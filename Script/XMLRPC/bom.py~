@@ -68,7 +68,7 @@ for line in lines:
        product[item_id] = default_code
 
 lines = csv.reader(open(FileInput, 'rb'), delimiter=separator)
-
+import pdb; pdb.set_trace()
 # BOM header:
 conversion = {}
 for line in lines:
@@ -82,25 +82,34 @@ for line in lines:
 
            if bom_code:
                continue
-
+           import pdb; pdb.set_trace()
            if product_id in product:
                default_code = product[product_id]
-               product_id = sock.execute( # search current ref
+               product_ids = sock.execute( # search current ref
                    dbname, uid, pwd, 'product.product', 'search', [
-                       ('default_code', '=', default_code),])
-               if product_id:
-                   product_id = product_id[0]        
+                       ('default_code', '=', default_code),])                       
+               if product_ids:
+                   product_tmpl_ids = sock.execute( # search current ref
+                       dbname, uid, pwd, 'product.product', 'read', 
+                       product_ids, ('product_tmpl_id',))[0]
+               
+                   product_id = product_tmpl_ids[0][0]
+                   
                else: # create 
-                   product_id = sock.execute( # search current ref
+                   product_ids = sock.execute( # search current ref
                        dbname, uid, pwd, 'product.product', 'create', {
                            'default_code': default_code,
                            'name': "Prod. %s" % default_code,
                            })
-                   product[default_code] = product_id
+                   product_tmpl_id = sock.execute( # search current ref
+                       dbname, uid, pwd, 'product.product', 'read', 
+                       product_ids, ('product_tmpl_id',))[0]
+
+                   product[default_code] = product_tmpl_ids[0]
                    
            else:
                print "codice non trovato", default_code
-               continue    
+               continue
 
            bom_id = sock.execute( # search current ref
                dbname, uid, pwd, 'mrp.bom', 'search', [
@@ -131,7 +140,7 @@ for line in lines:
            print "Errore importando, record saltato", sys.exc_info()    
 
 lines = csv.reader(open(FileInput, 'rb'), delimiter=separator)
-import pdb; pdb.set_trace()
+
 # -----------------------------------------------------------------------------
 #                                Components
 # -----------------------------------------------------------------------------
@@ -146,21 +155,30 @@ for line in lines:
 
            if not bom_code: # only parent bom
                continue
-           
+
+           import pdb; pdb.set_trace()
            if product_id in product:
                default_code = product[product_id]
-               product_id = sock.execute( # search current ref
+               product_ids = sock.execute( # search current ref
                    dbname, uid, pwd, 'product.product', 'search', [
                        ('default_code', '=', default_code),])
-               if product_id:
-                   product_id = product_id[0]        
+               if product_ids:
+                   product_tmpl_id = sock.execute( # search current ref
+                       dbname, uid, pwd, 'product.product', 'read', 
+                       product_ids, ('product_tmpl_id',))[0]
+                       
+                   product_id = product_ids[0]
                else: # create 
-                   product_id = sock.execute( # search current ref
+                   product_ids = sock.execute( # search current ref
                        dbname, uid, pwd, 'product.product', 'create', {
                            'default_code': default_code,
                            'name': "Prod. %s" % default_code,
                            })
-                   product[default_code] = product_id                   
+                   product_tmpl_id = sock.execute( # search current ref
+                       dbname, uid, pwd, 'product.product', 'read', 
+                       product_ids, ('product_tmpl_id',))[0]
+
+                   product[default_code] = product_tmpl_id[0]  # old ID
            else:
                print "codice non trovato", default_code
                continue    
@@ -176,7 +194,7 @@ for line in lines:
                'code': code,
                'name': name,
                'bom_id': conversion[bom_code],
-               'product_id': product_id,
+               'product_templ_id': product_id,
                'product_qty': product_qty,
                'type': 'normal',    
                'product_uom': 1,
