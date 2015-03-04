@@ -40,6 +40,13 @@ remove_product = eval(config.get('remove', 'product'))
 #remove_availability = eval(config.get('remove', 'availability'))
 #remove_reference = eval(config.get('remove', 'reference'))
 
+#csv
+availability_csv = config.get('csv', 'availability') # file csv
+availability_mask = config.get('csv', 'availability_mask') + log_log_return
+availability_mask = availability_mask.replace("(", "%(")
+availability_parameter = eval(config.get('csv', 'availability_parameter')) # param.
+availability_title = config.get('csv', 'availability_title') + log_log_return
+
 # SMTP paramenter for log mail:
 smtp_server = config.get('smtp', 'server')
 smtp_user = config.get('smtp', 'user')
@@ -154,6 +161,10 @@ try:
     item_id = False # find id record
     record = "" # text of element
     
+    # Extra csv file:
+    availability_csv_file = open(availability_csv, 'w')
+    availability_csv_file.write(availability_title)
+    line_csv = dict.fromkeys(availability_parameter, '')
     for line in open(xml_availability, 'r'):
         i += 1
         if i <= 2: # Jump first 2 line
@@ -175,7 +186,21 @@ try:
                     "Availability: not found ID_ARTICOLO [line: %s]" % i, )
             continue
 
+        # Extra export: Check element for CSV file:
+        for csv_key in availability_parameter:
+            if csv_key in line:
+                line_csv[csv_key] = line.split(
+                    "<%s>" % csv_key)[-1].split(
+                        "</%s>" % csv_key)[0]
+        
         if start and "</Disponibilita>" in line:
+            # Extra export CSV file:
+            # Write CSV line and reset dict
+            availability_csv_file.write(
+                availability_mask % (line_csv))
+            line_csv = (dict.fromkeys(availability_parameter, ''))
+                
+            
             if item_id not in availability:
                 availability[item_id] = []
             availability[item_id].append(record)
