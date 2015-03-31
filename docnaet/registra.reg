@@ -1,0 +1,12 @@
+Windows Registry Editor Version 5.00
+[HKEY_CLASSES_ROOT\docnaet]
+@="Micronaet Protocol Handler"
+"EditFlags"=hex:02,00,00,00
+"URL Protocol"=""
+[HKEY_CLASSES_ROOT\docnaet\DefaultIcon]
+[HKEY_CLASSES_ROOT\docnaet\shell]
+[HKEY_CLASSES_ROOT\docnaet\shell\open]
+[HKEY_CLASSES_ROOT\docnaet\shell\open\command]
+@="c:\\docnaet.exe %1"
+
+

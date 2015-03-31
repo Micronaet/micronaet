@@ -1,0 +1,258 @@
+.nolink {
+	FONT-SIZE: 8pt; COLOR: #333399; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.articolo {
+	FONT-WEIGHT: normal; FONT-SIZE: 8pt; COLOR: #000000; LINE-HEIGHT: 11pt; FONT-STYLE: normal; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif
+}
+.headwhite {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: #ffffff; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.headgiorno {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: #ff9900; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.dropdownbianco {
+	FONT-SIZE: 8pt; COLOR: black; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.headara {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: #ffffff; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.headlight {
+	FONT-SIZE: 10pt; COLOR: #333399; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.articololegge2 {
+	FONT-WEIGHT: normal; FONT-SIZE: 6.5pt; COLOR: #666666; LINE-HEIGHT: 9pt; FONT-STYLE: normal; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif
+}
+.articolosotto {
+	FONT-SIZE: 8pt; COLOR: #333399; LINE-HEIGHT: 11pt; FONT-STYLE: normal; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif
+}
+A.opera:link {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: #333399; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: underline
+}
+A.opera:hover {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: #333399; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+A.opera:active {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: #ff0000; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+A.opera:visited {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: #999999; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+A.operasx:link {
+	FONT-SIZE: 8pt; COLOR: #333399; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: underline
+}
+A.operasx:hover {
+	FONT-SIZE: 8pt; COLOR: #ff9900; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: underline
+}
+A.operasx:active {
+	FONT-SIZE: 8pt; COLOR: #ff0000; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: underline
+}
+A.operasx:visited {
+	FONT-SIZE: 8pt; COLOR: #999999; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+A.info:link {
+	FONT-SIZE: 8pt; COLOR: #ff9900; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+A.info:hover {
+	FONT-SIZE: 8pt; COLOR: #ff9900; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+A.info:active {
+	FONT-SIZE: 8pt; COLOR: #ff9900; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+A.info:visited {
+	FONT-SIZE: 8pt; COLOR: #ff9900; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+A.vismaup:link {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: #ffffff; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+A.vismaup:hover {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: #ff9900; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+A.vismaup:active {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: #ff0000; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+A.vismaup:visited {
+	FONT-SIZE: 10pt; COLOR: #cccccc; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+A.vismadown:link {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: #333399; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+A.vismadown:hover {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: #ff9900; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+A.vismadown:active {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: #ff0000; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+A.vismadown:visited {
+	FONT-SIZE: 10pt; COLOR: #cccccc; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+A.esterni:link {
+	FONT-SIZE: 6.5pt; COLOR: #333399; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+A.operara:link {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: #ff9900; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: underline
+}
+A.operara:hover {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: #ff9900; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+A.operara:active {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: #ff0000; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+A.operara:visited {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: #999999; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.headlong {
+	FONT-SIZE: 8pt; COLOR: #333399; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.head {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: #333399; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.date {
+	FONT-WEIGHT: normal; FONT-SIZE: 8pt; COLOR: #000000; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: underline
+}
+.headgiornopassato {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: #333399; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.Marchio {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.DescrBreve {
+	FONT-SIZE: xx-small; FONT-STYLE: normal; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.DatiTec {
+	FONT-WEIGHT: normal; FONT-SIZE: 10pt; LINE-HEIGHT: 12pt; FONT-STYLE: normal; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.Link01 {
+	FONT-WEIGHT: normal; FONT-SIZE: 10pt; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.Link02 {
+	FONT-WEIGHT: normal; FONT-SIZE: 9pt; FONT-STYLE: normal; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.Listino {
+	FONT-SIZE: 8pt; COLOR: #000077; LINE-HEIGHT: 10pt; FONT-STYLE: normal; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.Indirizzi {
+	FONT-WEIGHT: normal; FONT-SIZE: 9pt; LINE-HEIGHT: 13pt; FONT-STYLE: normal; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.Link00 {
+	FONT-WEIGHT: bold; FONT-SIZE: 12pt; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.Posizione {
+	FONT-WEIGHT: bold; FONT-SIZE: 8pt; LINE-HEIGHT: 20pt; FONT-STYLE: normal; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.ListinoTitolo {
+	FONT-WEIGHT: bold; FONT-SIZE: 9pt; FONT-STYLE: normal; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.Listino .marchi {
+	FONT-SIZE: 8pt; COLOR: white; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.MarchiTitolo {
+	FONT-WEIGHT: bolder; FONT-SIZE: small; COLOR: white; FONT-FAMILY: Arial
+}
+.MarchiTitolo A:link {
+	FONT-WEIGHT: bolder; FONT-SIZE: small; COLOR: white; LINE-HEIGHT: normal; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.MarchiTitolo A:visited {
+	FONT-WEIGHT: bolder; FONT-SIZE: small; COLOR: white; LINE-HEIGHT: normal; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.MarchiTitolo A:active {
+	FONT-WEIGHT: bolder; FONT-SIZE: small; COLOR: white; LINE-HEIGHT: normal; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.MarchiVoce {
+	FONT-SIZE: x-small; COLOR: white; FONT-FAMILY: Arial
+}
+.MarchiVoce A:active {
+	FONT-SIZE: 10pt; COLOR: white; LINE-HEIGHT: 12pt; FONT-FAMILY: Arial, helvetica, sans-serif; TEXT-DECORATION: none
+}
+.MarchiVoce A:link {
+	FONT-SIZE: 10pt; COLOR: white; LINE-HEIGHT: 12pt; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.MarchiVoce A:visited {
+	FONT-SIZE: 10pt; COLOR: white; LINE-HEIGHT: 12pt; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.MarchiTitolo A {
+	FONT-SIZE: small; COLOR: #ffffff; LINE-HEIGHT: normal; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.MarchiVoce A {
+	FONT-SIZE: 10pt; COLOR: white; LINE-HEIGHT: 12pt; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.DefaultLinkTitolo {
+	
+}
+.DefaultLinkTitolo A:active {
+	FONT-WEIGHT: bolder; FONT-SIZE: medium; COLOR: navy; FONT-FAMILY: Arial; TEXT-DECORATION: none
+}
+.DefaultLinkTitolo A {
+	FONT-WEIGHT: bolder; FONT-SIZE: medium; COLOR: blue; FONT-FAMILY: Arial; TEXT-DECORATION: none
+}
+.DefaultLinkTitolo A:link {
+	FONT-WEIGHT: bolder; FONT-SIZE: medium; COLOR: darkblue; FONT-FAMILY: Arial; TEXT-DECORATION: none
+}
+.DefaultLinkTitolo A:visited {
+	FONT-WEIGHT: bolder; FONT-SIZE: medium; COLOR: darkblue; FONT-FAMILY: Arial; TEXT-DECORATION: none
+}
+.DefaultLinkVoce {
+	FONT-SIZE: 8pt; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.DefaultLinkVoce A:active {
+	FONT-SIZE: 8pt; COLOR: navy; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.DefaultLinkVoce A {
+	FONT-SIZE: 8pt; COLOR: blue; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.DefaultLinkVoce A:link {
+	FONT-SIZE: 8pt; COLOR: navy; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.DefaultLinkVoce A:visited {
+	FONT-SIZE: 8pt; COLOR: navy; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.Listino .sconti {
+	FONT-SIZE: 8pt; COLOR: #ff6600; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.Listino .promo {
+	FONT-SIZE: 8pt; COLOR: crimson; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.Promo {
+	FONT-SIZE: 8pt; COLOR: crimson; LINE-HEIGHT: 10pt; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.Sconti {
+	FONT-SIZE: 8pt; COLOR: #ff6600; LINE-HEIGHT: 10pt; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.Listino A:hover {
+	FONT-SIZE: 8pt; COLOR: crimson; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: underline
+}
+.Listino A:active {
+	FONT-SIZE: 8pt; COLOR: mediumblue; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: underline
+}
+.Listino A:link {
+	FONT-SIZE: 8pt; COLOR: mediumblue; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: underline
+}
+.MarchiVoce A:hover {
+	FONT-SIZE: 10pt; COLOR: yellow; LINE-HEIGHT: 12pt; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.MarchiTitolo A:hover {
+	FONT-WEIGHT: bolder; FONT-SIZE: small; COLOR: yellow; LINE-HEIGHT: normal; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.copyright {
+	
+}
+.copyright A {
+	FONT-SIZE: x-small; COLOR: midnightblue; FONT-FAMILY: Arial; TEXT-DECORATION: none
+}
+.copyright A:active {
+	FONT-SIZE: x-small; COLOR: midnightblue; FONT-FAMILY: Arial; TEXT-DECORATION: none
+}
+.copyright A:hover {
+	FONT-SIZE: x-small; COLOR: coral; FONT-FAMILY: Arial; TEXT-DECORATION: none
+}
+.copyright A:visited {
+	FONT-SIZE: x-small; COLOR: midnightblue; FONT-FAMILY: Arial; TEXT-DECORATION: none
+}
+.copyright A:link {
+	FONT-SIZE: x-small; COLOR: midnightblue; FONT-FAMILY: Arial; TEXT-DECORATION: none
+}
+.Listino A:visited {
+	FONT-SIZE: 8pt; COLOR: darkgreen; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: underline
+}
+.Link03 {
+	FONT-SIZE: 8pt; TEXT-DECORATION: underline
+}

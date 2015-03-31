@@ -1,0 +1,64 @@
+<SCRIPT LANGUAGE=vbscript RUNAT =Server>
+''***********************************
+'* Programmatore: Nicola Riolini   *
+'* Copyright 2002 Micronaet s.r.l. *
+'*********************************** 
+'
+' Variabili globale dell'applicazione LABNAET
+'
+
+sub Application_OnStart()
+    ' informazioni del cliente
+    Application ("Ditta") ="Pan Chemicals S.p.A."                    		' Nome della ditta proprietaria del progetto
+    Application ("Logo")="/labnaet/immagini/sistema/logo/panchemicals.jpg"    		' logo della ditta proprietaria
+
+    ' informazioni del programma
+    Application("Versione")="1.0 del 01/01/2002"      		        ' Versione del programma
+    Application("WebSite")="http://server0/labnaet"				' Sito internet predefinito del progetto
+    Application("Configurazione")="111"  ' stringa di configurazione dei parametri
+
+    ' Cartelle utilizzate dal programma
+    Application("UsersFolder")="\\server0\utentilab$\" ' cartella utenti da utilizzare per download ed upload
+    Application("FaxFolder")="\\server0\faxstore$\faxric\" ' cartella per la raccolta dei fax in ingresso
+    Application("CartellaDati")="\\server0\documentilab$" ' cartella principale dei dati sul server
+    Application("CartellaDatiR")="\\server0\remote1$" ' Dati remoti
+    Application("CartellaDatiN")="\\server0\documentilab$" ' Dati Network
+    Application("Personalizzazioni")="1000010501"
+end sub
+
+sub Session_OnStart()
+    ' Informazioni utente che accede alla sessione
+    Session("IsAutenticated")=FALSE	' test effettuto da ogni videata
+    Session("IsAdministrator")=FALSE	' Amministratore di programma
+    Session("UserID")=""	' ID utente di log  
+    Session("UserName")=""	' Nome di logon dell'utente
+    Session("UserDescription")=""	' Descrizione completa dell'utente
+    Session("Password")=""  ' usate per il log off
+    Session("Level")=0   ' nessun accesso
+    Session("Remoto")=FALSE ' ipotizzo che non sia remoto
+    Session("Configurazione")="" ' parametri di configurazione dell'utente
+
+    ' Informazioni ditta utilizzata attulamente nella sessione
+    Session("IDDitta")=""   ' ditta di riferimento
+    Session("ditRagioneSociale")="Nessuna"	' Ditta di riferimento
+end sub 
+
+sub Application_end()
+end sub
+
+sub Session_end()
+end sub
+
+</SCRIPT>
+
+<OBJECT	RUNAT=Server
+	SCOPE=Application
+	ID=conquerChat
+	PROGID="Scripting.Dictionary">
+</OBJECT>
+
+<OBJECT	RUNAT=Server
+	SCOPE=Application
+	ID=conquerChatTime
+	PROGID="Scripting.Dictionary">
+</OBJECT>

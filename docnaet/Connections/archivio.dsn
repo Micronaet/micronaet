@@ -1,0 +1,10 @@
+[ODBC]
+DRIVER=SQL Server
+UID=Administrator
+Trusted_Connection=Yes
+LANGUAGE=Italiano
+DATABASE=docnaet
+WSID=SERVER
+APP=Macromedia Dreamweaver UltraDev
+SERVER=SERVER
+Description=docnaet

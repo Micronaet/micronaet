@@ -1,0 +1,40 @@
+BODY
+{
+    BACKGROUND-COLOR: snow;
+    COLOR: #666666;
+    FONT-FAMILY: 'Lucida Sans Unicode', Arial;
+    FONT-SIZE: 8pt;
+    LETTER-SPACING: normal;
+    LINE-HEIGHT: normal;
+    TEXT-ALIGN: justify;
+    TEXT-DECORATION: none
+}
+TABLE
+{
+    BACKGROUND-COLOR: lightgrey;
+    BORDER-BOTTOM: medium none;
+    BORDER-LEFT: medium none;
+    BORDER-RIGHT: medium none;
+    BORDER-TOP: medium none;
+    CLEAR: none;
+    COLOR: midnightblue;
+    FLOAT: none;
+    FONT-FAMILY: 'Lucida Sans Unicode', Arial;
+    FONT-SIZE: 8pt;
+    FONT-STYLE: normal;
+    LINE-HEIGHT: normal;
+    MARGIN: 0px 0px
+; text-align: left; padding: 0px 0px
+; clip:   rect(   )
+}
+Titolo
+{
+    BACKGROUND-COLOR: lemonchiffon;
+    COLOR: brown;
+    FONT-FAMILY: 'Lucida Sans Unicode', Arial;
+    FONT-SIZE: 8pt;
+    TEXT-DECORATION: none
+}
+TEXTAREA {  font: 12px "Lucida Sans Unicode"}
+INPUT {  font: 12px "Lucida Sans Unicode"}
+SELECT {  font: 12px "Lucida Sans Unicode"}
