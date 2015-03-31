@@ -12,7 +12,7 @@
         <field name="report_rml">report_purchase_fiam/report/purchase.odt</field>
         <field name="parser_state">loc</field>
         <field name="tml_source">file</field>
-        <field name="out_format" eval="ref('report_aeroo_ooo.report_mimetypes_pdf_odt')"></field>
+        <!--<field name="out_format" eval="ref('report_aeroo_ooo.report_mimetypes_pdf_odt')"></field>-->
     </record>
     
     <ir_set>
@@ -36,7 +36,7 @@
         <field name="report_rml">report_purchase_gpb/report/purchase.ods</field>
         <field name="parser_state">loc</field>
         <field name="tml_source">file</field>
-        <field name="out_format" eval="ref('report_aeroo.report_mimetypes_pdf_odt')"></field>
+        <!--<field name="out_format" eval="ref('report_aeroo.report_mimetypes_pdf_odt')"></field>-->
     </record>
     
     <ir_set>
