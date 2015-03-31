@@ -50,7 +50,6 @@
 	"update_xml": [
         "purchase_view.xml",
         "report/report_order.xml",
-        "report/report_order_ods.xml",
         ],
 	"installable": True
 }

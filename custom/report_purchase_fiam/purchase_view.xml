@@ -1,6 +1,18 @@
 <?xml version="1.0"?>
 <openerp>
 <data>
+    <record id='product_product_form_view_extra_fields' model='ir.ui.view'>
+        <field name='name'>Product pack</field>
+        <field name='model'>product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+           <field name='mes_type' position="after">   
+                <field name='quantity_x_pack' />
+           </field>                
+        </field>
+    </record>   
+    
     <record model="ir.ui.view" id="view_purchase_order_form_extra">
         <field name="name">purchase.order</field>
         <field name="model">purchase.order</field>

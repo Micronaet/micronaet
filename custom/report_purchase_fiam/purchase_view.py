@@ -33,6 +33,72 @@
 ##############################################################################
 
 from osv import osv, fields
+from datetime import datetime
+import decimal_precision as dp
+import tools
+import os
+import base64
+import urllib
+
+class inherit_product_product(osv.osv):
+    _name = 'product.product'
+    _inherit = 'product.product'
+
+    def get_quotation_image(self, cr, uid, item, context=None):
+        ''' Get single image for the file
+            (default path is ~/photo/db_name/quotation
+        '''        
+        img = ''         
+        extension = "jpg"
+        image_path = os.path.expanduser(
+            "~/photo/%s/product/default" % cr.dbname)
+        empty_image= "%s/%s.%s" % (image_path, "empty", extension)
+
+        product_browse=self.browse(cr, uid, item, context=context)
+        # Image compoesed with code format (code.jpg)
+        if product_browse.default_code:
+            try:
+                (filename, header) = urllib.urlretrieve(
+                    "%s/%s.%s" % (
+                        image_path, 
+                        product_browse.default_code.replace(" ", "_"), 
+                        extension)) # code image
+                f = open(filename , 'rb')
+                img = base64.encodestring(f.read())
+                f.close()
+            except:
+                img = ''
+            
+            if not img: # empty image:
+                try:
+                    (filename, header) = urllib.urlretrieve(empty_image) # empty setted up on folder
+                    f = open(filename , 'rb')
+                    img = base64.encodestring(f.read())
+                    f.close()
+                except:
+                    img = ''
+        return img
+
+    # Fields function:
+    def _get_quotation_image(self, cr, uid, ids, field_name, arg, context=None):
+        ''' Field function, for every ids test if there's image and return
+            base64 format according to code value (images are jpg)
+        '''
+        res = {}
+        for item in ids:
+            res[item] = self.get_quotation_image(
+                cr, uid, item, context=context)
+        return res                
+
+    _columns = {
+                'quotation_photo':fields.function(
+                    _get_quotation_image, type="binary", method=True),
+                'quantity_x_pack': fields.integer('Q. per pack'), #TODO used?
+               }                
+    _defaults = {
+        'quantity_x_pack': lambda *a: 1,
+    }               
+inherit_product_product()
 
 class purchase_order_extra(osv.osv):
     _name = 'purchase.order.line'
