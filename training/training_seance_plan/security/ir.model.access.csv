@@ -1,0 +1,11 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_training_lecturer_base_group_training","training.lecturer.base","model_training_lecturer_base","training.group_training",1,1,1,1
+"access_training_lecturer_base_group_course_manager","training.lecturer.base","model_training_lecturer_base","training.group_course_manager",1,1,1,1
+"access_training_lecturer_base_group_session_manager","training.lecturer.base","model_training_lecturer_base","training.group_session_manager",1,1,1,1
+"access_training_seance_plan_group_training","training.seance.plan","model_training_seance_plan","training.group_training",1,1,1,1
+"access_training_seance_plan_group_course_manager","training.seance.plan","model_training_seance_plan","training.group_course_manager",1,1,1,1
+"access_training_seance_plan_group_session_manager","training.seance.plan","model_training_seance_plan","training.group_session_manager",1,1,1,1
+"access_training_subscription_line_vote_group_training","training.subscription.line.vote","model_training_subscription_line_vote","training.group_training",1,1,1,1
+"access_training_subscription_line_vote_group_course_manager","training.subscription.line.vote","model_training_subscription_line_vote","training.group_course_manager",1,1,1,1
+"access_training_subscription_line_vote_group_session_manager","training.subscription.line.vote","model_training_subscription_line_vote","training.group_session_manager",1,1,1,1
+

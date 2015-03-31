@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+       <!--BLOCCO: hr.employee.resource.wizard: Prima videata dove si impostano i parametri -->
+         <record model="ir.ui.view" id="hr_employee_planner_wizard">
+            <field name="name">Resource Wizard</field>
+            <field name="model">hr.employee.planner.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Verify planning resources">
+                    <!--<field name="name" />-->
+                    <group colspan="4">
+                    <field name="from_date" widget="date"/>
+                    <field name="to_date" widget="date" />
+                    <newline />
+                    <field name="department_id" />
+                    <field name="treshold" />
+                    </group>                    
+                    <group colspan="4">
+                    <button string="Cancel" special="cancel" icon="gtk-cancel"/>                    
+                    <button name="open_calendar" string="Open" type="object" icon="gtk-go-forward" />
+                    </group>
+                </form>
+            </field>
+         </record>
+        
+        <act_window         
+            src_model="hr.employee.planner"
+            res_model="hr.employee.planner.wizard"
+            name="Controllo copertura"
+            view_mode="form"       
+            target="current"     
+            id="hr_employee_planner_wizard_action_right" />        
+            
+        <!--<record id="hr_employee_planner_wizard_action" model="ir.actions.act_window">
+            <field name="name">Verify cover planner</field>
+            <field name="res_model">hr.employee.planner.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">current</field>
+        </record> -->
+            
+        <!--<menuitem action="hr_employee_planner_wizard_action" 
+                  id="hr_employee_planner_wizard_action_menu" 
+                  parent="hr_attendance.menu_hr_time_tracking" 
+                  sequence="12"
+                  icon="STOCK_EXECUTE" />-->
+
+       <!--BLOCCO: hr.employee.planner.result.wizard: Seconda videata con rappresentazione calendario -->
+         <record model="ir.ui.view" id="hr_employee_planner_calendar_form">
+            <field name="name">Planner Calendar Form</field>
+            <field name="model">hr.employee.planner.calendar</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Planning resources">
+                    <field name="name" />
+                    <field name="date" />
+                    <field name="duration" widget="float_time" />
+                    <field name="total" />
+                </form>
+            </field>            
+         </record>              
+
+         <record model="ir.ui.view" id="hr_employee_planner_calendar_tree">
+            <field name="name">Planner Calendar Tree</field>
+            <field name="model">hr.employee.planner.calendar</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Planning resources">
+                    <field name="name" />
+                    <field name="date" />
+                    <field name="duration" widget="float_time" />
+                    <field name="total" />
+                </tree>
+            </field>            
+         </record>              
+
+         <record model="ir.ui.view" id="hr_employee_planner_calendar_calendar">
+            <field name="name">Planner Calendar</field>
+            <field name="model">hr.employee.planner.calendar</field>
+            <field name="type">calendar</field>
+            <field name="arch" type="xml">
+                <calendar string="Planning resources" date_start="date" date_delay="duration" color="covered" mode="week">
+                    <field name="total" />
+                    <field name="name" />
+                    <field name="duration" widget="float_time" />
+                </calendar>
+            </field>            
+         </record>              
+
+        <!--<record id="hr_employee_planner_calendar_calendar_action" model="ir.actions.act_window">
+            <field name="name">Esempio calendario pianificazioni</field>
+            <field name="res_model">hr.employee.planner.calendar</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">calendar, tree, form</field>
+        </record> 
+        
+        <menuitem action="hr_employee_planner_calendar_calendar_action" 
+                  id="hr_employee_planner_calendar_calendar_action_menu" 
+                  parent="hr_attendance.menu_hr_time_tracking" 
+                  sequence="12"
+                  icon="STOCK_EXECUTE" />-->
+
+    </data>
+</openerp>

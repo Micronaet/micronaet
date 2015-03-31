@@ -1,0 +1,141 @@
+<?xml version="1.0" ?>
+<openerp>
+	<data>
+    <!-- Partner > Address 
+          (inherit from base_contact view) -->
+         
+	<record model="ir.ui.view" id="view_partner_form_inherit_province">
+		<field name="name">Add partner region province</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="base_contact.view_partner_form_inherit"/>
+		<field name="type">form</field>
+		<field name="arch" type="xml">                  
+           <xpath expr="/form/notebook/page[@string='General']/field[@name='address']/form/group/field[@name='city']" position="after">
+               <field name="province" select="2" />
+               <field name="region" select="2" />
+		   </xpath>
+           <xpath expr="/form/notebook/page[@string='General']/field[@name='address']/form/group/field[@name='city']" position="attributes">
+                <attribute name='on_change'>on_change_city(city)</attribute>
+		   </xpath>
+           <xpath expr="/form/notebook/page[@string='General']/field[@name='address']/form/group/field[@name='zip']" position="attributes">
+                <attribute name='on_change'>on_change_zip(zip)</attribute>
+		   </xpath>
+           <xpath expr="/form/notebook/page[@string='General']/field[@name='address']/form/group/field[@name='state_id']" position="replace">
+               <!-- delete federal state -->
+		   </xpath>
+           <xpath expr="/form/notebook/page[@string='General']/field[@name='address']/form/group/field[@name='fax']" position="after">
+               <field name="mobile" />
+		   </xpath>
+		</field>
+	 </record>
+
+     <!-- INHERIT Search res.partner-->      
+     <!--TODO inserire nella res.partner un rimando alla regione / provincia per poter fare il filtro!!! -->
+     <!--<record model="ir.ui.view" id="view_res_partner_tree_filter_province_region">
+            <field name="name">Partner search province region</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                   <field name="user_id" position="before">
+                          <field name="province" />
+                          <field name="region" />
+                   </field>
+            </field>
+     </record>-->
+
+     <!-- INHERIT Search res.partner.contact --> 
+     <record model="ir.ui.view" id="view_partner_contact_search_province_region">
+            <field name="name">Contact search province region</field>
+            <field name="model">res.partner.contact</field>
+            <field name="inherit_id" ref="base_contact.view_partner_contact_search"/>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                   <field name="partner_id" position="after">
+                          <field name="province" />
+                          <field name="region" />
+                </field>
+            </field>
+     </record>
+       
+ <!--	Province -->
+        
+        <record id="view_res_province_tree" model="ir.ui.view">
+            <field name="name">res.province.tree</field>
+            <field name="model">res.province</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Province">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="region"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_res_province_form" model="ir.ui.view">
+            <field name="name">res.province.form</field>
+            <field name="model">res.province</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Province">
+                    <field name="name" select="1"/>
+                    <field name="code" select="1"/>
+                    <field name="region" select="1"/>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_province" model="ir.actions.act_window">
+            <field name="name">Provinces</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.province</field>
+            <field name="view_type">form</field>
+        </record>
+        
+        <menuitem action="action_province" id="menu_province_partner" parent="base.menu_localisation"/>
+
+ <!--	City -->
+        
+        <record id="view_res_city_tree" model="ir.ui.view">
+            <field name="name">res.city.tree</field>
+            <field name="model">res.city</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="City">
+                    <field name="name"/>
+                    <field name="zip"/>
+                    <field name="province_id"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_res_city_form" model="ir.ui.view">
+            <field name="name">res.city.form</field>
+            <field name="model">res.city</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="City">
+                    <group col="4">
+                        <field name="name" select="1" colspan="4"/>
+                        <field name="zip" select="1"/>
+                        <field name="province_id" select="1"/>
+                        <field name="phone_prefix" select="2"/>
+                        <field name="istat_code" select="2"/>
+                        <field name="cadaster_code" select="2"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_city" model="ir.actions.act_window">
+            <field name="name">Cities</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.city</field>
+            <field name="view_type">form</field>
+        </record>
+        
+        <menuitem action="action_city" id="menu_city_partner" parent="base.menu_localisation"/>
+
+	</data>
+</openerp>

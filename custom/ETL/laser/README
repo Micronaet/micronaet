@@ -1,0 +1,13 @@
+**** Creazione DB
+1. Creare nuovo DB in italiano
+2. Installare moduli base_contact, training, training_room
+
+**** Preparazione database
+1. Creazione anno e periodi (utilizzare la procedura corretta, verificare problema 1/1 domenica
+
+2. Importazioni anagrafiche standard:
+   python anagrafiche.py
+
+
+**** Operazioni schedulate 
+

@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <!-- INHERIT VIEW: -->  
+    <!-- Da sale_layout in sale.order --> 
+    <record id='view_sale_layout_order_add_print_fiam_fields' model='ir.ui.view'>
+        <field name='name'>Quotation sale layout</field>
+        <field name='model'>sale.order</field>
+        <field name="inherit_id" ref="sale_layout.view_order_form_inherit_1"/>
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+              <xpath expr="/form/notebook/page/field[@name='abstract_line_ids']/tree/field[@name='name']" position="before">
+                  <field name='repeat_header_line' />             
+              </xpath>
+              <xpath expr="/form/notebook/page/field[@name='abstract_line_ids']/form/notebook/page[@string='Order Line']/field[@name='layout_type']" position="after">
+                  <field name='repeat_header_line' />             
+              </xpath>
+              <!--<xpath expr="/form/notebook/page[@string='Sales Order']/field[@name='project_id']" position="after">
+                  <newline />
+                   <field name='has_master_header' />
+              </xpath>-->
+        </field>
+    </record>
+</data>
+</openerp>
+
+

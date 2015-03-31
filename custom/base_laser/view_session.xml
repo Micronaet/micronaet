@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+      <!-- VIEWS & ACTIONS -->
+        <!-- INHERIT VIEWS --> 
+        <record model="ir.ui.view" id="view_training_session_inherit_baselecturer">
+            <field name="name">Scheda Lecturer</field>
+            <field name="model">training.session</field>
+            <field name="inherit_id" ref="training.training_session_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="Docenti base">                        
+                        <button string="Crea elenco moduli dal corso" name="action_create_lecteurer" type="object" icon="terp-partner" />
+                        <field name="baselecturer_ids">
+                            <tree>
+                               <field name="course_id" />
+                               <field name="lecturer_id" />
+                            </tree>
+                            <form>
+                               <field name="course_id" />
+                               <field name="lecturer_id" />
+                            </form>         
+                        </field>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+        <!--<record model="ir.actions.act_window" id="open_view_sector">
+            <field name="name">Settore di attivita'</field>
+            <field name="res_model">res.partner.sector</field>
+            <field name="view_type">form</field>
+            <field name="view_model">form,tree</field>
+        </record>-->
+    </data>
+</openerp>

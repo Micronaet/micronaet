@@ -1,0 +1,195 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* report_aeroo_pricelist
+# <> <>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 6.0.3\n"
+"Report-Msgid-Bugs-To: support@openerp.com\n"
+"POT-Creation-Date: 2012-05-17 08:22+0000\n"
+"PO-Revision-Date: 2012-05-17 10:23+0200\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: report_aeroo_pricelist
+#: help:product.pricelist.customer,partner_id:0
+msgid "Choose partner to create custom pricelist or add quotations"
+msgstr ""
+"Scegliere il partner per creare listino personale o aggiungere un prezzo"
+
+#. module: report_aeroo_pricelist
+#: help:product.pricelist.customer,comment:0
+msgid "Need to be created or updated"
+msgstr "Deve essere creato o aggiornato"
+
+#. module: report_aeroo_pricelist
+#: field:product.pricelist.generator,pricelist_org_id:0
+msgid "Original pricelist"
+msgstr "Listino originale"
+
+#. module: report_aeroo_pricelist
+#: field:product.pricelist.generator,new:0
+msgid "New"
+msgstr "Nuovo"
+
+#. module: report_aeroo_pricelist
+#: field:product.pricelist.customer,product_id:0
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: report_aeroo_pricelist
+#: model:ir.module.module,description:report_aeroo_pricelist.module_meta_information
+msgid "Pricelist version report"
+msgstr "Report versione listino"
+
+#. module: report_aeroo_pricelist
+#: help:product.pricelist.generator,pricelist_des_id:0
+msgid "If no new pricelist, use this pricelist to upgrade fields"
+msgstr ""
+"Se non è un nuovo listino, uso il listino scelto per aggiornare i prezzi"
+
+#. module: report_aeroo_pricelist
+#: code:addons/report_aeroo_pricelist/wizard/create_pricelist.py:61
+#: code:addons/report_aeroo_pricelist/wizard/create_pricelist.py:64
+#: code:addons/report_aeroo_pricelist/wizard/nuovi/create_pricelist.py:61
+#: code:addons/report_aeroo_pricelist/wizard/nuovi/create_pricelist.py:64
+#: code:addons/report_aeroo_pricelist/wizard/vecchi/create_pricelist.py:61
+#: code:addons/report_aeroo_pricelist/wizard/vecchi/create_pricelist.py:64
+#, python-format
+msgid "Warning !"
+msgstr "Attenzione!"
+
+#. module: report_aeroo_pricelist
+#: field:product.pricelist.customer,price:0
+msgid "Price"
+msgstr "Prezzo"
+
+#. module: report_aeroo_pricelist
+#: model:ir.actions.act_window,name:report_aeroo_pricelist.product_pricelist_customer_action
+#: model:ir.ui.menu,name:report_aeroo_pricelist.product_pricelist_customer_menuitem
+msgid "Create / Update custom partner price"
+msgstr "Crea / Aggiorna prezzi cliente"
+
+#. module: report_aeroo_pricelist
+#: help:product.pricelist.generator,new:0
+msgid "Generate a new pricelist with this name"
+msgstr "Genera un nuovo listino con lo stesso nome"
+
+#. module: report_aeroo_pricelist
+#: view:product.pricelist.customer:0
+msgid "Add custom price for partner"
+msgstr "Aggiunge prezzo personalizzato al cliente"
+
+#. module: report_aeroo_pricelist
+#: view:product.pricelist.customer:0
+msgid "Insert / Update"
+msgstr "Inserisci / Aggiorna"
+
+#. module: report_aeroo_pricelist
+#: help:product.pricelist,customized:0
+msgid "If this pricelist is for only one partner"
+msgstr "Se questo listino è solamente per un partner"
+
+#. module: report_aeroo_pricelist
+#: model:ir.model,name:report_aeroo_pricelist.model_product_pricelist_customer
+msgid "Product pricelist customer"
+msgstr "Listino prodotti cliente"
+
+#. module: report_aeroo_pricelist
+#: code:addons/report_aeroo_pricelist/wizard/create_pricelist.py:64
+#: code:addons/report_aeroo_pricelist/wizard/nuovi/create_pricelist.py:64
+#: code:addons/report_aeroo_pricelist/wizard/vecchi/create_pricelist.py:64
+#, python-format
+msgid "Idea must be in \"Open\" state before vote for that idea."
+msgstr "L'idea deve essere nello stato \"Aperta\" per essere votata"
+
+#. module: report_aeroo_pricelist
+#: field:product.pricelist.generator,new_name:0
+msgid "New version name"
+msgstr "Nome nuova versione"
+
+#. module: report_aeroo_pricelist
+#: help:product.pricelist.customer,pricelist_id:0
+#: help:product.pricelist.generator,pricelist_org_id:0
+msgid ""
+"Choose original pricelist used to calculate new complete pricelist/version"
+msgstr ""
+"Scegliere listino originale da usare per calcolare il nuovo listino/versione"
+
+#. module: report_aeroo_pricelist
+#: field:product.pricelist,customized:0
+msgid "Customized"
+msgstr "Personalizzato"
+
+#. module: report_aeroo_pricelist
+#: view:product.pricelist.generator:0
+msgid "Create / Update"
+msgstr "Crea / Aggiorna"
+
+#. module: report_aeroo_pricelist
+#: model:ir.module.module,shortdesc:report_aeroo_pricelist.module_meta_information
+msgid "Aeroo Reports - Pricelist"
+msgstr "Aeroo Report - Listino"
+
+#. module: report_aeroo_pricelist
+#: model:ir.model,name:report_aeroo_pricelist.model_product_pricelist_generator
+msgid "Product pricelist generator"
+msgstr "Generatore listino prodotti"
+
+#. module: report_aeroo_pricelist
+#: view:product.pricelist.generator:0
+msgid "Create / Update pricelist version"
+msgstr "Crea / Aggiorna versione listino"
+
+#. module: report_aeroo_pricelist
+#: model:ir.model,name:report_aeroo_pricelist.model_product_pricelist
+msgid "Pricelist"
+msgstr "Listino Prezzi"
+
+#. module: report_aeroo_pricelist
+#: model:ir.actions.report.xml,name:report_aeroo_pricelist.aeroo_pricelist_version_report
+msgid "Pricelist version ODT/PDF"
+msgstr "Versione listino (ODT/PDF)"
+
+#. module: report_aeroo_pricelist
+#: field:product.pricelist.customer,comment:0
+msgid "Comment"
+msgstr "Commento"
+
+#. module: report_aeroo_pricelist
+#: field:product.pricelist.customer,pricelist_id:0
+msgid "Current pricelist"
+msgstr "Attuale listino"
+
+#. module: report_aeroo_pricelist
+#: model:ir.actions.act_window,name:report_aeroo_pricelist.product_pricelist_generator_right_action
+msgid "Create / Update pricelist"
+msgstr "Crea / Aggiorna listino"
+
+#. module: report_aeroo_pricelist
+#: field:product.pricelist.generator,pricelist_des_id:0
+msgid "Destination pricelist"
+msgstr "Listino destinazione"
+
+#. module: report_aeroo_pricelist
+#: view:product.pricelist.customer:0 view:product.pricelist.generator:0
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: report_aeroo_pricelist
+#: field:product.pricelist.customer,partner_id:0
+msgid "Partner"
+msgstr "Partner"
+
+#. module: report_aeroo_pricelist
+#: code:addons/report_aeroo_pricelist/wizard/create_pricelist.py:61
+#: code:addons/report_aeroo_pricelist/wizard/nuovi/create_pricelist.py:61
+#: code:addons/report_aeroo_pricelist/wizard/vecchi/create_pricelist.py:61
+#, python-format
+msgid "You can not give Vote for this idea more than %s times"
+msgstr "Non potete votare una idea più di %s volte"

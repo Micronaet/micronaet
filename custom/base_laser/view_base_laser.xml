@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!-- VIEWS & ACTIONS -->
+             <!-- Office: -->
+        <record model="ir.ui.view" id="view_base_laser_office_form">
+            <field name="name">Ufficio principale di appartenenza</field>
+            <field name="model">base.laser.office</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                  <form string="Ufficio">
+                       <field name="name" select="1" colspan="4" />                       
+                       <field name="note" select="2" colspan="4" />
+                  </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_base_laser_office_tree">
+            <field name="name">Ufficio principale di appartenenza</field>
+            <field name="model">base.laser.office</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                  <form string="Ufficio">
+                       <field name="name" select="1" />                       
+                       <field name="note" select="2" />
+                  </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="open_base_laser_office_form">
+            <field name="name">Ufficio di appartenenza principale</field>
+            <field name="res_model">base.laser.office</field>
+            <field name="view_type">form</field>
+            <field name="view_model">form,tree</field>
+        </record>
+
+         <!--MENU ITEMS-->
+        <menuitem name="Uffici" 
+                  id="res_base_laser_office_menu" 
+                  parent="res_menu_laser"
+                  action="open_base_laser_office_form"
+                  icon="terp-partner" 
+                  groups="base.group_partner_manager"
+                  sequence="0"/>  
+    </data>
+</openerp>

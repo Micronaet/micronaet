@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<openerp>
+<data noupdate="1">
+    <record id="aeroo_status_seance_edition_report_id" model="ir.actions.report.xml">
+        <field name="name">Stato edizioni/lezioni</field>
+        <field name="type">ir.actions.report.xml</field>
+        <field name="model">training.catalog</field>
+        <field name="report_name">status_seance_edition</field>
+        <field name="report_type">aeroo</field>
+        <field name="in_format">oo-odt</field>
+        <field name="parser_loc">training_seance_plan/report/parser.py</field>
+        <field name="report_rml">training_seance_plan/report/status.odt</field>
+        <field name="parser_state">loc</field>
+        <field name="tml_source">file</field>
+    </record>
+    <ir_set>
+        <field eval="'action'" name="key"/>
+        <field eval="'client_print_multi'" name="key2"/>
+        <field eval="['training.catalog']" name="models"/>
+        <field name="name">status_seance_edition</field>
+        <field eval="'ir.actions.report.xml,'+str(aeroo_status_seance_edition_report_id)" name="value"/>
+        <field eval="True" name="isobject"/>
+        <field eval="True" name="replace"/>
+    </ir_set>
+</data>
+</openerp>
+

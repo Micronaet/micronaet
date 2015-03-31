@@ -1,0 +1,1778 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* dentist
+# <> <>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 6.0.3\n"
+"Report-Msgid-Bugs-To: support@openerp.com\n"
+"POT-Creation-Date: 2012-04-29 07:46+0000\n"
+"PO-Revision-Date: 2012-04-29 09:48+0200\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: dentist
+#: field:sale.order,print_privacy_policy:0
+msgid "Print privacy"
+msgstr "Stampa Privacy"
+
+#. module: dentist
+#: field:res.partner,photo:0
+msgid "Picture"
+msgstr "Foto"
+
+#. module: dentist
+#: help:res.users,is_assistant:0
+msgid "Check if the partner is an assistant"
+msgstr "Controlla se il partner è un assistente"
+
+#. module: dentist
+#: field:dentist.operation,import:0 field:dentist.todo,import:0
+msgid "Imported"
+msgstr "Importato"
+
+#. module: dentist
+#: constraint:res.users:0
+msgid "The chosen company is not in the allowed companies for this user"
+msgstr "L'azienda scelta non è fra le aziende abilitate per questo utente"
+
+#. module: dentist
+#: model:ir.ui.menu,name:dentist.dentist_patients_module_menu
+msgid "Moduli cliente"
+msgstr "Moduli cliente"
+
+#. module: dentist
+#: selection:res.partner,rh:0
+msgid "-"
+msgstr "-"
+
+#. module: dentist
+#: model:ir.actions.act_window,name:dentist.dentist_action_form_new_appointment
+#: model:ir.ui.menu,name:dentist.menu_dentist_conf_appointment_new
+msgid "New Appointment"
+msgstr "Nuovo appuntamento"
+
+#. module: dentist
+#: field:res.groups,poliambulatory:0
+msgid "Poliambulatori"
+msgstr "Poliambulatori"
+
+#. module: dentist
+#: help:dentist.appointment,patient_id:0
+msgid "Patient Name"
+msgstr "Nome paziente"
+
+#. module: dentist
+#: field:dentist.appointment,comments:0
+msgid "Comments"
+msgstr "Commenti"
+
+#. module: dentist
+#: view:dentist.appointment:0
+msgid "Group By..."
+msgstr "Raggruppa per..."
+
+#. module: dentist
+#: model:ir.ui.menu,name:dentist.dentist_product_x_category_menu
+msgid "Products per category"
+msgstr "Prodotti per categoria"
+
+#. module: dentist
+#: view:res.partner:0
+msgid "Relazioni con altri partner"
+msgstr "Relazioni con altri partner"
+
+#. module: dentist
+#: field:dentist.operation,name:0 view:dentist.room:0
+msgid "Extra info"
+msgstr "Extra info"
+
+#. module: dentist
+#: view:sale.order:0
+msgid "Recreate Invoice"
+msgstr "Ricrea Fattura"
+
+#. module: dentist
+#: field:dentist.annotation,date_from:0
+msgid "Date form"
+msgstr "Data da"
+
+#. module: dentist
+#: view:dentist.appointment:0
+msgid "Medical note to inserto "
+msgstr "Da inserire note mediche"
+
+#. module: dentist
+#: field:dentist.appointment,alert_by:0
+msgid "Alert"
+msgstr "Promemoria"
+
+#. module: dentist
+#: field:res.partner,rh:0
+msgid "Rh"
+msgstr "Rh"
+
+#. module: dentist
+#: field:res.partner,annotations_ids:0
+msgid "Annotations"
+msgstr "Annotazioni"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "24"
+msgstr "24"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "25"
+msgstr "25"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "26"
+msgstr "26"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "27"
+msgstr "27"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "21"
+msgstr "21"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "22"
+msgstr "22"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "23"
+msgstr "23"
+
+#. module: dentist
+#: view:dentist.appointment:0
+msgid "Time info"
+msgstr "Info orario"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "28"
+msgstr "28"
+
+#. module: dentist
+#: model:ir.actions.act_window,name:dentist.dentist_action_form_appointment_today
+#: model:ir.ui.menu,name:dentist.menu_dentist_conf_appointment_today
+msgid "Today appointments (reception)"
+msgstr "Appuntamenti odierni (reception)"
+
+#. module: dentist
+#: help:res.partner,relationship:0
+msgid "Elenco delle relazioni con altri pazienti"
+msgstr "Elenco delle relazioni con altri pazienti"
+
+#. module: dentist
+#: field:dentist.annotation,date_to:0
+msgid "Date to"
+msgstr "Data a"
+
+#. module: dentist
+#: field:res.partner,first_name:0
+msgid "First name"
+msgstr "Nome"
+
+#. module: dentist
+#: selection:dentist.annotation,office:0
+msgid "Reumatologia"
+msgstr "Reumatologia"
+
+#. module: dentist
+#: view:res.partner:0
+msgid "Birth information"
+msgstr "Informazioni nascita"
+
+#. module: dentist
+#: model:ir.actions.act_window,name:dentist.dentist_action_form_appointment_annotation_required
+#: model:ir.ui.menu,name:dentist.menu_dentist_action_form_appointment_annotation_required
+msgid "Appointment annotation required"
+msgstr "Necessaria nota medica"
+
+#. module: dentist
+#: field:dentist.appointment,room_id:0
+#: model:ir.ui.menu,name:dentist.dentist_room_menu
+msgid "Room"
+msgstr "Stanza"
+
+#. module: dentist
+#: selection:dentist.annotation,office:0
+msgid "Ortopedia"
+msgstr "Ortopedia"
+
+#. module: dentist
+#: field:dentist.annotation,name:0 help:dentist.annotation,name:0
+msgid "Annotation"
+msgstr "Annotazioni"
+
+#. module: dentist
+#: view:sale.order:0
+msgid "Cancel Order"
+msgstr "Annulla Ordine"
+
+#. module: dentist
+#: view:sale.order:0
+msgid "Discard line"
+msgstr "Scarta riga"
+
+#. module: dentist
+#: help:dentist.operation,date:0 help:dentist.todo,date:0
+msgid "Start date of intervent"
+msgstr "Data inizio intervento"
+
+#. module: dentist
+#: field:product.category,code:0
+msgid "code"
+msgstr "codice"
+
+#. module: dentist
+#: field:res.partner,last_name:0
+msgid "Last name"
+msgstr "Cognome"
+
+#. module: dentist
+#: field:dentist.appointment,datetime_reminder:0
+msgid "Reminder time"
+msgstr "Ora promemoria"
+
+#. module: dentist
+#: view:sale.order:0
+msgid "Notes"
+msgstr "Note"
+
+#. module: dentist
+#: field:dentist.appointment,datetime_enter:0
+msgid "Enter time"
+msgstr "Ora entrata"
+
+#. module: dentist
+#: view:dentist.appointment:0
+msgid "Appointments for room"
+msgstr "Appuntamenti per stanza"
+
+#. module: dentist
+#: model:ir.ui.menu,name:dentist.dentist_configuration_product_category_menu
+msgid "Products category"
+msgstr "Categoria prodotto"
+
+#. module: dentist
+#: field:sale.order.line,discarded:0
+msgid "Discarded"
+msgstr "Scartato"
+
+#. module: dentist
+#: view:sale.order:0
+msgid "Print options:"
+msgstr "Opzioni di stampa:"
+
+#. module: dentist
+#: field:dentist.room,code:0
+msgid "Code"
+msgstr "Codice"
+
+#. module: dentist
+#: view:res.partner:0
+msgid "Last name (or firm name)"
+msgstr "Cognome (o ragione sociale)"
+
+#. module: dentist
+#: view:sale.order:0
+msgid "Other Information"
+msgstr "Altre informazioni"
+
+#. module: dentist
+#: field:res.partner,sex:0
+msgid "Sex"
+msgstr "Sesso"
+
+#. module: dentist
+#: view:dentist.appointment:0 field:dentist.todo,name:0
+msgid "Intervent"
+msgstr "Intervento"
+
+#. module: dentist
+#: view:dentist.appointment:0
+msgid "Appointment Information"
+msgstr "Informazioni appuntamento"
+
+#. module: dentist
+#: help:dentist.room,name:0
+msgid "Room description"
+msgstr "Descrizione stanza"
+
+#. module: dentist
+#: field:dentist.appointment,operation_ids:0 view:res.partner:0
+#: field:res.partner,operation_ids:0
+msgid "Operations"
+msgstr "Operazioni"
+
+#. module: dentist
+#: view:sale.order:0
+msgid "Qty"
+msgstr "Q.ta'"
+
+#. module: dentist
+#: help:dentist.annotation,date:0 help:res.partner,date_creation:0
+msgid "Date of creations partner record"
+msgstr "Data creazione partner"
+
+#. module: dentist
+#: selection:dentist.annotation,type:0
+msgid "Danger"
+msgstr "Pericoloso"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "55"
+msgstr "55"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "54"
+msgstr "54"
+
+#. module: dentist
+#: constraint:product.category:0
+msgid "Error ! You can not create recursive categories."
+msgstr "Errore! Non è possibile creare categorie ricorsive"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "51"
+msgstr "51"
+
+#. module: dentist
+#: selection:dentist.annotation,office:0
+msgid "All office"
+msgstr "Tutti gli uffici"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "53"
+msgstr "53"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "52"
+msgstr "52"
+
+#. module: dentist
+#: help:res.users,is_doctor:0
+msgid "Check if the partner is a doctor"
+msgstr "Controlla se il partner è un dottore"
+
+#. module: dentist
+#: help:dentist.operation,name:0 help:dentist.todo,name:0
+msgid "Short description of internent"
+msgstr "Descrizione breve intervento"
+
+#. module: dentist
+#: field:dentist.room,extra_info:0
+msgid "Extra Info"
+msgstr "Info extra"
+
+#. module: dentist
+#: selection:res.partner,sex:0
+msgid "Female"
+msgstr "Femmina"
+
+#. module: dentist
+#: view:sale.order:0
+msgid "Dettagli"
+msgstr "Dettagli"
+
+#. module: dentist
+#: view:dentist.room:0
+#: model:ir.actions.act_window,name:dentist.action_dentist_room
+msgid "Dentist Room"
+msgstr "Stanza dentista"
+
+#. module: dentist
+#: model:ir.model,name:dentist.model_sale_order view:sale.order:0
+msgid "Sales Order"
+msgstr "Ordine di vendita"
+
+#. module: dentist
+#: model:ir.ui.menu,name:dentist.dentist_quotation_menu
+msgid "Quotations"
+msgstr "Preventivi"
+
+#. module: dentist
+#: model:ir.model,name:dentist.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Linea d'ordine di vendita"
+
+#. module: dentist
+#: field:res.partner,date_creation:0
+msgid "Partner since"
+msgstr "Partner da"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "Inf."
+msgstr "Inf."
+
+#. module: dentist
+#: view:dentist.appointment:0 selection:dentist.appointment,state:0
+msgid "Confirmed"
+msgstr "Confermato"
+
+#. module: dentist
+#: sql_constraint:res.users:0
+msgid "You can not have two users with the same login !"
+msgstr "Non è possibile avere due utenti con lo stesso login!"
+
+#. module: dentist
+#: view:dentist.appointment:0
+msgid "Service time:"
+msgstr "Tempo servizio:"
+
+#. module: dentist
+#: selection:dentist.annotation,office:0
+msgid "Proctologia"
+msgstr "Proctologia"
+
+#. module: dentist
+#: view:dentist.appointment.wizard:0
+msgid "Create"
+msgstr "Create"
+
+#. module: dentist
+#: field:dentist.appointment,confirmed_user_id:0
+msgid "Confirmed from"
+msgstr "Confermato da"
+
+#. module: dentist
+#: selection:dentist.annotation,office:0
+msgid "Otorino"
+msgstr "Otorino"
+
+#. module: dentist
+#: model:ir.actions.act_window,name:dentist.dentist_action_form_appointment_reminder
+#: model:ir.ui.menu,name:dentist.menu_dentist_action_form_appointment_reminder
+msgid "Reminders appointment"
+msgstr "Promemoria appuntamenti"
+
+#. module: dentist
+#: model:ir.model,name:dentist.model_res_users
+msgid "res.users"
+msgstr "res.users"
+
+#. module: dentist
+#: field:res.partner,pob:0
+msgid "Province of birth"
+msgstr "Provincia di nascita"
+
+#. module: dentist
+#: model:ir.actions.act_window,name:dentist.action_board_poliambulatory_form
+msgid "Poliambulatory dashboard"
+msgstr "Dashboard poliambulatorio"
+
+#. module: dentist
+#: model:ir.actions.act_window,name:dentist.action_order_form_slim
+msgid "Sales Orders Slim"
+msgstr "Ordine (minimale)"
+
+#. module: dentist
+#: field:dentist.appointment,datetime_close:0
+msgid "Close time"
+msgstr "Ora chiusura"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "Sup."
+msgstr "Sup."
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "82"
+msgstr "82"
+
+#. module: dentist
+#: field:res.partner,disease_allergie:0
+msgid "Allergie"
+msgstr "Allergie"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "81"
+msgstr "81"
+
+#. module: dentist
+#: field:dentist.annotation,type:0
+msgid "Type"
+msgstr "Tipo"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "84"
+msgstr "84"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "85"
+msgstr "85"
+
+#. module: dentist
+#: field:dentist.appointment,name:0
+msgid "Appointment ID"
+msgstr "ID Appuntamento"
+
+#. module: dentist
+#: field:res.partner,marital_status:0
+msgid "Marital Status"
+msgstr "Stato civile"
+
+#. module: dentist
+#: field:res.partner,blood_type:0
+msgid "Blood Type"
+msgstr "Tipo di sangue"
+
+#. module: dentist
+#: view:sale.order:0
+msgid "Make Invoices"
+msgstr "Genera fatture"
+
+#. module: dentist
+#: field:dentist.appointment,patient_id:0
+msgid "Patient"
+msgstr "Paziente"
+
+#. module: dentist
+#: selection:res.partner,marital_status:0
+msgid "Divorced"
+msgstr "Divorziato"
+
+#. module: dentist
+#: field:res.partner,relationship:0
+msgid "Relationship"
+msgstr "Relazione"
+
+#. module: dentist
+#: field:res.partner,general_info:0
+msgid "General Information"
+msgstr "Informazioni generali"
+
+#. module: dentist
+#: field:res.partner,todo_ids:0
+msgid "Operations todo"
+msgstr "Operazioni da fare"
+
+#. module: dentist
+#: field:res.partner,dob:0
+msgid "Date of Birth"
+msgstr "Data di nascita"
+
+#. module: dentist
+#: selection:res.partner,rh:0
+msgid "+"
+msgstr "+"
+
+#. module: dentist
+#: field:res.partner,disease_pregnant:0
+msgid "Pregnant"
+msgstr "Incinta"
+
+#. module: dentist
+#: help:dentist.appointment,assistant_id:0
+msgid "Assistant name"
+msgstr "Nome assistente"
+
+#. module: dentist
+#: field:dentist.appointment,datetime_confirmed:0
+msgid "Confirmed time"
+msgstr "Ora conferma"
+
+#. module: dentist
+#: field:dentist.appointment,enter_time:0
+msgid "Time to enter"
+msgstr "Tempo entrata"
+
+#. module: dentist
+#: view:dentist.appointment:0 selection:dentist.appointment,state:0
+msgid "Arrived"
+msgstr "Arrivato"
+
+#. module: dentist
+#: view:sale.order:0
+msgid "Confirm Order"
+msgstr "Conferma Ordine"
+
+#. module: dentist
+#: view:dentist.appointment:0 view:dentist.operation:0
+#: selection:dentist.operation,state:0 view:res.partner:0
+msgid "Done"
+msgstr "Fatto"
+
+#. module: dentist
+#: model:ir.ui.menu,name:dentist.dentist_conf_menu
+msgid "Configuration"
+msgstr "Configurazione"
+
+#. module: dentist
+#: model:ir.model,name:dentist.model_dentist_todo
+msgid "dentist.todo"
+msgstr "Da fare"
+
+#. module: dentist
+#: model:ir.model,name:dentist.model_dentist_operation
+msgid "dentist.operation"
+msgstr "operazioni dentistiche"
+
+#. module: dentist
+#: model:ir.actions.act_window,name:dentist.dentist_action_form_appointment_wizard
+msgid "Re-schedule appointment"
+msgstr "Rischedula appuntamento"
+
+#. module: dentist
+#: view:res.partner:0
+msgid "To do list"
+msgstr "Lista da fare"
+
+#. module: dentist
+#: view:sale.order:0
+msgid "Dates"
+msgstr "Date"
+
+#. module: dentist
+#: selection:dentist.annotation,office:0
+msgid "Dietologia"
+msgstr "Dietologia"
+
+#. module: dentist
+#: field:dentist.appointment,datetime_cancel:0
+msgid "Cancel time"
+msgstr "Ora annullamento"
+
+#. module: dentist
+#: help:dentist.appointment,preparation:0
+msgid ""
+"Indica se e' stata richiesta qualche particolare preparazione "
+"all'appuntamento da verificare"
+msgstr ""
+"Indica se e' stata richiesta qualche particolare preparazione "
+"all'appuntamento da verificare"
+
+#. module: dentist
+#: field:sale.order,print_subtotal_price:0
+msgid "Print subtotal price"
+msgstr "Stampa prezzo subtotale"
+
+#. module: dentist
+#: view:sale.order:0
+msgid "Set to Draft"
+msgstr "Imposta come Bozza"
+
+#. module: dentist
+#: field:res.partner,disease_infectious:0
+msgid "Infectious"
+msgstr "Infezione"
+
+#. module: dentist
+#: selection:res.partner,blood_type:0
+msgid "O"
+msgstr "O"
+
+#. module: dentist
+#: selection:dentist.annotation,office:0
+msgid "Fisiatra"
+msgstr "Fisiatra"
+
+#. module: dentist
+#: sql_constraint:sale.order:0
+msgid "Order Reference must be unique !"
+msgstr "Il riferimento ordine deve essere unico!"
+
+#. module: dentist
+#: view:board.board:0
+msgid "Reception"
+msgstr "Reception"
+
+#. module: dentist
+#: field:dentist.annotation,partner_id:0 field:dentist.operation,partner_id:0
+#: field:dentist.todo,partner_id:0
+#: model:ir.model,name:dentist.model_res_partner
+msgid "Partner"
+msgstr "Partner"
+
+#. module: dentist
+#: field:dentist.operation,order_id:0
+msgid "Order"
+msgstr "Ordine"
+
+#. module: dentist
+#: selection:res.partner,sex:0
+msgid "Male"
+msgstr "Maschio"
+
+#. module: dentist
+#: field:res.partner,profession:0
+msgid "Professione"
+msgstr "Professione"
+
+#. module: dentist
+#: field:dentist.operation,product_id:0 field:dentist.todo,product_id:0
+msgid "Operation"
+msgstr "Operazione"
+
+#. module: dentist
+#: view:sale.order:0
+msgid "Recreate Packing"
+msgstr "Ricrea imballaggio"
+
+#. module: dentist
+#: field:res.partner,disease_nerve:0
+msgid "Nerve"
+msgstr "Nervi"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "38"
+msgstr "38"
+
+#. module: dentist
+#: view:dentist.appointment:0
+msgid "Interventi da effettuare"
+msgstr "Interventi da effettuare"
+
+#. module: dentist
+#: field:dentist.appointment,medical_note_completed:0
+msgid "Medical note completed"
+msgstr "Nota medica completa"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "33"
+msgstr "33"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "32"
+msgstr "32"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "31"
+msgstr "31"
+
+#. module: dentist
+#: view:dentist.appointment:0 view:dentist.operation:0
+#: selection:dentist.operation,state:0 view:res.partner:0
+msgid "To do"
+msgstr "Da fare"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "37"
+msgstr "37"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "36"
+msgstr "36"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "35"
+msgstr "35"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "34"
+msgstr "34"
+
+#. module: dentist
+#: selection:dentist.annotation,office:0
+msgid "Medicina interna"
+msgstr "Medicina interna"
+
+#. module: dentist
+#: model:ir.ui.menu,name:dentist.dentist_quotation_list_menu_slim
+msgid "Lista preventivi"
+msgstr "Lista preventivi"
+
+#. module: dentist
+#: view:dentist.appointment:0
+msgid "Operazioni (blue=senza preventivo)"
+msgstr "Operazioni (blue=senza preventivo)"
+
+#. module: dentist
+#: model:ir.actions.act_window,help:dentist.action_order_form_slim
+msgid ""
+"Sales Orders help you manage quotations and orders from your customers. "
+"OpenERP suggests that you start by creating a quotation. Once it is "
+"confirmed, the quotation will be converted into a Sales Order. OpenERP can "
+"handle several types of products so that a sales order may trigger tasks, "
+"delivery orders, manufacturing orders, purchases and so on. Based on the "
+"configuration of the sales order, a draft invoice will be generated so that "
+"you just have to confirm it when you want to bill your customer."
+msgstr ""
+"Gli ordini di vendita consentono di gestire preventivi e ordini dai vostri "
+"clienti. OpenERP ti suggerisce di iniziare con la creazione di una offerta. "
+"Una volta confermato, l'offferta sarà convertita in una conferma d'ordine di "
+"vendita. OpenERP è in grado di gestire diversi tipi di prodotti, in modo che "
+"un ordine di vendita può trasformarsi in ordini di consegna, ordini di "
+"fabbricazione, acquisti e così via. In base alla configurazione dell 'ordine "
+"di vendita, verrà generata un fattura tipo, in modo che devi solo confermare "
+"quando la si desidera inviare al cliente."
+
+#. module: dentist
+#: view:sale.order:0
+msgid "Create Final Invoice"
+msgstr "Creare la fattura finale"
+
+#. module: dentist
+#: selection:dentist.annotation,office:0
+msgid "Pediatria"
+msgstr "Pediatria"
+
+#. module: dentist
+#: field:dentist.appointment,calendar_name:0
+msgid "Calendar"
+msgstr "Calendario"
+
+#. module: dentist
+#: model:ir.model,name:dentist.model_res_partner_address
+msgid "Partner Addresses"
+msgstr "Indirizzi dei Partner"
+
+#. module: dentist
+#: field:res.partner,disease_cardio:0
+msgid "Cardio"
+msgstr "Cardio"
+
+#. module: dentist
+#: field:dentist.appointment,urgency:0 field:dentist.operation,urgency:0
+#: field:dentist.todo,urgency:0
+msgid "Urgency Level"
+msgstr "Livello urgenza"
+
+#. module: dentist
+#: view:sale.order:0
+msgid "Advance Invoice"
+msgstr "Fattura di acconto"
+
+#. module: dentist
+#: field:dentist.annotation,group_id:0
+msgid "Group"
+msgstr "Gruppo"
+
+#. module: dentist
+#: model:ir.actions.act_window,name:dentist.dentist_action_form_appointment_room
+#: model:ir.ui.menu,name:dentist.menu_dentist_conf_appointment_room
+msgid "Appointments per room"
+msgstr "Appuntamenti per stanza"
+
+#. module: dentist
+#: field:dentist.appointment,enter_user_id:0
+msgid "Carried in from"
+msgstr "Portato da"
+
+#. module: dentist
+#: view:dentist.appointment:0 field:dentist.appointment,doctor_id:0
+#: field:res.users,is_doctor:0
+msgid "Doctor"
+msgstr "Dottore"
+
+#. module: dentist
+#: selection:dentist.annotation,office:0
+msgid "Chirurgia estetica"
+msgstr "Chirurgia estetica"
+
+#. module: dentist
+#: selection:dentist.annotation,office:0
+msgid "Ginecologia"
+msgstr "Ginecologia"
+
+#. module: dentist
+#: field:res.partner,privacy_signed:0
+msgid "Privacy firmata"
+msgstr "Privacy firmata"
+
+#. module: dentist
+#: selection:dentist.appointment,alert_by:0
+msgid "SMS"
+msgstr "SMS"
+
+#. module: dentist
+#: selection:dentist.annotation,office:0
+msgid "Oculistica"
+msgstr "Oculistica"
+
+#. module: dentist
+#: view:dentist.annotation:0 field:dentist.annotation,note:0
+#: view:dentist.appointment:0 field:dentist.appointment,note:0
+#: view:dentist.operation:0 field:dentist.operation,note:0
+#: selection:dentist.operation,tooth:0 field:dentist.todo,note:0
+#: selection:dentist.todo,tooth:0 view:res.partner:0
+#: selection:sale.order.line,tooth:0
+msgid "Note"
+msgstr "Note"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "61"
+msgstr "61"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "62"
+msgstr "62"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "63"
+msgstr "63"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "64"
+msgstr "64"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "65"
+msgstr "65"
+
+#. module: dentist
+#: selection:dentist.appointment,preparation:0
+msgid "**>> Consegna <<**"
+msgstr "**>> Consegna <<**"
+
+#. module: dentist
+#: model:ir.actions.act_window,name:dentist.dentist_action_form_appointment_today_doctor
+#: model:ir.ui.menu,name:dentist.menu_dentist_conf_appointment_today_doctor
+msgid "My today appointments (doctor)"
+msgstr "Appuntamenti odierni (dottore)"
+
+#. module: dentist
+#: model:ir.actions.report.xml,name:dentist.aeroo_order_dentist
+msgid "Quotation PDF"
+msgstr "Preventivo in PDF"
+
+#. module: dentist
+#: view:dentist.appointment:0 selection:dentist.appointment,state:0
+msgid "Reminder"
+msgstr "Promemoria"
+
+#. module: dentist
+#: view:dentist.operation:0
+msgid "Search operation"
+msgstr "Ricerca operazione"
+
+#. module: dentist
+#: view:sale.order:0
+msgid "Conditions"
+msgstr "Condizioni"
+
+#. module: dentist
+#: field:dentist.appointment,appointment_date:0
+msgid "Date and Time"
+msgstr "Data e ora"
+
+#. module: dentist
+#: selection:res.partner,marital_status:0
+msgid "Separated"
+msgstr "Separato"
+
+#. module: dentist
+#: help:dentist.operation,date_end:0
+msgid "End date for intervent"
+msgstr "Fine dell'intervento"
+
+#. module: dentist
+#: model:ir.ui.menu,name:dentist.dentist_patients
+msgid "Customers"
+msgstr "Clienti"
+
+#. module: dentist
+#: selection:dentist.annotation,office:0
+msgid "Studio dentistico"
+msgstr "Studio dentistico"
+
+#. module: dentist
+#: view:dentist.appointment:0 field:dentist.operation,appointment_ids:0
+#: model:ir.actions.act_window,name:dentist.act_patient_appointment
+msgid "Appointment"
+msgstr "Appuntamento"
+
+#. module: dentist
+#: selection:dentist.annotation,office:0
+msgid "Oncologia"
+msgstr "Oncologia"
+
+#. module: dentist
+#: selection:dentist.appointment,urgency:0
+#: selection:dentist.operation,urgency:0 selection:dentist.todo,urgency:0
+msgid "Normal"
+msgstr "Normale"
+
+#. module: dentist
+#: field:dentist.appointment,assistant_id:0 field:res.users,is_assistant:0
+msgid "Assistant"
+msgstr "Assistente"
+
+#. module: dentist
+#: model:ir.actions.act_window,name:dentist.dentist_action_form_appointment_doctor
+#: model:ir.ui.menu,name:dentist.menu_dentist_conf_appointment_doctor
+msgid "Appointments per doctor"
+msgstr "Appuntamento per dottore"
+
+#. module: dentist
+#: view:dentist.appointment:0
+msgid "Con preparazione"
+msgstr "Con preparazione"
+
+#. module: dentist
+#: model:ir.module.module,shortdesc:dentist.module_meta_information
+#: model:ir.ui.menu,name:dentist.dentist_menu view:res.partner:0
+msgid "Dentist"
+msgstr "Poliambulatorio"
+
+#. module: dentist
+#: view:dentist.appointment:0
+msgid "My appointment"
+msgstr "I miei appuntamenti"
+
+#. module: dentist
+#: sql_constraint:res.groups:0
+msgid "The name of the group must be unique !"
+msgstr "Il nome del gruppo deve essere unico!"
+
+#. module: dentist
+#: view:dentist.appointment:0
+msgid "Return reminder"
+msgstr "Ritorna a promemoria"
+
+#. module: dentist
+#: model:ir.ui.menu,name:dentist.dentist_appointment_menu
+msgid "Appointments"
+msgstr "Appuntamenti"
+
+#. module: dentist
+#: field:dentist.annotation,user_id:0
+msgid "User"
+msgstr "Utente"
+
+#. module: dentist
+#: view:dentist.appointment:0
+msgid "Appointment info:"
+msgstr "Info appuntamento:"
+
+#. module: dentist
+#: field:dentist.appointment,duration:0
+msgid "Durata"
+msgstr "Durata"
+
+#. module: dentist
+#: selection:dentist.annotation,office:0
+msgid "Omeopatia"
+msgstr "Omeopatia"
+
+#. module: dentist
+#: model:ir.actions.report.xml,name:dentist.aeroo_scheda_dentist
+msgid "Scheda paziente PDF"
+msgstr "Scheda paziente PDF"
+
+#. module: dentist
+#: field:dentist.appointment,reminder_user_id:0
+msgid "Reminder from"
+msgstr "Promemoria da"
+
+#. module: dentist
+#: model:ir.actions.act_window,name:dentist.act_patient_quotation
+msgid "Preventivi e ordini"
+msgstr "Preventivi e ordini"
+
+#. module: dentist
+#: view:board.board:0
+msgid "Dashboard Poliambulatory"
+msgstr "Dashboard Poliambulatorio"
+
+#. module: dentist
+#: selection:res.partner,blood_type:0
+msgid "B"
+msgstr "B"
+
+#. module: dentist
+#: view:sale.order:0
+msgid "Compute"
+msgstr "Calcola"
+
+#. module: dentist
+#: field:dentist.appointment,cancel_user_id:0
+msgid "Cancelled from"
+msgstr "Annullato da"
+
+#. module: dentist
+#: help:res.partner,general_info:0
+msgid "General information about the patient"
+msgstr "Informazioni generali del paziente"
+
+#. module: dentist
+#: model:ir.model,name:dentist.model_res_groups
+msgid "Access Groups"
+msgstr "Gruppi di accesso"
+
+#. module: dentist
+#: field:res.partner,disease_emo:0
+msgid "Emo"
+msgstr "Emo"
+
+#. module: dentist
+#: selection:res.partner,marital_status:0
+msgid "Widowed"
+msgstr "Vedovo"
+
+#. module: dentist
+#: model:ir.actions.act_window,name:dentist.dentist_action_form_appointment_status
+#: model:ir.ui.menu,name:dentist.menu_dentist_conf_appointment_status
+msgid "Appointments per state"
+msgstr "Appuntamento per stato"
+
+#. module: dentist
+#: model:ir.model,name:dentist.model_dentist_room
+msgid "dentist.room"
+msgstr "stanza dentista"
+
+#. module: dentist
+#: field:dentist.annotation,date:0 view:dentist.appointment:0
+#: field:dentist.appointment.wizard,next_date:0 field:dentist.operation,date:0
+#: field:dentist.todo,date:0
+msgid "Date"
+msgstr "Data"
+
+#. module: dentist
+#: view:dentist.appointment:0 field:dentist.appointment,medical_note:0
+msgid "Medical note"
+msgstr "Note mediche"
+
+#. module: dentist
+#: model:ir.model,name:dentist.model_product_category
+msgid "Product Category"
+msgstr "Categoria prodotto"
+
+#. module: dentist
+#: model:ir.actions.report.xml,name:dentist.aeroo_operation_dentist
+msgid "Operation list PDF"
+msgstr "Lista operazioni PDF"
+
+#. module: dentist
+#: field:sale.order,print_discount:0
+msgid "Print detail discount"
+msgstr "Stampa dettaglio sconto"
+
+#. module: dentist
+#: help:dentist.annotation,office:0
+msgid "Used for filter annotation basing on office"
+msgstr "Usato per filtrare note basandosi sull'ufficio"
+
+#. module: dentist
+#: field:dentist.annotation,import:0
+msgid "ID importazione"
+msgstr "ID importazione"
+
+#. module: dentist
+#: model:ir.model,name:dentist.model_wizard_browse_teeth
+msgid "Browse teeth"
+msgstr "Sfoglia denti"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "11"
+msgstr "11"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "13"
+msgstr "13"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "12"
+msgstr "12"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "15"
+msgstr "15"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "14"
+msgstr "14"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "17"
+msgstr "17"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "16"
+msgstr "16"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "18"
+msgstr "18"
+
+#. module: dentist
+#: view:res.users:0
+msgid "Type of partner"
+msgstr "Tipo di partner"
+
+#. module: dentist
+#: selection:dentist.annotation,type:0
+msgid "Controindications"
+msgstr "Controindicazioni"
+
+#. module: dentist
+#: field:dentist.appointment,wait_time:0
+msgid "Wait time"
+msgstr "Tempo di attesa"
+
+#. module: dentist
+#: field:dentist.appointment,state:0 field:dentist.operation,state:0
+msgid "State"
+msgstr "Stato"
+
+#. module: dentist
+#: field:dentist.annotation,office:0
+msgid "Office"
+msgstr "Ufficio"
+
+#. module: dentist
+#: view:res.partner:0
+msgid "General information"
+msgstr "Informazioni generali"
+
+#. module: dentist
+#: help:dentist.annotation,date_from:0 help:dentist.annotation,date_to:0
+msgid "Ex. for medicaments or farmacology"
+msgstr "Esempio per medicamento o farmacologia"
+
+#. module: dentist
+#: view:dentist.appointment:0
+msgid "Reschedule"
+msgstr "Rischedula"
+
+#. module: dentist
+#: view:res.partner:0
+msgid "Anamnesi"
+msgstr "Anamnesi"
+
+#. module: dentist
+#: selection:res.partner,marital_status:0
+msgid "Single"
+msgstr "Single"
+
+#. module: dentist
+#: field:dentist.appointment,close_time:0
+msgid "Time to close"
+msgstr "Tempo di chiusura"
+
+#. module: dentist
+#: view:dentist.appointment:0 selection:dentist.appointment,state:0
+#: view:dentist.appointment.wizard:0 view:dentist.operation:0
+#: selection:dentist.operation,state:0 view:res.partner:0
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: dentist
+#: view:dentist.appointment:0 selection:dentist.appointment,state:0
+msgid "Close"
+msgstr "Chiuso"
+
+#. module: dentist
+#: view:dentist.appointment:0
+msgid "Return confirmed"
+msgstr "Ritorna a confermato"
+
+#. module: dentist
+#: model:ir.model,name:dentist.model_dentist_appointment_wizard
+msgid "dentist.appointment.wizard"
+msgstr "dentist.appointment.wizard"
+
+#. module: dentist
+#: field:res.partner,alias:0
+msgid "alias"
+msgstr "alias"
+
+#. module: dentist
+#: selection:dentist.annotation,type:0 view:dentist.appointment:0
+msgid "Information"
+msgstr "Informazione"
+
+#. module: dentist
+#: selection:res.partner,marital_status:0
+msgid "Married"
+msgstr "Spostato"
+
+#. module: dentist
+#: field:dentist.appointment,medical_note_required:0
+msgid "Medical note required"
+msgstr "Necessaria nota medica"
+
+#. module: dentist
+#: selection:dentist.annotation,office:0
+msgid "Dermatologia"
+msgstr "Dermatologia"
+
+#. module: dentist
+#: view:dentist.appointment:0
+msgid "Oggi"
+msgstr "Oggi"
+
+#. module: dentist
+#: field:res.partner,browse_web:0
+msgid "Link ortofoto"
+msgstr "Link ortofoto"
+
+#. module: dentist
+#: help:res.partner,deceased:0
+msgid "Mark if the patient has died"
+msgstr "Spunta se il paziente è deceduto"
+
+#. module: dentist
+#: selection:dentist.annotation,type:0
+msgid "Farmacology"
+msgstr "Farmacologia"
+
+#. module: dentist
+#: field:res.partner,disease_ricamb:0
+msgid "Ricamb"
+msgstr "Ricamb"
+
+#. module: dentist
+#: selection:dentist.appointment,alert_by:0
+msgid "E-mail"
+msgstr "E-mail"
+
+#. module: dentist
+#: field:dentist.operation,date_end:0
+msgid "Date end"
+msgstr "Data fine"
+
+#. module: dentist
+#: model:ir.module.module,description:dentist.module_meta_information
+msgid ""
+" Managing Dentist Studio:\n"
+"                           Manage partner-patient \n"
+"                           Manage appointment with rescheduling and "
+"workflow \n"
+"                           Manage note and medial informations for patients\n"
+"                           Manage Invoice, product and alarm on customer "
+"with\n"
+"                                  payment deadlined\n"
+"                    "
+msgstr ""
+" Managing Dentist Studio:\n"
+"                           Manage partner-patient \n"
+"                           Manage appointment with rescheduling and "
+"workflow \n"
+"                           Manage note and medial informations for patients\n"
+"                           Manage Invoice, product and alarm on customer "
+"with\n"
+"                                  payment deadlined\n"
+"                    "
+
+#. module: dentist
+#: field:res.partner,disease_pressure:0
+msgid "Presure"
+msgstr "Pressione"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "83"
+msgstr "83"
+
+#. module: dentist
+#: help:dentist.appointment,doctor_id:0
+msgid "Doctor Name"
+msgstr "Nome dottore"
+
+#. module: dentist
+#: selection:dentist.annotation,office:0
+msgid "Ecografie"
+msgstr "Ecografie"
+
+#. module: dentist
+#: field:dentist.appointment,preparation:0
+msgid "Preparazione"
+msgstr "Preparazione"
+
+#. module: dentist
+#: field:dentist.appointment,close_user_id:0
+msgid "Closed from"
+msgstr "Chiuso da"
+
+#. module: dentist
+#: view:board.board:0
+msgid "Doctor / Assistant"
+msgstr "Dottore / Assistente"
+
+#. module: dentist
+#: view:res.partner:0
+msgid "Patient information"
+msgstr "Informazioni paziente"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "48"
+msgstr "48"
+
+#. module: dentist
+#: selection:dentist.appointment,urgency:0
+#: selection:dentist.operation,urgency:0 selection:dentist.todo,urgency:0
+msgid "Urgent"
+msgstr "Urgente"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "46"
+msgstr "46"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "47"
+msgstr "47"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "44"
+msgstr "44"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "45"
+msgstr "45"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "42"
+msgstr "42"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "43"
+msgstr "43"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "41"
+msgstr "41"
+
+#. module: dentist
+#: field:res.partner,fiscal_id_code:0
+msgid "Fiscal code"
+msgstr "Codice fiscale"
+
+#. module: dentist
+#: field:res.partner,send_from:0
+msgid "Send from"
+msgstr "Inviato da"
+
+#. module: dentist
+#: view:dentist.room:0
+msgid "Search Room"
+msgstr "Ricerca stanza"
+
+#. module: dentist
+#: view:res.partner:0
+msgid "Address"
+msgstr "Indirizzo"
+
+#. module: dentist
+#: view:dentist.appointment:0 view:dentist.operation:0
+#: selection:dentist.operation,state:0 view:res.partner:0
+msgid "Irrilevant"
+msgstr "Irrilevante"
+
+#. module: dentist
+#: view:sale.order:0
+msgid "Untaxed amount"
+msgstr "Totale Imponibile"
+
+#. module: dentist
+#: view:sale.order:0
+msgid ""
+"Delete selected discarded line an store as operations todo in partner form, "
+"confirm?"
+msgstr ""
+"Elimina le righe impostate su scartare e memorizza le operazioni nell'area "
+"\"da fare\" nella scheda partner, confermate?"
+
+#. module: dentist
+#: selection:res.partner,blood_type:0
+msgid "A"
+msgstr "A"
+
+#. module: dentist
+#: selection:res.partner,blood_type:0
+msgid "AB"
+msgstr "AB"
+
+#. module: dentist
+#: model:ir.model,name:dentist.model_dentist_annotation
+msgid "dentist.annotation"
+msgstr "annotazioni dentista"
+
+#. module: dentist
+#: field:dentist.room,name:0
+msgid "Name"
+msgstr "Nome"
+
+#. module: dentist
+#: code:addons/dentist/wizard/appointment.py:60
+#, python-format
+msgid "Nuovo appuntamento"
+msgstr "Nuovo appuntamento"
+
+#. module: dentist
+#: field:dentist.appointment,arrived_user_id:0
+msgid "Signed in from"
+msgstr "Firmato da"
+
+#. module: dentist
+#: view:dentist.appointment:0
+msgid "[Waiting]"
+msgstr "[In attesa]"
+
+#. module: dentist
+#: model:ir.ui.menu,name:dentist.dentist_patients_menu
+msgid "Rubrica"
+msgstr "Rubrica"
+
+#. module: dentist
+#: selection:dentist.annotation,office:0
+msgid "Cardiologia"
+msgstr "Cardiologia"
+
+#. module: dentist
+#: field:dentist.operation,tooth:0 field:dentist.todo,tooth:0
+#: field:sale.order.line,tooth:0
+msgid "Tooth"
+msgstr "Dente"
+
+#. module: dentist
+#: field:res.partner,lob:0
+msgid "Place of birth"
+msgstr "Luogo di nascita"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "75"
+msgstr "75"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "74"
+msgstr "74"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "73"
+msgstr "73"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "72"
+msgstr "72"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "71"
+msgstr "71"
+
+#. module: dentist
+#: view:dentist.appointment:0 selection:dentist.appointment,state:0
+msgid "Enter"
+msgstr "Entrato"
+
+#. module: dentist
+#: view:res.partner:0
+msgid "Modulo Partner"
+msgstr "Modulo Partner"
+
+#. module: dentist
+#: field:res.partner,deceased:0
+msgid "Deceased"
+msgstr "Deceduto"
+
+#. module: dentist
+#: model:ir.model,name:dentist.model_dentist_appointment
+msgid "dentist.appointment"
+msgstr "appuntamenti dentista"
+
+#. module: dentist
+#: view:res.partner:0
+msgid "Doctor note"
+msgstr "Annotazioni dottore"
+
+#. module: dentist
+#: view:dentist.appointment:0
+msgid "Search Appointments"
+msgstr "Ricerca appuntamenti"
+
+#. module: dentist
+#: selection:dentist.operation,tooth:0 selection:dentist.todo,tooth:0
+#: selection:sale.order.line,tooth:0
+msgid "All"
+msgstr "Tutti"
+
+#. module: dentist
+#: view:dentist.appointment:0
+msgid "Appointments for doctor"
+msgstr "Appuntamenti per dottore"
+
+#. module: dentist
+#: view:sale.order:0
+msgid "Ignore Exception"
+msgstr "Ignora eccezione"
+
+#. module: dentist
+#: selection:dentist.appointment,alert_by:0
+msgid "No advice"
+msgstr "Nessun avviso"
+
+#. module: dentist
+#: view:dentist.annotation:0 view:res.partner:0
+msgid "Medical annotations"
+msgstr "Annotazioni mediche"
+
+#. module: dentist
+#: selection:dentist.appointment,urgency:0
+#: selection:dentist.operation,urgency:0 selection:dentist.todo,urgency:0
+msgid "Medical Emergency"
+msgstr "Emergenza medica"
+
+#. module: dentist
+#: model:ir.actions.report.xml,name:dentist.aeroo_order_appointment_operation
+msgid "Operation appointment per order"
+msgstr "Appuntamenti da preventivo"
+
+#. module: dentist
+#: field:sale.order,print_conditions:0
+msgid "Print conditions"
+msgstr "Stampa condizioni"
+
+#. module: dentist
+#: view:sale.order:0
+msgid "States"
+msgstr "Stati"
+
+#. module: dentist
+#: selection:dentist.annotation,office:0
+msgid "Chirurgia generale"
+msgstr "Chirurgia generale"
+
+#. module: dentist
+#: selection:dentist.appointment,preparation:0
+msgid "**>> Presenza <<**"
+msgstr "**>> Presenza <<**"
+
+#. module: dentist
+#: view:dentist.appointment:0
+msgid "Return arrived"
+msgstr "Ritorna ad arrivato"
+
+#. module: dentist
+#: model:ir.model,name:dentist.model_dentist_web_graph
+msgid "dentist.web.graph"
+msgstr "grafico.web"
+
+#. module: dentist
+#: view:res.partner:0
+msgid "Disease and problems"
+msgstr "Malattia e problemi"
+
+#. module: dentist
+#: model:ir.ui.menu,name:dentist.dentist_product_menu
+#: model:ir.ui.menu,name:dentist.dentist_product_product_menu
+msgid "Products"
+msgstr "Prodotti"
+
+#. module: dentist
+#: field:dentist.appointment,datetime_arrived:0
+msgid "Arrived time"
+msgstr "Ora arrivo"
+
+#. module: dentist
+#: model:ir.actions.act_window,name:dentist.action_dentist_patients_module
+msgid "Client module"
+msgstr "Modulo cliente"
+
+#. module: dentist
+#: field:dentist.appointment,delay_time:0
+msgid "Delay time"
+msgstr "Ritardo"

@@ -1,0 +1,114 @@
+Codice      >>> ID
+Datacompil  +++ Creazione (o aggiornamento)
+Titolo      ok
+Sesso       +++ Sesso
+Cognome     ok
+Nome        ok
+Genitore    >>> vuoto (serve?)
+Indirizzo   ok
+Cap         ok
+Residenza   (paese) Address
+Telefono    ok (vedere filtro, ce ce ne sono più di uno)
+Codfisc     ok (verifica unicità)
+Datanasc    ok??
+Luogonasc   ok??
+Provincia   ok??
+Inviato     inserire??
+Codmedic    vuoto cos'è??
+Assist      vuoto
+Listino     tutti 1
+Odont       (solo 3 valori, es.: scheda N. 80)
+Nuovo       S/N??
+Annotaz1    (attenzione ci sono dei dati personali sulle malattie)
+Annotaz2    (... dottori ... schede ... parentele)
+Annotaz3    (...)
+Annotaz4    (...)
+Gs          vuoto, solo un JOZ
+Allergie    S/N
+Malapres    
+Malcardio
+Malemo
+Malricamb
+Malnervose
+Gravidan
+Malinfett
+Note1       (malattie, farmaci, 
+Note2
+Note3
+Note4
+Farminsom1  Farmaci somministrati
+Farminsom2
+Farminsom3
+Contro1     Controindicazioni (allergie)
+Contro2     vuoto
+Contro3     vuoto
+Annota1     (Malattie, farmaci ecc.)
+Annota2
+Annota3
+Annota4
+Annocrea    ??
+Imp prev    Preventivi attivi
+Imp eseg    Importi eseg
+Imp acco    Imp. acconti
+Imp sald    Imp. saldi
+Imp scon    Imp. scontato?
+Imp res     Imp. res.
+Professio   Professione oppure cellulare
+Tipo viso   vuoto
+Colordent   vuoto
+Superfdent  vuoto
+Lucentezza  vuoto
+Altridisp1  vuoto
+Altridisp2  vuoto
+Allegati1   vuoto
+Allegati2   vuoto
+Allerg acc  vuoto
+Allerg pre  vuoto
+Malattinf   vuoto
+Problemi    vuoto
+Difficolta  vuoto
+Noteagg1    vuoto
+Noteagg2    vuoto
+Noteagg3    vuoto
+Noteagg4    vuoto
+Multilist   vuoto
+
+
+TAB_XPA (riassunto scheda cliente)
+Codice    ID (verificare che sia lo stesso)
+Cognome
+Nome
+Dtulprev  Data ultimo prev.
+Dtultvis  Data ultima visita
+Dtultacc
+Dtultsal
+Dtultpag
+Nfatac
+Nfatsa
+Saldato
+Pagato
+Debito
+Periodi
+Totprev
+Totskop
+Totacco
+Sconto1
+Sconto2
+Saprev
+Sapres
+Sollecito
+Totgprev
+Totgskop
+Flag
+Destinc
+Destinn
+Destinldn
+Destindtn
+Destinpro
+Destinind
+Destincap
+Destinloc
+Destincf
+Destinnot
+Destintit
+

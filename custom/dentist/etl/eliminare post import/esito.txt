@@ -1,0 +1,295 @@
+
+[INFO] Inizio conversione file: %s F_LISTIN.TXT
+    [INFO] File: F_LISTIN.TXT [righe 9618, colonne 41, record 229]
+
+[INFO] Inizio conversione file: %s F_AGENDA.TXT
+    [INFO] File: F_AGENDA.TXT [righe 3135545, colonne 100, record 31045]
+
+[INFO] Inizio conversione file: %s UTENTE04.TXT
+    [INFO] File: UTENTE04.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s LASEMPTY.TXT
+    [INFO] File: LASEMPTY.TXT [righe 13, colonne 12, record 1]
+
+[INFO] Inizio conversione file: %s UTENTE03.TXT
+    [INFO] File: UTENTE03.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s F_SALDI.TXT
+    [INFO] File: F_SALDI.TXT [righe 118, colonne 58, record 2]
+
+[INFO] Inizio conversione file: %s F_SA2008.TXT
+    [INFO] File: F_SA2008.TXT [righe 118, colonne 58, record 2]
+
+[INFO] Inizio conversione file: %s F_DOCUME.TXT
+    [INFO] File: F_DOCUME.TXT [righe 5544, colonne 20, record 264]
+
+[INFO] Inizio conversione file: %s SUPERJOB.TXT
+    [INFO] File: SUPERJOB.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s F_SA2009.TXT
+    [INFO] File: F_SA2009.TXT [righe 118, colonne 58, record 2]
+
+[INFO] Inizio conversione file: %s F_PRINOT.TXT
+    [INFO] File: F_PRINOT.TXT [righe 118, colonne 58, record 2]
+
+[INFO] Inizio conversione file: %s F_RICHIA.TXT
+    [INFO] File: F_RICHIA.TXT [righe 13456, colonne 15, record 841]
+
+[INFO] Inizio conversione file: %s DUMMYJOB.TXT
+    [INFO] File: DUMMYJOB.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s F_ASSRIC.TXT
+    [INFO] File: F_ASSRIC.TXT [righe 0, colonne 0, record 0]
+
+[INFO] Inizio conversione file: %s NOTESJOB.TXT
+    [INFO] File: NOTESJOB.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s F_TABCCB.TXT
+    [INFO] File: F_TABCCB.TXT [righe 9, colonne 8, record 1]
+
+[INFO] Inizio conversione file: %s ARCHIJOB.TXT
+    [INFO] File: ARCHIJOB.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s UTENTE12.TXT
+    [INFO] File: UTENTE12.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s F_SA2001.TXT
+    [INFO] File: F_SA2001.TXT [righe 114, colonne 56, record 2]
+
+[INFO] Inizio conversione file: %s LJETHP12.TXT
+    [INFO] File: LJETHP12.TXT [righe 13, colonne 12, record 1]
+
+[INFO] Saltato:  PARAM.TXT
+
+[INFO] Inizio conversione file: %s UTENTE17.TXT
+    [INFO] File: UTENTE17.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s UTENTE20.TXT
+    [INFO] File: UTENTE20.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s F_CONTAB.TXT
+    [INFO] File: F_CONTAB.TXT [righe 13806, colonne 25, record 531]
+
+[INFO] Inizio conversione file: %s LISTIJOB.TXT
+    [INFO] File: LISTIJOB.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s F_APPUNT.TXT
+    [INFO] File: F_APPUNT.TXT [righe 41650, colonne 9, record 4165]
+
+[INFO] Inizio conversione file: %s UTENTE11.TXT
+    [INFO] File: UTENTE11.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s STRU.TXT
+    [INFO] File: STRU.TXT [righe 5, colonne 4, record 1]
+
+[INFO] Inizio conversione file: %s F_CATEGO.TXT
+    [INFO] File: F_CATEGO.TXT [righe 1530, colonne 101, record 15]
+
+[INFO] Inizio conversione file: %s F_TMPFAT.TXT
+    [INFO] File: F_TMPFAT.TXT [righe 0, colonne 0, record 0]
+
+[INFO] Inizio conversione file: %s IBMPROPR.TXT
+    [INFO] File: IBMPROPR.TXT [righe 13, colonne 12, record 1]
+
+[INFO] Inizio conversione file: %s F_TABEST.TXT
+    [INFO] File: F_TABEST.TXT [righe 45, colonne 2, record 15]
+
+[INFO] Inizio conversione file: %s F_PN2006.TXT
+    [INFO] File: F_PN2006.TXT [righe 59, colonne 58, record 1]
+
+[INFO] Inizio conversione file: %s F_CODMED.TXT
+    [INFO] File: F_CODMED.TXT [righe 10, colonne 4, record 2]
+
+[INFO] Inizio conversione file: %s F_PN2004.TXT
+    [INFO] File: F_PN2004.TXT [righe 59, colonne 58, record 1]
+
+[INFO] Inizio conversione file: %s F_SCAUSC.TXT
+    [INFO] File: F_SCAUSC.TXT [righe 0, colonne 0, record 0]
+
+[INFO] Inizio conversione file: %s F_PN2001.TXT
+    [INFO] File: F_PN2001.TXT [righe 29205, colonne 58, record 495]
+
+[INFO] Inizio conversione file: %s DESKJET.TXT
+    [INFO] File: DESKJET.TXT [righe 13, colonne 12, record 1]
+
+[INFO] Inizio conversione file: %s F_SA2005.TXT
+    [INFO] File: F_SA2005.TXT [righe 118, colonne 58, record 2]
+
+[INFO] Inizio conversione file: %s F_CONTMA.TXT
+    [INFO] File: F_CONTMA.TXT [righe 24, colonne 23, record 1]
+
+[INFO] Inizio conversione file: %s DESK600.TXT
+    [INFO] File: DESK600.TXT [righe 13, colonne 12, record 1]
+
+[INFO] Inizio conversione file: %s F_ANADIF.TXT
+    [INFO] File: F_ANADIF.TXT [righe 14, colonne 13, record 1]
+
+[INFO] Inizio conversione file: %s UTENTE07.TXT
+    [INFO] File: UTENTE07.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s UTENTE16.TXT
+    [INFO] File: UTENTE16.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s UTENTE15.TXT
+    [INFO] File: UTENTE15.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s F_TABCAU.TXT
+    [INFO] File: F_TABCAU.TXT [righe 18, colonne 2, record 6]
+
+[INFO] Inizio conversione file: %s F_INFO.TXT
+    [INFO] File: F_INFO.TXT [righe 14, colonne 13, record 1]
+
+[INFO] Inizio conversione file: %s UTENTE09.TXT
+    [INFO] File: UTENTE09.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s F_TABXPA.TXT
+    [INFO] File: F_TABXPA.TXT [righe 131794, colonne 36, record 3562]
+
+[INFO] Inizio conversione file: %s EPSON.TXT
+    [INFO] File: EPSON.TXT [righe 13, colonne 12, record 1]
+
+[INFO] Inizio conversione file: %s F_PREVEN.TXT
+    [INFO] File: F_PREVEN.TXT [righe 1095318, colonne 17, record 60851]
+
+[INFO] Inizio conversione file: %s UTENTE14.TXT
+    [INFO] File: UTENTE14.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s F_PDIFFE.TXT
+    [INFO] File: F_PDIFFE.TXT [righe 0, colonne 0, record 0]
+
+[INFO] Inizio conversione file: %s F_ANAGRA.TXT
+    [INFO] File: F_ANAGRA.TXT [righe 267150, colonne 74, record 3562]
+
+[INFO] Inizio conversione file: %s UTENTE19.TXT
+    [INFO] File: UTENTE19.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s CODUSJOB.TXT
+    [INFO] File: CODUSJOB.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s F_SCADEN.TXT
+    [INFO] File: F_SCADEN.TXT [righe 4770, colonne 8, record 530]
+
+[INFO] Inizio conversione file: %s F_PRESCR.TXT
+    [INFO] File: F_PRESCR.TXT [righe 0, colonne 0, record 0]
+
+[INFO] Inizio conversione file: %s F_SCAPRE.TXT
+    [INFO] File: F_SCAPRE.TXT [righe 8120, colonne 6, record 1160]
+
+[INFO] Inizio conversione file: %s UTENTE02.TXT
+    [INFO] File: UTENTE02.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s F_FATFOR.TXT
+    [INFO] File: F_FATFOR.TXT [righe 620, colonne 61, record 10]
+
+[INFO] Inizio conversione file: %s UTENTE01.TXT
+    [INFO] File: UTENTE01.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s F_PN2003.TXT
+    [INFO] File: F_PN2003.TXT [righe 59, colonne 58, record 1]
+
+[INFO] Inizio conversione file: %s MEDIOJOB.TXT
+    [INFO] File: MEDIOJOB.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s F_SA2010.TXT
+    [INFO] File: F_SA2010.TXT [righe 118, colonne 58, record 2]
+
+[INFO] Inizio conversione file: %s UTENTE18.TXT
+    [INFO] File: UTENTE18.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s F_SOLLEC.TXT
+    [INFO] File: F_SOLLEC.TXT [righe 27, colonne 8, record 3]
+
+[INFO] Inizio conversione file: %s F_FATSTO.TXT
+    [INFO] File: F_FATSTO.TXT [righe 3844, colonne 61, record 62]
+
+[INFO] Inizio conversione file: %s F_SCHEOP.TXT
+    [INFO] File: F_SCHEOP.TXT [righe 1365336, colonne 23, record 56889]
+
+[INFO] Inizio conversione file: %s F_STORIC.TXT
+    [INFO] File: F_STORIC.TXT [righe 416, colonne 12, record 32]
+
+[INFO] Inizio conversione file: %s F_DOCAPP.TXT
+    [INFO] File: F_DOCAPP.TXT [righe 5355, colonne 20, record 255]
+
+[INFO] Inizio conversione file: %s F_SA2003.TXT
+    [INFO] File: F_SA2003.TXT [righe 118, colonne 58, record 2]
+
+[INFO] Inizio conversione file: %s UTENTE05.TXT
+    [INFO] File: UTENTE05.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s F_SA1997.TXT
+    [INFO] File: F_SA1997.TXT [righe 114, colonne 56, record 2]
+
+[INFO] Inizio conversione file: %s F_CODUSC.TXT
+    [INFO] File: F_CODUSC.TXT [righe 160, colonne 4, record 32]
+
+[INFO] Inizio conversione file: %s UTENTE10.TXT
+    [INFO] File: UTENTE10.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s F_DOTAGE.TXT
+    [INFO] File: F_DOTAGE.TXT [righe 215, colonne 42, record 5]
+
+[INFO] Inizio conversione file: %s DOCUMJOB.TXT
+    [INFO] File: DOCUMJOB.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s UTENTE13.TXT
+    [INFO] File: UTENTE13.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s F_DIFFER.TXT
+    [INFO] File: F_DIFFER.TXT [righe 0, colonne 0, record 0]
+
+[INFO] Inizio conversione file: %s UTENTE08.TXT
+    [INFO] File: UTENTE08.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s F_PN2005.TXT
+    [INFO] File: F_PN2005.TXT [righe 59, colonne 58, record 1]
+
+[INFO] Saltato:  SYSTEM2.TXT
+
+[INFO] Inizio conversione file: %s F_PN2009.TXT
+    [INFO] File: F_PN2009.TXT [righe 59, colonne 58, record 1]
+
+[INFO] Inizio conversione file: %s F_TABIVA.TXT
+    [INFO] File: F_TABIVA.TXT [righe 120, colonne 4, record 24]
+
+[INFO] Inizio conversione file: %s F_SA2004.TXT
+    [INFO] File: F_SA2004.TXT [righe 118, colonne 58, record 2]
+
+[INFO] Inizio conversione file: %s F_CODLAB.TXT
+    [INFO] File: F_CODLAB.TXT [righe 0, colonne 0, record 0]
+
+[INFO] Inizio conversione file: %s F_SA2006.TXT
+    [INFO] File: F_SA2006.TXT [righe 118, colonne 58, record 2]
+
+[INFO] Inizio conversione file: %s F_FORNIT.TXT
+    [INFO] File: F_FORNIT.TXT [righe 846, colonne 46, record 18]
+
+[INFO] Inizio conversione file: %s F_PN1997.TXT
+    [INFO] File: F_PN1997.TXT [righe 2242, colonne 58, record 38]
+
+[INFO] Inizio conversione file: %s F_CICLI.TXT
+    [INFO] File: F_CICLI.TXT [righe 37816, colonne 3, record 9454]
+
+[INFO] Inizio conversione file: %s F_PN2007.TXT
+    [INFO] File: F_PN2007.TXT [righe 59, colonne 58, record 1]
+
+[INFO] Inizio conversione file: %s UTENTE06.TXT
+    [INFO] File: UTENTE06.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s CONTAJOB.TXT
+    [INFO] File: CONTAJOB.TXT [righe 2, colonne 1, record 1]
+
+[INFO] Inizio conversione file: %s F_SA2007.TXT
+    [INFO] File: F_SA2007.TXT [righe 118, colonne 58, record 2]
+
+[INFO] Inizio conversione file: %s F_SA2002.TXT
+    [INFO] File: F_SA2002.TXT [righe 114, colonne 56, record 2]
+
+[INFO] Inizio conversione file: %s F_PN2008.TXT
+    [INFO] File: F_PN2008.TXT [righe 0, colonne 0, record 0]
+
+[INFO] Inizio conversione file: %s F_PN2010.TXT
+    [INFO] File: F_PN2010.TXT [righe 59, colonne 58, record 1]
+
+[INFO] Inizio conversione file: %s F_PN2002.TXT
+    [INFO] File: F_PN2002.TXT [righe 59, colonne 58, record 1]

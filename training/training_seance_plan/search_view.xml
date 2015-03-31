@@ -1,0 +1,31 @@
+ <record model="ir.ui.view" id="training_seance_plan_calendar">
+            <field name="name">res.partner.contact.laser.search</field>
+            <field name="model">res.partner.contact</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <group expand="1" string="Group By...">
+                   <filter string="Users" icon="terp-project" domain="[]" context="{'group_by':'user_id'}"/>
+                   <filter string="Project" icon="terp-project" domain="[]" context="{'group_by':'project_id'}"/>
+                   <separator orientation="vertical"/>
+                   <filter string="Deadline" icon="terp-project" domain="[]" context="{'group_by':'date_deadline'}"/>
+                </group>
+                <filter string="Current" domain="[('state','in',('open','draft'))]" help="Draft, Open and Pending Tasks" icon="terp-project"/>
+                <field name="project_id" select="1" widget="selection">
+                    <filter domain="[('project_id.user_id','=',uid)]" help="My Projects" icon="terp-project"/>
+                </field>
+                <filter string="Project" icon="terp-project" domain="[]" context="{'group_by':'project_id'}"/>
+                <filter string="Project" icon="terp-project" domain="[]" context="{'group_by': ['project_id', 'user_id'] }"/>
+            </field>
+        </record>
+
+<record id="action_view_task" model="ir.actions.act_window">
+    <field name="name">Tasks</field>
+    <field name="res_model">project.task</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form,calendar,gantt,graph</field>
+    <field eval="False" name="filter"/>
+    <field name="view_id" ref="view_task_tree2"/>
+    <field name="context">{"search_default_current":1,"search_default_user_id":uid}</field>
+    <field name="search_view_id" ref="view_task_search_form"/>
+</record>
+

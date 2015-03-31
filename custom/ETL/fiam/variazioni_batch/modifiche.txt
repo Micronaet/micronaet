@@ -1,0 +1,337 @@
+Modifico: Partner: 3Dh Interier, Nazione: Czech Republic, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: 3P Allestimenti Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: 3X3 Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Aaa Handels Gmbh, Nazione: Germany, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: A.A. Furnishing, Nazione: False, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Abacom Piscine, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: A B Arredamenti, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Abati, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Abitare, Nazione: Germany, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Absoute Space, Nazione: False, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: A.B.Srl Unipersonale, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Acamp, Nazione: Austria, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Acapulco, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Accor, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Ace Bed Co, Nazione: False, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: A Cielo Abierto, Nazione: Spain, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Acqua Design Srk, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Acqua Design Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Acrilico Artesanal S.R.L., Nazione: Uruguay, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Act', Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Addaura, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Adpress Communications Spa, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Adtech System Ltd, Nazione: India, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Advan Co. Ltd, Nazione: Japan, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Aeffe, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Aeffe Sas, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: A. Ellinas & Son Ltd, Nazione: Cyprus, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Aerchitetto Barbara Pietrantoni, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Afa Arredamenti Snc, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Af Holmgrens Ab, Nazione: Sweden, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: A. Forulis & Sons Corp. S.A., Nazione: Greece, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Agadir Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Agadir S.R.L., Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Agio Shian International Pty Ltd, Nazione: Australia, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Agricenter, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Agrigarden Snc, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Agrinova Di Rizzo S.R.L., Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Agrososic, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Agrusti Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Agueda Brito, Nazione: Spain, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Agustin Mestre S.A., Nazione: Spain, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: A.Haberkorn, Nazione: Austria, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Ah -Agentur, Nazione: Denmark, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Aiello Giuseppe, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Airport Hotel Hamburg, Nazione: Germany, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Akman, Nazione: Turkey, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Aks Habndels Gmbh & Co Kg., Nazione: Germany, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Alaire, Nazione: Spain, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Alawadi Motorsport, Nazione: United Arab Emirates, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Albareil Quercinox, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Albarossa, Nazione: Finland, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Al Deyaa Trading, Nazione: United Arab Emirates, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Aleph Inc, Nazione: Japan, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Ales Giorgio, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Alex Linder Gmbh, Nazione: Germany, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Alex Stewart International Corporation Bv, Nazione: Netherlands, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Alfa Delta Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Algeo Trevisan, Nazione: Austria, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Ali Al-Aufy Llc, Nazione: United Arab Emirates, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Ali Khochaiche, Nazione: Germany, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Al Lista Nozze, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Allosso Caravans, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Al Madalla, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Almar Garden, Nazione: Spain, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Almas, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Almeco, Nazione: Greece, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Al Mercato Del Giungo Di Mangano, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Al-Mex, Nazione: Albania, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Almuhareibi Group, Nazione: United Arab Emirates, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Alpha, Nazione: Germany, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Alpha Concept Gmbh, Nazione: Austria, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Altius Design, Nazione: False, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Alu Light, Nazione: Netherlands, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Ambientazione, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Ambientazione Interni, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Amc S.R.L., Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Amd Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: American Technologies, Nazione: False, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Ameublement Saint Vincent, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Amico Clima, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: A.Mir & Co Ltd, Nazione: False, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Amisano, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Amp Arquitectos, Nazione: Spain, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Ancilsa Disefios Y Proyectos, Nazione: Mexico, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Andreas Lambrou Ltd, Nazione: Cyprus, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Andre' Maury, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Andrian Stelio, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Anframur Sll, Nazione: Spain, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Aniello Troise, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Anis H. Al-Hireimi, Nazione: Israel, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Antichi Sapori Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Antonino Buttafuoco, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Antonio Olderigi Mauriello, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Antzoulatos Group, Nazione: Greece, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Aoc.D, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Apollo Trade, Nazione: Greece, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Aprime, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Aquae Calidae, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Aquamarina Thalassospa, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Aquamarina Thalassospa Beauty Farm, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Aquattro Arredamenti, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Archequipe, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Archilab, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Archimede Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Arch.Taurino Franco, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Arcidiacono Mfg Co. Ltd, Nazione: Malta, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Arcidiacono Mfg Co. Ltd., Nazione: Malta, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Arcobaleno, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Arcobaleno Studio, Nazione: False, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Aresoleil, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Arexim, Nazione: Bulgaria, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Arici Fiori, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Arici Fiori (Bs), Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Arieh Visocekas, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Arkidea, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Armando Pieroni, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Armonix Llc, Nazione: Japan, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Arnaldo Caprai, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Arntzen Trading As, Nazione: Norway, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Arquitectonica, Nazione: Portugal, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Arreda Di Cesana Antonio, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Arredamenti Crovetto, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Arredamenti Interini, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Arredamenti Pegaso Snc, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Arredamenti Ruocco, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Arredamenti Ruocco Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Arredamenti Ruocco S.R.L., Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Arredamenti Salvadori Romolo, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Arredamenti Salvadori Romolo Sas, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Arredare, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Arredare Oggi, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Arredatheta Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Arrediamo Snc, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Arredo 2000, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Arredo Service, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Artecasa Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Artecnica S.R.L., Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Artecolor Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Artelegno, Nazione: Morocco, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Art genesis, Nazione: Greece, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Arthega Gbr, Nazione: Germany, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Artiosi, Nazione: Belgium, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Artko Sarl, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Art Legno Garden, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Artos Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Art Prog, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Asa Home, Nazione: Lebanon, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: A&S Bader Gmbh & Co., Nazione: Germany, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Assobalneari Italia, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Astro, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Atelier Della Tenda, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Atemporel, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Atico International Usa Inc., Nazione: United States, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Atico Italia, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: At Media, Nazione: Ukraine, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Atzwanger S.P.A., Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Auchan Italia, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Audiostrobe, Nazione: Germany, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Autoarts, Nazione: False, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Automax Sa, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Autotrasporti Ciro Cirillo, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Auxlaper, Nazione: Spain, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Av-Service, Nazione: Ukraine, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Az Camping Snc, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Az Camping S.N.C., Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Azienda Alessio Eugenio, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Azienda Bioagricola Falcare, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: B, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Babili, Nazione: United Arab Emirates, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Baby Top, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bachi Paolo, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bacigalupo Mario & Figlio, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Baesso Roberto, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bagni Arcobaleno, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bagni Di Bormio, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bagni Silvia, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bagno 24, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bagno Carla, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bagno La Piazzetta, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bahag, Nazione: Germany, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bahag Ag, Nazione: Germany, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Balfleur Investments Limited, Nazione: China, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Ballerud Hagesenter, Nazione: Norway, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Balnearia Litorale Romano, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bals, Nazione: Japan, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bambu' 2000, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bambu'  2000 Di Fontana Americo, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Barba Gianfranco, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Barcode Group, Nazione: United Arab Emirates, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bar La Conchiglia, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Barna, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bartolini Di Bartolini A. E V. Snc, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bartolini Snc, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Base 212, Nazione: Denmark, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bassi Gianni, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bastas Mobilya, Nazione: Turkey, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bati Pscines, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Battaglia Casalinghi, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Baumax, Nazione: Croatia, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bavaria Boote - Hans Bosch, Nazione: Germany, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bazar 2 Effe, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bazar Ferrazzo Cosetta, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bazar Il Mercatino Sas, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bazar Liliana, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bazar Scarpi Cristina, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: B.B.B. Snc, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bbfc          Bbfc, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bbsb, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bda Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Beach Shop, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Beal 2008, Nazione: Spain, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Beatrice Heim, Nazione: Switzerland, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Beckmann, Nazione: Germany, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Belca, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Belca Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bell Peters, Nazione: False, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Beltram D.O.O., Nazione: Slovenia, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Berquier Pia, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Berri Mobili, Nazione: Germany, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bersezio Anna, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Berti Arredamenti Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bertoni, Nazione: Morocco, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Best Buy Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Best Garden Centre, Nazione: Sudan, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Beta, Nazione: Albania, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Betrans S.P.A., Nazione: False, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Beumer Zerhandel B.V., Nazione: Netherlands, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bezant, Nazione: False, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bgl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bgl Di Balducci Luigina, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bia Garden Store, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Biber, Nazione: Austria, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Biogiardinaggio Peraga, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Birbania Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Biro Sistem, Nazione: Slovenia, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bizeta Uno S.R.L., Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Blaha Gartenmoebel Gmbh, Nazione: Austria, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Blamann, Nazione: Norway, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bleuler Ag, Nazione: Switzerland, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bloemen Plants S.A.S., Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bloements Plants Sas, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Blooms Incorporating Jardinarie, Nazione: False, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Blu & Blu, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Blu Garden Srl, Nazione: False, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Blu Mare Snc, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bmb Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bmd, Nazione: Ukraine, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bmh Distribution, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bocci N. S.A.S., Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Boks, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bolitas Enterprises Ltd, Nazione: False, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bonazzelli Enrico, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bonit Design Studio, Nazione: Bulgaria, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bononia Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bonsaglio S.R.L., Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bordignon Noris Masetto, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Born Free Israel Ltd, Nazione: Israel, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Borzelli & C., Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bos Equipment, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Botamc, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Botanic, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Botanic Portello, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Botanika Dis Ticaret A.S., Nazione: Turkey, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bottega Del Campeggiatore Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bottega Del Sole, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Boutiques Schilliger, Nazione: Switzerland, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Branch Of Al-Futtaim Tradinf Company Llc, Nazione: United Arab Emirates, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bravia, Nazione: Ukraine, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Brazzaventre Mario, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Brick System, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bricofermin, Nazione: Spain, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bricofer Spa, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bricomania Snc, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bricomarche, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Brico Verde, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bricoverde Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bridgefex Partners Llc, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bridor              Bridor Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bridor Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bridor S.R.L., Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: B.R. International Inc., Nazione: Israel, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Brumisation, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Brunazzo Snc, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Brunj Group, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Buchele, Nazione: Germany, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Buddha Spa, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bulstar, Nazione: Belgium, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: B.U.M. S.R.L., Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Buonacquisto, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Buonacquisto Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Bvba Donum Design, Nazione: Belgium, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bvba Donum Originals, Nazione: Belgium, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Bvw Wohnungsbau Gmbh, Nazione: Germany, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: B & W Handelsgesm.B.H., Nazione: Austria, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: By Scarpi, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: C2H Comme Un Jardin, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Cabin, Nazione: Japan, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Cadrage Deborb, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Cagis Snc, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Caja, Nazione: Netherlands, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Calamati Marcello, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Calvaruso, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Camif Catalogues, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Caminetti Siviglia Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Camodue Sport, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Campeggio 2 Laghi, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Campeggio Fornella, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Campeggio Grande Quiete, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Campeggio San Francesco, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Campeggio Tre Capitelli, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Campeggio Trezene, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Campertours, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Campetours Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Camping Market, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Camping Spinnaker, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Camping Und Freizeitarti Berger, Nazione: Germany, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Camping Villaggio Irene, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Canape' Tappezzeria, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Cannarsa Rappresentanze, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Cantieri Riuniti Romani Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Capasso G., Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Cap Design, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Cappelli S.A.S. Di A. & C, Nazione: Guadeloupe (French), CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Car 90 Sas, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Caravans' City, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Caravans' City S.N.C., Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Carl Abt Kg, Nazione: Germany, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Carmetum, Nazione: Belgium, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Caron Marino Giorgio, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Caron Marino Giorgio1, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Carpicaravan, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Carpi Caravan, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Carretta Sementi, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Carribean Shade Parasoles, Nazione: Venezuela, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Cart Cash Srl, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1
+Modifico: Partner: Casa Bruno, Nazione: Spain, CEI: False, Pos. F.: False >> CEI: e, Pos F. 2
+Modifico: Partner: Casa & Co Di Lupi Sonia E Santini Sabrina Snc, Nazione: Italy, CEI: False, Pos. F.: False >> CEI: i, Pos F. 1

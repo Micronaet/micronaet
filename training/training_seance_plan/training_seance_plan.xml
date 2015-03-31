@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+         <!-- VIEWS -->
+            <!-- training.lecturer.base -->
+         <record model="ir.ui.view" id="training_lecturer_base_tree">
+            <field name="name">training.lecturer.base.tree</field>
+            <field name="model">training.lecturer.base</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Moduli abbinati a edizione">
+                    <field name="course_id" />
+                    <field name="base_lecturer_id" />
+                    <field name="base_lecturer_2_id"  groups="base_laser.group_laser_cfp"/>
+                    <field name="note" />                    
+                    <field name="session_id" />
+                </tree>
+            </field>
+         </record>
+
+            <!--training.seance.plan:-->
+         <record model="ir.ui.view" id="training_seance_plan_calendar">
+            <field name="name">training.seance.plan.calendar</field>
+            <field name="model">training.seance.plan</field>
+            <field name="type">calendar</field>
+            <field name="arch" type="xml">
+                <calendar string="Piano settimanale edizione" date_start="date" date_delay="duration" color="base_lecturer_id" mode="week">
+                    <field name="course_id" />
+                    <field name="base_lecturer_id" />
+                    <field name="base_lecturer_2_id"  groups="base_laser.group_laser_cfp"/>
+                    <field name="session_id" />
+                    <field name="duration" widget="float_time" />
+                </calendar>
+            </field>
+         </record>
+         <record model="ir.ui.view" id="training_seance_plan_tree">
+            <field name="name">training.seance.plan.tree</field>
+            <field name="model">training.seance.plan</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Piano settimanale edizione">
+                    <field name="session_id" />
+                    <field name="course_id" />
+                    <field name="date" />
+                    <field name="duration" widget="float_time" />
+                    <field name="base_lecturer_id" />
+                    <field name="base_lecturer_2_id"  groups="base_laser.group_laser_cfp"/>
+                </tree>
+            </field>
+         </record>
+         <record model="ir.ui.view" id="training_seance_plan_form">
+            <field name="name">training.seance.plan.form</field>
+            <field name="model">training.seance.plan</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Piano settimanale edizione">
+                    <field name="course_base_id" domain="[('session_id','=',session_id)]" on_change="on_change_course_base_id(course_base_id, session_id )" default_focus="1" />
+                    <field name="course_id" invisible="1" /> 
+                    <field name="duration" widget="float_time" /> <!-- on_change="on_change_duration(duration)"-->
+                    <field name="date" />
+                    <field name="base_lecturer_id" /> 
+                    <field name="base_lecturer_2_id"  groups="base_laser.group_laser_cfp"/>
+                    <field name="session_id" invisible="1" /> 
+                </form>
+            </field>
+        </record>
+
+        <!-- training.seance-->  
+         <record model="ir.ui.view" id="training_seance_calendar_session_course">
+            <field name="name">training.seance.calendar.session.course</field>
+            <field name="model">training.seance</field>
+            <field name="type">calendar</field>
+            <field name="arch" type="xml">
+                <calendar string="Lezioni/Corsi per l'edizione" date_start="date" date_delay="duration" color="session_id">  <!--cambiare i vari color per le viste-->
+                    <field name="course_id" />
+                    <field name="base_lecturer_id" />
+                    <field name="base_lecturer_2_id"  groups="base_laser.group_laser_cfp"/>
+                    <field name="original_session_id" />
+                    <field name="duration" widget="float_time" />
+                </calendar>
+            </field>
+         </record>
+
+        <!-- INHERIT VIEWS -->
+            <!--SESSION-->
+        <record model="ir.ui.view" id="view_session_lecturer_base_add_page">
+            <field name="name">training.session.lecturer.base.page</field>
+            <field name="model">training.session</field>
+            <field name="inherit_id" ref="training.training_session_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/form/notebook/page[@string='Seances']/field[@name='seance_ids']/tree/field[@name='group_id']" position='after'>
+                           <field name="base_lecturer_id" />
+                    </xpath>
+                    <xpath expr="/form/notebook/page[@string='Seances']/button[@name='action_create_seances']" position='after'>
+                            <newline />
+                            <button name="%(action_session_seance_calendar)d" type="action" string="Elenco lezioni edizione" icon="terp-mrp" colspan="4"/>
+                    </xpath>
+                    <xpath expr="/form/notebook/page[@string='Seances']" position='before'>
+                        <page string="Docenti base per modulo">      
+                              <newline />
+                              <button string="Carica moduli (come da corso)" colspan="2" context="{'unique_lecturer_id': unique_lecturer_id}" 
+                                      name="action_load_modules" type="object" icon="terp-partner" 
+                                      confirm="Confermi caricamento modulo come da corso abbinato (non verranno cancellate informazioni esistenti)?" />
+                              <field name="unique_lecturer_id" domain="['|',('function','ilike','operatore'),('function','ilike','docente')]"/>
+                              <separator string="Docenti base per modulo" />
+                              <field name="lecturer_base_ids" colspan="4" nolabel="1">
+                                 <tree>
+                                    <field name="course_id" select="1" />
+                                    <field name="base_lecturer_id" select="1" />
+                                    <field name="base_lecturer_2_id"  groups="base_laser.group_laser_cfp"/>
+                                    <field name="duration" />
+                                    <field name="daily_hours" />
+                                    <field name="week_hours" />
+                                    <field name="note" />
+                                 </tree>
+                                 <form>
+                                    <field name="course_id" />
+                                    <field name="base_lecturer_id" domain="['|',('function','ilike','operatore'),('function','ilike','docente')]" />
+                                    <field name="base_lecturer_2_id"  domain="['|',('function','ilike','operatore'),('function','ilike','docente')]" groups="base_laser.group_laser_cfp"/>
+                                    <!-- on_change="on_change_lecturer_base(course_id, lecturer_id)" -->   
+                                    <newline />
+                                    <field name="note" colspan="4"/>
+                                 </form>
+                             </field> 
+                             <separator string="Calendario base per la generazione lezioni"/>
+                             <label colspan="4" string="Utilizzare il link: 'Piano lezioni settimanale' per la creazione del piano settimanane (che verrà replicato per tutta la durata della edizione), oppure, nel caso il piano fosse importato (spunta qui sotto) verrà riportato pari pari nella creazione lezioni" />
+                             <newline />
+                             <!--<button name="%(action_session_training_seance_plan)d" type="action" string="Piano lezioni settimanale" icon="terp-mrp"/>-->
+                             <field name="imported_plan" />
+                             <!--<button name="action_session_import_seance_plan" type="object" string="Importazione piano lezioni" icon="gtk-execute"
+                                      groups="training.group_seance_manager" attrs="{'invisible' : [('imported_plan', '=', False)]}"/>-->
+                             <field name="fet_class" groups="training.group_seance_manager" attrs="{'invisible' : [('imported_plan', '=', False)]}"/>         
+                             <!--<field name="fet_date_start" />-->
+                        </page> 
+                   </xpath>
+                    <xpath expr="/form/notebook/page[@string='Groups']/field[@name='group_ids']" position='before'>
+                        <button string="Crea gruppo (per lezioni create in manuale)" name="action_create_group" type="object" icon="terp-partner" />                             
+                   </xpath>
+               </data>      
+           </field>
+        </record> 
+
+        <!-- TRAINING CATALOG -->
+        <record model="ir.ui.view" id="view_training_catalog_add_fields">
+            <field name="name">Training catalog FET</field>
+            <field name="model">training.catalog</field>
+            <field name="inherit_id" ref="training.training_catalog_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <data>
+                   <field name="year" position="after">
+                      <group colspan="4" groups="base_laser.group_laser_cfp">
+                         <separator string="Importazione file FET" colspan="4" />
+                         <field name="fet_prefix" />
+                         <button name="action_catalog_import_seance_plan" type="object" string="Importazione piano lezioni FET" icon="gtk-execute"
+                                 groups="training.group_seance_manager" 
+                                 confirm="Confermi l'importazione delle classi FET nelle edizioni, cancellando eventuali lezioni presenti?" />
+                      </group>
+                   </field>
+                   <xpath expr="/form/notebook/page[@string='Sessions']/field[@name='session_ids']/tree/field[@name='offer_id']" position='after'>
+                        <field name="imported_plan" groups="base_laser.group_laser_cfp" />
+                        <field name="fet_class" groups="base_laser.group_laser_cfp" />
+                        <!--<field name="fet_date_start" groups="base_laser.group_laser_cfp" />-->
+                   </xpath>
+                   
+               </data>      
+           </field>
+        </record> 
+
+        <!-- SUBSCRIPTION -->
+        <record model="ir.ui.view" id="view_subscription_base_add_page">
+            <field name="name">training.subscription.base.fields</field>
+            <field name="model">training.subscription</field>
+            <field name="inherit_id" ref="training.training_subscription_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/form/notebook/page[@string='Subscription']/field[@name='partner_rh_email']" position='before'>
+                          <field name="search_contact_id" 
+                                 on_change="on_change_search_contact(search_contact_id)" 
+                                 domain="[('function','not ilike','operatore'),('function','not ilike','docente')]" 
+                                 attrs="{'readonly' : [('state', '!=', 'draft')]}" />
+                   </xpath>
+               </data>      
+           </field>
+        </record> 
+        
+        <!-- SEANCES --> 
+        <record model="ir.ui.view" id="view_seance_base_add_fields">
+            <field name="name">training.seance.base.fields</field>
+            <field name="model">training.seance</field>
+            <field name="inherit_id" ref="training.training_seance_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <data>
+                    <field name="name" position="after">
+                          <field name="session_id" readonly="1" />
+                   </field>
+                    <xpath expr="/form/notebook/page[@string='Seance Description']/field[@name='course_id']" position='after'>
+                          <field name="base_lecturer_id" domain="['|',('function','ilike','operatore'),('function','ilike','docente')]"/>
+                          <field name="base_lecturer_2_id" domain="['|',('function','ilike','operatore'),('function','ilike','docente')]" groups="base_laser.group_laser_cfp"/>
+                   </xpath>
+               </data>      
+           </field>
+        </record> 
+
+        <!--<record model="ir.ui.view" id="training_seance_plan_calendar_session">
+            <field name="name">training.seance.plan.calendar.session</field>
+            <field name="model">training.seance.plan</field>
+            <field name="type">calendar</field>
+            <field name="arch" type="xml">
+                <calendar string="Session / Course plan" color="original_session_id" date_start="date" date_delay="duration" mode="week">
+                    <field name="original_session_id" />
+                    <field name="course_id" />
+                    <field name="duration" />    
+                </calendar>
+            </field>
+        </record>-->
+       
+         <!-- ACTION FORM -->
+         <!-- Piano lezioni settimanale --> 
+         <act_window
+            src_model="training.session"
+            res_model="training.seance.plan"
+            domain="[('session_id', '=', active_id)]"
+            name="Piano lezioni settimanale"
+            view_mode="calendar,tree,form"
+            context="{'session_id': session_id,}"
+            id="action_session_training_seance_plan" />
+
+         <!-- Calendario lezioni -->
+         <act_window
+            src_model="training.session"
+            res_model="training.seance"
+            domain="[('session_id', '=', active_id)]"
+            name="Elenco lezioni edizione"
+            view_mode="calendar"
+            context="{'original_session_id': session_id,}"
+            id="action_session_seance_calendar" 
+            view_id="training_seance_calendar_session_course" />
+            <!--Da errore fa vedere solamente l'edizione e non la lezione,tree,form--> 
+
+        <!-- ACTION -->
+        <!--
+        <record model="ir.actions.act_window" id="training_seance_plan_open">
+            <field name="name">Pianificazione settimana (edizione)</field>
+            <field name="res_model">training.seance.plan</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">calendar, tree, form</field>
+        </record>-->
+        <!-- <field name="domain">[('date', '>=', current_date)]</field>-->
+
+        <!-- MENU ITEM -->
+        <!--<menuitem action="training_seance_plan_open" id="training_seance_plan_open_menu" parent="training.menu_address_book" sequence="1"/>-->
+        <!--<menuitem action="training_seance_plan_session_open" id="training_seance_plan_open_session_menu" parent="training.menu_address_book" sequence="1"/>-->
+    </data>
+</openerp>

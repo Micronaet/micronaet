@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+   <data>
+        <!-- Laser Manager Group (insert anagraphic) -->
+        <record id="group_laser_manager" model="res.groups">
+            <field name="name">Laser / Manager Group</field>
+        </record>
+        <!-- Laser User Group -->
+        <record id="group_laser_user" model="res.groups">
+            <field name="name">Laser / User</field>
+        </record>
+
+        <!-- Laser Sub Groups -->
+        <record id="group_laser_cfp" model="res.groups">
+            <field name="name">Laser / C.F.P.</field>
+        </record>
+        <record id="group_laser_imprese" model="res.groups">
+            <field name="name">Laser / Servizi alle imprese</field>
+        </record>
+        <record id="group_laser_doti" model="res.groups">
+            <field name="name">Laser / Ufficio Doti</field>
+        </record>
+        <record id="group_laser_apprendistato" model="res.groups">
+            <field name="name">Laser / Ufficio Apprendistato</field>
+        </record>
+   </data>
+</openerp>

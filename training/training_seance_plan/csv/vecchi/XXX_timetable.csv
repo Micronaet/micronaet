@@ -1,0 +1,56 @@
+﻿Activity Id,Day,Hour,Students Sets,Subject,Teachers,Activity Tags,Room
+1,Sabato ,10:00,I A,Igiene,Betteni-Rivetta Laura,,Laboratorio Acconciatura
+2,Venerdì,10:00,I A,Igiene,Betteni-Rivetta Laura,,IA
+15,Lunedì,09:00,I A,Anatomia,Spini Massimiliano,,IA
+15,Lunedì,10:00,I A,Anatomia,Spini Massimiliano,,IA
+21,Giovedì,10:00,I A,Matematica,Gallo Materossi Francesca,,IA
+22,Lunedì,11:00,I A,Matematica,Gallo Materossi Francesca,,IA
+31,Giovedì,10:00,I E,Matematica,Borra Eva,,Informatica 2
+32,Sabato ,09:00,I E,Matematica,Borra Eva,,IE
+51,Mercoledì,09:00,I A,Comunicazione interpersonale,Tosini Fabio,,IA
+54,Sabato ,08:00,I E,Comunicazione interpersonale,Tosini Fabio,,Informatica 2
+55,Venerdì,09:00,I A,Cosmetologia,Sarnico Ilenia,,IA
+56,Sabato ,08:00,I A,Cosmetologia,Sarnico Ilenia,,IA
+66,Venerdì,15.00,I E,Scienze,Sarnico Ilenia,,IE
+71,Mercoledì,11:00,I A,Dermatologia,Sarnico Ilenia,,IA
+72,Mercoledì,12:00,I A,Dermatologia,Sarnico Ilenia,,IA
+75,Venerdì,08:00,I A,Diritto-Economia,Trevisi Antonella,,IA
+83,Giovedì,11:00,I A,Informatica,Colosio,,Informatica 1
+83,Giovedì,12:00,I A,Informatica,Colosio,,Informatica 1
+94,Mercoledì,15.00,I A,Inglese,Raciti Claudine,,IA
+95,Martedì,13.00,I A,Inglese,Raciti Claudine,,IA
+114,Mercoledì,11:00,I E,Inglese,Feroldi Luisa,,IE
+115,Sabato ,16.00,I E,Inglese,Feroldi Luisa,,IE
+120,Lunedì,15.00,I A,Italiano,Caprioli Clarice,,IA
+121,Mercoledì,13.00,I A,Italiano,Caprioli Clarice,,IA
+136,Martedì,10:00,I E,Italiano,Tosini Fabio,,IE
+137,Lunedì,13.00,I E,Italiano,Tosini Fabio,,IE
+144,Giovedì,14.00,I A,Scienze,Tebaldi Mauro,,Laboratorio Estetica
+152,Venerdì,11:00,I A,Storia-Geografia,Rondina,,IA
+155,Martedì,12:00,I E,Storia-Geografia,Rondina,,Informatica 2
+186,Venerdì,08:00,I E,Diritto-Economia,Lanzi Arianna,,Laboratorio Elettricisti
+212,Martedì,13.00,I E,Disegno elettrico,Simonini Diego,,Informatica 2
+212,Martedì,14.00,I E,Disegno elettrico,Simonini Diego,,Informatica 2
+213,Giovedì,12:00,I E,Disegno elettrico,Simonini Diego,,Informatica 2
+213,Giovedì,13.00,I E,Disegno elettrico,Simonini Diego,,Informatica 2
+214,Venerdì,09:00,I E,Disegno elettrico,Simonini Diego,,Informatica 2
+214,Venerdì,10:00,I E,Disegno elettrico,Simonini Diego,,Informatica 2
+220,Lunedì,14.00,I E,Elettrotecnica,Segreto,,IE
+220,Lunedì,15.00,I E,Elettrotecnica,Segreto,,IE
+221,Martedì,11:00,I E,Elettrotecnica,Segreto,,IE
+224,Mercoledì,14.00,I E,Informatica,info,,Informatica 1
+224,Mercoledì,15.00,I E,Informatica,info,,Informatica 1
+317,Lunedì,10:00,I E,Tecninca professionale - Elettricisti,Picazzi Ivanoe,,Laboratorio Elettricisti
+317,Lunedì,11:00,I E,Tecninca professionale - Elettricisti,Picazzi Ivanoe,,Laboratorio Elettricisti
+317,Lunedì,12:00,I E,Tecninca professionale - Elettricisti,Picazzi Ivanoe,,Laboratorio Elettricisti
+318,Giovedì,14.00,I E,Tecninca professionale - Elettricisti,Picazzi Ivanoe,,Laboratorio Elettricisti
+318,Giovedì,15.00,I E,Tecninca professionale - Elettricisti,Picazzi Ivanoe,,Laboratorio Elettricisti
+318,Giovedì,16.00,I E,Tecninca professionale - Elettricisti,Picazzi Ivanoe,,Laboratorio Elettricisti
+323,Sabato ,14.00,I A,Laboratorio,Lapadula Anotnietta+Felter Cristina,,Laboratorio Estetica
+323,Sabato ,15.00,I A,Laboratorio,Lapadula Anotnietta+Felter Cristina,,Laboratorio Estetica
+323,Sabato ,16.00,I A,Laboratorio,Lapadula Anotnietta+Felter Cristina,,Laboratorio Estetica
+324,Martedì,10:00,I A,Laboratorio,Lapadula Anotnietta+Felter Cristina,,Laboratorio Estetica
+324,Martedì,11:00,I A,Laboratorio,Lapadula Anotnietta+Felter Cristina,,Laboratorio Estetica
+324,Martedì,12:00,I A,Laboratorio,Lapadula Anotnietta+Felter Cristina,,Laboratorio Estetica
+327,Venerdì,13.00,I A,Disciplina del Lavoro,x,,IA
+331,Mercoledì,10:00,I E,Disciplina del Lavoro,x,,Laboratorio Elettricisti

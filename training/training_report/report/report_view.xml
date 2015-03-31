@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<openerp>
+<data noupdate="1">
+    <!-- Azione Job -->    
+    <record id="aeroo_status_lecturer_report_id" model="ir.actions.report.xml">
+        <field name="name">Status Lecturer</field>
+        <field name="type">ir.actions.report.xml</field>
+        <field name="model">res.partner.contact</field>
+        <field name="report_name">status_lecturer_report</field>
+        <field name="report_type">aeroo</field>
+        <field name="in_format">oo-odt</field>
+        <field name="parser_loc">training_report/report/parser.py</field>
+        <field name="report_rml">training_report/report/status_lecturer.odt</field>
+        <field name="parser_state">loc</field>
+        <field name="tml_source">file</field>
+    </record>
+    <ir_set>
+        <field eval="'action'" name="key"/>
+        <field eval="'client_print_multi'" name="key2"/>
+        <field eval="['res.partner.contact']" name="models"/>
+        <field name="name">status_lecturer_report</field>
+        <field eval="'ir.actions.report.xml,'+str(aeroo_status_lecturer_report_id)" name="value"/>
+        <field eval="True" name="isobject"/>
+        <field eval="True" name="replace"/>
+    </ir_set>
+    <!-- Azione Edizione -->    
+    <record id="aeroo_status_lecturer_edition_report_id" model="ir.actions.report.xml">
+        <field name="name">Status Lecturer from edition</field>
+        <field name="type">ir.actions.report.xml</field>
+        <field name="model">training.session</field>
+        <field name="report_name">status_lecturer_edition_report</field>
+        <field name="report_type">aeroo</field>
+        <field name="in_format">oo-odt</field>
+        <field name="parser_loc">training_report/report/parser_edition.py</field>
+        <field name="report_rml">training_report/report/status_lecturer_edition.odt</field>
+        <field name="parser_state">loc</field>
+        <field name="tml_source">file</field>
+    </record>
+    <ir_set>
+        <field eval="'action'" name="key"/>
+        <field eval="'client_print_multi'" name="key2"/>
+        <field eval="['training.session']" name="models"/>
+        <field name="name">status_lecturer_edition_report</field>
+        <field eval="'ir.actions.report.xml,'+str(aeroo_status_lecturer_edition_report_id)" name="value"/>
+        <field eval="True" name="isobject"/>
+        <field eval="True" name="replace"/>
+        
+    <!-- Azione Catalog -->    
+    </ir_set>
+        <record id="aeroo_status_lecturer_catalog_report_id" model="ir.actions.report.xml">
+        <field name="name">Status Lecturer from catalog</field>
+        <field name="type">ir.actions.report.xml</field>
+        <field name="model">training.catalog</field>
+        <field name="report_name">status_lecturer_catalog_report</field>
+        <field name="report_type">aeroo</field>
+        <field name="in_format">oo-odt</field>
+        <field name="parser_loc">training_report/report/parser_catalog.py</field>
+        <field name="report_rml">training_report/report/status_lecturer_catalog.odt</field>
+        <field name="parser_state">loc</field>
+        <field name="tml_source">file</field>
+    </record>
+    <ir_set>
+        <field eval="'action'" name="key"/>
+        <field eval="'client_print_multi'" name="key2"/>
+        <field eval="['training.catalog']" name="models"/>
+        <field name="name">status_lecturer_catalog_report</field>
+        <field eval="'ir.actions.report.xml,'+str(aeroo_status_lecturer_catalog_report_id)" name="value"/>
+        <field eval="True" name="isobject"/>
+        <field eval="True" name="replace"/>
+    </ir_set>
+</data>
+</openerp>
+

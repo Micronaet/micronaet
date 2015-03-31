@@ -1,0 +1,194 @@
+﻿Students Sets,Subject,Teachers,Total Duration
+I A,Anatomia,Spini,2
+I A,Comunicazione interpersonale,Tosini Fabio,1
+I A,Cosmetologia,Sarnico Ilenia,2
+I A,Dermatologia,Sarnico Ilenia,2
+I A,Diritto,Trevisi,1
+I A,Disciplina del Lavoro,Disciplina Lavoro,1
+I A,Flessibilita',,2
+I A,Igiene,Betteni,2
+I A,Informatica,Colosio,2
+I A,Inglese,Raciti,2
+I A,Italiano,Caprioli,2
+I A,Laboratorio,Lapadula+Felter,6
+I A,Matematica,Gallo,2
+I A,Scienze,Tebaldi,1
+I A,Storia geografia,Rondina,1
+I B,Anatomia,Spini,2
+I B,Comunicazione interpersonale,Tosini Fabio,1
+I B,Cosmetologia,Sarnico Ilenia,2
+I B,Dermatologia,Betteni,2
+I B,Diritto,Trevisi,1
+I B,Disciplina del Lavoro,Disciplina Lavoro,1
+I B,Flessibilita',,2
+I B,Igiene,Betteni,2
+I B,Informatica,Colosio,2
+I B,Inglese,Raciti,2
+I B,Italiano,Caprioli,2
+I B,Laboratorio,Mazza+Sottini,6
+I B,Matematica,Gallo,2
+I B,Scienze,Tebaldi,1
+I B,Storia geografia,Rondina,1
+I C,Comunicazione interpersonale,Tosini Fabio,1
+I C,Diritto,Vigliotti Luciano,1
+I C,Disciplina del Lavoro,Disciplina Lavoro,1
+I C,Flessibilita',xx,3
+I C,Gestione cliente cassa,Borghesi ,4
+I C,Informatica,Colosio,2
+I C,Inglese,x,2
+I C,Italiano,Tosini Fabio,2
+I C,Marketing,Bignotti Daniele,2
+I C,Matematica,Borra Eva,2
+I C,Merceologia - Packaging,Sicignano Carmen Maria,2
+I C,Organizzazione Negozio - Magazzino,Sicignano Carmen Maria,3
+I C,Scienze,Sarnico Ilenia,1
+I C,Storia geografia,Rondina,1
+I C,Window dressing,Carvalho Margarida,3
+I E,Comunicazione interpersonale,Tosini Fabio,1
+I E,Diritto,Lanzi,1
+I E,Disciplina del Lavoro,Disciplina Lavoro,1
+I E,Disegno Eletrico - Impianti,Simonini,6
+I E,Elettrotecnica,Segreto,3
+I E,Flessibilita',,2
+I E,Informatica,Info,2
+I E,Inglese,Feroldi,2
+I E,Italiano,Tosini Fabio,2
+I E,Matematica,Borra Eva,2
+I E,Scienze,Sarnico Ilenia,1
+I E,Storia geografia,Rondina,1
+I E,Tecninca professionale - Elettricisti,Picazzi,6
+II A,Anatomia,Spini,1
+II A,Cosmetologia,Sarnico Ilenia,2
+II A,Dermatologia,Sarnico Ilenia,1
+II A,Diritto,Trevisi,1
+II A,Disciplina del Lavoro,Disciplina Lavoro,1
+II A,Flessibilita',,5
+II A,Igiene,Betteni,1
+II A,Informatica,Colosio,2
+II A,Inglese,Raciti,2
+II A,Italiano,Caprioli,2
+II A,Laboratorio,Gallia+Lapadula,6
+II A,Matematica,Simonini,3
+II A,Scienze,Tebaldi,1
+II A,Storia geografia,Rondina,1
+II B,Anatomia,Spini,1
+II B,Cosmetologia,Sarnico Ilenia,1
+II B,Dermatologia,Betteni,2
+II B,Diritto,Trevisi,1
+II B,Disciplina del Lavoro,Disciplina Lavoro,1
+II B,Flessibilita',,6
+II B,Igiene,Betteni,1
+II B,Informatica,Colosio,2
+II B,Inglese,Raciti,2
+II B,Italiano,Caprioli,2
+II B,Laboratorio,Felter+Galli,6
+II B,Matematica,Gallo,3
+II B,Scienze,Tebaldi,1
+II B,Storia geografia,Rondina,1
+II C,Diritto,Vigliotti Luciano,1
+II C,Disciplina del Lavoro,Disciplina Lavoro,1
+II C,Flessibilita',,5
+II C,Gestione cliente cassa,Borghesi ,3
+II C,Informatica,Colosio,2
+II C,Inglese,,2
+II C,Italiano,Tosini Fabio,2
+II C,Marketing,Bignotti Daniele,3
+II C,Matematica,Borra Eva,3
+II C,Merceologia - Packaging,Sicignano Carmen Maria,1
+II C,Organizzazione Negozio - Magazzino,Sicignano Carmen Maria,2
+II C,Scienze,Sarnico Ilenia,1
+II C,Storia geografia,Rondina,1
+II C,Window dressing,Carvalho Margarida,3
+II E,Diritto,Lanzi,1
+II E,Disciplina del Lavoro,Disciplina Lavoro,1
+II E,Disegno Eletrico - Impianti,Simonini,5
+II E,Elettrotecnica,Segreto,1
+II E,Flessibilita',,5
+II E,Informatica,Info,2
+II E,Inglese,Feroldi,2
+II E,Italiano,Tosini Fabio,2
+II E,Matematica,Borra Eva,3
+II E,Scienze,Sarnico Ilenia,1
+II E,Storia geografia,Rondina,1
+II E,Tecninca professionale - Elettricisti,Picazzi,5
+III A,Anatomia,Spini,1
+III A,Cosmetologia,Sarnico Ilenia,1
+III A,Dermatologia,Sarnico Ilenia,1
+III A,Diritto,Trevisi,1
+III A,Flessibilita',,5
+III A,Igiene,Betteni,1
+III A,Informatica,Colosio,2
+III A,Inglese,Raciti,2
+III A,Italiano,Tosini Fabio,2
+III A,Laboratorio,Lapadula+Sottini,5
+III A,Matematica,Simonini,2
+III A,Scienze,Tebaldi,1
+III A,Storia geografia,Rondina,1
+III A,dietologia-Tricologia,Beschi+Spini,2
+III B,Anatomia,Spini,1
+III B,Cosmetologia,Sarnico Ilenia,1
+III B,Dermatologia,Betteni,1
+III B,Diritto,Trevisi,1
+III B,Flessibilita',,5
+III B,Igiene,Betteni,1
+III B,Informatica,Colosio,2
+III B,Inglese,Raciti,2
+III B,Italiano,Tosini Fabio,2
+III B,Laboratorio,Mazza+Sottini,5
+III B,Matematica,Gallo,2
+III B,Scienze,Tebaldi,1
+III B,Storia geografia,Rondina,1
+III B,dietologia-Tricologia,Beschi+Spini,2
+III C,Diritto,Vigliotti Luciano,1
+III C,Flessibilita',,3
+III C,Gestione cliente cassa,Borghesi ,3
+III C,Informatica,Colosio,2
+III C,Inglese,Feroldi,2
+III C,Italiano,Tosini Fabio,2
+III C,Marketing,Bignotti Daniele,2
+III C,Matematica,Borra Eva,2
+III C,Merceologia - Packaging,Sicignano Carmen Maria,2
+III C,Organizzazione Negozio - Magazzino,Sicignano Carmen Maria,2
+III C,Scienze,Sarnico Ilenia,1
+III C,Storia geografia,Rondina,1
+III C,Window dressing,Carvalho Margarida,2
+III E,Diritto,Lanzi,1
+III E,Disegno Eletrico - Impianti,Simonini,4
+III E,Domotica,Simonini,2
+III E,Elettrotecnica,Segreto,1
+III E,Flessibilita',,5
+III E,Informatica,Info,2
+III E,Inglese,Feroldi,2
+III E,Italiano,Tosini Fabio,2
+III E,Matematica,Borra Eva,2
+III E,Scienze,Sarnico Ilenia,1
+III E,Storia geografia,Rondina,1
+III E,Tecninca professionale - Elettricisti,Picazzi,4
+IV A,Cosmetologia-Dermatologia,Sarnico Ilenia,1
+IV A,Counseling,Counseling,1
+IV A,Diritto,Vigliotti Luciano,1
+IV A,Disciplina del Lavoro,Disciplina Lavoro,1
+IV A,Flessibilita',,6
+IV A,Inglese,Raciti,2
+IV A,Innformatica gestionale,Colosio,2
+IV A,Italiano,Caprioli,2
+IV A,Marketing,Bignotti Daniele,1
+IV A,Matematica,Simonini,2
+IV A,Servizi Finanziari,Servizi Finanziari,1
+IV A,Tecnica professionale - Acconciatura,Galab,6
+IV A,Tricologia,Fracassi,2
+IV B,Anatomia,Spini,1
+IV B,Cosmetologia,Sarnico Ilenia,1
+IV B,Counseling,Counseling,1
+IV B,Dermatologia,Betteni,1
+IV B,Diritto,Vigliotti Luciano,1
+IV B,Disciplina del Lavoro,Disciplina Lavoro,1
+IV B,Flessibilita',,5
+IV B,Igiene,Betteni,1
+IV B,Inglese,Raciti,2
+IV B,Innformatica gestionale,Colosio,2
+IV B,Italiano,Caprioli,2
+IV B,Marketing,Bignotti Daniele,1
+IV B,Matematica,Simonini,2
+IV B,Servizi Finanziari,Servizi Finanziari,1
+IV B,Tecnica professionale - Estetista,Sottini,6

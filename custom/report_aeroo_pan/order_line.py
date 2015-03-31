@@ -1,0 +1,62 @@
+##############################################################################
+#
+# Copyright (c) 2008-2010 SIA "KN dati". (http://kndati.lv) All Rights Reserved.
+#                    General contacts <info@kndati.lv>
+#
+# WARNING: This program as such is intended to be used by professional
+# programmers who take the whole responsability of assessing all potential
+# consequences resulting from its eventual inadequacies and bugs
+# End users who are looking for a ready-to-use solution with commercial
+# garantees and support are strongly adviced to contract a Free Software
+# Service Company
+#
+# This program is Free Software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#
+##############################################################################
+# Modified template model from:
+#
+# Micronaet s.r.l. - Nicola Riolini
+# Using the same term of use
+##############################################################################
+
+from osv import osv, fields
+
+class sale_order_line_add_fields(osv.osv):
+    _name='sale.order.line'
+    _inherit='sale.order.line'
+    
+    _columns={
+             'repeat_header_line': fields.boolean('Intest.', 
+                                                  required=False, 
+                                                  help="Spuntare quando e' richiesta l'intestazione, tipo dopo una riga titolo."),             
+             }
+sale_order_line_add_fields()
+
+class pan_sale_order_fields(osv.osv):
+    _name='sale.order'
+    _inherit='sale.order'
+    
+    _columns={
+             'print_address': fields.boolean('Stampa indirizzi aggiuntivi', required=False),             
+             'print_only_prices': fields.boolean('Offerta con soli prezzi', required=False),              
+             'has_master_header': fields.boolean('Intestazione tabella principale', 
+                                                 required=False, 
+                                                 help="Nei preventivi di sola comunicazione evita l'inserimento intestazione"),
+             }
+
+    _defaults={
+              'has_master_header': lambda *a: True,   
+              }
+pan_sale_order_fields()

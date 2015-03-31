@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!-- VIEWS -->
+        <record model="ir.ui.view" id="view_partner_contact_form_inherit_extra_info_page2">
+            <field name="name">res.partner.contact.form.inherit.extra_info_page2</field>
+            <field name="model">res.partner.contact</field>
+            <!-- Inherits from base.view_partner_contact_form -->
+            <field name="inherit_id" ref="base_contact.view_partner_contact_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <!-- Add a new page inside the Notebook -->
+                <notebook position="inside">
+                    <page string="Extra Laser">                        
+                        <separator string="Dati extra" colspan="4" />
+                        <field name="gender" colspan="2" />
+                        <field name="disadvantage" colspan="2" />
+                        <newline />
+                        <field name="title_school_id" select="2" colspan="2"/>
+                        <separator string="Fiscal Information" colspan="4" />
+                        <field name="fiscal_id_code" colspan="4"/>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_partner_schoolsheet_form">
+            <field name="name">Titoli di studio Form</field>
+            <field name="model">res.partner.schoolsheet</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                  <form string="Titoli di studio">
+                       <field name="name" colspan="4"/>                       
+                       <newline />
+                       <field name="note" colspan="4"/>
+                  </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_partner_schoolsheet_tree">
+            <field name="name">Titoli di studio Tree</field>
+            <field name="model">res.partner.schoolsheet</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Titoli di studio">
+                   <field name="name" />
+                   <field name="note" />
+                </tree>
+            </field>
+        </record>
+
+        <!-- ACTIONS -->
+        <!--<record model="ir.actions.act_window" id="action_schoolsheet_tree">
+            <field name="name">Titolo di studio</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner.schoolsheet</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="action_schoolsheet_tree"/>
+            <field name="sequence" eval="2"/>
+        </record>-->
+
+        <!--<record model="ir.actions.act_window.view" id="action_membership_product_view_tree">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="membership_products_tree"/>
+            <field name="act_window_id" ref="action_membership_products"/>
+        </record>
+
+        <record id="action_partner_title_partner" model="ir.actions.act_window">
+            <field name="name">Partner Titles</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner.title</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('domain','=','partner')]</field>
+            <field name="help">Manage the partner titles you want to have available in your system. The partner titles is the legal status of the company: Private Limited, SA, etc.</field>
+            <field name="view_id" ref="view_my_project" />
+        </record>-->
+
+        <record model="ir.actions.act_window" id="open_view_schoolsheet">
+            <field name="name">Titolo di studio</field>
+            <field name="res_model">res.partner.schoolsheet</field>
+            <field name="view_type">form</field>
+            <field name="view_model">form,tree</field>
+        </record>
+
+         <!--MENU ITEMS-->
+        <menuitem name="Titoli di studio" 
+                  id="res_partner_schoolsheet_menu" 
+                  parent="base.menu_config_address_book"
+                  action="open_view_schoolsheet"
+                  icon="terp-partner" 
+                  sequence="9"/>
+
+        <!--<menuitem name="Membership" id="menu_membership" sequence="0" parent="base.menu_association"/>
+                  groups="base.group_partner_manager"/>-->
+    </data>
+</openerp>

@@ -1,0 +1,223 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* crm_partner_categorization
+# <> <>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 6.0.2\n"
+"Report-Msgid-Bugs-To: support@openerp.com\n"
+"POT-Creation-Date: 2011-07-22 07:16+0000\n"
+"PO-Revision-Date: 2011-07-22 09:25+0200\n"
+"Last-Translator: <> <>\n"
+"Language-Team:  <>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: crm_partner_categorization
+#: view:res.partner:0
+msgid "Partners"
+msgstr "Partner"
+
+#. module: crm_partner_categorization
+#: field:crm.partner.importance,invoiced_less_than:0
+msgid "Invoice less than"
+msgstr "Fatturato < di"
+
+#. module: crm_partner_categorization
+#: view:res.partner:0
+msgid "Interesting"
+msgstr "Interessanti"
+
+#. module: crm_partner_categorization
+#: view:crm.partner.importance:0 field:crm.partner.importance,note:0
+msgid "Note"
+msgstr "Note"
+
+#. module: crm_partner_categorization
+#: view:res.partner:0
+msgid "Group By..."
+msgstr "Raggruppa per..."
+
+#. module: crm_partner_categorization
+#: view:crm.partner.importance:0
+msgid "CRM contact importance"
+msgstr "CRM importanza contatto"
+
+#. module: crm_partner_categorization
+#: help:crm.partner.importance,sequence:0
+msgid "Order of importance level"
+msgstr "Livello di importanza"
+
+#. module: crm_partner_categorization
+#: view:crm.partner.importance:0
+msgid "CRM partner importance"
+msgstr "CRM importanza partner"
+
+#. module: crm_partner_categorization
+#: field:res.partner,partner_color:0
+msgid "Color classification"
+msgstr "Classificazione per colori"
+
+#. module: crm_partner_categorization
+#: help:crm.partner.importance,name:0
+msgid "ex.: **** or xxxx"
+msgstr "es.: **** or xxxx"
+
+#. module: crm_partner_categorization
+#: view:res.partner:0
+msgid "Customers"
+msgstr "Clienti"
+
+#. module: crm_partner_categorization
+#: view:res.partner:0
+msgid "ID mexal c."
+msgstr "ID mexal c."
+
+#. module: crm_partner_categorization
+#: view:res.partner:0 field:res.partner,partner_importance_id:0
+msgid "Importance"
+msgstr "Importanza"
+
+#. module: crm_partner_categorization
+#: view:res.partner:0
+msgid "My Partners"
+msgstr "Miei Partners"
+
+#. module: crm_partner_categorization
+#: view:crm.partner.importance:0
+msgid "CRM partner importance search"
+msgstr "CRM ricerca importanza partner"
+
+#. module: crm_partner_categorization
+#: selection:res.partner,partner_color:0
+msgid "Red"
+msgstr "Rosso"
+
+#. module: crm_partner_categorization
+#: view:res.partner:0
+msgid "Mexal"
+msgstr "Mexal"
+
+#. module: crm_partner_categorization
+#: model:ir.actions.act_window,help:crm_partner_categorization.action_partner_color_form
+msgid ""
+"A customer is an entity you do business with, like a company or an "
+"organization. A customer can have several contacts or addresses which are "
+"the people working for this company. You can use the history tab, to follow "
+"all transactions related to a customer: sales order, emails, opportunities, "
+"claims, etc. If you use the email gateway, the Outlook or the Thunderbird "
+"plugin, don't forget to register emails to each contact so that the gateway "
+"will automatically attach incoming emails to the right partner."
+msgstr ""
+"Un cliente è un'entità con cui si fanno affari, come un'azienda o "
+"un'organizzazione. Un cliente può avere diversi contatti o indirizzi, i "
+"quali sono le persone che lavorano per questa azienda. Si può usare il tab "
+"storico per seguire tutte le transazioni legate ad un cliente: ordini di "
+"vendita, email, opportunità, reclami, ecc. Se si usa il modulo server email, "
+"il plugin per Outlook o Thunderbird, non dimenticare di registrare le email "
+"di ogni contatto di modo che il server possa allegare automaticamente le "
+"email in entrata al partner corretto."
+
+#. module: crm_partner_categorization
+#: model:ir.actions.act_window,name:crm_partner_categorization.action_partner_color_form
+#: model:ir.ui.menu,name:crm_partner_categorization.menu_partner_color_form
+msgid "Customers analisys"
+msgstr "Analisi clienti"
+
+#. module: crm_partner_categorization
+#: model:ir.actions.act_window,help:crm_partner_categorization.action_base_config_categorization_partner_importance
+msgid "List of partner importance"
+msgstr "Lista importanza partner"
+
+#. module: crm_partner_categorization
+#: view:res.partner:0
+msgid "Suppliers"
+msgstr "Fornitori"
+
+#. module: crm_partner_categorization
+#: model:ir.ui.menu,name:crm_partner_categorization.menu_base_config_categorization
+msgid "CRM Categorization"
+msgstr "Categorizzazione CRM"
+
+#. module: crm_partner_categorization
+#: view:crm.partner.importance:0
+msgid "Descrizione"
+msgstr "Descrizione"
+
+#. module: crm_partner_categorization
+#: field:res.partner,last_activity:0
+msgid "Last activity"
+msgstr "Ultima attività"
+
+#. module: crm_partner_categorization
+#: field:crm.partner.importance,invoiced_over_than:0
+msgid "Invoice over than"
+msgstr "Fatturato > di"
+
+#. module: crm_partner_categorization
+#: selection:res.partner,partner_color:0
+msgid "Green"
+msgstr "Verde"
+
+#. module: crm_partner_categorization
+#: view:crm.partner.importance:0
+msgid "Simbolo"
+msgstr "Simbolo"
+
+#. module: crm_partner_categorization
+#: help:crm.partner.importance,note:0
+msgid "Some information to this level behaviours"
+msgstr "Alcune informazioni sulla caratteristica del livello"
+
+#. module: crm_partner_categorization
+#: field:crm.partner.importance,symbol_description:0
+msgid "Symbol description"
+msgstr "Descrizione simbolo"
+
+#. module: crm_partner_categorization
+#: view:res.partner:0
+msgid "Search Partner highlighted"
+msgstr "Ricerca partner evidenziati"
+
+#. module: crm_partner_categorization
+#: view:res.partner:0
+msgid "Color"
+msgstr "Colore"
+
+#. module: crm_partner_categorization
+#: field:crm.partner.importance,sequence:0
+msgid "Sequence"
+msgstr "Sequenza"
+
+#. module: crm_partner_categorization
+#: selection:res.partner,partner_color:0
+msgid "Yellow"
+msgstr "Giallo"
+
+#. module: crm_partner_categorization
+#: model:ir.model,name:crm_partner_categorization.model_crm_partner_importance
+msgid "crm.partner.importance"
+msgstr "CRM importanza partner"
+
+#. module: crm_partner_categorization
+#: model:ir.model,name:crm_partner_categorization.model_res_partner
+msgid "Partner"
+msgstr "Partner"
+
+#. module: crm_partner_categorization
+#: field:crm.partner.importance,name:0
+msgid "Name"
+msgstr "Nome"
+
+#. module: crm_partner_categorization
+#: view:res.partner:0
+msgid "Salesman"
+msgstr "Venditore"
+
+#. module: crm_partner_categorization
+#: model:ir.actions.act_window,name:crm_partner_categorization.action_base_config_categorization_partner_importance
+#: model:ir.ui.menu,name:crm_partner_categorization.menu_base_config_categorization_partner_importance
+msgid "CRM Partner importance"
+msgstr "CRM: importanza Partner"

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    <!-- Post Idea for vote Form View  -->
+
+      <record id="view_wizard_browse_teeth" model="ir.ui.view">
+        <field name="name">wizard.browse.teeth.form</field>
+        <field name="model">wizard.browse.teeth</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Browse teeth">
+                <button  icon="gtk-ok" name="do_browse_teeth" string="Browse" type="object"/>
+           </form>
+        </field>
+    </record>
+
+    <record id="action_wizard_browse_teeth" model="ir.actions.act_window">
+        <field name="name">wizard browse teeth</field>
+        <field name="res_model">wizard.browse.teeth</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+       <field name="view_id" ref="view_wizard_browse_teeth"/>
+       <field name="target">new</field>
+    </record>  
+    </data>
+</openerp>

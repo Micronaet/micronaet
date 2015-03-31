@@ -1,0 +1,43 @@
+# -*- encoding: utf-8 -*-
+##############################################################################
+#
+# Copyright (c) 2004-2006 TINY SPRL. (http://axelor.com) All Rights Reserved.
+#
+# WARNING: This program as such is intended to be used by professional
+# programmers who take the whole responsability of assessing all potential
+# consequences resulting from its eventual inadequacies and bugs
+# End users who are looking for a ready-to-use solution with commercial
+# garantees and support are strongly adviced to contract a Free Software
+# Service Company
+#
+# This program is Free Software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#
+##############################################################################
+
+from osv import osv, fields
+
+class res_partner_address_add_fields(osv.osv):
+    # Add fields on object: res.partner
+    _name = 'res.partner.address'
+    _inherit = 'res.partner.address'
+
+    _columns = {
+        # Super partes:  
+        'import' : fields.char('ID Importazione', size=16, required=False),
+        'domain' : fields.char('Sigla Azienda', size=4, required=False), 
+        'prev_id': fields.integer('Import linked ID'),
+        'office_id': fields.related('partner_id','office_id', type='many2one', relation='base.laser.office', string='Uff. di apparten. principale'),        
+    }
+res_partner_address_add_fields()

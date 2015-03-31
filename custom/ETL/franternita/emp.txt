@@ -1,0 +1,54 @@
+***** CAMPI ******************************************
+address_id code coach_id resource_id photo
+company_id sinid manager id
+identification_id partner_id children
+time_efficiency user_id job_id work_phone
+country_id journal_id medic_exam bank_account_id
+parent_id state category_ids vehicle
+department_id mobile_phone vehicle_distance
+child_ids birthday active calendar_id
+marital work_email contract_id work_location
+name gender ssnid address_home_id passport_id
+product_id contract_ids place_of_birth notes resource_type
+******************************************************
+{'address_id': [1, 'OpenERP S.A., Belgium Gerompont Chaussee de Namur 40'], 'code': False, 'coach_id': False, 'resource_id': [1, 'Administrator'], 'photo': '',
+ 'company_id': [1, 'OpenERP S.A.'], 'sinid': False, 'manager': False, 'id': 1, 'identification_id': False, 'partner_id': False, 'children': 0, 'time_efficiency': 1.0,
+ 'user_id': [1, 'Administrator'], 'job_id': False, 'work_phone': False, 'country_id': False, 'journal_id': [5, 'Timesheet Journal'], 'medic_exam': False,
+ 'bank_account_id': False, 'parent_id': False, 'state': 'absent', 'category_ids': [], 'vehicle': False, 'department_id': False, 'mobile_phone': False, 'vehicle_distance': 0,
+ 'child_ids': [], 'birthday': False, 'active': True, 'calendar_id': False, 'marital': False, 'work_email': False, 'contract_id': False, 'work_location': False, 'name': 'Administrator',
+ 'gender': False, 'ssnid': False, 'address_home_id': False, 'passport_id': False, 'product_id': [45, 'Service on Timesheet'], 'contract_ids': [], 'place_of_birth': False, 'notes': False,
+ 'resource_type': 'user'}
+
+{'address_id': [1, 'OpenERP S.A., Belgium Gerompont Chaussee de Namur 40'], 'code': False, 'coach_id': False, 'resource_id': [2, 'Fabien Pinckaers'], 
+ 'photo': '', 'company_id': [1, 'OpenERP S.A.'], 'sinid': False, 'manager': False, 'id': 2, 'identification_id': False, 'partner_id': False, 'children': 0, 
+ 'time_efficiency': 1.0, 'user_id': [1, 'Administrator'], 'job_id': False, 'work_phone': False, 'country_id': False, 'journal_id': [5, 'Timesheet Journal'], 
+ 'medic_exam': False, 'bank_account_id': False, 'parent_id': False, 'state': 'absent', 'category_ids': [8, 3], 'vehicle': False, 'department_id': False,
+ 'mobile_phone': False, 'vehicle_distance': 0, 'child_ids': [11, 14, 16, 17], 'birthday': False, 'active': True, 'calendar_id': [1, '38 Hours/Week'],
+ 'marital': False, 'work_email': False, 'contract_id': False, 'work_location': False, 'name': 'Fabien Pinckaers', 'gender': False, 'ssnid': False,
+ 'address_home_id': False, 'passport_id': False, 'product_id': [45, 'Service on Timesheet'], 'contract_ids': [], 'place_of_birth': False, 'notes': False,
+ 'resource_type': 'user'}
+
+{'address_id': [1, 'OpenERP S.A., Belgium Gerompont Chaussee de Namur 40'], 'code': False, 'coach_id': False, 'resource_id': [3, 'Quentin Paolino'], 'photo': '',
+ 'company_id': [1, 'OpenERP S.A.'], 'sinid': False, 'manager': False, 'id': 3, 'identification_id': False, 'partner_id': False, 'children': 0, 'time_efficiency': 1.0,
+ 'user_id': [3, 'Demo User'], 'job_id': False, 'work_phone': False, 'country_id': False, 'journal_id': False, 'medic_exam': False, 'bank_account_id': False,
+ 'parent_id': [4, 'Antoine Philippe'], 'state': 'absent', 'category_ids': [9, 5], 'vehicle': False, 'department_id': [3, 'Management / Technical department'],
+ 'mobile_phone': False, 'vehicle_distance': 0, 'child_ids': [], 'birthday': False, 'active': True, 'calendar_id': [1, '38 Hours/Week'], 'marital': False,
+ 'work_email': False, 'contract_id': False, 'work_location': False, 'name': 'Quentin Paolino', 'gender': False, 'ssnid': False, 'address_home_id': False, 'passport_id': False,
+ 'product_id': False, 'contract_ids': [], 'place_of_birth': False, 'notes': False, 'resource_type': 'user'}
+
+{'address_id': [1, 'OpenERP S.A., Belgium Gerompont Chaussee de Namur 40'], 'code': False, 'coach_id': False, 'resource_id': [4, 'Antoine Philippe'], 'photo': '',
+ 'company_id': [1, 'OpenERP S.A.'], 'sinid': False, 'manager': False, 'id': 4, 'identification_id': False, 'partner_id': False, 'children': 0, 'time_efficiency': 1.0,
+ 'user_id': [1, 'Administrator'], 'job_id': False, 'work_phone': False, 'country_id': False, 'journal_id': False, 'medic_exam': False, 'bank_account_id': False,
+ 'parent_id': False, 'state': 'absent', 'category_ids': [10], 'vehicle': False, 'department_id': [6, 'Management / Sales'], 'mobile_phone': False, 'vehicle_distance': 0,
+ 'child_ids': [3], 'birthday': False, 'active': True, 'calendar_id': [1, '38 Hours/Week'], 'marital': False, 'work_email': False, 'contract_id': False,
+ 'work_location': False, 'name': 'Antoine Philippe', 'gender': False, 'ssnid': False, 'address_home_id': False, 'passport_id': False, 'product_id': False,
+ 'contract_ids': [], 'place_of_birth': False, 'notes': False, 'resource_type': 'user'}
+
+{'address_id': [1, 'OpenERP S.A., Belgium Gerompont Chaussee de Namur 40'], 'code': False, 'coach_id': False, 'resource_id': [11, 'giamaria mazzoletti'],
+ 'photo': '', 'company_id': [1, 'OpenERP S.A.'], 'sinid': False, 'manager': False, 'id': 11, 'identification_id': False, 'partner_id': False, 'children': 0,
+ 'time_efficiency': 1.0, 'user_id': [6, 'gianmaria mazzoletti'], 'job_id': False, 'work_phone': '(+32).81.81.37.00', 'country_id': False, 'journal_id': [5, 'Timesheet Journal'],
+ 'medic_exam': False, 'bank_account_id': False, 'parent_id': [2, 'Fabien Pinckaers'], 'state': 'absent', 'category_ids': [], 'vehicle': False, 'department_id': [2, 'Management / Administration'],
+ 'mobile_phone': False, 'vehicle_distance': 0, 'child_ids': [], 'birthday': False, 'active': True, 'calendar_id': False, 'marital': False, 'work_email': False, 'contract_id': False,
+ 'work_location': False, 'name': 'giamaria mazzoletti', 'gender': 'male', 'ssnid': False, 'address_home_id': False, 'passport_id': False, 'product_id': [32, '[EMPL] Employee'],
+ 'contract_ids': [], 'place_of_birth': False, 'notes': False, 'resource_type': 'user'}
+

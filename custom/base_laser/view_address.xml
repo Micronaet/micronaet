@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!-- VIEWS & ACTIONS -->
+           <!-- INHERIT VIEWS --> 
+        <record model="ir.ui.view" id="view_partner_address_tree_inherit_extra_info_office">
+            <field name="name">Address Laser</field>
+            <field name="model">res.partner.address</field>
+            <field name="inherit_id" ref="base.view_partner_address_tree"/>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <field name="type" position="after">
+                      <field name="office_id" select="1" />
+                </field>             
+            </field>
+        </record>
+
+        <!-- INHERIT SEARCH VIEWS
+        <record model="ir.ui.view" id="view_res_partner_tree_filter_laser">
+                <field name="name">res.partner.select.laser</field>
+                <field name="model">res.partner</field>
+                <field name="inherit_id" ref="base.view_res_partner_filter"/>
+                <field name="type">search</field>
+                <field name="arch" type="xml">
+                       <field name="user_id" position="before">
+                              <field name="office_id" select="1" />  
+                       </field>
+                </field>
+        </record> --> 
+    </data>
+</openerp>

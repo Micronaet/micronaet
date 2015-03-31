@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+      <!-- INHERIT VIEWS -->
+        <!-- Modify res.partner.contact -->     
+        <record model="ir.ui.view" id="view_partner_contact_form_inherit_extra_info_page2">
+            <field name="name">Aggiunta campi contatto scheda Laser</field>
+            <field name="model">res.partner.contact</field>
+            <field name="inherit_id" ref="base_contact.view_partner_contact_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <data>
+                    <notebook position="inside">
+                        <page string="Storico Iscrizioni">
+                          <!--<separator string="Iscrizioni" />-->
+                          <field name="subscription_line_ids" colspan="4" nolabel="1" readonly="1">
+                              <tree>
+                                   <field name='date' string ='Data' />          
+                                   <field name='partner_id' />
+                                   <field name='name' />
+                                   <field name='subscription_state' 
+                                          groups="base_laser.group_laser_cfp,base_laser.group_laser_imprese,base_laser.group_laser_apprendistato"/>          
+                                   <field name='session_id' />          
+                                   <field name='session_date' />          
+                                   <field name='session_state' 
+                                          groups="base_laser.group_laser_cfp,base_laser.group_laser_imprese,base_laser.group_laser_apprendistato" />     
+                                   <field name='pip_number' />
+                                   <field name='annuality'
+                                          groups="base_laser.group_laser_cfp,base_laser.group_laser_imprese,base_laser.group_laser_apprendistato" />
+                                   <field name='pip_state_id' 
+                                          groups="base_laser.group_laser_cfp,base_laser.group_laser_imprese,base_laser.group_laser_apprendistato" />
+                                   <field name='hourly_cost' 
+                                          groups="base_laser.group_laser_cfp,base_laser.group_laser_imprese,base_laser.group_laser_apprendistato" />
+                                   <field name='present_hours' 
+                                          groups="base_laser.group_laser_cfp,base_laser.group_laser_imprese,base_laser.group_laser_apprendistato" />
+                                   <field name='absence_hours' 
+                                          groups="base_laser.group_laser_cfp,base_laser.group_laser_imprese,base_laser.group_laser_apprendistato" />
+                              </tree>
+                         </field>              
+                      </page> 
+                        <page string="Storico Giudizi">
+                          <field name="vote_ids" colspan="4" nolabel="1" readonly="1">
+                              <tree>
+                                   <field name='session_date' string="Data Edizione"/>          
+                                   <field name='name' />          
+                                   <field name='session_id' />          
+                                   <field name='base_course_id' />          
+                                   <field name='vote' />          
+                                   <field name='opinion' />     
+                                   <field name='note' />
+                              </tree>
+                         </field>              
+                      </page> 
+                   </notebook>                
+               </data>      
+            </field>
+        </record>
+        <!-- Modify res.partner --> 
+        <record model="ir.ui.view" id="view_partner_form_inherit_extra_info_page2">
+            <field name="name">Aggiunta campi partner scheda Laser</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <data>
+                    <notebook position="inside">
+                        <page string="Storico Iscrizioni">
+                          <field name="subscription_line_ids" colspan="4" nolabel="1" readonly="1">
+                              <tree>
+                                   <field name='date' string ='Data iscr.' />          
+                                   <field name='name' />          
+                                   <field name='subscription_state' />          
+                                   <field name='contact_id' />          
+                                   <field name='session_id' />          
+                                   <field name='session_date' />
+                                   <field name='session_state' />
+                              </tree>
+                         </field>              
+                      </page> 
+                   </notebook>                
+               </data>      
+            </field>
+        </record>
+
+        <!-- Modify training.training_subscription_form --> 
+        <record model="ir.ui.view" id="view_training_sl_form_add_fields">
+            <field name="name">Aggiunta campi SL PIP</field>
+            <field name="model">training.subscription</field>
+            <field name="inherit_id" ref="training.training_subscription_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="/form/notebook/page[@string='Subscription']/field[@name='subscription_line_ids']/form/separator[@string='Session']"  position="before">
+                    <separator string="Informazioni PIP" />
+                    <field name='pip_number' />
+                    <field name='annuality' />
+                    <field name='pip_state_id' />
+                    <field name='hourly_cost' />
+                </xpath>  
+                <xpath expr="/form/notebook/page[@string='Subscription']/field[@name='subscription_line_ids']/tree/field[@name='state']" position="before">
+                    <field name='pip_number' />
+                </xpath> 
+            </field>
+        </record>
+
+        <!-- Modify training.session --> 
+        <record model="ir.ui.view" id="view_training_session_form_add_fields">
+            <field name="name">Campi riepilogo sessione</field>
+            <field name="model">training.session</field>
+            <field name="inherit_id" ref="training.training_session_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="/form/notebook/page[@string='Groups']"  position="after">
+                    <page string="Valutazioni">
+                      <!--Bottone caricamento -->
+                      <button string="Carica iscritti x moduli" 
+                              name="action_load_contact_x_modules" type="object" icon="terp-partner" 
+                              confirm="Confermi caricamento esploso iscritti x moduli base (non verranno cancellate informazioni esistenti)?" />
+                              <!--context="{'unique_lecturer_id': unique_lecturer_id}" -->
+                      <field name="vote_ids" colspan="4" nolabel="1">                          
+                          <tree>
+                               <field name='name' string="Nome" />          
+                               <field name='base_course_id' />          
+                               <field name='contact_id' />          
+                               <field name='vote' />          
+                               <field name='opinion' />          
+                          </tree>
+                          <form>
+                               <separator string="Riferimento contatto / modulo" />
+                               <field name='name' string="Nome" readonly="1" />          
+                               <field name='base_course_id' readonly="1" />          
+                               <field name='contact_id' readonly="1" />          
+                               <field name='vote' />          
+                               <separator string="Giudizio finale per il modulo" />
+                               <field name='opinion' colspan="4" />          
+                               <field name='note' colspan="4" />          
+                          </form>
+                     </field>              
+                    </page> 
+                    <page string="Riepilogo">                        
+                        <separator string="Dati Edizione" />
+                         <field name='tot_hours_x_cost_contact' />
+                        <separator string="Valorizzazione partecipazioni" />
+                         <field name='tot_hours_presence' />
+                         <field name='tot_hours_absence' />
+                    </page>
+                </xpath>  
+            </field>
+        </record>
+
+        <!-- VIEWS: --> 
+           <!-- GESTIONE PIP (tree, form, action, menuitem) -->
+        <record model="ir.ui.view" id="training_subscription_line_pip_tree">
+            <field name="name">Righe iscrizione con PIP</field>
+            <field name="model">training.subscription.line</field>
+            <field name="type">tree</field>
+            <field name="priority" eval="60" />
+            <field name="arch" type="xml">
+                <tree string="Subscription Lines" colors="black:state == 'done';red:state=='draft';darkgreen:state=='confirmed'">
+                    <field name="name" />
+                    <field name="subscription_id" />
+                    <field name="offer_product_line_id" /> 
+                    <field name="offer_id" /> 
+                    <field name="session_id" /> 
+                    <field name="session_date" widget="date" />
+                    <field name="session_state" />
+                    <field name="partner_id" groups="base.group_user" /> 
+                    <field name="job_id" /> 
+                    <field name='pip_number' select="1" /> 
+                    <field name='pip_state_id' select="1" /> 
+                    <field name='hourly_cost' /> 
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="training_subscription_line_pip_form">
+            <field name="name">Righe iscrizione con PIP</field>
+            <field name="model">training.subscription.line</field>
+            <field name="type">form</field>
+            <field name="priority" eval="60" />
+            <field name="arch" type="xml">
+                <form string="Subscription Lines">
+                    <separator string="Dati iscrizione:" colspan="4" />
+                    <field name="subscription_id" readonly="1" />
+                    <field name="name" readonly="1" />
+                    <field name="partner_id" groups="base.group_user" readonly="1" /> 
+                    <field name="job_id" string="Iscritto" readonly="1" /> 
+                    <field name="state" />
+                    <separator string="Dati edizione:" colspan="4" />
+                    <field name="session_id" readonly="1" /> 
+                    <field name="session_date" widget="date" readonly="1" />
+                    <field name="session_state" readonly="1" />
+                    <newline />
+                    <field name="offer_product_line_id" readonly="1" /> 
+                    <field name="offer_id" readonly="1" /> 
+                    <separator string="Dati PIP:" colspan="4" />
+                    <field name='pip_number' /> 
+                    <field name='pip_state_id' /> 
+                    <field name='hourly_cost' /> 
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="training_subscription_line_pip_action">
+            <field name="name">Elenco iscritti con PIP</field>
+            <field name="res_model">training.subscription.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="training_subscription_line_pip_tree"/>
+            <field name="view_id" ref="training_subscription_line_pip_tree" />
+            <field name="context">{'form_view_ref': 'training_seance_plan.training_subscription_line_pip_form'}</field>
+            <field name="domain"></field>
+        </record>
+        <menuitem id="training_subscription_line_pip_action_mi"
+            parent="training.training_subscription_management_mi"
+            action="training_subscription_line_pip_action" />
+       <!-- -->
+
+        <!-- VIEWS: --> 
+           <!-- training.participation (tree, left-action): per inserire la visibilità delle lezioni fatti nel contatto -->
+        <record model="ir.ui.view" id="training_participation_contact_tree">
+            <field name="name">Elenco partecipazione lezioni</field>
+            <field name="model">training.participation</field>
+            <field name="type">tree</field>
+            <field name="priority" eval="60" />
+            <field name="arch" type="xml">
+                <tree string="Elenco lezioni">
+                    <field name="partner_id" /> 
+                    <field name="job_id" />
+                    <field name="duration" />
+                    <field name="session_id" /> 
+                    <field name="seance_id" />
+                    <field name="seance_date" widget="date" />
+                    <field name="present" />
+                </tree>
+            </field>
+        </record>
+        <act_window
+            src_model="res.partner.contact"
+            res_model="training.participation"
+            domain="[('contact_id', '=', active_id)]"
+            name="Lezioni frequentate"
+            view_mode="tree, form"
+            view_id="training_participation_contact_tree"
+            id="action_training_participation_contact_tree" />
+            <!--context="{'session_id': session_id,}"-->
+    </data>
+</openerp>

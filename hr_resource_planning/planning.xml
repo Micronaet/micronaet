@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+       <!--BLOCCO: hr.employee.planner:-->
+        <record id="hr_employee_planner_search" model="ir.ui.view">
+            <field name="name">hr.employee.planner.search</field>
+            <field name="model">hr.employee.planner</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Planner Search">
+                    <group>
+                        <!--<filter string="Customer" name="customer" icon="terp-personal" domain="[('customer','=','1')]" />
+                        <filter string="Supplier" name="supplier"  icon="terp-personal" domain="[('supplier','=','1')]" />
+                        <separator orientation="vertical"/>-->
+                        <!--<field name="employee_id" />-->
+                        <field name="resource_id" />
+                        <field name="department_id" />
+                        <field name="parent_id" />
+                        <field name="date" />                        
+                    </group>
+                    <newline />
+                    <group>                                            
+                        <filter icon="terp-go-month" string=" Month "
+                                name="month"
+                                domain="[('date','&gt;=', (datetime.date.today().strftime('%%Y-%%m-01'))), ('date','&lt;',(datetime.date.today()+datetime.timedelta(days=31)).strftime('%%Y-%%m-01'))]"
+                                help="Timesheet in current month" />
+                        <filter icon="terp-go-month"
+                            string=" Month-1 "
+                            domain="[('date','&gt;=', ((datetime.date.today()-datetime.timedelta(month=1)).strftime('%%Y-%%m-01'))), 
+                                     ('date','&lt;',(datetime.date.today())-datetime.timedelta(month=1)+datetime.timedelta(days=31)).strftime('%%Y-%%m-01'))]"
+                            help="Timesheet of last month"/>
+                    </group>
+                    <!--domain="[('date','&lt;=', (datetime.date (int(time.strftime('%%Y')), datetime.date.today().month, 1) - datetime.timedelta (days = 1)).strftime('%%Y-%%m-%%d')),('date','&gt;',(datetime.date (int(time.strftime('%%Y')), datetime.date.today().month-1, 1)).strftime('%%Y-%%m-%%d'))]"-->
+                    <newline/>
+                    <group expand="0" string="Group By...">
+                       <filter string="Department" icon="terp-personal" domain="[]" context="{'group_by' : 'department_id'}" />
+                   </group>
+                 </search>
+            </field>
+        </record>       
+       
+         <record model="ir.ui.view" id="hr_employee_planner_tree">
+            <field name="name">hr.employee.planner.tree</field>
+            <field name="model">hr.employee.planner</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Planning resources">
+                    <field name="resource_id" />
+                    <field name="department_id" readonly="1" />
+                    <field name="parent_id" readonly="1" />
+
+                    <field name="date" />
+                    <field name="duration" widget="float_time" />
+                    <field name="date_real" />
+                    <field name="duration_real" widget="float_time" />
+                </tree>
+            </field>
+         </record>
+         
+         <record model="ir.ui.view" id="hr_employee_planner_form">
+            <field name="name">hr.employee.planner.form</field>
+            <field name="model">hr.employee.planner</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Planning resources">
+                    <field name="employee_id" />
+                    <field name="department_id" readonly="1" />
+                    <field name="parent_id" />
+                    <newline />
+                    <field name="date" />
+                    <field name="duration" widget="float_time" />
+                </form>
+            </field>
+         </record>
+         
+         <record model="ir.ui.view" id="hr_employee_planner_calendar">
+            <field name="name">hr.employee.planner.calendar</field>
+            <field name="model">hr.employee.planner</field>
+            <field name="type">calendar</field>
+            <field name="arch" type="xml">
+                <calendar string="Planning resources" date_start="date" date_delay="duration" color="employee_id" mode="week">
+                    <field name="employee_id" />
+                </calendar>
+            </field>            
+         </record>
+         
+        <record id="hr_employee_planner_action" model="ir.actions.act_window">
+            <field name="name">Planning resources</field>
+            <field name="res_model">hr.employee.planner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,calendar,form</field>
+            <field name="search_view_id" ref="hr_employee_planner_search" />
+            <field name="context">{"search_default_parent_id": uid}</field>
+        </record> 
+
+        <menuitem action="hr_employee_planner_action" id="hr_employee_planner_action_menu" parent="hr_attendance.menu_hr_time_tracking" sequence="10"/>
+    </data>
+</openerp>

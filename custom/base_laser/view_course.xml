@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+      <!-- VIEWS & ACTIONS -->
+        <!-- INHERIT VIEWS --> 
+        <record model="ir.ui.view" id="view_training_course_inherit_differenziazione">
+            <field name="name">Estensione corsi per Laser</field>
+            <field name="model">training.course</field>
+            <field name="inherit_id" ref="training.training_course_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                   <xpath expr="/form/notebook/page[@string='General']/field[@name='long_name']" position="before">
+                        <field name="differenziazione" groups="base_laser.group_laser_doti" />
+                   </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_training_course_inherit_differenziazione_list">
+            <field name="name">Estensione lista corsi per Laser</field>
+            <field name="model">training.course</field>
+            <field name="inherit_id" ref="training.training_course_list"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                   <field name="reference_id" position="replace">
+                        <field name="differenziazione" groups="base_laser.group_laser_doti" />
+                   </field>
+                   <field name="reference_lang_id" position="replace">
+                         <!-- DELETED-->
+                   </field>
+                   <field name="reference_type" position="replace">
+                         <!-- DELETED-->
+                   </field>
+            </field>
+        </record>
+
+      <!-- ACTIONS -->
+        <record model="ir.actions.act_window" id="training_course_diff_course_action">
+            <field name="name">Differenz. Formazione</field>
+            <field name="res_model">training.course</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('differenziazione', '=', 'formazione')]</field>
+        </record>
+        <record model="ir.actions.act_window" id="training_course_diff_service_action">
+            <field name="name">Differenz. Servizio</field>
+            <field name="res_model">training.course</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('differenziazione', '=', 'servizio')]</field>
+        </record>
+
+      <!--MENU-->
+        <menuitem id="training_course_diff_course_menu_id" 
+                  parent="training.training_library_course_course_mi" 
+                  action="training_course_diff_course_action" 
+                  groups="base_laser.group_laser_doti"
+                  sequence="2" />
+        <menuitem id="training_course_diff_service_menu_id" 
+                  parent="training.training_library_course_course_mi" 
+                  action="training_course_diff_service_action" 
+                  groups="base_laser.group_laser_doti"
+                  sequence="3" />
+    </data>
+</openerp>

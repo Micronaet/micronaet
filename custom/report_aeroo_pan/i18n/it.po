@@ -1,0 +1,78 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* report_aeroo_pan
+# <> <>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 6.0.3\n"
+"Report-Msgid-Bugs-To: support@openerp.com\n"
+"POT-Creation-Date: 2012-05-17 08:11+0000\n"
+"PO-Revision-Date: 2012-05-17 10:08+0200\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: report_aeroo_pan
+#: field:sale.order,print_only_prices:0
+msgid "Offerta con soli prezzi"
+msgstr "Offerta con soli prezzi"
+
+#. module: report_aeroo_pan
+#: sql_constraint:sale.order:0
+msgid "Order Reference must be unique !"
+msgstr "Il riferimento ordine deve essere unico!"
+
+#. module: report_aeroo_pan
+#: model:ir.module.module,shortdesc:report_aeroo_pan.module_meta_information
+msgid "Aeroo Reports - Order"
+msgstr "Report - Offerta / Ordine"
+
+#. module: report_aeroo_pan
+#: model:ir.actions.report.xml,name:report_aeroo_pan.aeroo_order_pan_report_id
+msgid "Stampa ODT/PDF"
+msgstr "Stampa ODT/PDF"
+
+#. module: report_aeroo_pan
+#: model:ir.module.module,description:report_aeroo_pan.module_meta_information
+msgid "Report Order based on report_aeroo module"
+msgstr "Report ordine basato su aeroo"
+
+#. module: report_aeroo_pan
+#: help:sale.order,has_master_header:0
+msgid "Nei preventivi di sola comunicazione evita l'inserimento intestazione"
+msgstr "Nei preventivi di sola comunicazione evita l'inserimento intestazione"
+
+#. module: report_aeroo_pan
+#: help:sale.order.line,repeat_header_line:0
+msgid "Spuntare quando e' richiesta l'intestazione, tipo dopo una riga titolo."
+msgstr ""
+"Spuntare quando e' richiesta l'intestazione, tipo dopo una riga titolo."
+
+#. module: report_aeroo_pan
+#: field:sale.order.line,repeat_header_line:0
+msgid "Intest."
+msgstr "Intest."
+
+#. module: report_aeroo_pan
+#: field:sale.order,print_address:0
+msgid "Stampa indirizzi aggiuntivi"
+msgstr "Stampa indirizzi aggiuntivi"
+
+#. module: report_aeroo_pan
+#: field:sale.order,has_master_header:0
+msgid "Intestazione tabella principale"
+msgstr "Intestazione tabella principale"
+
+#. module: report_aeroo_pan
+#: model:ir.model,name:report_aeroo_pan.model_sale_order
+msgid "Sales Order"
+msgstr "Ordine di vendita"
+
+#. module: report_aeroo_pan
+#: model:ir.model,name:report_aeroo_pan.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Linea d'ordine di vendita"

@@ -1,0 +1,341 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* base_fiam_pricelist
+# <> <>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 6.0.3\n"
+"Report-Msgid-Bugs-To: support@openerp.com\n"
+"POT-Creation-Date: 2011-09-28 14:14+0000\n"
+"PO-Revision-Date: 2011-09-28 16:22+0200\n"
+"Last-Translator: <> <>\n"
+"Language-Team:  <>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: base_fiam_pricelist
+#: field:product.product,fob_cost_eur:0
+msgid "FOB cost (EUR)"
+msgstr "Costo FOB (EUR)"
+
+#. module: base_fiam_pricelist
+#: field:base.container.type,name:0
+msgid "Container"
+msgstr "Container"
+
+#. module: base_fiam_pricelist
+#: field:product.product,fob_pricelist:0
+msgid "Pricelist (EUR)"
+msgstr "Listino (EUR)"
+
+#. module: base_fiam_pricelist
+#: field:product.product,fob_cost_supplier_eur:0
+msgid "Cost from supplier (EUR)"
+msgstr "Costo da fornitore (EUR)"
+
+#. module: base_fiam_pricelist
+#: field:product.product.history.cost,product_id:0
+msgid "Product ref."
+msgstr "Rif. prodotto"
+
+#. module: base_fiam_pricelist
+#: view:product.product:0
+msgid "Container data"
+msgstr "Dati container"
+
+#. module: base_fiam_pricelist
+#: field:product.product,type_of_material:0
+msgid "Type of material or fabric"
+msgstr "Tipo di materiale o tessuto"
+
+#. module: base_fiam_pricelist
+#: help:product.product,length:0
+msgid "The max length of the product"
+msgstr "Massima lunghezza del prodotto"
+
+#. module: base_fiam_pricelist
+#: view:product.product:0
+msgid "Total cost:"
+msgstr "Costo Totale:"
+
+#. module: base_fiam_pricelist
+#: field:product.product,width:0
+msgid "Width"
+msgstr "Larghezza"
+
+#. module: base_fiam_pricelist
+#: help:product.product,width:0
+msgid "The max width of the product"
+msgstr "Massima larghezza del prodotto"
+
+#. module: base_fiam_pricelist
+#: field:product.product.history.cost,name:0
+msgid "Name of history"
+msgstr "Nome storico"
+
+#. module: base_fiam_pricelist
+#: view:product.product:0
+msgid "Transport:"
+msgstr "Trasporto:"
+
+#. module: base_fiam_pricelist
+#: model:ir.actions.act_window,name:base_fiam_pricelist.base_product_exchange_action
+#: model:ir.ui.menu,name:base_fiam_pricelist.base_product_exchange_action_menu
+msgid "List of exchange"
+msgstr "Lista cambi"
+
+#. module: base_fiam_pricelist
+#: field:product.product.history.cost,usd_exchange:0
+msgid "USD to EUR exchange"
+msgstr "Cambio USD/EUR"
+
+#. module: base_fiam_pricelist
+#: view:product.product:0
+msgid "Pricelist computation"
+msgstr "Calcolo listino"
+
+#. module: base_fiam_pricelist
+#: field:product.product,dazi_eur:0
+msgid "Dazi (EUR)"
+msgstr "Dazi (EUR)"
+
+#. module: base_fiam_pricelist
+#: field:product.product,dazi:0
+msgid "Dazi (USD)"
+msgstr "Dazi (USD)"
+
+#. module: base_fiam_pricelist
+#: model:ir.model,name:base_fiam_pricelist.model_product_product
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: base_fiam_pricelist
+#: field:product.product,history_cost_ids:0
+msgid "History cost"
+msgstr "Storico costi"
+
+#. module: base_fiam_pricelist
+#: model:ir.actions.act_window,help:base_fiam_pricelist.base_container_type_action
+msgid "Type of container, to compute transport cost for each product"
+msgstr ""
+"Tipo di containter, per calcolare il costo di trasporto per ogni prodotto"
+
+#. module: base_fiam_pricelist
+#: field:base.product.exchange,name:0
+msgid "Description"
+msgstr "Descrizione"
+
+#. module: base_fiam_pricelist
+#: field:product.product,fob_pricelist_compute_eur:0
+msgid "Pricelist compute (EUR)"
+msgstr "Listino calcolato (EUR)"
+
+#. module: base_fiam_pricelist
+#: view:base.product.exchange:0 field:base.product.exchange,exchange:0
+msgid "Exchange"
+msgstr "Cambio"
+
+#. module: base_fiam_pricelist
+#: field:product.packaging,transport_cost:0
+msgid "Transport cost unit (EUR)"
+msgstr "Costo trasporto unitario (EUR)"
+
+#. module: base_fiam_pricelist
+#: field:product.product,preview:0
+msgid "unknown"
+msgstr "Sconosciuto"
+
+#. module: base_fiam_pricelist
+#: field:product.product,fob_cost_total_eur:0
+msgid "FOB cost total (EUR)"
+msgstr "Costo FOB totale (EUR)"
+
+#. module: base_fiam_pricelist
+#: field:product.product.history.cost,date:0
+msgid "Date of storicization"
+msgstr "Data storicizzazione"
+
+#. module: base_fiam_pricelist
+#: model:ir.model,name:base_fiam_pricelist.model_base_product_exchange
+msgid "base.product.exchange"
+msgstr "base.product.exchange"
+
+#. module: base_fiam_pricelist
+#: help:product.product,height:0
+msgid "The max height of the product"
+msgstr "Massima altezza del prodotto"
+
+#. module: base_fiam_pricelist
+#: view:product.product:0
+msgid "Product images preview"
+msgstr "Anteprima immagine prodotto"
+
+#. module: base_fiam_pricelist
+#: view:product.product:0
+msgid "History:"
+msgstr "Storico:"
+
+#. module: base_fiam_pricelist
+#: field:product.product,transport_packaging:0
+msgid "Cost from packaging (EUR)"
+msgstr "Costo da imballaggio (EUR)"
+
+#. module: base_fiam_pricelist
+#: view:product.product:0
+msgid "Costs:"
+msgstr "Costi:"
+
+#. module: base_fiam_pricelist
+#: field:product.product.history.cost,fob_pricelist:0
+msgid "Pricelist EUR"
+msgstr "Listino EUR"
+
+#. module: base_fiam_pricelist
+#: view:product.product:0 field:product.product,description_web:0
+msgid "Web Description"
+msgstr "Descrizione web"
+
+#. module: base_fiam_pricelist
+#: field:product.product,fob_cost_supplier:0
+msgid "Cost from supplier"
+msgstr "Costo dal fornitore"
+
+#. module: base_fiam_pricelist
+#: field:product.packaging,q_x_container:0
+msgid "Q. per container"
+msgstr "Q. per container"
+
+#. module: base_fiam_pricelist
+#: help:product.product,fob_cost_total:0
+msgid "FOB cost + transport + dazi"
+msgstr "Costo FOB + trasporto + dazi"
+
+#. module: base_fiam_pricelist
+#: view:product.product:0
+msgid "Colour"
+msgstr "Colore"
+
+#. module: base_fiam_pricelist
+#: view:product.product:0
+msgid "Product dim."
+msgstr "Dim. prodotto"
+
+#. module: base_fiam_pricelist
+#: field:product.product,fob_cost_total:0
+msgid "FOB cost total (USD)"
+msgstr "Costo FOB totale (USD)"
+
+#. module: base_fiam_pricelist
+#: view:base.container.type:0
+#: model:ir.actions.act_window,name:base_fiam_pricelist.base_container_type_action
+#: model:ir.ui.menu,name:base_fiam_pricelist.base_container_type_action_menu
+#: field:product.packaging,container_id:0
+msgid "Container type"
+msgstr "Tipo container"
+
+#. module: base_fiam_pricelist
+#: field:product.product,length:0
+msgid "Length"
+msgstr "Lunghezza"
+
+#. module: base_fiam_pricelist
+#: model:ir.actions.act_window,name:base_fiam_pricelist.act_product_images_preview
+msgid "Preview images"
+msgstr "Anteprima immagine"
+
+#. module: base_fiam_pricelist
+#: field:product.product,margin:0
+msgid "% margin"
+msgstr "% margine"
+
+#. module: base_fiam_pricelist
+#: field:product.product.history.cost,fob_cost:0
+msgid "FOB history cost USD"
+msgstr "Storico costo FOB USD"
+
+#. module: base_fiam_pricelist
+#: view:product.product:0
+msgid "History"
+msgstr "Storico"
+
+#. module: base_fiam_pricelist
+#: field:product.product,colour:0
+msgid "colour"
+msgstr "colore"
+
+#. module: base_fiam_pricelist
+#: field:base.container.type,date:0 field:base.product.exchange,date:0
+msgid "Date of quotation"
+msgstr "Data offerta"
+
+#. module: base_fiam_pricelist
+#: model:ir.model,name:base_fiam_pricelist.model_product_product_history_cost
+msgid "product.product.history.cost"
+msgstr "Storico costi"
+
+#. module: base_fiam_pricelist
+#: view:product.product:0
+msgid "Pricelist:"
+msgstr "Listino:"
+
+#. module: base_fiam_pricelist
+#: field:product.product,fob_pricelist_compute:0
+msgid "Pricelist compute (USD)"
+msgstr "Listino calcolato (USD)"
+
+#. module: base_fiam_pricelist
+#: model:ir.actions.act_window,help:base_fiam_pricelist.base_product_exchange_action
+msgid "List of exchange used for convert price in product"
+msgstr "Lista dei cambi utilizzati per convertire i prezzi nel prodotto"
+
+#. module: base_fiam_pricelist
+#: field:product.product,height:0
+msgid "Height"
+msgstr "Altezza"
+
+#. module: base_fiam_pricelist
+#: model:ir.model,name:base_fiam_pricelist.model_product_packaging
+msgid "Packaging"
+msgstr "Confezionamento"
+
+#. module: base_fiam_pricelist
+#: constraint:product.packaging:0 constraint:product.product:0
+msgid "Error: Invalid ean code"
+msgstr "Errore: codice EAN non valido"
+
+#. module: base_fiam_pricelist
+#: model:ir.model,name:base_fiam_pricelist.model_pricelist_partnerinfo
+msgid "pricelist.partnerinfo"
+msgstr "pricelist.partnerinfo"
+
+#. module: base_fiam_pricelist
+#: field:product.product,fabric:0
+msgid "Fabric - Glass"
+msgstr "Tessuto - Vetro"
+
+#. module: base_fiam_pricelist
+#: field:pricelist.partnerinfo,price_usd:0
+msgid "Unit Price USD"
+msgstr "Prezzo unitario USD"
+
+#. module: base_fiam_pricelist
+#: field:base.container.type,cost:0
+msgid "Loan cost (EUR)"
+msgstr "Costo noleggio (EUR)"
+
+#. module: base_fiam_pricelist
+#: view:product.product:0
+msgid "Preview (Only when saved)"
+msgstr "Anteprima (solo quando salvato)"
+
+#. module: base_fiam_pricelist
+#: model:ir.model,name:base_fiam_pricelist.model_base_container_type
+msgid "base.container.type"
+msgstr "base.container.type"
+
+#. module: base_fiam_pricelist
+#: field:product.product,fob_cost:0
+msgid "FOB cost (USD)"
+msgstr "Costo FOB (USD)"

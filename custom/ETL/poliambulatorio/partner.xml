@@ -1,0 +1,12 @@
+<tree string="Partners" colors="violet:deceased;red:not privacy_signed;">
+                    <field name="name"/>
+                    <field name="deceased" invisible="1"/>
+                 <field name="privacy_signed" invisible="1"/>
+           <field name="ref"/>
+                    <field name="phone"/>
+                    <field name="email"/>
+                    <field name="city"/>
+                    <field name="country"/>
+                    <field name="section_id" completion="1" widget="selection"/>
+                    <field name="user_id"/>
+                </tree>

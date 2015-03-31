@@ -1,0 +1,835 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+<!-- dentist.operation -->
+        <record id="view_dentist_operation_filter" model="ir.ui.view">
+            <field name="name">dentist.operation.select</field>
+            <field name="model">dentist.operation</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Search operation">
+                    <!--<filter icon="terp-personal" string="My operation" domain="[('user_id','=',uid)]"/>
+                    <newline/>-->
+                    <separator orientation="vertical"/>
+                        <field name="partner_id" select="1"/>
+                        <field name="tooth" select="1"/>
+                        <field name="state" select="1"/>
+                    <newline/>
+                    <!--<group expand="0" string="Group By..." colspan="11" col="11" groups="base.group_extended">
+                        <filter string="Doctor" icon="terp-personal" domain="[]" context="{'group_by':'doctor_id'}"/>
+                        <filter string="Date" icon="terp-go-month" domain="[]" context="{'group_by':'appointment_date'}"/>
+                    </group>-->
+                </search>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="dentist_operation_form_view">
+            <field name="name">Operation</field>
+            <field name="model">dentist.operation</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+               <form>
+                  <group colspan="4" col="6">
+                   <field name="partner_id" invisible="1"/>
+                   <field name="name" />
+                   <field name="tooth" />
+                   <field name="product_id" />
+                   <field name="date" />
+                   <field name="date_end" />
+                   <field name="urgency" />
+                   
+                  </group> 
+                  <separator string="Note" colspan="4"/>
+                   <field name="note" nolabel="1" colspan="4"/>
+
+                  <group colspan="4" col="10">
+                    <field name="state" />
+                       <button name="operation_done" string="Done" states="draft" icon="gtk-go-forward"/>
+                       <button name="operation_irrilevant" string="Irrilevant" states="done" icon="gtk-go-forward"/>
+                       <button name="operation_cancel" string="Cancel" states="draft" icon="gtk-cancel"/>
+                       <button name="operation_draft" string="To do" states="cancel" icon="gtk-go-forward"/>                       
+                   </group>
+               </form>
+            </field>
+        </record>    
+            
+        <record model="ir.ui.view" id="dentist_operation_tree_view">
+            <field name="name">Operation</field>
+            <field name="model">dentist.operation</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+               <tree colors="blue:not(order_id)">
+                   <field name="name" />
+                   <field name="tooth" />
+                   <field name="product_id" />
+                   <field name="date" />
+                   <field name="date_end" />
+                   <field name="urgency" />
+                   <field name="note" />
+                   <field name="order_id" />
+                   
+                   <field name="state" />
+                       <button name="operation_done" string="Done" states="draft" icon="gtk-go-forward"/>
+                       <button name="operation_irrilevant" string="Irrilevant" states="done" icon="gtk-go-forward"/>
+                       <button name="operation_cancel" string="Cancel" states="draft" icon="gtk-cancel"/>
+                       <button name="operation_draft" string="To do" states="cancel" icon="gtk-go-forward"/>                       
+               </tree>
+            </field>
+        </record>    
+       <!--TODO action? menuitem?-->
+
+<!-- dentist.appointment -->
+        <record id="view_dentist_appointment_filter" model="ir.ui.view">
+            <field name="name">dentist.appointment.select</field>
+            <field name="model">dentist.appointment</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Search Appointments">
+                    <filter icon="terp-personal" string="Oggi" domain="[('appointment_date','&gt;=',time.strftime('%%Y-%%m-%%d 00:00:00')),('appointment_date','&lt;=',time.strftime('%%Y-%%m-%%d 23:59:59'))]" name="today"/>
+                    <separator orientation="vertical"/>                    
+                    <filter icon="terp-personal" string="My appointment" domain="['|',('doctor_id','=',uid),('assistant_id','=',uid)]" name="my"/>
+                    <separator orientation="vertical"/>
+                    <filter icon="terp-personal" string="Con preparazione" domain="[('preparation','!=',False)]" name="preparation"/>
+                    <separator orientation="vertical"/>
+                    <filter icon="terp-personal" string="Reminder" domain="[('state','=','reminder')]" name="reminder"/>
+                    <filter icon="terp-personal" string="Confirmed" domain="[('state','=','confirmed')]" name="confirmed"/>
+                    <filter icon="terp-personal" string="[Waiting]" domain="[('state','=','arrived')]" name="arrived"/>
+                    <filter icon="terp-personal" string="Enter" domain="[('state','=','enter')]" name="enter"/>
+                    <filter icon="terp-personal" string="Close" domain="[('state','=','close')]" name="close"/>
+                    <separator orientation="vertical"/>
+                    <filter icon="terp-personal" string="Medical note to inserto " domain="[('medical_note_required', '=', True), ('medical_note_completed','=', False)]"/>
+                    <newline/>
+                    <separator orientation="vertical"/>
+                        <field name="patient_id"/>
+                        <field name="doctor_id"/>
+                        <field name="assistant_id"/>
+                        <field name="appointment_date"/>
+                    <newline/>
+                    <group expand="0" string="Group By..." colspan="11" col="11" groups="base.group_extended">
+                        <filter string="Doctor" icon="terp-personal" domain="[]" context="{'group_by':'doctor_id'}"/>
+                        <filter string="Date" icon="terp-go-month" domain="[]" context="{'group_by':'appointment_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="dentist_appointment_view">
+            <field name="name">Appointment</field>
+            <field name="model">dentist.appointment</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Appointment">                   
+                   <group colspan="4" col="6">
+                       <field name="patient_id" required="1" />
+                       <field name="appointment_date" required="1" />
+                       <field name="duration" widget="float_time"  required="1" /> 
+                       <field name="room_id" />                         
+                       <field name="doctor_id" /> 
+                       <field name="assistant_id" /> 
+                       <field name="name" />
+                       <field name="preparation" />
+                       <field name="urgency" />
+                   </group>                   
+                   <notebook colspan="4">
+                     <page string="Intervent">                      
+                      <separator string="Interventi da effettuare" colspan="4"/>
+                      <field name="operation_ids" nolabel="1" colspan="4" domain="[('state','=','draft'),('partner_id','=',patient_id)]" context="{'default_partner_id':patient_id,'default_date':appointment_date,'default_date_end':appointment_date}">
+                        <tree string="Operazioni (blue=senza preventivo)" colors="blue:not(order_id)">
+                           <field name="name" />
+                           <field name="tooth" />
+                           <field name="date" />
+                           <field name="date_end" />
+                           <field name="product_id" />
+                           <field name="urgency" />
+                           <field name="note" />
+                           <field name="partner_id" invisible="1" />
+                           <field name="order_id" />
+                           <field name="state" />
+                           <button name="operation_done" string="Done" states="draft" icon="gtk-go-forward"/>
+                           <button name="operation_irrilevant" string="Irrilevant" states="done" icon="gtk-go-forward"/>
+                           <button name="operation_cancel" string="Cancel" states="draft" icon="gtk-cancel"/>
+                           <button name="operation_draft" string="To do" states="cancel" icon="gtk-go-forward"/>                       
+                        </tree>
+                       </field>                   
+                     </page>                     
+                     <page string="Note">
+                        <field name="medical_note_required" />
+                        <field name="medical_note_completed" attrs="{'invisible':[('medical_note_required','!=',True)]}"/>
+                        <group colspan="4" attrs="{'invisible':[('medical_note_required','!=',True)]}">
+                           <separator colspan="4" string="Medical note"/>
+                           <field colspan="4" nolabel="1" name="medical_note" />
+                        </group>   
+                        <separator colspan="4" string="Information"/>
+                        <field colspan="4" nolabel="1" name="comments" />
+                     </page>                     
+                     <page string="Time info">
+                         <separator string="Appointment info:" colspan="4" />
+                         <field name="datetime_reminder" />
+                         <field name="reminder_user_id" />                         
+                         <field name="datetime_confirmed" />
+                         <field name="confirmed_user_id" />                            
+                         <separator string="Service time:" colspan="4" />
+                         <group colspan="4" col="6">
+                            <field name="datetime_arrived" readonly="1"/>
+                            <field name="arrived_user_id" />
+                            <field name="wait_time" attrs="{'invisible':[('state','!=','arrived')]}" />
+                            <field name="datetime_enter" readonly="1" />
+                            <field name="enter_user_id" />
+                            <field name="enter_time" />                            
+                            <field name="datetime_close" readonly="1" />
+                            <field name="close_user_id" />                            
+                            <field name="close_time" />                            
+                            <field name="datetime_cancel" readonly="1" />                      
+                            <field name="cancel_user_id" />
+                         </group>                            
+                     </page>
+                   </notebook>
+                   <group colspan="4" col="12">
+                        <field name="state"/><newline />
+                        <!--Normal states-->
+                        <button name="appointment_confirmed" string="Confirmed" states="reminder" icon="gtk-go-forward"/>
+                        <button name="appointment_reminder_cancel" string="Cancel" states="reminder" icon="gtk-cancel"/>
+
+                        <button name="appointment_confirmed_back" string="Return reminder" states="confirmed" icon="gtk-go-back"/>
+                        <button name="appointment_arrived" string="Arrived" states="confirmed" icon="gtk-go-forward"/>
+                        <button name="appointment_confirmed_cancel" string="Cancel" states="confirmed" icon="gtk-cancel"/>
+
+                        <button name="appointment_arrived_back" string="Return confirmed" states="arrived" icon="gtk-go-back"/>
+                        <button name="appointment_enter" string="Enter" states="arrived" icon="gtk-go-forward"/>
+                        <button name="appointment_arrived_cancel" string="Cancel" states="arrived" icon="gtk-cancel"/>
+
+                        <button name="appointment_enter_back" string="Return arrived" states="enter" icon="gtk-go-back"/>
+                        <button name="appointment_close" string="Close" states="enter" icon="gtk-go-forward"/>
+
+                        <button name="%(dentist.dentist_action_form_appointment_wizard)d" string="Reschedule" attrs="{'invisible':[('state','!=','close')]}" icon="gtk-jump-to" type="action" />
+                       
+                        <button name="appointment_enter_cancel" string="Cancel" states="enter" icon="gtk-cancel"/>
+
+                        <button name="appointment_cancel_confirmed" string="Return confirmed" states="cancel" icon="gtk-jump-to"/>
+                   </group>                
+              </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="dentist_appointment_tree">
+            <field name="name">Appointments</field>
+            <field name="model">dentist.appointment</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string='Appointment Information' colors="grey:state in ('reminder','cancel');blue:state in ('confirmed') and preparation;black:state in ('confirmed');red:state in ('arrived');orange:state in ('enter');green:state in ('close');">
+                    <field name="name"/>
+                    <field name="appointment_date"/>
+                    <field name="patient_id"></field>
+                    <field name="doctor_id"></field>
+                    <field name="assistant_id" />
+                    <field name="preparation" />
+                    <field name="delay_time" />                            
+                    <field name="wait_time" />
+                    <field name="urgency" />
+                    <field name="comments" />
+                    
+                    <!--WORKFLOW fields:-->
+                    <field name="state" />
+                        <button name="appointment_confirmed" string="Confirmed" states="reminder" icon="gtk-go-forward"/>
+                        <button name="appointment_reminder_cancel" string="Cancel" states="reminder" icon="gtk-cancel"/>
+
+                        <button name="appointment_confirmed_back" string="Return reminder" states="confirmed" icon="gtk-go-back"/>
+                        <button name="appointment_arrived" string="Arrived" states="confirmed" icon="gtk-go-forward"/>
+                        <button name="appointment_confirmed_cancel" string="Cancel" states="confirmed" icon="gtk-cancel"/>
+
+                        <button name="appointment_arrived_back" string="Return confirmed" states="arrived" icon="gtk-go-back"/>
+                        <button name="appointment_enter" string="Enter" states="arrived" icon="gtk-go-forward"/>
+                        <button name="appointment_arrived_cancel" string="Cancel" states="arrived" icon="gtk-cancel"/>
+
+                        <button name="appointment_enter_back" string="Return arrived" states="enter" icon="gtk-go-back"/>
+                        <button name="appointment_close" string="Close" states="enter" icon="gtk-go-forward"/>
+
+                        <button name="appointment_enter_cancel" string="Cancel" states="enter" icon="gtk-cancel"/>
+
+                        <button name="appointment_cancel_confirmed" string="Return confirmed" states="cancel" icon="gtk-jump-to"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- Viste a calendario per appuntamenti:-->
+        <record id="view_dentist_appointment_status" model="ir.ui.view">
+            <field name="name">Dentist appointment for status</field>
+            <field name="model">dentist.appointment</field>
+            <field name="type">calendar</field>
+            <field name="arch" type="xml">
+                <calendar string="Appointments for doctor" color="state" date_start="appointment_date" date_delay="duration" mode="week">
+                    <field name="calendar_name"/>
+                    <field name="patient_id"/>
+                    <field name="doctor_id"/>
+                    <field name="assistant_id"/>
+                </calendar>
+            </field>
+        </record>
+        <record id="view_dentist_appointment_doctor" model="ir.ui.view">
+            <field name="name">Dentist appointment for doctor</field>
+            <field name="model">dentist.appointment</field>
+            <field name="type">calendar</field>
+            <field name="priority" eval="20" />            
+            <field name="arch" type="xml">
+                <calendar string="Appointments for doctor" color="doctor_id" date_start="appointment_date" date_delay="duration" mode="week">
+                    <field name="calendar_name"/>
+                    <field name="patient_id"/>
+                    <field name="doctor_id"/>
+                    <field name="assistant_id"/>
+                </calendar>
+            </field>
+        </record>
+        <record id="view_dentist_appointment_room" model="ir.ui.view">
+            <field name="name">Dentist appointment for room</field>
+            <field name="model">dentist.appointment</field>
+            <field name="type">calendar</field>
+            <field name="priority" eval="20" />            
+            <field name="arch" type="xml">
+                <calendar string="Appointments for room" color="room_id" date_start="appointment_date" date_delay="duration" mode="week">
+                    <field name="calendar_name"/>
+                    <field name="patient_id"/>
+                    <field name="doctor_id"/>
+                    <field name="assistant_id"/>
+                </calendar>
+            </field>
+        </record>
+
+        <!--Varie viste calendario-->
+        <!-- DEL GIORNO: -->
+        <record model="ir.actions.act_window" id="dentist_action_form_appointment_today"><!-- GESTIONE ARRIVI DEL GIORNO -->
+            <field name="name">Today appointments (reception)</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dentist.appointment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="domain">[('appointment_date','&gt;=',time.strftime('%Y-%m-%d 00:00:00')),('appointment_date','&lt;=',time.strftime('%Y-%m-%d 23:59:59')),('state','not in',('close','cancel','reminder'))]</field>
+            <field name="auto_refresh" eval="60" />
+        </record>
+
+        <record model="ir.actions.act_window" id="dentist_action_form_appointment_today_doctor"><!-- GESTIONE ARRIVI DEL GIORNO PER DOTTORE -->
+            <field name="name">My today appointments (doctor)</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dentist.appointment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="domain">[('appointment_date','&gt;=',time.strftime('%Y-%m-%d 00:00:00')),('appointment_date','&lt;=',time.strftime('%Y-%m-%d 23:59:59')),('state','not in',('close','cancel','reminder'))]</field>
+            <field name="auto_refresh" eval="60" />
+        </record>
+
+        <record model="ir.actions.act_window" id="dentist_action_form_appointment_annotation_required"><!-- NOTE DA COMPLETARE -->
+            <field name="name">Appointment annotation required</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dentist.appointment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="domain">[('medical_note_required', '=', True), ('medical_note_completed','=', False)]</field>
+        </record>
+
+        <!-- COMPLETE: -->
+        <record model="ir.actions.act_window" id="dentist_action_form_appointment_status"><!--PER STATUS (default)-->
+            <field name="name">Appointments per state</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dentist.appointment</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('state','!=','reminder')]</field><!--TODO tenere?-->
+            <field name="view_mode">calendar,tree,form</field>
+        </record>
+        
+        <record model="ir.actions.act_window" id="dentist_action_form_appointment_reminder"><!--PER STATUS reminder (draft)-->
+            <field name="name">Reminders appointment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dentist.appointment</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('state','=','reminder')]</field>
+            <field name="view_mode">tree,form,calendar</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="dentist_action_form_appointment_doctor"><!--PER DOTTORE-->
+            <field name="name">Appointments per doctor</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dentist.appointment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">calendar,tree,form</field>
+            <field name="domain">[('state','!=','reminder')]</field>
+            <field name="context">{'calendar_view_ref':'dentist.view_dentist_appointment_doctor'}</field>        
+        </record>
+
+        <record model="ir.actions.act_window" id="dentist_action_form_appointment_room"><!--PER STANZA-->
+            <field name="name">Appointments per room</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dentist.appointment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">calendar,tree,form</field>
+            <field name="domain">[('state','!=','reminder')]</field>
+            <field name="context">{'calendar_view_ref':'dentist.view_dentist_appointment_room'}</field>        
+        </record>
+
+        <!--NUOVO-->
+        <record model="ir.actions.act_window" id="dentist_action_form_new_appointment"><!--NUOVO-->
+            <field name="name">New Appointment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dentist.appointment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form,tree</field>
+        </record>
+
+        <!-- Shortcut from patient form -->
+        <!-- Esiste gia come vendite-->
+        <act_window 
+             domain="[('partner_id', '=', active_id)]" 
+             id="act_patient_quotation" 
+             name="Preventivi e ordini" 
+             res_model="sale.order" 
+             context ="{'search_default_user_id':uid,'form_view_ref':'dentist.view_order_form_slim','search_default_user_id':'',}" 
+             src_model="res.partner"/>
+             <!--TODO mettere i default, pero' non fa l'on_change: 'default_partner_id':active_id,-->
+        <act_window 
+             domain="[('patient_id', '=', active_id)]" 
+             id="act_patient_appointment" 
+             name="Appointment" 
+             view_mode="tree,form,calendar"
+             res_model="dentist.appointment" 
+             context ="{'default_partner_id':active_id,}"
+             src_model="res.partner"/>
+             
+<!-- dentist.room -->
+        <record id="view_dentist_room_filter" model="ir.ui.view">
+            <field name="name">dentist.room.filter</field>
+            <field name="model">dentist.room</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Search Room">
+                    <separator orientation="vertical"/>
+                        <field name="code" />
+                        <field name="name" />
+                    <newline/>
+                </search>
+            </field>
+        </record>
+      <record model="ir.ui.view" id="dentist_room_view">
+                <field name="name">Dentist Room</field>
+                <field name="model">dentist.room</field>
+                <field name="type">form</field>
+                <field name="arch" type="xml">
+                    <form string="Dentist Room">
+                        <field name="name" required="1" />
+                        <field name="code" />
+                        <separator string="Extra info" colspan="4" />
+                        <field name="extra_info" colspan="4" nolabel="1" />
+                    </form>
+                </field>
+        </record>
+
+        <record model="ir.ui.view" id="dentist_room_tree">
+                <field name="name">Operational Areas List</field>
+                <field name="model">dentist.room</field>
+                <field name="type">tree</field>
+                <field name="arch" type="xml">
+                    <tree string='Dentist Room'>
+                            <field name="code" />
+                            <field name="name" />
+                    </tree>
+                </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_dentist_room">
+                <field name="name">Dentist Room</field>
+                <field name="type">ir.actions.act_window</field>
+                <field name="res_model">dentist.room</field>
+                <field name="view_type">form</field>
+                <field name="view_mode">tree,form</field>
+                <field name="view_id" ref="dentist_room_tree"/>
+        </record>
+
+
+<!-- dentist.annotation-->
+        <record model="ir.ui.view" id="dentist_annotation_form_view">
+            <field name="name">Annotation</field>
+            <field name="model">dentist.annotation</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                  <field name="office" />
+                  <newline />
+                  <group colspan="4" col="6">
+                   <field name="date" />
+                   <field name="type" />
+                   <field name="user_id" />
+                  </group>
+                  <group colspan="4" col="6">
+                   <field name="name" />
+                   <field name="date_from" />
+                   <field name="date_to" />
+                  </group>
+                  <separator string="Note" colspan="4"/>
+                   <field name="note" nolabel="1" colspan="4"/>
+                </form>
+            </field>
+        </record>    
+            
+        <record model="ir.ui.view" id="dentist_annotation_tree_view">
+            <field name="name">Annotation</field>
+            <field name="model">dentist.annotation</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Medical annotations" colors="red:type in ('danger','controindications')">
+                       <field name="date" />
+                       <field name="type" />
+                       <field name="name" />
+                       <field name="note" />
+                       <field name="date_from" />
+                       <field name="date_to" />
+                       <field name="user_id" />
+                       <field name="office" />
+                       <!--<field name="superpartes" />-->
+                 </tree>
+            </field>
+        </record>    
+
+<!-- PARTNER -->
+    <record model="ir.ui.view" id="view_res_partner_tree_filter">
+            <field name="name">Partner filter</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                   <!--<field name="name" position="before">
+                      <field name="last_name" />
+                      <field name="first_name" />
+                   </field>-->
+                   
+                   <field name="name" position="after">
+                      <field name="ref" />
+                   </field>
+
+                   <!--<field name="user_id" position="after">
+                          <field name='type_id' />                      
+                          <field name='zone_id' widget="selection" />
+                   </field>-->
+            </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_res_partner_form_extra_button">
+            <field name="name">Partner form button</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                   <field name="ref" position="before">                         
+                         <field name="browse_web" widget="url" context="{'partner_id':active_id}" />
+                   </field>
+            </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_partner_form_module">
+        <field name="name">Modulo partner</field>
+        <field name="model">res.partner</field>
+        <field name="type">form</field>
+        <field name="priority" eval="20" />
+        <field name="arch" type="xml">
+            <form string="Modulo Partner">
+                <field name="ref"/>
+                <field name="alias"/>
+                <field name="last_name" string="Last name (or firm name)"/>
+                <field name="first_name"/>
+                <field name="date_creation" readonly="1" />
+                <field name="fiscal_id_code" />
+                <field name="dob" />
+                <field name="lob" />
+                <field name="pob" />
+                <!--Address-->               
+                <field name="address" colspan="4" nolabel="1" >
+                   <form string="Address">
+                      <field name="type" />
+                      <field name="street" />
+                      <field name="street2" />
+                      <field name="zip" />
+                      <field name="city" />
+                      <field name="country_id" />
+                      <field name="phone" />
+                      <field name="mobile" />
+                      <field name="fax" />
+                      <field name="email" widget="url" />                   
+                   </form>
+                </field>
+                <field name="profession" />
+                <field name="send_from" />
+                <field name="sex" />
+
+                    <field name="general_info" colspan="4" nolabel="1" />
+
+                <!--<field name="yet_mail" />-->
+                <!--<field name="know_about_us" />-->
+                    
+                <separator string="Anamnesi"  colspan="4"/> 
+                <!--<field name="good_health" />-->
+                <!--<field name="smooke" />-->
+                <!--<field name="grave_disease" />-->
+                <!--<field name="anestesy_problem" />-->
+                <!--<field name="epatite_problem" />-->
+                <!--<field name="farmacology" />-->
+                <field name="disease_allergie" />
+                <!--<field name="disease_allergie_list" />-->
+                <field name="disease_pressure" />
+                <field name="disease_cardio" />
+                <field name="disease_emo" />
+
+                 <field name="disease_ricamb" />
+                 <field name="disease_nerve" />
+                 <field name="disease_pregnant" />
+                 <field name="disease_infectious" />
+
+                <field name="annotations_ids" nolabel="1" colspan="4" />
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_partner_tree">
+        <field name="name">res partner tree colors</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree" />
+        <field name="type">tree</field>
+        <field name="arch" type="xml">        
+           <xpath expr="/tree" position="attributes">
+               <attribute name="colors">violet:deceased;red:not privacy_signed;</attribute>
+           </xpath>
+           <xpath expr="/tree/field[@name='name']" position="after">
+                 <field name="deceased" invisible="1" />
+                 <field name="privacy_signed" invisible="1" />
+           </xpath>
+        </field>
+    </record>
+        
+    <record model="ir.ui.view" id="view_partner_form">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+           <!--<field name="vat_subjected" position="after">
+              <newline /><field name="fiscal_id_code" />
+           </field> TODO è piu' giusto qui!!!!!!-->
+           <field name="lang" position="before">
+                <field name="alias"/>
+           </field>
+           <field name="name" position="before">
+                <field name="last_name" string="Last name (or firm name)"/>
+                <field name="first_name"/>
+           </field>
+           <field name="name" position="attributes">
+              <attribute name="invisible">1</attribute>
+           </field>
+           <notebook>
+                <page string="Dentist">
+                  <separator string="Patient information" colspan="4" />
+                    <group col="6" colspan="4">
+                      <field name="date_creation" readonly="1"/>
+                      <field name="send_from" />
+                      <field name="privacy_signed" />
+                      
+                      <field name="profession" />
+                      <field name="fiscal_id_code" /><!--TODO non qui!!!-->
+                      <field name="sex" />
+                    </group>
+                    <newline />
+
+                  <separator string="Birth information" colspan="4" />
+                    <group colspan="4" col="8">
+                       <field name="dob" />
+                       <field name="lob" />
+                       <field name="pob" />
+                       <field name="deceased" />
+                    </group>
+
+                  <separator string="Relazioni con altri partner" colspan="4" />
+                    <field name="relationship" colspan="4" nolabel="1" />
+                  <separator string="General information" colspan="4" />
+                    <field name="general_info" colspan="4" nolabel="1" />
+                    
+                </page>
+                
+                <page string="Doctor note" groups="dentist.group_dentist_doctor">
+                  <separator string="Disease and problems" />                  
+                  <group colspan="4" col="16">
+                     <field name="disease_allergie" />
+                     <field name="disease_pressure" />
+                     <field name="disease_cardio" />
+                     <field name="disease_emo" />
+                     <field name="disease_ricamb" />
+                     <field name="disease_nerve" />
+                     <field name="disease_pregnant" />
+                     <field name="disease_infectious" />
+                  </group>  
+                  <separator string="Medical annotations" colspan="4"/>
+                  <newline />
+                       <field name="annotations_ids" nolabel="1" colspan="4" />
+                </page>
+
+                <page string="Operations" groups="dentist.group_dentist_doctor">
+                  <field name="operation_ids" nolabel="1" colspan="4">
+                    <tree string="Operations" editable="bottom" colors="blue:not(order_id)">
+                       <field name="product_id" />
+                       <field name="name" />
+                       <field name="tooth" />
+                       <field name="date" />
+                       <field name="date_end" />
+                       <field name="urgency" />
+                       <field name="note" />
+                       <field name="order_id" />
+                       <field name="state" />
+                       <button name="operation_done" string="Done" states="draft" icon="gtk-go-forward"/>
+                       <button name="operation_irrilevant" string="Irrilevant" states="done" icon="gtk-go-forward"/>
+                       <button name="operation_cancel" string="Cancel" states="draft" icon="gtk-cancel"/>
+                       <button name="operation_draft" string="To do" states="cancel" icon="gtk-go-forward"/>                       
+                    </tree>
+                    <form>
+                      <group colspan="4" col="6">
+                       <field name="name" />
+                       <field name="tooth" />
+                       <field name="product_id" />
+                       <field name="date" />
+                       <field name="date_end" />
+                       <field name="urgency" />
+                       <field name="order_id" />         
+                      </group>
+                      <separator string="Note" colspan="4"/>
+                       <field name="note" nolabel="1" colspan="4"/>
+         
+                      <group colspan="4" col="6">
+                       <field name="state" />
+                       <button name="operation_done" string="Done" states="draft" icon="gtk-go-forward"/>
+                       <button name="operation_irrilevant" string="Irrilevant" states="done" icon="gtk-go-forward"/>
+                       <button name="operation_cancel" string="Cancel" states="draft" icon="gtk-cancel"/>
+                       <button name="operation_draft" string="To do" states="cancel" icon="gtk-go-forward"/>
+                      </group>
+                    </form>
+                  </field>
+                </page>
+
+                <page string="To do list" groups="dentist.group_dentist_doctor">
+                  <field name="todo_ids" nolabel="1" colspan="4">
+                    <tree string="To do" editable="bottom" colors="blue:import==True"> <!--TODO NON FUNZIONA-->
+                       <field name="name" />
+                       <field name="tooth" />
+                       <field name="date" />
+                       <field name="product_id" />
+                       <field name="urgency" />
+                       <field name="note" />
+                       <field name="import" invisible="1" />
+                    </tree>
+                    <form>
+                      <group colspan="4" col="6">
+                       <field name="name" />
+                       <field name="tooth" />
+                       <field name="product_id" />
+                       <field name="date" />
+                       <field name="urgency" />
+         
+                      </group>
+                      <separator string="Note" colspan="4"/>
+                       <field name="note" nolabel="1" colspan="4"/>
+         
+                    </form>
+                  </field>
+                </page>
+            </notebook>
+                </field>
+    </record>
+
+   <record model="ir.ui.view" id="view_users_form_inherit">
+            <field name="name">User position</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form" />
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                    <field name="new_password" position="after">
+                      <separator string="Type of partner" colspan="4" />
+                      <field name="is_doctor" />
+                      <field name="is_assistant" />
+                    </field>
+            </field>
+   </record>
+
+   <record model="ir.ui.view" id="view_groups_form_inherit">
+            <field name="name">Groups</field>
+            <field name="model">res.groups</field>
+            <field name="inherit_id" ref="base.view_groups_form" />
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <field name="name" position="before">
+                   <field name="poliambulatory" />
+                </field>
+            </field>
+   </record>
+
+<!-- DASHBOARD: -->
+   <record id="board_poliambulatory_form" model="ir.ui.view">
+        <field name="name">board.poliambulatory.form</field>
+        <field name="model">board.board</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Dashboard Poliambulatory">
+                <hpaned position="200">
+                    <child1>
+                        <action colspan="4" name="%(dentist_action_form_appointment_today)d" string="Reception" width="800"  groups="dentist.group_dentist_secretary"/>
+                        <action colspan="4" name="%(dentist_action_form_appointment_today_doctor)d" string="Doctor / Assistant" width="800" groups="dentist.group_dentist_doctor,dentist.group_dentist_assistant" />
+                    </child1>
+                </hpaned>
+            </form>
+        </field>
+    </record>   
+
+    <record id="action_board_poliambulatory_form" model="ir.actions.act_window">
+        <field name="name">Poliambulatory dashboard</field>
+        <field name="res_model">board.board</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="board_poliambulatory_form"/>
+    </record>
+
+    <record id="action_dentist_patients_module" model="ir.actions.act_window">
+        <field name="name">Client module</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'form_view_ref':'dentist.view_partner_form_module'}</field>
+    </record>
+
+<!-- menu: -->
+          <menuitem name="Dentist" id="dentist_menu" action="action_board_poliambulatory_form" sequence="-1"  web_icon="images/poliambulatorio.png" web_icon_hover="images/poliambulatorio-hover.png"/>
+          <menuitem name="Rubrica" id="dentist_patients_menu" parent="dentist_menu" sequence="1"/>
+          <menuitem name="Appointments" id="dentist_appointment_menu" parent="dentist_menu" sequence="2"/>
+                <menuitem action="dentist_action_form_appointment_status" id="menu_dentist_conf_appointment_status" parent="dentist_appointment_menu" sequence="1"/>
+                         <menuitem action="dentist_action_form_appointment_doctor" id="menu_dentist_conf_appointment_doctor" parent="menu_dentist_conf_appointment_status" sequence="1"/>
+                         <menuitem action="dentist_action_form_appointment_room" id="menu_dentist_conf_appointment_room" parent="menu_dentist_conf_appointment_status" sequence="2"/>
+
+                <menuitem action="dentist_action_form_appointment_today" id="menu_dentist_conf_appointment_today" parent="dentist_appointment_menu" sequence="2" groups="dentist.group_dentist_secretary"/>
+                <menuitem action="dentist_action_form_appointment_reminder" id="menu_dentist_action_form_appointment_reminder" parent="dentist_appointment_menu" sequence="3"  groups="dentist.group_dentist_secretary" />
+                <menuitem action="dentist_action_form_new_appointment" id="menu_dentist_conf_appointment_new" parent="dentist_appointment_menu" sequence="4" />
+
+                <menuitem action="dentist_action_form_appointment_today_doctor" id="menu_dentist_conf_appointment_today_doctor" parent="dentist_appointment_menu" sequence="5" groups="dentist.group_dentist_doctor,dentist.group_dentist_assistant"/>
+                <menuitem action="dentist_action_form_appointment_annotation_required" id="menu_dentist_action_form_appointment_annotation_required" parent="dentist_appointment_menu" sequence="6" groups="dentist.group_dentist_doctor,dentist.group_dentist_assistant"/>
+             
+          <menuitem name="Quotations" id="dentist_quotation_menu" parent="dentist_menu" sequence="3" groups="dentist.group_dentist_doctor,dentist.group_dentist_assistant"/>
+             <!--<menuitem name="Quotations list" id="dentist_quotation_list_menu" parent="dentist_quotation_menu" action="sale.action_order_form" sequence="1"/>-->
+
+          <menuitem name="Products" id="dentist_product_menu" parent="dentist_menu" sequence="4" groups="dentist.group_dentist_doctor,dentist.group_dentist_assistant"/>
+             <menuitem name="Products per category" id="dentist_product_x_category_menu" parent="dentist_product_menu" sequence="1" action="product.product_category_action"/>
+             <menuitem name="Products" id="dentist_product_product_menu" parent="dentist_product_menu" sequence="2" action="product.product_normal_action"/>
+
+          <!--<menuitem name="Reporting" id="dentist_reporting_menu" parent="dentist_menu" sequence="5"/>-->
+          <menuitem name="Configuration" id="dentist_conf_menu" parent="dentist_menu" sequence="99" groups="dentist.group_dentist_administration"/>
+             <menuitem name="Products category" id="dentist_configuration_product_category_menu" parent="dentist_conf_menu" sequence="2" action="product.product_category_action_form"/>
+             <!--<menuitem name="Users" id="dentist_configuration_users_menu" parent="dentist_conf_menu" sequence="0" />
+               <menuitem name="Group" id="dentist_configuration_users_group_menu" parent="dentist_configuration_users_menu" sequence="1" action="base.menu_action_res_groups" />
+               <menuitem name="Users" id="dentist_configuration_users_users_menu" parent="dentist_configuration_users_menu" sequence="1" action="base.menu_action_res_users" />-->
+             <menuitem name="Room" id="dentist_room_menu" parent="dentist_conf_menu" sequence="1" action="action_dentist_room" />
+
+        <!--Menu actions:-->
+             <menuitem action="base.action_partner_form" id="dentist_patients" parent="dentist_patients_menu" sequence="1" />
+                 <menuitem name="Moduli cliente" id="dentist_patients_module_menu" parent="dentist_patients" action="action_dentist_patients_module" sequence="1"/>
+
+
+
+    </data>
+</openerp>
+

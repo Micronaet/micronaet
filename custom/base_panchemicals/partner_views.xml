@@ -1,0 +1,105 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+	<!--INHERIT--> 
+
+    <record id='sale_view_order_form_extra_fields' model='ir.ui.view'>
+        <field name='name'>Sale line extra fields</field>
+        <field name='model'>sale.order</field>
+        <field name="inherit_id" ref="sale_layout.view_order_form_inherit_1"/>
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+              <field name="discount" position="after">
+                  <field name="price_comment" colspan="4"/>
+              </field>    
+        </field>
+    </record>
+      <!-- RES.PARTNER-->
+    <record id='view_partner_add_fiam_fields' model='ir.ui.view'>
+        <field name='name'>Pan Chemicals Partner</field>
+        <field name='model'>res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+              <xpath expr="/form/notebook/page[@string='Notes']" position="inside">
+                  <field name="mexal_c" />
+                  <field name="mexal_s" />
+                  <group colspan="4" col="6">
+                     <field name="mexal_age" />
+                     <field name="mexal_resp" />
+                     <field name="mexal_super" />
+
+                     <field name="mexal_age_description" />
+                     <field name="responsible_name" />
+                     <field name="supervisor_id" />
+                  </group>   
+              </xpath>
+        </field>
+    </record>
+    <record id='view_partner_address_add_pan_fields' model='ir.ui.view'>
+        <field name='name'>Pan Chemicals partner address</field>
+        <field name='model'>res.partner</field>
+        <field name="inherit_id" ref="base_contact.view_partner_form_inherit"/>
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+           <field name="email" position="after">
+               <field name="mexal" />
+           </field>
+        </field>
+    </record>
+
+      <!-- PRODUCT.PRODUCT-->
+    <record id='view_product_product_add_fields' model='ir.ui.view'>
+        <field name='name'>Product extra fields</field>
+        <field name='model'>product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+              <xpath expr="/form/notebook/page[@string='Information']/group/field[@name='cost_method']" position="after">
+                    <field name='force_manual' />
+                    <field name='manual_price' attrs="{'invisible': [('force_manual','=', False)]}" />
+                    <newline />
+                    <label string="" attrs="{'invisible': [('force_manual','=', False)]}" /> 
+                    <button string="Ricalcola prezzi" name="compute_price_from_bom_action" type="object" icon="terp-stage" /> 
+                    <newline />                    
+              </xpath>
+        </field>
+    </record>
+    <record id='view_product_tree_product_add_fields' model='ir.ui.view'>
+        <field name='name'>Product tree extra fields</field>
+        <field name='model'>product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name='type'>tree</field>
+        <field name='arch' type='xml'>
+              <field name="standard_price" position="after">
+                    <field name='force_manual' />
+                    <field name='manual_price' />
+              </field>
+        </field>
+    </record>
+    <record id='view_product_search_product_add_fields' model='ir.ui.view'>
+        <field name='name'>Product search extra fields</field>
+        <field name='model'>product.product</field>
+        <field name="inherit_id" ref="product.product_search_form_view"/>
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+              <field name="categ_id" position="before">
+                    <field name='force_manual' />
+              </field>
+        </field>
+    </record>    
+    <!--res.users-->
+    <record id='view_res_users_extra_fields' model='ir.ui.view'>
+        <field name='name'>Users extra fields</field>
+        <field name='model'>res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+              <field name="new_password" position="after">
+                    <field name='mexal_id' />
+              </field>
+        </field>
+    </record>    
+  </data>
+</openerp>
+

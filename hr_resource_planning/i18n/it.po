@@ -1,0 +1,58 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* hr_resource_planning
+# <> <>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 6.0.1\n"
+"Report-Msgid-Bugs-To: support@openerp.com\n"
+"POT-Creation-Date: 2011-03-24 17:37+0000\n"
+"PO-Revision-Date: 2011-03-24 18:44+0100\n"
+"Last-Translator: <> <>\n"
+"Language-Team:  <>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_resource_planning
+#: help:hr.employee.planner,duration:0
+msgid "Duration of job session"
+msgstr "Durata lavorativa"
+
+#. module: hr_resource_planning
+#: help:hr.employee.planner,date:0
+msgid "Begin of the job session"
+msgstr "Inizio lavoro"
+
+#. module: hr_resource_planning
+#: model:ir.model,name:hr_resource_planning.model_hr_employee_planning
+msgid "hr.employee.planning"
+msgstr "Pianificazione impiegati"
+
+#. module: hr_resource_planning
+#: view:hr.employee.planner:0
+#: model:ir.actions.act_window,name:hr_resource_planning.hr_employee_resource_action
+#: model:ir.ui.menu,name:hr_resource_planning.hr_employee_resource_action_menu
+msgid "Planning resources"
+msgstr "Pianificazione risorse"
+
+#. module: hr_resource_planning
+#: field:hr.employee.planner,employee_id:0
+msgid "Employee"
+msgstr "Impiegato"
+
+#. module: hr_resource_planning
+#: model:ir.model,name:hr_resource_planning.model_hr_employee_planner
+msgid "Planning of employee"
+msgstr "Pianificazione dell'impiegato"
+
+#. module: hr_resource_planning
+#: field:hr.employee.planner,duration:0
+msgid "Duration"
+msgstr "Durata"
+
+#. module: hr_resource_planning
+#: field:hr.employee.planner,date:0
+msgid "Start date"
+msgstr "Data inizio"

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!-- VIEWS & ACTIONS -->
+           <!-- INHERIT VIEWS --> 
+        <record model="ir.ui.view" id="view_partner_form_inherit_extra_info_page2">
+            <field name="name">Integrazioni Scheda Laser</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="/form/group" position="before">
+                     <group colspan="4" col="6">
+                        <field name="fiscal_id_code" on_change="on_change_fiscal_code_partner(fiscal_id_code,'fiscal_id_code')"/>
+                        <field name="office_id" select="1" />
+                     </group>
+                </xpath>
+                <field name="lang" position="after">
+                       <button string="Riporta docente" name="action_create_lecturer" context="{'type_of_partner_contact': 'docente'}" type="object" icon="terp-partner" confirm="Immettere tutte le informazioni necessarie nel partner o address e salvare (aggiornare al termine della copia)" />
+                       <button string="Riporta studente" name="action_create_lecturer" context="{'type_of_partner_contact': 'studente'}" type="object" icon="terp-partner" confirm="Immettere tutte le informazioni necessarie nel partner o address e salvare (aggiornare al termine della copia)" />
+                </field>
+                <notebook position="inside">
+                    <page string="Laser">                        
+                        <separator string="Informazioni addizionali" colspan="4" />
+                        <field name="vatnumber" />
+                        <field name="cciaanumber" />
+                        <field name="title_sector_id" select="2" colspan="2" />
+                        <field name="title_dimension_id" select="2" colspan="2" />
+                        <field name="number_employee" />
+                        <field name="pmi_company" />
+                    </page>
+                </notebook>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_partner_tree_inherit_extra_info_office">
+            <field name="name">Partner Laser</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <field name="user_id" position="before">
+                      <field name="fiscal_id_code" />
+                      <field name="vat" />
+                      <field name="office_id" select="1" />
+                      <!--<field name="office_uid_id" select="1" /> -->
+                </field>             
+            </field>
+        </record>
+
+           <!-- INHERIT SEARCH VIEWS --> 
+        <record model="ir.ui.view" id="view_res_partner_tree_filter_laser">
+                <field name="name">res.partner.select.laser</field>
+                <field name="model">res.partner</field>
+                <field name="inherit_id" ref="base.view_res_partner_filter"/>
+                <field name="type">search</field>
+                <field name="arch" type="xml">
+                       <field name="user_id" position="before">
+                              <field name="fiscal_id_code" />
+                              <field name="vat" />
+                              <field name="office_id" select="1" />  
+                              <!--<field name="office_uid_id" select="1" /> -->
+                       </field>
+                </field>
+        </record>
+       
+           <!-- NEW VIEWS -->   
+             <!-- Settore: -->
+        <record model="ir.ui.view" id="view_partner_sector_form">
+            <field name="name">Settore di attivita' Form</field>
+            <field name="model">res.partner.sector</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                  <form string="Settore di attività">
+                       <field name="name" select="1" colspan="4"/>                       
+                       <field name="note" select="2" colspan="4"/>
+                  </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_partner_sector_tree">
+            <field name="name">Settore di attivita' Lista</field>
+            <field name="model">res.partner.sector</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                  <tree string="Settore di attività">
+                       <field name="name" select="1" />                       
+                       <field name="note" select="2" />
+                  </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="open_view_sector">
+            <field name="name">Settore di attivita'</field>
+            <field name="res_model">res.partner.sector</field>
+            <field name="view_type">form</field>
+            <field name="view_model">form,tree</field>
+        </record>
+
+               <!--Dimensione:-->
+        <record model="ir.ui.view" id="view_partner_dimension_form">
+            <field name="name">Dimensione azienda Form</field>
+            <field name="model">res.partner.dimension</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                  <form string="Dimensione azienda Dettaglio">
+                       <field name="name" select="1" colspan="4"/>                       
+                       <newline />
+                       <field name="note" select="2" colspan="4"/>
+                  </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_partner_dimension_form">
+            <field name="name">Dimensione azienda Lista</field>
+            <field name="model">res.partner.dimension</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                  <tree string="Dimensione azienda Lista">
+                       <field name="name" select="1" />                       
+                       <field name="note" select="1" />
+                  </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="open_view_dimension">
+            <field name="name">Dimensione azienda</field>
+            <field name="res_model">res.partner.dimension</field>
+            <field name="view_type">form</field>
+            <field name="view_model">form,tree</field>
+        </record>
+          
+        <!-- ACTION WITH DEFAULT SEARCH -->
+        <!--<record id="training_action_partner_office_form" model="ir.actions.act_window">
+            <field name="name">Clienti per ufficio</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="context">{"search_default_customer": 1, "search_default_office_uid_id": True}</field> 
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+        </record>
+        <menuitem action="training_action_partner_office_form" id="menu_partner_office_form" parent="training.menu_address_book" sequence="2"/>-->
+
+        <!-- AZIONI PARTE DX DELLA VIDEATA: -->
+        <act_window id="action_partner_list_fiscalcode"
+                    name="Partner con stesso CF"
+                    src_model="res.partner"
+                    res_model="res.partner"
+                    domain="[('fiscal_id_code', '=', fiscal_id_code)]" />
+        <act_window id="action_partner_list_vat"
+                    name="Partner con stessa Partita IVA"
+                    src_model="res.partner"
+                    res_model="res.partner"
+                    domain="[('vat', '=', vat)]" />
+
+         <!--MENU ITEMS-->
+            <menuitem name="Partner" 
+                  id="res_partner_partner_menu" 
+                  parent="res_menu_laser"
+                  icon="terp-partner" 
+                  groups="base.group_partner_manager"
+                  sequence="1"/>
+            <!-- Sub menus -->
+            <menuitem name="Settori di attività" 
+                      id="res_partner_sector_menu" 
+                      parent="res_partner_partner_menu"
+                      action="open_view_sector"
+                      icon="terp-partner" 
+                      groups="base.group_partner_manager"
+                      sequence="10"/>
+            
+            <menuitem name="Dimensioni azienda" 
+                      id="res_partner_dimension_menu" 
+                      parent="res_partner_partner_menu"
+                      action="open_view_dimension"
+                      icon="terp-partner" 
+                      groups="base.group_partner_manager"
+                      sequence="11"/>
+    </data>
+</openerp>

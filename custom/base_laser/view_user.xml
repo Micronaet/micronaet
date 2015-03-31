@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+      <!-- VIEWS & ACTIONS -->
+        <!-- INHERIT VIEWS --> 
+        <record model="ir.ui.view" id="view_training_course_inherit_fields">
+            <field name="name">Estensione utenti per Laser</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                   <xpath expr="/form/notebook/page[@string='User']/group/field[@name='menu_id']" position="after">
+                          <field name="office_id" />
+                   </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

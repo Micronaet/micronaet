@@ -1,0 +1,13 @@
+Installare dbview: 
+sudo apt-get install dwview
+
+avvia: trasforma.sh 
+per trasformare i DB in TXT poi in CSV 
+
+in /home/administrator/ETL/ambulatorio 
+deve esserci la cartella MACH2 con il programma e 3 cartelle popolate dagli script
+DB (contiene i TXT dei DB convertiti)
+CSV (contiene i file CSV generati)
+TRC (contiene l'elenco dei campi dei vari file: tracciato record)
+
+Impostare i default: Lingua Italiana, posizione fiscale Italia, 

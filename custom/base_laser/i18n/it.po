@@ -1,0 +1,467 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* base_laser
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 6.0.1\n"
+"Report-Msgid-Bugs-To: support@openerp.com\n"
+"POT-Creation-Date: 2011-02-05 02:06+0000\n"
+"PO-Revision-Date: 2011-02-05 03:14+0100\n"
+"Last-Translator: Nicola Riolini <nicola.riolini@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+
+#. module: base_laser
+#: model:ir.actions.act_window,name:base_laser.open_view_profile
+#: view:res.partner.contact.profile:0
+#: field:res.partner.contact.profile,name:0
+msgid "Tipo di profilo"
+msgstr "Tipo di profilo"
+
+#. module: base_laser
+#: view:res.partner.contact.profile:0
+msgid "Tipo di profilo mansione"
+msgstr "Tipo di profilo mansione"
+
+#. module: base_laser
+#: model:ir.model,name:base_laser.model_res_partner_currentprof
+#: field:res.partner.contact,title_currentprof_id:0
+#: field:res.partner.currentprof,name:0
+msgid "Attuale professione"
+msgstr "Attuale professione"
+
+#. module: base_laser
+#: model:ir.model,name:base_laser.model_res_partner_contact_pip
+#: model:ir.ui.menu,name:base_laser.res_partner_contact_pip_menu
+#: field:res.partner.contact,title_pip_state_id:0
+#: field:res.partner.contact.pip,name:0
+msgid "Stato PIP"
+msgstr "Stato PIP"
+
+#. module: base_laser
+#: field:res.partner.contact,tutor:0
+msgid "Tutor"
+msgstr "Tutor"
+
+#. module: base_laser
+#: model:ir.actions.act_window,name:base_laser.open_view_contract
+#: model:ir.model,name:base_laser.model_res_partner_contract
+#: model:ir.ui.menu,name:base_laser.res_partner_contract_menu
+#: field:res.partner.contact,title_contract_id:0
+#: view:res.partner.contract:0
+#: field:res.partner.contract,name:0
+msgid "Descrizione contratto"
+msgstr "Descrizione contratto"
+
+#. module: base_laser
+#: model:ir.module.module,description:base_laser.module_meta_information
+msgid "Personalizzazioni Laser"
+msgstr "Personalizzazioni Laser"
+
+#. module: base_laser
+#: field:base.laser.office,note:0
+#: field:res.partner.contact.ccnl,note:0
+#: field:res.partner.contact.formation,note:0
+#: field:res.partner.contact.pip,note:0
+#: field:res.partner.contact.profile,note:0
+#: field:res.partner.contract,note:0
+#: field:res.partner.currentprof,note:0
+#: field:res.partner.dimension,note:0
+#: field:res.partner.prioritycat,note:0
+#: field:res.partner.profposition,note:0
+#: field:res.partner.profstatus,note:0
+#: field:res.partner.schoolsheet,note:0
+#: field:res.partner.sector,note:0
+msgid "Note"
+msgstr "Note"
+
+#. module: base_laser
+#: field:res.partner,prev_id:0
+#: field:res.partner.address,prev_id:0
+#: field:res.partner.contact,prev_id:0
+msgid "Import linked ID"
+msgstr "ID link importato"
+
+#. module: base_laser
+#: field:res.partner,pmi_company:0
+msgid "Azienda PMI"
+msgstr "Azienda PMI"
+
+#. module: base_laser
+#: model:ir.model,name:base_laser.model_base_laser_office
+#: model:ir.ui.menu,name:base_laser.res_base_laser_office_menu
+msgid "Uffici"
+msgstr "Uffici"
+
+#. module: base_laser
+#: view:res.partner:0
+#: view:res.partner.contact:0
+msgid "Informazioni addizionali"
+msgstr "Informazioni addizionali"
+
+#. module: base_laser
+#: field:res.partner.contact,recruitment_date:0
+msgid "Data assunzione"
+msgstr "Data assunzione"
+
+#. module: base_laser
+#: field:res.partner.contact,study_broken:0
+msgid "Studi interrotti"
+msgstr "Studi interrotti"
+
+#. module: base_laser
+#: model:ir.actions.act_window,name:base_laser.open_view_sector
+#: model:ir.model,name:base_laser.model_res_partner_sector
+#: field:res.partner,title_sector_id:0
+msgid "Settore di attivita'"
+msgstr "Settore di attivita'"
+
+#. module: base_laser
+#: selection:res.partner.contact,gender:0
+msgid "Maschio"
+msgstr "Maschio"
+
+#. module: base_laser
+#: field:res.partner,vatnumber:0
+msgid "Partita IVA"
+msgstr "Partita IVA"
+
+#. module: base_laser
+#: field:res.partner.contact,annuality:0
+msgid "Annualità"
+msgstr "Annualità"
+
+#. module: base_laser
+#: field:res.partner.contact,matricola:0
+msgid "Matricola"
+msgstr "Matricola"
+
+#. module: base_laser
+#: field:res.partner.contact,trainee_location:0
+msgid "Sede operativa apprendista"
+msgstr "Sede operativa apprendista"
+
+#. module: base_laser
+#: model:ir.actions.act_window,name:base_laser.open_base_laser_office_form
+msgid "Ufficio di appartenenza principale"
+msgstr "Ufficio di appartenenza principale"
+
+#. module: base_laser
+#: model:ir.model,name:base_laser.model_res_partner_prioritycat
+#: field:res.partner.prioritycat,name:0
+msgid "Categoria prioritaria"
+msgstr "Categoria prioritaria"
+
+#. module: base_laser
+#: field:res.partner.contact,gender:0
+msgid "Sesso"
+msgstr "Sesso"
+
+#. module: base_laser
+#: field:res.partner.contact,study_broken_year:0
+msgid "Anno interruzione"
+msgstr "Anno interruzione"
+
+#. module: base_laser
+#: field:res.partner,fiscal_id_code:0
+#: field:res.partner.contact,fiscal_id_code:0
+msgid "Codice Fiscale"
+msgstr "Codice Fiscale"
+
+#. module: base_laser
+#: field:res.partner,import:0
+#: field:res.partner.address,import:0
+#: field:res.partner.contact,import:0
+msgid "ID Importazione"
+msgstr "ID Importazione"
+
+#. module: base_laser
+#: view:res.partner.contact:0
+msgid "Informazioni apprendista"
+msgstr "Informazioni apprendista"
+
+#. module: base_laser
+#: field:res.partner.contact,domain:0
+msgid "Sigla azienda"
+msgstr "Sigla azienda"
+
+#. module: base_laser
+#: model:ir.actions.act_window,name:base_laser.open_view_schoolsheet
+#: field:res.partner.contact,title_school_id:0
+#: field:res.partner.schoolsheet,name:0
+msgid "Titolo di studio"
+msgstr "Titolo di studio"
+
+#. module: base_laser
+#: model:ir.ui.menu,name:base_laser.res_partner_sector_menu
+msgid "Settori di attività"
+msgstr "Settori di attività"
+
+#. module: base_laser
+#: field:res.partner.contact,hourly:0
+msgid "Retribuzione oraria"
+msgstr "Retribuzione oraria"
+
+#. module: base_laser
+#: field:res.partner.contact,pip_state:0
+msgid "N. PIP"
+msgstr "N. PIP"
+
+#. module: base_laser
+#: field:res.partner.contact,date:0
+msgid "Data"
+msgstr "Data"
+
+#. module: base_laser
+#: field:base.laser.office,name:0
+msgid "Nome ufficio"
+msgstr "Nome ufficio"
+
+#. module: base_laser
+#: field:res.partner.contact,tutor_fiscal_id_code:0
+msgid "Codice fiscale tutor"
+msgstr "Codice fiscale tutor"
+
+#. module: base_laser
+#: model:ir.ui.menu,name:base_laser.res_partner_contact_profile_menu
+msgid "Tipo di profilo / mansione"
+msgstr "Tipo di profilo / mansione"
+
+#. module: base_laser
+#: selection:res.partner.contact,gender:0
+msgid "Femmina"
+msgstr "Femmina"
+
+#. module: base_laser
+#: field:res.partner.contact,privacy:0
+msgid "Consenso al trattamento"
+msgstr "Consenso al trattamento"
+
+#. module: base_laser
+#: model:ir.ui.menu,name:base_laser.res_menu_laser
+#: view:res.partner:0
+#: view:res.partner.contact:0
+msgid "Laser"
+msgstr "Laser"
+
+#. module: base_laser
+#: model:ir.model,name:base_laser.model_res_partner_schoolsheet
+#: model:ir.ui.menu,name:base_laser.res_partner_schoolsheet_menu
+#: view:res.partner.schoolsheet:0
+msgid "Titoli di studio"
+msgstr "Titoli di studio"
+
+#. module: base_laser
+#: field:res.partner.sector,name:0
+msgid "Settore attivita'"
+msgstr "Settore attivita'"
+
+#. module: base_laser
+#: model:ir.actions.act_window,name:base_laser.open_view_formation
+#: model:ir.model,name:base_laser.model_res_partner_contact_formation
+#: model:ir.ui.menu,name:base_laser.res_partner_contact_formation_menu
+#: field:res.partner.contact,formation_id:0
+#: view:res.partner.contact.formation:0
+#: field:res.partner.contact.formation,name:0
+msgid "Tipo di formazione"
+msgstr "Tipo di formazione"
+
+#. module: base_laser
+#: model:ir.module.module,shortdesc:base_laser.module_meta_information
+msgid "Base Contact Laser"
+msgstr "Base Contact Laser"
+
+#. module: base_laser
+#: model:ir.actions.act_window,name:base_laser.open_view_dimension
+#: model:ir.model,name:base_laser.model_res_partner_dimension
+#: field:res.partner,title_dimension_id:0
+#: field:res.partner.dimension,name:0
+msgid "Dimensione azienda"
+msgstr "Dimensione azienda"
+
+#. module: base_laser
+#: sql_constraint:base.laser.office:0
+#: sql_constraint:res.partner.contact.ccnl:0
+#: sql_constraint:res.partner.contact.formation:0
+#: sql_constraint:res.partner.contact.pip:0
+#: sql_constraint:res.partner.contact.profile:0
+#: sql_constraint:res.partner.contract:0
+#: sql_constraint:res.partner.currentprof:0
+#: sql_constraint:res.partner.dimension:0
+#: sql_constraint:res.partner.prioritycat:0
+#: sql_constraint:res.partner.profposition:0
+#: sql_constraint:res.partner.profstatus:0
+#: sql_constraint:res.partner.schoolsheet:0
+#: sql_constraint:res.partner.sector:0
+msgid "Il nome deve essere unico!"
+msgstr "Il nome deve essere unico!"
+
+#. module: base_laser
+#: model:ir.actions.act_window,name:base_laser.open_view_ccnl
+#: view:res.partner.contact.ccnl:0
+msgid "Anagrafica CCNL"
+msgstr "Anagrafica CCNL"
+
+#. module: base_laser
+#: field:res.partner.contact,cost:0
+msgid "Costo"
+msgstr "Costo"
+
+#. module: base_laser
+#: field:res.partner.contact,course_tutor:0
+msgid "Corso tutor"
+msgstr "Corso tutor"
+
+#. module: base_laser
+#: model:ir.ui.menu,name:base_laser.res_partner_contact_submenu
+msgid "Contatti"
+msgstr "Contatti"
+
+#. module: base_laser
+#: model:ir.model,name:base_laser.model_res_partner_contact
+msgid "Contact"
+msgstr "Contatto"
+
+#. module: base_laser
+#: model:ir.actions.act_window,name:base_laser.open_view_pip
+#: view:res.partner.contact.pip:0
+msgid "Anagrafica PIP"
+msgstr "Anagrafica PIP"
+
+#. module: base_laser
+#: field:res.partner.contact,disadvantage:0
+msgid "Allievo svantaggiato"
+msgstr "Allievo svantaggiato"
+
+#. module: base_laser
+#: model:ir.actions.act_window,name:base_laser.open_view_profposition
+#: model:ir.model,name:base_laser.model_res_partner_profposition
+#: model:ir.ui.menu,name:base_laser.res_partner_profposition_menu
+#: field:res.partner.contact,title_profpos_id:0
+#: view:res.partner.profposition:0
+#: field:res.partner.profposition,name:0
+msgid "Posizione professionale"
+msgstr "Posizione professionale"
+
+#. module: base_laser
+#: field:res.partner.contact,profile_id:0
+msgid "Mansione / Profilo"
+msgstr "Mansione / Profilo"
+
+#. module: base_laser
+#: view:res.partner.contact:0
+msgid "Formazione"
+msgstr "Formazione"
+
+#. module: base_laser
+#: field:res.partner.contact,trainee_residence:0
+msgid "Residenza apprendista"
+msgstr "Residenza apprendista"
+
+#. module: base_laser
+#: view:base.laser.office:0
+msgid "Ufficio"
+msgstr "Ufficio"
+
+#. module: base_laser
+#: model:ir.model,name:base_laser.model_res_partner_address
+msgid "Partner Addresses"
+msgstr "Indirizzi Partner"
+
+#. module: base_laser
+#: field:res.partner,domain:0
+#: field:res.partner.address,domain:0
+msgid "Sigla Azienda"
+msgstr "Sigla Azienda"
+
+#. module: base_laser
+#: model:ir.actions.act_window,name:base_laser.open_view_profstatus
+#: model:ir.model,name:base_laser.model_res_partner_profstatus
+#: model:ir.ui.menu,name:base_laser.res_partner_profstatus_menu
+#: field:res.partner.contact,title_profstatus_id:0
+#: view:res.partner.profstatus:0
+#: field:res.partner.profstatus,name:0
+msgid "Condizione professionale"
+msgstr "Condizione professionale"
+
+#. module: base_laser
+#: model:ir.model,name:base_laser.model_res_partner_contact_profile
+msgid "Profilo / Mansione"
+msgstr "Profilo / Mansione"
+
+#. module: base_laser
+#: field:res.partner,office_id:0
+#: field:res.partner.contact,office_id:0
+msgid "Uff. di apparten. principale"
+msgstr "Uff. di apparten. principale"
+
+#. module: base_laser
+#: view:res.partner.contact:0
+msgid "Professione / Studi"
+msgstr "Professione / Studi"
+
+#. module: base_laser
+#: view:res.partner.dimension:0
+msgid "Dimensione azienda Lista"
+msgstr "Dimensione azienda Lista"
+
+#. module: base_laser
+#: field:res.partner,number_employee:0
+msgid "Numero dipendenti"
+msgstr "Numero dipendenti"
+
+#. module: base_laser
+#: model:ir.actions.act_window,name:base_laser.open_view_prioritycat
+#: model:ir.ui.menu,name:base_laser.res_partner_prioritycat_menu
+#: field:res.partner.contact,title_prioritycat_id:0
+#: view:res.partner.prioritycat:0
+msgid "Categorie prioritarie"
+msgstr "Categorie prioritarie"
+
+#. module: base_laser
+#: model:ir.ui.menu,name:base_laser.res_partner_contact_ccnl_menu
+msgid "Stato CCNL"
+msgstr "Stato CCNL"
+
+#. module: base_laser
+#: view:res.partner.contact:0
+msgid "Interruzione studi"
+msgstr "Interruzione studi"
+
+#. module: base_laser
+#: view:res.partner.sector:0
+msgid "Settore di attività"
+msgstr "Settore di attività"
+
+#. module: base_laser
+#: model:ir.model,name:base_laser.model_res_partner_contact_ccnl
+#: field:res.partner.contact,title_ccnl_id:0
+#: field:res.partner.contact.ccnl,name:0
+msgid "CCNL"
+msgstr "CCNL"
+
+#. module: base_laser
+#: model:ir.model,name:base_laser.model_res_partner
+#: model:ir.ui.menu,name:base_laser.res_partner_partner_menu
+msgid "Partner"
+msgstr "Partner"
+
+#. module: base_laser
+#: field:res.partner.contact,internal_ref:0
+msgid "Referente aziendale"
+msgstr "Referente aziendale"
+
+#. module: base_laser
+#: field:res.partner,cciaanumber:0
+msgid "Numero iscrizione CCIAA"
+msgstr "Numero iscrizione CCIAA"
+
+#. module: base_laser
+#: model:ir.ui.menu,name:base_laser.res_partner_dimension_menu
+msgid "Dimensioni azienda"
+msgstr "Dimensioni azienda"
+
