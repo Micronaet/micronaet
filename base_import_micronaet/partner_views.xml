@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <record id='view_partner_add_fiam_fields' model='ir.ui.view'>
+        <field name='name'>Partner extra field</field>
+        <field name='model'>res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+              <field name="vat" position="before">
+                 <field name="fiscal_id_code"/>
+                 <newline />
+              </field>
+              <xpath expr="/form/notebook/page[@string='Notes']" position="inside">
+                  <newline />
+                  <field name="mexal_c" />
+                  <field name="mexal_s" />
+              </xpath>
+        </field>
+    </record>
+
+   <!--BLOCCO: inherit res.partner:-->
+   <!--<record model="ir.ui.view" id="view_partner_form_inherit_mexal_id">
+        <field name="name">Partner mexal</field>
+        <field name="model">res.partner</field>
+        <!-<field name="inherit_id" ref="base.view_partner_form"/>->
+        <field name="inherit_id" ref="base_contact.view_partner_form_inherit"/>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+               <field name="email" position="after">
+                  <field name="mexal_c" />
+                  <field name="mexal_s" />
+               </field>
+        </field>
+    </record>-->
+
+    <record model="ir.ui.view" id="view_res_partner_tree_filter_mexal_id">
+            <field name="name">Partner filter mexal</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+               <field name="name" position="after">
+                      <field name="ref" />
+               </field>
+            </field>
+    </record>
+    
+</data>
+</openerp>
+

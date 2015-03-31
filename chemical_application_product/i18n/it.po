@@ -1,0 +1,133 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* chemical_application_product
+# <> <>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 6.0.3\n"
+"Report-Msgid-Bugs-To: support@openerp.com\n"
+"POT-Creation-Date: 2012-07-02 15:23+0000\n"
+"PO-Revision-Date: 2012-07-02 17:43+0200\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: chemical_application_product
+#: view:chemical.application:0 view:chemical.application.line:0
+msgid "Application description"
+msgstr "Descrizione applicazione"
+
+#. module: chemical_application_product
+#: field:chemical.application,partner_id:0
+#: field:chemical.application.line,partner_id:0
+msgid "Partner"
+msgstr "Partner"
+
+#. module: chemical_application_product
+#: view:chemical.application:0 field:chemical.application,user_id:0
+msgid "Responsible"
+msgstr "Responsabile"
+
+#. module: chemical_application_product
+#: field:chemical.application,supervisor_id:0
+msgid "Supervisor"
+msgstr "Supervisore"
+
+#. module: chemical_application_product
+#: model:ir.model,name:chemical_application_product.model_chemical_application
+msgid "Chemical Application"
+msgstr "Applicazione chimica"
+
+#. module: chemical_application_product
+#: view:chemical.application:0
+msgid "Group By..."
+msgstr "Raggruppa per..."
+
+#. module: chemical_application_product
+#: help:chemical.application.line,valutation:0
+msgid "General valutation for product usage, positive or negative"
+msgstr "Valutazione generale in base all'uso del prodotto, positiva o negativa"
+
+#. module: chemical_application_product
+#: field:chemical.application,product_id:0
+#: field:chemical.application.line,product_id:0
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: chemical_application_product
+#: field:chemical.application,mexal_age_description:0
+msgid "Agent"
+msgstr "Agente"
+
+#. module: chemical_application_product
+#: help:chemical.application.line,note:0
+msgid "Internal information/annotation about this use"
+msgstr "Informazioni interne / annotazioni circa l'uso fatto"
+
+#. module: chemical_application_product
+#: view:chemical.application:0 view:chemical.application.line:0
+#: field:chemical.application.line,note:0
+msgid "Note"
+msgstr "Note"
+
+#. module: chemical_application_product
+#: field:chemical.application,line_ids:0
+#: field:chemical.application.line,application_id:0
+#: field:chemical.application.line,name:0
+msgid "Application"
+msgstr "Applicazione"
+
+#. module: chemical_application_product
+#: field:chemical.application.line,date_end:0
+msgid "To date"
+msgstr "Alla data"
+
+#. module: chemical_application_product
+#: field:chemical.application,number_of_application:0
+msgid "# of apps"
+msgstr "# di appl."
+
+#. module: chemical_application_product
+#: view:chemical.application:0
+msgid "Uses"
+msgstr "Usi"
+
+#. module: chemical_application_product
+#: field:chemical.application.line,date:0
+msgid "From date"
+msgstr "Dalla data"
+
+#. module: chemical_application_product
+#: view:chemical.application:0 view:chemical.application.line:0
+#: model:ir.actions.act_window,name:chemical_application_product.action_chemical_application
+#: model:ir.ui.menu,name:chemical_application_product.menu_action_chemical_application
+msgid "Chemical application"
+msgstr "Applicazione chimica"
+
+#. module: chemical_application_product
+#: view:chemical.application:0
+msgid "No Responsibile"
+msgstr "Senza responsabile"
+
+#. module: chemical_application_product
+#: view:chemical.application.line:0
+#: model:ir.actions.act_window,name:chemical_application_product.action_chemical_application_line
+#: model:ir.model,name:chemical_application_product.model_chemical_application_line
+#: model:ir.ui.menu,name:chemical_application_product.menu_action_chemical_application_line
+msgid "Chemical application line"
+msgstr "Linea applicazione chimica"
+
+#. module: chemical_application_product
+#: view:chemical.application:0 view:chemical.application.line:0
+#: field:chemical.application.line,valutation:0
+msgid "Valutation"
+msgstr "Valutazione"
+
+#. module: chemical_application_product
+#: view:chemical.application:0
+msgid "No application"
+msgstr "Nessuna applicazione"

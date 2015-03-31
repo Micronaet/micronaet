@@ -1,0 +1,507 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* hr_assign_equipment
+# <> <>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 6.0.3\n"
+"Report-Msgid-Bugs-To: support@openerp.com\n"
+"POT-Creation-Date: 2012-06-06 12:56+0000\n"
+"PO-Revision-Date: 2012-06-06 15:06+0200\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_assign_equipment
+#: model:ir.actions.act_window,name:hr_assign_equipment.open_module_tree_res_car_service
+#: model:ir.model,name:hr_assign_equipment.model_res_car_service
+#: view:res.car.service:0
+msgid "Service"
+msgstr "Servizio"
+
+#. module: hr_assign_equipment
+#: model:ir.model,name:hr_assign_equipment.model_res_telepass
+#: field:res.car,telepass:0 field:res.car,telepass_ids:0
+msgid "Telepass"
+msgstr "Telepass"
+
+#. module: hr_assign_equipment
+#: view:res.car.document:0 field:res.car.document,comments:0
+msgid "Comments"
+msgstr "Commenti"
+
+#. module: hr_assign_equipment
+#: field:res.car,plate:0
+msgid "Plate ID or S/N"
+msgstr "Targa o S/N"
+
+#. module: hr_assign_equipment
+#: view:res.car.document:0 field:res.car.document,name:0
+msgid "Document"
+msgstr "Documento"
+
+#. module: hr_assign_equipment
+#: code:addons/hr_assign_equipment/res_car.py:262
+#, python-format
+msgid "Cannot assign Car which start date is different then current date!"
+msgstr "Non è possibile assegnare equipaggiamenti con una data diversa da oggi"
+
+#. module: hr_assign_equipment
+#: model:ir.model,name:hr_assign_equipment.model_res_car_type
+msgid "Car Types"
+msgstr "Tipi di macchine"
+
+#. module: hr_assign_equipment
+#: selection:res.car.contract,state:0
+msgid "Released"
+msgstr "Rilascia"
+
+#. module: hr_assign_equipment
+#: model:ir.actions.act_window,name:hr_assign_equipment.action_car_deadline_dashboard
+msgid "Deadlined documents"
+msgstr "Scadenze documenti"
+
+#. module: hr_assign_equipment
+#: model:ir.ui.menu,name:hr_assign_equipment.menu_equipment_materials
+msgid "Materials and equipment"
+msgstr "Materiali ed equipaggiamenti"
+
+#. module: hr_assign_equipment
+#: field:res.car.document,valid_start_date:0
+#: field:res.car.document.expiry.bymonth,date_from:0
+msgid "Valid Start Date"
+msgstr "Data partenza valida"
+
+#. module: hr_assign_equipment
+#: field:hr.employee,car_id:0
+#: model:ir.model,name:hr_assign_equipment.model_res_car
+#: model:ir.ui.menu,name:hr_assign_equipment.menu_config_res_equipment_car
+#: view:res.car:0 selection:res.car,typology:0 field:res.car.contract,car_id:0
+#: field:res.car.document,car_id:0 field:res.car.km,car_id:0
+#: field:res.car.service,car_id:0 field:res.telepass,car_id:0
+msgid "Car"
+msgstr "Macchina"
+
+#. module: hr_assign_equipment
+#: view:res.car:0
+msgid "Notes"
+msgstr "Annotazioni"
+
+#. module: hr_assign_equipment
+#: constraint:hr.employee:0
+msgid ""
+"Error ! You cannot select a department for which the employee is the manager."
+msgstr ""
+"Errore ! Non è possibile selezionare un dipartimento di cui il dipendente è "
+"manager."
+
+#. module: hr_assign_equipment
+#: view:hr.employee:0 view:res.car.contract:0
+msgid "Release"
+msgstr "Rilascia"
+
+#. module: hr_assign_equipment
+#: model:ir.actions.act_window,name:hr_assign_equipment.open_module_tree_res_equipment
+#: model:ir.ui.menu,name:hr_assign_equipment.menu_res_car_tree
+msgid "Equipment list"
+msgstr "Lista equipaggiamenti"
+
+#. module: hr_assign_equipment
+#: model:ir.actions.act_window,name:hr_assign_equipment.open_module_tree_res_car_service_type
+#: model:ir.ui.menu,name:hr_assign_equipment.menu_res_car_service_type_tree
+#: view:res.car.service.type:0 field:res.car.service.type,name:0
+msgid "Service Type"
+msgstr "Tipo di servizio"
+
+#. module: hr_assign_equipment
+#: model:ir.actions.act_window,name:hr_assign_equipment.open_module_tree_res_equipment_car
+msgid "Car list"
+msgstr "Lista vetture"
+
+#. module: hr_assign_equipment
+#: model:ir.model,name:hr_assign_equipment.model_res_car_document
+msgid "Car Document"
+msgstr "Documenti vetture"
+
+#. module: hr_assign_equipment
+#: constraint:res.car.contract:0
+msgid "Error! Contract Start and End dates are not valid"
+msgstr "Errore! Data inizio o fine contratto non valide"
+
+#. module: hr_assign_equipment
+#: model:ir.model,name:hr_assign_equipment.model_res_car_service_type
+msgid "Service Types"
+msgstr "Tipi di servizio"
+
+#. module: hr_assign_equipment
+#: view:res.car:0
+msgid "Car Fuel History"
+msgstr "Storico rifornimenti"
+
+#. module: hr_assign_equipment
+#: view:res.car:0 field:res.car,documents_ids:0 view:res.car.document:0
+msgid "Documents"
+msgstr "Documenti"
+
+#. module: hr_assign_equipment
+#: selection:res.car,typology:0
+msgid "portable"
+msgstr "cellulare"
+
+#. module: hr_assign_equipment
+#: model:ir.ui.menu,name:hr_assign_equipment.menu_config_res_equipment_generic
+#: view:res.car:0 selection:res.car,typology:0
+msgid "Generic"
+msgstr "Generici"
+
+#. module: hr_assign_equipment
+#: help:res.car,plate:0
+msgid ""
+"Identification numbero for equipment, plate for car, S/N for portable or PC "
+"etc"
+msgstr ""
+"Numero identificativo per equipaggiamento, targa per macchina, S/N per "
+"cellulare o PC ecc."
+
+#. module: hr_assign_equipment
+#: model:ir.ui.menu,name:hr_assign_equipment.menu_equipment_root
+msgid "Equipment"
+msgstr "Equipaggiamento"
+
+#. module: hr_assign_equipment
+#: field:res.car.contract,state:0
+msgid "State"
+msgstr "Stato"
+
+#. module: hr_assign_equipment
+#: model:ir.model,name:hr_assign_equipment.model_hr_employee
+#: field:res.car,current_driver:0 field:res.car,employee_id:0
+#: field:res.car.contract,employee_id:0
+msgid "Employee"
+msgstr "Dipendente"
+
+#. module: hr_assign_equipment
+#: field:res.car,car_type_id:0 field:res.car.service,service_type_id:0
+msgid "Type"
+msgstr "Tipo"
+
+#. module: hr_assign_equipment
+#: model:ir.ui.menu,name:hr_assign_equipment.menu_config_res_equipment_pc
+#: view:res.car:0 selection:res.car,typology:0
+msgid "PC"
+msgstr "PC"
+
+#. module: hr_assign_equipment
+#: field:res.car,telephone_company:0
+msgid "Telephone company"
+msgstr "Compagnia telefonica"
+
+#. module: hr_assign_equipment
+#: model:ir.ui.menu,name:hr_assign_equipment.menu_equipment_configuration
+msgid "Configuration"
+msgstr "Configurazione"
+
+#. module: hr_assign_equipment
+#: field:res.car.service,required_next_service:0
+#: field:res.car.service.type,required_next_service:0
+msgid "Have next service ?"
+msgstr "Ha un prossimo servizio?"
+
+#. module: hr_assign_equipment
+#: view:board.board:0
+msgid "My equipment list"
+msgstr "Lista miei equipaggiamenti"
+
+#. module: hr_assign_equipment
+#: field:res.car.service,spent:0 field:res.telepass,spent:0
+msgid "Spent"
+msgstr "Spese"
+
+#. module: hr_assign_equipment
+#: view:res.car.document.type:0
+msgid "Define document type"
+msgstr "Definisci tipo di documento"
+
+#. module: hr_assign_equipment
+#: model:ir.ui.menu,name:hr_assign_equipment.menu_config_res_equipment_portable
+#: view:res.car:0
+msgid "Portable"
+msgstr "Cellulare"
+
+#. module: hr_assign_equipment
+#: model:ir.model,name:hr_assign_equipment.model_res_car_document_type
+msgid "Documents Types"
+msgstr "Tipi di documento"
+
+#. module: hr_assign_equipment
+#: model:ir.actions.act_window,name:hr_assign_equipment.action_res_car_document_expire_bymonth
+msgid "Document Expire Report Monthly"
+msgstr "Scadenza documenti mensile"
+
+#. module: hr_assign_equipment
+#: field:res.car.document,valid_end_date:0
+#: field:res.car.document.expiry.bymonth,date_to:0
+msgid "Valid End Date"
+msgstr "Data valide termine "
+
+#. module: hr_assign_equipment
+#: view:res.car:0
+msgid "Car Services"
+msgstr "Servizi vetture"
+
+#. module: hr_assign_equipment
+#: field:res.car.contract,start_date:0
+msgid "Start Date"
+msgstr "Data inizio"
+
+#. module: hr_assign_equipment
+#: field:res.car,note:0 field:res.car.km,note:0 field:res.car.service,note:0
+#: field:res.telepass,note:0
+msgid "Note"
+msgstr "Note"
+
+#. module: hr_assign_equipment
+#: view:res.car.contract:0
+msgid "Assign Auto"
+msgstr "Assegna auto"
+
+#. module: hr_assign_equipment
+#: selection:res.car.contract,state:0
+msgid "Draft"
+msgstr "Bozza"
+
+#. module: hr_assign_equipment
+#: field:res.car,service_ids:0
+msgid "Servcies"
+msgstr "Servizi"
+
+#. module: hr_assign_equipment
+#: model:ir.actions.act_window,name:hr_assign_equipment.open_module_tree_res_equipment_pc
+msgid "PC list"
+msgstr "Lista PC"
+
+#. module: hr_assign_equipment
+#: view:res.car:0
+msgid "Cars"
+msgstr "Vetture"
+
+#. module: hr_assign_equipment
+#: field:res.car,fuel_card_number:0
+msgid "Fuel card number"
+msgstr "Numero carta carburanti"
+
+#. module: hr_assign_equipment
+#: view:hr.employee:0 field:hr.employee,contract_ids:0
+msgid "Car History"
+msgstr "Storico vetture"
+
+#. module: hr_assign_equipment
+#: view:board.board:0
+#: model:ir.actions.act_window,name:hr_assign_equipment.action_board_car_deadline
+msgid "Dashboard Equipment"
+msgstr "Dashboard equipaggiamenti"
+
+#. module: hr_assign_equipment
+#: field:res.car.contract,isactive:0 field:res.car.document,active:0
+msgid "Active"
+msgstr "Attivo"
+
+#. module: hr_assign_equipment
+#: model:ir.actions.act_window,name:hr_assign_equipment.open_module_tree_res_equipment_generic
+msgid "Generic list"
+msgstr "Lista generici"
+
+#. module: hr_assign_equipment
+#: view:res.car.document.expiry.bymonth:0
+msgid "Print Document Expiry Report Monthly"
+msgstr "Stampa report scadenze mensili"
+
+#. module: hr_assign_equipment
+#: constraint:hr.employee:0
+msgid "Error ! You cannot create recursive Hierarchy of Employees."
+msgstr "Errore ! Non è possibile creare una gerarchia ricorsiva di dipendenti"
+
+#. module: hr_assign_equipment
+#: model:ir.actions.act_window,name:hr_assign_equipment.open_module_tree_res_car_contract
+#: model:ir.ui.menu,name:hr_assign_equipment.menu_res_car_contract_tree
+msgid "My equipment"
+msgstr "I miei equipaggiamenti"
+
+#. module: hr_assign_equipment
+#: field:res.car.service,next_service_km:0
+msgid "Next service in km"
+msgstr "Prossimo servizio in Km"
+
+#. module: hr_assign_equipment
+#: model:ir.model,name:hr_assign_equipment.model_res_car_contract
+#: view:res.car:0
+msgid "Contract"
+msgstr "Contratti"
+
+#. module: hr_assign_equipment
+#: field:res.car.km,date:0 field:res.car.service,service_date:0
+#: field:res.telepass,date:0
+msgid "Date"
+msgstr "Data"
+
+#. module: hr_assign_equipment
+#: view:hr.employee:0 view:res.car.contract:0
+msgid "Assign"
+msgstr "Assegna"
+
+#. module: hr_assign_equipment
+#: field:res.car.document.type,code:0 field:res.car.type,code:0
+msgid "Code"
+msgstr "Codice"
+
+#. module: hr_assign_equipment
+#: field:res.car,number:0
+msgid "Number"
+msgstr "Numero"
+
+#. module: hr_assign_equipment
+#: field:res.car.km,month_fuel_cost:0
+msgid "Monthly Fuel Cost"
+msgstr "Costo mensile rifornimento"
+
+#. module: hr_assign_equipment
+#: selection:res.car.contract,state:0
+msgid "Assigned"
+msgstr "Assegnata"
+
+#. module: hr_assign_equipment
+#: sql_constraint:res.car:0
+msgid "Plate name must be unique !"
+msgstr "Il numero di targa/ID deve essere univoco!"
+
+#. module: hr_assign_equipment
+#: view:res.car.document.expiry.bymonth:0
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: hr_assign_equipment
+#: constraint:res.car.service:0
+msgid "Error! Please enter the next service Km."
+msgstr "Errore! Prego inserire il prossimo servizio al km"
+
+#. module: hr_assign_equipment
+#: model:ir.actions.act_window,name:hr_assign_equipment.open_module_tree_res_equipment_portable
+msgid "Portable list"
+msgstr "Lista cellullari"
+
+#. module: hr_assign_equipment
+#: field:res.car,typology:0
+msgid "Tipology"
+msgstr "Tipologia"
+
+#. module: hr_assign_equipment
+#: view:res.car.document.expiry.bymonth:0
+msgid "Print"
+msgstr "Stampa"
+
+#. module: hr_assign_equipment
+#: view:res.car.document:0
+msgid "Details"
+msgstr "Dettagli"
+
+#. module: hr_assign_equipment
+#: model:ir.actions.act_window,name:hr_assign_equipment.open_module_tree_res_car_type
+#: model:ir.ui.menu,name:hr_assign_equipment.menu_res_car_type_tree
+#: view:res.car.type:0
+msgid "Car Type"
+msgstr "Tipo di vettura"
+
+#. module: hr_assign_equipment
+#: model:ir.actions.act_window,name:hr_assign_equipment.open_module_tree_document
+#: model:ir.ui.menu,name:hr_assign_equipment.menu_res_car_document_tree
+msgid "Car's Documents"
+msgstr "Documenti vetture"
+
+#. module: hr_assign_equipment
+#: constraint:res.car.document:0
+msgid "Error! Documents start date must be lower then contract end date."
+msgstr ""
+"Errore! La data iniziale del documento deve essere minore della data termine"
+
+#. module: hr_assign_equipment
+#: view:res.car.contract:0
+msgid "Impegno"
+msgstr "Impegno"
+
+#. module: hr_assign_equipment
+#: field:res.car,generic_ref:0 field:res.car,pc_ref:0
+msgid "Ref."
+msgstr "Rif."
+
+#. module: hr_assign_equipment
+#: model:ir.model,name:hr_assign_equipment.model_res_car_document_expiry_bymonth
+msgid "Print Monthly Document Expiry Report"
+msgstr "Stampa documento scadenze mensili"
+
+#. module: hr_assign_equipment
+#: field:res.car.contract,end_date:0
+msgid "End Date"
+msgstr "Data fine"
+
+#. module: hr_assign_equipment
+#: field:res.car.type,name:0
+msgid "Name"
+msgstr "Nome"
+
+#. module: hr_assign_equipment
+#: model:ir.actions.act_window,name:hr_assign_equipment.open_module_tree_res_car_km
+#: model:ir.model,name:hr_assign_equipment.model_res_car_km
+#: field:res.car,km_ids:0 view:res.car.km:0 field:res.car.km,km:0
+#: field:res.car.service,km:0
+msgid "Km"
+msgstr "Km"
+
+#. module: hr_assign_equipment
+#: field:res.car,contract_ids:0
+msgid "Employee History"
+msgstr "Storico impiegato"
+
+#. module: hr_assign_equipment
+#: model:ir.actions.act_window,name:hr_assign_equipment.open_module_tree_res_car_contract_admin
+#: model:ir.ui.menu,name:hr_assign_equipment.menu_res_car_contract_tree_admin
+msgid "All Assigned Equipment"
+msgstr "Tutti gli equipaggiamenti assegnati"
+
+#. module: hr_assign_equipment
+#: field:res.car,model:0
+msgid "Model"
+msgstr "Modello"
+
+#. module: hr_assign_equipment
+#: view:board.board:0
+msgid "Deadline documents"
+msgstr "Documenti in scadenza"
+
+#. module: hr_assign_equipment
+#: view:res.car:0
+msgid "Telepass History"
+msgstr "Storico telepass"
+
+#. module: hr_assign_equipment
+#: code:addons/hr_assign_equipment/res_car.py:262
+#, python-format
+msgid "Invalid Could Not Be Performed !"
+msgstr "Invalido non può essere eseguito!"
+
+#. module: hr_assign_equipment
+#: field:res.car.document,has_date_option:0
+#: field:res.car.document.type,has_date_option:0
+msgid "Has date options ?"
+msgstr "Obbligo di range date?"
+
+#. module: hr_assign_equipment
+#: model:ir.actions.act_window,name:hr_assign_equipment.open_module_tree_document_type
+#: model:ir.ui.menu,name:hr_assign_equipment.menu_res_car_document_type_tree
+#: field:res.car.document,document_type_id:0 view:res.car.document.type:0
+#: field:res.car.document.type,name:0
+msgid "Document Type"
+msgstr "Tipo documento"

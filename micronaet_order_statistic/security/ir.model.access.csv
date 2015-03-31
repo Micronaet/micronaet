@@ -1,0 +1,5 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_statistic_order_manager","statistic.order","model_statistic_order","base.group_sale_manager",1,1,1,1
+"access_statistic_deadline_manager","statistic.deadline","model_statistic_deadline","base.group_sale_manager",1,1,1,1
+"access_statistic_trend_manager","statistic.trend","model_statistic_trend","base.group_sale_manager",1,1,1,1
+

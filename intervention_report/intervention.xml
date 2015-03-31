@@ -1,0 +1,409 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    <!-- inherit view-->
+    <record id='view_partner_add_fiam_fields' model='ir.ui.view'>
+        <field name='name'>Partner extra field</field>
+        <field name='model'>res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+            <xpath expr="/form/notebook/page[@string='Notes']/field" position="after">
+                 <separator string="Intervent parameter:" colspan="4" />
+                 <group colspan="4" col="6">
+                    <field name="trip_duration"  widget="float_time"/>
+                    <field name="has_contract"/>
+                    <field name="hour_contract" attrs="{'invisible':[('has_contract','=',False)]}" widget="float_time"/>
+                 </group>
+            </xpath>  
+              <!--<xpath expr="/form/notebook/page[@string='Notes']" position="inside">
+                  <newline />
+                  <field name="mexal_c" />
+                  <field name="mexal_s" />
+              </xpath>-->
+        </field>
+    </record>
+    
+    <!-- intervention.type -->
+       <!-- Search -->
+    <record model="ir.ui.view" id="view_intervention_type_search">
+        <field name="name">intervention.type.search</field>
+        <field name="model">intervention.type</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Intervention type">
+                <group col="10" colspan="4">
+                    <field name="name" string="Order"/>
+                </group>
+                <newline/>
+                <group expand="0" string="Group By..." colspan="14">
+                    <filter string="Invoice" icon="terp-stock_symbol-selection" domain="[]" context="{'group_by':'invoice'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+       <!-- Form -->
+    <record model="ir.ui.view" id="view_intervention_type_form">
+        <field name="name">intervention.type.form</field>
+        <field name="model">intervention.type</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Intervention type Form">
+                <field name="invoice"/>
+                <field name="name" />
+            </form>
+        </field>
+    </record>
+
+       <!-- Tree -->
+    <record model="ir.ui.view" id="view_intervention_type_tree">
+        <field name="name">intervention.type.tree</field>
+        <field name="model">intervention.type</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Intervention type Tree">
+                <field name="invoice"/>
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+    
+       <!-- Action -->
+    <record model="ir.actions.act_window" id="action_intervention_type">
+        <field name="name">Intervention type</field>
+        <field name="res_model">intervention.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_intervention_type_search"/>
+    </record>
+
+       <!-- Menu -->
+    <menuitem name="Intervention report" 
+              id="menu_base_intervention" 
+              sequence="5" 
+              /> <!--parent="base.menu_base_partner" -->
+    
+    <menuitem name="Configuration" id="menu_base_intervention_configuration" sequence="99" parent="menu_base_intervention" />
+        <menuitem name="Intervention type" parent="menu_base_intervention_configuration" id="menu_base_intervention_configuration_type" sequence="1" action="action_intervention_type" />
+
+    <!-- intervention.sector -->
+       <!-- Search -->
+    <record model="ir.ui.view" id="view_intervention_sector_search">
+        <field name="name">intervention.sector.search</field>
+        <field name="model">intervention.sector</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Intervention sector">
+                <group col="10" colspan="4">
+                    <field name="name" string="Sector"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+       <!-- Form -->
+    <record model="ir.ui.view" id="view_intervention_sector_form">
+        <field name="name">intervention.sector.form</field>
+        <field name="model">intervention.sector</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Intervention sector Form">
+                <field name="name" />
+                <field name="product_id" />
+                <separator string="Note" colspan="4" />
+                <field name="note" colspan="4" nolabel="1" />
+            </form>
+        </field>
+    </record>
+
+       <!-- Tree -->
+    <record model="ir.ui.view" id="view_intervention_sector_tree">
+        <field name="name">intervention.sector.tree</field>
+        <field name="model">intervention.sector</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Intervention sector Tree">
+                <field name="name" />
+                <field name="product_id" />
+            </tree>
+        </field>
+    </record>
+    
+       <!-- Action -->
+    <record model="ir.actions.act_window" id="action_intervention_sector">
+        <field name="name">Intervention sector</field>
+        <field name="res_model">intervention.sector</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_intervention_sector_search"/>
+    </record>
+
+       <!-- Menu -->
+        <menuitem name="Intervention sector" parent="menu_base_intervention_configuration" id="menu_base_intervention_configuration_sector" sequence="20" action="action_intervention_sector" />
+
+    <!-- intervention.report -->
+       <!-- Search -->
+    <record model="ir.ui.view" id="view_intervention_report_search">
+        <field name="name">intervention.report.search</field>
+        <field name="model">intervention.report</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Intervention report">
+                <group col="10" colspan="4">
+                    <filter string="No ref" icon="terp-stock_symbol-selection" domain="[('ref','=',False)]"/>
+
+                    <field name="imported" />
+                    <field name="name" string="Description"/>
+                    <field name="partner_id" string="Partner"/>
+                    <field name="date_start" string="Date"/>
+                    <field name="mode" string="Date"/>
+                    <field name="user_id" string="User"/>
+                </group>
+                <newline/>
+                <group expand="0" string="Group By..." colspan="14">
+                    <filter string="Partner" icon="terp-stock_symbol-selection" domain="[]" context="{'group_by':'partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+       <!-- Graph -->
+    <record model="ir.ui.view" id="view_intervention_report_graph">
+        <field name="name">intervention.report.graph</field>
+        <field name="model">intervention.report</field>
+           <field name="type">graph</field>
+           <field name="arch" type="xml">
+               <graph string="Intervet per customer (graph)" type="bar">
+                   <field name="partner_id"/>
+                   <field name="hour_contract" operator="min" string="Hours of annual contract" />
+                   <field name="total" operator="+" string="Hours of intervent"/>
+               </graph>
+           </field>
+    </record>
+
+       <!-- Form -->
+    <record model="ir.ui.view" id="view_intervention_report_form">
+        <field name="name">intervention.report.form</field>
+        <field name="model">intervention.report</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Intervention report Form">
+                <field name="name" default_focus="1" colspan="4" on_change="on_change_name(name,intervention_request)"/>
+                <newline />
+                <field name="partner_id" on_change="on_change_compute_total_hour(duration, trip_require, trip_hour, partner_id, break_require, break_hour, manual_total)"/>
+                <field name="tipology" />       
+                <field name="user_id" />
+                <field name="mode" />                
+                
+                <notebook colspan="4">
+                   <page string="Appointment">
+                     <field name="date_start" />
+                     <field name="duration" widget="float_time" on_change="on_change_compute_total_hour(duration, trip_require, trip_hour, partner_id, break_require, break_hour, manual_total)"/>
+                     <separator string="Intervention request" colspan="4" />
+                     <field name="intervention_request" nolabel="1" colspan="4" />
+                   </page>
+                   <page string="Intervent" attrs="{'invisible': [('state', 'not in', ['confirmed','reported','close'])]}"> 
+                      <field name="ref" /><newline />
+                      
+                      <separator string="Intervention" colspan="4" />
+                      <field name="intervention" nolabel="1" colspan="4" />
+
+                      <separator string="Intervent data:" colspan="4" />
+                      <group colspan="2" col="4">
+                        <field name="trip_require" on_change="on_change_compute_total_hour(duration, trip_require, trip_hour, partner_id, break_require, break_hour, manual_total)"/>
+                        <field name="trip_hour" attrs="{'invisible':[('trip_require','=',False)]}" widget="float_time" on_change="on_change_compute_total_hour(duration, trip_require, trip_hour, partner_id, break_require, break_hour, manual_total)" />
+                      </group>
+                      <group colspan="2" col="4">
+                        <field name="break_require" on_change="on_change_compute_total_hour(duration, trip_require, trip_hour, partner_id, break_require, break_hour, manual_total)" />
+                        <field name="break_hour" attrs="{'invisible':[('break_require','=',False)]}" widget="float_time" on_change="on_change_compute_total_hour(duration, trip_require, trip_hour, partner_id, break_require, break_hour, manual_total)" />
+                      </group>
+                      <group colspan="2" col="8">
+                        <field name="type_id" />
+                        <field name="sector_id" />
+                        <field name="total" widget="float_time" />
+                        <field name="manual_total" on_change="on_change_compute_total_hour(duration, trip_require, trip_hour, partner_id, break_require, break_hour, manual_total)" />
+                      </group>
+                   </page>
+                   
+                   <page string="Note">
+                        <separator string="Internal note" colspan="4" />
+                        <field name="internal_note" nolabel="1" colspan="4" />
+                   </page>
+                </notebook>
+
+                <group colspan="4" col="8">
+                    <field name="state" colspan="2" />
+                    <button name="intervention_draft" string="Draft" states="cancel" icon="gtk-go-back" />
+
+                    <button name="intervention_waiting" string="Waiting" states="draft" icon="gtk-execute" />
+                    <button name="intervention_confirmed" string="Confirmed" states="draft" icon="gtk-go-forward" />
+                    
+                    <button name="intervention_waiting_cancel" string="Cancel" states="waiting" icon="gtk-cancel" />
+                    <button name="intervention_reschedule" string="Reschedule" states="waiting" icon="gtk-go-back" />
+                    <button name="intervention_waiting_confirmed" string="Confirmed" states="waiting" icon="gtk-go-forward" />
+                    
+                    <button name="intervention_confirmed_cancel" string="Cancel" states="confirmed" icon="gtk-cancel" />
+                    <button name="intervention_report_close" string="Close with report" states="confirmed" icon="gtk-go-forward" />
+                    <button name="intervention_close" string="Close" states="confirmed" icon="gtk-ok" />                    
+                </group>
+            </form>
+        </field>
+    </record>
+
+       <!-- Tree -->
+    <record model="ir.ui.view" id="view_intervention_report_tree">
+        <field name="name">intervention.report.tree</field>
+        <field name="model">intervention.report</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Intervention report Tree" colors="grey:state in ('close','reporting')">
+                <field name="imported" />
+                <field name="name" />
+                <field name="partner_id" />
+                <field name="user_id" />
+                <field name="date_start" />
+                <field name="duration" />
+                <field name="mode" />
+                <field name="ref" />
+                <field name="state" />
+                    <button name="intervention_draft" string="Draft" states="cancel" icon="gtk-go-back" />
+
+                    <button name="intervention_waiting" string="Waiting" states="draft" icon="gtk-execute" />
+                    <button name="intervention_confirmed" string="Confirmed" states="draft" icon="gtk-go-forward" />
+                    
+                    <button name="intervention_waiting_cancel" string="Cancel" states="waiting" icon="gtk-cancel" />
+                    <button name="intervention_reschedule" string="Reschedule" states="waiting" icon="gtk-go-back" />
+                    <button name="intervention_waiting_confirmed" string="Confirmed" states="waiting" icon="gtk-go-forward" />
+                    
+                    <button name="intervention_confirmed_cancel" string="Cancel" states="confirmed" icon="gtk-cancel" />
+                    <button name="intervention_report_close" string="Close with report" states="confirmed" icon="gtk-go-forward" />
+                    <button name="intervention_close" string="Close" states="confirmed" icon="gtk-ok" />
+            </tree>
+        </field>
+    </record>
+    
+       <!-- Calendar -->
+    <record model="ir.ui.view" id="view_intervention_report_calendar">
+        <field name="name">intervention.report.calendar</field>
+        <field name="model">intervention.report</field>
+        <field name="type">calendar</field>
+        <field name="priority" eval="10"/>
+        <field name="arch" type="xml">
+            <calendar color="user_id" date_start="date_start" date_delay="duration" string="Intervention" mode="week">
+                <field name="partner_id"/>
+                <field name="name"/>
+                <field name="state"/>
+                <field name="mode"/>                
+            </calendar>
+        </field>
+    </record>    
+    <record model="ir.ui.view" id="view_intervention_report_insert_calendar">
+        <field name="name">intervention.report.insert.calendar</field>
+        <field name="model">intervention.report</field>
+        <field name="type">calendar</field>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+            <calendar color="state" date_start="date_start" date_delay="duration" string="Intervention" mode="week">
+                <field name="partner_id"/>
+                <field name="user_id"/>
+                <field name="name"/>
+                <field name="state"/>
+                <field name="mode"/>                
+            </calendar>
+        </field>
+    </record>    
+    <record model="ir.ui.view" id="view_intervention_report_state_calendar">
+        <field name="name">intervention.report.insert.calendar</field>
+        <field name="model">intervention.report</field>
+        <field name="type">calendar</field>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+            <calendar color="state" date_start="date_start" date_delay="duration" string="Intervention" mode="week">
+                <field name="user_id"/>
+                <field name="partner_id"/>
+                <field name="name"/>
+                <field name="mode"/>                
+            </calendar>
+        </field>
+    </record>    
+    <record model="ir.ui.view" id="view_intervention_report_location_calendar">
+        <field name="name">intervention.report.insert.calendar</field>
+        <field name="model">intervention.report</field>
+        <field name="type">calendar</field>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+            <calendar color="mode" date_start="date_start" date_delay="duration" string="Intervention" mode="week">
+                <field name="user_id"/>
+                <field name="partner_id"/>
+                <field name="name"/>
+                <field name="mode"/>                
+            </calendar>
+        </field>
+    </record>    
+    <record model="ir.ui.view" id="view_intervention_report_pay_calendar">
+        <field name="name">intervention.report.insert.calendar</field>
+        <field name="model">intervention.report</field>
+        <field name="type">calendar</field>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+            <calendar color="type_id" date_start="date_start" date_delay="duration" string="Intervention" mode="week">
+                <field name="user_id"/>
+                <field name="partner_id"/>
+                <field name="name"/>
+                <field name="mode"/>                
+            </calendar>
+        </field>
+    </record>    
+        
+       <!-- Action -->
+    <record model="ir.actions.act_window" id="action_intervention_report">
+        <field name="name">Intervention report user</field>
+        <field name="res_model">intervention.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">calendar,form,tree</field>
+        <field name="search_view_id" ref="view_intervention_report_search"/>
+    </record>
+    <record model="ir.actions.act_window" id="action_intervention_report_state_calendar">
+        <field name="name">Intervention report state calendar</field>
+        <field name="res_model">intervention.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">calendar,form,tree</field>
+        <field name="context">{'calendar_view_ref':'intervention_report.view_intervention_report_state_calendar'}</field>        
+        <field name="search_view_id" ref="view_intervention_report_search"/>
+    </record>
+    <record model="ir.actions.act_window" id="action_intervention_report_location_calendar">
+        <field name="name">Intervention report location calendar</field>
+        <field name="res_model">intervention.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">calendar,form,tree</field>
+        <field name="context">{'calendar_view_ref':'intervention_report.view_intervention_report_location_calendar'}</field>        
+        <field name="search_view_id" ref="view_intervention_report_search"/>
+    </record>
+    <record model="ir.actions.act_window" id="action_insert_intervention_report">
+        <field name="name">Insert intervention report</field>
+        <field name="res_model">intervention.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">calendar,form,tree</field>
+        <field name="context">{'calendar_view_ref':'intervention_report.view_intervention_report_insert_calendar'}</field>        
+        <field name="domain">[('user_id', '=', uid)]</field>
+        <field name="search_view_id" ref="view_intervention_report_search"/>
+    </record>
+    <record model="ir.actions.act_window" id="action_insert_intervention_pay_report">
+        <field name="name">Insert intervention report</field>
+        <field name="res_model">intervention.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">calendar,form,tree</field>
+        <field name="context">{'calendar_view_ref':'intervention_report.view_intervention_report_pay_calendar'}</field>        
+        <field name="domain">[('user_id', '=', uid)]</field>
+        <field name="search_view_id" ref="view_intervention_report_search"/>
+    </record>
+
+       <!-- Menu -->
+    <menuitem name="Rapportini intervento personali" parent="menu_base_intervention" id="menu_base_intervention_report_insert" sequence="10" action="action_insert_intervention_report" />        
+    <menuitem name="Evidenziati per utente" parent="menu_base_intervention_report_insert" id="menu_base_intervention_report" sequence="20" action="action_intervention_report" />        
+    <menuitem name="Evidenziati per stato" parent="menu_base_intervention_report_insert" id="menu_base_intervention_report_state_calendar" sequence="30" action="action_intervention_report_state_calendar" />        
+    <menuitem name="Evidenziati per luogo" parent="menu_base_intervention_report_insert" id="menu_base_intervention_report_location_calendar" sequence="40" action="action_intervention_report_location_calendar" />        
+    <menuitem name="Evidenziati per fatturazione" parent="menu_base_intervention_report_insert" id="menu_base_intervention_report_pay_calendar" sequence="50" action="action_insert_intervention_pay_report" />        
+    </data>
+</openerp>

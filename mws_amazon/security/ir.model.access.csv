@@ -1,0 +1,10 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_amazon_warranty_user","amazon.warranty","model_amazon_warranty","account.group_account_user",1,1,1,1
+"access_amazon_parameter_user","amazon.parameter","model_amazon_parameter","account.group_account_user",1,1,1,1
+"access_amazon_parameter_path_user","amazon.parameter.path","model_amazon_parameter_path","account.group_account_user",1,1,1,1
+"access_amazon_feed_user","amazon.feed","model_amazon_feed","account.group_account_user",1,1,1,1
+"access_amazon_product_category_user","amazon.product.category","model_amazon_product_category","account.group_account_user",1,1,1,1
+"access_amazon_subproduct_user","amazon.subproduct","model_amazon_subproduct","account.group_account_user",1,1,1,1
+"access_amazon_orders_user","amazon.orders","model_amazon_orders","account.group_account_user",1,1,1,1
+"access_amazon_order_lines_user","amazon.order.lines","model_amazon_order_lines","account.group_account_user",1,1,1,1
+

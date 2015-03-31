@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    <!-- extra view: -->
+    <record model="ir.ui.view" id="view_coal_product_graph">
+        <field name="name">product.product.graph</field>
+        <field name="model">product.product</field>
+        <field name="type">graph</field>
+        <field name="arch" type="xml">
+            <graph string="Coal graph" type="bar">
+                <field name="name"/>
+                <field name="qty_available" />
+            </graph>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_coal_product_tree">
+        <field name="name">product.product.tree</field>
+        <field name="model">product.product</field>
+        <field name="type">tree</field>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+           <tree colors="black:qty_available&gt;=10;red:qty_available&lt;1;" string="Coal list (red&lt;1 Tn - black&gt;10 tn">
+                    <field name="name"/>
+                    <field name="default_code"/>
+                    <field name="chemical_category_id"/>
+                    <field name="categ_id" invisible="1"/>
+                    <field name="uom_id" string="UoM"/>
+                    <field name="type"/>
+                    <field name="qty_available"/>
+                    <field name="virtual_available"/>
+                    <field name="lst_price"/>
+                    <field name="price" invisible="not context.get('pricelist',False)"/>
+                    <field name="standard_price"/>
+                    <field name="is_coal" invisible="1"/>
+                   <field name="state"/>
+                </tree>
+        </field>
+    </record>
+       
+    <record model="ir.actions.act_window" id="action_coal_product_graph_dashboard">
+        <field name="name">Coal product</field>
+        <field name="res_model">product.product</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph</field>
+        <!--<field name="search_view_id" ref="view_statistic_order_deadline_search"/>-->
+        <field name="domain">[('is_coal','=',True)]</field>
+    </record>
+    <record model="ir.actions.act_window" id="action_coal_product_tree_dashboard">
+        <field name="name">Coal product</field>
+        <field name="res_model">product.product</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_coal_product_tree" />
+        <!--<field name="search_view_id" ref="view_statistic_order_deadline_search"/>-->
+        <field name="domain">[('is_coal','=',True)]</field>
+    </record>
+   
+   <!-- Dashboard -->     
+   <record id="board_coal_product" model="ir.ui.view">
+        <field name="name">Coal Dashboard</field>
+        <field name="model">board.board</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Dashboard coal">
+                <vpaned position="800">
+                    <child1>
+                        <action colspan="4" name="%(action_coal_product_graph_dashboard)d" string="Coal product status graph" width="800" />
+                        <action colspan="4" name="%(action_coal_product_tree_dashboard)d" string="Coal product status" width="800" />
+                    </child1>
+                </vpaned>
+            </form>
+        </field>
+    </record>        
+    
+    <record id="action_coal_dashboard" model="ir.actions.act_window">
+        <field name="name">Coal Dashboard</field>
+        <field name="res_model">board.board</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="board_coal_product"/>
+    </record>        
+
+    <!-- MENUITEM -->
+    <!-- override per inserimento dashboard -->
+   <menuitem id="menu_coal_root"
+             name="Coal"
+             icon="terp-stock" 
+             sequence="0"
+             web_icon="images/coal.png"
+             web_icon_hover="images/coal-hover.png" 
+             action="action_coal_dashboard"
+             groups="coal_tax_exemption.group_coal_user,coal_tax_exemption.group_coal_manager" />
+    </data>
+</openerp>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+   <data>
+        <record id="group_coal_manager" model="res.groups">
+            <field name="name">Coal / Mananger</field>
+        </record>
+        <record id="group_coal_user" model="res.groups">
+            <field name="name">Coal / User</field>
+        </record>
+   </data>
+</openerp>        

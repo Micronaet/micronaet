@@ -1,0 +1,399 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <!-- INHERIT VIEWS: -->
+    <!--stock.move-->
+    <record id='view_move_form_extra' model='ir.ui.view'>
+        <field name='name'>Via move fields</field>
+        <field name='model'>stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_form" />
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+           <field name="address_id" position="after">
+               <field name="is_coal" invisible="1"/>
+               <field name="via_hygro" attrs="{invisible: [('is_coal','=',False)]}"/>
+               <field name="via_number" attrs="{invisible: [('is_coal','=',False)]}"/>
+           </field>
+        </field>
+    </record>       
+
+    <!--stock.picking-->
+    <record id='view_picking_out_search_add_fields' model='ir.ui.view'>
+        <field name='name'>Stock picking search fields</field>
+        <field name='model'>stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_out_search" />
+        <field name='type'>search</field>
+        <field name='arch' type='xml'>
+           <filter name="to_invoice" position="after">
+              <separator orientation="vertical"/>
+              <filter name="is_xab" icon="terp-check" string="XAB" domain="[('xab_number','!=',False)]" help="XAB doc."/>
+           </filter>           
+        </field>
+    </record>   
+    
+    <record id='view_picking_out_tree_add_fields' model='ir.ui.view'>
+        <field name='name'>Stock picking tree fields</field>
+        <field name='model'>stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_out_tree" />
+        <field name='type'>tree</field>
+        <field name='arch' type='xml'>
+           <field name="state" position="before">
+              <field name="xab_number" groups="account.group_account_manager"/>
+           </field>
+        </field>
+    </record>   
+    
+    <record id='view_picking_out_form_add_fields' model='ir.ui.view'>
+        <field name='name'>Stock picking fields</field>
+        <field name='model'>stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_out_form" />
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+           <field name="stock_journal_id" position="after">
+              <field name="xab_number" />
+           </field>
+        </field>
+    </record>       	 
+ 	
+    <record id='view_stock_picking_add_fields' model='ir.ui.view'>
+        <field name='name'>Stock picking fields</field>
+        <field name='model'>stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_in_form" />
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+           <xpath expr="/form/notebook/page/field[@name='move_lines']/tree/field[@name='location_dest_id']" position="after">
+              <field name="via_hygro" />
+              <field name="via_number" />
+           </xpath>
+           <xpath expr="/form/notebook/page/field[@name='move_lines']/form/group/field[@name='product_packaging']" position="after">
+              <field name="via_hygro" />
+              <field name="via_number" />              
+           </xpath>
+        </field>
+    </record>   
+
+    <!--mrp.production-->    
+    <record id='view_mrp_production_filter_via' model='ir.ui.view'>
+        <field name='name'>Search Via</field>
+        <field name='model'>mrp.production</field>
+        <field name="inherit_id" ref="mrp.view_mrp_production_filter" />
+        <field name='type'>search</field>
+        <field name='arch' type='xml'>
+           <field name="origin" position="after">
+               <field name="via_number" />
+           </field>
+        </field>
+    </record>       
+
+    <record id='mrp_production_tree_view_via' model='ir.ui.view'>
+        <field name='name'>Tree VIA</field>
+        <field name='model'>mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_tree_view" />
+        <field name='type'>tree</field>
+        <field name='arch' type='xml'>
+           <field name="origin" position="after">
+               <field name="via_number" />
+           </field>
+        </field>
+    </record>       
+
+    <record id='view_mrp_production_extra' model='ir.ui.view'>
+        <field name='name'>Via fields</field>
+        <field name='model'>mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view" />
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+           <field name="product_uos" position="after">
+               <field name="via_number" />
+               <button name="get_via_number" string="Assign VIA number" type="object" />
+           </field>
+        </field>
+    </record>       
+    
+    <!--res.partner-->
+    <record id='view_res_partner_extra' model='ir.ui.view'>
+        <field name='name'>Partner</field>
+        <field name='model'>res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+           <field name="lang" position="after">
+               <field name="combine_name" />
+               <field name="combine_name_internal" />
+           </field>
+        </field>
+    </record>   
+    <record id='view_res_partner_search_extra' model='ir.ui.view'>
+        <field name='name'>Partner</field>
+        <field name='model'>res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter" />  
+        <field name='type'>search</field>
+        <field name='arch' type='xml'>           
+           <field name="name" position="before">
+                  <separator orientation="vertical"/>
+                  <filter string="Dogane" name="dogane" icon="terp-personal" domain="['|',('combine_name','!=',False),('combine_name_internal','!=',False)]" />
+           </field>
+        </field>
+    </record>   
+        
+    <!--product.product-->
+    <record id='view_product_product_search_coal_fields' model='ir.ui.view'>
+        <field name='name'>Product search coal fields</field>
+        <field name='model'>product.product</field>
+        <field name="inherit_id" ref="product.product_search_form_view" />
+        <field name='type'>search</field>     
+        <field name='arch' type='xml'>
+           <field name="categ_id" position="after">
+               <field name="is_coal" />
+               <field name="combine_name" />
+           </field>
+        </field>
+    </record>   
+
+    <record id='view_product_product_coal_fields' model='ir.ui.view'>
+        <field name='name'>Product coal fields</field>
+        <field name='model'>product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+           <field name="purchase_ok" position="after">
+               <field name="is_coal" />
+           </field>
+           <field name="ean13" position="after">
+               <field name="combine_name" />
+               <field name="coal_type" attrs="{'invisible':[('is_coal','=',False)]}" />
+               <field name="combine_name_description" attrs="{'invisible':[('is_coal','=',False)]}" />               
+           </field>
+        </field>
+    </record>   
+
+    <record id='view_product_product_tree_coal_extra_fields' model='ir.ui.view'>
+        <field name='name'>Product tree coal fields</field>
+        <field name='model'>product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view" />
+        <field name='type'>tree</field>
+        <field name='arch' type='xml'>
+           <field name="state" position="before">
+               <field name="combine_name" string="NC (dog.)"/>
+           </field>
+        </field>
+    </record>   
+
+    <record id='view_product_product_tree_coal_fields' model='ir.ui.view'>
+        <field name='name'>Product tree coal fields</field>
+        <field name='model'>product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view" />
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+           <xpath expr="/tree" position="attributes">
+              <attribute name="colors">red:virtual_available&lt;0;blue:virtual_available&gt;=0 and state in ('draft','end','obsolete');black:virtual_available&gt;=0 and state not in ('draft','end','obsolete');green:is_coal</attribute>
+              <attribute name="string">Product (coal=green)</attribute>
+           </xpath>
+           <field name="state" position="before">
+              <field name="is_coal" invisible="1" />
+           </field>
+        </field>
+    </record>   
+
+    <!--NEW VIEWS-->
+    <!-- stock.location.type -->
+    <record id="view_stock_location_type_tree" model="ir.ui.view">
+        <field name="name">Stock location type</field>
+        <field name="model">stock.location.type</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Stock location type" editable="bottom">
+               <field name="name"/>
+               <field name="location_id"/>
+            </tree>
+        </field>    
+    </record>
+
+    <record model="ir.actions.act_window" id="action_stock_location_type">
+        <field name="name">Stock location type</field>
+        <field name="res_model">stock.location.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_stock_location_type_tree"/>
+    </record>
+
+    <record id="action_coal_move_form" model="ir.actions.act_window">
+        <field name="name">Stock coal moves</field>
+        <field name="res_model">stock.move</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="stock.view_move_tree"/>
+        <field name="domain">[('state','not in',('cancel','draft')),('is_coal','=',True)]</field>
+        <field name="search_view_id" ref="stock.view_move_search"/>
+    </record>
+    
+    <record id="action_configuration_sequence_number" model="ir.actions.act_window">
+        <field name="name">Coal sequences</field>
+        <field name="res_model">ir.sequence</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="domain">[('prefix','in',('VIA','XAB'))]</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <!--<field name="domain">[('state','not in',('cancel','draft')),('is_coal','=',True)]</field>-->
+    </record>
+    <!--seq_type_xab_number-->
+       
+    <!--MENUITEM-->
+   <menuitem id="menu_coal_root"
+             name="Coal"
+             icon="terp-stock" 
+             sequence="0"
+             web_icon="images/coal.png"
+             web_icon_hover="images/coal-hover.png" 
+             groups="coal_tax_exemption.group_coal_user,coal_tax_exemption.group_coal_manager" />
+
+        <menuitem id="menu_coal_rubrica_root"
+             name="Rubrica"
+             sequence="0"                 
+             parent="menu_coal_root" 
+             />
+
+            <menuitem id="menu_rubrica_clienti"
+                 name="Partner"
+                 action="base.action_partner_form"
+                 sequence="0"                 
+                 parent="menu_coal_rubrica_root" />
+
+        <menuitem id="menu_coal_production_root"
+             name="Production"
+             sequence="0"                 
+             parent="menu_coal_root" 
+             />
+             
+        <menuitem id="menu_coal_journal_root"
+             name="Coal movement and report"
+             sequence="0"                 
+             parent="menu_coal_root" 
+             />
+            <menuitem id="menu_coal_commercial_journal"
+                 name="Movement"
+                 sequence="1"                 
+                 parent="menu_coal_journal_root" 
+                 action="action_coal_move_form"
+                 />
+
+        <menuitem id="menu_coal_product_root"
+             name="Product"
+             sequence="0"                 
+             parent="menu_coal_root" 
+             />             
+            <menuitem id="menu_coal_product_product"
+                 name="Product"
+                 action="product.product_normal_action"
+                 sequence="0"                 
+                 parent="menu_coal_product_root" />  
+                       
+        <menuitem id="menu_coal_stock_root"
+             name="Stock"
+             sequence="0"                 
+             parent="menu_coal_root" 
+             />
+            <menuitem id="menu_coal_stock_in"
+                 name="Incoming shipment"
+                 action="stock.action_picking_tree4"
+                 sequence="2"                 
+                 parent="menu_coal_stock_root" />
+            <menuitem id="menu_coal_stock_internal"
+                 name="Internal movement"
+                 action="stock.action_picking_tree6"
+                 sequence="3"                 
+                 parent="menu_coal_stock_root" />
+            <menuitem id="menu_coal_stock_out"
+                 name="Outgoing shipment"
+                 action="stock.action_picking_tree"
+                 sequence="4"                 
+                 parent="menu_coal_stock_root" />
+            <menuitem id="menu_coal_stock_trace"
+                 name="Traceability"
+                 sequence="1"                 
+                 parent="menu_coal_stock_root" />       
+                <!--menuitem id="menu_coal_stock_trace_order"
+                     name="Product order"
+                     sequence="1"                 
+                     parent="menu_coal_stock_trace"           
+                     action="stock.action_move_form2" />-->                     
+                <menuitem id="menu_coal_stock_trace_movement"
+                     name="Stock movements"
+                     sequence="2"                 
+                     parent="menu_coal_stock_trace"           
+                     action="stock.action_move_form2" /> 
+                <menuitem id="menu_coal_stock_trace_lot"
+                     name="Lots"
+                     sequence="3"                 
+                     parent="menu_coal_stock_trace"           
+                     action="stock.action_production_lot_form" />    
+
+        <menuitem id="menu_coal_production_root"
+             name="Production"
+             sequence="0"                 
+             parent="menu_coal_root" 
+             />            
+             <menuitem id="menu_coal_production_bom"
+                 name="BOM"
+                 sequence="1"                 
+                 parent="menu_coal_production_root" />    
+                 <menuitem id="menu_coal_production_bom_bom"
+                     name="BOM"
+                     action="mrp.mrp_bom_form_action"
+                     sequence="1"                 
+                     parent="menu_coal_production_bom" />    
+                 <menuitem id="menu_coal_production_bom_component"
+                     name="BOM component"
+                     action="mrp.mrp_bom_form_action2"
+                     sequence="2"                 
+                     parent="menu_coal_production_bom" />                         
+                     
+             <menuitem id="menu_coal_production_in"
+                 name="Production order"
+                 action="mrp.mrp_production_action"
+                 sequence="2"                 
+                 parent="menu_coal_production_root" />    
+                 
+        <menuitem id="menu_configuration_root"
+             name="Configuration"
+             sequence="99" 
+             parent="menu_coal_root" 
+             groups="coal_tax_exemption.group_coal_manager,coal_tax_exemption.group_coal_user" />
+             <menuitem id="menu_configuration_defaul_location"
+                 name="Stock location default"
+                 sequence="10" 
+                 parent="menu_configuration_root" 
+                 action="action_stock_location_type"/>
+             <menuitem id="menu_configuration_sequence_number"
+                 name="Sequences"
+                 sequence="20" 
+                 parent="menu_configuration_root" 
+                 groups="account.group_account_manager"
+                 action="action_configuration_sequence_number"/>
+             
+             
+    <!-- DISABLE ALL MACRO AREA FOR ALL USER:-->       
+       <record id="base.menu_base_partner" model="ir.ui.menu">
+           <field name="groups_id" eval="[(6,0,[ref('coal_tax_exemption.group_coal_manager')])]"/>
+       </record>    
+       <record id="base.menu_main_pm" model="ir.ui.menu">
+           <field name="groups_id" eval="[(6,0,[ref('coal_tax_exemption.group_coal_manager')])]"/>
+       </record>           
+       <record id="account.menu_finance" model="ir.ui.menu">
+           <field name="groups_id" eval="[(6,0,[ref('coal_tax_exemption.group_coal_manager')])]"/>
+       </record>           
+       <record id="base.menu_main_pm" model="ir.ui.menu">
+           <field name="groups_id" eval="[(6,0,[ref('coal_tax_exemption.group_coal_manager')])]"/>
+       </record>           
+       <!--<record id="hr.menu_hr_root" model="ir.ui.menu">
+           <field name="groups_id" eval="[(6,0,[ref('contract_manage.group_contract_all_macro_group_manager')])]"/>
+       </record> -->
+       <record id="knowledge.menu_document" model="ir.ui.menu">
+           <field name="groups_id" eval="[(6,0,[ref('coal_tax_exemption.group_coal_manager')])]"/>
+       </record>           
+       <record id="base.menu_administration" model="ir.ui.menu">
+           <field name="groups_id" eval="[(6,0,[ref('coal_tax_exemption.group_coal_manager')])]"/>
+       </record>           
+</data>
+</openerp>
+

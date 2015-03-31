@@ -1,0 +1,408 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    <!--Inherit View:-->
+    <!--res.partner-->
+    <record model="ir.ui.view" id="view_res_partner_add_trend_form">
+        <field name="name">res.partner.trend.form</field>
+        <field name="model">res.partner</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+           <field name="supplier" position="after">
+              <field name="trend" />
+           </field>
+        </field>
+    </record>
+    
+    <!--Normal View:-->
+    <!-- Statistic Order: statistic.order-->
+       <!-- Search -->
+    <record model="ir.ui.view" id="view_statistic_order_search">
+        <field name="name">statistic.order.search</field>
+        <field name="model">statistic.order</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Statistic Order">
+                <group col="10" colspan="4">
+                    <field name="name" string="Order"/>
+                    <field name="partner_id"/>
+                    <field name="deadline"/>
+                </group>
+                <newline/>
+                <group expand="0" string="Group By..." colspan="14">
+                    <filter string="Partner" icon="terp-stock_symbol-selection" domain="[]" context="{'group_by':'partner_id'}"/>
+                    <filter string="Deadline" icon="terp-stock_symbol-selection" domain="[]" context="{'group_by':'deadline'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+       <!-- Form -->
+    <record model="ir.ui.view" id="view_statistic_order_form">
+        <field name="name">statistic.order.form</field>
+        <field name="model">statistic.order</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Statistic Order Form">
+                <field name="date" />
+                <field name="name" />
+                <field name="deadline"/>
+                <field name="partner_id"/>
+                <field name="total"/>
+                
+                <field name="code" />
+                <field name="quantity" />
+                <field name="type" />
+            </form>
+        </field>
+    </record>
+
+       <!-- Tree -->
+    <record model="ir.ui.view" id="view_statistic_order_tree">
+        <field name="name">statistic.order.tree</field>
+        <field name="model">statistic.order</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Statistic Order Tree" colors="green:type!=False">
+                <field name="date" />
+                <field name="name" />
+                <field name="deadline"/>
+                <field name="partner_id"/>
+                <field name="property_account_position" />                
+
+                <field name="code" />
+                <field name="quantity" sum="Art. tot." />
+                <field name="type" />
+            </tree>
+        </field>
+    </record>
+    
+       <!-- Calendar -->
+    <record model="ir.ui.view" id="view_statistic_order_calendar">
+        <field name="name">Order date</field>
+        <field name="model">statistic.order</field>
+        <field name="type">calendar</field>
+        <field name="arch" type="xml">
+            <calendar color="partner_id" date_start="date" string="Order">
+                <field name="calendar_description" />
+                <field name="deadline" />
+                <field name="code" />
+                <field name="quantity" />
+            </calendar>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_statistic_order_deadline_calendar">
+        <field name="name">Order deadline date</field>
+        <field name="model">statistic.order</field>
+        <field name="type">calendar</field>
+        <field name="priority" eval="20" />
+        <field name="arch" type="xml">
+            <calendar color="partner_id" date_start="deadline" string="Order deadline">
+                <field name="calendar_description" />
+                <field name="date" />
+                <field name="code" />
+                <field name="quantity" />
+            </calendar>
+        </field>
+    </record>
+    
+       <!-- Graph -->
+    <record model="ir.ui.view" id="view_statistic_order_graph">
+        <field name="name">Statistic Order Graph date</field>
+        <field name="model">statistic.order</field>
+        <field name="type">graph</field>
+        <field name="arch" type="xml">
+            <graph string="Order by date" type="bar">
+                <field name="date"/>
+                <field name="quantity" operator="+" />
+            </graph>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_statistic_order_deadline_graph">
+        <field name="name">Statistic Order Graph deadline</field>
+        <field name="model">statistic.order</field>
+        <field name="type">graph</field>
+        <field name="priority" eval="20" />
+        <field name="arch" type="xml">
+            <graph string="Order by deadline" type="bar">
+                <field name="deadline"/>
+                <field name="quantity" operator="+" string="Totali" />
+                <field name="quantity_ok" operator="+" string="Prodotti" />
+                <!--TODO count?-->
+            </graph>
+        </field>
+    </record>
+    
+       <!-- Action -->
+    <record model="ir.actions.act_window" id="action_statistic_order">
+        <field name="name">Statistic Order Date</field>
+        <field name="res_model">statistic.order</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,calendar,graph,form</field>
+        <field name="search_view_id" ref="view_statistic_order_search"/>
+    </record>
+    <record model="ir.actions.act_window" id="action_statistic_order_deadline">
+        <field name="name">Statistic Order Deadline</field>
+        <field name="res_model">statistic.order</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,calendar,graph,form</field>
+        <field name="context">{'calendar_view_ref':'mexal_order_statistic.view_statistic_order_deadline_calendar','graph_view_ref':'mexal_order_statistic.view_statistic_order_deadline_graph'}</field>
+        <field name="search_view_id" ref="view_statistic_order_search"/>
+    </record>
+
+    <!--Statistic Deadline: statistic.deadline -->
+        <record model="ir.ui.view" id="view_statistic_deadline_search">
+        <field name="name">statistic.deadline.search</field>
+        <field name="model">statistic.deadline</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Statistic deadline">
+                <group col="10" colspan="4">
+                    <field name="name" string="Order"/>
+                    <field name="partner_id"/>
+                    <field name="deadline"/>
+                    <field name="type"/>
+                </group>
+                <newline/>
+                <group expand="0" string="Group By..." colspan="14">
+                    <filter string="Partner" icon="terp-stock_symbol-selection" domain="[]" context="{'group_by':'partner_id'}"/>
+                    <filter string="Type" icon="terp-stock_symbol-selection" domain="[]" context="{'group_by':'type'}"/>
+                    <filter string="Deadline" icon="terp-stock_symbol-selection" domain="[]" context="{'group_by':'deadline'}"/>
+               </group>
+            </search>
+        </field>
+    </record>
+
+       <!-- Form -->
+    <record model="ir.ui.view" id="view_statistic_deadline_form">
+        <field name="name">statistic.deadline.form</field>
+        <field name="model">statistic.deadline</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Statistic deadline Form">
+                <field name="name" />
+                <field name="deadline"/>
+                <field name="partner_id"/>
+                <field name="total"/>
+                <field name="type"/>
+            </form>
+        </field>
+    </record>
+
+       <!-- Tree -->
+    <record model="ir.ui.view" id="view_statistic_deadline_tree">
+        <field name="name">statistic.deadline.tree</field>
+        <field name="model">statistic.deadline</field>
+        <field name="type">tree</field>  
+        <field name="arch" type="xml">
+            <tree string="Statistic deadline Tree" colors="green:total&gt;=0;red:total&lt;0">
+                <field name="name" />
+                <field name="deadline"/>
+                <field name="partner_id"/>
+                <field name="in" sum="Entrate" string="Entrate" />
+                <field name="out" sum="Uscite" string="Uscite" />
+                <field name="total" sum="Totale" />
+                <field name="type"/>
+            </tree>
+        </field>
+    </record>
+    
+       <!-- Calendar -->
+    <record model="ir.ui.view" id="view_statistic_deadline_calendar">
+        <field name="name">Order deadline</field>
+        <field name="model">statistic.deadline</field>
+        <field name="type">calendar</field>
+        <field name="arch" type="xml">
+            <calendar color="partner_id" date_start="deadline" string="Order">
+                <field name="name" />
+                <field name="deadline" />
+                <field name="type" />
+            </calendar>
+        </field>
+    </record>
+    
+       <!-- Graph -->
+    <record model="ir.ui.view" id="view_statistic_deadline_graph">
+        <field name="name">Statistic deadline Graph</field>
+        <field name="model">statistic.deadline</field>
+        <field name="type">graph</field>
+        <field name="arch" type="xml">
+            <graph string="Order by date" type="bar">
+                <field name="deadline"/>
+                <field name="out" operator="+" />
+                <field name="in" operator="+" />
+            </graph>
+        </field>
+    </record>
+    
+       <!-- Action -->
+    <record model="ir.actions.act_window" id="action_statistic_deadline">
+        <field name="name">Scadenze ordini</field>
+        <field name="res_model">statistic.deadline</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,calendar,graph,form</field>
+        <field name="search_view_id" ref="view_statistic_deadline_search"/>
+        <field name="context">{'search_default_deadline': time.strftime('%Y-%m-01')}</field>
+    </record>
+
+      <!--Statistic Trend: statistic.trend -->
+        <record model="ir.ui.view" id="view_statistic_trend_search">
+        <field name="name">statistic.trend.search</field>
+        <field name="model">statistic.trend</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Statistic trend">
+                <group col="10" colspan="4">
+                    <filter string="Importanti" name="trend" icon="terp-personal" domain="[('trend','=',1)]" help="Only partner with trend check selected"/>
+                    <field name="name" string="Order"/>
+                    <field name="partner_id"/>
+                    <field name="total"/>
+                    <field name="total_last"/>
+                </group>
+                <newline/>
+                <group expand="0" string="Group By..." colspan="14">
+                    <filter string="Partner" icon="terp-stock_symbol-selection" domain="[]" context="{'group_by':'partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+       <!-- Form -->
+    <record model="ir.ui.view" id="view_statistic_trend_form">
+        <field name="name">statistic.trend.form</field>
+        <field name="model">statistic.trend</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Statistic trend Form">
+                <!--<field name="name" />-->
+                <field name="partner_id"/>
+                <field name="total"/>
+                <field name="total_last"/>
+            </form>
+        </field>
+    </record>
+
+       <!-- Tree -->
+    <record model="ir.ui.view" id="view_statistic_trend_tree">
+        <field name="name">statistic.trend.tree</field>
+        <field name="model">statistic.trend</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Statistic trend Tree">
+                <!--<field name="name" />-->
+                <field name="partner_id"/>
+                <field name="total" sum="Totale" />
+                <field name="total_last" sum="Totale" />
+            </tree>
+        </field>
+    </record>
+    
+       <!-- Graph -->
+    <record model="ir.ui.view" id="view_statistic_trend_graph">
+        <field name="name">Statistic trend Graph</field>
+        <field name="model">statistic.trend</field>
+        <field name="type">graph</field>
+        <field name="arch" type="xml">
+            <graph string="trend by date" type="bar">
+                <field name="partner_id"/>
+                <field name="total_last" operator="+" />
+                <field name="total" operator="+" />
+            </graph>
+        </field>
+    </record>
+    
+       <!-- Action -->
+    <record model="ir.actions.act_window" id="action_statistic_trend">
+        <field name="name">Statistic trend Date</field>
+        <field name="res_model">statistic.trend</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,graph,form</field>
+        <field name="context">{'search_default_trend':1}</field>
+        <field name="search_view_id" ref="view_statistic_trend_search"/>
+    </record>
+
+
+       <!-- Dashboards: -->
+       <!-- Action per statistic.trend -->   
+    <record model="ir.actions.act_window" id="action_statistic_trend_dashboard">
+        <field name="name">Statistic trend Date</field>
+        <field name="res_model">statistic.trend</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph,tree,form</field>
+        <field name="domain">[('trend','=',1)]</field>
+        <field name="search_view_id" ref="view_statistic_trend_search"/>
+    </record>
+       <!-- Action per statistic.deadline -->   
+    <record model="ir.actions.act_window" id="action_statistic_deadline_dashboard">
+        <field name="name">Entrate prossima settimana</field>
+        <field name="res_model">statistic.deadline</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph,tree,calendar,form</field>
+        <field name="search_view_id" ref="view_statistic_deadline_search"/>
+        <field name="domain">[('deadline','&gt;=',datetime.datetime.today().strftime('%Y-%m-%d')),('deadline','&lt;=', (datetime.datetime.today()+ datetime.timedelta(days=20)).strftime('%Y-%m-%d'))]</field>
+    </record>
+       <!-- Action per statistic.order -->   
+    <record model="ir.actions.act_window" id="action_statistic_order_dashboard">
+        <field name="name">Dett. ordini Italia</field>
+        <field name="res_model">statistic.order</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph,tree,calendar,form</field>
+        <field name="search_view_id" ref="view_statistic_order_search"/>
+        <field name="context">{'calendar_view_ref':'mexal_order_statistic.view_statistic_order_deadline_calendar','graph_view_ref':'mexal_order_statistic.view_statistic_order_deadline_graph'}</field>
+        
+        <field name="domain">[('property_account_position', 'in', ('Italia','Italy')), ('deadline','&gt;=',datetime.datetime.today().strftime('%Y-%m-%d')),('deadline','&lt;=', (datetime.datetime.today()+ datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]</field>
+    </record>
+    <record model="ir.actions.act_window" id="action_statistic_order_dashboard_estero">
+        <field name="name">Dett. ordini Estero</field>
+        <field name="res_model">statistic.order</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph,tree,calendar,form</field>
+        <field name="search_view_id" ref="view_statistic_order_search"/>
+        <field name="context">{'calendar_view_ref':'mexal_order_statistic.view_statistic_order_deadline_calendar','graph_view_ref':'mexal_order_statistic.view_statistic_order_deadline_graph'}</field>
+        
+        <field name="domain">[('property_account_position', 'not in', ('Italia','Italy')), ('deadline','&gt;=',datetime.datetime.today().strftime('%Y-%m-%d')),('deadline','&lt;=', (datetime.datetime.today()+ datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]</field>
+    </record>
+
+       <record id="board_mexal_form" model="ir.ui.view">
+            <field name="name">board.mexal.form</field>
+            <field name="model">board.board</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Dashboard">
+                    <hpaned position="200">
+                        <child1>
+                            <action colspan="4" name="%(action_statistic_deadline_dashboard)d" string="Entrate / Uscite (pros. 20 gg.)" />
+                            <action colspan="4" name="%(action_statistic_order_dashboard)d" string="Ordini Italia (pros. 20 gg.)" width="510"/>
+                        </child1>
+
+                        <child2>
+                            <action colspan="4" name="%(action_statistic_trend_dashboard)d" string="Trend ordini dal 1/1" width="510"/>
+                            <action colspan="4" name="%(action_statistic_order_dashboard_estero)d" string="Ordini Estero (pros. 20 gg.)" />
+                        </child2>
+                    </hpaned>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_board_mexal_form" model="ir.actions.act_window">
+            <field name="name">Mexal Dashboard (dati agg. alla sera precedente)</field>
+            <field name="res_model">board.board</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="board_mexal_form"/>
+        </record>
+
+       <!-- Menu -->
+    <menuitem name="Dashboard" id="menu_base_mexal" sequence="5" web_icon="images/menu.png" web_icon_hover="images/menu_hover.png" action="action_board_mexal_form" /> 
+       <menuitem name="Analisi" parent="menu_base_mexal" id="menu_base_mexal_analisi" sequence="1" />
+
+          <!--<menuitem name="Order from Mexal" parent="menu_base_mexal_analisi" id="menu_statistic_statistic_order" sequence="1" action="action_statistic_order" />-->
+          <menuitem name="Scadenze ordini" parent="menu_base_mexal_analisi" id="menu_statistic_statistic_order_deadline" sequence="2" action="action_statistic_order_deadline" />
+          <menuitem name="Scadenze entrate/uscite" parent="menu_base_mexal_analisi" id="menu_statistic_statistic_deadline" sequence="3" action="action_statistic_deadline" />
+          <menuitem name="Trend" parent="menu_base_mexal_analisi" id="menu_statistic_statistic_trend" sequence="3" action="action_statistic_trend" />
+
+       <menuitem name="Dashboard" parent="menu_base_mexal" id="menu_base_mexal_dashboard" sequence="1" />
+          <menuitem name="Mexal default" parent="menu_base_mexal_dashboard" id="menu_action_board_mexal_form" sequence="1" action="action_board_mexal_form" />
+  </data>
+</openerp>

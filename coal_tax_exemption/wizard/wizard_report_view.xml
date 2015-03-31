@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <!-- coal.wizard.report -->
+    <record id="view_coal_wizard_report" model="ir.ui.view">
+        <field name="name">Wizard coal report</field>
+        <field name="model">coal.wizard.report</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Wizard coal report">
+               <field name="name" />
+               <field name="start" attrs="{'invisible':[('name','!=','commercial')]}"/>
+               <field name="from_date" />
+               <field name="to_date" />
+               <newline />
+               <button string="Cancel" special="cancel" colspan="2"/>                   
+               <button name="print_report" type="object" string="Print" icon="gtk-print" colspan="2" /> 
+            </form>
+        </field>    
+    </record>
+
+    <record model="ir.actions.act_window" id="action_view_coal_wizard_report">
+        <field name="name">Wizard coal report</field>
+        <field name="res_model">coal.wizard.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_coal_wizard_report"/>
+        <field name="target">new</field>
+    </record>
+    
+    <!--MENUITEM-->
+    <menuitem id="menu_coal_report"
+         name="Report"
+         sequence="80"                 
+         parent="menu_coal_root" />
+         
+        <menuitem id="menu_coal_wizard_report"
+             name="Wizard Report"
+             action="action_view_coal_wizard_report"
+             sequence="10"                 
+             parent="menu_coal_report" />
+  </data>
+</openerp>
+

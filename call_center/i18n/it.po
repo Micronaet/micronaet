@@ -1,0 +1,350 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* intervention_report
+# <> <>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 6.0.3\n"
+"Report-Msgid-Bugs-To: support@openerp.com\n"
+"POT-Creation-Date: 2011-11-24 07:33+0000\n"
+"PO-Revision-Date: 2011-11-24 08:35+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: intervention_report
+#: model:ir.model,name:intervention_report.model_intervention_type
+msgid "Intervention Type"
+msgstr "Tipo intervento"
+
+#. module: intervention_report
+#: field:intervention.report,trip_hour:0
+msgid "Trip hour"
+msgstr "Ore viaggio"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Confirmed"
+msgstr "Confermato"
+
+#. module: intervention_report
+#: model:ir.ui.menu,name:intervention_report.menu_base_intervention_report_insert
+msgid "Rapportini intervento personali"
+msgstr "Rapportini intervento personali"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Intervention report Tree"
+msgstr "Rapportini di intervento"
+
+#. module: intervention_report
+#: model:ir.actions.act_window,name:intervention_report.action_intervention_report
+msgid "Intervention report user"
+msgstr "Rapporti intervento per utente"
+
+#. module: intervention_report
+#: field:intervention.report,tipology:0
+msgid "Tipology"
+msgstr "Tipologia"
+
+#. module: intervention_report
+#: help:intervention.report,break_require:0
+msgid "If intervention is split in 2 part for break"
+msgstr "Se l'intervento è diviso in due parti per pausa intermedia"
+
+#. module: intervention_report
+#: view:intervention.report:0 view:intervention.type:0
+msgid "Group By..."
+msgstr "Raggruppa per..."
+
+#. module: intervention_report
+#: field:intervention.report,state:0
+msgid "State"
+msgstr "Stato"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Draft"
+msgstr "Bozza"
+
+#. module: intervention_report
+#: view:intervention.type:0
+msgid "Intervention type Form"
+msgstr "Tipo di intervento"
+
+#. module: intervention_report
+#: selection:intervention.report,state:0
+msgid "Appointment executed"
+msgstr "Intervento eseguito"
+
+#. module: intervention_report
+#: field:intervention.report,type_id:0
+msgid "Type"
+msgstr "Tipo"
+
+#. module: intervention_report
+#: selection:intervention.report,state:0
+msgid "Appointment confirmed"
+msgstr "Appuntamento confermato"
+
+#. module: intervention_report
+#: selection:intervention.report,state:0
+msgid "Appointment executed reported"
+msgstr "Intervento eseguito (con invio rapportino)"
+
+#. module: intervention_report
+#: help:intervention.report,break_hour:0
+msgid "Duration of break"
+msgstr "Durata pausa"
+
+#. module: intervention_report
+#: view:intervention.report:0 field:intervention.report,name:0
+#: field:intervention.type,name:0
+msgid "Description"
+msgstr "Description"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Waiting"
+msgstr "In attesa"
+
+#. module: intervention_report
+#: field:intervention.report,total:0
+msgid "Number of hours"
+msgstr "Numero di ore"
+
+#. module: intervention_report
+#: model:ir.ui.menu,name:intervention_report.menu_base_intervention_report_state_calendar
+msgid "Evidenziati per stato"
+msgstr "Evidenziati per stato"
+
+#. module: intervention_report
+#: field:intervention.report,break_require:0
+msgid "Break"
+msgstr "Pausa"
+
+#. module: intervention_report
+#: selection:intervention.report,mode:0
+msgid "Phone"
+msgstr "Telefonico"
+
+#. module: intervention_report
+#: model:ir.ui.menu,name:intervention_report.menu_base_intervention_report
+msgid "Evidenziati per utente"
+msgstr "Evidenziati per utente"
+
+#. module: intervention_report
+#: field:intervention.report,mode:0
+msgid "Mode"
+msgstr "Modo"
+
+#. module: intervention_report
+#: view:intervention.report:0 field:intervention.report,user_id:0
+msgid "User"
+msgstr "User"
+
+#. module: intervention_report
+#: selection:intervention.report,mode:0
+msgid "Tele assistence"
+msgstr "Tele assistence"
+
+#. module: intervention_report
+#: field:intervention.report,break_hour:0
+msgid "Break hour"
+msgstr "Ore pausa"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Date"
+msgstr "Date"
+
+#. module: intervention_report
+#: model:ir.ui.menu,name:intervention_report.menu_base_intervention_configuration
+msgid "Configuration"
+msgstr "Configurazione"
+
+#. module: intervention_report
+#: view:intervention.type:0
+msgid "Intervention type Tree"
+msgstr "Tipo di intervento"
+
+#. module: intervention_report
+#: model:ir.model,name:intervention_report.model_intervention_report
+msgid "Intervention Report"
+msgstr "Rapporto di intervento"
+
+#. module: intervention_report
+#: model:ir.actions.act_window,name:intervention_report.action_intervention_report_state_calendar
+msgid "Intervention report state calendar"
+msgstr "Intervention report state calendar"
+
+#. module: intervention_report
+#: model:ir.ui.menu,name:intervention_report.menu_base_intervention_report_location_calendar
+msgid "Evidenziati per luogo"
+msgstr "Evidenziati per luogo"
+
+#. module: intervention_report
+#: field:intervention.report,date_end:0
+msgid "Date end"
+msgstr "Data fine"
+
+#. module: intervention_report
+#: selection:intervention.report,state:0
+msgid "Appointment draft"
+msgstr "Appuntamento in bozza"
+
+#. module: intervention_report
+#: selection:intervention.report,tipology:0
+msgid "Lavorativo"
+msgstr "Lavorativo"
+
+#. module: intervention_report
+#: help:intervention.report,tipology:0
+msgid ""
+"If the invervention is about work, or extra work but usefull to plann "
+"appointment"
+msgstr ""
+"If the invervention is about work, or extra work but usefull to plann "
+"appointment"
+
+#. module: intervention_report
+#: field:intervention.report,import_id:0
+msgid "Import ID"
+msgstr "Import ID"
+
+#. module: intervention_report
+#: model:ir.actions.act_window,name:intervention_report.action_insert_intervention_report
+msgid "Insert intervention report"
+msgstr "Rapporti di intervento"
+
+#. module: intervention_report
+#: selection:intervention.report,mode:0
+msgid "Company address"
+msgstr "Ns. sede"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Intervention report Form"
+msgstr "Rapportino di intervento"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: intervention_report
+#: selection:intervention.report,tipology:0
+msgid "Extra Lavorativo"
+msgstr "Extra Lavorativo"
+
+#. module: intervention_report
+#: view:intervention.report:0 field:intervention.report,partner_id:0
+msgid "Partner"
+msgstr "Partner"
+
+#. module: intervention_report
+#: field:intervention.report,date_start:0
+msgid "Date start"
+msgstr "Data inizio"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Close with report"
+msgstr "Chiudi con invio rapportino"
+
+#. module: intervention_report
+#: view:intervention.report:0 field:intervention.report,internal_note:0
+msgid "Internal note"
+msgstr "Note interne"
+
+#. module: intervention_report
+#: view:intervention.type:0
+msgid "Order"
+msgstr "Ordine"
+
+#. module: intervention_report
+#: view:intervention.type:0
+#: model:ir.actions.act_window,name:intervention_report.action_intervention_type
+#: model:ir.ui.menu,name:intervention_report.menu_base_intervention_configuration_type
+msgid "Intervention type"
+msgstr "Tipo intervento"
+
+#. module: intervention_report
+#: selection:intervention.report,state:0
+msgid "Appointment awaiting confirmation"
+msgstr "Appuntamento in attesa di conferma"
+
+#. module: intervention_report
+#: selection:intervention.report,mode:0
+msgid "Customer address"
+msgstr "Presso il cliente"
+
+#. module: intervention_report
+#: selection:intervention.report,tipology:0
+msgid "Personale"
+msgstr "Personale"
+
+#. module: intervention_report
+#: field:intervention.report,intervention:0
+msgid "Intervention description"
+msgstr "Descrizione intervento"
+
+#. module: intervention_report
+#: help:intervention.type,invoice:0
+msgid "If so the intervention will be invoiced for duration time"
+msgstr "Se è vero l'intervento verrà fatturato per la durata oraria"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Reschedule"
+msgstr "Rischedula"
+
+#. module: intervention_report
+#: view:intervention.report:0
+#: model:ir.ui.menu,name:intervention_report.menu_base_intervention
+msgid "Intervention report"
+msgstr "Rapportino di intervento"
+
+#. module: intervention_report
+#: view:intervention.type:0 field:intervention.type,invoice:0
+msgid "Invoice"
+msgstr "Fatturare"
+
+#. module: intervention_report
+#: selection:intervention.report,state:0
+msgid "Appointment cancelled"
+msgstr "Appuntamento annullato"
+
+#. module: intervention_report
+#: field:intervention.report,duration:0
+msgid "Duration"
+msgstr "Duration"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Close"
+msgstr "Chiudi"
+
+#. module: intervention_report
+#: model:ir.actions.act_window,name:intervention_report.action_intervention_report_location_calendar
+msgid "Intervention report location calendar"
+msgstr "Intervention report location calendar"
+
+#. module: intervention_report
+#: view:intervention.report:0 field:intervention.report,intervention_request:0
+msgid "Intervention request"
+msgstr "Richiesta intervento"
+
+#. module: intervention_report
+#: field:intervention.report,trip_require:0
+msgid "Trip"
+msgstr "Con viaggio"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Intervention"
+msgstr "Intervento"

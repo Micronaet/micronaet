@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    <record id='view_partner_form_add_extra_fields_pricelist' model='ir.ui.view'>
+        <field name='name'>Ref. pricelist</field>
+        <field name='model'>res.partner</field>
+        <field name='inherit_id' ref='product.view_partner_property_form'/>
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+            <field name='property_product_pricelist' position='after'>
+               <newline />
+               <field name='pricelist_model_id' />
+               <newline />
+               <field name='pricelist_model_history_id' />
+            </field>
+        </field>
+      </record>
+
+    <!--<record id='view_partner_form_add_extra_fields' model='ir.ui.view'>
+        <field name='name'>Partner pricelist analysis</field>
+        <field name='model'>res.partner</field>
+        <field name='inherit_id' ref='base.view_partner_form'/>
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+           <xpath expr="/form/notebook/page[@string='Notes']" position="before">              
+             <page string="Listini di riferimento">   
+                <field name='pricelist_analysis_ids' nolabel="1" colspan="4">   
+                   <tree string="Listini di comparazione">
+                       <field name="sequence" />
+                       <field name="name" />
+                       <field name="pricelist_id" />
+                   </tree>
+                   <form>
+                      <group colspan="4" col="6">
+                        <field name="sequence" />
+                        <field name="name" />
+                        <field name="pricelist_id" />
+                      </group>  
+                      <separator string="Note" colspan="4" />
+                      <field name="note" nolabel="1" colspan="4" />
+                   </form>
+                </field>     
+             </page>     
+           </xpath>
+        </field>
+      </record>-->
+      
+      <!--sale.order.line-->
+      <record model="ir.ui.view" id="view_sale_order_line_tree">
+          <field name="name">sale.order.line.tree</field>
+          <field name="model">sale.order.line</field>
+          <field name="type">tree</field>
+          <field name="priority" eval="20" />
+          <field name="arch" type="xml">
+              <tree string="Sale order line analysis">
+                  <field name="order_partner_id" />
+                  <field name="order_id" />
+                  <field name="product_id" />
+                  <field name="product_uom_qty" />
+                  <field name="product_uom" />
+                  <field name="price_unit" />
+                  <field name="salesman_id" />
+                  <field name="notes" />
+              </tree>
+          </field>
+    </record>
+    <record model="ir.ui.view" id="view_sale_order_line_graph">
+        <field name="name">sale.order.line.graph</field>
+        <field name="model">sale.order.line</field>
+        <field name="type">graph</field>
+        <field name="priority" eval="20" />
+        <field name="arch" type="xml">
+            <graph string="Product analysis" type="bar">
+                <field name="product_id"/>
+                <field name="product_uom_qty" operator="+"/>
+            </graph>
+        </field>
+    </record>
+      <record model="ir.ui.view" id="view_sale_order_line_form">
+          <field name="name">sale.order.line.form</field>
+          <field name="model">sale.order.line</field>
+          <field name="type">form</field>
+          <field name="priority" eval="20" />
+          <field name="arch" type="xml">
+              <form string="Sale order line analysis">
+                  <field name="order_partner_id" />
+                  <field name="order_id" />
+                  <field name="product_id" />
+                  <field name="product_uom_qty" />
+                  <field name="product_uom" />
+                  <field name="price_unit" />
+                  <field name="salesman_id" />
+                  <field name="notes" />
+              </form>
+          </field>
+    </record>     
+
+      <record model="ir.ui.view" id="view_sale_order_line_search">
+          <field name="name">sale.order.line.search</field>
+          <field name="model">sale.order.line</field>
+          <field name="type">search</field>
+          <field name="priority" eval="20" />
+          <field name="arch" type="xml">
+              <search string="Sale order line analysis">
+                  <filter icon="terp-go-home" string="Anno precedente" domain="[('order_id.create_date','&gt;=','2010-01-01'),('order_id.create_date','&lt;','2011-01-01']"/>
+                  <filter icon="terp-go-home" string="Anno corrente" domain="[('order_id.create_date','&gt;=','2011-01-01']"/>
+                  <separator />
+                  <field name="order_partner_id" />
+                  <field name="order_id" />
+                  <field name="product_id" />
+                  <newline />                   
+                  <group expand="0" string="Group By..." colspan="8" col="6">
+                        <filter icon="terp-personal+" string="Partner" domain="[]" context="{'group_by':'order_partner_id'}"/>
+                        <filter icon="terp-personal+" string="Prodotto" domain="[]" context="{'group_by':'product_id'}"/>
+                  </group>
+              </search>              
+          </field>
+      </record>
+      
+      <record model="ir.actions.act_window" id="action_sale_order_line_tree">
+          <field name="name">Analisi venduto</field>
+          <field name="res_model">sale.order.line</field>
+          <field name="view_type">form</field>
+          <field name="view_mode">tree,form,graph</field>
+          <field name="view_id" ref="view_sale_order_line_tree"/>
+          <field name="search_view_id" ref="view_sale_order_line_search"/>
+          <field name="context">{'graph_view_ref':'price_quotation_history.view_sale_order_line_graph'}</field>
+      </record>
+      
+      <menuitem 
+          parent="base.menu_sales" 
+          id="menu_action_sale_order_line_tree" 
+          action="action_sale_order_line_tree"/>
+      
+    </data>
+</openerp>

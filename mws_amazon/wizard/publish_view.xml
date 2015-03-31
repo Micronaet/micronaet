@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <menuitem name="Amazon" parent="base.menu_sales" id="menu_amazon_base" sequence="10" /> <!--root menu-->
+
+   <!-- amazon.publish.wizard -->        
+        <record model="ir.ui.view" id="amazon_publish_wizard_view">
+            <field name="name">Amazon publish wizard</field>
+            <field name="model">amazon.publish.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+               <form>
+                  <field name="market_id" />
+                  <newline />
+                  <field name="force_image" />
+                  <field name="force_selected_image" />
+                  <newline />
+                  <button special="cancel" string="Cancel" icon="gtk-cancel" />
+                  <button name="publish_on_amazon" string="Publish Amazon" icon="gtk-go-forward" type="object" />
+               </form>
+            </field>
+        </record>
+            
+        <record model="ir.actions.act_window" id="action_amazon_publish_wizard">
+            <field name="name">Publish</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">amazon.publish.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+       <!-- Menu -->
+       <menuitem name="Publish all product" 
+                 parent="menu_amazon_base" 
+                 id="menu_amazon_publish_wizard" 
+                 sequence="30" 
+                 action="action_amazon_publish_wizard" />
+
+</data>
+</openerp>
+

@@ -1,0 +1,25 @@
+<form string="Production Lot">
+    <group col="4" colspan="2">
+        <separator string="Production Lot Identification" colspan="4"/>
+        <field name="product_id" colspan="4"/>
+        <field name="prefix" colspan="2"/>
+        <field name="name" colspan="2"/>
+        <field name="ref" colspan="4"/>
+        <field name="date" colspan="4"/>
+    </group>
+    <group col="2" colspan="2">
+        <separator string="Traceability" colspan="4"/>
+        <field name="stock_available" colspan="4"/>
+        <button name="action_traceability" string="Upstream Traceability" type="object" context="{'type': '', 'field': 'prodlot_id'}" icon="gtk-go-up" colspan="2"/>
+        <button name="action_traceability" string="Downstream Traceability" type="object" context="{'type': 'move_history_ids', 'field': 'prodlot_id'}" icon="gtk-go-down" colspan="2"/>
+    </group>
+    <notebook colspan="4">
+        <page string="Revisions">
+            <field colspan="2" name="revisions" nolabel="1"/>
+        </page>
+        <page string="Stock Moves">
+            <field colspan="2" name="move_ids" nolabel="1" widget="one2many_list">
+                </field>
+        </page>
+    </notebook>
+</form>

@@ -1,0 +1,681 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <!--INHERIT VIEWS:-->
+      <!--intervention.report-->
+    <record id="view_intervention_report_form" model="ir.ui.view">
+        <field name="name">Intervent extra field</field>
+        <field name="model">intervention.report</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="intervention_report.view_intervention_report_tree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field name="issue_ids" invisible="1"/>
+            </field>
+        </field>    
+    </record>
+
+      <!--res.users-->
+    <record id="view_res_user_extra_fields" model="ir.ui.view">
+        <field name="name">Users extra fields</field>
+        <field name="model">res.users</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <field name="login" position="before">
+                <field name="external_issue" />
+                <field name="partner_issue_id" />
+            </field>
+        </field>    
+    </record>
+
+     <!--res.partner-->
+    <record model="ir.ui.view" id="view_res_partner_add_issue_users">
+        <field name="name">Partner issue users</field>
+        <field name="model">res.partner</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+           <xpath expr="/form/notebook/page[@string='Notes']" position="after">
+              <page string="Issue user">              
+                 <separator string="OpenERP Users" colspan="4"/>
+                 <field name="user_issue_ids" nolabel="1" readonly="1" colspan="4">
+                      <tree>
+                         <field name="active" />
+                         <field name="name" />
+                      </tree>
+                 </field>
+                 <separator string="Customer internal users" colspan="4"/>
+                 <field name="ref_ids" nolabel="1" colspan="4">
+                      <tree colors="grey:active==False" editable="bottom">
+                         <field name="active" />
+                         <field name="name" />
+                         <field name="opt_in" />
+                         <field name="email" />
+                         <field name="note" />
+                      </tree>
+                      <form>
+                         <field name="name" />
+                         <field name="active" />
+                         <field name="opt_in" />
+                         <field name="email" />
+                         <separator string="Note" colspan="4"/>
+                         <field name="note" nolabel="1" colspan="4" />
+                      </form>
+                 </field>
+              </page>
+           </xpath>
+        </field>
+    </record>
+
+    <record id="view_intervention_report_form" model="ir.ui.view">
+        <field name="name">Intervent extra field</field>
+        <field name="model">intervention.report</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="intervention_report.view_intervention_report_form"/>
+        <field name="arch" type="xml">
+           <xpath expr="/form/notebook/page[@string='Note']" position="before">
+              <page string="Issue">
+                    <separator string="Issue" colspan="8"/>  
+                    <field name="issue_ids" colspan="8" nolabel="1" context="{'search_default_partner_id':partner_id}" attrs="{'invisible':[('partner_id','=',False)]}">
+                       <tree>
+                           <field name="datetime"/>          
+                           <field name="name"/>
+                           <field name="priority"/>
+                           <field name="locked"/>
+                           <field name="partner_id" string="Customer"/>                  
+                           <field name="user_id"/>                  
+                           <field name="tech_id"/>                  
+                           
+                           <!--WF: -->
+                           <field name="state" colspan="2" />
+                           <!-- Normal iter:-->
+                           <button name="support_received" string="Received" states="draft" icon="gtk-go-forward" />
+                           <button name="support_charge" string="In Charge" states="received" icon="gtk-go-forward" />
+                           <button name="support_working" string="Working" states="charge" icon="gtk-execute" />
+                           <button name="support_close" string="Close" states="working" icon="gtk-ok" />
+                           <!-- Cancel trigger: --> 
+                           <button name="support_draft_cancel" string="Cancel" states="draft" icon="gtk-cancel" />
+                           <button name="support_received_cancel" string="Cancel" states="received" icon="gtk-cancel" />
+                           <button name="support_charge_cancel" string="Cancel" states="charge" icon="gtk-cancel" />
+                           <button name="support_working_cancel" string="Cancel" states="working" icon="gtk-cancel" />
+                           <!-- Restore trigger: -->
+                           <button name="support_cancel_draft" string="Draft" states="cancel" icon="gtk-go-back" />
+                       </tree>
+                    </field>
+               </page>
+            </xpath>
+        </field>    
+    </record>
+
+    <!--NEW VIEWS-->
+    <!-- support.area -->
+    <record id="view_support_area_tree" model="ir.ui.view">
+        <field name="name">Support area</field>
+        <field name="model">support.area</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Support Area" editable="bottom">
+               <field name="name"/>
+               <field name="note"/>
+            </tree>
+        </field>    
+    </record>
+    
+    <record id="view_support_area_form" model="ir.ui.view"> <!--NOTE: Not used!-->
+        <field name="name">Support area</field>
+        <field name="model">support.area</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Support Area">
+               <field name="name"/>
+               <field name="note"/>
+            </form>
+        </field>    
+    </record>
+
+    <record model="ir.actions.act_window" id="action_support_area">
+        <field name="name">Support area</field>
+        <field name="res_model">support.area</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_support_area_tree"/>
+    </record>
+
+    <!-- support.area.sector -->
+    <record id="view_support_area_sector_search" model="ir.ui.view">
+        <field name="name">Support area sector</field>
+        <field name="model">support.area.sector</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Support area sector">
+               <field name="area_id" />
+               <field name="name"/>
+            </search>
+        </field>    
+    </record>
+    
+    <record id="view_support_area_sector_tree" model="ir.ui.view">
+        <field name="name">Support area sector</field>
+        <field name="model">support.area.sector</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Support area sector" editable="bottom">
+               <field name="area_id" />
+               <field name="name"/>
+               <field name="note"/>
+            </tree>
+        </field>    
+    </record>
+    
+    <record id="view_support_area_sector_form" model="ir.ui.view"> <!--NOTE: Not used!-->
+        <field name="name">Support area sector</field>
+        <field name="model">support.area.sector</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Support Area sector">
+               <field name="area_id" />
+               <field name="name"/>
+               <separator string="Note"/>
+               <field name="note" nolabel="1" colspan="4"/>
+            </form>
+        </field>    
+    </record>
+
+    <record model="ir.actions.act_window" id="action_support_area_sector">
+        <field name="name">Support area sector</field>
+        <field name="res_model">support.area.sector</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_support_area_sector_tree"/>
+        <field name="search_view_id" ref="view_support_area_sector_search"/>
+    </record>
+    
+    <!-- support.issue.comunication (only for act_window in support.issue) -->
+    <record id="view_support_issue_comunication_search" model="ir.ui.view">
+        <field name="name">Support issue comunication</field>
+        <field name="model">support.issue.comunication</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Support issue comunication">
+               <field name="invisible"/>
+               <field name="datetime"/>
+               <field name="name"/>
+               <field name="direction"/>
+               <field name="body"/>
+               <field name="note"/>
+            </search>
+        </field>    
+    </record>
+    
+    <record id="view_support_issue_comunication_tree" model="ir.ui.view">
+        <field name="name">Support issue comunication</field>
+        <field name="model">support.issue.comunication</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Support issue comunication">
+               <field name="invisible"/>
+               <field name="datetime"/>
+               <field name="name"/>
+               <field name="direction"/>
+               <field name="tech_id"/>
+               <field name="issue_id" invisible="1"/>
+            </tree>
+        </field>    
+    </record>
+    
+    <record id="view_support_issue_comunication_form" model="ir.ui.view"> <!--NOTE: Not used!-->
+        <field name="name">Support issue comunication</field>
+        <field name="model">support.issue.comunication</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Support issue comunication">
+               <group colspan="4" col="6">
+                 <field name="datetime"/>
+                 <field name="name"/>
+                 <field name="tech_id"/>
+               </group>  
+               <field name="invisible"/>
+               <field name="direction"/>
+               <separator string="Body" colspan="4" />
+               <field name="body" colspan="4" nolabel="1" />
+               <separator string="Note" colspan="4" />
+               <field name="note" colspan="4" nolabel="1" />
+            </form>
+        </field>    
+    </record>
+
+    <record model="ir.actions.act_window" id="action_issue_comunication">
+        <field name="name">Support issue comunication</field>
+        <field name="res_model">support.issue.comunication</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_support_issue_comunication_tree"/>
+        <field name="search_view_id" ref="view_support_issue_comunication_search"/>
+    </record>
+
+    <!-- support.issue -->
+    <record id="view_support_issue_search" model="ir.ui.view">
+        <field name="name">Support issue</field>
+        <field name="model">support.issue</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Support issue">
+               <field name="datetime"/>          
+               <field name="partner_id" string="Customer"/>                  
+               <field name="name"/>
+               <field name="user_id"/>                  
+               <field name="tech_id"/>                  
+               <field name="priority"/>
+               <field name="locked"/>
+               <field name="state"/>                  
+            </search>
+        </field>    
+    </record>
+    
+    <record id="view_support_issue_tree" model="ir.ui.view">
+        <field name="name">Support issue</field>
+        <field name="model">support.issue</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Support issue" colors="red:locked==True;green:state in ('close')">
+               <field name="datetime"/>          
+               <field name="partner_id" string="Customer"/>                  
+               <field name="name"/>
+               <field name="user_id"/>                  
+               <field name="tech_id"/>                  
+               <field name="priority"/>
+               <field name="locked"/>
+               
+               <!--WF: -->
+               <field name="state" colspan="2" />
+               <!-- Normal iter:-->
+               <button name="support_received" string="Received" states="draft" icon="gtk-go-forward" />
+               <button name="support_charge" string="In Charge" states="received" icon="gtk-go-forward" />
+               <button name="support_working" string="Working" states="charge" icon="gtk-execute" />
+               <button name="support_close" string="Close" states="working" icon="gtk-ok" />
+               <!-- Cancel trigger: --> 
+               <button name="support_draft_cancel" string="Cancel" states="draft" icon="gtk-cancel" />
+               <button name="support_received_cancel" string="Cancel" states="received" icon="gtk-cancel" />
+               <button name="support_charge_cancel" string="Cancel" states="charge" icon="gtk-cancel" />
+               <button name="support_working_cancel" string="Cancel" states="working" icon="gtk-cancel" />
+               <!-- Restore trigger: -->
+               <button name="support_cancel_draft" string="Draft" states="cancel" icon="gtk-go-back" />
+            </tree>
+        </field>    
+    </record>
+    
+    <record id="view_support_issue_form" model="ir.ui.view"> 
+        <field name="name">Support issue</field>
+        <field name="model">support.issue</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Support issue">
+               <group colspan="4" col="6">
+                 <field name="name" string="Issue / Problem"/>
+                 <field name="create_from"/>
+                 <field name="started_with"/>
+                 <field name="priority"/>
+                 <field name="locked"/>
+                 <field name="is_case"/>
+               </group>                 
+
+               <notebook colspan="4">
+                  <page string="General">
+                      <group colspan="4" col="8">
+                         <field name="user_id" readonly="1" />                  
+                         <field name="external_issue" invisible="1"/> 
+                         <field name="partner_id" string="Customer" />  <!--TODO metterlo poi invisibile (così l'utente normale non vede il pratner (e non lo cambia)) attrs="{'invisible':[('external_issue','=',True)]}"-->                  
+                         <field name="partner_ref_id" attrs="{'required':[('external_issue','=',True)]}" domain="[('partner_id','=',partner_id)]" />
+                         <field name="tech_id" attrs="{'invisible':[('state','in',('draft','received','cancel'))]}"/>
+                      </group>
+                      <field name="area_id"/>                  
+                      <field name="sector_id" domain="[('area_id','=',area_id)]" attrs="{'invisible':[('area_id','=',False)]}"/> 
+                      <newline />
+                      <field name="notify_creator"/>                                              
+                  </page>
+                  
+                  <page string="Comunication">
+                      <field name="comunication_ids" colspan="4" nolabel="1" context="{'default_tech_id': tech_id,}" >
+                         <tree string="Comunication">
+                            <field name="invisible"/>
+                            <field name="datetime" />
+                            <field name="name" />
+                            <field name="direction"/>
+                            <field name="tech_id" />
+                         </tree>
+                         <form string="Comunication">
+                            <field name="invisible"/>
+                            <field name="datetime" />          
+                            <field name="name" />          
+                            <field name="direction"/>
+                            <field name="tech_id" />          
+                            <separator string="Body" colspan="4" />
+                            <field name="body" colspan="4" nolabel="1"/>          
+                            <separator string="Note" colspan="4" />
+                            <field name="note" colspan="4" nolabel="1"/>          
+                         </form>
+                      </field>                     
+                  </page>
+                  
+                  <page string="Intervent">
+                     <field name="intervent_ids" colspan="4" nolabel="1" context="{'search_default_partner_id':partner_id}">
+                         <tree string="Intervent">
+                            <field name="name" />          
+                            <field name="user_id" />          
+                            <field name="partner_id" />          
+                            <field name="date_start" /> 
+                            <field name="duration" /> 
+                            <field name="tipology" /> 
+                            <field name="mode" /> 
+                            <field name="state" /> 
+                            <button name="intervention_draft" string="Draft" states="cancel" icon="gtk-go-back" />
+
+                            <button name="intervention_waiting" string="Waiting" states="draft" icon="gtk-execute" />
+                            <button name="intervention_confirmed" string="Confirmed" states="draft" icon="gtk-go-forward" />
+                            
+                            <button name="intervention_waiting_cancel" string="Cancel" states="waiting" icon="gtk-cancel" />
+                            <button name="intervention_reschedule" string="Reschedule" states="waiting" icon="gtk-go-back" />
+                            <button name="intervention_waiting_confirmed" string="Confirmed" states="waiting" icon="gtk-go-forward" />
+                            
+                            <button name="intervention_confirmed_cancel" string="Cancel" states="confirmed" icon="gtk-cancel" />
+                            <button name="intervention_report_close" string="Close with report" states="confirmed" icon="gtk-go-forward" />
+                            <button name="intervention_close" string="Close" states="confirmed" icon="gtk-ok" />
+                         </tree>
+                     </field>
+                  </page>                  
+                  
+                  <page string="Log">
+                      <field name="datetime"/>          
+                      <field name="datetime_received"/>                  
+                      <field name="datetime_charge"/>                  
+                      <field name="datetime_working"/>                  
+                      <field name="datetime_close"/>                  
+                  </page>
+                  
+                  <page string="Case study" attrs="{'invisible':[('is_case','=',False)]}">
+                      <field name="case_subject"/>
+                      <newline />          
+                      <separator string="Problem" colspan="4"/>
+                      <field name="case_problem" nolabel="1" colspan="4"/>
+                      <separator string="solution" colspan="4"/>
+                      <field name="case_solution" nolabel="1" colspan="4"/>
+                  </page>                  
+               </notebook>
+               <separator string="Description" colspan="4"/>
+               <field name="description" nolabel="1" colspan="4"/>
+               <separator string="Note" colspan="4"/>
+               <field name="note" nolabel="1" colspan="4"/>
+               
+               <group colspan="4" col="8">
+                   <field name="state" colspan="2" />
+                   
+                   <!-- Normal iter:-->
+                   <button name="support_received" string="Received" states="draft" icon="gtk-go-forward" />
+                   <button name="support_charge" string="In Charge" states="received" icon="gtk-go-forward" />
+                   <button name="support_working" string="Working" states="charge" icon="gtk-execute" />
+                   <button name="support_close" string="Close" states="working" icon="gtk-ok" />
+                    
+                   <!-- Cancel trigger: --> 
+                   <button name="support_draft_cancel" string="Cancel" states="draft" icon="gtk-cancel" />
+                   <button name="support_received_cancel" string="Cancel" states="received" icon="gtk-cancel" />
+                   <button name="support_charge_cancel" string="Cancel" states="charge" icon="gtk-cancel" />
+                   <button name="support_working_cancel" string="Cancel" states="working" icon="gtk-cancel" />
+                    
+                   <!-- Restore trigger: -->
+                   <button name="support_cancel_draft" string="Draft" states="cancel" icon="gtk-go-back" />
+               </group>
+            </form>
+        </field>    
+    </record>
+
+    <record model="ir.ui.view" id="view_support_issue_graph">
+        <field name="name">Support issue graph</field>
+        <field name="model">support.issue</field>
+        <field name="type">graph</field>
+        <field name="arch" type="xml">
+            <graph string="Support issue per partner" type="bar">
+                <field name="partner_id"/>
+                <field name="count" operator="+" />
+            </graph>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_support_issue_graph_per_status"> <!-- low priority -->
+        <field name="name">Support issue graph (status)</field>
+        <field name="model">support.issue</field>
+        <field name="type">graph</field>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+            <graph string="Support issue per status" type="bar">
+                <field name="state"/>
+                <field name="count" operator="+" />
+            </graph>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_support_issue_calendar">
+        <field name="name">Support issue calendar (partner)</field>
+        <field name="model">support.issue</field>
+        <field name="type">calendar</field>
+        <field name="arch" type="xml">
+            <calendar color="partner_id" date_start="datetime" string="Issue" mode="week">
+                <field name="partner_id"/>
+                <field name="name"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>    
+
+    <record model="ir.actions.act_window" id="action_support_issue">
+        <field name="name">All support issue</field>
+        <field name="res_model">support.issue</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,calendar,graph</field>
+        <field name="view_id" ref="view_support_issue_tree"/>
+        <field name="search_view_id" ref="view_support_issue_search"/>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_my_support_issue">
+        <field name="name">My support issue</field>
+        <field name="res_model">support.issue</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,calendar,graph</field>
+        <field name="view_id" ref="view_support_issue_tree"/>
+        <field name="search_view_id" ref="view_support_issue_search"/>
+        <field name="domain">["|",('tech_id','=',uid),('user_id','=',uid)]</field>
+    </record>
+
+       <!-- >> Case Study (view with low priority=20) -->
+    <record id="view_support_issue_case_search" model="ir.ui.view">
+        <field name="name">Case study</field>
+        <field name="model">support.issue</field>
+        <field name="type">search</field>
+        <field name="priority" eval="20" />
+        <field name="arch" type="xml">
+            <search string="Case study">
+               <field name="datetime"/>          
+               <field name="area_id"/>          
+               <field name="sector_id"/>          
+               <field name="case_subject"/>
+            </search>
+        </field>    
+    </record>
+    
+    <record id="view_support_issue_case_tree" model="ir.ui.view">
+        <field name="name">Case study</field>
+        <field name="model">support.issue</field>
+        <field name="type">tree</field>
+        <field name="priority" eval="20" />
+        <field name="arch" type="xml">
+            <tree string="Case study (read only)">
+               <field name="datetime"/>          
+               <field name="area_id"/>          
+               <field name="sector_id"/>          
+               <field name="case_subject"/>              
+            </tree>
+        </field>    
+    </record>
+    
+    <record id="view_support_issue_case_form" model="ir.ui.view"> 
+        <field name="name">Case study</field>
+        <field name="model">support.issue</field>
+        <field name="type">form</field>
+        <field name="priority" eval="20" />
+        <field name="arch" type="xml">
+            <form string="Case study (read only)">
+               <group colspan="4" col="6">
+                 <field name="case_subject" readonly="1" />
+                 <field name="area_id" readonly="1" />          
+                 <field name="sector_id" readonly="1" />          
+               </group>
+               <separator string="Problem" colspan="4"/>
+               <field name="case_problem" nolabel="1" colspan="4"/>
+               <separator string="Solution" colspan="4"/>
+               <field name="case_solution" nolabel="1" colspan="4"/>
+            </form>
+        </field>    
+    </record>
+
+    <record model="ir.actions.act_window" id="action_support_issue_case">
+        <field name="name">Case study</field>
+        <field name="res_model">support.issue</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_support_issue_case_tree"/>
+        <field name="search_view_id" ref="view_support_issue_case_search"/>
+        <field name="domain">[('is_case','=',True)]</field>
+        <field name="context">{'form_view_ref':'technical_support.view_support_issue_case_form'}</field>
+    </record>
+
+    <!--ACT_WINDOW-->
+      <act_window
+            id="act_support_issue_comunication"
+            name="List: Comunications"
+            src_model="support.issue"
+            res_model="support.issue.comunication"
+            view_type="form"
+            view_mode="tree,form"
+            domain="[('issue_id','=',active_id)]"
+            context="{'default_issue_id':active_id}"
+            />
+            
+      <act_window
+            id="act_support_intervention_report"
+            name="List: Intervents"
+            src_model="support.issue"
+            res_model="intervention.report"
+            view_type="form"
+            view_mode="tree,form"
+            domain="[('issue_ids','=',[active_id])]"            
+            context="{'default_partner_id':partner_id}"
+            /><!--TODO Maybe not works on mixed intervent: 1 intervent that have 2 issue-->
+
+         <!--4 type of intervent:-->
+      <act_window
+            id="act_support_issue_new_intervent"
+            name="New intervention: customer"
+            src_model="support.issue"
+            res_model="intervention.report"
+            view_type="form"
+            view_mode="form"            
+            context="{'default_partner_id':partner_id,'default_issue_ids':[active_id],'default_name':name,'default_intervention_request':description,'default_date_start':time.strftime('%Y-%m-%d %H:00:00'),'default_mode':'customer'}"
+            />
+      <act_window
+            id="act_support_issue_new_company"
+            name="New intervention: company"
+            src_model="support.issue"
+            res_model="intervention.report"
+            view_type="form"
+            view_mode="form"            
+            context="{'default_partner_id':partner_id,'default_issue_ids':[active_id],'default_name':name,'default_intervention_request':description,'default_date_start':time.strftime('%Y-%m-%d %H:00:00'),'default_mode':'company'}"
+            />
+      <act_window
+            id="act_support_issue_new_connection"
+            name="New intervention: connection"
+            src_model="support.issue"
+            res_model="intervention.report"
+            view_type="form"
+            view_mode="form"            
+            context="{'default_partner_id':partner_id,'default_issue_ids':[active_id],'default_name':name,'default_intervention_request':description,'default_date_start':time.strftime('%Y-%m-%d %H:%M:00'),'default_mode':'connection'}"
+            />
+      <act_window
+            id="act_support_issue_new_phone"
+            name="New intervention: phone"
+            src_model="support.issue"
+            res_model="intervention.report"
+            view_type="form"
+            view_mode="form"            
+            context="{'default_partner_id':partner_id,'default_issue_ids':[active_id],'default_name':name,'default_intervention_request':description,'default_date_start':time.strftime('%Y-%m-%d %H:%M:00'),'default_mode':'phone'}"
+            />
+    <!--MENUITEM-->
+   <menuitem id="menu_technical_support_root"
+             name="Tech Support"
+             icon="terp-crm" 
+             sequence="0"
+             web_icon="images/support.png"
+             web_icon_hover="images/support-hover.png" 
+             />
+
+        <menuitem id="menu_issue_root"
+             name="Issue"
+             sequence="1" 
+             parent="menu_technical_support_root" 
+             />             
+             <menuitem id="menu_my_issue"
+                 name="My Issue"
+                 sequence="10" 
+                 parent="menu_issue_root" 
+                 action="action_my_support_issue"/>
+             <menuitem id="menu_issue_area"
+                 name="Issue"
+                 sequence="10" 
+                 parent="menu_issue_root" 
+                 action="action_support_issue"/>
+             <menuitem id="menu_issue_case"
+                 name="Case study"
+                 sequence="20" 
+                 parent="menu_issue_root" 
+                 action="action_support_issue_case"/>
+
+
+        <menuitem id="menu_configuration_root"
+             name="Configuration"
+             sequence="99" 
+             parent="menu_technical_support_root" 
+             />
+             <menuitem id="menu_configuration_area"
+                 name="Area"
+                 sequence="1" 
+                 parent="menu_configuration_root" 
+                 action="action_support_area"/>
+             <menuitem id="menu_configuration_area_sector"
+                 name="Sector"
+                 sequence="2" 
+                 parent="menu_configuration_root" 
+                 action="action_support_area_sector"/>
+
+    <!-- DISABLE ALL MACRO AREA FOR ALL USER: 
+       <record id="base.menu_base_partner" model="ir.ui.menu">
+           <field name="groups_id" eval="[(6,0,[ref('coal_tax_exemption.group_coal_manager')])]"/>
+       </record>    
+       <record id="base.menu_main_pm" model="ir.ui.menu">
+           <field name="groups_id" eval="[(6,0,[ref('coal_tax_exemption.group_coal_manager')])]"/>
+       </record>           
+       <record id="account.menu_finance" model="ir.ui.menu">
+           <field name="groups_id" eval="[(6,0,[ref('coal_tax_exemption.group_coal_manager')])]"/>
+       </record>           
+       <record id="base.menu_main_pm" model="ir.ui.menu">
+           <field name="groups_id" eval="[(6,0,[ref('coal_tax_exemption.group_coal_manager')])]"/>
+       </record>           
+       <record id="hr.menu_hr_root" model="ir.ui.menu">
+           <field name="groups_id" eval="[(6,0,[ref('contract_manage.group_contract_all_macro_group_manager')])]"/>
+       </record>
+       <record id="knowledge.menu_document" model="ir.ui.menu">
+           <field name="groups_id" eval="[(6,0,[ref('coal_tax_exemption.group_coal_manager')])]"/>
+       </record>           
+       <record id="base.menu_administration" model="ir.ui.menu">
+           <field name="groups_id" eval="[(6,0,[ref('coal_tax_exemption.group_coal_manager')])]"/>
+       </record>-->
+</data>
+</openerp>
+

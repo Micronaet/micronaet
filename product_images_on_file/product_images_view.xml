@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+	
+		<record id="view_product_image_from_file" model="ir.ui.view">
+			<field name="name">Product image from file</field>
+			<field name="model">product.product</field>
+			<field name="inherit_id" ref="product.product_normal_form_view" />
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<xpath expr="/form/notebook" position="inside">
+					<page string="File Image">
+                       <separator string="Preview (Only when saved)" colspan="4" />
+						  <field name="preview" widget="image" nolabel="1" colspan="4"/>
+                    </page>
+				</xpath>
+			</field>
+		</record>
+		
+	</data>
+</openerp>

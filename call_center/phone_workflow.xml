@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="workflow" id="wkf_callcenter_phone">
+            <field name="name">callcenter.phone.wkf</field>
+            <field name="osv">callcenter.phone</field>
+            <field name="on_create">True</field>
+        </record>
+
+        <record model="workflow.activity" id="act_draft">
+            <field name="wkf_id" ref="wkf_callcenter_phone" />
+            <field name="flow_start">True</field>
+            <field name="name">draft</field>
+            <field name="kind">function</field>
+            <field name="action">callcenter_phone_draft()</field>
+        </record>
+
+        <record model="workflow.activity" id="act_incharge">
+            <field name="wkf_id" ref="wkf_callcenter_phone" />
+            <field name="name">incharge</field>
+            <field name="kind">function</field>
+            <field name="action">callcenter_phone_incharge()</field>
+        </record>
+        
+        <record model="workflow.activity" id="act_richiamare">
+            <field name="wkf_id" ref="wkf_callcenter_phone" />
+            <field name="name">richiamare</field>
+            <field name="kind">function</field>
+            <field name="action">callcenter_phone_recall()</field>
+        </record>
+        
+        <record model="workflow.activity" id="act_vinta">
+            <field name="wkf_id" ref="wkf_callcenter_phone" />
+            <field name="name">vinta</field>
+            <field name="kind">function</field>
+            <field name="action">callcenter_phone_win()</field>
+            <field name="flow_stop">True</field>
+        </record>
+
+        <record model="workflow.activity" id="act_persa">
+            <field name="wkf_id" ref="wkf_callcenter_phone" />
+            <field name="name">persa</field>
+            <field name="kind">function</field>
+            <field name="action">callcenter_phone_loose()</field>
+            <field name="flow_stop">True</field>
+        </record>
+
+        <record model="workflow.transition" id="t1">
+            <field name="act_from" ref="act_draft" />
+            <field name="act_to" ref="act_incharge" />
+            <field name="signal">callcenter_phone_incharge</field>
+        </record>
+        <record model="workflow.transition" id="t2">
+            <field name="act_from" ref="act_incharge" />
+            <field name="act_to" ref="act_richiamare" />
+            <field name="signal">callcenter_phone_recall</field>
+        </record>
+        <record model="workflow.transition" id="t3">
+            <field name="act_from" ref="act_draft" />
+            <field name="act_to" ref="act_vinta" />
+            <field name="signal">callcenter_phone_confirmed</field>
+        </record>
+        <record model="workflow.transition" id="t4">
+            <field name="act_from" ref="act_draft" />
+            <field name="act_to" ref="act_persa" />
+            <field name="signal">callcenter_phone_close</field>
+        </record>
+    </data>
+</openerp>

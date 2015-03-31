@@ -1,0 +1,397 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* mexal_order_statistic
+# <> <>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 6.0.3\n"
+"Report-Msgid-Bugs-To: support@openerp.com\n"
+"POT-Creation-Date: 2011-11-18 13:43+0000\n"
+"PO-Revision-Date: 2011-11-18 14:51+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: mexal_order_statistic
+#: view:statistic.order:0
+msgid "Order by deadline"
+msgstr "Ordini per scadenza"
+
+#. module: mexal_order_statistic
+#: model:ir.actions.act_window,name:mexal_order_statistic.action_statistic_trend
+#: model:ir.actions.act_window,name:mexal_order_statistic.action_statistic_trend_dashboard
+msgid "Statistic trend Date"
+msgstr "Trend per data"
+
+#. module: mexal_order_statistic
+#: selection:statistic.deadline,type:0
+msgid "Rimessa diretta X"
+msgstr "Rimessa diretta X"
+
+#. module: mexal_order_statistic
+#: model:ir.ui.menu,name:mexal_order_statistic.menu_action_board_mexal_form
+msgid "Mexal default"
+msgstr "Mexal standard"
+
+#. module: mexal_order_statistic
+#: field:statistic.trend,trend:0
+msgid "Important partner"
+msgstr "Partner importante"
+
+#. module: mexal_order_statistic
+#: selection:statistic.deadline,type:0
+msgid "RIBA"
+msgstr "RIBA"
+
+#. module: mexal_order_statistic
+#: view:statistic.deadline:0 view:statistic.order:0 view:statistic.trend:0
+msgid "Group By..."
+msgstr "Raggruppa per..."
+
+#. module: mexal_order_statistic
+#: field:statistic.order,property_account_position:0
+msgid "Fiscal position"
+msgstr "Posizione fiscale"
+
+#. module: mexal_order_statistic
+#: field:statistic.order,line_ids:0
+msgid "Details"
+msgstr "Dettagli"
+
+#. module: mexal_order_statistic
+#: view:statistic.trend:0
+msgid "Statistic trend Tree"
+msgstr "Trend (lista)"
+
+#. module: mexal_order_statistic
+#: model:ir.model,name:mexal_order_statistic.model_statistic_deadline
+#: view:statistic.deadline:0
+msgid "Statistic deadline"
+msgstr "Scadenze"
+
+#. module: mexal_order_statistic
+#: view:statistic.deadline:0 view:statistic.trend:0
+msgid "Totale"
+msgstr "Totale"
+
+#. module: mexal_order_statistic
+#: field:statistic.trend,worst:0
+msgid "Worst trend"
+msgstr "Trend peggiori"
+
+#. module: mexal_order_statistic
+#: view:statistic.trend:0
+msgid "Statistic trend"
+msgstr "Trend"
+
+#. module: mexal_order_statistic
+#: view:statistic.order:0
+msgid "Order deadline"
+msgstr "Scadenza ordine"
+
+#. module: mexal_order_statistic
+#: view:board.board:0
+#: model:ir.actions.act_window,name:mexal_order_statistic.action_statistic_order_dashboard
+msgid "Ordini Italia (pros. 10 gg.)"
+msgstr "Ordini Italia (pros. 10 gg.)"
+
+#. module: mexal_order_statistic
+#: selection:statistic.deadline,type:0
+msgid "Bonifico"
+msgstr "Bonifico"
+
+#. module: mexal_order_statistic
+#: field:statistic.order,name:0 field:statistic.trend,name:0
+msgid "Description"
+msgstr "Descrizione"
+
+#. module: mexal_order_statistic
+#: model:ir.actions.act_window,name:mexal_order_statistic.action_board_mexal_form
+msgid "Mexal Dashboard (dati agg. alla sera precedente)"
+msgstr "Mexal Dashboard (dati agg. alla sera precedente)"
+
+#. module: mexal_order_statistic
+#: view:board.board:0
+msgid "Trend ordini dal 1/1"
+msgstr "Trend ordini dal 1/1"
+
+#. module: mexal_order_statistic
+#: view:statistic.deadline:0 field:statistic.deadline,type:0
+msgid "Type"
+msgstr "Tipo"
+
+#. module: mexal_order_statistic
+#: view:statistic.trend:0
+msgid "Statistic trend Form"
+msgstr "Trend (form)"
+
+#. module: mexal_order_statistic
+#: model:ir.actions.act_window,name:mexal_order_statistic.action_statistic_order_deadline
+msgid "Statistic Order Deadline"
+msgstr "Statistiche ordine per scadenza"
+
+#. module: mexal_order_statistic
+#: help:res.partner,trend:0
+msgid ""
+"Insert in trend statistic, used for get only interesting partner in "
+"statistic graph"
+msgstr "Inserisce il partner nella videata dettaglio trend"
+
+#. module: mexal_order_statistic
+#: view:statistic.deadline:0
+msgid "Statistic deadline Form"
+msgstr "Scadenze (form)"
+
+#. module: mexal_order_statistic
+#: field:statistic.order,country_id:0
+msgid "Country"
+msgstr "Nazione"
+
+#. module: mexal_order_statistic
+#: field:statistic.order,date:0
+msgid "Date"
+msgstr "Data"
+
+#. module: mexal_order_statistic
+#: field:statistic.order.line,name:0
+msgid "Article"
+msgstr "Articolo"
+
+#. module: mexal_order_statistic
+#: view:statistic.trend:0
+msgid "trend by date"
+msgstr "Trend per data"
+
+#. module: mexal_order_statistic
+#: field:statistic.order,calendar_description:0
+#: field:statistic.order,total_lines:0
+msgid "Total lines"
+msgstr "Righe totali"
+
+#. module: mexal_order_statistic
+#: view:statistic.order:0
+msgid "Statistic Order"
+msgstr "Statistiche ordine"
+
+#. module: mexal_order_statistic
+#: field:statistic.deadline,deadline:0 field:statistic.order,deadline:0
+msgid "Dead line"
+msgstr "Scadenza"
+
+#. module: mexal_order_statistic
+#: field:statistic.trend,best:0
+msgid "Best trend"
+msgstr "Trend migliore"
+
+#. module: mexal_order_statistic
+#: model:ir.actions.act_window,name:mexal_order_statistic.action_statistic_deadline_dashboard
+msgid "Entrate prossima settimana"
+msgstr "Entrate prossima settimana"
+
+#. module: mexal_order_statistic
+#: view:statistic.order:0
+msgid "Statistic Order Form"
+msgstr "Form Statistiche ordine"
+
+#. module: mexal_order_statistic
+#: selection:statistic.order.line,type:0
+msgid "Annullato"
+msgstr "Annullato"
+
+#. module: mexal_order_statistic
+#: view:statistic.deadline:0 field:statistic.deadline,in:0
+msgid "Entrate"
+msgstr "Entrate"
+
+#. module: mexal_order_statistic
+#: view:statistic.order:0
+msgid "Articoli"
+msgstr "Articoli"
+
+#. module: mexal_order_statistic
+#: view:statistic.trend:0
+msgid "Importanti"
+msgstr "Importanti"
+
+#. module: mexal_order_statistic
+#: view:statistic.order:0
+msgid "Statistic Order Tree"
+msgstr "Lista Statistiche ordine"
+
+#. module: mexal_order_statistic
+#: view:board.board:0
+#: model:ir.actions.act_window,name:mexal_order_statistic.action_statistic_order_dashboard_estero
+msgid "Ordini Estero (pros. 10 gg.)"
+msgstr "Ordini Estero (pros. 10 gg.)"
+
+#. module: mexal_order_statistic
+#: model:ir.ui.menu,name:mexal_order_statistic.menu_base_mexal_analisi
+msgid "Analisi"
+msgstr "Analisi"
+
+#. module: mexal_order_statistic
+#: model:ir.ui.menu,name:mexal_order_statistic.menu_base_mexal
+msgid "Mexal"
+msgstr "Mexal"
+
+#. module: mexal_order_statistic
+#: view:board.board:0
+msgid "Entrate (pros. 10 gg.)"
+msgstr "Entrate (pros. 10 gg.)"
+
+#. module: mexal_order_statistic
+#: view:statistic.deadline:0 field:statistic.deadline,out:0
+msgid "Uscite"
+msgstr "Uscite"
+
+#. module: mexal_order_statistic
+#: selection:statistic.deadline,type:0
+msgid "Rimessa diretta"
+msgstr "Rimessa diretta"
+
+#. module: mexal_order_statistic
+#: model:ir.ui.menu,name:mexal_order_statistic.menu_base_mexal_dashboard
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#. module: mexal_order_statistic
+#: model:ir.actions.act_window,name:mexal_order_statistic.action_statistic_order
+msgid "Statistic Order Date"
+msgstr "Statistiche ordine per data"
+
+#. module: mexal_order_statistic
+#: model:ir.ui.menu,name:mexal_order_statistic.menu_statistic_statistic_deadline
+#: model:ir.ui.menu,name:mexal_order_statistic.menu_statistic_statistic_order_deadline
+msgid "Deadline calendar"
+msgstr "Calendario scadenze"
+
+#. module: mexal_order_statistic
+#: selection:statistic.deadline,type:0
+msgid "Rimessa diretta Z"
+msgstr "Rimessa diretta Z"
+
+#. module: mexal_order_statistic
+#: field:statistic.order.line,type:0
+msgid "Type of line"
+msgstr "Tipo di riga"
+
+#. module: mexal_order_statistic
+#: view:statistic.order:0
+msgid "Linee"
+msgstr "Linee"
+
+#. module: mexal_order_statistic
+#: selection:statistic.deadline,type:0
+msgid "Rimessa diretta Y"
+msgstr "Rimessa diretta Y"
+
+#. module: mexal_order_statistic
+#: view:statistic.deadline:0 view:statistic.order:0
+#: field:statistic.order.line,order_id:0 view:statistic.trend:0
+msgid "Order"
+msgstr "Ordine"
+
+#. module: mexal_order_statistic
+#: field:statistic.order.line,quantity:0
+msgid "Quantity"
+msgstr "Quantità"
+
+#. module: mexal_order_statistic
+#: field:statistic.order.line,code:0
+msgid "Code"
+msgstr "Codice"
+
+#. module: mexal_order_statistic
+#: model:ir.model,name:mexal_order_statistic.model_statistic_order_line
+msgid "Statistic order line"
+msgstr "Righe ordine"
+
+#. module: mexal_order_statistic
+#: model:ir.ui.menu,name:mexal_order_statistic.menu_statistic_statistic_order
+msgid "Order from Mexal"
+msgstr "Ordini da Mexal"
+
+#. module: mexal_order_statistic
+#: model:ir.model,name:mexal_order_statistic.model_statistic_order
+msgid "Statistic order"
+msgstr "Statistiche Ordini"
+
+#. module: mexal_order_statistic
+#: selection:statistic.deadline,type:0
+msgid "MAV"
+msgstr "MAV"
+
+#. module: mexal_order_statistic
+#: model:ir.ui.menu,name:mexal_order_statistic.menu_statistic_statistic_trend
+#: field:res.partner,trend:0
+msgid "Trend"
+msgstr "Trend"
+
+#. module: mexal_order_statistic
+#: field:statistic.trend,total_last:0
+msgid "Total year-1"
+msgstr "Totale anno-1"
+
+#. module: mexal_order_statistic
+#: field:statistic.order,total_items:0
+msgid "Total items"
+msgstr "Totale articoli"
+
+#. module: mexal_order_statistic
+#: view:board.board:0
+msgid "Mexal board"
+msgstr "Mexal dashboard"
+
+#. module: mexal_order_statistic
+#: model:ir.actions.act_window,name:mexal_order_statistic.action_statistic_deadline
+msgid "Statistic deadline Date"
+msgstr "Date scadenze"
+
+#. module: mexal_order_statistic
+#: view:statistic.deadline:0 field:statistic.deadline,name:0
+#: view:statistic.order:0
+msgid "Deadline"
+msgstr "Scadenza"
+
+#. module: mexal_order_statistic
+#: view:statistic.deadline:0
+msgid "Statistic deadline Tree"
+msgstr "Scadenza (elenco)"
+
+#. module: mexal_order_statistic
+#: model:ir.model,name:mexal_order_statistic.model_res_partner
+#: view:statistic.deadline:0 field:statistic.deadline,partner_id:0
+#: view:statistic.order:0 field:statistic.order,partner_id:0
+#: view:statistic.trend:0 field:statistic.trend,partner_id:0
+msgid "Partner"
+msgstr "Partner"
+
+#. module: mexal_order_statistic
+#: selection:statistic.deadline,type:0
+msgid "Contanti"
+msgstr "Contanti"
+
+#. module: mexal_order_statistic
+#: view:statistic.deadline:0 view:statistic.order:0
+msgid "Order by date"
+msgstr "Ordini per data"
+
+#. module: mexal_order_statistic
+#: field:statistic.deadline,total:0 field:statistic.order,total:0
+#: field:statistic.trend,total:0
+msgid "Total"
+msgstr "Totale"
+
+#. module: mexal_order_statistic
+#: model:ir.model,name:mexal_order_statistic.model_statistic_trend
+msgid "Statistic Trend"
+msgstr "Trend"
+
+#. module: mexal_order_statistic
+#: selection:statistic.order.line,type:0
+msgid "Prodotto"
+msgstr "Prodotto"

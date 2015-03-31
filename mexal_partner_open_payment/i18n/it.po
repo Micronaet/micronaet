@@ -1,0 +1,166 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* mexal_partner_open_payment
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 6.0.3\n"
+"Report-Msgid-Bugs-To: support@openerp.com\n"
+"POT-Creation-Date: 2012-05-17 08:45+0000\n"
+"PO-Revision-Date: 2012-05-17 08:45+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: mexal_partner_open_payment
+#: model:ir.actions.act_window,name:mexal_partner_open_payment.action_statistic_deadline_passed_tree_dashboard
+#: view:res.partner:0
+#: field:res.partner,deadline_ids:0
+#: view:statistic.deadline:0
+msgid "Pagamenti scaduti"
+msgstr "Pagamenti scaduti"
+
+#. module: mexal_partner_open_payment
+#: view:statistic.deadline:0
+msgid "Group By..."
+msgstr "Raggruppa per..."
+
+#. module: mexal_partner_open_payment
+#: view:statistic.deadline:0
+msgid "Order by date"
+msgstr "Ordini per data"
+
+#. module: mexal_partner_open_payment
+#: view:res.partner:0
+msgid "Elenco scaduti"
+msgstr "Elenco scaduti"
+
+#. module: mexal_partner_open_payment
+#: model:ir.model,name:mexal_partner_open_payment.model_statistic_deadline
+#: view:statistic.deadline:0
+msgid "Statistic deadline"
+msgstr "Scadenze"
+
+#. module: mexal_partner_open_payment
+#: field:statistic.deadline,type:0
+msgid "Type"
+msgstr "Tipo"
+
+#. module: mexal_partner_open_payment
+#: selection:statistic.deadline,type:0
+msgid "Bonifico"
+msgstr "Bonifico"
+
+#. module: mexal_partner_open_payment
+#: field:res.partner,pendent:0
+#: field:sale.order,pendent:0
+msgid "Ha pendenze"
+msgstr "Ha pendenze"
+
+#. module: mexal_partner_open_payment
+#: view:statistic.deadline:0
+msgid "Statistic deadline Form"
+msgstr "Scadenze (form)"
+
+#. module: mexal_partner_open_payment
+#: selection:statistic.deadline,type:0
+msgid "RIBA"
+msgstr "RIBA"
+
+#. module: mexal_partner_open_payment
+#: view:statistic.deadline:0
+#: field:statistic.deadline,in:0
+msgid "Entrate"
+msgstr "Entrate"
+
+#. module: mexal_partner_open_payment
+#: field:statistic.deadline,deadline:0
+msgid "Dead line"
+msgstr "Scadenza"
+
+#. module: mexal_partner_open_payment
+#: model:ir.actions.act_window,name:mexal_partner_open_payment.action_statistic_deadline_dashboard
+msgid "Entrate prossima settimana"
+msgstr "Entrate prossima settimana"
+
+#. module: mexal_partner_open_payment
+#: view:statistic.deadline:0
+msgid "Dati scrittura contabile"
+msgstr "Dati scrittura contabile"
+
+#. module: mexal_partner_open_payment
+#: model:ir.ui.menu,name:mexal_partner_open_payment.menu_base_mexal
+msgid "Mexal"
+msgstr "Mexal"
+
+#. module: mexal_partner_open_payment
+#: sql_constraint:sale.order:0
+msgid "Order Reference must be unique !"
+msgstr "Il riferimento ordine deve essere unico!"
+
+#. module: mexal_partner_open_payment
+#: selection:statistic.deadline,type:0
+msgid "Rimessa diretta"
+msgstr "Rimessa diretta"
+
+#. module: mexal_partner_open_payment
+#: selection:statistic.deadline,type:0
+msgid "Rimessa diretta Z"
+msgstr "Rimessa diretta Z"
+
+#. module: mexal_partner_open_payment
+#: selection:statistic.deadline,type:0
+msgid "Rimessa diretta X"
+msgstr "Rimessa diretta X"
+
+#. module: mexal_partner_open_payment
+#: selection:statistic.deadline,type:0
+msgid "Rimessa diretta Y"
+msgstr "Rimessa diretta Y"
+
+#. module: mexal_partner_open_payment
+#: model:ir.actions.act_window,name:mexal_partner_open_payment.action_statistic_deadline
+msgid "Scadenze ordini"
+msgstr "Scadenze ordini"
+
+#. module: mexal_partner_open_payment
+#: model:ir.actions.act_window,name:mexal_partner_open_payment.action_statistic_deadline_passed_dashboard
+msgid "Pagamenti scaduti diviso per cliente con scoperto"
+msgstr "Pagamenti scaduti diviso per cliente con scoperto"
+
+#. module: mexal_partner_open_payment
+#: selection:statistic.deadline,type:0
+msgid "MAV"
+msgstr "MAV"
+
+#. module: mexal_partner_open_payment
+#: view:statistic.deadline:0
+#: field:statistic.deadline,name:0
+msgid "Deadline"
+msgstr "Scadenza"
+
+#. module: mexal_partner_open_payment
+#: view:statistic.deadline:0
+msgid "Importo"
+msgstr "Importo"
+
+#. module: mexal_partner_open_payment
+#: selection:statistic.deadline,type:0
+msgid "Contanti"
+msgstr "Contanti"
+
+#. module: mexal_partner_open_payment
+#: model:ir.model,name:mexal_partner_open_payment.model_res_partner
+#: view:statistic.deadline:0
+#: field:statistic.deadline,partner_id:0
+msgid "Partner"
+msgstr "Partner"
+
+#. module: mexal_partner_open_payment
+#: model:ir.model,name:mexal_partner_open_payment.model_sale_order
+msgid "Sales Order"
+msgstr "Ordine di vendita"
+

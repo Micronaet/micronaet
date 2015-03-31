@@ -1,0 +1,71 @@
+<?xml version="1.0" ?>
+<openerp>
+    <!-- Analysis of feed list to launch correct scheduled ones' -->
+	<data noupdate="1">	
+		<record id="ir_cron_amazon0" model="ir.cron">
+			<field eval="&quot;&quot;&quot;schedule_product_feed&quot;&quot;&quot;" name="function"/>
+			<field eval="&quot;&quot;&quot;minutes&quot;&quot;&quot;" name="interval_type"/>
+			<field name="user_id" ref="base.user_root"/>
+			<field eval="&quot;&quot;&quot;Amazon publish event&quot;&quot;&quot;" name="name"/>
+			<field eval="-1" name="numbercall"/>
+			<field eval="&quot;&quot;&quot;2010-01-07 11:35:28&quot;&quot;&quot;" name="nextcall"/>
+			<field eval="5" name="priority"/>
+			<field eval="0" name="doall"/>
+			<field eval="1" name="active"/>
+			<field eval="360" name="interval_number"/>
+			<field eval="&quot;&quot;&quot;amazon.feed&quot;&quot;&quot;" name="model"/>
+		</record>
+	</data>
+
+    <!-- Import inventory status from Amazon (price and quantity) -->
+	<data noupdate="1">
+		<record id="ir_cron_amazon1" model="ir.cron">
+			<field eval="&quot;&quot;&quot;schedule_inventory_report&quot;&quot;&quot;" name="function"/>
+			<field eval="&quot;&quot;&quot;minutes&quot;&quot;&quot;" name="interval_type"/>
+			<field name="user_id" ref="base.user_root"/>
+			<field eval="&quot;&quot;&quot;Amazon inventory request event&quot;&quot;&quot;" name="name"/>
+			<field eval="-1" name="numbercall"/>
+			<field eval="&quot;&quot;&quot;2012-10-01 08:00:00&quot;&quot;&quot;" name="nextcall"/>
+			<field eval="5" name="priority"/>
+			<field eval="0" name="doall"/>
+			<field eval="1" name="active"/>
+			<field eval="120" name="interval_number"/>
+			<field eval="&quot;&quot;&quot;amazon.feed&quot;&quot;&quot;" name="model"/>
+		</record>
+	</data>
+
+    <!-- Import order from Amazon and import on account program -->
+	<data noupdate="1">
+		<record id="ir_cron_amazon2" model="ir.cron">
+			<field eval="&quot;&quot;&quot;import_order_list&quot;&quot;&quot;" name="function"/>
+			<field eval="&quot;&quot;&quot;minutes&quot;&quot;&quot;" name="interval_type"/>
+			<field name="user_id" ref="base.user_root"/>
+			<field eval="&quot;&quot;&quot;Amazon import order list&quot;&quot;&quot;" name="name"/>
+			<field eval="-1" name="numbercall"/>
+			<field eval="&quot;&quot;&quot;2012-10-01 08:00:00&quot;&quot;&quot;" name="nextcall"/>
+			<field eval="5" name="priority"/>
+			<field eval="0" name="doall"/>
+			<field eval="1" name="active"/>
+			<field eval="60" name="interval_number"/>
+			<field eval="&quot;&quot;&quot;amazon.orders&quot;&quot;&quot;" name="model"/>
+		</record>
+	</data>
+	
+    <!-- Publish event for all product inventory  -->
+	<data noupdate="1">
+		<record id="ir_cron_amazon3" model="ir.cron">
+			<field eval="&quot;&quot;&quot;publish_inventory_scheduled&quot;&quot;&quot;" name="function"/>
+			<field eval="&quot;&quot;&quot;days&quot;&quot;&quot;" name="interval_type"/>
+			<field name="user_id" ref="base.user_root"/>
+			<field eval="&quot;&quot;&quot;Amazon inventory push to web&quot;&quot;&quot;" name="name"/>
+			<field eval="-1" name="numbercall"/>
+			<field eval="&quot;&quot;&quot;2012-10-01 08:30:00&quot;&quot;&quot;" name="nextcall"/>
+			<field eval="5" name="priority"/>
+			<field eval="0" name="doall"/>
+			<field eval="1" name="active"/>
+			<field eval="1" name="interval_number"/>
+			<field eval="&quot;&quot;&quot;product.product&quot;&quot;&quot;" name="model"/>
+		</record>
+	</data></openerp>
+
+

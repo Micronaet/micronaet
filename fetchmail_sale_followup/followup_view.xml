@@ -1,0 +1,142 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    
+    <record id='view_sale_order_followup' model='ir.ui.view'>
+        <field name='name'>Follow up</field>
+        <field name='model'>sale.order</field>
+        <field name='type'>tree</field>
+        <field name="priority" eval="20"/>        
+        <field name='arch' type='xml'>
+            <tree string="Sales Orders" colors="grey:partner_id.id==1;">
+                    <field name="name"/>
+                    <field name="date_order"/>
+                    <field name="client_order_ref"/>
+                    <field name="partner_id"/>
+                    <field name="user_id"/>
+                    <field name="picked_rate" widget="progressbar"/>
+                    <field name="invoiced_rate" widget="progressbar"/>
+                    <field name="amount_untaxed" sum="Total Tax Excluded"/>
+                    <field name="amount_total" sum="Total Tax Included"/>
+                    <field name="follow_subject" />
+                    <field name="follow_user_id" />
+                    <field name="state"/>
+             </tree>
+        </field>
+    </record>  
+
+    <record model="ir.ui.view" id="view_sale_order_followup_graph">
+        <field name="name">sale.order.graph</field>
+        <field name="model">sale.order</field>
+        <field name="type">graph</field>
+        <field name="arch" type="xml">
+            <graph string="Sales Orders" type="bar">
+                <field name="user_id"/>
+                <field name="count" operator="+"/>
+            </graph>
+        </field>
+    </record>    
+
+    <record id='view_sale_order_add_comunication_page' model='ir.ui.view'>
+        <field name='name'>Sale order comunication page</field>
+        <field name='model'>sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+           <xpath expr="/form/notebook" position="inside">
+               <page string="Follow up" attrs="{'invisible': [('follow_email_creation','=',False)]}">
+                  <field name="follow_email_creation" invisible="1"/>
+                  <field name="follow_subject" />
+                  <field name="follow_date" />
+                  <field name="follow_email_from" />
+                  <field name="follow_email_cc" />
+                  <!--<field name="follow_priority" />-->
+                  <separator string="Body mail"  colspan="4" />               
+                  <field name="follow_description" colspan="4" nolabel="1"/>
+                  <!--<separator string="Body mail"  colspan="4" />               -->
+                  <!--<field name="follow_message_ids" colspan="4" nolabel="1"/>-->
+                  
+                  
+                  <!--<field name="follow_user_id" />-->
+                  
+                  <!--<field name="comunication_ids" colspan="4" nolabel="1" >
+                     <tree string="E-mail list">
+                         <field name="date" />
+                         <field name="name" />
+                         <field name="email_from" />
+                         <field name="email_cc" />
+                         <field name="description" />
+                         <field name="user_id" />
+                     </tree>
+                     <form>
+                         <field name="date" />
+                         <field name="name" />
+                         <field name="email_from" />
+                         <field name="email_cc" />
+                         <field name="user_id" />
+                         <newline />
+                         <separator string="Description" colspan="4"/>
+                         <field name="description" nolabel="1" colspan="4"/>
+                     </form>
+                  </field>-->
+               </page>
+           </xpath>
+        </field>
+    </record> 
+
+    <!-- action for dashboard -->
+    <record model="ir.actions.act_window" id="action_sale_order_followup_action">
+        <field name="name">My followup</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,calendar,graph</field>
+        <field name="view_id" ref="view_sale_order_followup"/>
+        <field name="domain">[('follow_email_creation','=',True),('order_line','=',False)]</field>
+    </record>
+    <record model="ir.actions.act_window" id="action_sale_order_followup_graph_action">
+        <field name="name">Followup per user</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph,tree,form</field>
+        <field name="view_id" ref="view_sale_order_followup"/>
+        <field name="domain">[('follow_email_creation','=',True),('order_line','=',False)]</field>
+    </record>
+    
+    <!-- override dashboard: --><!--TODO use inherit??-->
+        <record id="board_sales_manager_form" model="ir.ui.view">
+            <field name="name">board.sales.manager.form</field>
+            <field name="model">board.board</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Sales Manager Dashboard">
+                    <hpaned position="100">
+                        <child1>
+                            <action  name="%(action_sale_order_followup_action)d" string="Followup to do"/>
+                            <action  name="%(action_sale_order_followup_graph_action)d" string="Followup per user to do"/>
+                            <action  name="%(sale.action_quotation_for_sale)d" string="Quotations"/>
+                            <action width="510" name="%(sale.action_view_sales_by_month)d" string="Sales by Month"/>
+                        </child1>
+                        <child2>
+                            <action  name="%(sale.action_sales_by_salesman)d" string="Sales by Salesman in last 90 days"/>
+                            <action  name="%(sale.action_sales_by_partner)d" string="Sales per Customer in last 90 days"/>
+                            <action  name="%(sale.action_sales_product_total_price)d" string="Sales by Product's Category in last 90 days"/>
+                        </child2>
+                    </hpaned>
+                </form>
+            </field>
+        </record>
+
+        <record id="open_board_sales_manager" model="ir.actions.act_window">
+            <field name="name">Sales Manager Dashboard</field>
+            <field name="res_model">board.board</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="board_sales_manager_form"/>
+        </record>
+        
+        <!-- override action on sale menu-->
+        <menuitem icon="terp-partner" id="base.menu_base_partner" name="Sales" sequence="0" action="open_board_sales_manager"/>
+    
+</data>
+</openerp>
+

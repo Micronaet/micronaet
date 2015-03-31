@@ -1,0 +1,393 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <!-- INHERIT VIEWS: -->    
+    <!--res.partner-->
+    <record id='view_partner_form_add_fields' model='ir.ui.view'>
+        <field name='name'>Laboratory partner</field>
+        <field name='model'>res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+           <field name="supplier" position="after">
+               <field name="is_laboratory" />
+           </field>    
+        </field>
+    </record>   
+
+    <record id='view_partner_tree_add_fields' model='ir.ui.view'>
+        <field name='name'>Laboratory partner</field>
+        <field name='model'>res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree" />
+        <field name='type'>tree</field>
+        <field name='arch' type='xml'>
+           <field name="name" position="after">
+               <field name="is_laboratory" invisible="1" />
+           </field>    
+        </field>
+    </record>   
+
+    <record model="ir.actions.act_window" id="action_laboratory_tree">
+        <field name="name">Laboratory</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form,tree</field>
+        <field name="view_id" ref="base.view_partner_tree" />
+        <field name="search_view_id" ref="base.view_res_partner_filter" />
+        <field name="domain">[('is_laboratory','=',True)]</field>
+    </record>
+
+    <!--stock.picking-->
+    <record id='view_stock_picking_add_fields' model='ir.ui.view'>
+        <field name='name'>Stock picking fields</field>
+        <field name='model'>stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_in_form" />
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+           <field name="stock_journal_id" position="after">
+               <button name="create_all_analysis" string="Create analysis form" type="object" attrs="{'invisible': [('state','!=','done')]}" colspan="2" confirm="Confirm creation of analysis (one for every line)?"/>
+           </field>    
+        </field>
+    </record>   
+
+    <!--stock.production.form-->
+    <record id='view_stock_production_lot_add_fields' model='ir.ui.view'>
+        <field name='name'>Stock lot</field>
+        <field name='model'>stock.production.lot</field>
+        <field name="inherit_id" ref="stock.view_production_lot_form" />
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+           <xpath expr="/form/notebook/page[@string='Stock Moves']" position="after"> 
+              <page string="Analisys">
+                 <field name="hygro" /> 
+                 <newline />
+                 <separator string="Granulometric" />
+                 <field name="granulometric" colspan="4" nolabel="1"/>
+                 <separator string="Visual" />
+                 <field name="visual" colspan="4" nolabel="1"/>
+                 <separator string="Composition" />
+                 <field name="chemical_analysis_ids" colspan="4" nolabel="1">
+                    <!--TODO form e tree? -->                 
+                 </field>
+              </page>   
+           </xpath>    
+        </field>
+    </record>   
+
+    <act_window id="action_analysis_of_lot" name="Analisys list"
+        res_model="chemical.analysis" 
+        src_model="stock.production.lot"
+        view_type="form" 
+        view_mode="tree,form"
+        domain="['|',('prodlot_id','=', active_id),('prodlot_id','in', (active_ids))]"
+        /> 
+        
+    <!--product.product-->
+    <record id='view_product_product_search_analysis_fields' model='ir.ui.view'>
+        <field name='name'>Product search analysis fields</field>
+        <field name='model'>product.product</field>
+        <field name="inherit_id" ref="product.product_search_form_view" />
+        <field name='type'>search</field>
+        <field name='arch' type='xml'>
+           <field name="name" position="after">
+               <field name="chemical_category_id" />
+               <field name="category_type_id" />
+           </field>
+        </field>
+    </record>   
+
+    <record id='view_product_product_analysis_fields' model='ir.ui.view'>
+        <field name='name'>Product analysis fields</field>
+        <field name='model'>product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+           <field name="name" position="after">
+               <group colspan="2" col="6">
+                  <field name="need_analysis" />
+                  <field name="chemical_category_id" />
+                  <field name="category_type_id" readonly="1" />
+               </group>
+           </field>
+        </field>
+    </record>   
+
+    <record id='view_product_product_tree_analysis_fields' model='ir.ui.view'>
+        <field name='name'>Product tree analysis fields</field>
+        <field name='model'>product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view" />
+        <field name='type'>tree</field>
+        <field name='arch' type='xml'>
+           <field name="name" position="after">
+               <field name="chemical_category_id" />
+               <field name="category_type_id" />
+           </field>
+        </field>
+    </record>   
+
+    <!--NEW VIEWS-->
+    <!-- chemical.analysis -->
+    <record id="view_chemical_analysis_search" model="ir.ui.view">
+        <field name="name">Analysis search</field>
+        <field name="model">chemical.analysis</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Analysis list">
+               <field name="name"/>
+               <field name="date"/>
+               <field name="prodlot_id"/>
+               <!--<field name="product_id"/>-->
+            </search>
+        </field>    
+    </record>
+
+    <record id="view_chemical_analysis_tree" model="ir.ui.view">
+        <field name="name">Analysis</field>
+        <field name="model">chemical.analysis</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Analysis list">
+               <field name="name"/>
+               <field name="date"/>
+               <field name="quantity"/>
+               <field name="product_id"/>
+               <field name="prodlot_id"/>
+            </tree>
+        </field>    
+    </record>
+
+    <record id="view_chemical_analysis_form" model="ir.ui.view">
+        <field name="name">Analysis</field>
+        <field name="model">chemical.analysis</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Analysis list">
+               <separator string="Analysis header" />
+               <field name="name"/>
+               <field name="quantity"/>
+               <field name="laboratory_id" domain="[('is_laboratory','=',True)]" />
+               <field name="quantity_laboratory" attrs="{'readonly': [('laboratory_id','=', False)]}"/>
+               <field name="product_id"/>
+               <field name="prodlot_id" readonly="1" />
+               <field name="date"/>
+               <field name="date_in" readonly="1" />
+               <separator string="Analysis details" />
+               <field name="line_ids" nolabel="1" colspan="4">
+                  <tree editable="bottom" string="Elements" >
+                      <field name="name" />
+                      <field name="symbol" readonly="1" />
+                      <field name="percentage" sum="Internal"/>            
+                      <field name="percentage_supplier" sum="Supplier"/>                      
+                      <field name="percentage_laboratory" sum="Laboratory"/> <!--attrs="{'readonly': [('laboratory_id','!=', False )]}"-->                
+                      <field name="note" />
+                  </tree>
+               </field>
+               <separator string="Note" />
+               <field name="note" nolabel="1" colspan="4"/>
+            </form>
+        </field>    
+    </record>
+
+    <record model="ir.actions.act_window" id="action_chemical_analysis">
+        <field name="name">Chemical analysis</field>
+        <field name="res_model">chemical.analysis</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_chemical_analysis_tree" />
+        <field name="search_id" ref="view_chemical_analysis_search" />
+
+    </record>
+    
+    <!-- chemical.element -->
+    <record id="view_chemical_element_tree" model="ir.ui.view">
+        <field name="name">Chemical Element</field>
+        <field name="model">chemical.element</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Chemical Element" editable="bottom">
+               <field name="name"/>
+               <field name="symbol"/>
+               <field name="atomic"/>
+            </tree>
+        </field>    
+    </record>
+
+    <record id="view_chemical_element_form" model="ir.ui.view">
+        <field name="name">Chemical Element</field>
+        <field name="model">chemical.element</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Chemical Element">
+               <group colspan="4" col="6">
+                  <field name="name"/>
+                  <field name="symbol"/>
+                  <field name="atomic"/>
+               </group>   
+            </form>
+        </field>    
+    </record>
+
+    <record model="ir.actions.act_window" id="action_chemical_element">
+        <field name="name">Chemical Element</field>
+        <field name="res_model">chemical.element</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_chemical_element_tree"/>
+    </record>
+
+    <!-- chemical.product.category.type -->
+    <record id="view_chemical_product_category_type_tree" model="ir.ui.view">
+        <field name="name">Chemical type</field>
+        <field name="model">chemical.product.category.type</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Chemical category type">
+               <field name="name" />
+               <field name="note" />
+            </tree>
+        </field>    
+    </record>
+
+    <record id="view_chemical_product_category_type_form" model="ir.ui.view">
+        <field name="name">Chemical type</field>
+        <field name="model">chemical.product.category.type</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Chemical category type">
+               <field name="name" />
+               <newline />
+               <separator string="Note" />
+               <field name="note" colspan="4" nolabel="1" />
+            </form>
+        </field>    
+    </record>
+
+    <record model="ir.actions.act_window" id="action_chemical_product_category_type">
+        <field name="name">Chemical category type</field>
+        <field name="res_model">chemical.product.category.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_chemical_product_category_type_tree"/>
+    </record>
+
+    <!-- chemical.product.category -->
+    <record id="view_chemical_product_category_tree" model="ir.ui.view">
+        <field name="name">Chemical category</field>
+        <field name="model">chemical.product.category</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Chemical category">
+               <field name="name" />
+               <field name="note" />
+               <field name="type_id" />
+            </tree>
+        </field>    
+    </record>
+
+    <record id="view_chemical_product_category_form" model="ir.ui.view">
+        <field name="name">Chemical category</field>
+        <field name="model">chemical.product.category</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Chemical category">
+               <field name="name"/>
+               <field name="type_id"/>
+               <field name="line_ids" nolabel="1" colspan="4" >
+                   <tree editable="bottom" string="Elements">
+                         <field name="name" />
+                         <field name="symbol" />
+                         <field name="min" />
+                         <field name="max" />
+                   </tree>
+                   <form string="Element">
+                         <field name="name"/>
+                         <field name="symbol"/>
+                         <field name="min" />
+                         <field name="max" />
+                   </form>                   
+               </field>   
+               <separator string="Note" />
+               <field name="note" nolabel="1" colspan="4" />
+            </form>
+        </field>    
+    </record>
+
+    <record model="ir.actions.act_window" id="action_chemical_product_category">
+        <field name="name">Chemical category</field>
+        <field name="res_model">chemical.product.category</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_chemical_product_category_tree"/>
+    </record>
+
+    <!--MENUITEM-->    
+   <menuitem id="menu_analysis_root"
+             name="Analysis"
+             icon="terp-stock" 
+             sequence="0"
+             web_icon="images/analysis.png"
+             web_icon_hover="images/analysis-hover.png" 
+             groups="chemical_analysis.group_analysis_user,chemical_analysis.group_analysis_manager" />
+
+        <menuitem id="menu_chemical_analysis_root"
+             name="Analysis"
+             sequence="0"                 
+             parent="menu_analysis_root" 
+             />
+            <menuitem id="menu_chemical_analysis_laboratory_root"
+                 name="Laboratory"
+                 sequence="10"                 
+                 parent="menu_chemical_analysis_root" 
+                 action="action_laboratory_tree"
+                 />
+            <menuitem id="menu_chemical_analysis_analysis_root"
+                 name="Analysis list"
+                 sequence="20"                 
+                 parent="menu_chemical_analysis_root" 
+                 action="action_chemical_analysis"
+                 />
+
+        <menuitem id="menu_analysis_product_root"
+             name="Product"
+             sequence="0"                 
+             parent="menu_analysis_root" 
+             />
+             
+            <menuitem id="menu_analysis_product_product"
+                 name="Product"
+                 action="product.product_normal_action"
+                 sequence="0"                 
+                 parent="menu_analysis_product_root" />
+            <menuitem id="menu_analysis_product_lot"
+                 name="Lots"
+                 sequence="1"                 
+                 parent="menu_analysis_product_root"  
+                 action="stock.action_production_lot_form" />    
+             
+        <menuitem id="menu_analysis_configuration_root"
+             name="Configurazione"
+             sequence="99" 
+             parent="menu_analysis_root" 
+             groups="chemical_analysis.group_analysis_manager" />
+
+             <menuitem id="menu_analysis_configuration_element"
+                 name="Elements"
+                 sequence="1" 
+                 parent="menu_analysis_configuration_root" 
+                 action="action_chemical_element"/>
+
+             <menuitem id="menu_analysis_configuration_category"
+                 name="Category"
+                 sequence="2" 
+                 parent="menu_analysis_configuration_root" 
+                 action="action_chemical_product_category" />
+
+             <menuitem id="menu_analysis_configuration_category_type"
+                 name="Type of category"
+                 sequence="3" 
+                 parent="menu_analysis_configuration_root" 
+                 action="action_chemical_product_category_type" />
+
+</data>
+</openerp>
+

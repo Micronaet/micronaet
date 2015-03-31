@@ -1,0 +1,5 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_production_line_manager","production.line","model_production_line","base.group_sale_manager",1,1,1,1
+"access_production_production_order_manager","production.production.order","model_production_production_order","base.group_sale_manager",1,1,1,1
+"access_production_customer_order_line","production.customer.order.line","model_production_customer_order_line","base.group_sale_manager",1,1,1,1
+

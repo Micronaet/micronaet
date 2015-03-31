@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+       <!-- picking.import.wizard -->
+       <record id="picking_import_wizard" model="ir.ui.view">
+            <field name="name">Wizard import picking from CSV</field>
+            <field name="model">picking.import.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Import CSV picking">
+                   <group string="workflow" colspan="4" col="10">
+                       <field name="state"/>
+                       <button string="Cancel" special="cancel" />
+                       <label string="" />
+                       <button name="signal_import_load" string="Load files" states="draft" icon="terp-gtk-go-back-rtl"/>
+                       <button name="signal_import_import" string="Import document" states="loaded" icon="gtk-jump-to"/>
+                       
+                       <button name="open_picking_tree" string="Close" type="object" states="imported" />
+                   </group>
+
+                   <group colspan="4" attrs="{'invisible':[('error','=',False)]}" >
+                      <label string="Error during operation, see bottom of this window" /> 
+                   </group>   
+
+                   <group name="Information" states="draft" colspan="4">
+                   <field name="direction_in" />
+                   <group string="IN document" attrs="{'invisible':[('direction_in','=',False)]}" colspan="4" >
+                     <newline />
+                     <separator string="Direction: document in" colspan="4" />
+                     <field name="name" readonly="1" nolabel="1" colspan="4" attrs="{'invisible':[('in','=',False)]}" />
+                   </group>
+                   <group string="OUT document" attrs="{'invisible':[('direction_in','=',True)]}" colspan="4" >
+                     <newline />
+                     <separator string="Direction: document out" colspan="4" />
+                     <field name="name_out" readonly="1" nolabel="1" colspan="4" />
+                   </group>
+                   </group>
+                   
+                   <separator string="Files" colspan="4"/>
+                   <field name="line_ids" colspan="4" nolabel="1"> 
+                       <tree string="Files list to import:" editable="bottom" colors="green:imported==True;red:to_import==False;">
+                           <field name="to_import" />
+                           <field name="exist" readonly="1"/>
+                           <field name="import_document" readonly="1" />
+                           <field name="name" readonly="1"  invisible="1" />                   
+                           <field name="date" readonly="1" />
+                           <field name="log_error" readonly="1" />
+                           <field name="imported" readonly="1" invisible="1" />
+                           <field name="log_text" readonly="1" invisible="1" />
+                       </tree>
+                   </field>            
+
+                   <group string="Result" colspan="4" > 
+                     <group string="Log" colspan="2">
+                        <field name="log_activity" colspan="2" nolabel="1" /> 
+                     </group>   
+                     <group string="Error" colspan="2" attrs="{'invisible':[('error','=',False)]}"> 
+                        <field name="error" colspan="2" nolabel="1"/> 
+                     </group>   
+                   </group>   
+
+                </form>
+            </field>
+      </record>
+
+      <record id="picking_import_wizard_action" model="ir.actions.act_window">
+        <field name="name">Import CSV picking in</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">picking.import.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+      </record>     
+
+      <menuitem action="picking_import_wizard_action" 
+                    id="picking_import_wizard_menuitem" 
+                    sequence="10"
+                    parent="configuration_picking_import"
+                    icon="STOCK_EXECUTE" />
+
+      <record id="picking_import_wizard_out_action" model="ir.actions.act_window">
+        <field name="name">Import CSV picking out</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">picking.import.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="context">{'default_direction_in':False}</field>
+        <field name="target">new</field>
+      </record>     
+
+      <menuitem action="picking_import_wizard_out_action" 
+                    id="picking_import_wizard_out_menuitem" 
+                    sequence="10"
+                    parent="configuration_picking_import"
+                    icon="STOCK_EXECUTE" />
+    </data>
+</openerp>

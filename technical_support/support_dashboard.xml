@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+    <!--Action for dashboard elements-->
+    <record model="ir.actions.act_window" id="action_support_issue_to_start">
+        <field name="name">Issue stand by</field>
+        <field name="res_model">support.issue</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_support_issue_tree"/>
+        <field name="search_view_id" ref="view_support_issue_search"/>
+        <field name="domain">['|',('user_id','=',uid),('tech_id','=',uid),('state','in',['draft', 'received', 'charge']),]</field>
+    </record>
+    <record model="ir.actions.act_window" id="action_support_issue_to_work">
+        <field name="name">Issue stand by</field>
+        <field name="res_model">support.issue</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_support_issue_tree"/>
+        <field name="search_view_id" ref="view_support_issue_search"/>
+        <field name="domain">['|',('user_id','=',uid),('tech_id','=',uid),('state','=','working'),]</field>
+    </record>
+    <record model="ir.actions.act_window" id="action_dashboard_support_issue_graph">
+        <field name="name">All my issue per customer (user or tech)</field>
+        <field name="res_model">support.issue</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph,tree,form</field>
+        <field name="view_id" ref="view_support_issue_tree"/>
+        <field name="search_view_id" ref="view_support_issue_search"/>
+        <field name="domain">['|',('user_id','=',uid),('tech_id','=',uid),]</field>
+    </record>       
+    <record model="ir.actions.act_window" id="action_dashboard_support_issue_graph_status"> <!-- force graph per status-->
+        <field name="name">All my issue per status (user or tech)</field>
+        <field name="res_model">support.issue</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph,tree,form</field>
+        <field name="view_id" ref="view_support_issue_tree"/>
+        <field name="search_view_id" ref="view_support_issue_search"/>        
+        <field name="context">{'graph_view_ref':'technical_support.view_support_issue_graph_per_status'}</field>
+        <field name="domain">['|',('user_id','=',uid),('tech_id','=',uid)]</field>
+    </record>       
+
+    <record model="ir.actions.act_window" id="action_dashboard_intervention_report_graph_contract"> 
+        <field name="name">All intervent on partner with contract</field>
+        <field name="res_model">intervention.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph,tree,form</field>
+        <!--<field name="view_id" ref="view_support_issue_tree"/>
+        <field name="search_view_id" ref="view_support_issue_search"/> 
+        <field name="context">{'graph_view_ref':'technical_support.view_support_issue_graph_per_status'}</field>-->
+        <field name="domain">[('partner_id.has_contract','=',True)]</field> <!--TODO filter for current year -->
+    </record>       
+    
+   <!-- Dashboard -->     
+   <record id="board_support_issue" model="ir.ui.view">
+        <field name="name">Support dashboard</field>
+        <field name="model">board.board</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Dashboard support">
+                <vpaned position="800">
+                    <child1>
+                        <action colspan="4" name="%(action_support_issue_to_start)d" string="My issue to start" width="800" />
+                        <action colspan="4" name="%(action_support_issue_to_work)d" string="My issue to work" width="800" />
+                        <action colspan="4" name="%(action_dashboard_intervention_report_graph_contract)d" string="Partner with contract" width="800" />
+                    </child1>
+                    <child2>
+                        <hpaned>
+                            <child1>
+                                <action name="%(action_dashboard_support_issue_graph)d" string="My issue per partner" width="600" />
+                            </child1>
+                            <child2>
+                                <action name="%(action_dashboard_support_issue_graph_status)d" string="My issue per status" width="400" />                        
+                            </child2>
+                        </hpaned>
+                    </child2>    
+                </vpaned>
+            </form>
+        </field>
+    </record>
+    <record id="action_support_dashboard" model="ir.actions.act_window">
+        <field name="name">Support Dashboard</field>
+        <field name="res_model">board.board</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="board_support_issue"/>
+    </record>        
+
+    <!-- MENUITEM -->
+    <!-- override for insert dashboard -->
+   <menuitem id="menu_technical_support_root"
+             name="Tech Support"
+             icon="terp-crm" 
+             sequence="0"
+             action="action_support_dashboard"
+             web_icon="images/support.png"
+             web_icon_hover="images/support-hover.png" 
+             />
+    </data>
+</openerp>

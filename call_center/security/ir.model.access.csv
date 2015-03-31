@@ -1,0 +1,6 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_callcenter_campaign_user","callcenter.campaign","model_callcenter_campaign","base.group_user",1,1,1,1
+"access_callcenter_phone_user","callcenter.phone","model_callcenter_phone","base.group_user",1,1,1,1
+"access_callcenter_phone_product_user","callcenter.phone.product","model_callcenter_phone_product","base.group_user",1,1,1,1
+"access_callcenter_phone_history_user","callcenter.phone.history","model_callcenter_phone_history","base.group_user",1,1,1,1
+

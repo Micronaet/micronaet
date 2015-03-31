@@ -1,0 +1,239 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+<!--VIEW-->
+    <!--chemical.application.category-->
+    <record model="ir.ui.view" id="view_chemical_application_category_search">
+        <field name="name">Chemical Application category search</field>
+        <field name="model">chemical.application.category</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Chemical application category">
+               <field name="name"/>                
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_chemical_application_category_tree">
+        <field name="name">Chemical Application category</field>
+        <field name="model">chemical.application.category</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Chemical application category"> <!-- editable="bottom"-->
+               <field name="seq"/>                
+               <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_chemical_application_category_form">
+        <field name="name">Chemical Application category</field>
+        <field name="model">chemical.application.category</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Chemical application category">
+               <field name="seq"/>                
+               <field name="name"/>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_chemical_application_category">
+        <field name="name">Chemical application category</field>
+        <field name="res_model">chemical.application.category</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_chemical_application_category_tree"/>
+        <field name="search_view_id" ref="view_chemical_application_category_search"/>
+        <field name="context">{}</field>
+    </record>
+    
+    <menuitem 
+        parent="base.menu_base_partner" 
+        name="Chemical applications"
+        sequence="1"
+        id="menu_action_chemical_application_root"/>
+
+        <menuitem 
+            parent="menu_action_chemical_application_root" 
+            name="Configuration"
+            sequence="99"
+            id="menu_action_chemical_application_configuration_root"/>
+
+        <menuitem 
+            parent="menu_action_chemical_application_configuration_root" 
+            name="Category"
+            sequence="1"
+            id="menu_action_chemical_application_configuration_category"
+            action="action_chemical_application_category"/>
+
+    <!--chemical.application-->
+    <record model="ir.ui.view" id="view_chemical_application_search">
+        <field name="name">Chemical Application search</field>
+        <field name="model">chemical.application</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Chemical application">
+               <filter string="No application" domain="[('number_of_application','=',0)]" icon="terp-check" help="Filter elements that has numbero of application equal to zero"/>
+               <filter string="No Responsible" domain="[('user_id','=',False)]" help="Partner that have not responible setted" icon="terp-personal" />
+               <separator orientation="vertical"/>
+               <field name="partner_id"/>                
+               <field name="product_id"/>
+               <field name="mexal_age_description"/>
+               <field name="user_id"/>
+               <field name="supervisor_id"/>
+               <newline/>
+               <group expand="0" string="Group By...">
+                    <filter string="Responsible" icon="terp-personal" domain="[]" context="{'group_by' : 'user_id'}"/>
+               </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_chemical_application_tree">
+        <field name="name">Chemical Application</field>
+        <field name="model">chemical.application</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Chemical application">
+               <field name="partner_id"/>                
+               <field name="product_id"/>
+
+               <field name="mexal_age_description"/>
+               <field name="user_id"/>
+               <field name="supervisor_id"/>
+
+               <field name="number_of_application" />
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_chemical_application_form">
+        <field name="name">Chemical Application</field>
+        <field name="model">chemical.application</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Chemical application">
+               <field name="partner_id"/>                
+               <field name="product_id"/>
+               <separator string="Uses" />
+               <field name="line_ids" colspan="4" nolabel="1">               
+                   <tree> 
+                      <field name="name"/>
+                      <field name="category_id" />
+                      <field name="date"/>
+                      <field name="date_end"/>
+                      <field name="valutation"/>                        
+                   </tree>
+                   <form>
+                      <field name="date"/>
+                      <field name="date_end"/>                      
+                      <field name="category_id" colspan="4" />
+                      <separator string="Application description" colspan="4"/>
+                      <field name="name" colspan="4" nolabel="1"/>
+                      <separator string="Valutation" colspan="4"/>
+                      <field name="valutation" colspan="4" nolabel="1"/>                        
+                      <separator string="Note" colspan="4"/>
+                      <field name="note" colspan="4" nolabel="1"/>                                              
+                   </form>
+               </field>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_chemical_application">
+        <field name="name">Chemical application</field>
+        <field name="res_model">chemical.application</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_chemical_application_tree"/>
+        <field name="search_view_id" ref="view_chemical_application_search"/>
+        <field name="context">{}</field>
+        <field name="domain">['|',('user_id','=',uid),('supervisor_id','=',uid)]</field>
+    </record>
+    
+    <menuitem 
+        parent="menu_action_chemical_application_root" 
+        id="menu_action_chemical_application" 
+        name="Chemical applications"
+        sequence="10"
+        action="action_chemical_application"/>
+
+    <!--chemical.application.line-->
+    <record model="ir.ui.view" id="view_chemical_application_line_search">
+        <field name="name">Chemical Application line search</field>
+        <field name="model">chemical.application.line</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Chemical application">
+               <field name="date"/>
+               <field name="partner_id"/>                
+               <field name="product_id"/>
+               <field name="name" />
+               <field name="category_id" />
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_chemical_application_line_tree">
+        <field name="name">Chemical Application line</field>
+        <field name="model">chemical.application.line</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Chemical application">
+               <field name="date"/>
+               <field name="date_end"/>                      
+               <field name="partner_id"/>                
+               <field name="product_id"/>
+               <field name="name" />
+               <field name="category_id" />
+              <field name="valutation" />               
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_chemical_application_line_form">
+        <field name="name">Chemical Application line</field>
+        <field name="model">chemical.application.line</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Chemical application line">
+               <field name="partner_id" readonly="1" />                
+               <field name="product_id" readonly="1" />
+
+               <field name="date"/>
+               <field name="date_end"/>                      
+
+               <field name="category_id" colspan="4" />
+ 
+               <separator string="Application description" colspan="4"/>
+               <field name="name" colspan="4" nolabel="1"/>
+               <separator string="Valutation" colspan="4"/>
+               <field name="valutation" colspan="4" nolabel="1"/>                        
+               <separator string="Note" colspan="4"/>
+               <field name="note" colspan="4" nolabel="1"/>                                              
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_chemical_application_line">
+        <field name="name">Chemical application line</field>
+        <field name="res_model">chemical.application.line</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_chemical_application_line_tree"/>
+        <field name="search_view_id" ref="view_chemical_application_line_search"/>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+    </record>
+    
+    <menuitem 
+        parent="menu_action_chemical_application" 
+        id="menu_action_chemical_application_line" 
+        name="Chemical applications analysis"
+        sequence="1"
+        action="action_chemical_application_line"/>
+            
+</data>
+</openerp>
+

@@ -1,0 +1,662 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <menuitem name="Amazon" parent="base.menu_sales" id="menu_amazon_base" sequence="10" /> <!--root menu-->
+       <menuitem name="Configuration" parent="menu_amazon_base" id="menu_amazon_configuration" sequence="99" /> 
+       <menuitem name="Orders" parent="menu_amazon_base" id="menu_amazon_orders" sequence="10" /> 
+
+    <!--product.product (alternative form for Amazon manage)-->
+    <record id="view_product_product_amazon_form" model="ir.ui.view">
+        <field name="name">Amazon product form</field>
+        <field name="model">product.product</field>
+        <field name="type">form</field>
+        <field name="priority" eval="30" />
+        <field name="arch" type="xml">
+            <form string="Product (Amazon information)">  
+               <group colspan="4" col="6">
+                  <field name="amazon_published" />
+                  <field name="amazon_product_set" />
+                  <field name="amazon_origin_db" readonly="1" />
+               </group>                 
+               <field name="amazon_image_publish" />
+               <field name="name"/>
+               <field name="amazon_category1_id" />
+               <field name="amazon_category2_id" />
+               <group colspan="4" col="6">
+                  <field name="default_code" required="1" />  <!--attrs="{'required':[('amazon_published','=',True)]}"-->
+                  <field name="amazon_asin_code" readonly="1" />
+                  <field name="ean13" />
+               </group>
+               <group colspan="2">
+                 <notebook>
+                   <page string="General">
+                       <field name="amazon_is_gift" />
+                       <!--<field name="amazon_is_wrap" /> -->
+                       <!--<field name="amazon_is_discontinued" />-->
+                       <field name="amazon_out" />
+                       <field name="amazon_title" />
+                       <field name="amazon_country_id" />
+                       <field name="amazon_brand" />
+                       <field name="amazon_manufacturer" />
+                       <!--<field name="amazon_designer" />-->
+                       <field name="amazon_color" />          
+                       <field name="amazon_material" />       
+                       <separator string="Long description (2000 car.):" colspan="4" />                       
+                       <field name="amazon_description" colspan="4" nolabel="1" on_change="on_change_long(amazon_description)"/> 
+                   </page>
+                   
+                   <page string = "Dimension">
+                       <group colspan="4" col="8">
+                           <field name="amazon_length" />                       
+                           <field name="amazon_width" />                         
+                           <field name="amazon_height" />                        
+                           <field name="amazon_dimension_um" />
+                           <field name="amazon_volume" />                        
+                           <field name="amazon_volume_um" />
+                           <field name="amazon_weight" />                        
+                           <field name="amazon_weight_um" />
+                       </group>                   
+                   </page>
+                   
+                   <page string = "Set subproduct" attrs = "{'invisible':[('amazon_product_set','!=',True)]}">
+                        <separator string="Inventory status:" />
+                        <group colspan="4" col="6">
+                           <field name="amazon_set_inventory_security_level" />
+                           <field name="amazon_set_inventory" />
+                           <field name="amazon_amazon_set_inventory" readonly="1" />
+                        </group>   
+                        <separator string="Sub product elements:" />
+                        <field name="amazon_subproduct_ids" colspan="4" nolabel="1">
+                            <tree editable="bottom" string="Subproduct"> 
+                               <field name="product_id" />
+                               <field name="quantity" />
+                               <field name="max_set" readonly="1" />
+                               <field name="amazon_inventory" readonly="1" />
+                               <field name="amazon_amazon_inventory" readonly="1" />
+                            </tree>   
+                        </field>
+                   </page>
+                   
+                   <page string="Market">
+                       <separator string="Visibility:" colspan="4" />                       
+                       <field name="amazon_sale_start" />
+                       <field name="amazon_sale_end" />
+
+                       <separator string="Price:" colspan="4" />
+                       <group colspan="4" col="6">
+                           <field name="list_price" readonly="1"/>
+                           <field name="amazon_price" />                       
+                           <field name="amazon_amazon_price" readonly="1" />
+                       </group>
+                       <group colspan="4" col="6">
+                           <field name="amazon_discount_price" />
+                           <field name="amazon_discount_start" />
+                           <field name="amazon_discount_end" />
+                       </group>
+
+                       <separator string="Inventory:" colspan="4"/>
+                       <group colspan="4" col="6">                       
+                           <field name="amazon_inventory" attrs = "{'readonly':[('amazon_product_set','=',True)]}"/><!--net of security quote!-->
+                           <field name="amazon_amazon_inventory" readonly="1" /> <!--attrs = "{'invisible':[('amazon_product_set','=',True)]}"/>-->
+                           <field name="amazon_min_level" />
+
+                           <field name="amazon_q_x_pack" /> 
+                           <field name="amazon_manage_days" />
+                           <field name="amazon_warranty" />
+                       </group>                       
+                       <separator string="Function (4 line x 50 car.):" colspan="4"/>
+                       <field name="amazon_function" colspan="4" nolabel="1" />
+
+                       <separator string="Keywords (5 line x 50 car.):" colspan="4"/>       
+                       <field name="amazon_keywords" colspan="4" nolabel="1"/>  
+                   </page>
+                 </notebook>
+               </group>
+               <group colspan="2" name="preview">     
+                  <separator string="Preview:"/>
+                  <field name="amazon_image" widget="image" colspan="4" nolabel="1" string="Preview" img_width="300"  width="300" />
+               </group>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_product_product_amazon_search">
+        <field name="name">Amazon product search</field>
+        <field name="model">product.product</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Product (Amazon)">
+               <filter string="On Amazon" icon="terp-accessories-archiver-minus" domain="[('amazon_published','=',True)]"/>
+               <separator orientation="vertical" />   
+               <filter string="Force image" icon="terp-accessories-archiver-minus" domain="[('amazon_image_publish','=',True)]"/>
+               <separator orientation="vertical" />   
+               <filter string="Is Set" icon="terp-accessories-archiver-minus" domain="[('amazon_product_set','=',True)]"/>
+               <separator orientation="vertical" />   
+               <field name="default_code" />
+               <field name="name" />
+               <field name="amazon_title" />
+            </search>
+        </field>
+    </record>    
+
+    <record model="ir.ui.view" id="view_product_product_amzon_graph">
+        <field name="name">Amazon product status</field>
+        <field name="model">product.product</field>
+        <field name="type">graph</field>
+        <field name="arch" type="xml">
+            <graph string="Amazon status" type="bar">
+                <field name="amazon_origin_db"/>
+                <field name="graph_total" operator="+"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_product_product_amazon_tree" model="ir.ui.view">
+        <field name="name">Amazon product tree</field>
+        <field name="model">product.product</field>
+        <field name="type">tree</field>
+        <field name="priority" eval="30" />
+        <field name="arch" type="xml">
+            <tree colors="red:amazon_amazon_inventory==0;" string="Products">
+               <field name="amazon_published" />
+               <field name="amazon_image_publish" string="Force img pub."/>
+               <field name="amazon_is_image" string="Image find"/>
+               <field name="amazon_product_set" string="Is Set"/>
+               <field name="default_code" />
+               <field name="amazon_asin_code"/>
+               <field name="name" />
+               <field name="amazon_origin_db" />
+               <field name="amazon_category1_id" />
+               <field name="amazon_category2_id" />
+               <field name="amazon_title" />
+               <field name="amazon_color" />
+               <field name="amazon_material" />
+               <field name="amazon_dimension_um" />
+               <field name="amazon_q_x_pack" />
+               <field name="amazon_min_level" />
+               <field name="amazon_inventory" />
+               <field name="amazon_manage_days" />               
+               <field name="amazon_amazon_inventory" />
+               <field name="amazon_price" />
+               <field name="amazon_sale_start" />
+               <field name="amazon_sale_end" />
+            </tree>
+       </field>
+    </record>
+    
+    <!-- Action for open different product list-->
+    <!-- Normal view: -->
+    <record id="product_product_amazon_action" model="ir.actions.act_window">
+        <field name="name">Amazon product</field>
+        <field name="res_model">product.product</field>
+        <field name="view_type">form</field>        
+        <field name="view_mode">tree,form</field>                   
+        <field name="view_id" ref="view_product_product_amazon_tree" />
+        <field name="search_view_id" ref="view_product_product_amazon_search" />
+        <field name="context">{'form_view_ref':'mws_amazon.view_product_product_amazon_form'}</field>     
+        <field name="help">Show minimal form information for manage product published on Amazon</field>
+    </record>
+
+    <!-- Test quantity: -->
+    <record id="product_product_amazon_status_action" model="ir.actions.act_window">
+        <field name="name">Amazon product status</field>
+        <field name="res_model">product.product</field>
+        <field name="view_type">form</field>        
+        <field name="view_mode">graph,tree,form</field>                   
+        <field name="view_id" ref="view_product_product_amazon_tree" />
+        <field name="search_view_id" ref="view_product_product_amazon_search" />
+        <field name="context">{'form_view_ref' : 'mws_amazon.view_product_product_amazon_form'}</field>     
+        <field name="domain">[('amazon_published','=',True),('amazon_inventory','&gt;',0)]</field>
+        <field name="help">Show minimal form information for manage product published on Amazon showing status for each DB</field>
+    </record>
+
+    <!-- Inventory status: -->
+    <record id="product_product_amazon_inventory_action" model="ir.actions.act_window">
+        <field name="name">Amazon product (inventory)</field>
+        <field name="res_model">product.product</field>
+        <field name="view_type">form</field>        
+        <field name="view_mode">tree,form.graph</field>                   
+        <field name="view_id" ref="view_product_product_amazon_tree" />
+        <field name="search_view_id" ref="view_product_product_amazon_search" />
+        <field name="context">{'form_view_ref' : 'mws_amazon.view_product_product_amazon_form'}</field>     
+        <field name="help">Show minimal form information for manage product published on Amazon</field>
+    </record>
+
+    <menuitem action="product_product_amazon_action" 
+              id="product_product_amazon_menu" 
+              parent="menu_amazon_base" 
+              sequence="10" />
+    <menuitem action="product_product_amazon_status_action" 
+              id="product_product_amazon_status_menu" 
+              parent="product_product_amazon_menu" 
+              sequence="20" />
+    <menuitem action="product_product_amazon_inventory_action" 
+              id="product_product_amazon_inventory_menu" 
+              parent="product_product_amazon_menu" 
+              sequence="30" />
+
+    <!-- amazon.parameter -->
+       <!-- Search -->
+    <record model="ir.ui.view" id="view_amazon_parameter_search">
+        <field name="name">Amazon parameter</field>
+        <field name="model">amazon.parameter</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Amazon parameter">
+                <field name="name" />
+                <field name="company_id" />
+            </search>
+        </field>
+    </record>
+    
+       <!-- Form -->
+    <record model="ir.ui.view" id="view_amazon_parameter_form">
+        <field name="name">Amazon parameter</field>
+        <field name="model">amazon.parameter</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Amazon parameter">
+                <separator string="General:" colspan="4" /> 
+                <group colspan="4" col="6">
+                    <field name="name" />
+                    <field name="company_id" />
+                    <field name="log_to_email" />                
+                </group>
+                <separator string="Amazon parameter:" colspan="4" /> 
+                <field name="seller_number" />
+                <field name="market_place" />
+                <field name="market_web_site" />
+                <field name="software_account_id" />
+                <field name="key" />
+                <field name="secret" />
+                <field name="merchant_identification" />
+                <field name="feed_deadtime" />
+                <separator string="FTP access for image publication:" colspan="4" /> 
+                <field name="ftp_server" />
+                <field name="ftp_path" />
+                <field name="ftp_user" />
+                <field name="ftp_password" />
+                <separator string="Image path:" colspan="4" /> 
+                <field name="image_web_root" />
+                <field name="path_ids" colspan="4" nolabel="1">
+                   <tree string="Image path on File System:" editable="bottom" >
+                       <field name="code" />
+                       <field name="name" />                
+                       <field name="image_fs_root" />                                   
+                   </tree>
+                </field>
+            </form>
+        </field>
+    </record>
+
+       <!-- Tree -->
+    <record model="ir.ui.view" id="view_amazon_parameter_tree">
+        <field name="name">Amazon parameter</field>
+        <field name="model">amazon.parameter</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Amazon parameter">
+                <field name="name" />
+                <field name="company_id" />
+                <field name="merchant_identification" />
+            </tree>
+        </field>
+    </record>    
+    
+       <!-- Action -->
+       <record model="ir.actions.act_window" id="action_amazon_parameter">
+        <field name="name">Amazon parameter</field>
+           <field name="res_model">amazon.parameter</field>
+           <field name="view_type">form</field>
+           <field name="view_mode">tree,form</field>
+           <field name="view_id" ref="view_amazon_parameter_tree"/>
+           <field name="search_view_id" ref="view_amazon_parameter_search" />
+       </record>
+
+       <!-- Menu -->
+       <menuitem name="MWS parameters" 
+                 parent="menu_amazon_configuration" 
+                 id="menu_amazon_configuration_parameter" 
+                 sequence="10" 
+                 action="action_amazon_parameter" />
+
+    <!-- amazon.orders -->
+       <!-- Search -->
+    <record model="ir.ui.view" id="view_amazon_orders_search">
+        <field name="name">Amazon orders</field>
+        <field name="model">amazon.orders</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Amazon orders">
+                <field name="name" />
+                <field name="imported" />
+                <field name="buyer_name" />
+                <field name="buyer_email" />
+                <field name="shipping_city" /> 
+                <field name="shipping_region" /> 
+            </search>
+        </field>
+    </record>
+
+       <!-- Form -->
+    <record model="ir.ui.view" id="view_amazon_orders_form">
+        <field name="name">Amazon orders</field>
+        <field name="model">amazon.orders</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Amazon orders">
+                <separator string="General:" colspan="4" /> 
+                <field name="name" readonly="1" />
+                <field name="sales_channel" readonly="1" />
+
+                <field name="buyer_name" readonly="1" />
+                <field name="payment_method" readonly="1" />
+
+                <field name="total" readonly="1" />
+                <field name="currency" readonly="1" />
+
+                <notebook colspan="4">
+                   <page string="Details">
+                       <field name="line_ids" colspan="4" nolabel="1">
+                           <tree string="Details" editable="bottom">
+                               <field name="is_set" readonly="1" />
+                               <field name="amazon_asin" readonly="1" />
+                               <field name="code" readonly="1" />
+                               <field name="product_id" readonly="1" />
+                               <field name="db_code" readonly="1" />
+                               <field name="name" readonly="1" />
+                               <field name="quantity" readonly="1" />
+                               <field name="total" readonly="1" />
+                               <field name="currency" readonly="1" />
+                           </tree>
+                       </field>
+                   </page>
+                   <page string="Shipping info">
+                        <field name="shipping_name" readonly="1" string="Name"/> 
+                        <field name="buyer_email" readonly="1" />
+                        <field name="shipping_address" readonly="1" string="Address" /> 
+                        <field name="shipping_postal" readonly="1" string="ZIP" /> 
+                        <field name="shipping_city" readonly="1" string="City" /> 
+                        <field name="shipping_region" readonly="1" string="Region" /> 
+                        <field name="shipping_country" readonly="1" string="County code" /> 
+                        <field name="shipping_phone" readonly="1" string="Phone" /> 
+                   </page>
+                   <page string="Technical info"> 
+                        <field name="imported" readonly="1" />
+                        <separator string="XML response:" colspan="4" /> 
+                        <field name="xml" colspan="4" nolabel="1" readonly="1" />
+                        <separator string="Parsed text:" colspan="4" /> 
+                        <field name="parsed" colspan="4" nolabel="1" readonly="1" />
+                   </page>     
+                </notebook>   
+                <group colspan="4" col="6">
+                    <field name="state" readonly="1" />
+                </group>
+            </form>
+        </field>
+    </record>
+
+       <!-- Tree -->
+    <record model="ir.ui.view" id="view_amazon_orders_tree">
+        <field name="name">Amazon orders</field>
+        <field name="model">amazon.orders</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Amazon orders">
+                <field name="name" />
+                <field name="imported" />
+                <field name="state" />
+                <field name="buyer_name" />
+                <field name="shipping_phone" /> 
+                <field name="shipping_city" /> 
+                <field name="shipping_region" /> 
+                <field name="shipping_country" /> 
+                <field name="total" />
+            </tree>
+        </field>
+    </record>    
+    
+       <!-- Action -->
+       <record model="ir.actions.act_window" id="action_amazon_orders">
+        <field name="name">Amazon orders</field>
+           <field name="res_model">amazon.orders</field>
+           <field name="view_type">form</field>
+           <field name="view_mode">tree,form</field>
+           <field name="view_id" ref="view_amazon_orders_tree"/>
+           <field name="search_view_id" ref="view_amazon_orders_search" />
+       </record>
+
+       <!-- Menu -->
+       <menuitem name="Orders" 
+                 parent="menu_amazon_orders" 
+                 id="menu_amazon_orders_orders" 
+                 sequence="10" 
+                 action="action_amazon_orders" />
+
+    <!-- amazon.warranty -->
+       <!-- Search -->
+    <record model="ir.ui.view" id="view_amazon_warranty_search">
+        <field name="name">Amazon warranty</field>
+        <field name="model">amazon.warranty</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Amazon warranty">
+                <field name="name" />
+            </search>
+        </field>
+    </record>
+    
+       <!-- Form -->
+    <record model="ir.ui.view" id="view_amazon_warranty_form">
+        <field name="name">Amazon warranty</field>
+        <field name="model">amazon.warranty</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Amazon warranty">
+                <field name="name" />
+                <field name="company_id" />
+                <separator string="Warranty terms:" colspan="4" /> 
+                <field name="warranty" colspan="4" nolabel="1" />
+            </form>
+        </field>
+    </record>
+
+       <!-- Tree -->
+    <record model="ir.ui.view" id="view_amazon_warranty_tree">
+        <field name="name">Amazon warranty</field>
+        <field name="model">amazon.warranty</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Amazon warranty">
+                <field name="name" />
+                <field name="warranty"/>
+            </tree>
+        </field>
+    </record>    
+    
+       <!-- Action -->
+       <record model="ir.actions.act_window" id="action_amazon_warranty">
+        <field name="name">Amazon warranty</field>
+           <field name="res_model">amazon.warranty</field>
+           <field name="view_type">form</field>
+           <field name="view_mode">tree,form</field>
+           <field name="view_id" ref="view_amazon_warranty_tree"/>
+           <field name="search_view_id" ref="view_amazon_warranty_search" />
+       </record>
+
+       <!-- Menu -->
+       <menuitem name="Amazon warranty terms" 
+                 parent="menu_amazon_configuration" 
+                 id="menu_amazon_configuration_warranty" 
+                 sequence="20" 
+                 action="action_amazon_warranty" />
+
+    <!-- amazon.feed -->
+       <!-- Search -->
+    <record model="ir.ui.view" id="view_amazon_feed_search">
+        <field name="name">Amazon feed</field>
+        <field name="model">amazon.feed</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Amazon feed">
+                <filter string="Pending" icon="terp-accessories-archiver-minus" domain="[('state','in', ('draft', 'submitted'))]" name="pending"/>
+                <filter string="Closed" icon="terp-accessories-archiver-minus" domain="[('state','in', ('error', 'done'))]"/>
+                <separator orientation="vertical" />   
+                <filter string="Draft" icon="terp-accessories-archiver-minus" domain="[('state','=', 'draft')]"/>
+                <filter string="Submitted" icon="terp-accessories-archiver-minus" domain="[('state','=', 'submitted')]"/>
+                <filter string="Complete" icon="terp-accessories-archiver-minus" domain="[('state','=', 'done')]"/>
+                <filter string="Error" icon="terp-accessories-archiver-minus" domain="[('state','=', 'error')]"/>
+                <!--<filter string="Error" icon="terp-accessories-archiver-minus" domain="[('state','=', 'error')]"/> TODO today feed-->
+                <separator orientation="vertical" />   
+                <field name="name" />
+                <field name="feed_code" />
+                <field name="api" />
+                <field name="description" string="SKU in feed"/>                
+            </search>
+        </field>
+    </record>
+    
+       <!-- Form -->
+    <record model="ir.ui.view" id="view_amazon_feed_form">
+        <field name="name">Amazon feed</field>
+        <field name="model">amazon.feed</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Amazon feed">
+                <group colspan="4" col="6">
+                    <field name="name" readonly="1" />
+                    <field name="parameter_id" readonly="1" />
+                    <field name="api" readonly="1" />
+                </group>
+                <notebook colspan="4">
+                   <page string="General">
+                        <group colspan="4" col="6">
+                           <field name="create_datetime" readonly="1" />
+                           <field name="scheduled_datetime" readonly="1" />
+                           <field name="send_datetime" readonly="1" />
+
+                           <field name="feed_code" readonly="1" />
+                           <field name="feed_type" readonly="1" />
+                           <field name="state" readonly="1" />
+                        </group>
+                        
+                   </page>                
+                   <page string="XML">
+                       <field name="feed_xml" colspan="4" nolabel="1"/>
+                   </page>
+                   <page string="Error">
+                       <separator string="Error" />
+                       <field name="error_text" colspan="4" nolabel="1" readonly="1" />
+                       <separator string="Response XML (for debug purposes" />
+                       <field name="response_text" colspan="4" nolabel="1" readonly="1" />
+                       <separator string="Feed message description" />
+                       <field name="description" colspan="4" nolabel="1"/>
+                   </page> 
+                </notebook>
+                <button name="button_reschedule_feed" string="Reschedule" type="object" colspan="4" attrs="{'invisible':[('state','=','draft')]}"/>
+            </form>
+        </field>
+    </record>
+
+       <!-- Tree -->
+    <record model="ir.ui.view" id="view_amazon_feed_tree">
+        <field name="name">Amazon feed</field>
+        <field name="model">amazon.feed</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Amazon feed" colors="red:state=='error';gray:state=='submitted';gray:state=='draft';green:state=='done'">
+                <field name="name" />
+                <field name="parameter_id" />
+                <field name="create_datetime" />
+                <field name="scheduled_datetime" />
+                <field name="feed_code" />
+                <field name="feed_type" />
+                <field name="state" />
+                <field name="api" />
+            </tree>
+        </field>
+    </record>    
+    
+       <!-- Action -->
+       <record model="ir.actions.act_window" id="action_amazon_feed">
+        <field name="name">Amazon feed</field>
+           <field name="res_model">amazon.feed</field>
+           <field name="view_type">form</field>
+           <field name="view_mode">tree,form</field>
+           <field name="view_id" ref="view_amazon_feed_tree"/>
+           <field name="search_view_id" ref="view_amazon_feed_search" />
+           <field name="context">{"search_default_pending":1}</field>
+       </record>
+
+       <!-- Menu -->
+       <menuitem name="Amazon feed scheduled" 
+                 parent="menu_amazon_base" 
+                 id="menu_amazon_feed" 
+                 sequence="20" 
+                 action="action_amazon_feed" />
+
+    <!-- amazon.product.category -->
+       <!-- Search -->
+    <record model="ir.ui.view" id="view_amazon_product_category_search">
+        <field name="name">Amazon category</field>
+        <field name="model">amazon.product.category</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Amazon category">
+                <field name="parent_id" />
+                <field name="name" />
+            </search>
+        </field>
+    </record>
+    
+       <!-- Form -->
+    <record model="ir.ui.view" id="view_amazon_product_category_form">
+        <field name="name">Amazon category</field>
+        <field name="model">amazon.product.category</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Amazon parameter">
+                 <group colspan="4" col="6">
+                    <field name="name" />
+                    <field name="code" />
+                    <field name="parent_id" />
+                 </group> 
+            </form>
+        </field>
+    </record>
+
+       <!-- Tree -->
+    <record model="ir.ui.view" id="view_amazon_product_category_tree">
+        <field name="name">Amazon category</field>
+        <field name="model">amazon.product.category</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Amazon parameter">
+                    <field name="name" />
+                    <field name="code" />
+                    <field name="parent_id" />
+            </tree>
+        </field>
+    </record>    
+    
+       <!-- Action -->
+       <record model="ir.actions.act_window" id="action_amazon_product_category">
+        <field name="name">Amazon category</field>
+           <field name="res_model">amazon.product.category</field>
+           <field name="view_type">form</field>
+           <field name="view_mode">tree,form</field>
+           <field name="view_id" ref="view_amazon_product_category_tree"/>
+           <field name="search_view_id" ref="view_amazon_product_category_search" />
+       </record>
+
+       <!-- Menu -->
+       <menuitem name="Amazon product category" 
+                 parent="menu_amazon_configuration" 
+                 id="menu_amazon_product_category" 
+                 sequence="10" 
+                 action="action_amazon_product_category" />
+
+
+</data>
+</openerp>
+

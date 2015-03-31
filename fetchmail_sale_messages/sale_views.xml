@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <record id='view_sale_order_add_comunication_page' model='ir.ui.view'>
+        <field name='name'>Sale order comunication page</field>
+        <field name='model'>sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+           <xpath expr="/form/notebook" position="inside">
+               <page string="Comunications">
+                  <!--<separator string="History messages:" colspan="4" /> readonly="1"-->
+                  <field name="comunication_ids" colspan="4" nolabel="1" >
+                     <tree string="E-mail list">
+                         <field name="date" />
+                         <field name="name" />
+                         <field name="email_from" />
+                         <field name="email_cc" />
+                         <field name="description" />
+                         <field name="user_id" />
+                     </tree>
+                     <form>
+                         <field name="date" />
+                         <field name="name" />
+                         <field name="email_from" />
+                         <field name="email_cc" />
+                         <field name="user_id" />
+                         <newline />
+                         <separator string="Description" colspan="4"/>
+                         <field name="description" nolabel="1" colspan="4"/>
+                     </form>
+                  </field>
+               </page>
+           </xpath>
+        </field>
+    </record>
+</data>
+</openerp>
+

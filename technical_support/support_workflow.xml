@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="workflow" id="wkf_support">
+            <field name="name">support.wkf</field>
+            <field name="osv">support.issue</field>
+            <field name="on_create">True</field>
+        </record>
+
+        <record model="workflow.activity" id="act_draft">
+            <field name="wkf_id" ref="wkf_support" />
+            <field name="flow_start">True</field>
+            <field name="name">draft</field>
+            <field name="kind">function</field>
+            <field name="action">support_draft()</field>
+        </record>
+
+        <record model="workflow.activity" id="act_received">
+            <field name="wkf_id" ref="wkf_support" />
+            <field name="name">received</field>
+            <field name="kind">function</field>
+            <field name="action">support_received()</field>
+        </record>
+        
+        <record model="workflow.activity" id="act_charge">
+            <field name="wkf_id" ref="wkf_support" />
+            <field name="name">charge</field>
+            <field name="kind">function</field>
+            <field name="action">support_charge()</field>
+        </record>
+        
+        <record model="workflow.activity" id="act_working">
+            <field name="wkf_id" ref="wkf_support" />
+            <field name="name">working</field>
+            <field name="kind">function</field>
+            <field name="action">support_working()</field>
+        </record>
+
+        <record model="workflow.activity" id="act_close">
+            <field name="wkf_id" ref="wkf_support" />
+            <field name="name">close</field>
+            <field name="kind">function</field>
+            <field name="action">support_close()</field>
+            <field name="flow_stop">True</field>
+        </record>
+
+        <record model="workflow.activity" id="act_cancel">
+            <field name="wkf_id" ref="wkf_support" />
+            <field name="name">cancel</field>
+            <field name="kind">function</field>
+            <field name="action">support_cancel()</field>
+        </record>
+
+        <!--Normal Transition-->
+        <record model="workflow.transition" id="t1">
+            <field name="act_from" ref="act_draft" />
+            <field name="act_to" ref="act_received" />
+            <field name="signal">support_received</field>
+        </record>
+        <record model="workflow.transition" id="t2">
+            <field name="act_from" ref="act_received" />
+            <field name="act_to" ref="act_charge" />
+            <field name="signal">support_charge</field>
+        </record>
+        <record model="workflow.transition" id="t3">
+            <field name="act_from" ref="act_charge" />
+            <field name="act_to" ref="act_working" />
+            <field name="signal">support_working</field>
+        </record>
+        <record model="workflow.transition" id="t4">
+            <field name="act_from" ref="act_working" />
+            <field name="act_to" ref="act_close" />
+            <field name="signal">support_close</field>
+        </record>
+        
+        <!--Cancel Transition-->
+        <record model="workflow.transition" id="t5a">
+            <field name="act_from" ref="act_draft" />
+            <field name="act_to" ref="act_cancel" />
+            <field name="signal">support_draft_cancel</field>
+        </record>
+        <record model="workflow.transition" id="t5b">
+            <field name="act_from" ref="act_received" />
+            <field name="act_to" ref="act_cancel" />
+            <field name="signal">support_received_cancel</field>
+        </record>
+        <record model="workflow.transition" id="t5c">
+            <field name="act_from" ref="act_charge" />
+            <field name="act_to" ref="act_cancel" />
+            <field name="signal">support_charge_cancel</field>
+        </record>
+        <record model="workflow.transition" id="t5d">
+            <field name="act_from" ref="act_working" />
+            <field name="act_to" ref="act_cancel" />
+            <field name="signal">support_working_cancel</field>
+        </record>
+
+        <!--Restart Transition-->        
+        <record model="workflow.transition" id="t6">
+            <field name="act_from" ref="act_cancel" />
+            <field name="act_to" ref="act_draft" />
+            <field name="signal">support_cancel_draft</field>
+        </record>
+    </data>
+</openerp>

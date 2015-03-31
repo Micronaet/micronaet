@@ -1,0 +1,180 @@
+<?xml version="1.0" ?>
+<openerp>
+	<data noupdate="1">
+	    <!-- Giardino e giardinaggio: -->
+		<record id="amazon_product_category_giardinaggio" model="amazon.product.category">
+			<field name="name">Giardino e giardinaggio</field>
+			<field name="code">635017031</field>
+			<field name="parent_id" eval="0" />
+			<field name="active" eval="1" />
+		</record>
+
+      	    <!-- Giardino e giardinaggio / Barbeque e Pic Nic: --> 
+		    <record id="amazon_product_category_picnic" model="amazon.product.category">
+			    <field name="name">Barbecue e picnic</field>
+			    <field name="code">731471031</field>
+			    <field name="parent_id" ref="amazon_product_category_giardinaggio" />
+    			<field name="active" eval="1" />
+		    </record>
+
+		        <!-- Giardino e giardinaggio / Barbeque e Pic Nic / Accessori per il barbecue: --> 
+		        <record id="amazon_product_category_picnic_accessori" model="amazon.product.category">
+			        <field name="name">Accessori per il barbecue</field>
+			        <field name="code">731531031</field>
+			        <field name="parent_id" ref="amazon_product_category_picnic" />
+        			<field name="active" eval="1" />
+		        </record>
+
+		            <record id="amazon_product_category_picnic_accessori_1" model="amazon.product.category">
+			            <field name="name">Carbone</field>
+			            <field name="code">731539031</field>
+			            <field name="parent_id" ref="amazon_product_category_picnic_accessori" />
+            			<field name="active" eval="1" />
+		            </record>
+		            <record id="amazon_product_category_picnic_accessori_2" model="amazon.product.category">
+			            <field name="name">Cover per barbecue</field>
+			            <field name="code">731537031</field>
+			            <field name="parent_id" ref="amazon_product_category_picnic_accessori" />
+            			<field name="active" eval="1" />
+		            </record>
+		            <record id="amazon_product_category_picnic_accessori_3" model="amazon.product.category">
+			            <field name="name">Griglie</field>
+			            <field name="code">771620031</field>
+			            <field name="parent_id" ref="amazon_product_category_picnic_accessori" />
+            			<field name="active" eval="1" />
+		            </record>
+		            <record id="amazon_product_category_picnic_accessori_4" model="amazon.product.category">
+			            <field name="name">Spazzole per barbecue</field>
+			            <field name="code">731538031</field>
+			            <field name="parent_id" ref="amazon_product_category_picnic_accessori" />
+            			<field name="active" eval="1" />
+		            </record>
+		            <record id="amazon_product_category_picnic_accessori_5" model="amazon.product.category">
+			            <field name="name">Utensili per barbecue</field>
+			            <field name="code">731536031</field>
+			            <field name="parent_id" ref="amazon_product_category_picnic_accessori" />
+            			<field name="active" eval="1" />
+		            </record>
+
+      	    <!-- Giardino e giardinaggio / Arreda mento da giardino: --> 
+		    <record id="amazon_product_category_arredamento" model="amazon.product.category">
+			    <field name="name">Arredamento da giardino</field>
+			    <field name="code">731468031</field>
+			    <field name="parent_id" ref="amazon_product_category_giardinaggio" />
+      			<field name="active" eval="1" />
+		    </record>
+
+          	    <!-- Giardino e giardinaggio / Arreda mento da giardino / Accessori: --> 
+		        <record id="amazon_product_category_arredamento_accessory" model="amazon.product.category">
+			        <field name="name">Accessori</field>
+			        <field name="code">738487031</field>
+			        <field name="parent_id" ref="amazon_product_category_arredamento" />
+           			<field name="active" eval="1" />
+		        </record>
+		        
+		            <record id="amazon_product_category_arredamento_accessory_1" model="amazon.product.category">
+			            <field name="name">Basi per ombrelloni</field>
+			            <field name="code">738489031</field>
+			            <field name="parent_id" ref="amazon_product_category_arredamento_accessory" />
+            			<field name="active" eval="1" />
+		            </record>
+		            <record id="amazon_product_category_arredamento_accessory_2" model="amazon.product.category">
+			            <field name="name">Coperture per arredo giardino</field>
+			            <field name="code">738491031</field>
+			            <field name="parent_id" ref="amazon_product_category_arredamento_accessory" />
+            			<field name="active" eval="1" />
+		            </record>
+		            <record id="amazon_product_category_arredamento_accessory_3" model="amazon.product.category">
+			            <field name="name">Cuscini decorativi</field>
+			            <field name="code">731502031</field>
+			            <field name="parent_id" ref="amazon_product_category_arredamento_accessory" />
+            			<field name="active" eval="1" />
+		            </record>
+		            <record id="amazon_product_category_arredamento_accessory_4" model="amazon.product.category">
+			            <field name="name">Cuscini per sedili</field>
+			            <field name="code">731503031</field>
+			            <field name="parent_id" ref="amazon_product_category_arredamento_accessory" />
+            			<field name="active" eval="1" />
+		            </record>
+		            <record id="amazon_product_category_arredamento_accessory_5" model="amazon.product.category">
+			            <field name="name">Tende da veranda</field>
+			            <field name="code">738490031</field>
+			            <field name="parent_id" ref="amazon_product_category_arredamento_accessory" />
+            			<field name="active" eval="1" />
+		            </record>
+
+		            <record id="amazon_product_category_arredamento_1" model="amazon.product.category">
+			            <field name="name">Amache</field>
+			            <field name="code">731501031</field>
+			            <field name="parent_id" ref="amazon_product_category_arredamento" />
+            			<field name="active" eval="1" />
+		            </record>
+		            <record id="amazon_product_category_arredamento_2" model="amazon.product.category">
+			            <field name="name">Carrelli portavivande</field>
+			            <field name="code">738497031</field>
+			            <field name="parent_id" ref="amazon_product_category_arredamento" />
+            			<field name="active" eval="1" />
+		            </record>
+		            <record id="amazon_product_category_arredamento_3" model="amazon.product.category">
+			            <field name="name">Divani</field>
+			            <field name="code">738493031</field>
+			            <field name="parent_id" ref="amazon_product_category_arredamento" />
+            			<field name="active" eval="1" />
+		            </record>
+		            <record id="amazon_product_category_arredamento_4" model="amazon.product.category">
+			            <field name="name">Dondoli</field>
+			            <field name="code">738499031</field>
+			            <field name="parent_id" ref="amazon_product_category_arredamento" />
+            			<field name="active" eval="1" />
+		            </record>
+		            <record id="amazon_product_category_arredamento_5" model="amazon.product.category">
+			            <field name="name">Gazebo</field>
+			            <field name="code">738498031</field>
+			            <field name="parent_id" ref="amazon_product_category_arredamento" />
+            			<field name="active" eval="1" />
+		            </record>
+		            <record id="amazon_product_category_arredamento_6" model="amazon.product.category">
+			            <field name="name">Lettini</field>
+			            <field name="code">738494031</field>
+			            <field name="parent_id" ref="amazon_product_category_arredamento" />
+            			<field name="active" eval="1" />
+		            </record>
+		            <record id="amazon_product_category_arredamento_7" model="amazon.product.category">
+			            <field name="name">Ombrelloni</field>
+			            <field name="code">738502031</field>
+			            <field name="parent_id" ref="amazon_product_category_arredamento" />
+            			<field name="active" eval="1" />
+		            </record>
+		            <record id="amazon_product_category_arredamento_8" model="amazon.product.category">
+			            <field name="name">Panche</field>
+			            <field name="code">738492031</field>
+			            <field name="parent_id" ref="amazon_product_category_arredamento" />
+            			<field name="active" eval="1" />
+		            </record>
+		            <record id="amazon_product_category_arredamento_9" model="amazon.product.category">
+			            <field name="name">Sdraio</field>
+			            <field name="code">738495031</field>
+			            <field name="parent_id" ref="amazon_product_category_arredamento" />
+            			<field name="active" eval="1" />
+		            </record>
+		            <record id="amazon_product_category_arredamento_10" model="amazon.product.category">
+			            <field name="name">Set di mobili</field>
+			            <field name="code">738496031</field>
+			            <field name="parent_id" ref="amazon_product_category_arredamento" />
+            			<field name="active" eval="1" />
+		            </record>
+		            <record id="amazon_product_category_arredamento_11" model="amazon.product.category">
+			            <field name="name">Set tavoli e sedie</field>
+			            <field name="code">738501031</field>
+			            <field name="parent_id" ref="amazon_product_category_arredamento" />
+            			<field name="active" eval="1" />
+		            </record>
+		            <record id="amazon_product_category_arredamento_12" model="amazon.product.category">
+			            <field name="name">Tavoli e tavolini</field>
+			            <field name="code">738500031</field>
+			            <field name="parent_id" ref="amazon_product_category_arredamento" />
+            			<field name="active" eval="1" />
+		            </record>
+	</data>
+</openerp>
+

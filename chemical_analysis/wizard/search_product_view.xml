@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <!--NEW VIEWS-->
+    <!-- chemical.analysis -->
+    <record id="view_search_element_wizard" model="ir.ui.view">
+        <field name="name">Element search</field>
+        <field name="model">search.element.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Analysis list">
+               <separator string="Note:" colspan="4"/>
+               <field name="note"  colspan="4" nolabel="1" readonly="1"/>
+               <separator string="Query:" colspan="4"/>
+               <group colspan="4" col="6">
+                   <field name="name" />
+                   <field name="min" />
+                   <field name="max" />
+               </group>   
+               <label string="" /> 
+               <button name="search_button" string="search" type="object" icon="gtk-ok" colspan="2" />
+            </form>
+        </field>    
+    </record>
+
+    <record model="ir.actions.act_window" id="action_search_element_wizard">
+        <field name="name">Search element wizard</field>
+        <field name="res_model">search.element.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_search_element_wizard" />
+    </record>
+
+    <!--MENUITEM-->    
+        <menuitem id="menu_chemical_analysis_search_wizard"
+             name="Search elements"
+             sequence="50"                 
+             parent="menu_chemical_analysis_root" 
+             action="action_search_element_wizard"
+             /> 
+</data>
+</openerp>
+

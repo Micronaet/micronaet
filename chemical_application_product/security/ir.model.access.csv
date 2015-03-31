@@ -1,0 +1,5 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_chemical_application_user","chemical.application","model_chemical_application","base.group_user",1,1,1,1
+"access_chemical_application_line_user","chemical.application.line","model_chemical_application_line","base.group_user",1,1,1,1
+"access_chemical_application_category_user","chemical.application.category","model_chemical_application_category","base.group_user",1,1,1,1
+

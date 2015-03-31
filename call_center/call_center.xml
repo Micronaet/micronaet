@@ -1,0 +1,201 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    <!-- Menuitems: -->
+    <menuitem name="Call center" id="menu_base_callcenter" sequence="1" />
+    
+    <!-- callcenter.campaign -->
+       <!-- Search -->
+    <record model="ir.ui.view" id="view_callcenter_campaign_search">
+        <field name="name">callcenter.campaign.search</field>
+        <field name="model">callcenter.campaign</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Campagna">
+                <group col="10" colspan="4">
+                    <field name="name" />
+                    <field name="date_start" />
+                    <field name="date_end" />
+                    <field name="user_id" />
+                </group>
+                <newline/>
+                <group expand="0" string="Group By..." colspan="14">
+                    <filter string="Proprietario" icon="terp-stock_symbol-selection" domain="[]" context="{'group_by':'user_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+       <!-- Form -->
+    <record model="ir.ui.view" id="view_callcenter_campaign_form">
+        <field name="name">callcenter.campaign.form</field>
+        <field name="model">callcenter.campaign</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Campagna">
+                <field name="name" />
+                <field name="user_id" readonly="1" />
+                <field name="date_start" />
+                <field name="date_end" />
+                <separator string="Indicazioni per i venditori" colspan="4" />
+                <field name="indicazioni" nolabel="1" colspan="4" />
+                <separator string="Partecipanti" colspan="4" />
+                <field name="patecipant_ids" colspan="4" nolabel="1">
+                    <tree string="Partecipanti" editable="bottom">
+                        <field name="partner_id" />                         
+                    </tree>
+                    <form>
+                        <field name="partner_id" />                         
+                    </form>
+                </field>
+            </form>
+        </field>
+    </record>
+
+       <!-- Tree -->
+    <record model="ir.ui.view" id="view_callcenter_campaign_tree">
+        <field name="name">callcenter.campaign.tree</field>
+        <field name="model">callcenter.campaign</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Campagna">
+                <field name="name" />
+                <field name="date_start" />
+                <field name="date_end" />
+                <field name="user_id" />
+            </tree>
+        </field>
+    </record>
+    
+       <!-- Action -->
+    <record model="ir.actions.act_window" id="action_callcenter_campaign">
+        <field name="name">Campagna</field>
+        <field name="res_model">callcenter.campaign</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_callcenter_campaign_search"/>
+    </record>
+
+       <!-- Menu -->
+    <menuitem name="Campagna" id="menu_callcenter_campaign" sequence="1" parent="menu_base_callcenter" action="action_callcenter_campaign" />
+
+    <!-- callcenter.phone -->
+       <!-- Search -->
+    <record model="ir.ui.view" id="view_callcenter_phone_search">
+        <field name="name">callcenter.phone.search</field>
+        <field name="model">callcenter.phone</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Telefonate">
+                <group col="10" colspan="4">
+                    <field name="partner_id" />
+                    <field name="campaign_id" />
+                    <field name="user_id" readonly="1" />
+                    <field name="date_recall" />
+                    <field name="date_end_id" />
+                </group>
+                <newline/>
+                <group expand="0" string="Group By..." colspan="14">
+                    <filter string="Proprietario" icon="terp-stock_symbol-selection" domain="[]" context="{'group_by':'user_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+       <!-- Form -->
+    <record model="ir.ui.view" id="view_callcenter_phone_form">
+        <field name="name">callcenter.phone.form</field>
+        <field name="model">callcenter.phone</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Telefonate">
+               <notebook colspan="4">
+                <page string="Generale">
+                    <field name="partner_id" />
+                    <field name="campaign_id" />
+                    <field name="user_id" readonly="1" />
+                    <field name="date_charge" />
+                    <field name="impression" />
+                    <field name="note" />
+                    <field name="date_recall" />
+                    <field name="date_end_id" />
+                    <separator string="Indicazioni per i venditori" colspan="4" />
+                    <field name="indicazioni" nolabel="1" colspan="4" />
+
+                    <separator string="Prodotti di interesse" colspan="4" />
+                    <field name="product_ids" colspan="4" nolabel="1">
+                        <tree string="Prodotti" editable="bottom">
+                            <field name="simulazione" />                         
+                            <field name="product_id" />                         
+                            <field name="quantity" />                         
+                            <field name="discount" />                         
+                            <field name="subtotal" />                         
+                            <field name="note" />
+                        </tree>
+                        <form>
+                            <field name="simulazione" />                         
+                            <field name="product_id" />                         
+                            <field name="quantity" />                         
+                            <field name="discount" />                         
+                            <field name="subtotal" />                         
+                            <field name="note" />
+                        </form>
+                    </field>
+                 </page>
+                 <page string="Storico comunicazioni">   
+                    <separator string="Elenco annotazioni" colspan="4" />
+                    <field name="history_ids" colspan="4" nolabel="1">
+                        <tree string="Storico" editable="bottom">
+                            <field name="date" />                         
+                            <field name="name" />                         
+                            <field name="impression" />                         
+                            <field name="note" />                         
+                        </tree>
+                        <form>
+                            <field name="date" />                         
+                            <field name="name" />                         
+                            <field name="impression" />                         
+                            <field name="note" />                         
+                        </form>
+                    </field>
+                 </page>
+               </notebook>
+               <newline />
+               <button name="button_dummy" string="Compute" type="object" icon="gtk-execute" />
+               <field name="subtotal" />                         
+            </form>
+        </field>
+    </record>
+
+       <!-- Tree -->
+    <record model="ir.ui.view" id="view_callcenter_phone_tree">
+        <field name="name">callcenter.phone.tree</field>
+        <field name="model">callcenter.phone</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Telefonate">
+                <field name="partner_id" />
+                <field name="campaign_id" />
+                <field name="user_id" readonly="1" />
+                <field name="date_charge" />
+                <field name="impression" />
+                <field name="note" />
+                <field name="date_recall" />
+                <field name="date_end_id" />
+            </tree>
+        </field>
+    </record>
+    
+       <!-- Action -->
+    <record model="ir.actions.act_window" id="action_callcenter_phone">
+        <field name="name">Telefonate</field>
+        <field name="res_model">callcenter.phone</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_callcenter_phone_search"/>
+    </record>
+
+       <!-- Menu -->
+    <menuitem name="Telefonate" id="menu_callcenter_phone" sequence="2" parent="menu_base_callcenter" action="action_callcenter_phone" />
+   </data>
+</openerp>

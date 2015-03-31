@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+    <record model="ir.actions.act_window" id="action_car_deadline_dashboard">
+        <field name="name">Deadlined documents</field>
+        <field name="res_model">res.car.document</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <!--<field name="search_view_id" ref="view_statistic_order_deadline_search"/>-->
+        <field name="domain">[('valid_end_date','&lt;',(datetime.date.today()+relativedelta(months=1)).strftime('%Y-%m-%d'))]</field>
+    </record>
+        
+   <record id="board_car_deadline" model="ir.ui.view">
+        <field name="name">board.mexal.form</field>
+        <field name="model">board.board</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Dashboard Equipment">
+                <vpaned position="800">
+                    <child1>
+                        <action colspan="4" name="%(open_module_tree_res_car_contract)d" string="My equipment list" width="800" />
+                        <action colspan="4" name="%(action_car_deadline_dashboard)d" string="Deadline documents in a month" width="800" />
+                    </child1>
+                </vpaned>
+            </form>
+        </field>
+    </record>        
+    
+    <record id="action_board_car_deadline" model="ir.actions.act_window">
+        <field name="name">Dashboard Equipment</field>
+        <field name="res_model">board.board</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="board_car_deadline"/>
+    </record>        
+
+    <!-- MENUITEM -->
+    <!-- override per inserimento dashboard -->
+   <menuitem id="menu_equipment_root"
+             name="Equipment"
+             icon="terp-stock" 
+             sequence="0"
+             web_icon="images/equipment.png"
+             action="action_board_car_deadline"
+             web_icon_hover="images/equipment_hover.png" />    
+    </data>
+</openerp>

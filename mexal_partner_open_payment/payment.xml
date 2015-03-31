@@ -1,0 +1,248 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    <!--Inherit View:-->    
+    <record model="ir.ui.view" id="view_res_partner_filter_add_fields">
+        <field name="name">res.partner.filter.add</field>
+        <field name="model">res.partner</field>
+        <field name="type">search</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter" />
+        <field name="arch" type="xml">
+           <field name="user_id" position="after">
+              <field name="pendent" />              
+           </field>
+        </field>
+    </record>
+
+    <!--res.partner-->
+    <record model="ir.ui.view" id="view_res_partner_add_trend_form">
+        <field name="name">res.partner.trend.form</field>
+        <field name="model">res.partner</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+           <xpath expr="/form/notebook/page[@string='Notes']" position="after">
+              <page string="Pagamenti scaduti">
+                 <!--<separator string="Elenco scaduti" colspan="4" />-->
+                 <field name="deadline_ids" nolabel="1" colspan="4"> <!--domain="[('deadline','&lt;',datetime.date.today().strftime('%%Y-%%m-%%d'))]" >-->
+                    <tree string="Elenco scaduti"> 
+                        <field name="type"/>
+                        <field name="deadline"/>
+                        <field name="in" />                    
+                    </tree>
+                    <form> 
+                        <group colspan="4" col="6">
+                           <field name="type"/>
+                           <field name="deadline"/>
+                           <field name="in" />       
+                        </group>             
+                    </form>
+                 </field>   
+              </page>
+           </xpath>
+        </field>
+    </record>
+    
+    <!--Normal View:-->
+    <!--Statistic Deadline: statistic.deadline ***************************** -->
+        <record model="ir.ui.view" id="view_statistic_deadline_search">
+        <field name="name">statistic.deadline.search</field>
+        <field name="model">statistic.deadline</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Statistic deadline">
+                <group col="10" colspan="4">
+                    <field name="partner_id"/>
+                    <field name="deadline"/>
+                    <field name="type"/>
+                </group>
+                <newline/>
+                <group expand="0" string="Group By..." colspan="14">
+                    <filter string="Partner" icon="terp-stock_symbol-selection" domain="[]" context="{'group_by':'partner_id'}"/>
+                    <filter string="Deadline" icon="terp-stock_symbol-selection" domain="[]" context="{'group_by':'deadline'}"/>
+               </group>
+            </search>
+        </field>
+    </record>
+
+       <!-- Form -->
+    <record model="ir.ui.view" id="view_statistic_deadline_form">
+        <field name="name">statistic.deadline.form</field>
+        <field name="model">statistic.deadline</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Statistic deadline Form">
+                <separator string="Dati scrittura contabile" colspan="4" />
+                <field name="partner_id"/>
+                <newline />
+                <group colspan="4" col="6">
+                   <field name="deadline"/>
+                   <field name="in" string="Importo" />                
+                   <field name="type"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+       <!-- Tree -->
+    <record model="ir.ui.view" id="view_statistic_deadline_tree">
+        <field name="name">statistic.deadline.tree</field>
+        <field name="model">statistic.deadline</field>
+        <field name="type">tree</field>  
+        <field name="arch" type="xml">
+            <tree string="Pagamenti scaduti">
+                <field name="partner_id"/>
+                <field name="deadline"/>
+                <field name="in" sum="Entrate" string="Importo"  />
+                <field name="type"/>
+            </tree>
+        </field>
+    </record>
+    
+       <!-- Graph -->
+    <record model="ir.ui.view" id="view_statistic_deadline_graph">
+        <field name="name">Statistic deadline Graph</field>
+        <field name="model">statistic.deadline</field>
+        <field name="type">graph</field>
+        <field name="arch" type="xml">
+            <graph string="Order by date" type="bar">
+                <field name="deadline"/>
+                <field name="in" operator="+" />
+            </graph>
+        </field>
+    </record>
+    <!-- Graph diviso per partner-->
+    <record model="ir.ui.view" id="view_statistic_deadline_in_graph">
+        <field name="name">Statistic deadline in Graph</field>
+        <field name="model">statistic.deadline</field>
+        <field name="type">graph</field>
+        <field name="priority" eval="20" />
+        <field name="arch" type="xml">
+            <graph string="Order by date" type="bar">
+                <field name="partner_id"/>
+                <field name="in" operator="+" />
+            </graph>
+        </field>
+    </record>
+    
+       <!-- Action -->
+    <record model="ir.actions.act_window" id="action_statistic_deadline">
+        <field name="name">Scadenze ordini</field>
+        <field name="res_model">statistic.deadline</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,calendar,graph,form</field>
+        <field name="search_view_id" ref="view_statistic_deadline_search"/>
+    </record>
+
+       <!-- Action per statistic.deadline -->   
+    <record model="ir.actions.act_window" id="action_statistic_deadline_passed_dashboard">
+        <field name="name">Pagamenti scaduti diviso per cliente con scoperto</field>
+        <field name="res_model">statistic.deadline</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph,tree,calendar,form</field>
+        <field name="search_view_id" ref="view_statistic_deadline_search"/>
+        <field name="domain">[('scoperto_c','&lt;',-2000.0),]</field>
+        <field name="context">{'graph_view_ref':'mexal_order_statistic.view_statistic_deadline_in_graph', 'lang':'it_IT'}</field>
+    </record>
+    <record model="ir.actions.act_window" id="action_statistic_deadline_passed_tree_dashboard">
+        <field name="name">Pagamenti scaduti</field>
+        <field name="res_model">statistic.deadline</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,graph</field>
+        <field name="search_view_id" ref="view_statistic_deadline_search"/>
+        <field name="domain">[('deadline','&lt;',datetime.datetime.today().strftime('%Y-%m-%d')),('in','&gt;',0)]</field>
+    </record>
+    <record model="ir.actions.act_window" id="action_statistic_deadline_dashboard">
+        <field name="name">Entrate prossima settimana</field>
+        <field name="res_model">statistic.deadline</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph,tree,calendar,form</field>
+        <field name="search_view_id" ref="view_statistic_deadline_search"/>
+        <field name="domain">[('deadline','&gt;=',datetime.datetime.today().strftime('%Y-%m-%d')),('deadline','&lt;=', (datetime.datetime.today()+ datetime.timedelta(days=20)).strftime('%Y-%m-%d'))]</field>
+    </record>
+
+
+       <!-- Form Dashboard-->
+       <!--<record id="board_mexal_form" model="ir.ui.view">
+            <field name="name">board.mexal.form</field>
+            <field name="model">board.board</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Dashboard">
+                
+                    <vpaned>
+                        <child1>
+                            <action colspan="4" name="%(action_statistic_deadline_passed_dashboard)d" string="Pagamenti scaduti divisi per cliente (fuori fido di oltre 2000 euro)" width="800" />
+                        </child1>
+                        
+                        <child2>
+                          <hpaned> 
+                             <child1>
+                                 <action colspan="4" name="%(action_statistic_order_dashboard)d" string="Ordini Italia (pros. 30 gg.)" width="510"/>
+                                 <action colspan="4" name="%(action_statistic_invoice_dashboard)d" string="Trend fatturato diviso per mese (solo controp. segnalate)" />
+                                 <action colspan="4" name="%(action_view_statistic_trend_last_best_graph)d" string="Fatturato percentuale (> 1) precedente (solo controp. segnalate)" />
+                             </child1>
+                             <child2>
+                                <action colspan="4" name="%(action_statistic_order_dashboard_estero)d" string="Ordini Estero (pros. 30 gg.)"  width="510"/>
+                                
+                                <action colspan="4" name="%(action_statistic_trend_dashboard)d" string="Fatturato categorie statistiche (spunta Trend) (solo controp. segnalate)" />
+
+                                <action colspan="4" name="%(action_view_statistic_trend_current_best_graph)d" string="Fatturato percentuale (> 1) corrente (solo controp. segnalate)" />
+                             </child2>
+                          </hpaned>                          
+                        </child2>
+
+                        <child3>
+                             <separator colspan="4" string="Variazioni fatturato perc. (>1) migliori clienti ultimi 2 anni (solo controp. segnalate)"/>
+                             <action colspan="4" name="%(action_view_statistic_trend_current_best_graph_bar)d" string="Variazioni perc. (>1) migliori clienti ultimi 2 anni (solo controp. segnalate)" width="800" />
+                        </child3>                                                 
+                    </vpaned>
+                    
+                </form>
+            </field>
+        </record>
+       <record id="board_order_form" model="ir.ui.view">
+            <field name="name">board.mexal.form</field>
+            <field name="model">board.board</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Dashboard Ordini">
+                    <hpaned position="200">
+                        <child1>
+                            <action colspan="4" name="%(action_statistic_order_0_dashboard)d" string="Ordini mese attuale" width="800" />
+                            <action colspan="4" name="%(action_statistic_order_1_dashboard)d" string="Ordini mese +1" width="800" />
+                            <action colspan="4" name="%(action_statistic_order_2_dashboard)d" string="Ordini mese +2" width="800" />
+                            <action colspan="4" name="%(action_statistic_order_3_dashboard)d" string="Ordini mese +3" width="800" />
+                            <action colspan="4" name="%(action_statistic_order_4_dashboard)d" string="Ordini mese +4" width="800" />
+                            <action colspan="4" name="%(action_statistic_order_5_dashboard)d" string="Ordini mese +5" width="800" />
+                        </child1>
+                    </hpaned>
+                </form>
+            </field>
+        </record>
+       <record id="board_order_b_form" model="ir.ui.view">
+            <field name="name">board.mexal.form</field>
+            <field name="model">board.board</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Dashboard Ordini semestre successivo">
+                    <hpaned position="200">
+                        <child1>
+                            <action colspan="4" name="%(action_statistic_order_6_dashboard)d" string="Ordini mese +6" width="800" />
+                            <action colspan="4" name="%(action_statistic_order_7_dashboard)d" string="Ordini mese +7" width="800" />
+                            <action colspan="4" name="%(action_statistic_order_8_dashboard)d" string="Ordini mese +8" width="800" />
+                            <action colspan="4" name="%(action_statistic_order_9_dashboard)d" string="Ordini mese +9" width="800" />
+                            <action colspan="4" name="%(action_statistic_order_10_dashboard)d" string="Ordini mese +10" width="800" />
+                            <action colspan="4" name="%(action_statistic_order_11_dashboard)d" string="Ordini mese +11" width="800" />
+                        </child1>
+                    </hpaned>
+                </form>
+            </field>
+        </record>-->
+
+       <!-- Menu -->
+    <menuitem name="Mexal" id="menu_base_mexal" sequence="5" web_icon="images/menu.png" web_icon_hover="images/menu_hover.png" /> 
+    <!--action="action_board_mexal_form" /> 
+          <menuitem name="Mexal default" parent="menu_base_mexal_dashboard" id="menu_action_board_mexal_form" sequence="1" action="action_board_mexal_form" />-->
+  </data>
+</openerp>

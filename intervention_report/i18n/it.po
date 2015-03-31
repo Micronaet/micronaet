@@ -1,0 +1,662 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* intervention_report
+# <> <>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 6.0.4\n"
+"Report-Msgid-Bugs-To: support@openerp.com\n"
+"POT-Creation-Date: 2012-08-07 16:20+0000\n"
+"PO-Revision-Date: 2012-08-07 18:29+0200\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: intervention_report
+#: field:intervention.report,imported:0
+msgid "Imported"
+msgstr "Importato"
+
+#. module: intervention_report
+#: field:intervention.report,total:0
+msgid "Number of hours"
+msgstr "Numero di ore"
+
+#. module: intervention_report
+#: view:intervention.report:0 view:intervention.type:0
+msgid "Group By..."
+msgstr "Raggruppa per..."
+
+#. module: intervention_report
+#: model:ir.model,name:intervention_report.model_intervention_report
+msgid "Intervention Report"
+msgstr "Rapporto di intervento"
+
+#. module: intervention_report
+#: selection:intervention.report,state:0
+msgid "Appointment confirmed"
+msgstr "Appuntamento confermato"
+
+#. module: intervention_report
+#: selection:intervention.report,state:0
+msgid "Appointment executed reported"
+msgstr "Intervento eseguito (con invio rapportino)"
+
+#. module: intervention_report
+#: selection:intervent.report.collection.wizard,month:0
+msgid "March"
+msgstr "Marzo"
+
+#. module: intervention_report
+#: view:intervention.sector:0
+msgid "Intervention sector Tree"
+msgstr "Settore intevento"
+
+#. module: intervention_report
+#: selection:intervent.report.collection.wizard,report_type:0
+msgid "List of intervent"
+msgstr "Lista interventi"
+
+#. module: intervention_report
+#: field:intervention.report,break_hour:0
+msgid "Break hour"
+msgstr "Ore pausa"
+
+#. module: intervention_report
+#: field:intervent.report.collection.wizard,report_type:0
+msgid "Report type (group by)"
+msgstr "Report raggruppato per tipo"
+
+#. module: intervention_report
+#: selection:intervent.report.collection.wizard,report_type:0
+msgid "Report by state"
+msgstr "Report raggruppato per stato"
+
+#. module: intervention_report
+#: selection:intervention.report,state:0
+msgid "Appointment draft"
+msgstr "Appuntamento in bozza"
+
+#. module: intervention_report
+#: selection:intervention.report,tipology:0
+msgid "Lavorativo"
+msgstr "Lavorativo"
+
+#. module: intervention_report
+#: model:ir.ui.menu,name:intervention_report.menu_base_intervention_report_insert
+msgid "Rapportini intervento personali"
+msgstr "Rapportini intervento personali"
+
+#. module: intervention_report
+#: selection:intervention.report,mode:0
+msgid "Tele assistence"
+msgstr "Tele assistenza"
+
+#. module: intervention_report
+#: view:intervention.sector:0
+#: model:ir.actions.act_window,name:intervention_report.action_intervention_sector
+#: model:ir.model,name:intervention_report.model_intervention_sector
+#: model:ir.ui.menu,name:intervention_report.menu_base_intervention_configuration_sector
+msgid "Intervention sector"
+msgstr "Settore intervento"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Intervent"
+msgstr "Intervento"
+
+#. module: intervention_report
+#: model:ir.model,name:intervention_report.model_intervent_report_collection_wizard
+msgid "intervent.report.collection.wizard"
+msgstr "intervent.report.collection.wizard"
+
+#. module: intervention_report
+#: view:intervention.sector:0
+msgid "Intervention sector Form"
+msgstr "Settore intervento"
+
+#. module: intervention_report
+#: view:board.board:0 view:intervention.report:0
+#: model:ir.ui.menu,name:intervention_report.menu_base_intervention
+msgid "Intervention report"
+msgstr "Report intervento"
+
+#. module: intervention_report
+#: field:intervent.report.collection.wizard,partner_id:0
+#: view:intervention.report:0 field:intervention.report,partner_id:0
+#: model:ir.model,name:intervention_report.model_res_partner
+msgid "Partner"
+msgstr "Partner"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Confirmed"
+msgstr "Confermato"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Intervention report Tree"
+msgstr "Rapportini di intervento"
+
+#. module: intervention_report
+#: model:ir.actions.act_window,name:intervention_report.action_intervention_report
+msgid "Intervention report user"
+msgstr "Rapporti intervento per utente"
+
+#. module: intervention_report
+#: field:intervention.report,state:0
+msgid "State"
+msgstr "Stato"
+
+#. module: intervention_report
+#: view:intervent.report.collection.wizard:0
+msgid "Print"
+msgstr "Stampa"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Intervent (hours) per state"
+msgstr "Ore intervento per stato"
+
+#. module: intervention_report
+#: selection:intervent.report.collection.wizard,report_type:0
+msgid "Report by customer"
+msgstr "Report per cliente"
+
+#. module: intervention_report
+#: model:ir.actions.act_window,name:intervention_report.action_insert_intervention_pay_report
+#: model:ir.actions.act_window,name:intervention_report.action_insert_intervention_report
+msgid "Insert intervention report"
+msgstr "Rapporti di intervento"
+
+#. module: intervention_report
+#: field:res.partner,trip_duration:0
+msgid "Trip duration"
+msgstr "Durata viaggio"
+
+#. module: intervention_report
+#: model:ir.actions.report.xml,name:intervention_report.aeroo_intervent_report_state_id
+msgid "Intervent report x state"
+msgstr "Report interventi per stato"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Intervet per customer (graph)"
+msgstr "Interventi per cliente (grafico)"
+
+#. module: intervention_report
+#: model:ir.ui.menu,name:intervention_report.menu_base_intervention_report
+msgid "Evidenziati per utente"
+msgstr "Evidenziati per utente"
+
+#. module: intervention_report
+#: selection:intervent.report.collection.wizard,month:0
+msgid "July"
+msgstr "Luglio"
+
+#. module: intervention_report
+#: model:ir.ui.menu,name:intervention_report.menu_base_intervention_configuration
+msgid "Configuration"
+msgstr "Configurazione"
+
+#. module: intervention_report
+#: field:res.partner,number_of_hours:0
+msgid "Hours yearly"
+msgstr "Ore annuali"
+
+#. module: intervention_report
+#: model:ir.ui.menu,name:intervention_report.menu_base_intervention_report_location_calendar
+msgid "Evidenziati per luogo"
+msgstr "Evidenziati per luogo"
+
+#. module: intervention_report
+#: field:intervention.report,manual_total:0
+msgid "Manual"
+msgstr "Manuale"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Intervention report Form"
+msgstr "Rapportino di intervento"
+
+#. module: intervention_report
+#: model:ir.actions.act_window,name:intervention_report.action_view_intervention_report_state_dashboard
+msgid "Intervent per state (this user, this month)"
+msgstr "Intervento per stato (questo utente, questo mese)"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Close with report"
+msgstr "Chiudi con invio rapportino"
+
+#. module: intervention_report
+#: view:intervention.report:0 field:intervention.report,internal_note:0
+msgid "Internal note"
+msgstr "Note interne"
+
+#. module: intervention_report
+#: view:intervention.type:0
+#: model:ir.actions.act_window,name:intervention_report.action_intervention_type
+#: model:ir.ui.menu,name:intervention_report.menu_base_intervention_configuration_type
+msgid "Intervention type"
+msgstr "Tipo intervento"
+
+#. module: intervention_report
+#: model:ir.ui.menu,name:intervention_report.menu_base_intervention_report_pay_calendar
+msgid "Evidenziati per fatturazione"
+msgstr "Evidenziati per fatturazione"
+
+#. module: intervention_report
+#: selection:intervent.report.collection.wizard,month:0
+msgid "September"
+msgstr "Settembre"
+
+#. module: intervention_report
+#: selection:intervent.report.collection.wizard,month:0
+msgid "December"
+msgstr "Dicembre"
+
+#. module: intervention_report
+#: selection:intervention.report,tipology:0
+msgid "Personale"
+msgstr "Personale"
+
+#. module: intervention_report
+#: field:intervent.report.collection.wizard,month:0
+msgid "Month"
+msgstr "Mese"
+
+#. module: intervention_report
+#: help:intervention.type,invoice:0
+msgid "If so the intervention will be invoiced for duration time"
+msgstr "Se è vero l'intervento verrà fatturato per la durata oraria"
+
+#. module: intervention_report
+#: selection:intervention.report,state:0
+msgid "Appointment cancelled"
+msgstr "Appuntamento annullato"
+
+#. module: intervention_report
+#: view:intervention.report:0 field:intervention.report,intervention_request:0
+msgid "Intervention request"
+msgstr "Richiesta intervento"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Hours of annual contract"
+msgstr "Ore annuali contratto "
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Intervention"
+msgstr "Intervento"
+
+#. module: intervention_report
+#: view:res.partner:0
+msgid "Intervent parameter:"
+msgstr "Parametri interventi:"
+
+#. module: intervention_report
+#: field:intervention.report,trip_hour:0
+msgid "Trip hour"
+msgstr "Ore viaggio"
+
+#. module: intervention_report
+#: view:intervention.report:0 view:intervention.sector:0
+#: field:intervention.sector,note:0
+msgid "Note"
+msgstr "Note"
+
+#. module: intervention_report
+#: view:intervention.type:0
+msgid "Intervention type Tree"
+msgstr "Tipo di intervento"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Draft"
+msgstr "Bozza"
+
+#. module: intervention_report
+#: field:intervent.report.collection.wizard,from_date:0
+msgid "From date (>=)"
+msgstr "Dalla data (>=)"
+
+#. module: intervention_report
+#: field:res.partner,trip_time:0 field:res.partner.address,trip_time:0
+msgid "Trip time"
+msgstr "Ore viaggio"
+
+#. module: intervention_report
+#: help:intervention.report,break_hour:0
+msgid "Duration of break"
+msgstr "Durata pausa"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Appointment"
+msgstr "Appuntamento"
+
+#. module: intervention_report
+#: selection:intervent.report.collection.wizard,month:0
+msgid "August"
+msgstr "Agosto"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Intervent data:"
+msgstr "Dati intervento:"
+
+#. module: intervention_report
+#: field:res.partner,contracts:0
+msgid "Contracts"
+msgstr "Contratti"
+
+#. module: intervention_report
+#: selection:intervent.report.collection.wizard,month:0
+msgid "June"
+msgstr "Giugno"
+
+#. module: intervention_report
+#: model:ir.ui.menu,name:intervention_report.menu_base_intervention_report_state_calendar
+msgid "Evidenziati per stato"
+msgstr "Evidenziati per stato"
+
+#. module: intervention_report
+#: field:intervention.report,break_require:0
+msgid "Break"
+msgstr "Pausa"
+
+#. module: intervention_report
+#: selection:intervention.report,mode:0
+msgid "Phone"
+msgstr "Telefonico"
+
+#. module: intervention_report
+#: field:intervent.report.collection.wizard,user_id:0
+#: view:intervention.report:0 field:intervention.report,user_id:0
+msgid "User"
+msgstr "Utente"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Date"
+msgstr "Data"
+
+#. module: intervention_report
+#: selection:intervent.report.collection.wizard,month:0
+msgid "November"
+msgstr "Novembre"
+
+#. module: intervention_report
+#: selection:intervention.report,state:0
+msgid "Appointment awaiting confirmation"
+msgstr "Appuntamento in attesa di conferma"
+
+#. module: intervention_report
+#: model:ir.actions.act_window,name:intervention_report.action_intervention_report_state_calendar
+msgid "Intervention report state calendar"
+msgstr "Stato interventi (calendario)"
+
+#. module: intervention_report
+#: help:res.partner,hour_contract:0
+msgid "If customer has contract this are the hour per year to cover"
+msgstr "Se questo cliente ha un contratto queste sono le ore da coprire"
+
+#. module: intervention_report
+#: field:intervention.report,date_end:0
+msgid "Date end"
+msgstr "Data fine"
+
+#. module: intervention_report
+#: field:intervent.report.collection.wizard,is_intervent:0
+msgid "Is intervent"
+msgstr "E' intervento"
+
+#. module: intervention_report
+#: selection:intervent.report.collection.wizard,month:0
+msgid "January"
+msgstr "Gennaio"
+
+#. module: intervention_report
+#: help:intervention.report,tipology:0
+msgid ""
+"If the invervention is about work, or extra work but usefull to plann "
+"appointment"
+msgstr ""
+"Se l'intervento è lavorativo o extra lavorativo ma utile per pianificare gli "
+"altri appuntamenti"
+
+#. module: intervention_report
+#: selection:intervention.report,mode:0
+msgid "Company address"
+msgstr "Ns. sede"
+
+#. module: intervention_report
+#: field:intervention.report,tipology:0
+msgid "Tipology"
+msgstr "Tipologia"
+
+#. module: intervention_report
+#: selection:intervention.report,tipology:0
+msgid "Extra Lavorativo"
+msgstr "Extra Lavorativo"
+
+#. module: intervention_report
+#: field:intervention.report,sector_id:0 view:intervention.sector:0
+#: field:intervention.sector,name:0
+msgid "Sector"
+msgstr "Settore"
+
+#. module: intervention_report
+#: selection:intervent.report.collection.wizard,report_type:0
+msgid "Report by tipology"
+msgstr "Report per tipologia"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "No ref"
+msgstr "N. rif."
+
+#. module: intervention_report
+#: model:ir.actions.act_window,name:intervention_report.action_board_intervention_report_area
+msgid "Default dashboard"
+msgstr "Dashboard standard"
+
+#. module: intervention_report
+#: view:intervent.report.collection.wizard:0
+#: model:ir.actions.act_window,name:intervention_report.action_wizard_intervent_report
+msgid "Intervent report wizard"
+msgstr "Wizard stampa interventi"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Waiting"
+msgstr "In attesa"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Reschedule"
+msgstr "Rischedula"
+
+#. module: intervention_report
+#: view:intervention.type:0 field:intervention.type,invoice:0
+msgid "Invoice"
+msgstr "Fatturare"
+
+#. module: intervention_report
+#: view:intervent.report.collection.wizard:0 view:intervention.report:0
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Close"
+msgstr "Chiudi"
+
+#. module: intervention_report
+#: model:ir.actions.act_window,name:intervention_report.action_intervention_report_location_calendar
+msgid "Intervention report location calendar"
+msgstr "Calendario interventi per luogo"
+
+#. module: intervention_report
+#: model:ir.model,name:intervention_report.model_intervention_type
+msgid "Intervention Type"
+msgstr "Tipo intervento"
+
+#. module: intervention_report
+#: view:board.board:0
+msgid "Intervent x state (current user, this month)"
+msgstr "Intervento per stato (utente corrente, questo mese)"
+
+#. module: intervention_report
+#: field:res.partner,has_contract:0
+msgid "Has contract"
+msgstr "Ha contratto"
+
+#. module: intervention_report
+#: help:intervention.report,break_require:0
+msgid "If intervention is split in 2 part for break"
+msgstr "Se l'intervento è diviso in due parti per pausa intermedia"
+
+#. module: intervention_report
+#: field:res.partner,hour_contract:0
+msgid "Hour contract"
+msgstr "Ore contratto"
+
+#. module: intervention_report
+#: selection:intervent.report.collection.wizard,month:0
+msgid "October"
+msgstr "October"
+
+#. module: intervention_report
+#: view:intervention.type:0
+msgid "Intervention type Form"
+msgstr "Tipo di intervento"
+
+#. module: intervention_report
+#: selection:intervention.report,state:0
+msgid "Appointment executed"
+msgstr "Intervento eseguito"
+
+#. module: intervention_report
+#: field:intervention.sector,product_id:0
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: intervention_report
+#: view:intervention.report:0 field:intervention.report,name:0
+#: field:intervention.type,name:0
+msgid "Description"
+msgstr "Descrizione"
+
+#. module: intervention_report
+#: selection:intervent.report.collection.wizard,month:0
+msgid "May"
+msgstr "Maggio"
+
+#. module: intervention_report
+#: field:intervention.report,type_id:0
+msgid "Type"
+msgstr "Tipo"
+
+#. module: intervention_report
+#: field:intervent.report.collection.wizard,to_date:0
+msgid "To date (<)"
+msgstr "Alla data (<)"
+
+#. module: intervention_report
+#: help:intervention.report,manual_total:0
+msgid ""
+"If true don't auto calculate total hour, if false, total hours=intervent + "
+"trip - pause hours"
+msgstr ""
+"Se spuntato non calcola automaticamente il totale, non spuntato: ore "
+"intervento=intervento + viaggio - pausa"
+
+#. module: intervention_report
+#: view:intervention.report:0
+msgid "Hours of intervent"
+msgstr "Ore intervento"
+
+#. module: intervention_report
+#: field:intervention.report,ref:0
+msgid "Ref."
+msgstr "Rif."
+
+#. module: intervention_report
+#: selection:intervent.report.collection.wizard,month:0
+msgid "February"
+msgstr "Febbraio"
+
+#. module: intervention_report
+#: help:intervention.sector,name:0
+msgid ""
+"Sector name, for identify tipology of intervent as it's linked to the product"
+msgstr ""
+"Nome settore, per identificare la tipologia di intervento siccome è "
+"collegata al prodotto"
+
+#. module: intervention_report
+#: selection:intervent.report.collection.wizard,month:0
+msgid "April"
+msgstr "Aprile"
+
+#. module: intervention_report
+#: field:intervention.report,mode:0
+msgid "Mode"
+msgstr "Modo"
+
+#. module: intervention_report
+#: model:ir.actions.report.xml,name:intervention_report.aeroo_intervent_report_id
+msgid "Intervent report"
+msgstr "Report intervento"
+
+#. module: intervention_report
+#: field:intervention.report,date_start:0
+msgid "Date start"
+msgstr "Data inizio"
+
+#. module: intervention_report
+#: view:intervention.type:0
+msgid "Order"
+msgstr "Ordine"
+
+#. module: intervention_report
+#: field:intervent.report.collection.wizard,is_closed:0
+msgid "Is closed"
+msgstr "E' chiuso"
+
+#. module: intervention_report
+#: model:ir.model,name:intervention_report.model_res_partner_address
+msgid "Partner Addresses"
+msgstr "Indirizzi Partner"
+
+#. module: intervention_report
+#: selection:intervention.report,mode:0
+msgid "Customer address"
+msgstr "Presso il cliente"
+
+#. module: intervention_report
+#: field:intervention.report,intervention:0
+msgid "Intervention description"
+msgstr "Descrizione intervento"
+
+#. module: intervention_report
+#: field:intervention.report,import_id:0
+msgid "Import ID"
+msgstr "ID Importazione"
+
+#. module: intervention_report
+#: field:intervention.report,duration:0
+msgid "Duration"
+msgstr "Durata"
+
+#. module: intervention_report
+#: field:intervention.report,trip_require:0
+msgid "Trip"
+msgstr "Con viaggio"

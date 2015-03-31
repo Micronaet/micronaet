@@ -1,0 +1,16 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_chemical_element_user","chemical.element","model_chemical_element","chemical_analysis.group_analysis_user",1,0,0,0
+"access_chemical_element_manager","chemical.element","model_chemical_element","chemical_analysis.group_analysis_manager",1,1,1,1
+"access_chemical_product_category_user","chemical.product.category","model_chemical_product_category","chemical_analysis.group_analysis_user",1,0,0,0
+"access_chemical_product_category_manager","chemical.product.category","model_chemical_product_category","chemical_analysis.group_analysis_manager",1,1,1,1
+"access_product_product_analysis_default_user","product.product.analysis.default","model_product_product_analysis_default","chemical_analysis.group_analysis_user",1,0,0,0
+"access_product_product_analysis_default_manager","product.product.analysis.default","model_product_product_analysis_default","chemical_analysis.group_analysis_manager",1,1,1,1
+"access_chemical_analysis_user","chemical.analysis","model_chemical_analysis","chemical_analysis.group_analysis_user",1,1,1,1
+"access_chemical_analysis_manager","chemical.analysis","model_chemical_analysis","chemical_analysis.group_analysis_manager",1,1,1,1
+"access_chemical_analysis_line_user","chemical.analysis.line","model_chemical_analysis_line","chemical_analysis.group_analysis_user",1,1,1,1
+"access_chemical_analysis_line_manager","chemical.analysis.line","model_chemical_analysis_line","chemical_analysis.group_analysis_manager",1,1,1,1
+"access_product_product_analysis_model_user","product.product.analysis.model","model_product_product_analysis_model","chemical_analysis.group_analysis_user",1,1,1,1
+"access_product_product_analysis_manager","product.product.analysis.model","model_product_product_analysis_model","chemical_analysis.group_analysis_manager",1,1,1,1
+"access_product_product_analysis_line_user","product.product.analysis.line","model_product_product_analysis_line","chemical_analysis.group_analysis_user",1,1,1,1
+"access_product_product_analysis_line_manager","product.product.analysis.line","model_product_product_analysis_line","chemical_analysis.group_analysis_manager",1,1,1,1
+

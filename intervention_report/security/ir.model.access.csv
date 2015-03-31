@@ -1,0 +1,5 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_intervention_report_manager","intervention.report","model_intervention_report","base.group_user",1,1,1,1
+"access_intervention_type_manager","intervention.type","model_intervention_type","base.group_user",1,1,1,1
+"access_intervention_sector_manager","intervention.sector","model_intervention_sector","base.group_user",1,1,1,1
+

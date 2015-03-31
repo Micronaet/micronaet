@@ -1,0 +1,1040 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* mws_amazon
+# <> <>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 6.0.4\n"
+"Report-Msgid-Bugs-To: support@openerp.com\n"
+"POT-Creation-Date: 2012-09-24 11:26+0000\n"
+"PO-Revision-Date: 2012-09-24 13:44+0200\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: mws_amazon
+#: field:amazon.feed,scheduled_datetime:0
+msgid "Scheduled time"
+msgstr "Orario schedulazione"
+
+#. module: mws_amazon
+#: model:ir.actions.act_window,name:mws_amazon.product_product_amazon_inventory_action
+#: model:ir.ui.menu,name:mws_amazon.product_product_amazon_inventory_menu
+msgid "Amazon product (inventory)"
+msgstr "Prodotti Amazon (inventario)"
+
+#. module: mws_amazon
+#: field:product.product,amazon_min_level:0
+msgid "Re-order level"
+msgstr "Livello di riordino"
+
+#. module: mws_amazon
+#: field:amazon.parameter,ftp_password:0 help:amazon.parameter,ftp_password:0
+msgid "FTP password"
+msgstr "FTP: password"
+
+#. module: mws_amazon
+#: view:amazon.parameter:0
+msgid "General:"
+msgstr "Generale:"
+
+#. module: mws_amazon
+#: model:ir.model,name:mws_amazon.model_amazon_product_category
+msgid "Amazon Category"
+msgstr "Categoria Amazon"
+
+#. module: mws_amazon
+#: help:amazon.parameter,software_account_id:0
+msgid "Software account ID assigned by Amazon, like: 1234-5678-9012"
+msgstr "ID Accont SW per Amazon, es.: 1234-5678-9012"
+
+#. module: mws_amazon
+#: view:product.product:0
+msgid "Preview image"
+msgstr "Anteprima immagine"
+
+#. module: mws_amazon
+#: help:amazon.feed,error_text:0
+msgid "Error text when feed not accepted from the system"
+msgstr "Messaggio di errore quando il feed non e' accettato dal sistema"
+
+#. module: mws_amazon
+#: field:product.product,amazon_brand:0
+msgid "Amazon brand"
+msgstr "Marchio Amazon"
+
+#. module: mws_amazon
+#: field:amazon.product.category,code:0
+msgid "Amazon code"
+msgstr "Codice Amazon"
+
+#. module: mws_amazon
+#: help:product.product,amazon_image_publish:0
+msgid "Force FTP of image for publishing on Amazon (feed after)"
+msgstr ""
+"Forza la pubblicazione FTP delle immagini su Amazon (dopo esegue i feed)"
+
+#. module: mws_amazon
+#: field:product.product,amazon_sale_start:0
+msgid "Amazon sale start date"
+msgstr "Data inizio vendita su Amazon"
+
+#. module: mws_amazon
+#: help:product.product,amazon_is_wrap:0
+msgid "Product is wrap available on Amazon"
+msgstr "Prodotto disponibile modalita' warp per Amazon"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Flat File Order Acknowledgement Feed"
+msgstr "Feed conferma d'ordine su flat file "
+
+#. module: mws_amazon
+#: field:amazon.parameter,image_web_root:0
+msgid "Image web root"
+msgstr "Root immagini web"
+
+#. module: mws_amazon
+#: field:amazon.parameter,company_id:0
+msgid "Company"
+msgstr "Azienda"
+
+#. module: mws_amazon
+#: help:amazon.parameter,image_web_root:0
+msgid ""
+"Web site root path where amazon images are published, used for send link for "
+"every product image"
+msgstr ""
+"Il percorso root per le immagini pubblicate su amazon, usato per collegare "
+"ogni prodotto alla sua immagine"
+
+#. module: mws_amazon
+#: help:product.product,amazon_published:0
+msgid "Product is visible on Amazon"
+msgstr "Il prodotto e' visibile su Amazon"
+
+#. module: mws_amazon
+#: help:amazon.parameter,merchant_identification:0
+msgid "Merchant ID assigned by Amazon, like: M_COMPANY_11252334"
+msgstr "ID commerciante fornito da Amazon, esempio: M_COMPANY_11252334"
+
+#. module: mws_amazon
+#: help:amazon.parameter,ftp_server:0
+msgid "FTP server name, es. www.example.it"
+msgstr "FTP: nome server, es. www.example.it"
+
+#. module: mws_amazon
+#: view:amazon.feed:0
+msgid "XML"
+msgstr "XML"
+
+#. module: mws_amazon
+#: field:amazon.publish.wizard,force_image:0 view:product.product:0
+msgid "Force image"
+msgstr "Forza immagini"
+
+#. module: mws_amazon
+#: field:amazon.parameter,market_web_site:0
+msgid "Web site market"
+msgstr "Sito internet Market"
+
+#. module: mws_amazon
+#: model:ir.module.module,description:mws_amazon.module_meta_information
+msgid ""
+" \n"
+"                    Module that use Amazon API to connect OpenERP to Amazon\n"
+"                    market, normal operations are written in API "
+"documentation:\n"
+"                    - Product \n"
+"                    - Order \n"
+"                    - Report\n"
+"                    "
+msgstr ""
+" \n"
+"                    Module that use Amazon API to connect OpenERP to Amazon\n"
+"                    market, normal operations are written in API "
+"documentation:\n"
+"                    - Product \n"
+"                    - Order \n"
+"                    - Report\n"
+"                    "
+
+#. module: mws_amazon
+#: field:amazon.parameter,feed_deadtime:0
+msgid "Feed deadtime"
+msgstr "Scadenza feed"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Flat File Invoice Confirmation Feed"
+msgstr "Feed conferma fattura con file flat"
+
+#. module: mws_amazon
+#: help:amazon.parameter,market_web_site:0
+msgid ""
+"Wer service address, every zone has different addres, ex. for EU: 'https://"
+"mws-eu.amazonservices.com"
+msgstr ""
+"Indirizzo web service, ogni zona ha il suo, es per EU: 'https://mws-eu."
+"amazonservices.com"
+
+#. module: mws_amazon
+#: field:amazon.parameter,path_ids:0
+msgid "Path"
+msgstr "Percorso"
+
+#. module: mws_amazon
+#: field:product.product,amazon_published:0
+msgid "Published on Amazon"
+msgstr "Pubblicato su Amazon"
+
+#. module: mws_amazon
+#: view:amazon.parameter:0
+msgid "Amazon parameter:"
+msgstr "Parametri Amazon:"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Flat File Order Fulfillment Feed"
+msgstr "Feed ordine pronto su flat file"
+
+#. module: mws_amazon
+#: field:product.product,amazon_dimension_um:0
+msgid "Dimension UM"
+msgstr "UM Dimensione"
+
+#. module: mws_amazon
+#: field:amazon.parameter.path,image_fs_root:0
+msgid "Image filesystem root"
+msgstr "Root su FS delle immagini"
+
+#. module: mws_amazon
+#: help:amazon.parameter,secret:0
+msgid ""
+"Secret key for encrypt messagesn, like: "
+"ivFe6C7aq3UJNhYqg0BH5+6g4+XfkSLJyPgbt2al"
+msgstr ""
+"Chiave segreta per criptare il messaggio, es.: "
+"ivFe6C7aq3UJNhYqg0BH5+6g4+XfkSLJyPgbt2al"
+
+#. module: mws_amazon
+#: help:product.product,amazon_inventory:0
+msgid "Availability on company (inventory quantity in the company store)"
+msgstr ""
+"Disponibile nell'azienda (quantita' d'inventario nel magazzino aziendale)"
+
+#. module: mws_amazon
+#: field:product.product,amazon_is_gift:0
+msgid "Product if gift"
+msgstr "Il prodotto e' un regalo"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Shipping Override Feed"
+msgstr "Feed: sovrascrivi la consegna"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Flat File Inventory Loader Feed"
+msgstr "Feed flat file inventario"
+
+#. module: mws_amazon
+#: view:product.product:0
+msgid "Keywords:"
+msgstr "Keywords:"
+
+#. module: mws_amazon
+#: view:product.product:0
+msgid "Products"
+msgstr "Prodotti"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "FBA Flat File Update Inbound  Shipment Feed"
+msgstr "FBA Flat File Update Inbound  Shipment Feed"
+
+#. module: mws_amazon
+#: model:ir.ui.menu,name:mws_amazon.menu_amazon_configuration_parameter
+msgid "MWS parameters"
+msgstr "Parameteri MWS"
+
+#. module: mws_amazon
+#: field:product.product,amazon_amazon_inventory:0
+msgid "Amazon inventory"
+msgstr "Inventorio Amazon"
+
+#. module: mws_amazon
+#: field:amazon.parameter,ftp_path:0
+msgid "FTP path"
+msgstr "FTP: percorso"
+
+#. module: mws_amazon
+#: help:amazon.feed,response_text:0
+msgid "For debug purposes"
+msgstr "Per scopo di debug"
+
+#. module: mws_amazon
+#: help:amazon.parameter,ftp_user:0
+msgid "FTP user name"
+msgstr "FTP: user name"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Request data feed"
+msgstr "Feed richiesta dati"
+
+#. module: mws_amazon
+#: view:amazon.product.category:0
+#: model:ir.actions.act_window,name:mws_amazon.action_amazon_product_category
+msgid "Amazon category"
+msgstr "Categoria Amazon"
+
+#. module: mws_amazon
+#: field:product.product,amazon_width:0
+msgid "Amazon Width"
+msgstr "Larghezza Amazon"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Flat File FBA Shipment Injection Fulfillment Feed"
+msgstr "Flat File FBA Shipment Injection Fulfillment Feed"
+
+#. module: mws_amazon
+#: field:product.product,amazon_volume:0
+msgid "Amazon Volume"
+msgstr "Volume Amazon"
+
+#. module: mws_amazon
+#: field:amazon.feed,send_datetime:0
+msgid "Send time"
+msgstr "Ora invio"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "FTP Image"
+msgstr "FTP: Image"
+
+#. module: mws_amazon
+#: model:ir.ui.menu,name:mws_amazon.menu_amazon_feed
+msgid "Amazon feed scheduled"
+msgstr "Schedulazione feed Amazon"
+
+#. module: mws_amazon
+#: model:ir.actions.act_window,name:mws_amazon.action_amazon_publish_wizard
+msgid "Publish"
+msgstr "Pubblica su J25 VM20"
+
+#. module: mws_amazon
+#: help:product.product,amazon_amazon_inventory:0
+msgid "Availability on Amazon (inventory quantity in Amazon store)"
+msgstr "Disponibilita' su Amazon (quantita' d'inventario sul magazzino Amazon)"
+
+#. module: mws_amazon
+#: help:product.product,amazon_min_level:0
+msgid ""
+"Quantity considered as minimum level of availability, used for highlight "
+"product or produce action"
+msgstr ""
+"Quantita' considerata il livello minimo di disponibilita', usato per "
+"evidenziare i prodotti sottoscorta (da produrre o ordinare)"
+
+#. module: mws_amazon
+#: field:amazon.feed,state:0
+msgid "State"
+msgstr "Stato"
+
+#. module: mws_amazon
+#: help:amazon.parameter.path,image_fs_root:0
+msgid ""
+"File system root path where amazon images are published, used for send link "
+"for every product image, ex. '/home/administrator/photo'"
+msgstr ""
+"File system root path where amazon images are published, used for send link "
+"for every product image, ex. '/home/administrator/photo'"
+
+#. module: mws_amazon
+#: field:product.product,amazon_discount_price:0
+msgid "Amazon discount price"
+msgstr "Prezzo scontato Amazon"
+
+#. module: mws_amazon
+#: view:product.product:0
+msgid "On Amazon"
+msgstr "Su Amazon"
+
+#. module: mws_amazon
+#: model:ir.module.module,shortdesc:mws_amazon.module_meta_information
+msgid "MWS Aamazon API"
+msgstr "MWS Amazon API"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Product Ads Flat File Feed"
+msgstr "Product Ads Flat File Feed"
+
+#. module: mws_amazon
+#: field:product.product,amazon_length:0
+msgid "Amazon Length"
+msgstr "Lunghezza Amazon"
+
+#. module: mws_amazon
+#: view:amazon.parameter:0 view:amazon.product.category:0
+#: model:ir.actions.act_window,name:mws_amazon.action_amazon_parameter
+msgid "Amazon parameter"
+msgstr "Parametri Amazon"
+
+#. module: mws_amazon
+#: field:product.product,amazon_material:0
+msgid "Material"
+msgstr "Materiale"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Order Fulfillment Feed"
+msgstr "Feed chiusura ordine"
+
+#. module: mws_amazon
+#: help:product.product,amazon_manufacturer:0
+msgid "Manufacturer of product in amazon"
+msgstr "Produttore articolo Amazon"
+
+#. module: mws_amazon
+#: help:amazon.parameter,seller_number:0
+msgid "Seller number assigned by Amazon, like: A4M45BERTF3VIV"
+msgstr "Numero venditore asseghato da Amazon, es.: A4M45BERTF3VIV"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Flat File Price and Quantity"
+msgstr "File flat quantita' e prezzo"
+
+#. module: mws_amazon
+#: model:ir.ui.menu,name:mws_amazon.menu_amazon_base
+msgid "Amazon"
+msgstr "Amazon"
+
+#. module: mws_amazon
+#: field:product.product,amazon_inventory:0
+msgid "Company inventory"
+msgstr "Inventario azienda"
+
+#. module: mws_amazon
+#: field:amazon.parameter,key:0
+msgid "Key"
+msgstr "Chiave"
+
+#. module: mws_amazon
+#: field:product.product,amazon_manage_days:0
+msgid "Amazon Manage days"
+msgstr "Giorni evasione su Amazon"
+
+#. module: mws_amazon
+#: model:ir.ui.menu,name:mws_amazon.menu_amazon_configuration
+msgid "Configuration"
+msgstr "Configurazione"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Order Adjustment Feed"
+msgstr "Feed correzione ordine"
+
+#. module: mws_amazon
+#: field:amazon.parameter,ftp_user:0
+msgid "FTP user"
+msgstr "FTP: user"
+
+#. module: mws_amazon
+#: field:product.product,amazon_is_wrap:0
+msgid "Product if wrap"
+msgstr "Product if wrap"
+
+#. module: mws_amazon
+#: model:ir.ui.menu,name:mws_amazon.menu_amazon_product_category
+msgid "Amazon product category"
+msgstr "Categoria prodotto Amazon"
+
+#. module: mws_amazon
+#: view:product.product:0
+msgid "Function:"
+msgstr "Functione:"
+
+#. module: mws_amazon
+#: field:amazon.parameter,merchant_identification:0
+msgid "Merchant ID"
+msgstr "ID Commerciante"
+
+#. module: mws_amazon
+#: field:product.product,amazon_origin_db:0
+msgid "Amazon Origin DB"
+msgstr "DB origine Amazon"
+
+#. module: mws_amazon
+#: help:product.product,amazon_description:0
+msgid "Description of product in amazon"
+msgstr "Descrizione prodotto in Amazon"
+
+#. module: mws_amazon
+#: help:product.product,amazon_category1_id:0
+#: help:product.product,amazon_category2_id:0
+msgid "Also called Browse Node in Amazon"
+msgstr "Chiamato anche \"browse node\" su Amazon"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Flat File FBA Shipment Injection Cancellation Feed"
+msgstr "Flat File FBA Shipment Injection Cancellation Feed"
+
+#. module: mws_amazon
+#: field:product.product,amazon_out:0
+msgid "Amazon out of production"
+msgstr "Fuori produzione su Amazon"
+
+#. module: mws_amazon
+#: view:product.product:0
+msgid "Dimension"
+msgstr "Dimensione"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Product Images Feed"
+msgstr "Feed immagine prodotto"
+
+#. module: mws_amazon
+#: field:amazon.feed,create_datetime:0
+msgid "Create time"
+msgstr "Ora creazione"
+
+#. module: mws_amazon
+#: help:amazon.feed,send_datetime:0
+msgid "Launched time, compiled by the sistem scheduler"
+msgstr "Ora schedulazione, compilato dal sistema pianificatore"
+
+#. module: mws_amazon
+#: help:amazon.parameter,market_place:0
+msgid "Market place code assigned by Amazon, like: APJ3JRB2FGD4"
+msgstr "Codice mercato assegnato da Amazon, es.: APJ3JRB2FGD4"
+
+#. module: mws_amazon
+#: field:product.product,amazon_image_publish:0
+msgid "Force image publish"
+msgstr "Forza pubblicazione immagini"
+
+#. module: mws_amazon
+#: model:ir.actions.act_window,help:mws_amazon.product_product_amazon_action
+#: model:ir.actions.act_window,help:mws_amazon.product_product_amazon_inventory_action
+msgid "Show minimal form information for manage product published on Amazon"
+msgstr ""
+"Mostra un form minimale con le sole informazioni prodotto utilizzate da "
+"Amazon"
+
+#. module: mws_amazon
+#: field:amazon.feed,feed_xml:0
+msgid "XML file"
+msgstr "File XML"
+
+#. module: mws_amazon
+#: view:product.product:0
+msgid "Price:"
+msgstr "Prezzo:"
+
+#. module: mws_amazon
+#: field:product.product,amazon_sale_end:0
+msgid "Amazon sale end date"
+msgstr "Data fine vendita su Amazon"
+
+#. module: mws_amazon
+#: view:amazon.parameter:0
+msgid "FTP access for image publication:"
+msgstr "FTP: accesso per pubblicazione immagini:"
+
+#. module: mws_amazon
+#: view:amazon.publish.wizard:0
+msgid "Publish Amazon"
+msgstr "Pubblica su Amazon"
+
+#. module: mws_amazon
+#: help:product.product,amazon_brand:0
+msgid "Brand of the product in amazon"
+msgstr "Marca del prodotto in Amazon"
+
+#. module: mws_amazon
+#: view:product.product:0
+msgid "Product (Amazon information)"
+msgstr "Prodotto (Informazioni Amazon)"
+
+#. module: mws_amazon
+#: field:product.product,amazon_weight_um:0
+msgid "Weight UM"
+msgstr "UM Peso"
+
+#. module: mws_amazon
+#: field:amazon.product.category,name:0
+msgid "Category"
+msgstr "Categoria"
+
+#. module: mws_amazon
+#: field:product.product,amazon_category1_id:0
+msgid "Amazon category 1"
+msgstr "Amazon categoria 1"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Flat File Video Loader File"
+msgstr "File video su flat file"
+
+#. module: mws_amazon
+#: field:product.product,amazon_category2_id:0
+msgid "Amazon category 2"
+msgstr "Amazon categoria 2"
+
+#. module: mws_amazon
+#: help:product.product,amazon_q_x_pack:0
+msgid "Quantity per pack"
+msgstr "Quantita' per pacco"
+
+#. module: mws_amazon
+#: help:amazon.parameter,feed_deadtime:0
+msgid "Days after a feed with state done is erased from feed list"
+msgstr "Giorni in cui il feed elaborato compare nella lista dei feed"
+
+#. module: mws_amazon
+#: help:amazon.publish.wizard,force_image:0
+msgid "Force publishing of product image via FTP of all Amazon articles"
+msgstr ""
+"Forza pubblicazione dell'immagine prodotto via FTP per tutti gli articoli "
+"Amazon"
+
+#. module: mws_amazon
+#: field:amazon.publish.wizard,force_selected_image:0
+msgid "Force selected image"
+msgstr "Forza pubblicazione immagini selezionate"
+
+#. module: mws_amazon
+#: view:amazon.feed:0 selection:amazon.feed,state:0
+msgid "Draft"
+msgstr "Bozza"
+
+#. module: mws_amazon
+#: field:product.product,amazon_discount_end:0
+msgid "End discount price"
+msgstr "Fine prezzo scontato"
+
+#. module: mws_amazon
+#: view:amazon.feed:0
+msgid "Closed"
+msgstr "Chiuso"
+
+#. module: mws_amazon
+#: model:ir.actions.act_window,name:mws_amazon.product_product_amazon_action
+#: model:ir.ui.menu,name:mws_amazon.product_product_amazon_menu
+msgid "Amazon product"
+msgstr "Prodotto Amazon"
+
+#. module: mws_amazon
+#: field:product.product,amazon_description:0
+msgid "Amazon description"
+msgstr "Descrizione Amazon"
+
+#. module: mws_amazon
+#: field:amazon.parameter,software_account_id:0
+msgid "SW account"
+msgstr "SW account"
+
+#. module: mws_amazon
+#: view:amazon.feed:0
+msgid "Pending"
+msgstr "In attesa"
+
+#. module: mws_amazon
+#: field:amazon.feed,response_text:0
+msgid "Response XML"
+msgstr "Risposta XML"
+
+#. module: mws_amazon
+#: help:product.product,amazon_manage_days:0
+msgid "Important for spedition of product, usually 2 days"
+msgstr "Importante per la spedizione prodotto, di solito 2 gg."
+
+#. module: mws_amazon
+#: view:product.product:0
+msgid "Visibility:"
+msgstr "Visibilita':"
+
+#. module: mws_amazon
+#: view:amazon.parameter:0
+msgid "Image path:"
+msgstr "Percorso immagini:"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Cancellation Feed"
+msgstr "Feed annullamento"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Relationship feed"
+msgstr "Feed relazioni prodotto"
+
+#. module: mws_amazon
+#: field:amazon.product.category,active:0
+msgid "Active"
+msgstr "Attivo"
+
+#. module: mws_amazon
+#: view:amazon.feed:0
+#: model:ir.actions.act_window,name:mws_amazon.action_amazon_feed
+#: model:ir.model,name:mws_amazon.model_amazon_feed
+msgid "Amazon feed"
+msgstr "Feed Amazon"
+
+#. module: mws_amazon
+#: field:product.product,amazon_height:0
+msgid "Amazon Height"
+msgstr "Altezza Amazon"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Inventory Feed"
+msgstr "Feed inventario"
+
+#. module: mws_amazon
+#: field:amazon.parameter,seller_number:0
+msgid "Seller Number"
+msgstr "Numero venditore"
+
+#. module: mws_amazon
+#: model:ir.model,name:mws_amazon.model_amazon_publish_wizard
+msgid "Amazon publish wizard"
+msgstr "Wizard pubblicazione Amazon"
+
+#. module: mws_amazon
+#: help:amazon.parameter,key:0
+msgid "Encrypt Key assigned by Amazon, like: AKYAJ4M45BERTFTA3VIV"
+msgstr "Chiave di criptazione assegnata da Amazon, es.: AKYAJ4M45BERTFTA3VIV"
+
+#. module: mws_amazon
+#: view:amazon.feed:0 selection:amazon.feed,state:0
+msgid "Submitted"
+msgstr "Inviato"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "FBA Shipment Injection"
+msgstr "FBA Shipment Injection"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Pricing Feed"
+msgstr "Feed prezzo"
+
+#. module: mws_amazon
+#: field:product.product,amazon_is_discontinued:0
+msgid "Product discontinued"
+msgstr "Prodotto discontinuo"
+
+#. module: mws_amazon
+#: view:amazon.feed:0 field:amazon.feed,error_text:0
+#: selection:amazon.feed,state:0
+msgid "Error"
+msgstr "Errore"
+
+#. module: mws_amazon
+#: view:product.product:0
+msgid "Inventory:"
+msgstr "Inventario:"
+
+#. module: mws_amazon
+#: field:amazon.product.category,parent_id:0
+msgid "Label"
+msgstr "Etichetta"
+
+#. module: mws_amazon
+#: view:amazon.parameter:0
+msgid "Image path on File System:"
+msgstr "Percorso immagini su FS:"
+
+#. module: mws_amazon
+#: help:amazon.feed,scheduled_datetime:0
+msgid "Send feed passed this time"
+msgstr "Send feed passed this time"
+
+#. module: mws_amazon
+#: field:amazon.parameter.path,name:0
+msgid "Database name"
+msgstr "Nome database"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Product data"
+msgstr "Product data"
+
+#. module: mws_amazon
+#: field:product.product,amazon_price:0
+msgid "Amazon price"
+msgstr "Prezzo Amazon"
+
+#. module: mws_amazon
+#: model:ir.model,name:mws_amazon.model_amazon_parameter
+msgid "Amazon access parameter"
+msgstr "Amazon access parameter"
+
+#. module: mws_amazon
+#: help:product.product,amazon_designer:0
+msgid "Designer of product in amazon"
+msgstr "Designer of product in amazon"
+
+#. module: mws_amazon
+#: field:product.product,amazon_title:0
+msgid "Amazon title"
+msgstr "Amazon title"
+
+#. module: mws_amazon
+#: view:amazon.feed:0 view:product.product:0
+msgid "General"
+msgstr "General"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Flat File Listings Feed"
+msgstr "Flat File Listings Feed"
+
+#. module: mws_amazon
+#: selection:amazon.feed,state:0
+msgid "Done"
+msgstr "Done"
+
+#. module: mws_amazon
+#: field:amazon.parameter,market_place:0
+msgid "Market place"
+msgstr "Market place"
+
+#. module: mws_amazon
+#: view:amazon.publish.wizard:0
+msgid "Cancel"
+msgstr "Cancel"
+
+#. module: mws_amazon
+#: field:product.product,amazon_discount_start:0
+msgid "Start discount price"
+msgstr "Start discount price"
+
+#. module: mws_amazon
+#: model:ir.model,name:mws_amazon.model_amazon_parameter_path
+msgid "Amazon parameter path"
+msgstr "Amazon parameter path"
+
+#. module: mws_amazon
+#: field:amazon.publish.wizard,market_id:0 view:product.product:0
+msgid "Market"
+msgstr "Market"
+
+#. module: mws_amazon
+#: field:product.product,amazon_weight:0
+msgid "Amazon Weight"
+msgstr "Amazon Weight"
+
+#. module: mws_amazon
+#: view:product.product:0
+msgid "Long description:"
+msgstr "Long description:"
+
+#. module: mws_amazon
+#: field:product.product,amazon_q_x_pack:0
+msgid "Q. x pack"
+msgstr "Q. x pack"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Single product feed"
+msgstr "Single product feed"
+
+#. module: mws_amazon
+#: field:amazon.parameter,secret:0
+msgid "Secret"
+msgstr "Secret"
+
+#. module: mws_amazon
+#: view:amazon.feed:0
+msgid "Response XML (for debug purposes"
+msgstr "Response XML (for debug purposes"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Flat File Order Adjustment  Feed"
+msgstr "Flat File Order Adjustment  Feed"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "FBA Flat File Create Inbound Shipment Feed"
+msgstr "FBA Flat File Create Inbound Shipment Feed"
+
+#. module: mws_amazon
+#: help:product.product,amazon_is_gift:0
+msgid "Product is consider gift on Amazon"
+msgstr "Product is consider gift on Amazon"
+
+#. module: mws_amazon
+#: model:ir.model,name:mws_amazon.model_product_product
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: mws_amazon
+#: field:amazon.feed,name:0
+msgid "Description"
+msgstr "Description"
+
+#. module: mws_amazon
+#: field:amazon.parameter.path,parameter_id:0
+msgid "Parameter"
+msgstr "Parameter"
+
+#. module: mws_amazon
+#: help:amazon.feed,feed_code:0
+msgid "ID assigned by Amazon when feed is submitted to the system"
+msgstr "ID assigned by Amazon when feed is submitted to the system"
+
+#. module: mws_amazon
+#: field:amazon.feed,feed_type:0
+msgid "Feed type"
+msgstr "Feed type"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Flat File Music Loader File"
+msgstr "Flat File Music Loader File"
+
+#. module: mws_amazon
+#: field:product.product,amazon_keywords:0
+msgid "Keywords"
+msgstr "Keywords"
+
+#. module: mws_amazon
+#: field:product.product,amazon_manufacturer:0
+msgid "Amazon manufacturer"
+msgstr "Amazon manufacturer"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "FBA Shipment Injection Fulfillment Feed"
+msgstr "FBA Shipment Injection Fulfillment Feed"
+
+#. module: mws_amazon
+#: field:product.product,amazon_function:0
+msgid "Principal function"
+msgstr "Principal function"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Invoice Confirmation Feed"
+msgstr "Invoice Confirmation Feed"
+
+#. module: mws_amazon
+#: field:amazon.feed,parameter_id:0
+msgid "Amazon Market"
+msgstr "Amazon Market"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Flat File Book Loader File"
+msgstr "Flat File Book Loader File"
+
+#. module: mws_amazon
+#: field:amazon.parameter,name:0
+msgid "Name"
+msgstr "Name"
+
+#. module: mws_amazon
+#: help:amazon.parameter,ftp_path:0
+msgid "FTP path for images (absolute, es.: /home/www/image/amazon)"
+msgstr "FTP path for images (absolute, es.: /home/www/image/amazon)"
+
+#. module: mws_amazon
+#: help:amazon.publish.wizard,force_selected_image:0
+msgid ""
+"Force publishing of selected product image via FTP of all Amazon articles"
+msgstr ""
+"Force publishing of selected product image via FTP of all Amazon articles"
+
+#. module: mws_amazon
+#: view:product.product:0
+msgid "Product (Amazon)"
+msgstr "Product (Amazon)"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Update File"
+msgstr "Update File"
+
+#. module: mws_amazon
+#: help:product.product,amazon_is_discontinued:0
+msgid "Product is discontinued by manufacturer on Amazon"
+msgstr "Prodotto fornito in maniera discontinua"
+
+#. module: mws_amazon
+#: model:ir.ui.menu,name:mws_amazon.menu_amazon_publish_wizard
+msgid "Publish all product"
+msgstr "Publish all product"
+
+#. module: mws_amazon
+#: view:amazon.feed:0
+msgid "Complete"
+msgstr "Complete"
+
+#. module: mws_amazon
+#: field:product.product,amazon_color:0
+msgid "Color"
+msgstr "Color"
+
+#. module: mws_amazon
+#: field:amazon.parameter,ftp_server:0
+msgid "FTP server"
+msgstr "FTP server"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "UIEE Inventory File Exchange Environment"
+msgstr "UIEE Inventory File Exchange Environment"
+
+#. module: mws_amazon
+#: field:product.product,amazon_designer:0
+msgid "Amazon designer"
+msgstr "Amazon designer"
+
+#. module: mws_amazon
+#: field:amazon.feed,feed_code:0
+msgid "Feed code"
+msgstr "Feed code"
+
+#. module: mws_amazon
+#: constraint:product.product:0
+msgid "Error: Invalid ean code"
+msgstr "Errore: codice EAN non valido"
+
+#. module: mws_amazon
+#: help:product.product,amazon_title:0
+msgid "Title of product in amazon"
+msgstr "Title of product in amazon"
+
+#. module: mws_amazon
+#: help:product.product,amazon_origin_db:0
+msgid "Database origin of this product"
+msgstr "Database origin of this product"
+
+#. module: mws_amazon
+#: field:product.product,amazon_country_id:0
+msgid "Amazon origin (country)"
+msgstr "Amazon origin (country)"
+
+#. module: mws_amazon
+#: field:product.product,amazon_volume_um:0
+msgid "Volume UM"
+msgstr "Volume UM"
+
+#. module: mws_amazon
+#: selection:amazon.feed,feed_type:0
+msgid "Order Acknowledgement Feed"
+msgstr "Order Acknowledgement Feed"

@@ -1,0 +1,82 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <!-- importation.purchase.order -->
+    <record id="view_importation_purchase_order_search" model="ir.ui.view">
+        <field name="name">Search history of lots</field>
+        <field name="model">importation.purchase.order</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Lots history">
+               <field name="product_id"/>
+               <field name="partner_id"/>
+               <field name="purchase_order"/>
+               <field name="lot_id"/>
+            </search>
+        </field>    
+    </record>
+    
+    <record id="view_importation_purchase_order_tree" model="ir.ui.view">
+        <field name="name">History of lots</field>
+        <field name="model">importation.purchase.order</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Lots history" editable="bottom">
+               <field name="product_id"/>
+               <field name="partner_id"/>
+               <field name="purchase_order"/>
+               <field name="lot_id"/>
+            </tree>
+        </field>    
+    </record>
+
+    <record model="ir.actions.act_window" id="action_importation_purchase_order">
+        <field name="name">History of lots</field>
+        <field name="res_model">importation.purchase.order</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_importation_purchase_order_tree"/>
+        <field name="search_view_id" ref="view_importation_purchase_order_search"/>
+    </record>
+    
+    <!-- importation.default.location IN (BF) -->
+    <record id="view_importation_default_location_tree" model="ir.ui.view">
+        <field name="name">Default stock import</field>
+        <field name="model">importation.default.location</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Default stock import" editable="bottom">
+               <field name="name"/>
+               <field name="location_id"/>
+            </tree>
+        </field>    
+    </record>
+
+    <record model="ir.actions.act_window" id="action_importation_default_location">
+        <field name="name">Default stock import (BF)</field>
+        <field name="res_model">importation.default.location</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_importation_default_location_tree"/>
+    </record>
+    
+    <!-- menuitem -->
+    <menuitem id="configuration_picking_import" 
+                sequence="60"
+                name="Importation"
+                parent="base.menu_base_config" />    
+                
+        <menuitem id="menu_importation_default_location"
+             name="Default stock import"
+             sequence="10" 
+             parent="configuration_picking_import" 
+             action="action_importation_default_location" />
+
+        <menuitem id="menu_importation_purchase_order"
+             name="Lots history"
+             sequence="10" 
+             parent="coal_tax_exemption.menu_coal_stock_trace_lot" 
+             action="action_importation_purchase_order" />
+</data>
+</openerp>
+

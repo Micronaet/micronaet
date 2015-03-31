@@ -1,0 +1,7 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_support_area_manager","support.area","model_support_area","base.group_user",1,1,1,1
+"access_support_area_sector_manager","support.area.sector","model_support_area_sector","base.group_user",1,1,1,1
+"access_support_issue_manager","support.issue","model_support_issue","base.group_user",1,1,1,1
+"access_support_issue_comunication_manager","support.issue.comunication","model_support_issue_comunication","base.group_user",1,1,1,1
+"access_support_partner_ref_manager","support.partner.ref","model_support_partner_ref","base.group_user",1,1,1,1
+

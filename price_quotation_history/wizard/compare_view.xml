@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+       <!--<record id="product_partner_analysis_wizard_form" model="ir.ui.view">
+            <field name="name">Wizard price analize</field>
+            <field name="model">product.partner.analysis.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Price compare">
+                    <label name="name" />
+                    <newline />
+                    <notebook colspan="4">
+                       <page string="Pricelist compare">
+                            <field name="compare_price" colspan="4" nolabel="1"  default_focus="1" />
+                       </page> 
+                    </notebook>   
+                </form>
+            </field>
+      </record>
+
+      <record id="action_product_partner_analysis_wizard_form" model="ir.actions.act_window">
+        <field name="name">Product price compare</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">>product.partner.analysis.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+      </record>
+      
+      <menuitem name="Search wizard" parent="base.menu_sale" id="menu_action_product_partner_analysis_wizard_form" sequence="1" action="action_product_partner_analysis_wizard_form" />
+      -->
+      <!--<act_window
+            id="search_database_wizard_action"
+            name="Extra search partner string"
+            src_model="res.partner"
+            res_model="search.database.wizard"
+            />-->
+    </data>
+</openerp>
