@@ -79,16 +79,16 @@ class Parser(report_sxw.rml_parse):
             total += float(self.get_subtotal(item, order))
         return "%2.2f"%(total)
         
-    def get_total_volume(self, item_list):
+    def get_total_volume(self, order_id):
         ''' Function that compute total volume for 1 or more items
         '''
         total = 0.0
-        import pdb; pdb.set_trace()
-        for item in item_list:
+        for item in self.pool.get('purchase.order').browse(
+                self.cr, self.uid, order_id).order_line:
              total += item.product_qty * (
                  item.product_id.pack_l * 
                  item.product_id.pack_h * 
-                 item.product_id.pack_p) / 1000000.0
+                 item.product_id.pack_p / 1000000.0
         return "%2.3f" % total
         
         """for item in self.pool.get('purchase.order.line').browse(self.cr, self.uid, item_list):
