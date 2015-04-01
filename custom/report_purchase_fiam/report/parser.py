@@ -83,6 +83,7 @@ class Parser(report_sxw.rml_parse):
         ''' Function that compute total volume for 1 or more items
         '''
         total = 0.0
+        import pdb; pdb.set_trace()
         for item in self.pool.get('purchase.order').browse(
                 self.cr, self.uid, order_id).order_line:
              total += item.product_qty * (
