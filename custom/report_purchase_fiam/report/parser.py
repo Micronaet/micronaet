@@ -33,7 +33,7 @@ class Parser(report_sxw.rml_parse):
     def __init__(self, cr, uid, name, context):
         super(Parser, self).__init__(cr, uid, name, context)
         self.localcontext.update({
-            'get_volume_item':self.get_volume_item,
+            #'get_volume_item':self.get_volume_item,
             'total_volume':self.total_volume,
             
             'get_price': self.get_price,
@@ -83,8 +83,12 @@ class Parser(report_sxw.rml_parse):
         ''' Function that compute total volume for 1 or more items
         '''
         total = 0.0
+        import pdb; pdb.set_trace()
         for item in item_list:
-             total += item.product_qty * item.product_id.pack_l * item.product_id.pack_h * item.product_id.pack_p / 1000000.0
+             total += item.product_qty * (
+                 item.product_id.pack_l * 
+                 item.product_id.pack_h * 
+                 item.product_id.pack_p) / 1000000.0
         return "%2.3f" % total
         
         """for item in self.pool.get('purchase.order.line').browse(self.cr, self.uid, item_list):
@@ -100,11 +104,11 @@ class Parser(report_sxw.rml_parse):
                 total += float("%2.3f"%(total_value))  # for correct aprox value (maybe theres' a best way :) )
         return "%2.3f"%(total,)"""
         
-    def get_volume_item(self, item_id):
-        ''' calculate total volume for item line 
-            Pz / Pz. x box * (volume of the box => l x w x h)
-        '''
-        return self.get_total_volume([item_id])
+    #def get_volume_item(self, item_id):
+    #    ''' calculate total volume for item line 
+    #        Pz / Pz. x box * (volume of the box => l x w x h)
+    #    '''
+    #    return self.get_total_volume([item_id])
         
     def total_volume(self, order_id):
         ''' calculate total volume for all items present in order
