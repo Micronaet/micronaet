@@ -50,6 +50,7 @@ class inherit_product_product(osv.osv):
         '''        
         img = ''         
 
+        import pdb; pdb.set_trace()
         extension = "jpg"
         image_path = os.path.expanduser(
             "~/photo/%s/product/quotation" % cr.dbname)
