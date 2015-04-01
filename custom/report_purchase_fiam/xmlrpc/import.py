@@ -96,7 +96,7 @@ for row in lines:
     row = clean(row)
     line = row.strip().split(separator)
     i += 1 
-    if not len(line) or len(line) != 22: # jump empty lines
+    if not len(line) or len(line) != 21: # jump empty lines
         print "Line jumped"
         continue
     default_code = format_string(line[0]) ##
@@ -118,9 +118,8 @@ for row in lines:
     L_pack = format_float(line[16]) ##
     H_pack = format_float(line[17]) ##
     D_pack = format_float(line[18]) ##
-    weight_pack = format_float(line[19])
-    colls = format_float(line[20]) ##
-    ean13 = format_string(line[21]) ##
+    colls = format_string(line[19]) ##
+    ean13 = format_string(line[20]) ##
    
     data = {
         'default_code': default_code,
@@ -146,7 +145,6 @@ for row in lines:
         'colls': colls,
         'ean13': ean13,
         }
-       
     product_ids = sock.execute( # search current ref
         dbname, uid, pwd, 'product.product', 'search', [
             ('default_code', '=', default_code),])                       

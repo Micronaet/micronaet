@@ -94,7 +94,8 @@ class inherit_product_product(osv.osv):
         'quotation_photo':fields.function(
             _get_quotation_image, type="binary", method=True),
         'quantity_x_pack': fields.integer('Q. per pack'), 
-        'colls': fields.integer('Colli'), 
+        'colls_number': fields.integer('Colli'), 
+        'colls': fields.char('Colli', size=30), 
         'colour_code': fields.char('Codice colore', size=64),
         }       
          
