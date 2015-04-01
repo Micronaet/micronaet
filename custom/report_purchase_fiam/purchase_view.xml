@@ -16,6 +16,10 @@
                 <field name='pack_h' />
                 <field name='pack_p' />
            </field>             
+           <field name='uom_pos_id' position="after">   
+                <separator string="Colli" />
+                <field name='colls' />
+           </field>     
        </field>
     </record>   
     
