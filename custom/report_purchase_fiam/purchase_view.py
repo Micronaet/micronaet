@@ -91,10 +91,10 @@ class inherit_product_product(osv.osv):
         return res                
 
     _columns = {
-                'quotation_photo':fields.function(
-                    _get_quotation_image, type="binary", method=True),
-                'quantity_x_pack': fields.integer('Q. per pack'), #TODO used?
-               }                
+        'quotation_photo':fields.function(
+            _get_quotation_image, type="binary", method=True),
+        'quantity_x_pack': fields.integer('Q. per pack'), #TODO used?
+        }                
     _defaults = {
         'quantity_x_pack': lambda *a: 1,
     }               
