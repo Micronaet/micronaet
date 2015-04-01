@@ -10,10 +10,13 @@
            <field name='mes_type' position="after">   
                 <field name='quantity_x_pack' />
            </field>                
-           <!--<field name='mes_type' position="after">   
-                <field name='quantity_x_pack' />
-           </field>                -->
-        </field>
+           <field name='length' position="after">   
+                <separator string="Imballo" />
+                <field name='pack_l' />
+                <field name='pack_h' />
+                <field name='pack_p' />
+           </field>             
+       </field>
     </record>   
     
     <record model="ir.ui.view" id="view_purchase_order_form_extra">
