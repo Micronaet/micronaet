@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <openerp>
-<data> <!-- noupdate="1"-->
+<data noupdate="1">
     <record id="aeroo_purchase_report_id" model="ir.actions.report.xml">
         <field name="name">Stampa Word</field>
         <field name="type">ir.actions.report.xml</field>
