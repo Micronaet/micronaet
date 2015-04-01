@@ -347,7 +347,7 @@ try:
                    'uom_po_id': uom_id,        # TODO test if it is NR
                    'type': 'product',          # TODO parametrize: product consu service
                    'supply_method': 'produce', # TODO parametrize: produce buy
-                   'standard_price': bug_start_value,
+                   #'standard_price': bug_start_value,
                    'list_price': 0.0,
                    'procure_method': 'make_to_order', 
                    'q_x_pack': lot,
