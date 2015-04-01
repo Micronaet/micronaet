@@ -101,6 +101,10 @@ class inherit_product_product(osv.osv):
         'colour_code': fields.char('Codice colore', size=64),
 
         'default_supplier': fields.char('Fornitore default', size=64),
+
+        'L_pack': fields.integer('L. Imb.'), 
+        'H_pack': fields.integer('H. Imb.'), 
+        'P_pack': fields.integer('P. Imb.'), 
         }       
          
     _defaults = {
