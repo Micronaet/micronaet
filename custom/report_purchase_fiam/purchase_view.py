@@ -61,11 +61,13 @@ class inherit_product_product(osv.osv):
         # Image compoesed with code format (code.jpg)
         if product_browse.default_code:
             try:
-                (filename, header) = urllib.urlretrieve(
-                    "%s/%s.%s" % (
+                img_tmp = "%s/%s.%s" % (
                         image_path, 
                         product_browse.default_code.replace(" ", "_"), 
                         extension)) # code image
+                print img_tmp        
+                (filename, header) = urllib.urlretrieve(img_tmp)
+                    
                 f = open(filename , 'rb')
                 img = base64.encodestring(f.read())
                 f.close()
