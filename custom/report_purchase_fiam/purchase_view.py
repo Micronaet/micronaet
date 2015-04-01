@@ -49,12 +49,13 @@ class inherit_product_product(osv.osv):
             (default path is ~/photo/db_name/quotation
         '''        
         img = ''         
+        import pdb; pdb.set_trace()
         extension = "jpg"
         image_path = os.path.expanduser(
             "~/photo/%s/product/quotation" % cr.dbname)
         empty_image= "%s/%s.%s" % (image_path, "empty", extension)
 
-        product_browse=self.browse(cr, uid, item, context=context)
+        product_browse = self.browse(cr, uid, item, context=context)
         # Image compoesed with code format (code.jpg)
         if product_browse.default_code:
             try:
