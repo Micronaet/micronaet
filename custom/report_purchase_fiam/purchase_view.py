@@ -32,6 +32,7 @@
 # Using the same term of use
 ##############################################################################
 
+import sys
 from osv import osv, fields
 from datetime import datetime
 import decimal_precision as dp
@@ -78,6 +79,7 @@ class inherit_product_product(osv.osv):
                     img = base64.encodestring(f.read())
                     f.close()
                 except:
+                    print sys.exc_info()
                     img = ''
         return img
 
