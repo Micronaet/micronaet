@@ -43,6 +43,7 @@
         "report_aeroo", 
         "report_aeroo_ooo",
         "purchase",
+        "purchase_extra_field",
         ],
 	"category": "Generic Modules/Aeroo Reporting",
 	"init_xml": [],
