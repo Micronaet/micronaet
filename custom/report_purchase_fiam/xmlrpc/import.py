@@ -135,9 +135,9 @@ for row in lines:
         'width': L,
         'height': H,
         'length': D,
-        'L_pack': L_pack,
-        'H_pack': H_pack,
-        'P_pack': D_pack,
+        'pack_l': L_pack,
+        'pack_h': H_pack,
+        'pack_p': D_pack,
         
         'default_supplier': supplier,
         #'description_purchase': ,

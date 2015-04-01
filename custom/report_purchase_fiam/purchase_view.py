@@ -102,9 +102,9 @@ class inherit_product_product(osv.osv):
 
         'default_supplier': fields.char('Fornitore default', size=64),
 
-        #'L_pack': fields.integer('L. Imb.'), 
-        #'H_pack': fields.integer('H. Imb.'), 
-        #'P_pack': fields.integer('P. Imb.'), 
+        'pack_l': fields.integer('L. Imb.'), 
+        'pack_h': fields.integer('H. Imb.'), 
+        'pack_p': fields.integer('P. Imb.'), 
         }       
          
     _defaults = {
