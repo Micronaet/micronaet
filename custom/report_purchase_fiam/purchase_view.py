@@ -64,7 +64,7 @@ class inherit_product_product(osv.osv):
                 img_tmp = "%s/%s.%s" % (
                         image_path, 
                         product_browse.default_code.replace(" ", "_"), 
-                        extension)) # code image
+                        extension) # code image
                 print img_tmp        
                 (filename, header) = urllib.urlretrieve(img_tmp)
                     
