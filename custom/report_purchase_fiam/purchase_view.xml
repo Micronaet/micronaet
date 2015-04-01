@@ -17,6 +17,10 @@
                 <field name='pack_p' />
                 <field name='colls' />
            </field>             
+           <field name='seller_ids' position="before">   
+               <field name="default_supplier" />
+               <field name="default_supplier_code" />
+           </field>
        </field>
     </record>   
     

@@ -124,6 +124,7 @@ for row in lines:
    
     data = {
         'default_code': default_code,
+        'code': default_code,
         #name,
         #description,
         #campaign_qty,
