@@ -21,7 +21,7 @@
 
 import os
 import sys
-from openerp.osv import fields, osv
+from osv import fields, osv
 
 
 class purchase_order(osv.osv):
