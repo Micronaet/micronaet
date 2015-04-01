@@ -166,6 +166,6 @@ for row in lines:
         #product_id = sock.execute(
         #    dbname, uid, pwd, 'product.product', 'create', data)                   
     print "Riga", i
-    #except:
+    #except: 
     #    print "Errore importando, record saltato", sys.exc_info()    
     #    continue
