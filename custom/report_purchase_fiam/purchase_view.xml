@@ -10,8 +10,11 @@
            <field name='mes_type' position="after">   
                 <field name='quantity_x_pack' />
            </field>                
+           <field name='default_code' position="after">   
+                <field name='colour_code' />
+           </field>                
            <field name='length' position="after">   
-                <separator string="Imballo" />
+                <separator string="Imballo default" />
                 <field name='pack_l' />
                 <field name='pack_h' />
                 <field name='pack_p' />
