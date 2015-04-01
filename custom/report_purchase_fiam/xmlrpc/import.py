@@ -134,6 +134,7 @@ for row in lines:
         'height': L,
         'width': H,
         'length': D,
+        'default_supplier': supplier,
         #diameter,
         #H_sit,
         #comment,

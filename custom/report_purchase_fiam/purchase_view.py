@@ -94,9 +94,13 @@ class inherit_product_product(osv.osv):
         'quotation_photo':fields.function(
             _get_quotation_image, type="binary", method=True),
         'quantity_x_pack': fields.integer('Q. per pack'), 
+        
         'colls_number': fields.integer('Colli'), 
         'colls': fields.char('Colli', size=30), 
+        
         'colour_code': fields.char('Codice colore', size=64),
+
+        'default_supplier': fields.char('Fornitore default', size=64),
         }       
          
     _defaults = {
