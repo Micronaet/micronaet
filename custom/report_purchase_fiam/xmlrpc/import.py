@@ -45,11 +45,16 @@ def format_date(valore):
        return time.strftime("%d/%m/%Y")
 
 def format_float(valore):
-    valore=valore.strip() 
-    if valore: # TODO test correct date format       
-       return float(valore.replace(",","."))
-    else:
-       return 0.0   # for empty values
+    valore = valore.strip() 
+    valore = valore.split(" ")[-1]
+    try:
+        if valore: # TODO test correct date format       
+           return float(valore.replace(",","."))
+        else:
+           return 0.0   # for empty values
+    except:
+        print "Error conversion:", sys.exc_info()
+        return 0.0       
 
 # -----------------------------------------------------------------------------
 # Start main code 
@@ -73,35 +78,41 @@ uid = sock.login(dbname, user, pwd)
 sock = xmlrpclib.ServerProxy(
     'http://%s:%s/xmlrpc/object' % (server, port), allow_none=True)
 
-lines = csv.reader(open(filename, 'rb'), delimiter=separator)
+#lines = csv.reader(open(filename, 'rb'), delimiter=separator)
+lines = open(filename, 'rb')
 
-for line in lines:
-    if not len(line): # jump empty lines
+i = 0
+for row in lines:
+    line = row.strip().split(separator)
+    i += 1 
+    import pdb; pdb.set_trace()
+    if not len(line) or len(line) != 23: # jump empty lines
+        print "line jumped"
         continue
     try:
         default_code = format_string(line[0])
         name = format_string(line[1])
         description = format_string(line[2])
         campaign_qty = format_string(line[3])
-        price_supplier = format_string(line[4])
+        price_supplier = format_float(line[4])
         material = format_string(line[5])
-        color = format_string(line[6])
+        colour = format_string(line[6])
         unshield = format_string(line[7])
         wash = format_string(line[8])
-        L = format_string(line[9])
-        H = format_string(line[10])
-        D = format_string(line[11])
+        L = format_float(line[9])
+        H = format_float(line[10])
+        D = format_float(line[11])
         diameter = format_string(line[12])
         H_sit = format_string(line[13])
         comment = format_string(line[14])
-        weight = format_string(line[15])
+        weight = format_float(line[15])
         mounted = format_string(line[16])
-        L1 = format_string(line[17])
-        H1 = format_string(line[18])
-        D1 = format_string(line[19])
-        weight1 = format_string(line[20])
+        #L1 = format_float(line[17])
+        #H1 = format_float(line[18])
+        #D1 = format_float(line[19])
+        weight1 = format_float(line[20])
         colls = format_string(line[21])
-        ean = format_string(line[22])
+        ean13 = format_string(line[22])
        
         data = {
             'default_code': default_code,
@@ -110,23 +121,23 @@ for line in lines:
             #campaign_qty,
             #price_supplier,
             #material,
-            'color': color,
+            'colour': colour,
             #unshield,
             #wash,
-            #L,
-            #H,
-            #D,
+            'height': L,
+            'width': H,
+            'length': D,
             #diameter,
             #H_sit,
             #comment,
-            #weight,
+            'weight': weight,
             #mounted,
             #L1,
             #H1,
             #D1,
             #weight1,
             #colls,
-            'ean': ean,
+            'ean13': ean13,
             }
            
         product_ids = sock.execute( # search current ref
@@ -141,5 +152,7 @@ for line in lines:
             print "Code not found", default_code
             #product_id = sock.execute(
             #    dbname, uid, pwd, 'product.product', 'create', data)                   
+        print "Line", i
     except:
         print "Errore importando, record saltato", sys.exc_info()    
+        continue
