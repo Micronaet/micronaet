@@ -55,7 +55,8 @@ def format_date(valore):
        return time.strftime("%d/%m/%Y")
 
 def format_float(valore):
-    valore = valore.strip() 
+    valore = valore.strip().upper()
+    valore = valore.replace("CM.", "").replace("CM", "")
     valore = valore.split(" ")[-1]
     try:
         if valore: # TODO test correct date format       
