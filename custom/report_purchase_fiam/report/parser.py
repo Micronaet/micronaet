@@ -88,7 +88,7 @@ class Parser(report_sxw.rml_parse):
              total += item.product_qty * (
                  item.product_id.pack_l * 
                  item.product_id.pack_h * 
-                 item.product_id.pack_p / 1000000.0
+                 item.product_id.pack_p / 1000000.0)
         return "%2.3f" % total
         
         """for item in self.pool.get('purchase.order.line').browse(self.cr, self.uid, item_list):
