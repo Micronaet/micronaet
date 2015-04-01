@@ -51,7 +51,7 @@ class inherit_product_product(osv.osv):
         img = ''         
         extension = "jpg"
         image_path = os.path.expanduser(
-            "~/photo/%s/product/default" % cr.dbname)
+            "~/photo/%s/product/quotation" % cr.dbname)
         empty_image= "%s/%s.%s" % (image_path, "empty", extension)
 
         product_browse=self.browse(cr, uid, item, context=context)
