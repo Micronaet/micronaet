@@ -33,7 +33,7 @@ class Parser(report_sxw.rml_parse):
     def __init__(self, cr, uid, name, context):
         super(Parser, self).__init__(cr, uid, name, context)
         self.localcontext.update({
-            #'get_volume_item':self.get_volume_item,
+            'get_total_volume':self.get_total_volume,
             'total_volume':self.total_volume,
             
             'get_price': self.get_price,
