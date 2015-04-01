@@ -96,32 +96,31 @@ for row in lines:
     row = clean(row)
     line = row.strip().split(separator)
     i += 1 
-    if not len(line) or len(line) != 23: # jump empty lines
-        print "line jumped"
+    if not len(line) or len(line) != 22: # jump empty lines
+        print "Line jumped"
         continue
-    default_code = format_string(line[0])
-    name = format_string(line[1])
-    description = format_string(line[2])
-    campaign_qty = format_string(line[3])
-    price_supplier = format_float(line[4])
-    material = format_string(line[5])
-    colour = format_string(line[6])
-    unshield = format_string(line[7])
-    wash = format_string(line[8])
+    default_code = format_string(line[0]) ##
+    supplier = format_string(line[1]) #
+    name = format_string(line[2]) ##
+    description = format_string(line[3]) ## 
+    campaign_qty = format_string(line[4]) 
+    reserve = format_string(line[5]) 
+    price_supplier = format_float(line[6]) #
+    colour = format_string(line[7]) ##
+    colour_code = format_string(line[8]) ##
     L = format_float(line[9])
     H = format_float(line[10])
     D = format_float(line[11])
-    diameter = format_string(line[12])
-    H_sit = format_string(line[13])
+    diameter = format_float(line[12])
+    H_sit = format_float(line[13])
     comment = format_string(line[14])
-    weight = format_float(line[15])
-    mounted = format_string(line[16])
-    #L1 = format_float(line[17])
-    #H1 = format_float(line[18])
-    #D1 = format_float(line[19])
-    weight1 = format_float(line[20])
-    colls = format_string(line[21])
-    ean13 = format_string(line[22])
+    weight = format_float(line[15]) #
+    L_pack = format_float(line[16]) ##
+    H_pack = format_float(line[17]) ##
+    D_pack = format_float(line[18]) ##
+    weight_pack = format_float(line[19])
+    colls = format_float(line[20]) ##
+    ean13 = format_string(line[21]) ##
    
     data = {
         'default_code': default_code,
@@ -131,8 +130,7 @@ for row in lines:
         #price_supplier,
         #material,
         'colour': colour,
-        #unshield,
-        #wash,
+        'colour_code': colour_code,        
         'height': L,
         'width': H,
         'length': D,
@@ -145,7 +143,7 @@ for row in lines:
         #H1,
         #D1,
         #weight1,
-        #colls,
+        'colls': colls,
         'ean13': ean13,
         }
        

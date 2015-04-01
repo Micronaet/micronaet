@@ -93,11 +93,14 @@ class inherit_product_product(osv.osv):
     _columns = {
         'quotation_photo':fields.function(
             _get_quotation_image, type="binary", method=True),
-        'quantity_x_pack': fields.integer('Q. per pack'), #TODO used?
-        }                
+        'quantity_x_pack': fields.integer('Q. per pack'), 
+        'colls': fields.integer('Colli'), 
+        'colour_code': fields.char('Codice colore', size=64),
+        }       
+         
     _defaults = {
         'quantity_x_pack': lambda *a: 1,
-    }               
+        }               
 inherit_product_product()
 
 class purchase_order_extra(osv.osv):
