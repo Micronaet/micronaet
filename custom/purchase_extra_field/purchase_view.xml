@@ -9,6 +9,8 @@
         <field name="arch" type="xml">
             <field name="location_id" position="after">
                <field name="delivery_note" />
+            </field>
+            <field name="fiscal_position" position="after">
                <field name="payment_note" />                
             </field>
         </field>
