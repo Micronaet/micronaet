@@ -69,11 +69,10 @@ class inherit_product_product(osv.osv):
                 f.close()
             
                 if not img: # empty image:
-                    try:
-                        (filename, header) = urllib.urlretrieve(empty_image) # empty setted up on folder
-                        f = open(filename , 'rb')
-                        img = base64.encodestring(f.read())
-                        f.close()
+                    (filename, header) = urllib.urlretrieve(empty_image) # empty setted up on folder
+                    f = open(filename , 'rb')
+                    img = base64.encodestring(f.read())
+                    f.close()
         except:
             print sys.exc_info()
             img = ''
