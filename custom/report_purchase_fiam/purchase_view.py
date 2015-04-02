@@ -50,16 +50,15 @@ class inherit_product_product(osv.osv):
             (default path is ~/photo/db_name/quotation
         '''        
         img = ''         
+        try:
+            extension = "jpg"
+            image_path = os.path.expanduser(
+                "~/photo/%s/product/quotation" % cr.dbname)
+            empty_image= "%s/%s.%s" % (image_path, "empty", extension)
 
-        extension = "jpg"
-        image_path = os.path.expanduser(
-            "~/photo/%s/product/quotation" % cr.dbname)
-        empty_image= "%s/%s.%s" % (image_path, "empty", extension)
-
-        product_browse = self.browse(cr, uid, item, context=context)
-        # Image compoesed with code format (code.jpg)
-        if product_browse.default_code:
-            try:
+            product_browse = self.browse(cr, uid, item, context=context)
+            # Image compoesed with code format (code.jpg)
+            if product_browse.default_code:
                 (filename, header) = urllib.urlretrieve(
                     "%s/%s.%s" % (
                         image_path, 
@@ -68,18 +67,16 @@ class inherit_product_product(osv.osv):
                 f = open(filename , 'rb')
                 img = base64.encodestring(f.read())
                 f.close()
-            except:
-                img = ''
             
-            if not img: # empty image:
-                try:
-                    (filename, header) = urllib.urlretrieve(empty_image) # empty setted up on folder
-                    f = open(filename , 'rb')
-                    img = base64.encodestring(f.read())
-                    f.close()
-                except:
-                    print sys.exc_info()
-                    img = ''
+                if not img: # empty image:
+                    try:
+                        (filename, header) = urllib.urlretrieve(empty_image) # empty setted up on folder
+                        f = open(filename , 'rb')
+                        img = base64.encodestring(f.read())
+                        f.close()
+        except:
+            print sys.exc_info()
+            img = ''
         return img
 
     # Fields function:
