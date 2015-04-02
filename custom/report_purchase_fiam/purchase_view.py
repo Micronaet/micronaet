@@ -74,7 +74,10 @@ class inherit_product_product(osv.osv):
                     img = base64.encodestring(f.read())
                     f.close()
         except:
-            print sys.exc_info()
+            try:
+                print "Image error", product_browse.default_code, sys.exc_info()
+            except:    
+                pass
             img = ''
         return img
 
