@@ -51,7 +51,7 @@ class Parser(report_sxw.rml_parse):
         position = 0 # next is 0
         for element in order_line:
             position += 1
-            if position mod 2 == 1: # odd
+            if position % 2 == 1: # odd
                 res.append([element, False])
             else: # event
                 res[(position-1) / 2][1] = element # second element
