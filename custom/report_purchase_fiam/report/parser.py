@@ -33,16 +33,30 @@ class Parser(report_sxw.rml_parse):
     def __init__(self, cr, uid, name, context):
         super(Parser, self).__init__(cr, uid, name, context)
         self.localcontext.update({
-            'get_total_volume':self.get_total_volume,
-            'total_volume':self.total_volume,
+            'get_total_volume': self.get_total_volume,
+            'total_volume': self.total_volume,
             
             'get_price': self.get_price,
             'get_subtotal': self.get_subtotal,
             'get_total': self.get_total,
 
-            'total_USD':self.total_USD,
+            'total_USD': self.total_USD,
+            'get_couple': self.get_couple,
         })
 
+    def get_couple(self, o.order_line):
+        ''' Couple the elements
+        '''
+        res = []
+        position = 0 # next is 0
+        for element in o.order_line:
+            position += 1
+            if position mod 2 == 1: # odd
+                res.append([element, False])
+            else: # event
+                res[(position-1) / 2][1] = element # second element
+        return res
+    
     def get_price(self, item, order):
         ''' Return cost price from pricelist in currency indicated
         '''
