@@ -44,12 +44,12 @@ class Parser(report_sxw.rml_parse):
             'get_couple': self.get_couple,
         })
 
-    def get_couple(self, o.order_line):
+    def get_couple(self, order_line):
         ''' Couple the elements
         '''
         res = []
         position = 0 # next is 0
-        for element in o.order_line:
+        for element in order_line:
             position += 1
             if position mod 2 == 1: # odd
                 res.append([element, False])
