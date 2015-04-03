@@ -48,7 +48,7 @@ class Parser(report_sxw.rml_parse):
         ''' Couple the elements
         '''
         res = []
-        import pdb; pdb.set_trace()
+
         position = 0 # next is 0
         for element in order_line:
             position += 1
