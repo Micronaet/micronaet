@@ -257,6 +257,8 @@ try:
                    active = True
                else:    
                    active = False
+               
+               colour = Prepare(line[18])    
                    
                item = sock.execute( # search current ref
                    dbname, uid, pwd, 'product.product', 'search', [
@@ -353,6 +355,7 @@ try:
                    'q_x_pack': lot,
                    'description_sale': name, # preserve original name (not code + name)<<<<<<<<<
                    'name_template': name,    
+                   'colour': colour,
                    #'description': description,
                    #'description_spurchase'
                    #'lst_price' 
