@@ -43,6 +43,7 @@ port = config.get('dbaccess', 'port')   # verify if it's necessary: getint
 separator = config.get('dbaccess', 'separator') # test
 verbose = eval(config.get('import_mode', 'verbose'))
 
+file_transcode_log = "transcode.log"
 #if azienda == 'gpb'
 #    try:
 #        convert_file = config.get('convert', 'list')
@@ -81,7 +82,7 @@ ID_uom_categ_capacity = getUomCateg(sock, dbname, uid, pwd, 'Capacity') # Catego
 ID_uom_categ_power = getUomCateg(sock, dbname, uid, pwd, 'Electric Power') # Category potenza elettrica
 ID_uom_categ_volume = getUomCateg(sock, dbname, uid, pwd, 'Volume') # Category Volume
 
-uom_nr = getUOM(sock, dbname, uid, pwd, 'PCE', {}) 
+uom_nr = getUOM(sock, dbname, uid, pwd, 'Pz', {}) 
 uom_kg = getUOM(sock, dbname, uid, pwd, 'kg', {})
 uom_m = getUOM(sock, dbname, uid, pwd, 'm', {})
 uom_hour = getUOM(sock, dbname, uid, pwd, 'Hour', {})
