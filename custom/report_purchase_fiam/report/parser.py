@@ -48,10 +48,10 @@ class Parser(report_sxw.rml_parse):
         ''' Couple the elements
         '''
         res = []
-        import pdb; pdb.set_trace()
+
         position = 0 # next is 0
         for element in order_line:
-            colls = order_line.product_id.colls or 1
+            colls = element.product_id.colls or 1
             for i in range(1, colls + 1):
                 position += 1
                 part_number = "%s/%s" % (i, colls)
