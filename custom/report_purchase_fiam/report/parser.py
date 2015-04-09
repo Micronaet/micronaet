@@ -49,10 +49,12 @@ class Parser(report_sxw.rml_parse):
         '''
         res = []
 
-        import pdb; pdb.set_trace()
         position = 0 # next is 0
         for element in order_line:
-            colls = element.product_id.colls or 1
+            try:
+                colls = int(element.product_id.colls) or 1
+            except:
+                colls = 1 # error in conversion    
             for i in range(1, colls + 1):
                 position += 1
                 part_number = "%s/%s" % (i, colls)
