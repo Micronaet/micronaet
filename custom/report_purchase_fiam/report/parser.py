@@ -51,11 +51,21 @@ class Parser(report_sxw.rml_parse):
 
         position = 0 # next is 0
         for element in order_line:
-            position += 1
-            if position % 2 == 1: # odd
-                res.append([element, False])
-            else: # event
-                res[(position-1) / 2][1] = element # second element
+            colls = order_line.product_id.colls or 1
+            for i in range(1, colls + 1):
+                position += 1
+                part_number = "%s/%s" % (i, colls)
+                if position % 2 == 1: # odd
+                    # fist element:
+                    res.append([
+                        [element, part_number],
+                        [False, False]
+                        ])
+                else: # event
+                    # second element:
+                    res[(position-1) / 2][1][0] = element 
+                    res[(position-1) / 2][1][1] = part_number
+                    
         return res
     
     def get_price(self, item, order):
