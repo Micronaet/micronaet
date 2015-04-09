@@ -49,6 +49,7 @@ class Parser(report_sxw.rml_parse):
         '''
         res = []
 
+        import pdb; pdb.set_trace()
         position = 0 # next is 0
         for element in order_line:
             colls = element.product_id.colls or 1
