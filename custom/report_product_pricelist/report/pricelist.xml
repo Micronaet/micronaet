@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <openerp>
-<data noupdate="1">
+<data>
     <record id="aeroo_pricelist_codebar_report" model="ir.actions.report.xml">
         <field name="name">Codebar pricelist</field>
         <field name="type">ir.actions.report.xml</field>
