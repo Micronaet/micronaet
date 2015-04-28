@@ -28,7 +28,7 @@
         <field name="model">product.product</field>
         <field name="report_name">aeroo_pricelist_codebar_report_ods</field>
         <field name="report_type">aeroo</field>
-        <field name="in_format">oo-odt</field>
+        <field name="in_format">oo-ods</field>
         <field name="parser_loc">report_product_pricelist/report/parser.py</field>
         <field name="report_rml">report_product_pricelist/report/pricelist.ods</field>
         <field name="parser_state">loc</field>
