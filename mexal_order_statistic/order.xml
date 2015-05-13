@@ -141,6 +141,39 @@
         <field name="search_view_id" ref="view_statistic_category_search"/>
     </record>
 
+    <!--statistic.invoice.agent-->
+    <record model="ir.ui.view" id="view_statistic_agents_form">
+        <field name="name">statistic.invoice.agent.form</field>
+        <field name="model">statistic.invoice.agent</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Statistic tree">
+                <field name="hide_statistic"/>
+                <field name="trend" />
+                <field name="name" />
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_statistic_agents_tree">
+        <field name="name">statistic.invoice.agent.tree</field>
+        <field name="model">statistic.invoice.agent</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Statistic tree">
+                <field name="hide_statistic"/>
+                <field name="trend" />
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="action_statistic_agents_configuration">
+        <field name="name">Agenti</field>
+        <field name="res_model">statistic.invoice.agent</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
     <!-- Statistic invoice product: statistic.invoice.product ************** -->
        <!-- Search -->
     <record model="ir.ui.view" id="view_statistic_invoice_product_search">
@@ -1185,7 +1218,7 @@
             <field name="res_model">statistic.invoice</field>
             <field name="view_type">form</field>
             <field name="view_mode">graph,tree,form</field> 
-            <field name="context">{'graph_view_ref':'mexal_order_statistic.view_invoice_agent_hide_statistic_graph'}</field>
+            <field name="context">{'graph_view_ref':'mexal_order_statistic.view_invoice_agent_graph'}</field>
             <field name="domain">[('type_cei','=','i'),('invoice_agent_id','=',False)]</field>
             <field name="search_view_id" ref="view_statistic_invoice_search" />
        </record>       
@@ -1921,6 +1954,7 @@
 
        <menuitem name="Configurazione" parent="menu_base_mexal" id="menu_base_mexal_configuration" sequence="3" />          
           <menuitem name="Categorie statistiche" parent="menu_base_mexal_configuration" id="menu_base_mexal_statistic_configuration" sequence="10" action="action_statistic_category" />
-          <menuitem name="Famiglie escluse" parent="menu_base_mexal_configuration" id="menu_statistic_invoice_product_removed" sequence="20" action="action_statistic_invoice_product_removed" />
+          <menuitem name="Agenti statistiche" parent="menu_base_mexal_configuration" id="menu_base_mexal_statistic_agent_configuration" sequence="20" action="action_statistic_agents_configuration" />
+          <menuitem name="Famiglie escluse" parent="menu_base_mexal_configuration" id="menu_statistic_invoice_product_removed" sequence="30" action="action_statistic_invoice_product_removed" />
   </data>
 </openerp>
