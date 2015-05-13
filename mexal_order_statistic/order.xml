@@ -1116,6 +1116,21 @@
     </record>
 
     <!-- Per Fatturato Agenti: -->
+    <record model="ir.ui.view" id="view_invoice_agent_hide_statistic_graph">
+        <field name="name">Fatturato agente visibile (barre)</field>
+        <field name="model">statistic.invoice</field>
+        <field name="type">graph</field>
+        <field name="priority" eval="40"/>
+        <field name="arch" type="xml">
+            <graph string="Fatturato agente visibile Italia" type="bar">
+                <field name="invoice_agent_id"/>
+                <field name="total_last_last" operator="+" />
+                <field name="total_last" operator="+" />
+                <field name="total" operator="+" />
+            </graph>
+        </field>
+    </record>
+
     <record model="ir.ui.view" id="view_invoice_agent_graph">
         <field name="name">Fatturato agente (barre)</field>
         <field name="model">statistic.invoice</field>
@@ -1155,13 +1170,13 @@
     </record>
 
        <!-- Dashboards: -->
-       <!-- AGENTI: -->
+       <!-- AGENTI: -->   <!--PRECEDENTE AZIONE: view_invoice_agent_graph *************************************************************-->
        <record model="ir.actions.act_window" id="action_statistic_invoice_agent_i_True_dashboard">
             <field name="name">Fatture Agente Italia</field>
             <field name="res_model">statistic.invoice</field>
             <field name="view_type">form</field>
             <field name="view_mode">graph,tree,form</field> 
-            <field name="context">{'graph_view_ref':'mexal_order_statistic.view_invoice_agent_graph'}</field>
+            <field name="context">{'graph_view_ref':'mexal_order_statistic.view_invoice_agent_hide_statistic_graph'}</field>
             <field name="domain">[('type_cei','=','i'),('invoice_agent_id','!=',False)]</field>
             <field name="search_view_id" ref="view_statistic_invoice_search" />
        </record>       
@@ -1170,7 +1185,7 @@
             <field name="res_model">statistic.invoice</field>
             <field name="view_type">form</field>
             <field name="view_mode">graph,tree,form</field> 
-            <field name="context">{'graph_view_ref':'mexal_order_statistic.view_invoice_agent_graph'}</field>
+            <field name="context">{'graph_view_ref':'mexal_order_statistic.view_invoice_agent_hide_statistic_graph'}</field>
             <field name="domain">[('type_cei','=','i'),('invoice_agent_id','=',False)]</field>
             <field name="search_view_id" ref="view_statistic_invoice_search" />
        </record>       
@@ -1179,7 +1194,7 @@
             <field name="res_model">statistic.invoice</field>
             <field name="view_type">form</field>
             <field name="view_mode">graph,tree,form</field> <!--TODO CONTEXT CON VISTA GRAPH -->
-            <field name="context">{'graph_view_ref':'mexal_order_statistic.view_invoice_agent_graph'}</field>
+            <field name="context">{'graph_view_ref':'mexal_order_statistic.view_invoice_agent_hide_statistic_graph'}</field>
             <field name="domain">[('type_cei','!=','i'),('invoice_agent_id','!=',False)]</field>
             <field name="search_view_id" ref="view_statistic_invoice_search" />
        </record>       
