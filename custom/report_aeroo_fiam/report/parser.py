@@ -101,6 +101,7 @@ class Parser(report_sxw.rml_parse):
                 return "Tessuto Acrypol"
             else:    
                 return "Tessuto Acrypol"
+        return "/"        
 
     def get_telaio(self, name, lingua):
         #import pdb; pdb.set_trace()
