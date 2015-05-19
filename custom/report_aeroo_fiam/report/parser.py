@@ -35,10 +35,72 @@ class Parser(report_sxw.rml_parse):
         self.localcontext.update({
             'clean_description':self.clean_description,
             'get_telaio':self.get_telaio,
+            'get_fabric': self.get_fabric,
         })
 
     def clean_description(self, name):
         return name.split("]")[-1:]
+
+    def get_fabric(self, code, language):
+        ''' Return type of fabric depend on start code
+            case:
+                TX = Tessuto texfil
+                TXI = Tessuto texfil ignifugo
+                PE = Tessuto poliestere
+                S = Tessuto Olefine
+                SB = Tessuto Olefine
+                S3 = Tessuto Triplex
+                L = Tessuto Acrypol
+                IL = Tessuto Acrypol            
+        '''
+        
+        if code[:3] == "TXI":
+            if language == 'it_IT':
+                return "Tessuto texfil ignifugo"
+            else:    
+                return "Tessuto texfil ignifugo"
+                
+        if code[:2] == "TX":
+            if language == 'it_IT':
+                return "Tessuto texfil"
+            else:    
+                return "Tessuto texfil ignifugo"
+                
+        if code[:2] == "PE":
+            if language == 'it_IT':
+                return "Tessuto poliestere"
+            else:    
+                return "Tessuto poliestere"
+
+        if code[:2] == "S3":
+            if language == 'it_IT':
+                return "Tessuto Triplex"
+            else:    
+                return "Tessuto Triples"
+    
+        if code[:2] == "SB":
+            if language == 'it_IT':
+                return "Tessuto Olefine"
+            else:    
+                return "Tessuto Olefine"
+
+        if code[:1] == "S":
+            if language == 'it_IT':
+                return "Tessuto Olefine"
+            else:    
+                return "Tessuto Olefine"
+
+        if code[:1] == "L":
+            if language == 'it_IT':
+                return "Tessuto Acrypol"
+            else:    
+                return "Tessuto Acrypol"
+
+        if code[:2] == "IL":
+            if language == 'it_IT':
+                return "Tessuto Acrypol"
+            else:    
+                return "Tessuto Acrypol"
 
     def get_telaio(self, name, lingua):
         #import pdb; pdb.set_trace()
