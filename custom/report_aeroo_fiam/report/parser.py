@@ -43,65 +43,46 @@ class Parser(report_sxw.rml_parse):
 
     def get_fabric(self, code, language):
         ''' Return type of fabric depend on start code
-            case:
-                TX = Tessuto texfil
-                TXI = Tessuto texfil ignifugo
-                PE = Tessuto poliestere
-                S = Tessuto Olefine
-                SB = Tessuto Olefine
-                S3 = Tessuto Triplex
-                L = Tessuto Acrypol
-                IL = Tessuto Acrypol            
         '''
-        
+        code = code.upper()
         if code[:3] == "TXI":
             if language == 'it_IT':
-                return "Tessuto texfil ignifugo"
+                return "Texfil ignifugo"
             else:    
-                return "Tessuto texfil ignifugo"
+                return "Texfil fire retardant"
                 
-        if code[:2] == "TX":
+        elif code[:3] == "TXR" or code[:2] == "TX":
             if language == 'it_IT':
-                return "Tessuto texfil"
+                return "Texfil"
             else:    
-                return "Tessuto texfil ignifugo"
-                
-        if code[:2] == "PE":
-            if language == 'it_IT':
-                return "Tessuto poliestere"
-            else:    
-                return "Tessuto poliestere"
+                return "Texfil"
 
-        if code[:2] == "S3":
+        elif code[:2] == "PE":
             if language == 'it_IT':
-                return "Tessuto Triplex"
+                return "Poliestere"
             else:    
-                return "Tessuto Triples"
+                return "Polyester"
+
+        elif code[:2] == "S3":
+            if language == 'it_IT':
+                return "Triplex"
+            else:    
+                return "Triplex"
     
-        if code[:2] == "SB":
+        elif code[:2] == "SB" or code[:1] == "S":
             if language == 'it_IT':
-                return "Tessuto Olefine"
+                return "Olefine"
             else:    
-                return "Tessuto Olefine"
+                return "Olefine"
 
-        if code[:1] == "S":
+        elif code[:1] == "L" or code[:2] == "IL":
             if language == 'it_IT':
-                return "Tessuto Olefine"
+                return "Acrypol"
             else:    
-                return "Tessuto Olefine"
+                return "Acrypol"
 
-        if code[:1] == "L":
-            if language == 'it_IT':
-                return "Tessuto Acrypol"
-            else:    
-                return "Tessuto Acrypol"
-
-        if code[:2] == "IL":
-            if language == 'it_IT':
-                return "Tessuto Acrypol"
-            else:    
-                return "Tessuto Acrypol"
-        return "/"        
+        else:        
+            return "/"        
 
     def get_telaio(self, name, lingua):
         #import pdb; pdb.set_trace()
