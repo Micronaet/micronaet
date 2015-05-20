@@ -30,7 +30,11 @@ class statistic_invoice_agent(osv.osv):
         'name':fields.char('Agent', size=64, required=True, readonly=False),
         'ref':fields.char('Code', size=10, required=False),
         'hide_statistic': fields.boolean('Nascondi statistica'),
+        'trend': fields.boolean('Trend', required=False),
     }    
+    _defaults = {
+        'trend': lambda *a: False,
+    }
 statistic_invoice_agent()
 
 class statistic_category(osv.osv):
@@ -60,7 +64,7 @@ class res_partner_extra_fields(osv.osv):
         #    'hide_statistic', 
         #    type='boolean', 
         #    string='Nascondi statistica'),         
-        'trend':fields.boolean('Trend', help='Insert in trend statistic, used for get only interesting partner in statistic graph',required=False),
+        'trend': fields.boolean('Trend', help='Insert in trend statistic, used for get only interesting partner in statistic graph',required=False),
 
         'open_payment_ids':fields.one2many('statistic.deadline', 'partner_id', 'Pagamenti aperti', required=False),
         'statistic_category_id':fields.many2one('statistic.category', 'Categoria statistica', help='Valore di categoria statistica acquisito dal gestionale', required=False),
