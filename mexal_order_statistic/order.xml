@@ -149,7 +149,7 @@
         <field name="arch" type="xml">
             <form string="Statistic tree">
                 <field name="hide_statistic"/>
-                <field name="trend" />
+                <!--<field name="trend" />-->
                 <field name="name" />
             </form>
         </field>
@@ -161,7 +161,7 @@
         <field name="arch" type="xml">
             <tree string="Statistic tree">
                 <field name="hide_statistic"/>
-                <field name="trend" />
+                <!--<field name="trend" />-->
                 <field name="name" />
             </tree>
         </field>

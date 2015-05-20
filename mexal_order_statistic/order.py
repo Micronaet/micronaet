@@ -30,10 +30,10 @@ class statistic_invoice_agent(osv.osv):
         'name':fields.char('Agent', size=64, required=True, readonly=False),
         'ref':fields.char('Code', size=10, required=False),
         'hide_statistic': fields.boolean('Nascondi statistica'),
-        'trend': fields.boolean('Trend', required=False),
+        #'trend': fields.boolean('Trend', required=False),
     }    
     _defaults = {
-        'trend': lambda *a: False,
+        #'trend': lambda *a: False,
     }
 statistic_invoice_agent()
 
