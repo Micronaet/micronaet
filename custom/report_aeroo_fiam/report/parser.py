@@ -45,37 +45,37 @@ class Parser(report_sxw.rml_parse):
         ''' Return type of fabric depend on start code
         '''
         code = code.upper()
-        if code[:3] == "TXI":
+        if code[3:6] == "TXI":
             if language == 'it_IT':
                 return "Texfil ignifugo"
             else:    
                 return "Texfil fire retardant"
                 
-        elif code[:3] == "TXR" or code[:2] == "TX":
+        elif code[3:6] == "TXR" or code[3:5] == "TX":
             if language == 'it_IT':
                 return "Texfil"
             else:    
                 return "Texfil"
 
-        elif code[:2] == "PE":
+        elif code[3:5] == "PE":
             if language == 'it_IT':
                 return "Poliestere"
             else:    
                 return "Polyester"
 
-        elif code[:2] == "S3":
+        elif code[3:5] == "S3":
             if language == 'it_IT':
                 return "Triplex"
             else:    
                 return "Triplex"
     
-        elif code[:2] == "SB" or code[:1] == "S":
+        elif code[3:5] == "SB" or code[3:4] == "S":
             if language == 'it_IT':
                 return "Olefine"
             else:    
                 return "Olefine"
 
-        elif code[:1] == "L" or code[:2] == "IL":
+        elif code[3:4] == "L" or code[3:5] == "IL":
             if language == 'it_IT':
                 return "Acrypol"
             else:    
