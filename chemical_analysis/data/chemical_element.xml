@@ -1,0 +1,595 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+   <data noupdate="1">
+        <record id="chemical_element_Ac" model="chemical.element">
+            <field name="name">Attinio</field>
+            <field name="symbol">Ac</field>
+            <field name="atomic" eval="89" />
+        </record>
+        <record id="chemical_element_Ag" model="chemical.element">
+            <field name="name">Argento</field>
+            <field name="symbol">Ag</field>
+            <field name="atomic" eval="47" />
+        </record>
+        <record id="chemical_element_Al" model="chemical.element">
+            <field name="name">Alluminio</field>
+            <field name="symbol">Al</field>
+            <field name="atomic" eval="13" />
+        </record>
+        <record id="chemical_element_Am" model="chemical.element">
+            <field name="name">Americio</field>
+            <field name="symbol">Am</field>
+            <field name="atomic" eval="95" />
+        </record>
+        <record id="chemical_element_Ar" model="chemical.element">
+            <field name="name">Argon</field>
+            <field name="symbol">Ar</field>
+            <field name="atomic" eval="18" />
+        </record>
+        <record id="chemical_element_As" model="chemical.element">
+            <field name="name">Arsenico</field>
+            <field name="symbol">As</field>
+            <field name="atomic" eval="33" />
+        </record>
+        <record id="chemical_element_At" model="chemical.element">
+            <field name="name">Astato</field>
+            <field name="symbol">At</field>
+            <field name="atomic" eval="85" />
+        </record>
+        <record id="chemical_element_Au" model="chemical.element">
+            <field name="name">Oro</field>
+            <field name="symbol">Au</field>
+            <field name="atomic" eval="79" />
+        </record>
+        <record id="chemical_element_B" model="chemical.element">
+            <field name="name">Boro</field>
+            <field name="symbol">B</field>
+            <field name="atomic" eval="5" />
+        </record>
+        <record id="chemical_element_Ba" model="chemical.element">
+            <field name="name">Bario</field>
+            <field name="symbol">Ba</field>
+            <field name="atomic" eval="56" />
+        </record>
+        <record id="chemical_element_Be" model="chemical.element">
+            <field name="name">Berillio</field>
+            <field name="symbol">Be</field>
+            <field name="atomic" eval="4" />
+        </record>
+        <record id="chemical_element_Bh" model="chemical.element">
+            <field name="name">Borio</field>
+            <field name="symbol">Bh</field>
+            <field name="atomic" eval="107" />
+        </record>
+        <record id="chemical_element_Bi" model="chemical.element">
+            <field name="name">Bismuto</field>
+            <field name="symbol">Bi</field>
+            <field name="atomic" eval="83" />
+        </record>
+        <record id="chemical_element_Bk" model="chemical.element">
+            <field name="name">Berchelio</field>
+            <field name="symbol">Bk</field>
+            <field name="atomic" eval="97" />
+        </record>
+        <record id="chemical_element_Br" model="chemical.element">
+            <field name="name">Bromo</field>
+            <field name="symbol">Br</field>
+            <field name="atomic" eval="35" />
+        </record>
+        <record id="chemical_element_C" model="chemical.element">
+            <field name="name">Carbonio</field>
+            <field name="symbol">C</field>
+            <field name="atomic" eval="6" />
+        </record>
+        <record id="chemical_element_Ca" model="chemical.element">
+            <field name="name">Calcio</field>
+            <field name="symbol">Ca</field>
+            <field name="atomic" eval="20" />
+        </record>
+        <record id="chemical_element_Cd" model="chemical.element">
+            <field name="name">Cadmio</field>
+            <field name="symbol">Cd</field>
+            <field name="atomic" eval="48" />
+        </record>
+        <record id="chemical_element_Ce" model="chemical.element">
+            <field name="name">Cerio</field>
+            <field name="symbol">Ce</field>
+            <field name="atomic" eval="58" />
+        </record>
+        <record id="chemical_element_Cf" model="chemical.element">
+            <field name="name">Californio</field>
+            <field name="symbol">Cf</field>
+            <field name="atomic" eval="98" />
+        </record>
+        <record id="chemical_element_Cl" model="chemical.element">
+            <field name="name">Cloro</field>
+            <field name="symbol">Cl</field>
+            <field name="atomic" eval="17" />
+        </record>
+        <record id="chemical_element_Cm" model="chemical.element">
+            <field name="name">Curio</field>
+            <field name="symbol">Cm</field>
+            <field name="atomic" eval="96" />
+        </record>
+        <record id="chemical_element_Co" model="chemical.element">
+            <field name="name">Cobalto</field>
+            <field name="symbol">Co</field>
+            <field name="atomic" eval="27" />
+        </record>
+        <record id="chemical_element_Cr" model="chemical.element">
+            <field name="name">Cromio</field>
+            <field name="symbol">Cr</field>
+            <field name="atomic" eval="24" />
+        </record>
+        <record id="chemical_element_Cs" model="chemical.element">
+            <field name="name">Cesio</field>
+            <field name="symbol">Cs</field>
+            <field name="atomic" eval="55" />
+        </record>
+        <record id="chemical_element_Cu" model="chemical.element">
+            <field name="name">Rame</field>
+            <field name="symbol">Cu</field>
+            <field name="atomic" eval="29" />
+        </record>
+        <record id="chemical_element_Db" model="chemical.element">
+            <field name="name">Dubnio</field>
+            <field name="symbol">Db</field>
+            <field name="atomic" eval="105" />
+        </record>
+        <record id="chemical_element_Ds" model="chemical.element">
+            <field name="name">Darmstadtio</field>
+            <field name="symbol">Ds</field>
+            <field name="atomic" eval="110" />
+        </record>
+        <record id="chemical_element_Dy" model="chemical.element">
+            <field name="name">Disprosio</field>
+            <field name="symbol">Dy</field>
+            <field name="atomic" eval="66" />
+        </record>
+        <record id="chemical_element_Er" model="chemical.element">
+            <field name="name">Erbio</field>
+            <field name="symbol">Er</field>
+            <field name="atomic" eval="68" />
+        </record>
+        <record id="chemical_element_Es" model="chemical.element">
+            <field name="name">Einsteinio</field>
+            <field name="symbol">Es</field>
+            <field name="atomic" eval="99" />
+        </record>
+        <record id="chemical_element_Eu" model="chemical.element">
+            <field name="name">Europio</field>
+            <field name="symbol">Eu</field>
+            <field name="atomic" eval="63" />
+        </record>
+        <record id="chemical_element_F" model="chemical.element">
+            <field name="name">Fluoro</field>
+            <field name="symbol">F</field>
+            <field name="atomic" eval="9" />
+        </record>
+        <record id="chemical_element_Fe" model="chemical.element">
+            <field name="name">Ferro</field>
+            <field name="symbol">Fe</field>
+            <field name="atomic" eval="26" />
+        </record>
+        <record id="chemical_element_Fm" model="chemical.element">
+            <field name="name">Fermio</field>
+            <field name="symbol">Fm</field>
+            <field name="atomic" eval="100" />
+        </record>
+        <record id="chemical_element_Fr" model="chemical.element">
+            <field name="name">Francio</field>
+            <field name="symbol">Fr</field>
+            <field name="atomic" eval="87" />
+        </record>
+        <record id="chemical_element_Ga" model="chemical.element">
+            <field name="name">Gallio</field>
+            <field name="symbol">Ga</field>
+            <field name="atomic" eval="31" />
+        </record>
+        <record id="chemical_element_Gd" model="chemical.element">
+            <field name="name">Gadolinio</field>
+            <field name="symbol">Gd</field>
+            <field name="atomic" eval="64" />
+        </record>
+        <record id="chemical_element_Ge" model="chemical.element">
+            <field name="name">Germanio</field>
+            <field name="symbol">Ge</field>
+            <field name="atomic" eval="32" />
+        </record>
+        <record id="chemical_element_H" model="chemical.element">
+            <field name="name">Idrogeno</field>
+            <field name="symbol">H</field>
+            <field name="atomic" eval="1" />
+        </record>
+        <record id="chemical_element_He" model="chemical.element">
+            <field name="name">Elio</field>
+            <field name="symbol">He</field>
+            <field name="atomic" eval="2" />
+        </record>
+        <record id="chemical_element_Hf" model="chemical.element">
+            <field name="name">Afnio</field>
+            <field name="symbol">Hf</field>
+            <field name="atomic" eval="72" />
+        </record>
+        <record id="chemical_element_Hg" model="chemical.element">
+            <field name="name">Mercurio</field>
+            <field name="symbol">Hg</field>
+            <field name="atomic" eval="80" />
+        </record>
+        <record id="chemical_element_Ho" model="chemical.element">
+            <field name="name">Olmio</field>
+            <field name="symbol">Ho</field>
+            <field name="atomic" eval="67" />
+        </record>
+        <record id="chemical_element_Hs" model="chemical.element">
+            <field name="name">Hassio</field>
+            <field name="symbol">Hs</field>
+            <field name="atomic" eval="108" />
+        </record>
+        <record id="chemical_element_I" model="chemical.element">
+            <field name="name">Iodio</field>
+            <field name="symbol">I</field>
+            <field name="atomic" eval="53" />
+        </record>
+        <record id="chemical_element_In" model="chemical.element">
+            <field name="name">Indio</field>
+            <field name="symbol">In</field>
+            <field name="atomic" eval="49" />
+        </record>
+        <record id="chemical_element_Ir" model="chemical.element">
+            <field name="name">Iridio</field>
+            <field name="symbol">Ir</field>
+            <field name="atomic" eval="77" />
+        </record>
+        <record id="chemical_element_K" model="chemical.element">
+            <field name="name">Potassio</field>
+            <field name="symbol">K</field>
+            <field name="atomic" eval="19" />
+        </record>
+        <record id="chemical_element_Kr" model="chemical.element">
+            <field name="name">Cripto</field>
+            <field name="symbol">Kr</field>
+            <field name="atomic" eval="36" />
+        </record>
+        <record id="chemical_element_La" model="chemical.element">
+            <field name="name">Lantano</field>
+            <field name="symbol">La</field>
+            <field name="atomic" eval="57" />
+        </record>
+        <record id="chemical_element_Li" model="chemical.element">
+            <field name="name">Litio</field>
+            <field name="symbol">Li</field>
+            <field name="atomic" eval="3" />
+        </record>
+        <record id="chemical_element_Lr" model="chemical.element">
+            <field name="name">Laurencio</field>
+            <field name="symbol">Lr</field>
+            <field name="atomic" eval="103" />
+        </record>
+        <record id="chemical_element_Lu" model="chemical.element">
+            <field name="name">Lutezio</field>
+            <field name="symbol">Lu</field>
+            <field name="atomic" eval="71" />
+        </record>
+        <record id="chemical_element_Md" model="chemical.element">
+            <field name="name">Mendelevio</field>
+            <field name="symbol">Md</field>
+            <field name="atomic" eval="101" />
+        </record>
+        <record id="chemical_element_Mg" model="chemical.element">
+            <field name="name">Magnesio</field>
+            <field name="symbol">Mg</field>
+            <field name="atomic" eval="12" />
+        </record>
+        <record id="chemical_element_Mn" model="chemical.element">
+            <field name="name">Manganese</field>
+            <field name="symbol">Mn</field>
+            <field name="atomic" eval="25" />
+        </record>
+        <record id="chemical_element_Mo" model="chemical.element">
+            <field name="name">Molibdeno</field>
+            <field name="symbol">Mo</field>
+            <field name="atomic" eval="42" />
+        </record>
+        <record id="chemical_element_Mt" model="chemical.element">
+            <field name="name">Meitnerio</field>
+            <field name="symbol">Mt</field>
+            <field name="atomic" eval="109" />
+        </record>
+        <record id="chemical_element_N" model="chemical.element">
+            <field name="name">Azoto</field>
+            <field name="symbol">N</field>
+            <field name="atomic" eval="7" />
+        </record>
+        <record id="chemical_element_Na" model="chemical.element">
+            <field name="name">Sodio</field>
+            <field name="symbol">Na</field>
+            <field name="atomic" eval="11" />
+        </record>
+        <record id="chemical_element_Nb" model="chemical.element">
+            <field name="name">Niobio</field>
+            <field name="symbol">Nb</field>
+            <field name="atomic" eval="41" />
+        </record>
+        <record id="chemical_element_Nd" model="chemical.element">
+            <field name="name">Neodimio</field>
+            <field name="symbol">Nd</field>
+            <field name="atomic" eval="60" />
+        </record>
+        <record id="chemical_element_Ne" model="chemical.element">
+            <field name="name">Neon</field>
+            <field name="symbol">Ne</field>
+            <field name="atomic" eval="10" />
+        </record>
+        <record id="chemical_element_Ni" model="chemical.element">
+            <field name="name">Nickel</field>
+            <field name="symbol">Ni</field>
+            <field name="atomic" eval="28" />
+        </record>
+        <record id="chemical_element_No" model="chemical.element">
+            <field name="name">Nobelio</field>
+            <field name="symbol">No</field>
+            <field name="atomic" eval="102" />
+        </record>
+        <record id="chemical_element_Np" model="chemical.element">
+            <field name="name">Neptunio</field>
+            <field name="symbol">Np</field>
+            <field name="atomic" eval="93" />
+        </record>
+        <record id="chemical_element_O" model="chemical.element">
+            <field name="name">Ossigeno</field>
+            <field name="symbol">O</field>
+            <field name="atomic" eval="8" />
+        </record>
+        <record id="chemical_element_Os" model="chemical.element">
+            <field name="name">Osmio</field>
+            <field name="symbol">Os</field>
+            <field name="atomic" eval="76" />
+        </record>
+        <record id="chemical_element_P" model="chemical.element">
+            <field name="name">Fosforo</field>
+            <field name="symbol">P</field>
+            <field name="atomic" eval="15" />
+        </record>
+        <record id="chemical_element_Pa" model="chemical.element">
+            <field name="name">Protattinio</field>
+            <field name="symbol">Pa</field>
+            <field name="atomic" eval="91" />
+        </record>
+        <record id="chemical_element_Pb" model="chemical.element">
+            <field name="name">Piombo</field>
+            <field name="symbol">Pb</field>
+            <field name="atomic" eval="82" />
+        </record>
+        <record id="chemical_element_Pd" model="chemical.element">
+            <field name="name">Palladio</field>
+            <field name="symbol">Pd</field>
+            <field name="atomic" eval="46" />
+        </record>
+        <record id="chemical_element_Pm" model="chemical.element">
+            <field name="name">Promezio</field>
+            <field name="symbol">Pm</field>
+            <field name="atomic" eval="61" />
+        </record>
+        <record id="chemical_element_Po" model="chemical.element">
+            <field name="name">Polonio</field>
+            <field name="symbol">Po</field>
+            <field name="atomic" eval="84" />
+        </record>
+        <record id="chemical_element_Pr" model="chemical.element">
+            <field name="name">Praseodimio</field>
+            <field name="symbol">Pr</field>
+            <field name="atomic" eval="59" />
+        </record>
+        <record id="chemical_element_Pt" model="chemical.element">
+            <field name="name">Platino</field>
+            <field name="symbol">Pt</field>
+            <field name="atomic" eval="78" />
+        </record>
+        <record id="chemical_element_Pu" model="chemical.element">
+            <field name="name">Plutonio</field>
+            <field name="symbol">Pu</field>
+            <field name="atomic" eval="94" />
+        </record>
+        <record id="chemical_element_Ra" model="chemical.element">
+            <field name="name">Radio</field>
+            <field name="symbol">Ra</field>
+            <field name="atomic" eval="88" />
+        </record>
+        <record id="chemical_element_Rb" model="chemical.element">
+            <field name="name">Rubidio</field>
+            <field name="symbol">Rb</field>
+            <field name="atomic" eval="37" />
+        </record>
+        <record id="chemical_element_Re" model="chemical.element">
+            <field name="name">Renio</field>
+            <field name="symbol">Re</field>
+            <field name="atomic" eval="75" />
+        </record>
+        <record id="chemical_element_Rf" model="chemical.element">
+            <field name="name">Ruterfordio</field>
+            <field name="symbol">Rf</field>
+            <field name="atomic" eval="104" />
+        </record>
+        <record id="chemical_element_Rg" model="chemical.element">
+            <field name="name">Roentgenio</field>
+            <field name="symbol">Rg</field>
+            <field name="atomic" eval="111" />
+        </record>
+        <record id="chemical_element_Rh" model="chemical.element">
+            <field name="name">Rodio</field>
+            <field name="symbol">Rh</field>
+            <field name="atomic" eval="45" />
+        </record>
+        <record id="chemical_element_Rn" model="chemical.element">
+            <field name="name">Radon</field>
+            <field name="symbol">Rn</field>
+            <field name="atomic" eval="86" />
+        </record>
+        <record id="chemical_element_Ru" model="chemical.element">
+            <field name="name">Rutenio</field>
+            <field name="symbol">Ru</field>
+            <field name="atomic" eval="44" />
+        </record>
+        <record id="chemical_element_S" model="chemical.element">
+            <field name="name">Zolfo</field>
+            <field name="symbol">S</field>
+            <field name="atomic" eval="16" />
+        </record>
+        <record id="chemical_element_Sb" model="chemical.element">
+            <field name="name">Antimonio</field>
+            <field name="symbol">Sb</field>
+            <field name="atomic" eval="51" />
+        </record>
+        <record id="chemical_element_Sc" model="chemical.element">
+            <field name="name">Scandio</field>
+            <field name="symbol">Sc</field>
+            <field name="atomic" eval="21" />
+        </record>
+        <record id="chemical_element_Se" model="chemical.element">
+            <field name="name">Selenio</field>
+            <field name="symbol">Se</field>
+            <field name="atomic" eval="34" />
+        </record>
+        <record id="chemical_element_Sg" model="chemical.element">
+            <field name="name">Seaborgio</field>
+            <field name="symbol">Sg</field>
+            <field name="atomic" eval="106" />
+        </record>
+        <record id="chemical_element_Si" model="chemical.element">
+            <field name="name">Silicio</field>
+            <field name="symbol">Si</field>
+            <field name="atomic" eval="14" />
+        </record>
+        <record id="chemical_element_Sm" model="chemical.element">
+            <field name="name">Samario</field>
+            <field name="symbol">Sm</field>
+            <field name="atomic" eval="62" />
+        </record>
+        <record id="chemical_element_Sn" model="chemical.element">
+            <field name="name">Stagno</field>
+            <field name="symbol">Sn</field>
+            <field name="atomic" eval="50" />
+        </record>
+        <record id="chemical_element_Sr" model="chemical.element">
+            <field name="name">Stronzio</field>
+            <field name="symbol">Sr</field>
+            <field name="atomic" eval="38" />
+        </record>
+        <record id="chemical_element_Ta" model="chemical.element">
+            <field name="name">Tantalo</field>
+            <field name="symbol">Ta</field>
+            <field name="atomic" eval="73" />
+        </record>
+        <record id="chemical_element_Tb" model="chemical.element">
+            <field name="name">Terbio</field>
+            <field name="symbol">Tb</field>
+            <field name="atomic" eval="65" />
+        </record>
+        <record id="chemical_element_Tc" model="chemical.element">
+            <field name="name">Tecnezio</field>
+            <field name="symbol">Tc</field>
+            <field name="atomic" eval="43" />
+        </record>
+        <record id="chemical_element_Te" model="chemical.element">
+            <field name="name">Tellurio</field>
+            <field name="symbol">Te</field>
+            <field name="atomic" eval="52" />
+        </record>
+        <record id="chemical_element_Th" model="chemical.element">
+            <field name="name">Torio</field>
+            <field name="symbol">Th</field>
+            <field name="atomic" eval="90" />
+        </record>
+        <record id="chemical_element_Ti" model="chemical.element">
+            <field name="name">Titanio</field>
+            <field name="symbol">Ti</field>
+            <field name="atomic" eval="22" />
+        </record>
+        <record id="chemical_element_Tl" model="chemical.element">
+            <field name="name">Tallio</field>
+            <field name="symbol">Tl</field>
+            <field name="atomic" eval="81" />
+        </record>
+        <record id="chemical_element_Tm" model="chemical.element">
+            <field name="name">Tullio</field>
+            <field name="symbol">Tm</field>
+            <field name="atomic" eval="69" />
+        </record>
+        <record id="chemical_element_U" model="chemical.element">
+            <field name="name">Uranio</field>
+            <field name="symbol">U</field>
+            <field name="atomic" eval="92" />
+        </record>
+        <record id="chemical_element_Uub" model="chemical.element">
+            <field name="name">Ununbio</field>
+            <field name="symbol">Uub</field>
+            <field name="atomic" eval="112" />
+        </record>
+        <record id="chemical_element_Uuh" model="chemical.element">
+            <field name="name">Ununexio</field>
+            <field name="symbol">Uuh</field>
+            <field name="atomic" eval="116" />
+        </record>
+        <record id="chemical_element_Uuo" model="chemical.element">
+            <field name="name">Ununoctio</field>
+            <field name="symbol">Uuo</field>
+            <field name="atomic" eval="118" />
+        </record>
+        <record id="chemical_element_Uup" model="chemical.element">
+            <field name="name">Ununpentio</field>
+            <field name="symbol">Uup</field>
+            <field name="atomic" eval="115" />
+        </record>
+        <record id="chemical_element_Uuq" model="chemical.element">
+            <field name="name">Ununquadio</field>
+            <field name="symbol">Uuq</field>
+            <field name="atomic" eval="114" />
+        </record>
+        <record id="chemical_element_Uus" model="chemical.element">
+            <field name="name">Ununseptio</field>
+            <field name="symbol">Uus</field>
+            <field name="atomic" eval="117" />
+        </record>
+        <record id="chemical_element_Uut" model="chemical.element">
+            <field name="name">Ununtrio</field>
+            <field name="symbol">Uut</field>
+            <field name="atomic" eval="113" />
+        </record>
+        <record id="chemical_element_V" model="chemical.element">
+            <field name="name">Vanadio</field>
+            <field name="symbol">V</field>
+            <field name="atomic" eval="23" />
+        </record>
+        <record id="chemical_element_W" model="chemical.element">
+            <field name="name">Tungsteno</field>
+            <field name="symbol">W</field>
+            <field name="atomic" eval="74" />
+        </record>
+        <record id="chemical_element_Xe" model="chemical.element">
+            <field name="name">Xenon</field>
+            <field name="symbol">Xe</field>
+            <field name="atomic" eval="54" />
+        </record>
+        <record id="chemical_element_Y" model="chemical.element">
+            <field name="name">Yttrio</field>
+            <field name="symbol">Y</field>
+            <field name="atomic" eval="39" />
+        </record>
+        <record id="chemical_element_Yb" model="chemical.element">
+            <field name="name">Ytterbio</field>
+            <field name="symbol">Yb</field>
+            <field name="atomic" eval="70" />
+        </record>
+        <record id="chemical_element_Zn" model="chemical.element">
+            <field name="name">Zinco</field>
+            <field name="symbol">Zn</field>
+            <field name="atomic" eval="30" />
+        </record>
+        <record id="chemical_element_Zr" model="chemical.element">
+            <field name="name">Zirconio</field>
+            <field name="symbol">Zr</field>
+            <field name="atomic" eval="40" />
+        </record>
+   </data>
+</openerp>        

@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+
+	<!--INHERIT--> 
+	   <!--product.pricelist-->
+    <record id='view_product_pricelist_search_extra_fields' model='ir.ui.view'>
+        <field name='name'>Pricelist search extra fields</field>
+        <field name='model'>product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view_search"/>
+        <field name='arch' type='xml'>
+           <field name="active" position="after">
+              <field name="tipology" />
+           </field>
+        </field>
+    </record>
+    <record id='view_product_pricelist_tree_extra_fields' model='ir.ui.view'>
+        <field name='name'>Pricelist extra fields</field>
+        <field name='model'>product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view_tree"/>
+        <field name='arch' type='xml'>
+           <field name="active" position="after">
+              <field name="tipology" />
+           </field>
+        </field>
+    </record>
+    <record id='view_product_pricelist_form_extra_fields' model='ir.ui.view'>
+        <field name='name'>Pricelist extra fields</field>
+        <field name='model'>product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view"/>
+        <field name='arch' type='xml'>
+           <field name="active" position="after">
+              <field name="tipology" />
+           </field>
+        </field>
+    </record>
+
+  </data>
+</openerp>
+

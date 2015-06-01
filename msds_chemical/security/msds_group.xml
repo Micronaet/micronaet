@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+   <data>
+        <record id="group_MSDS_manager" model="res.groups">
+            <field name="name">MSDS / Mananger</field>
+        </record>
+        <record id="group_MSDS_user" model="res.groups">
+            <field name="name">MSDS / User</field>
+        </record>
+   </data>
+</openerp>        

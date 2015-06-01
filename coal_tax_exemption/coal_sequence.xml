@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!-- VIA sequence: -->
+        <record model="ir.sequence.type" id="seq_type_via_number">
+                <field name="name">VIA type for coal</field>
+                <field name="code">product.coal</field>
+
+        </record>
+        <record model="ir.sequence" id="seq_via_number">
+                <field name="name">VIA number for coal </field>
+                <field name="code">product.coal</field>
+                <field name="padding" eval="5" />
+                <field name="prefix">VIA</field>
+        </record>
+
+        <!-- XAB out sequence: -->
+        <record model="ir.sequence.type" id="seq_type_xab_number">
+                <field name="name">XAB for picking out</field>
+                <field name="code">stock.picking.out.xab</field>
+
+        </record>
+        <record model="ir.sequence" id="seq_xab_number">
+                <field name="name">XAB number for coal</field>
+                <field name="code">stock.picking.out.xab</field>
+                <field name="padding" eval="5" />
+                <field name="prefix">XAB</field>
+        </record>
+    </data>
+</openerp>
+

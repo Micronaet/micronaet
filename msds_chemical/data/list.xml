@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<openerp>
+	<data noupdate="1">
+	   <record id="msds_form_language_it" model="msds.form.language">
+	       <field name="code">IT</field>
+	       <field name="name">Italian</field>
+	   </record>
+	   <record id="msds_form_language_en" model="msds.form.language">
+	       <field name="code">EN</field>
+	       <field name="name">English</field>
+	   </record>
+	   <record id="msds_form_language_de" model="msds.form.language">
+	       <field name="code">DE</field>
+	       <field name="name">German</field>       
+	   </record>
+	   <record id="msds_form_language_fr" model="msds.form.language">
+	       <field name="code">FR</field>
+	       <field name="name">French</field>       
+	   </record>
+	   <record id="msds_form_language_pl" model="msds.form.language">
+	       <field name="code">PL</field>
+	       <field name="name">Polland</field>       
+	   </record>
+	   <record id="msds_form_language_es" model="msds.form.language">
+	       <field name="code">ES</field>
+	       <field name="name">Spain</field>       
+	   </record>
+	   <record id="msds_form_language_ru" model="msds.form.language">
+	       <field name="code">RU</field>
+	       <field name="name">Russia</field>       
+	   </record>
+	   <record id="msds_form_language_pt" model="msds.form.language">
+	       <field name="code">PT</field>
+	       <field name="name">Portogal</field>       
+	   </record>
+	   <record id="msds_form_language_nl" model="msds.form.language">
+	       <field name="code">NL</field>
+	       <field name="name">Dutch</field>       
+	   </record>
+    </data>
+</openerp>

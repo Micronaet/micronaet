@@ -1,0 +1,91 @@
+<?xml version="1.0" ?>
+<openerp>
+<data noupdate="1">
+    <!--product.uom.categ-->
+    <record id="product_uom_category_potenza" model="product.uom.categ">
+        <field name="name">Potenza</field>
+    </record>
+    <record id="product_uom_category_area" model="product.uom.categ">
+        <field name="name">Area</field>
+    </record>
+    <record id="product_uom_category_volume" model="product.uom.categ">
+        <field name="name">Volume</field>
+    </record>
+    <record id="product_uom_category_perc" model="product.uom.categ">
+        <field name="name">Percentuale</field>
+    </record>
+    <record id="product_uom_category_corpo" model="product.uom.categ">
+        <field name="name">Corpo</field>
+    </record>
+
+    <!--product.uom-->
+    <record id="product_uom_m2" model="product.uom">
+        <field name="name">m²</field>
+        <field name="active">1</field>
+        <field name="category_id" ref="product_uom_category_area"/>
+        <field name="rounding" eval="0.01"/>
+        <field name="factor" eval="1"/>
+        <field name="uom_type">reference</field>
+    </record>
+
+    <record id="product_uom_m3" model="product.uom">
+        <field name="name">m³</field>
+        <field name="active">1</field>
+        <field name="category_id" ref="product_uom_category_volume"/>
+        <field name="rounding" eval="0.01"/>
+        <field name="factor" eval="1"/>
+        <field name="uom_type">reference</field>
+    </record>
+
+    <record id="product_uom_watt" model="product.uom">
+        <field name="name">Watt</field>
+        <field name="active">1</field>
+        <field name="category_id" ref="product_uom_category_potenza"/>
+        <field name="rounding" eval="0.01"/>
+        <field name="factor" eval="1"/>
+        <field name="uom_type">reference</field>
+    </record>
+    <record id="product_uom_100_watt" model="product.uom">
+        <field name="name">100 Watt</field>
+        <field name="active">1</field>
+        <field name="category_id" ref="product_uom_category_potenza"/>
+        <field name="rounding" eval="0.01"/>
+        <field name="factor" eval="100"/>
+        <field name="uom_type">bigger</field>
+    </record>
+    <record id="product_uom_k_watt" model="product.uom">
+        <field name="name">Kilo Watt</field>
+        <field name="active">1</field>
+        <field name="category_id" ref="product_uom_category_potenza"/>
+        <field name="rounding" eval="0.01"/>
+        <field name="factor" eval="1000"/>
+        <field name="uom_type">bigger</field>
+    </record>
+    <record id="product_uom_m_watt" model="product.uom">
+        <field name="name">Mega Watt</field>
+        <field name="active">1</field>
+        <field name="category_id" ref="product_uom_category_potenza"/>
+        <field name="rounding" eval="0.01"/>
+        <field name="factor" eval="1000000"/>
+        <field name="uom_type">bigger</field>
+    </record>
+
+    <record id="product_uom_perc" model="product.uom">
+        <field name="name">Percentuale</field>
+        <field name="active">1</field>
+        <field name="category_id" ref="product_uom_category_perc"/>
+        <field name="rounding" eval="0.01"/>
+        <field name="factor" eval="1"/>
+        <field name="uom_type">reference</field>
+    </record>
+    <record id="product_uom_corpo" model="product.uom">
+        <field name="name">A corpo</field>
+        <field name="active">1</field>
+        <field name="category_id" ref="product_uom_category_corpo"/>
+        <field name="rounding" eval="0.01"/>
+        <field name="factor" eval="1"/>
+        <field name="uom_type">reference</field>
+    </record>   
+</data>
+</openerp>
+

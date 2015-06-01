@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <!--NEW VIEWS-->
+    <!-- chemical.model.update.wizard -->
+    <record id="view_update_model_wizard_form" model="ir.ui.view">
+        <field name="name">Update model wizard</field>
+        <field name="model">chemical.model.update.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Update wizard" version="7.0">
+               <sheet>
+                   <separator string="Wizard procedure:" colspan="4"/>
+                   <group colspan="4" col="4">
+                       <field name="note" colspan="4" nolabel="1" readonly="1"/>
+                       <newline/>
+                       <field name="force" />
+                   </group>   
+                   <button string="Cancel" class="oe_link" special="cancel" colspan="2" />
+                   <button name="execute_button" string="Run wizard" type="object" icon="gtk-ok" colspan="2" />               
+              </sheet>  
+            </form>
+        </field>    
+    </record>
+
+    <record model="ir.actions.act_window" id="action_update_model_wizard">
+        <field name="name">Update model wizard</field>
+        <field name="res_model">chemical.model.update.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_update_model_wizard_form" />
+    </record>
+
+    <!--MENUITEM-->    
+        <menuitem id="menu_update_model_wizard"
+             name="Update model and product"
+             sequence="60"
+             parent="menu_chemical_analysis_root" 
+             action="action_update_model_wizard"
+             /> 
+</data>
+</openerp>
+

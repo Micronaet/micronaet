@@ -1,0 +1,208 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <!--sale.order.line-->
+    <record model="ir.ui.view" id="view_sale_order_line_construction_tree">
+        <field name="name">sale.order.line.tree</field>
+        <field name="model">sale.order.line</field>
+        <field name="inherit_id" ref="sale.view_order_line_tree" />
+        <field name="arch" type="xml">
+            <field name="product_id" position="before">
+                <field name="filter_category_id" />
+            </field>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_sale_order_line_construction_form">
+        <field name="name">butsale.order.line.form</field>
+        <field name="model">sale.order.line</field>
+        <field name="inherit_id" ref="sale.view_order_line_form2" />
+        <field name="arch" type="xml">
+            <field name="product_id" position="before">
+                <field name="filter_category_id" invisible="1" />
+            </field>
+        </field>
+    </record>
+
+    <!--sale.order-->
+    <record model="ir.ui.view" id="view_sale_order_construction_form">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <field name="order_line" position="before">       
+                <group colspan="4" >
+                    <field name="default_category_id"/>
+                </group>
+            </field>
+            <field name="order_line" position="attributes">
+                <attribute name="context">{'default_filter_category_id':default_category_id}</attribute>
+            </field>
+            <xpath expr="/form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='product_id']" position="before">
+                <field name="filter_category_id" />
+            </xpath>
+            <xpath expr="/form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
+                <attribute name="domain">['|',('categ_id','=',filter_category_id),('categ_parent_id','=',filter_category_id),]</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!--product.product-->
+    <record model="ir.ui.view" id="view_product_category_construction_form">
+        <field name="name">product.product.construction.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <field name="type" position="before">                    
+               <!--<field name="catalog_group_1_id" />
+               <field name="catalog_group_2_id" />-->
+               <field name="categ_parent_id" />
+               <field name="percentual" />
+            </field>
+        </field>
+    </record>    
+    <record model="ir.ui.view" id="view_product_category_construction_tree">
+        <field name="name">product.product.construction.tree</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view" />
+        <field name="arch" type="xml">
+            <field name="name" position="after">                    
+               <!--<field name="catalog_group_1_id" />
+               <field name="catalog_group_2_id" />-->
+               <field name="categ_parent_id" />
+            </field>
+        </field>
+    </record>        
+    <!--construction.web-->
+    <record model="ir.ui.view" id="view_construction_web_form">
+        <field name="name">construction.web.form</field>
+        <field name="model">construction.web</field>
+        <field name="arch" type="xml">
+            <form string="Construction web" version="7.0">
+               <sheet>
+                    <group col="4" colspan="4">
+                       <field name="active" />                    
+                       <field name="name" />                    
+                       <field name="category_id" />
+                       <field name="web" />
+                       <separator string="Version" colspan="4"/>
+                       <field name="catalog_ids" colspan="4" nolabel="1">
+                           
+                       </field>
+                       <separator string="Note" colspan="4"/>
+                       <field name="note" colspan="4" nolabel="1"/>
+                    </group>
+               </sheet>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_construction_web_tree">
+        <field name="name">construction.web.tree</field>
+        <field name="model">construction.web</field>
+        <field name="arch" type="xml">
+            <tree string="Construction web">
+               <field name="active" />                    
+               <field name="name" />                    
+               <field name="category_id" />
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="action_construction_web">
+        <field name="name">Construction web</field>
+        <field name="res_model">construction.web</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_construction_web_tree"/>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+    </record>
+
+    <!--construction.catalog.uom-->
+    <record model="ir.ui.view" id="view_construction_catalog_uom_form">
+        <field name="name">construction.catalog.uom.form</field>
+        <field name="model">construction.catalog.uom</field>
+        <field name="arch" type="xml">
+            <form string="Catalog uom conversion" version="7.0">
+               <sheet>
+                    <group col="4" colspan="4">
+                       <field name="name" />                    
+                       <field name="uom_id" />
+                    </group>
+               </sheet>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_construction_catalog_uom_tree">
+        <field name="name">construction.catalog.uom.tree</field>
+        <field name="model">construction.catalog.uom</field>
+        <field name="arch" type="xml">
+            <tree string="Catalog uom conversion" editable="bottom">
+               <field name="name" />
+               <field name="uom_id" />
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="action_construction_catalog_uom">
+        <field name="name">Construction catalog uom</field>
+        <field name="res_model">construction.catalog.uom</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_construction_catalog_uom_tree"/>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+    </record>
+    
+    <!--construction.catalog-->
+    <record model="ir.ui.view" id="view_construction_catalog_form">
+        <field name="name">construction.catalog.form</field>
+        <field name="model">construction.catalog</field>
+        <field name="arch" type="xml">
+            <form string="Construction catalog" version="7.0">
+               <sheet>
+                    <group col="4" colspan="4">
+                       <field name="active" />                    
+                       <field name="date" />                    
+                       <field name="year" />                    
+                       <field name="quad" />                    
+                       <field name="name" />                    
+                       <field name="web_id" />
+                       <field name="file_name" />
+                       <button name="dowload_uom" string="Download UOM" type="object" />
+                       <button name="dowload_catalog" string="Download catalog" type="object" />
+                       <separator string="Note" colspan="4"/>
+                       <field name="note" colspan="4" nolabel="1"/>
+                    </group>
+               </sheet>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_construction_catalog_tree">
+        <field name="name">construction.catalog.tree</field>
+        <field name="model">construction.catalog</field>
+        <field name="arch" type="xml">
+            <tree string="Construction catalog">
+               <field name="active" />                    
+               <field name="date" />                    
+               <field name="year" />                    
+               <field name="quad" />                    
+               <field name="web_id" />
+               <field name="name" />                    
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="action_construction_catalog">
+        <field name="name">Construction catalog</field>
+        <field name="res_model">construction.catalog</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_construction_catalog_tree"/>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+    </record>
+
+    <menuitem id="menu_construction_configuration" name="Construction catalog" parent="stock.menu_stock_configuration" sequence="10" />
+        <menuitem action="action_construction_web" name="Web catalog" id="menu_construction_configuration_web" parent="menu_construction_configuration" sequence="10" />
+        <menuitem action="action_construction_catalog_uom" name="Importation UOM" id="menu_construction_configuration_uom" parent="menu_construction_configuration" sequence="20" />
+        
+</data>
+</openerp>
+

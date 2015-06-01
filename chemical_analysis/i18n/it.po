@@ -1,0 +1,767 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* chemical_analysis
+# <> <>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-02-21 09:50+0000\n"
+"PO-Revision-Date: 2014-02-21 10:55+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0
+msgid "Analysis header"
+msgstr "Analisi: Testata"
+
+#. module: chemical_analysis
+#: view:search.element.wizard:0
+msgid "Note:"
+msgstr "Note:"
+
+#. module: chemical_analysis
+#: selection:chemical.analysis.line,valutation:0
+#: selection:product.product.analysis.line,valutation:0
+msgid "In range"
+msgstr "In range"
+
+#. module: chemical_analysis
+#: field:product.product,need_analysis:0
+msgid "Need analysis"
+msgstr "Analisi obbligatoria"
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0
+msgid "Forn."
+msgstr "Forn."
+
+#. module: chemical_analysis
+#: view:stock.production.lot:0
+msgid "Open analysis"
+msgstr "Apri analisi"
+
+#. module: chemical_analysis
+#: field:chemical.model.update.wizard,note:0
+msgid "Wizard specific"
+msgstr "Procedura specifica"
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0
+msgid "Group By..."
+msgstr "Raggruppa per..."
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0
+msgid "Load from model"
+msgstr "Ricarica da modello"
+
+#. module: chemical_analysis
+#: help:chemical.analysis.line,percentage:0
+msgid "Supplier value"
+msgstr "Valore fornitore"
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0
+msgid "Supplier"
+msgstr "Fornitore"
+
+#. module: chemical_analysis
+#: help:chemical.analysis.line,percentage_supplier:0
+msgid "Internal value"
+msgstr "Valore interno"
+
+#. module: chemical_analysis
+#: view:stock.picking:0
+msgid "Create analysis form"
+msgstr "Crea modulo analisi"
+
+#. module: chemical_analysis
+#: field:product.product.analysis.line,min:0 field:search.element.wizard,min:0
+msgid "Min %"
+msgstr "Min %"
+
+#. module: chemical_analysis
+#: code:addons/chemical_analysis/analysis.py:445
+#, python-format
+msgid "Warning !"
+msgstr "Attenzione!"
+
+#. module: chemical_analysis
+#: view:chemical.element:0
+msgid "Element list"
+msgstr "Lista elementi"
+
+#. module: chemical_analysis
+#: model:ir.ui.menu,name:chemical_analysis.menu_update_model_wizard
+msgid "Update model and product"
+msgstr "Aggiorna modello e prodotto"
+
+#. module: chemical_analysis
+#: field:chemical.analysis.line,standard:0
+#: field:product.product.analysis.line,standard:0
+msgid "Standard"
+msgstr "Standard"
+
+#. module: chemical_analysis
+#: model:ir.ui.menu,name:chemical_analysis.menu_analysis_product_lot
+msgid "Lots"
+msgstr "Lotti"
+
+#. module: chemical_analysis
+#: model:ir.model,name:chemical_analysis.model_stock_production_lot
+msgid "Serial Number"
+msgstr "Numero di serie"
+
+#. module: chemical_analysis
+#: field:chemical.analysis,chemical_category_id:0
+msgid "Chem Category"
+msgstr "Categoria chimica"
+
+#. module: chemical_analysis
+#: selection:chemical.analysis.line,valutation:0
+#: selection:product.product.analysis.line,valutation:0
+msgid "> Min %"
+msgstr "> Min %"
+
+#. module: chemical_analysis
+#: help:search.element.wizard,max:0
+msgid "Max value of element in %"
+msgstr "Valore max elemento in %"
+
+#. module: chemical_analysis
+#: help:product.product,need_analysis:0
+msgid "Check this if the product require an analysis every purchase or sold"
+msgstr ""
+"Spunta qui se il prodotto richiede l'analisi chimica su ogni acquisto o "
+"vendita"
+
+#. module: chemical_analysis
+#: field:chemical.analysis.line,out_of_range:0
+msgid "Out of range"
+msgstr "Fuori range"
+
+#. module: chemical_analysis
+#: model:ir.actions.act_window,name:chemical_analysis.action_search_element_wizard
+msgid "Search element wizard"
+msgstr "Ricerca elemento"
+
+#. module: chemical_analysis
+#: field:chemical.analysis,line_ids:0
+#: field:chemical.analysis.line,chemical_analysis_id:0
+#: model:ir.model,name:chemical_analysis.model_chemical_analysis
+#: model:ir.ui.menu,name:chemical_analysis.menu_analysis_root
+#: model:ir.ui.menu,name:chemical_analysis.menu_chemical_analysis_root
+#: field:stock.production.lot,chemical_analysis_ids:0
+msgid "Analysis"
+msgstr "Analisi"
+
+#. module: chemical_analysis
+#: code:addons/chemical_analysis/analysis.py:314
+#: code:addons/chemical_analysis/analysis.py:340
+#, python-format
+msgid "Error!"
+msgstr "Errore!"
+
+#. module: chemical_analysis
+#: model:ir.model,name:chemical_analysis.model_product_product_analysis_model
+msgid "Analysis mode"
+msgstr "Analisi"
+
+#. module: chemical_analysis
+#: field:chemical.element,atomic:0
+msgid "Atomic number"
+msgstr "Numero atomico"
+
+#. module: chemical_analysis
+#: field:product.product.analysis.model,name:0
+msgid "Analysis model name"
+msgstr "Nome modello di analisi"
+
+#. module: chemical_analysis
+#: help:product.product.analysis.line,standard:0
+msgid "Use values like: '>14.45' or '<100'"
+msgstr "Utilizzare valori tipo: '>14.45' or '<100'"
+
+#. module: chemical_analysis
+#: selection:chemical.analysis.line,valutation:0
+#: selection:product.product.analysis.line,valutation:0
+msgid "< Max %"
+msgstr "< Max %"
+
+#. module: chemical_analysis
+#: model:ir.ui.menu,name:chemical_analysis.menu_analysis_product_product
+msgid "Product / analysis range"
+msgstr "Prodotti / range analisi"
+
+#. module: chemical_analysis
+#: view:stock.production.lot:0
+msgid "Analisys"
+msgstr "Analisi"
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0
+msgid "From date"
+msgstr "Dalla data"
+
+#. module: chemical_analysis
+#: code:addons/chemical_analysis/analysis.py:445
+#, python-format
+msgid "Error creating analysis form for this picking element!"
+msgstr ""
+"Errore creando il modulo di analisi per gli elementi di questo documento"
+
+#. module: chemical_analysis
+#: view:product.product.analysis.model:0
+msgid "Analysis model list"
+msgstr "Lista modelli di analsi"
+
+#. module: chemical_analysis
+#: model:ir.actions.act_window,name:chemical_analysis.action_product_product_analysis_model
+msgid "Chemical model analysis"
+msgstr "Modello analisi chimiche"
+
+#. module: chemical_analysis
+#: field:stock.production.lot,hygro:0
+msgid "% Hygro"
+msgstr "% Umidità"
+
+#. module: chemical_analysis
+#: field:stock.production.lot,granulometric:0
+msgid "Granulometric analysis"
+msgstr "Analisi granulometrica"
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0
+msgid "Analysis details"
+msgstr "Analisi: Dettagli"
+
+#. module: chemical_analysis
+#: model:ir.model,name:chemical_analysis.model_stock_picking
+msgid "Picking List"
+msgstr "Lista prelievi"
+
+#. module: chemical_analysis
+#: view:chemical.model.update.wizard:0
+msgid "Wizard procedure:"
+msgstr "Procedura da eseguire:"
+
+#. module: chemical_analysis
+#: view:chemical.model.update.wizard:0
+msgid "Update wizard"
+msgstr "Wizard aggiornamento"
+
+#. module: chemical_analysis
+#: field:chemical.product.category,name:0
+msgid "Type"
+msgstr "Tipo"
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0
+msgid "Product info"
+msgstr "Info prodotto"
+
+#. module: chemical_analysis
+#: view:stock.production.lot:0
+msgid "Visual"
+msgstr "Visuale"
+
+#. module: chemical_analysis
+#: model:ir.ui.menu,name:chemical_analysis.menu_analysis_configuration_root
+msgid "Configurazione"
+msgstr "Configurazione"
+
+#. module: chemical_analysis
+#: field:stock.production.lot,visual:0
+msgid "Visual analysis"
+msgstr "Analisi visuale"
+
+#. module: chemical_analysis
+#: model:ir.actions.act_window,name:chemical_analysis.action_chemical_product_category
+msgid "Chemical category type"
+msgstr "Tipo di categoria chimica"
+
+#. module: chemical_analysis
+#: field:chemical.analysis,model_id:0
+msgid "Analysis model"
+msgstr "Modello analisi"
+
+#. module: chemical_analysis
+#: view:chemical.element:0
+#: model:ir.actions.act_window,name:chemical_analysis.action_chemical_element
+msgid "Chemical Element"
+msgstr "Elemento chimico"
+
+#. module: chemical_analysis
+#: view:stock.production.lot:0
+msgid "Granulometric"
+msgstr "Granulometria"
+
+#. module: chemical_analysis
+#: field:chemical.analysis.line,percentage:0
+msgid "% internal"
+msgstr "% interna"
+
+#. module: chemical_analysis
+#: help:chemical.analysis.line,model_line_id:0
+msgid "reference for range for this element"
+msgstr "riferimento fuori range per questo elemento"
+
+#. module: chemical_analysis
+#: field:chemical.analysis,date_in:0
+msgid "Date create"
+msgstr "Data creazione"
+
+#. module: chemical_analysis
+#: model:ir.model,name:chemical_analysis.model_res_partner
+msgid "Partner"
+msgstr "Partner"
+
+#. module: chemical_analysis
+#: model:ir.model,name:chemical_analysis.model_search_element_wizard
+msgid "search.element.wizard"
+msgstr "ricerca elementi"
+
+#. module: chemical_analysis
+#: field:chemical.model.update.wizard,name:0
+msgid "Update mode wizard"
+msgstr "Procedura aggiorna modello"
+
+#. module: chemical_analysis
+#: view:search.element.wizard:0
+msgid "search"
+msgstr "ricerca"
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0
+msgid "Lab. 2"
+msgstr "Lab. 2"
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0
+msgid "Lab. 1"
+msgstr "Lab. 1"
+
+#. module: chemical_analysis
+#: model:res.groups,name:chemical_analysis.group_analysis_manager
+msgid "Analysis / Mananger"
+msgstr "Analisi / Gestore"
+
+#. module: chemical_analysis
+#: model:ir.actions.act_window,name:chemical_analysis.action_analysis_of_lot
+msgid "Analisys list"
+msgstr "Lista analisi"
+
+#. module: chemical_analysis
+#: code:addons/chemical_analysis/analysis.py:227
+#, python-format
+msgid "Check format:"
+msgstr "Verifica formato:"
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0
+#: model:ir.actions.act_window,name:chemical_analysis.action_laboratory_tree
+#: model:ir.ui.menu,name:chemical_analysis.menu_chemical_analysis_laboratory_root
+msgid "Laboratory"
+msgstr "Laboratorio"
+
+#. module: chemical_analysis
+#: field:chemical.element,symbol:0
+msgid "Chemical symbol"
+msgstr "Simbolo chimico"
+
+#. module: chemical_analysis
+#: view:stock.picking:0
+msgid "Confirm creation of analysis (one for every line)?"
+msgstr "Confermate la creazione delle analisi (una per ogni linea)?"
+
+#. module: chemical_analysis
+#: model:ir.model,name:chemical_analysis.model_chemical_product_category
+#: model:ir.ui.menu,name:chemical_analysis.menu_analysis_configuration_category
+#: field:product.product,chemical_category_id:0
+msgid "Category"
+msgstr "Categoria"
+
+#. module: chemical_analysis
+#: help:chemical.analysis.line,percentage_lab3:0
+msgid "Laboratory 3 value"
+msgstr "Valore Lab. 3"
+
+#. module: chemical_analysis
+#: field:product.product.analysis.model,family:0
+msgid "Group"
+msgstr "Gruppo"
+
+#. module: chemical_analysis
+#: help:chemical.element,atomic:0
+msgid ""
+"Atomic number if the element is a periodic table element, instead of not "
+"indicate"
+msgstr ""
+"Numero atomico se l'elemento fa parte della tavola periodica, in caso "
+"contrario non indicarlo"
+
+#. module: chemical_analysis
+#: field:chemical.analysis,quantity_lab1:0
+msgid "Q. anal. (lab.1)"
+msgstr "Q. anal. (lab.1)"
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0 field:chemical.analysis,note:0
+#: field:chemical.analysis.line,note:0 view:chemical.product.category:0
+#: field:chemical.product.category,note:0
+#: view:product.product.analysis.model:0
+#: field:product.product.analysis.model,note:0
+#: field:search.element.wizard,note:0
+msgid "Note"
+msgstr "Note"
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0
+msgid "Internal"
+msgstr "Interna"
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0 field:chemical.analysis,prodlot_id:0
+msgid "Lot"
+msgstr "Lotto"
+
+#. module: chemical_analysis
+#: field:product.product.analysis.model,analysis_line_ids:0
+msgid "Lines per element"
+msgstr "Linee per elemento"
+
+#. module: chemical_analysis
+#: model:ir.actions.act_window,name:chemical_analysis.action_update_model_wizard
+msgid "Update model wizard"
+msgstr "Procedura aggiornamento modello"
+
+#. module: chemical_analysis
+#: field:product.product.analysis.model,chemical_category_id:0
+msgid "Chemical Category"
+msgstr "Categoria chimica"
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0
+#: model:ir.ui.menu,name:chemical_analysis.menu_analysis_configuration_element
+#: view:product.product.analysis.model:0
+msgid "Elements"
+msgstr "Elementi"
+
+#. module: chemical_analysis
+#: field:chemical.analysis.line,symbol:0
+#: field:product.product.analysis.line,symbol:0
+msgid "Symbol"
+msgstr "Simbolo"
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0
+msgid "Int."
+msgstr "Int."
+
+#. module: chemical_analysis
+#: help:chemical.analysis,quantity_lab1:0
+#: help:chemical.analysis,quantity_lab2:0
+#: help:chemical.analysis,quantity_lab3:0
+msgid "Quantity used for laboratory analysis"
+msgstr "Quantità usata per il laboratorio di analisi"
+
+#. module: chemical_analysis
+#: code:addons/chemical_analysis/analysis.py:228
+#, python-format
+msgid ""
+"The standard value is not in correct format\n"
+"Examples:\n"
+"> 10.5\n"
+">= 11\n"
+"<=4.56\n"
+"Note: numbers are from 0 to 100."
+msgstr ""
+"Il valore standard non è espresso nel formato corretto\n"
+"Esempi:\n"
+"> 10.5\n"
+">= 11\n"
+"<=4.56\n"
+"Nota: i numeri vanno da 0 a 100."
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0 field:chemical.analysis,date:0
+msgid "Date"
+msgstr "Data"
+
+#. module: chemical_analysis
+#: field:chemical.analysis.line,max_all:0
+#: field:chemical.analysis.line,min_all:0
+msgid "Min % of all"
+msgstr "Min % di tutto"
+
+#. module: chemical_analysis
+#: field:chemical.analysis,code_lab3:0
+msgid "Code pattern 3"
+msgstr "Codice campione 3"
+
+#. module: chemical_analysis
+#: field:chemical.analysis,code_lab2:0
+msgid "Code pattern 2"
+msgstr "Codice campione 2"
+
+#. module: chemical_analysis
+#: field:chemical.analysis,code_lab1:0
+msgid "Code pattern 1"
+msgstr "Codice campione 1"
+
+#. module: chemical_analysis
+#: model:res.groups,name:chemical_analysis.group_analysis_user
+msgid "Analysis / User"
+msgstr "Analisi / Utente"
+
+#. module: chemical_analysis
+#: help:product.product.analysis.line,max:0
+msgid "Max value of element for this category"
+msgstr "Massimo valore dell'elemento per questa categoria"
+
+#. module: chemical_analysis
+#: model:ir.model,name:chemical_analysis.model_chemical_model_update_wizard
+msgid "Update model and category"
+msgstr "Aggiorna modello e categoria"
+
+#. module: chemical_analysis
+#: code:addons/chemical_analysis/analysis.py:314
+#, python-format
+msgid "No model found in product linked to lot!"
+msgstr "Modello non trovato per il prodotto collegato a questo lotto"
+
+#. module: chemical_analysis
+#: help:chemical.product.category,code:0
+msgid "Usually 2 char of product code"
+msgstr "Normalmente 2 caratteri del codice"
+
+#. module: chemical_analysis
+#: field:chemical.analysis,quantity_lab2:0
+msgid "Q. anal. (lab.2)"
+msgstr "Q. anal. (lab.2)"
+
+#. module: chemical_analysis
+#: model:ir.model,name:chemical_analysis.model_product_product_analysis_line
+msgid "Analysis model line"
+msgstr "Linea modello analisi"
+
+#. module: chemical_analysis
+#: help:chemical.analysis.line,percentage_lab1:0
+msgid "Laboratory 1 value"
+msgstr "Valore Lab. 1"
+
+#. module: chemical_analysis
+#: field:chemical.analysis,laboratory3_id:0
+msgid "Laboratory 3"
+msgstr "Laboratorio 3"
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0 field:chemical.analysis,laboratory2_id:0
+msgid "Laboratory 2"
+msgstr "Laboratorio 2"
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0 field:chemical.analysis,laboratory1_id:0
+msgid "Laboratory 1"
+msgstr "Laboratorio 1"
+
+#. module: chemical_analysis
+#: view:chemical.model.update.wizard:0
+msgid "Run wizard"
+msgstr "Esegui procedura"
+
+#. module: chemical_analysis
+#: help:search.element.wizard,min:0
+msgid "Min value of element in %"
+msgstr "Minimo valore elemento in %"
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0 field:chemical.analysis,code:0
+#: field:chemical.product.category,code:0
+msgid "Code"
+msgstr "Codice"
+
+#. module: chemical_analysis
+#: field:chemical.model.update.wizard,force:0
+msgid "Force"
+msgstr "Forza aggiornamento"
+
+#. module: chemical_analysis
+#: help:product.product.analysis.line,min:0
+msgid "Min value of element for this category"
+msgstr "Minimo valore dell'elemento per questa categoria"
+
+#. module: chemical_analysis
+#: view:chemical.model.update.wizard:0
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0
+msgid "Laboratory info"
+msgstr "Info laboratorio"
+
+#. module: chemical_analysis
+#: field:chemical.analysis,quantity_lab3:0
+msgid "Q. anal. (lab.3)"
+msgstr "Q. anal. (lab.3)"
+
+#. module: chemical_analysis
+#: view:chemical.product.category:0
+msgid "Chemical category"
+msgstr "Categorie chimiche"
+
+#. module: chemical_analysis
+#: code:addons/chemical_analysis/analysis.py:340
+#, python-format
+msgid "Caricamento non riuscito [%s]!"
+msgstr "Caricamento non riuscito [%s]!"
+
+#. module: chemical_analysis
+#: field:chemical.analysis.line,min:0
+msgid "Min"
+msgstr "Min"
+
+#. module: chemical_analysis
+#: help:chemical.analysis.line,percentage_lab2:0
+msgid "Laboratory 2 value"
+msgstr "Valore Lab. 2"
+
+#. module: chemical_analysis
+#: field:chemical.analysis.line,percentage_supplier:0
+msgid "% supplier"
+msgstr "% fornitore"
+
+#. module: chemical_analysis
+#: field:chemical.analysis.line,percentage_lab2:0
+msgid "% laboratory 2"
+msgstr "% lab. 2"
+
+#. module: chemical_analysis
+#: field:chemical.analysis.line,percentage_lab3:0
+msgid "% laboratory 3"
+msgstr "% lab. 3"
+
+#. module: chemical_analysis
+#: field:chemical.analysis.line,percentage_lab1:0
+msgid "% laboratory 1"
+msgstr "% lab. 1"
+
+#. module: chemical_analysis
+#: view:stock.production.lot:0
+msgid "Composition"
+msgstr "Composizione"
+
+#. module: chemical_analysis
+#: model:ir.actions.act_window,name:chemical_analysis.action_chemical_analysis
+msgid "Chemical analysis"
+msgstr "Analisi chimica"
+
+#. module: chemical_analysis
+#: model:ir.model,name:chemical_analysis.model_chemical_element
+msgid "Chemical element"
+msgstr "Elemento chimico"
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0 field:chemical.analysis,product_id:0
+#: model:ir.model,name:chemical_analysis.model_product_product
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: chemical_analysis
+#: field:chemical.analysis,name:0
+msgid "Description"
+msgstr "Descrizione"
+
+#. module: chemical_analysis
+#: field:res.partner,is_laboratory:0
+msgid "Is laboratory"
+msgstr "E' laboratorio"
+
+#. module: chemical_analysis
+#: field:chemical.analysis.line,max:0
+msgid "Max"
+msgstr "Max"
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0
+msgid "To date"
+msgstr "Alla data"
+
+#. module: chemical_analysis
+#: field:product.product.analysis.line,max:0 field:search.element.wizard,max:0
+msgid "Max %"
+msgstr "Max %"
+
+#. module: chemical_analysis
+#: field:chemical.analysis.line,model_line_id:0
+msgid "Model line"
+msgstr "Linea modello"
+
+#. module: chemical_analysis
+#: help:product.product.analysis.model,family:0
+msgid "Product code, first 6 chars, ex.: 010234"
+msgstr "Codice prodotto, primi sei caratteri di solito, ex.: 010234"
+
+#. module: chemical_analysis
+#: view:search.element.wizard:0
+msgid "Query:"
+msgstr "Interrogazione:"
+
+#. module: chemical_analysis
+#: model:ir.model,name:chemical_analysis.model_chemical_analysis_line
+msgid "Line of analysis"
+msgstr "Linea analisi"
+
+#. module: chemical_analysis
+#: view:product.product.analysis.model:0
+msgid "Default elements"
+msgstr "Elementi di default"
+
+#. module: chemical_analysis
+#: view:chemical.analysis:0
+#: model:ir.ui.menu,name:chemical_analysis.menu_chemical_analysis_analysis_root
+#: view:search.element.wizard:0
+msgid "Analysis list"
+msgstr "Lista analisi"
+
+#. module: chemical_analysis
+#: field:chemical.analysis.line,name:0 field:chemical.element,name:0
+#: field:product.product.analysis.line,name:0
+#: field:search.element.wizard,name:0
+msgid "Element"
+msgstr "Elemento"
+
+#. module: chemical_analysis
+#: field:product.product,model_id:0
+#: field:product.product.analysis.line,model_id:0
+msgid "Model"
+msgstr "Modello"
+
+#. module: chemical_analysis
+#: field:chemical.analysis.line,valutation:0
+#: field:product.product.analysis.line,valutation:0
+msgid "Valutation"
+msgstr "Valutazione"
+
+#. module: chemical_analysis
+#: model:ir.ui.menu,name:chemical_analysis.menu_chemical_analysis_search_wizard
+msgid "Search elements"
+msgstr "Ricerca elementi"
+
+#. module: chemical_analysis
+#: field:chemical.analysis,quantity:0
+msgid "Q. anal. (int.)"
+msgstr "Q. anal. (int.)"
+
+#. module: chemical_analysis
+#: help:chemical.analysis,quantity:0
+msgid "Quantity used for intenral analysis"
+msgstr "Quantità usata per analisi interna"

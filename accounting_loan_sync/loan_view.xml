@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <!--loan.header-->
+        <record model="ir.ui.view" id="view_loan_header_tree">
+            <field name="name">Loan header</field>
+            <field name="model">loan.header</field>
+            <field name="arch" type="xml">
+                <tree string="Invoice Line">
+                    <field name="request_date"/>
+                    <field name="name"/>
+                    <field name="description"/>                    
+                    <field name="partner_id"/>
+                    <field name="bank_id"/>
+                    <field name="guarantor_id"/>
+                    <field name="loan_type"/>
+                    <field name="loan_period"/>
+                    <field name="loan_amount" />
+                    <field name="analytic_account" />
+                    
+                    <!--Workflow:-->
+                    <button name="trigger_header_draft_confirmed" string="Confirm" type="workflow" states="draft" class="oe_highlight" icon="gtk-yes"/>
+                    <button name="trigger_header_confirmed_approved" string="Approve" type="workflow" states="confirmed"  class="oe_highlight" icon="gtk-apply"/>
+                    <button name="trigger_header_confirmed_cancel" string="Cancel" type="workflow" states="confirmed"  icon="gtk-cancel"/>
+                    <button name="trigger_header_approved_close" string="Close" type="workflow" states="approved"  class="oe_highlight" icon="gtk-goto-last"/>
+                    <button name="trigger_header_approved_cancel" string="Cancel" type="workflow" states="approved" icon="gtk-cancel"/>
+                    <field name="state" />                        
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_loan_header_form">
+            <field name="name">Loan header</field>
+            <field name="model">loan.header</field>
+            <field name="arch" type="xml">
+                <form string="Loan Details" version="7.0">
+                    <header>
+                        <button name="trigger_header_draft_confirmed" string="Confirm" type="workflow" states="draft" class="oe_highlight" icon="gtk-yes"/>
+
+                        <button name="trigger_header_confirmed_approved" string="Approve" type="workflow" states="confirmed"  class="oe_highlight" icon="gtk-apply"/>
+                        <button name="trigger_header_confirmed_cancel" string="Cancel" type="workflow" states="confirmed"  icon="gtk-cancel"/>
+                        
+                        <button name="trigger_header_approved_close" string="Close" type="workflow" states="approved"  class="oe_highlight" icon="gtk-goto-last"/>
+                        <button name="trigger_header_approved_cancel" string="Cancel" type="workflow" states="approved" icon="gtk-cancel"/>
+                        
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,approved,close,cancel" />
+                    </header>
+                    <sheet>
+		                    <h1>
+			                    <label string="Loan" states="draft" />
+			                    <field name="name" readonly="1" class="oe_inline" />
+		                    </h1>
+		                    <group col="6" colspan="4">
+                                <field name="description" colspan="6"/>
+                                
+                                <field name="partner_id" />                                                       
+                                <field name="bank_id"/>
+                                <field name="guarantor_id"/>
+                           </group>
+                        
+                        <notebook colspan="4">
+                            <page string="Loan">
+                                <group col="4" colspan="4">
+                                    <field name="loan_type" />
+                                    <field name="loan_period" />
+                                    
+                                    <field name="return_type" />
+                                    <field name="rate_type" />
+                                    
+                                    <field name="loan_amount" />
+                                    <field name="rate" />
+                                    <!--<field name="interest_rate" />-->
+                                    
+                                    <field name="period" />
+                                    <newline />
+                                    
+                                    <button name="generate_plan" string="Generate" type="object" attrs="{'invisible':[('state','!=','draft')]}" />
+                                </group>
+                            </page>
+                            <page string="Plan">
+                                <group col="4" colspan="4">
+                                    <separator string="Interess Plan" colspan="4"/>
+                                    <field name="rate_ids" nolabel="1" context="{'embedded':True}">
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Workflow">
+                                <group col="4" colspan="4">
+                                    <field name="request_date" />
+                                    <field name="confirmed_date" />
+                                    <field name="approve_date" />
+                                    <field name="close_date" />
+                                    <field name="cancel_date" />
+                                </group>
+                            </page>
+                            
+                        </notebook>
+                        <separator string="Note" colspan="4"/>
+                        <field name="note" nolabel="1" colspan="4" />
+                    </sheet>
+                    
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_loan_header">
+            <field name="name">Loan headers</field>
+            <field name="res_model">loan.header</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+        </record>
+
+        <!--loan.rate-->
+        <record model="ir.ui.view" id="view_loan_rate_tree">
+            <field name="name">Rate plan</field>
+            <field name="model">loan.rate</field>
+            <field name="arch" type="xml">
+                <tree string="Plan rates">
+                    <field name="loan_id" invisible="context.get('embedded',False)"/>
+                    <field name="name"/>
+                    <field name="rate_date"/>
+                    <field name="pay_date"/>
+                    <field name="rate_amount"/>
+                    <field name="state"/>
+                    <button name="trigger_rate_confirmed_payed" string="Payed" type="workflow" states="confirmed" class="oe_highlight" icon="gtk-yes"/>
+                    <button name="trigger_rate_confirmed_payed" string="cancel" type="workflow" states="confirmed" icon="gtk-no"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_loan_rate_form">
+            <field name="name">Rate plan</field>
+            <field name="model">loan.rate</field>
+            <field name="arch" type="xml">
+                <form string="Loan Details" version="7.0">
+                    <header>
+                        <button name="trigger_rate_confirmed_payed" string="Payed" type="workflow" states="confirmed" class="oe_highlight" icon="gtk-yes"/>
+                        <button name="trigger_rate_confirmed_payed" string="cancel" type="workflow" states="confirmed" icon="gtk-no"/>
+
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,approved,close,cancel" />
+                    </header>
+                    <sheet>
+	                    <h1>
+		                    <label string="#" />
+		                    <field name="name" readonly="1" class="oe_inline" />
+	                    </h1>
+	                    <group col="4" colspan="4">
+                            <field name="capital"/>
+                            <field name="interest"/>
+
+                            <field name="rate_date"/>
+                            <field name="rate_amount"/>                            
+
+                            <field name="pay_date"/>                            
+                            <field name="pay_amount"/>
+                        </group>
+                    </sheet>
+               </form>
+           </field>
+        </record>         
+        
+        <menuitem name="Financial Management" id="financial_management_root" sequence="40" />
+            <menuitem name="Loan" parent="financial_management_root" 
+                id="financial_management_loan" sequence="10" />
+                <menuitem name="Loan" parent="financial_management_loan" 
+                    id="financial_management_loan_loan" 
+                    action="action_loan_header"  
+                    sequence="10" />
+    </data>
+</openerp>

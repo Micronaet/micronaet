@@ -1,0 +1,63 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* product_adr
+# <> <>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-05-30 10:44+0000\n"
+"PO-Revision-Date: 2014-05-30 12:57+0200\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+"X-Generator: Gtranslator 2.91.5\n"
+
+#. module: product_adr
+#: field:product.product,duty_id:0
+msgid "Duty"
+msgstr "Codice doganale"
+
+#. module: product_adr
+#: view:product.product:0
+msgid "Duty cod"
+msgstr "Codice doganale"
+
+#. module: product_adr
+#: view:product.product:0 field:product.product,adr:0
+msgid "ADR"
+msgstr "ADR"
+
+#. module: product_adr
+#: field:product.product.duty,note:0
+msgid "Duty specific"
+msgstr "Specifica doganale"
+
+#. module: product_adr
+#: model:ir.model,name:product_adr.model_product_product_duty
+msgid "Product for duty"
+msgstr "Prodotto per dogane"
+
+#. module: product_adr
+#: model:ir.model,name:product_adr.model_product_product
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: product_adr
+#: field:product.product.duty,name:0
+msgid "Duty code"
+msgstr "Codice doganale"
+
+#. module: product_adr
+#: help:product.product.duty,name:0
+msgid "Coded used for duty import / export"
+msgstr "Codice utilizzato per le dogane (import / export)"
+
+#. module: product_adr
+#: help:product.product,adr:0
+msgid "Product that need ADR for transport"
+msgstr "Prodotto che richiede l'ADR per il trasporto"

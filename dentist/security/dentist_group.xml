@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+   <data>
+        <record id="group_dentist_doctor" model="res.groups">
+            <field name="name">Poliambulatory / Doctor</field>
+        </record>
+        <record id="group_dentist_assistant" model="res.groups">
+            <field name="name">Poliambulatory / Assistant</field>
+        </record>
+        <record id="group_dentist_secretary" model="res.groups">
+            <field name="name">Poliambulatory / Secretary</field>
+        </record>
+        <record id="group_dentist_administration" model="res.groups">
+            <field name="name">Poliambulatory / Administration</field>
+        </record>
+
+        <record id="group_dentist_note" model="res.groups">
+            <field name="name">Poliambulatory / Dentist annotation</field>
+        </record>
+        <record id="group_oculist_note" model="res.groups">
+            <field name="name">Poliambulatory / Otulistic annotation</field>
+        </record>
+        <record id="group_cardiology_note" model="res.groups">
+            <field name="name">Poliambulatory / Cardiology annotation</field>
+        </record>
+        <record id="group_estetic_note" model="res.groups">
+            <field name="name">Poliambulatory / Estetic annotation</field>
+        </record>
+        <record id="group_generic_note" model="res.groups">
+            <field name="name">Poliambulatory / Generic Surg. annotation</field>
+        </record>
+        <record id="group_dermatology_note" model="res.groups">
+            <field name="name">Poliambulatory / Dermatology annotation</field>
+        </record>
+        <record id="group_dietology_note" model="res.groups">
+            <field name="name">Poliambulatory / Dietology annotation</field>
+        </record>
+        <record id="group_ecograpy_note" model="res.groups">
+            <field name="name">Poliambulatory / Ecography annotation</field>
+        </record>
+        <record id="group_fisiatry_note" model="res.groups">
+            <field name="name">Poliambulatory / Fisiatry annotation</field>
+        </record>
+        <record id="group_ginecology_note" model="res.groups">
+            <field name="name">Poliambulatory / Ginecology annotation</field>
+        </record>
+        <record id="group_internal_note" model="res.groups">
+            <field name="name">Poliambulatory / Internal Surg. annotation</field>
+        </record>
+        <record id="group_omeopaty_note" model="res.groups">
+            <field name="name">Poliambulatory / Omeopathy annotation</field>
+        </record>
+        <record id="group_oncology_note" model="res.groups">
+            <field name="name">Poliambulatory / Oncology annotation</field>
+        </record>
+        <record id="group_ortopedy_note" model="res.groups">
+            <field name="name">Poliambulatory / Ordopedy annotation</field>
+        </record>
+        <record id="group_otorin_note" model="res.groups">
+            <field name="name">Poliambulatory / Otorin annotation</field>
+        </record>
+        <record id="group_proctology_note" model="res.groups">
+            <field name="name">Poliambulatory / Proctology annotation</field>
+        </record>
+        <record id="group_pediatry_note" model="res.groups">
+            <field name="name">Poliambulatory / Pediatry annotation</field>
+        </record>
+        <record id="group_reumatology_note" model="res.groups">
+            <field name="name">Poliambulatory / Reumatology annotation</field>
+        </record>
+        <record id="group_all_note" model="res.groups">
+            <field name="name">Poliambulatory / All office annotation</field>
+        </record>
+   </data>
+</openerp>

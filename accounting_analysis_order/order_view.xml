@@ -1,0 +1,199 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    <!-- production.customer.order.line *****************************-->
+    <record model="ir.ui.view" id="view_sale_order_line_search">
+        <field name="name">Search OC line</field>
+        <field name="model">sale.order.line</field>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+            <search string="OC line">
+                    <field name="partner_id" string="Partner" filter_domain="[('partner_id','=',self)]"/>
+                    <field name="product_id" string="Product" filter_domain="[('product_id','=',self)]"/>
+                    <field name="order_id" string="Order" filter_domain="[('order_id','=',self)]"/>  
+
+                    <filter icon="terp-go-home" name="Next10" string="Deadline &lt; 10gg" domain="[('date_deadline','&lt;',(context_today()+relativedelta(days=10)).strftime('%%Y-%%m-%%d'))]" />
+                    <filter icon="terp-go-home" name="Next20" string="Deadline &lt; 20gg" domain="[('date_deadline','&lt;',(context_today()+relativedelta(days=20)).strftime('%%Y-%%m-%%d'))]" />
+                    <filter icon="terp-go-home" name="Next30" string="Deadline &lt; 30gg" domain="[('date_deadline','&lt;',(context_today()+relativedelta(days=30)).strftime('%%Y-%%m-%%d'))]" />
+
+                    <group expand="1" string="Group By...">
+                        <filter name="group_partner" string="Partner" icon="terp-partner" context="{'group_by':'partner_id'}"/>
+                        <filter name="group_product" string="Product" icon="terp-partner" context="{'group_by':'product_id'}"/>
+                    </group>                    
+            </search>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_sale_order_line_tree">
+        <field name="name">OC line</field>
+        <field name="model">sale.order.line</field>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+            <tree string="OC line">
+                    <field name="name" />
+                    <field name="product_id" />
+                    <field name="partner_id" />
+                    <field name="order_id" />                   
+                    <field name="date_order" />                    
+                    <field name="date_deadline" />                    
+                    <field name="product_uom" />
+                    <field name="product_uom_qty" sum="Tot. q" />
+                    <field name="price_subtotal" sum="Tot. amount" />
+                    <field name="state" />
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_sale_order_line_form">
+        <field name="name">OC line</field>
+        <field name="model">sale.order.line</field>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+            <form string="OC line">
+                <group colspan="4" col="6">
+                    <field name="sequence" />
+                    <field name="product_id" />
+                    <field name="name" />
+                    
+                    <field name="order_id" /> 
+                    <field name="date_order" />                    
+                    <field name="date_deadline" />                    
+
+                    <field name="product_uom" />
+                    <field name="product_uom_qty" />
+                    <field name="price_subtotal" />
+
+                    <field name="state" />
+                </group>   
+                <group>
+                  <separator string="Note" colspan="4"/>
+                </group>   
+            </form>
+        </field>
+    </record>
+
+     <record model="ir.ui.view" id="view_sale_order_line_graph">
+        <field name="name">OC per partner</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <graph string="Partner order line" type="bar">
+                <field name="partner_id"/>
+                <field name="price_subtotal" operator="+" />
+            </graph>
+        </field>
+    </record>
+
+     <record model="ir.ui.view" id="view_sale_order_line_product_graph">
+        <field name="name">OC per product</field>
+        <field name="model">sale.order.line</field>
+        <field name="prority" eval="20"/>
+        <field name="arch" type="xml">
+            <graph string="Product order line" type="bar">
+                <field name="product_id"/>
+                <field name="price_subtotal" operator="+" />
+            </graph>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_sale_order_line_calendar">
+        <field name="name">Calendar OC for product</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <calendar color="product_id" date_start="date_deadline" string="Product">
+                <field name="name" />
+                <field name="partner_id" />
+                <field name="product_uom_qty" />
+            </calendar>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_view_sale_order_line_partner">
+        <field name="name">OC line analysis</field>
+        <field name="res_model">sale.order.line</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,graph,calendar</field>
+        <field name="search_view_id" ref="view_sale_order_line_search"/>
+        <field name="view_id" ref="view_sale_order_line_tree"/>
+        <field name="context">{'form_view_ref':'accounting_analysis_order.view_sale_order_line_form'}</field>
+        <field name="help" type="html"><p class="oe_view_nocontent_create">Show all active order lines loaded every day from accounting (used for statistic and search)</p></field>
+    </record>
+    <record model="ir.actions.act_window" id="action_view_sale_order_line_product">
+        <field name="name">OC line analysis (product)</field>
+        <field name="res_model">sale.order.line</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph,tree,form,calendar</field>
+        <field name="search_view_id" ref="view_sale_order_line_search"/>
+        <field name="view_id" ref="view_sale_order_line_tree"/>
+        <field name="context">{'graph_view_ref':'accounting_analysis_order.view_sale_order_line_product_graph','form_view_ref':'accounting_analysis_order.view_sale_order_line_form'}</field>
+        <field name="help" type="html"><p class="oe_view_nocontent_create">Show all active order lines loaded every day from accounting, product bars (used for statistic and search)</p></field>
+    </record>
+
+    <!-- Dashboard actions:-->
+    <record model="ir.actions.act_window" id="action_view_sale_order_line_partner_board">
+        <field name="name">OC line analysis</field>
+        <field name="res_model">sale.order.line</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="view_sale_order_line_tree"/>
+        <field name="context">{'graph_view_ref':'accounting_analysis_order.view_sale_order_line_graph'}</field>
+    </record>
+    <record model="ir.actions.act_window" id="action_view_sale_order_line_product_board">
+        <field name="name">OC line analysis (product)</field>
+        <field name="res_model">sale.order.line</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="view_sale_order_line_tree"/>
+        <field name="context">{'graph_view_ref':'accounting_analysis_order.view_sale_order_line_product_graph'}</field>
+    </record>
+    <record model="ir.actions.act_window" id="action_view_sale_order_line_partner_tree_board">
+        <field name="name">OC line analysis</field>
+        <field name="res_model">sale.order.line</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,graph,calendar</field>
+        <field name="search_view_id" ref="view_sale_order_line_search"/>
+        <field name="view_id" ref="view_sale_order_line_tree"/>
+        <field name="context">{'form_view_ref':'accounting_analysis_order.view_sale_order_line_form','group_by':'partner_id'}</field>
+    </record>
+    <record model="ir.actions.act_window" id="action_view_sale_order_line_product_tree_board">
+        <field name="name">OC line analysis</field>
+        <field name="res_model">sale.order.line</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,graph,calendar</field>
+        <field name="search_view_id" ref="view_sale_order_line_search"/>
+        <field name="view_id" ref="view_sale_order_line_tree"/>
+        <field name="context">{'form_view_ref':'accounting_analysis_order.view_sale_order_line_form','group_by':'product_id'}</field>
+    </record>
+
+    <!-- DASHBOARD: -->
+    <record id="board_accounting_analysis_order_default" model="ir.ui.view">
+        <field name="name">board.accounting.analysis.order</field>
+        <field name="model">board.board</field>
+        <field name="arch" type="xml">
+            <form string="Accounting analysis order" version="7.0">
+                <board style="1-1">
+                    <column>
+                        <action name="%(action_view_sale_order_line_partner_board)d" string="Partner situation"/>
+                        <action name="%(action_view_sale_order_line_partner_tree_board)d" string="Partner group situation"/>
+                    </column>
+                    <column>
+                        <action name="%(action_view_sale_order_line_product_board)d" string="Product situation"/>
+                        <action name="%(action_view_sale_order_line_product_tree_board)d" string="Product group situation"/>
+                    </column>
+                </board>
+            </form>
+        </field>
+    </record>
+    <record id="action_board_accounting_analysis_order_default" model="ir.actions.act_window">
+        <field name="name">Accounting analysis order</field>
+        <field name="res_model">board.board</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="board_accounting_analysis_order_default"/>
+    </record>
+
+    <!-- Create production order from customer order lines -->
+    <menuitem name="Order" parent="accounting_analysis.menu_accounting_analysis_root" id="menu_analysis_order_root" sequence="60" action="action_board_accounting_analysis_order_default" />
+       <menuitem name="OC line (detailed)" parent="menu_analysis_order_root" id="menu_analysis_order_line" action="action_view_sale_order_line_partner" sequence="10" />
+       
+  </data>
+</openerp>

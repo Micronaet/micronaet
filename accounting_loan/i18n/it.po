@@ -1,0 +1,635 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* accounting_loan
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-11-21 09:34+0000\n"
+"PO-Revision-Date: 2014-11-21 10:48+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 1.5.4\n"
+
+#. module: accounting_loan
+#: help:loan.header,guarantor_id:0
+msgid "Partner that is garantor for the loan (only for statistic purposes"
+msgstr "Partner che ha avallato il prestito (solo per scopi statistici)"
+
+#. module: accounting_loan
+#: view:loan.header:0
+msgid "Changing of rate"
+msgstr "Cambio del tasso"
+
+#. module: accounting_loan
+#: selection:loan.header,return_type:0
+msgid "By Cash"
+msgstr "Contanti"
+
+#. module: accounting_loan
+#: selection:loan.header,loan_period:0
+msgid "Monthly"
+msgstr "Mensile"
+
+#. module: accounting_loan
+#: help:loan.header,analytic_account:0
+msgid "Account for analytic entries"
+msgstr "Conto per contabilità analitica"
+
+#. module: accounting_loan
+#: help:loan.header,name:0
+msgid "Code for reference"
+msgstr "Codice per riferimento"
+
+#. module: accounting_loan
+#: help:loan.change.rate.wizard,rate_period:0 help:loan.header,rate_period:0
+#: help:loan.header.rate,rate_period:0
+msgid ""
+"If rate is referred to annual value or to the choosen period (in this case "
+"is recalculated"
+msgstr ""
+"Se il tasso è riferito ad un valore annuale oppure adattato al periodo della "
+"rata (in questo caso è ricalcolato in funzione del periodo)"
+
+#. module: accounting_loan
+#: view:loan.header:0 view:loan.rate:0
+msgid "Group By..."
+msgstr "Raggruppa per..."
+
+#. module: accounting_loan
+#: field:loan.change.rate.wizard,rate_period:0 field:loan.header,rate_period:0
+#: field:loan.header.rate,rate_period:0
+msgid "Rate period"
+msgstr "Periodi data"
+
+#. module: accounting_loan
+#: view:loan.header:0 view:loan.rate:0
+msgid "Loan Details"
+msgstr "Dettagli prestito"
+
+#. module: accounting_loan
+#: field:loan.header,approve_date:0
+msgid "Approve Date"
+msgstr "Data approvazione"
+
+#. module: accounting_loan
+#: field:loan.header,guarantor_id:0
+msgid "Gaurantor"
+msgstr "Avallante"
+
+#. module: accounting_loan
+#: view:loan.header:0
+msgid "Workflow"
+msgstr "Workflow"
+
+#. module: accounting_loan
+#: help:loan.header,partner_id:0
+msgid "Partner that open loan or that is referred to"
+msgstr "Partner che ha acceso il finanziamento o a cui è riferito"
+
+#. module: accounting_loan
+#: field:loan.header,rate:0
+msgid "Interest rate"
+msgstr "Tasso di interesse"
+
+#. module: accounting_loan
+#: model:ir.model,name:accounting_loan.model_loan_header
+msgid "Account loan"
+msgstr "Prestiti"
+
+#. module: accounting_loan
+#: selection:loan.header,method:0
+msgid "French"
+msgstr "Francese"
+
+#. module: accounting_loan
+#: field:loan.rate,rate_date:0
+msgid "Rate Date"
+msgstr "Data rata"
+
+#. module: accounting_loan
+#: field:loan.header,total_payed:0
+msgid "Total payed"
+msgstr "Totale pagato"
+
+#. module: accounting_loan
+#: model:ir.ui.menu,name:accounting_loan.financial_management_loan_rate
+#: view:loan.header:0
+msgid "Rates"
+msgstr "Rate"
+
+#. module: accounting_loan
+#: view:loan.header:0 selection:loan.header,state:0
+msgid "Approved"
+msgstr "Approvato"
+
+#. module: accounting_loan
+#: selection:loan.header,loan_period:0
+msgid "Bimestral"
+msgstr "Bimestrale"
+
+#. module: accounting_loan
+#: selection:loan.change.rate.wizard,rate_period:0
+#: selection:loan.header,rate_period:0
+#: selection:loan.header.rate,rate_period:0
+msgid "Annual"
+msgstr "Annuale"
+
+#. module: accounting_loan
+#: code:addons/accounting_loan/wizard/change_rate.py:77
+#, python-format
+msgid "Error!"
+msgstr "Errore!"
+
+#. module: accounting_loan
+#: view:loan.change.rate.wizard:0
+msgid "Import acceptation"
+msgstr "Importazione"
+
+#. module: accounting_loan
+#: model:res.groups,comment:accounting_loan.group_loan_manager
+#: model:res.groups,name:accounting_loan.group_loan_manager
+msgid "Loan Manager"
+msgstr "Gestione prestiti"
+
+#. module: accounting_loan
+#: model:ir.actions.act_window,name:accounting_loan.action_loan_change_rate_wizard
+#: model:ir.model,name:accounting_loan.model_loan_change_rate_wizard
+#: view:loan.header:0
+msgid "Change rate"
+msgstr "Cambio tasso"
+
+#. module: accounting_loan
+#: model:ir.ui.menu,name:accounting_loan.financial_management_root
+msgid "Financial Management"
+msgstr "Gest. Finanziaria"
+
+#. module: accounting_loan
+#: selection:loan.header,method:0
+msgid "Italian"
+msgstr "Italiano"
+
+#. module: accounting_loan
+#: model:ir.actions.act_window,name:accounting_loan.action_loan_header
+msgid "Loan headers"
+msgstr "Testata prestito"
+
+#. module: accounting_loan
+#: field:loan.header,rate_ids:0
+msgid "Plan rate"
+msgstr "Piano rateale"
+
+#. module: accounting_loan
+#: field:loan.header,close_date:0
+msgid "Close Date"
+msgstr "Data chiusura"
+
+#. module: accounting_loan
+#: field:loan.header,analytic_account:0
+msgid "Analytic Account"
+msgstr "Conto analitivo"
+
+#. module: accounting_loan
+#: selection:loan.header,method:0
+msgid "Variable duration"
+msgstr "Durata variabile"
+
+#. module: accounting_loan
+#: field:loan.rate,pay_amount:0
+msgid "Pay amount"
+msgstr "Importo pagato"
+
+#. module: accounting_loan
+#: model:ir.model,name:accounting_loan.model_res_partner view:loan.header:0
+#: field:loan.header,partner_id:0 view:loan.rate:0
+#: field:loan.rate,partner_id:0
+msgid "Partner"
+msgstr "Partner"
+
+#. module: accounting_loan
+#: selection:loan.header,return_type:0
+msgid "Automatic Payment"
+msgstr "Pagamento automatico"
+
+#. module: accounting_loan
+#: selection:loan.header,loan_period:0
+msgid "Quadrimestral"
+msgstr "Quadrimestrale"
+
+#. module: accounting_loan
+#: view:loan.header:0
+msgid "Confirm"
+msgstr "Conferma"
+
+#. module: accounting_loan
+#: help:loan.header,description:0
+msgid "Extra description for loan element"
+msgstr "Descrizione extra per il prestito"
+
+#. module: accounting_loan
+#: view:loan.header:0 view:loan.rate:0
+msgid "Analytic account"
+msgstr "Conto analitico"
+
+#. module: accounting_loan
+#: view:loan.header:0 field:loan.header,state:0 view:loan.rate:0
+#: field:loan.rate,state:0
+msgid "State"
+msgstr "Stato"
+
+#. module: accounting_loan
+#: model:ir.module.category,name:accounting_loan.module_loan
+msgid "Financial roles"
+msgstr "Ruoli finanziati"
+
+#. module: accounting_loan
+#: field:loan.rate,interest:0
+msgid "Interest"
+msgstr "Interessi"
+
+#. module: accounting_loan
+#: view:loan.header:0
+msgid "payed"
+msgstr "pagato"
+
+#. module: accounting_loan
+#: selection:loan.header,loan_type:0
+msgid "Loan early"
+msgstr "Prestito anticipato"
+
+#. module: accounting_loan
+#: field:loan.header.rate,rate_id:0
+msgid "From rate #"
+msgstr "Dalla data #"
+
+#. module: accounting_loan
+#: field:loan.header,return_type:0
+msgid "Payment Type"
+msgstr "Tipo di pagamento"
+
+#. module: accounting_loan
+#: model:ir.model,name:accounting_loan.model_loan_rate
+msgid "Account loan rate"
+msgstr "Rata prestito"
+
+#. module: accounting_loan
+#: help:loan.rate,name:0
+msgid "Code for reference for rate"
+msgstr "Codice per riferimento della rata"
+
+#. module: accounting_loan
+#: view:loan.header:0 view:loan.rate:0 field:loan.rate,guarantor_id:0
+msgid "Guarantor"
+msgstr "Avallante"
+
+#. module: accounting_loan
+#: selection:loan.header,loan_period:0
+msgid "Trimestral"
+msgstr "Trimestrale"
+
+#. module: accounting_loan
+#: field:loan.rate,remain:0
+msgid "Remain"
+msgstr "Residuo"
+
+#. module: accounting_loan
+#: view:loan.rate:0 field:loan.rate,rate_type:0
+msgid "Rate type"
+msgstr "Tipo di tasso"
+
+#. module: accounting_loan
+#: field:loan.rate,rate:0
+msgid "Rate applied"
+msgstr "Tasso applicato"
+
+#. module: accounting_loan
+#: field:loan.header,total_interest:0
+msgid "Total Interest"
+msgstr "Totale interesse"
+
+#. module: accounting_loan
+#: selection:loan.rate,rate_type:0
+msgid "Normal"
+msgstr "Normale"
+
+#. module: accounting_loan
+#: view:loan.header:0
+msgid "Invoice Line"
+msgstr "Riga fatturazione"
+
+#. module: accounting_loan
+#: field:loan.change.rate.wizard,rate_id:0
+msgid "Last rate #"
+msgstr "Ultima rata #"
+
+#. module: accounting_loan
+#: view:loan.rate:0
+msgid "Plan rates"
+msgstr "Piano rateale"
+
+#. module: accounting_loan
+#: help:loan.rate,pay_amount:0
+msgid "If import is different from correct rate"
+msgstr "Se l'importo è differente dalla corrente rata"
+
+#. module: accounting_loan
+#: field:loan.header,start_date:0
+msgid "Start Date"
+msgstr "Data inizio"
+
+#. module: accounting_loan
+#: selection:loan.header,loan_period:0
+msgid "Semestral"
+msgstr "Semestrale"
+
+#. module: accounting_loan
+#: model:res.groups,comment:accounting_loan.group_loan_user
+#: model:res.groups,name:accounting_loan.group_loan_user
+msgid "Loan user"
+msgstr "Utilizzatore prestivi"
+
+#. module: accounting_loan
+#: field:loan.header,loan_type:0
+msgid "Loan Type"
+msgstr "Tipo di prestito"
+
+#. module: accounting_loan
+#: view:loan.header:0
+msgid "Opened"
+msgstr "Aperto"
+
+#. module: accounting_loan
+#: view:loan.rate:0 field:loan.rate,pay_date:0
+msgid "Pay Date"
+msgstr "Data pagamento"
+
+#. module: accounting_loan
+#: model:ir.module.category,description:accounting_loan.module_loan
+msgid "Financial groups"
+msgstr "Gruppi finanziari"
+
+#. module: accounting_loan
+#: view:loan.header:0 field:loan.header,note:0 field:loan.header.rate,note:0
+msgid "Note"
+msgstr "Note"
+
+#. module: accounting_loan
+#: help:loan.change.rate.wizard,rate_id:0
+msgid "Last rate before change (this rate use old interest rate)"
+msgstr ""
+"Ultima rata prima del cambio (la rata selezionata utilizza il precedente "
+"valore del tasso, la successiva quello impostato qui)"
+
+#. module: accounting_loan
+#: selection:loan.header,state:0
+msgid "Draft"
+msgstr "Bozza"
+
+#. module: accounting_loan
+#: selection:loan.header,state:0
+msgid "Reject"
+msgstr "Rifiutato"
+
+#. module: accounting_loan
+#: view:loan.header:0
+msgid "total"
+msgstr "totale"
+
+#. module: accounting_loan
+#: field:loan.header,method:0
+msgid "Method"
+msgstr "Metodo"
+
+#. module: accounting_loan
+#: code:addons/accounting_loan/wizard/change_rate.py:77
+#, python-format
+msgid "No rate to modify"
+msgstr "Nessun tasso da modificare"
+
+#. module: accounting_loan
+#: field:loan.header,cancel_date:0 field:loan.rate,cancel_date:0
+msgid "Cancel Date"
+msgstr "Data annullamento"
+
+#. module: accounting_loan
+#: view:loan.header:0
+msgid "interest"
+msgstr "interesse"
+
+#. module: accounting_loan
+#: view:loan.header:0 view:loan.rate:0
+msgid "Date"
+msgstr "Data"
+
+#. module: accounting_loan
+#: view:loan.header:0
+msgid "Total:"
+msgstr "Totale:"
+
+#. module: accounting_loan
+#: view:loan.rate:0 selection:loan.rate,state:0
+msgid "Payed"
+msgstr "Pagato"
+
+#. module: accounting_loan
+#: field:loan.header,request_date:0
+msgid "Request Date"
+msgstr "Data richiesta"
+
+#. module: accounting_loan
+#: selection:loan.header,method:0
+msgid "American"
+msgstr "Americano"
+
+#. module: accounting_loan
+#: field:loan.header,loan_period:0
+msgid "Loan Period"
+msgstr "Periodo prestito"
+
+#. module: accounting_loan
+#: help:loan.rate,rate:0
+msgid "Rate applied (changeable by wizard via header)"
+msgstr "Tasso applicato (variabile con wizard nella testata prestito)"
+
+#. module: accounting_loan
+#: help:loan.header,rate:0
+msgid "Rate for calculate interess"
+msgstr "Tasso per calcolare gli interessi"
+
+#. module: accounting_loan
+#: view:loan.header:0
+msgid "Loan type"
+msgstr "Tipo di prestito"
+
+#. module: accounting_loan
+#: selection:loan.header,method:0
+msgid "German"
+msgstr "Tedesco"
+
+#. module: accounting_loan
+#: model:ir.ui.menu,name:accounting_loan.financial_management_loan
+#: model:ir.ui.menu,name:accounting_loan.financial_management_loan_loan
+#: view:loan.header:0 field:loan.header.rate,loan_id:0 view:loan.rate:0
+#: field:loan.rate,loan_id:0 field:res.partner,loan_ids:0
+msgid "Loan"
+msgstr "Prestiti"
+
+#. module: accounting_loan
+#: view:loan.header:0
+msgid "Period"
+msgstr "Periodi"
+
+#. module: accounting_loan
+#: view:loan.header:0
+msgid "Generate"
+msgstr "Genera"
+
+#. module: accounting_loan
+#: field:loan.header,period:0
+msgid "Periods"
+msgstr "Periodi"
+
+#. module: accounting_loan
+#: selection:loan.header,loan_type:0
+msgid "Load postponed"
+msgstr "Prestito posticipato"
+
+#. module: accounting_loan
+#: view:loan.change.rate.wizard:0 view:loan.header:0 view:loan.rate:0
+#: selection:loan.rate,state:0
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: accounting_loan
+#: view:loan.header:0 selection:loan.header,state:0
+msgid "Close"
+msgstr "Chiudi"
+
+#. module: accounting_loan
+#: field:loan.rate,analytic_account:0
+msgid "Analitic account"
+msgstr "Conto analitico"
+
+#. module: accounting_loan
+#: selection:loan.rate,rate_type:0
+msgid "Integration"
+msgstr "Integrazione"
+
+#. module: accounting_loan
+#: view:loan.change.rate.wizard:0
+msgid "Cange"
+msgstr "Cambia"
+
+#. module: accounting_loan
+#: field:loan.header,confirmed_date:0
+msgid "Confirmed Date"
+msgstr "Data conferma"
+
+#. module: accounting_loan
+#: field:loan.header,loan_amount:0 field:loan.rate,capital:0
+msgid "Capital"
+msgstr "Capitale"
+
+#. module: accounting_loan
+#: model:ir.actions.act_window,name:accounting_loan.action_loan_rate
+msgid "Loan rate"
+msgstr "Rata prestito"
+
+#. module: accounting_loan
+#: field:loan.header,rate_change_ids:0
+msgid "Change of rate"
+msgstr "Cambio di tasso"
+
+#. module: accounting_loan
+#: view:loan.header:0
+msgid "amount"
+msgstr "importo"
+
+#. module: accounting_loan
+#: view:loan.rate:0 field:loan.rate,currency_date:0
+msgid "Currency Date"
+msgstr "Data valuta"
+
+#. module: accounting_loan
+#: view:loan.header:0 selection:loan.header,state:0 view:loan.rate:0
+#: selection:loan.rate,state:0
+msgid "Confirmed"
+msgstr "Confermato"
+
+#. module: accounting_loan
+#: field:loan.header,name:0 field:loan.rate,name:0
+msgid "Ref."
+msgstr "Rif."
+
+#. module: accounting_loan
+#: view:loan.header:0 field:loan.header,bank_id:0 view:loan.rate:0
+#: field:loan.rate,bank_id:0
+msgid "Bank"
+msgstr "Banca"
+
+#. module: accounting_loan
+#: field:loan.header,total_amount:0
+msgid "Total amount"
+msgstr "Importo totale"
+
+#. module: accounting_loan
+#: selection:loan.change.rate.wizard,rate_period:0
+#: selection:loan.header,rate_period:0
+#: selection:loan.header.rate,rate_period:0
+msgid "Match with loan period"
+msgstr "Allineato col periodo della rata"
+
+#. module: accounting_loan
+#: view:loan.header:0
+msgid "Approve"
+msgstr "Approvato"
+
+#. module: accounting_loan
+#: sql_constraint:loan.header.rate:0
+msgid "Change rate already setted for this period"
+msgstr "Cambia il tasso già importato per questo periodo"
+
+#. module: accounting_loan
+#: field:loan.header,description:0
+msgid "Description"
+msgstr "Descrizione"
+
+#. module: accounting_loan
+#: field:loan.rate,rate_amount:0
+msgid "Amount"
+msgstr "Importo"
+
+#. module: accounting_loan
+#: model:ir.model,name:accounting_loan.model_loan_header_rate
+msgid "Loan change rates"
+msgstr "Cambio tasso prestito"
+
+#. module: accounting_loan
+#: field:loan.change.rate.wizard,rate:0 field:loan.header.rate,rate:0
+msgid "Rate"
+msgstr "Tasso"
+
+#. module: accounting_loan
+#: selection:loan.header,loan_period:0
+msgid "Year"
+msgstr "Annuale"
+
+#. module: accounting_loan
+#: view:loan.header:0
+msgid "Interess Plan:"
+msgstr "Piano interessi:"
+
+#. module: accounting_loan
+#: selection:loan.header,return_type:0
+msgid "By Cheque"
+msgstr "Assegno"
+
+#. module: accounting_loan
+#: help:loan.header,bank_id:0
+msgid "Bank reference for this loan, depend on partner"
+msgstr "Riferimento bancario per questo prestito, in funzione del partner"

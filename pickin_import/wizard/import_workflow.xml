@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <!-- Workflow: -->
+        <record model="workflow" id="wkf_import">
+            <field name="name">import.wkf</field>
+            <field name="osv">picking.import.wizard</field>
+            <field name="on_create">True</field>
+        </record>
+
+        <!-- Activities: -->
+        <record model="workflow.activity" id="act_draft">
+            <field name="wkf_id" ref="wkf_import" />
+            <field name="flow_start">True</field>
+            <field name="name">draft</field>
+            <field name="kind">function</field>
+            <field name="action">import_draft()</field>
+        </record>
+
+        <record model="workflow.activity" id="act_loaded">
+            <field name="wkf_id" ref="wkf_import" />
+            <field name="name">loaded</field>
+            <field name="kind">function</field>
+            <field name="action">import_loaded()</field>
+        </record>
+
+        <record model="workflow.activity" id="act_imported">
+            <field name="wkf_id" ref="wkf_import" />
+            <field name="name">imported</field>
+            <field name="kind">function</field>
+            <field name="action">import_imported()</field>
+            <field name="flow_stop">True</field>
+        </record>
+
+        <!-- Transition: -->
+        <record model="workflow.transition" id="trigger1">
+            <field name="act_from" ref="act_draft" />
+            <field name="act_to" ref="act_loaded" />
+            <field name="signal">signal_import_load</field>
+        </record>
+
+        <record model="workflow.transition" id="trigger2">
+            <field name="act_from" ref="act_loaded" />
+            <field name="act_to" ref="act_imported" />
+            <field name="signal">signal_import_import</field>
+        </record>
+    </data>
+</openerp>

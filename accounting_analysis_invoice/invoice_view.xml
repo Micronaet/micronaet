@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+    <!--Statistic invoice: etl.accounting.invoice ***************************** -->
+        <record model="ir.ui.view" id="view_etl_accounting_invoice_search">
+        <field name="name">etl.accounting.invoice.search</field>
+        <field name="model">etl.accounting.invoice</field>
+        <field name="arch" type="xml">
+            <search string="Statistic invoice">
+                    <field name="partner_id" string="Partner" filter_domain="[('partner_id','=',self)]"/>
+                    <field name="date" string="From date" filter_domain="[('date','&gt;=',self)]"/>
+
+                    <filter icon="terp-go-home" name="Prev30" string="Ultimo mese" domain="[('date','&gt;',(context_today()-relativedelta(days=40)).strftime('%%Y-%%m-%%d'))]" />
+
+                    <group expand="1" string="Group By...">
+                        <filter name="group_partner" string="Partner" icon="terp-partner" context="{'group_by':'partner_id'}"/>
+                        <filter name="group_type" string="Date" icon="terp-partner" context="{'group_by':'date'}"/>
+                    </group>                    
+            </search>
+        </field>
+    </record>
+
+       <!-- Form -->
+    <record model="ir.ui.view" id="view_etl_accounting_invoice_form">
+        <field name="name">etl.accounting.invoice.form</field>
+        <field name="model">etl.accounting.invoice</field>
+        <field name="arch" type="xml">
+            <form string="Statistic invoice Form">
+                <separator string="Accounting write" colspan="4" />
+                <field name="partner_id"/>
+                <newline />
+                <group colspan="4" col="6">
+                   <field name="date"/>
+                   <field name="total" string="Importo" />
+                </group>
+            </form>
+        </field>
+    </record>
+
+       <!-- Tree -->
+    <record model="ir.ui.view" id="view_etl_accounting_invoice_tree">
+        <field name="name">etl.accounting.invoice.tree</field>
+        <field name="model">etl.accounting.invoice</field>
+        <field name="arch" type="xml">
+            <tree string="Invoice terms of payments">
+                <field name="partner_id"/>
+                <field name="date" />
+                <field name="total" sum="Totale" string="Saldo"  />
+            </tree>
+        </field>
+    </record>
+    
+       <!-- Calendar -->
+    <record model="ir.ui.view" id="view_etl_accounting_invoice_calendar">
+        <field name="name">Invoice</field>
+        <field name="model">etl.accounting.invoice</field>
+        <field name="arch" type="xml">
+            <calendar color="partner_id" date_start="date" string="Date">
+                <field name="name" />
+                <field name="date" />
+                <field name="total" />
+            </calendar>
+        </field>
+    </record>
+    
+       <!-- Graph -->
+    <record model="ir.ui.view" id="view_etl_accounting_invoice_graph">
+        <field name="name">Statistic invoice Graph</field>
+        <field name="model">etl.accounting.invoice</field>
+        <field name="arch" type="xml">
+            <graph string="invoice for date" type="bar">
+                <field name="partner_id"/>
+                <field name="total" operator="+" />
+            </graph>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_etl_accounting_invoice_graph_period">
+        <field name="name">Statistic invoice Graph (period)</field>
+        <field name="model">etl.accounting.invoice</field>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+            <graph string="invoice for date" type="bar">            
+                <field name="date"/>
+                <field name="total" operator="+" />
+            </graph>
+        </field>
+    </record>
+
+       <!-- Action -->
+    <record model="ir.actions.act_window" id="action_etl_accounting_invoice">
+        <field name="name">invoice list</field>
+        <field name="res_model">etl.accounting.invoice</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,graph,calendar</field>
+        <field name="search_view_id" ref="view_etl_accounting_invoice_search"/>
+    </record>
+
+       <!-- Dashboard Action -->
+    <record model="ir.actions.act_window" id="action_etl_accounting_invoice_board">
+        <field name="name">Invoice list per period</field>
+        <field name="res_model">etl.accounting.invoice</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph</field>
+        <field name="search_view_id" ref="view_etl_accounting_invoice_search"/>
+        <field name="context">{'group_by':'date','graph_default_view':'account.analysis_invoice.view_etl_accounting_invoice_graph_period'}</field>
+    </record>
+    <record model="ir.actions.act_window" id="action_etl_accounting_invoice_partner_board">
+        <field name="name">Invoice list per period</field>
+        <field name="res_model">etl.accounting.invoice</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,graph</field>
+        <field name="search_view_id" ref="view_etl_accounting_invoice_search"/>
+        <field name="context">{'group_by':'partner_id',}</field>
+    </record>
+
+    <!-- DASHBOARD: -->
+    <record id="board_accounting_analysis_invoice_default" model="ir.ui.view">
+        <field name="name">board.accounting.analysis.invoice</field>
+        <field name="model">board.board</field>
+        <field name="arch" type="xml">
+            <form string="Accounting analysis invoice" version="7.0">
+                <board style="1">
+                    <column>
+                        <action name="%(action_etl_accounting_invoice_board)d" string="Partner situation"/>
+                        <action name="%(action_etl_accounting_invoice_partner_board)d" string="Partner group"/>
+                    </column>
+                </board>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_board_accounting_analysis_invoice_default" model="ir.actions.act_window">
+        <field name="name">Accounting analysis invoice</field>
+        <field name="res_model">board.board</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="board_accounting_analysis_invoice_default"/>
+    </record>-->
+
+    <!-- Create production order from customer order lines           action="action_board_accounting_analysis_order_default" -->
+    <menuitem name="Invoice" parent="accounting_analysis.menu_accounting_analysis_root" id="menu_analysis_invoice_root" sequence="60" action="action_board_accounting_analysis_invoice_default"/>
+       <menuitem name="Invoice list" parent="menu_analysis_invoice_root" id="menu_analysis_invoice_tree" action="action_etl_accounting_invoice" sequence="10" />
+  </data>
+</openerp>

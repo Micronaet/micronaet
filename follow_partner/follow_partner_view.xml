@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+    <!-- PARTNER -->
+        <record model="ir.ui.view" id="view_res_partner_follow_form">
+            <field name="name">Follow partner</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+               <field name='active' position="after">
+                  <field name="followed" />
+               </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_res_partner_follow_search">
+            <field name="name">Follow partner</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+               <filter name='supplier' position="after">
+                  <filter string='Followed' name="followed" domain="[('followed','=',1)]"/>
+               </filter>
+            </field>
+        </record>
+
+        <record id="view_res_partner_follower_tree" model="ir.ui.view" >
+            <field name="name">res.partner.follow.tree</field>
+            <field name="model">res.partner</field>
+            <field name="priority" eval='60'/>
+            <field name="arch" type="xml">
+                <tree string='Partner' editable='bottom'>
+                    <field name='name'/>
+                    <field name='followed'/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_partner_follow_tree" model="ir.actions.act_window" >
+            <field name="name">Follow</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">tree</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_res_partner_follower_tree"/>
+        </record>
+
+    <!--MENUITEM-->
+    <menuitem parent="base.menu_partner_form" id="menu_partner_follow_tree" name='Follow' action="action_partner_follow_tree" sequence="10"/>
+
+    </data>
+</openerp>
+

@@ -1,0 +1,3 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_analysis_supplier_request_user","analysis.supplier.request","model_analysis_supplier_request","chemical_analysis.group_analysis_user",1,1,1,1
+"access_analysis_supplier_request_user_base","analysis.supplier.request","model_analysis_supplier_request","base.group_user",1,0,0,0

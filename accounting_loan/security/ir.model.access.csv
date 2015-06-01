@@ -1,0 +1,8 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_loan_header_user","loan.header","model_loan_header","accounting_loan.group_loan_user",1,0,0,0
+"access_loan_header_manager","loan.header","model_loan_header","accounting_loan.group_loan_manager",1,1,1,1
+"access_loan_rate_user","loan.rate","model_loan_rate","accounting_loan.group_loan_user",1,0,0,0
+"access_loan_rate_manager","loan.rate","model_loan_rate","accounting_loan.group_loan_manager",1,1,1,1
+"access_loan_header_rate_user","loan.header.rate","model_loan_header_rate","accounting_loan.group_loan_user",1,0,0,0
+"access_loan_header_rate_manager","loan.header.rate","model_loan_header_rate","accounting_loan.group_loan_manager",1,1,1,1
+

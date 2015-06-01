@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<openerp>
+   <data>
+    <menuitem name="Accounting Analysis" parent="base.menu_sales" id="menu_accounting_analysis_root" sequence="60" />
+   </data>
+</openerp>

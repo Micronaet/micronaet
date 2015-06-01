@@ -1,0 +1,127 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+	<!--INHERIT--> 
+	   <!--product.pricelist-->
+    <record id='view_product_pricelist_search_extra_fields' model='ir.ui.view'>
+        <field name='name'>Pricelist search extra fields</field>
+        <field name='model'>product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view_search"/>
+        <field name='arch' type='xml'>
+           <field name="active" position="after">
+              <separator />
+              <filter name="is_model" string="Model" domain="[('tipology','=','model')]" />
+              <filter name="is_customer" string="Customer" domain="[('tipology','=','customer')]" />
+              <filter name="is_historical" string="Historical" domain="[('tipology','=','historical')]" />
+
+              <group expand="1" string="Group By...">
+                  <filter name="group_tipology" string="Tipology" icon="terp-partner" context="{'group_by':'tipology'}"/>
+              </group>
+              
+           </field>
+        </field>
+    </record>
+    <record id='view_product_pricelist_tree_extra_fields' model='ir.ui.view'>
+        <field name='name'>Pricelist extra fields</field>
+        <field name='model'>product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view_tree"/>
+        <field name='arch' type='xml'>
+           <field name="active" position="after">
+              <field name="tipology" />
+           </field>
+        </field>
+    </record>
+    <record id='view_product_pricelist_form_extra_fields' model='ir.ui.view'>
+        <field name='name'>Pricelist extra fields</field>
+        <field name='model'>product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view"/>
+        <field name='arch' type='xml'>
+           <field name="active" position="after">
+              <field name="tipology" />
+           </field>
+        </field>
+    </record>
+
+	   <!--product.product-->
+    <record id='product_search_form_view_pricelist' model='ir.ui.view'>
+        <field name='name'>Pricelist search</field>
+        <field name='model'>product.product</field>
+        <field name="inherit_id" ref="product.product_search_form_view"/>
+        <field name='arch' type='xml'>        
+           <field name="name" position="after">
+              <filter name="in_pricelist" string="In pricelist" domain="[('in_pricelist', '=', True)]" />
+           </field>
+        </field>
+    </record>
+    <record id='product_product_tree_view_pricelist' model='ir.ui.view'>
+        <field name='name'>Pricelist fields</field>
+        <field name='model'>product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name='arch' type='xml'>
+           <field name="name" position="after">
+              <field name="in_pricelist" invisible="1"/>
+           </field>
+        </field>
+    </record>
+    <record id='product_normal_form_view_pricelist_in_pricelist_field' model='ir.ui.view'>
+        <field name='name'>Pricelist fields</field>
+        <field name='model'>product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name='arch' type='xml'>
+           <label for="warranty" position="before">
+              <field name="in_pricelist" />
+              <newline/>
+           </label>
+        </field>
+    </record>
+
+    <!--product.product-->
+    <record id='view_product_product_pricelist_search' model='ir.ui.view'>
+        <field name='name'>Pricelist product search</field>
+        <field name='model'>product.product</field>
+        <field name="priority" eval="40" />
+        <field name='arch' type='xml'>
+           <search string="Search product">
+              <field name="name" />
+              <field name="default_code" />
+              <field name="categ_id" />
+              <filter name="is_pricelist" string="In pricelist" domain="[('is_pricelist','=',True)]" />
+
+              <group expand="1" string="Group By...">
+                  <filter name="group_categ" string="Category" icon="terp-partner" context="{'group_by':'categ_id'}"/>
+              </group>                  
+           </search>   
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_product_product_pricelist_tree">
+        <field name="name">Pricelist tree</field>
+        <field name="model">product.product</field>
+        <field name="priority" eval="40" />
+        <field name="arch" type="xml">
+            <tree string="Pricelist product" editable="bottom" colors="grey:in_pricelist==False;black:in_pricelist==True">
+                <field name="in_pricelist" />
+                <field name="name" readonly="1" />
+                <field name="default_code" readonly="1" />
+                <field name="categ_id" readonly="1"  />
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_product_pricelist">
+        <field name="name">Product in Pricelist</field>
+        <field name="res_model">product.product</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_product_product_pricelist_tree"/>
+        <field name="search_view_id" ref="view_product_product_pricelist_search"/>
+    </record>
+    
+    <menuitem 
+        parent="product.menu_product_pricelist_main" 
+        id="menu_product_pricelist_main" 
+        action="action_product_pricelist"
+        sequence="5" />
+  </data>
+</openerp>
+

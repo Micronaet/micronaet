@@ -1,0 +1,85 @@
+Passaggio dalla 6 alla 7 dei moduli:
+
+Viste (XML):
+   1. non c'è il campo type nelle viste, es.: <field name="type">search</field>
+   2. controllare i menuitem se vengono creati
+   3. controllare le videate inherit se puntano a videate ancora esistenti e a campi che sono ancora presenti (o magari spostati nell'xpath)
+   4. riprendere in mano tutte le viste search con le nuove integrazioni 
+   5. Aggiungere nelle vista form il campo string = '....'
+   6. Aggiungere il tag sheet e group e la relativa version 7.0
+   7. cambiare i colors con l'operatore unario
+
+
+Codice python:
+    1. attivazione:
+       - non c'è l'attivazione dell'oggetto, es.: 
+           class dentist_todo(osv.osv):
+              ''' classe ..... '''
+              
+           dentist_todo()    # <<<<< TOLGIERE 
+
+    2. nuovi padri degli oggetti
+       prima:    from osv import osv, fields
+       adesso:   from osv import osv, orm, fields  
+       (poi andrà tolto anche osv importato, tenuto solo per le comunicazioni di errore)
+
+    3. messaggi di errore:
+       per ora hanno osv. dovrebbe andare cambiato (credo in orm devo verificare)
+           
+    4. mettere le classi come
+       prima   osv.osv
+       adess   orm.Model 
+       
+    5. mettere i wizard come orm.Transient al posto di osv.osv_memory, fare anche l'import corretto da osv di orm
+       prima   osv.osv_memory 
+       adesso  orm.TransientModel
+
+    6. sostituire le librerie non più utilizzate (es. time o altre per la gestione di date e ore e differenze)
+
+    7. res.partner.address non esiste più, si collassano in res.partner (vedere se ci sono campi di questo tipo)
+
+
+    8. i wizard, come tutti i bottoni del wizard, se cliccati chiudono la videata, occorre creare un dizionario per dire quale finestra riaprire
+
+    9. per il programma dentista sarà da cambiare il link che apre l'ortofoto, magari con un bottone direttamente 
+    
+    10. init: utilizzare la seguente maschera:    
+    
+DA QUI: vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+# -*- coding: utf-8 -*-
+###############################################################################
+#
+#    Copyright (C) 2001-2014 Micronaet SRL (<http://www.micronaet.it>).
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as published
+#    by the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+###############################################################################
+import os
+import sys
+import netsvc
+import logging
+from osv import osv, orm, fields
+from datetime import datetime, timedelta
+from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, DATETIME_FORMATS_MAP, float_compare
+import openerp.addons.decimal_precision as dp
+from openerp.tools.translate import _
+
+
+_logger = logging.getLogger(__name__)
+A QUI: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Normalizzazione:
+    In ultimo: Possibilmente normalizzare pep8 (dove non comporta un lavoraccio)
+

@@ -1,0 +1,83 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* dentist_web
+# <> <>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-11-11 08:23+0000\n"
+"PO-Revision-Date: 2014-11-11 09:25+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: dentist_web
+#: field:dentist.web.wizard,phone:0
+msgid "Phone number"
+msgstr "Numero di telefono"
+
+#. module: dentist_web
+#: view:dentist.web.wizard:0
+msgid "Save"
+msgstr "Inoltra"
+
+#. module: dentist_web
+#: field:dentist.web.wizard,name:0
+msgid "Company"
+msgstr "Azienda"
+
+#. module: dentist_web
+#: field:dentist.web.wizard,email:0
+msgid "E-mail sender"
+msgstr "Indirizzo e-mail"
+
+#. module: dentist_web
+#: model:ir.model,name:dentist_web.model_dentist_web_wizard
+msgid "dentist.web.wizard"
+msgstr "dentist.web.wizard"
+
+#. module: dentist_web
+#: field:dentist.web.wizard,support_contact:0
+msgid "Support contact"
+msgstr "Nominativo"
+
+#. module: dentist_web
+#: model:ir.model,name:dentist_web.model_dentist_welcome_wizard
+msgid "dentist.welcome.wizard"
+msgstr "dentist.welcome.wizard"
+
+#. module: dentist_web
+#: view:dentist.web.wizard:0
+#: model:ir.actions.act_window,name:dentist_web.action_dentist_web_wizard_form
+msgid "Dentist Web"
+msgstr "Dentista web"
+
+#. module: dentist_web
+#: model:ir.model,name:dentist_web.model_dentist_web
+msgid "dentist.web"
+msgstr "dentist.web"
+
+#. module: dentist_web
+#: view:dentist.welcome.wizard:0
+msgid "Request information"
+msgstr "Richiesta informazioni"
+
+#. module: dentist_web
+#: view:dentist.web.wizard:0
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: dentist_web
+#: field:dentist.web.wizard,contacted:0
+msgid "If you would like, you fill in the following fields"
+msgstr "Se desiderata essere contattati, compilate i seguenti campi"
+
+#. module: dentist_web
+#: view:dentist.web.wizard:0 field:dentist.web.wizard,req_desc:0
+msgid "Request description"
+msgstr "Descrizione richiesta"

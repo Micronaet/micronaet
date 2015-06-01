@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<openerp>
+	<data>
+		<wizard
+			string="Open web graph"
+			model="res.partner"
+			name="web_graph_wizard"
+			id="wizard_web_graph"
+			keyword="client_action_multi" />
+	</data>
+</openerp>

@@ -1,0 +1,123 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+
+    <!-- bank.movement -->
+    <record model="ir.ui.view" id="view_bank_movement_search">
+        <field name="name">Bank movement</field>
+        <field name="model">bank.movement</field>
+        <field name="arch" type="xml">
+            <search string="Bank movement">
+                <field name="category_id" string="Categoria" filter_domain="[('category_id','=',self)]" />
+                <field name="user_id" string="Utente" filter_domain="[('user_id','=',self)]" />
+
+                <group expand="1" string="Group By...">
+                    <filter name="group_category_id" string="Categoria" icon="terp-partner" context="{'group_by':'category_id'}"/>
+                    <filter name="group_user_id" string="Utente" icon="terp-accessories-archiver" context="{'group_by':'user_id'}"/>
+                    <filter name="group_anno" string="Anno" icon="terp-accessories-archiver" context="{'group_by':'year'}"/>
+                    <filter name="group_trimestre" string="Trimestre" icon="terp-accessories-archiver" context="{'group_by':'trimestre'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_bank_movement_tree">
+        <field name="name">Bank movement</field>
+        <field name="model">bank.movement</field>
+        <field name="arch" type="xml">
+            <tree string="Bank movement" version="7.0">
+                <field name="date" />
+                <field name="causale" />
+                <field name="anno" />
+                <field name="trimestre" />
+                <field name="note_banca" />
+                <field name="note"  />
+                <field name="dare" />
+                <field name="avere" />
+                <field name="user_id" />
+                <field name="category_id" />
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_bank_movement_form">
+        <field name="name">Bank movement</field>
+        <field name="model">bank.movement</field>
+        <field name="arch" type="xml">
+            <form string="Bank movement" version="7.0">
+                <field name="date" />
+                <field name="causale" />
+                <field name="anno" />
+                <field name="trimestre" />
+                <field name="note_banca" />
+                <field name="note"  />
+                <field name="dare" total="1" />
+                <field name="avere" total="1" />
+                <field name="user_id" />
+                <field name="category_id" />
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_bank_movement_form">
+        <field name="name">Bank movement</field>
+        <field name="model">bank.movement</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_bank_movement_tree"/>
+        <field name="search_view_id" ref="view_bank_movement_search"/>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+    </record>
+    
+    <!-- bank.movement.category -->
+    <record model="ir.ui.view" id="view_bank_movement_category_search">
+        <field name="name">Bank movement category</field>
+        <field name="model">bank.movement.category</field>
+        <field name="arch" type="xml">
+            <search string="Bank movement category">
+                <field name="name" string="Categoria" filter_domain="[('name','=',self)]" />
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_bank_movement_category_tree">
+        <field name="name">Bank movement category</field>
+        <field name="model">bank.movement.category</field>
+        <field name="arch" type="xml">
+            <tree string="Bank movement category" version="7.0">
+                <field name="name" />
+                <field name="note" />
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_bank_movement_category_form">
+        <field name="name">Bank movement category</field>
+        <field name="model">bank.movement.category</field>
+        <field name="arch" type="xml">
+            <form string="Bank movement category" version="7.0">
+                <field name="name" />
+                <field name="note" />
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_bank_movement_category_form">
+        <field name="name">Bank movement category</field>
+        <field name="model">bank.movement.category</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_bank_movement_category_tree"/>
+        <field name="search_view_id" ref="view_bank_movement_category_search"/>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+    </record>
+    
+    <menuitem name="Bank" id="menu_bank_movement_root" sequence="40" />        
+        <menuitem name="Bank movement" id="menu_bank_movement" parent="menu_bank_movement_root" action="action_bank_movement_form" sequence="10" />
+        <menuitem name="Bank category" id="menu_bank_movement_category" parent="menu_bank_movement_root" action="action_bank_movement_category_form" sequence="20" />        
+    
+</data>
+</openerp>
+

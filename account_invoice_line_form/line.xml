@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<openerp>
+   <data>    
+        <record id="view_invoice_line_form_extra_details" model="ir.ui.view">
+            <field name="name">account.invoice.line.form.extra</field>
+            <field name="model">account.invoice.line</field>
+            <field name="arch" type="xml">
+                <form string="Invoice Line" version="7.0">
+                    <group>
+                        <group>
+                            <field name="product_id" readonly="1"/>
+                            <label for="quantity" readonly="1"/>
+                            <div>
+                                <field name="quantity" class="oe_inline" readonly="1"/>
+                                <field name="uos_id" class="oe_inline" groups="product.group_uom" readonly="1"/>
+                            </div>
+                            <field name="price_unit" readonly="1"/>
+                            <field name="discount" groups="sale.group_discount_per_so_line" readonly="1"/>
+                        </group>
+                        <group>
+                            <field domain="[('company_id', '=', parent.company_id), ('journal_id', '=', parent.journal_id), ('type', '&lt;&gt;', 'view')]" name="account_id" groups="account.group_account_user" readonly="1"/>
+                            <field name="invoice_line_tax_id" context="{'type':parent.type}" domain="[('parent_id','=',False),('company_id', '=', parent.company_id)]" widget="many2many_tags" readonly="1"/>
+                            <field domain="[('type','&lt;&gt;','view'), ('company_id', '=', parent.company_id)]" name="account_analytic_id" groups="analytic.group_analytic_accounting" readonly="1"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="1"/>
+                        </group>
+                    </group>
+                    <label for="name"/>
+                    <field name="name" readonly="1"/>
+                    
+                    <separator string="Extra info" />
+                    <field name="extra_text" colspan="4" nolabel="1" />
+                </form>
+            </field>
+        </record>
+   
+    <record id="action_invoice_line_form_detail" model="ir.actions.act_window">
+        <field name="name">Open account line</field>
+        <field name="res_model">account.invoice.line</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_invoice_line_form_extra_details"/>
+        <field name="domain">[('id','=',active_id)]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <!--<record id="view_invoice_line_tree_extra_button" model="ir.ui.view">
+        <field name="name">account.invoice.line.tree.extra.button</field>
+        <field name="model">account.invoice.line</field>
+        <field name="inherit_id" ref="account.view_invoice_line_tree"/>
+        <field name="arch" type="xml">
+            <field name="price_subtotal" position="after">
+               <button name="%(account_invoice_line_form.action_open_invoice_line_form)d" type="action" string="Open" />
+            </field>
+        </field>
+    </record>-->
+
+    <record id="view_invoice_form_line_button" model="ir.ui.view">
+        <field name="name">account.invoice.extra.button</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="/form/sheet/notebook//field[@name='invoice_line']/tree/field[@name='price_subtotal']" position="after">
+               <button name="%(account_invoice_line_form.action_invoice_line_form_detail)d" type="action" string="Open" />
+            </xpath>
+        </field>
+    </record>
+   </data>
+</openerp>

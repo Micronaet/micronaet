@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>        
+        <record id="view_dentist_web_wizard_form" model="ir.ui.view" >
+            <field name="name">dentist.web.wizard.form</field>
+            <field name="model">dentist.web.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Dentist Web" version='7.0'>
+                    <head>
+                        <button name="save_contact" string="Save" icon="gtk-go-forward" type="object" />
+                        <button special="cancel" string="Cancel" icon="gtk-cancel" />
+                    </head>
+                    <sheet>
+                    <group colspan="4" col="4">
+                        <field name="name"/>
+                        <field name="email" />
+                        <field name="contacted" readonly='1' nolabel='1' colspan="4"/>
+                        <newline/>
+                        <field name="support_contact" />
+                        <field name="phone" />
+                        <separator string="Request description" colspan="4"/>
+                        <field name="req_desc" nolabel='1' colspan="4"/>
+                    </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_dentist_web_wizard_tree" model="ir.ui.view">
+            <field name="name">dentist.web.wizard.tree</field>
+            <field name="model">dentist.web.wizard</field>
+            <field name="arch" type="xml">
+               <tree string='Dentist Web'>
+                    <field name="name"/>
+                    <field name="email" />
+                    <field name="support_contact"/>
+                    <field name="phone" />
+                    <field name="req_desc"/>
+               </tree>
+            </field>
+        </record>
+
+        <record id="action_dentist_web_wizard_form" model="ir.actions.act_window" >
+            <field name="name">Dentist Web</field>
+            <field name="res_model">dentist.web.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_dentist_web_wizard_form"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+            <field name="target">new</field>
+        </record>
+
+
+
+
+    </data>
+</openerp>
+

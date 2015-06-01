@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<openerp>
+<data noupdate="1">
+    <record id="aeroo_pricelist_model_report" model="ir.actions.report.xml">
+        <field name="name">Pricelist version</field>
+        <field name="type">ir.actions.report.xml</field>
+        <field name="model">product.pricelist</field>
+        <field name="report_name">aeroo_pricelist_model_report</field>
+        <field name="report_type">aeroo</field>
+        <field name="in_format">oo-odt</field>
+        <field name="parser_loc">pricelist_model/report/parser.py</field>
+        <field name="report_rml">pricelist_model/report/pricelist.odt</field>
+        <field name="parser_state">loc</field>
+        <field name="tml_source">file</field>
+    </record>
+    <ir_set>
+        <field eval="'action'" name="key"/>
+        <field eval="'client_print_multi'" name="key2"/>
+        <field eval="['product.pricelist']" name="models"/>
+        <field name="name">aeroo_pricelist_model_report_action</field>
+        <field eval="'ir.actions.report.xml,'+str(aeroo_pricelist_model_report)" name="value"/>
+        <field eval="True" name="isobject"/>
+        <field eval="True" name="replace"/>
+    </ir_set>
+</data>
+</openerp>
+

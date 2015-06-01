@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <record model="ir.ui.view" id="view_sale_order_form">
+        <field name="name">Sale order extra fields</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+           <field name="date_order" position="after">
+              <field name="deadline_order" />
+           </field>
+           <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="before">
+              <field name="footer_annotation" />           
+           </xpath>
+           <field name="note" position="before">
+              <separator string="Termini e condizioni" />
+              <newline/>
+           </field>
+           <field name="note" position="after">
+              <separator string="Note piè pagina per articoli" />
+              <newline/>
+              <field name="footer_annotation_text" />                         
+           </field>        
+        </field>
+    </record>
+</data>
+</openerp>
+

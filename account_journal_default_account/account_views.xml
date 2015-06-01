@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<openerp>
+   <data>
+        <record id="view_account_journal_form_visible_default" model="ir.ui.view">
+            <field name="name">Journal visible default</field>
+            <field name="model">account.journal</field>
+             <field name="inherit_id" ref="account.view_account_journal_form" />
+            <field name="arch" type="xml">
+                 <field name="group_invoice_lines" position="after">
+                     <field name="default_debit_account_id" attrs="{'required':[('type','in', ('cash', 'bank'))]}" domain="[('type','&lt;&gt;','view'),('type','&lt;&gt;','consolidation')]"/>
+                     <field name="default_credit_account_id" attrs="{'required':[('type','in',('cash', 'bank'))]}" domain="[('type','&lt;&gt;','view'),('type','&lt;&gt;','consolidation')]"/>
+                 </field>               
+            </field>
+        </record>      
+   </data>
+</openerp>

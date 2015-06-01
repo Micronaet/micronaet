@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    <data noupdate="1">
+        <!--mrp.workcenter.motive -->
+        <record id="mrp_workcenter_motive_work" model="mrp.workcenter.motive">
+            <field name="sequence" eval="10"/>
+            <field name="name">Work</field>
+            <field name="name">Normal workng period of the line</field>
+            <field name="uptime">1</field>
+        </record>
+
+        <record id="mrp_workcenter_motive_indicate" model="mrp.workcenter.motive">
+            <field name="sequence" eval="15"/>
+            <field name="name">To indicate...</field>
+            <field name="name">Must be specified (else means no indication)</field>
+            <field name="uptime">0</field>
+        </record>
+        <record id="mrp_workcenter_motive_personal" model="mrp.workcenter.motive">
+            <field name="sequence" eval="20"/>
+            <field name="name">No worker</field>
+            <field name="name">Stop for no worker problem</field>
+            <field name="uptime">0</field>
+        </record>
+        <record id="mrp_workcenter_motive_vacation" model="mrp.workcenter.motive">
+            <field name="sequence" eval="30"/>
+            <field name="name">Vacation</field>
+            <field name="name">Stop for vacation time</field>
+            <field name="uptime">0</field>
+        </record>
+        <record id="mrp_workcenter_motive_manutention" model="mrp.workcenter.motive">
+            <field name="sequence" eval="40"/>
+            <field name="name">Manutention</field>
+            <field name="name">Stop for normal manutention fime</field>
+            <field name="uptime">0</field>
+        </record>
+        <record id="mrp_workcenter_motive_broken" model="mrp.workcenter.motive">
+            <field name="sequence" eval="50"/>
+            <field name="name">Broken</field>
+            <field name="name">Stop for machinery broken</field>
+            <field name="uptime">0</field>
+        </record>
+        <record id="mrp_workcenter_motive_break" model="mrp.workcenter.motive">
+            <field name="sequence" eval="60"/>
+            <field name="name">Break</field>
+            <field name="name">Stop for break period decided from manager</field>
+            <field name="uptime">0</field>
+        </record>
+        <record id="mrp_workcenter_motive_stock" model="mrp.workcenter.motive">
+            <field name="sequence" eval="70"/>
+            <field name="name">Stock</field>
+            <field name="name">Stop for no stock space so no production</field>
+            <field name="uptime">0</field>
+        </record>
+        <record id="mrp_workcenter_motive_orders" model="mrp.workcenter.motive">
+            <field name="sequence" eval="80"/>
+            <field name="name">No orders</field>
+            <field name="name">Stop for no orders</field>
+            <field name="uptime">0</field>
+        </record>
+    </data>   
+   </data>
+</openerp>   

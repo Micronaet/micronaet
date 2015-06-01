@@ -1,0 +1,8 @@
+Agent for open in write mode document
+In Windows only:
+
+1. reg files active openerp:// type of link
+2. python files open document and is esecuted from openerp://msds/x.pdf
+3. Copy folder in c:\ (as openerp)
+4. Modify bat with call to python
+
