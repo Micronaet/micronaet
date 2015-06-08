@@ -2,7 +2,7 @@
 <openerp>
 <data noupdate="1">
     <record id="aeroo_bom_report_id" model="ir.actions.report.xml">
-        <field name="name">BOM Report</field>
+        <field name="name">BOM Structure Report</field>
         <field name="type">ir.actions.report.xml</field>
         <field name="model">mrp.bom</field>
         <field name="report_name">bom_report</field>
@@ -25,4 +25,3 @@
     </ir_set>
 </data>
 </openerp>
-
