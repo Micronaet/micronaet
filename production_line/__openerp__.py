@@ -77,6 +77,7 @@
         'report/lavoration_report.xml',
         'report/workcenter_lavoration.xml',
         'report/order_covered.xml',
+        'report/bom_report.xml',
         
         'data/template.xml',
         
