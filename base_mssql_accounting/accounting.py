@@ -17,13 +17,17 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
+
+
 import os
 import sys
 import netsvc
 import logging
 from openerp.osv import osv, orm, fields
 from datetime import datetime, timedelta
-from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, DATETIME_FORMATS_MAP, float_compare
+from openerp.tools import (
+    DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, 
+    DATETIME_FORMATS_MAP, float_compare)
 import openerp.addons.decimal_precision as dp
 from openerp.tools.translate import _
 
@@ -49,11 +53,16 @@ class micronaet_accounting(osv.osv):
     _description = "Micronaet accounting"
 
     # Format parameters (for keys):
-    KEY_MM_HEADER_FORMAT = "%(CSG_DOC)s%(NGB_SR_DOC)s:" + datetime.now().strftime("%y") + "-%(NGL_DOC)s"
-    KEY_MM_LINE_FORMAT = "%(CSG_DOC)s%(NGB_SR_DOC)s:" + datetime.now().strftime("%y") + "-%(NGL_DOC)s[%(NPR_DOC)s.%(NPR_RIGA_ART)s]"
+    KEY_MM_HEADER_FORMAT = "%(CSG_DOC)s%(NGB_SR_DOC)s:" + \
+        datetime.now().strftime("%y") + "-%(NGL_DOC)s"
+    KEY_MM_LINE_FORMAT = "%(CSG_DOC)s%(NGB_SR_DOC)s:" + \
+        datetime.now().strftime("%y") + \
+        "-%(NGL_DOC)s[%(NPR_DOC)s.%(NPR_RIGA_ART)s]"
 
-    KEY_OC_LINE_FORMAT = "%(CSG_DOC)s%(NGB_SR_DOC)s:" + datetime.now().strftime("%y") + "-%(NGL_DOC)s[%(NPR_RIGA)s]"
-    KEY_OC_FORMAT = "%(CSG_DOC)s%(NGB_SR_DOC)s:" + datetime.now().strftime("%y") + "-%(NGL_DOC)s"
+    KEY_OC_LINE_FORMAT = "%(CSG_DOC)s%(NGB_SR_DOC)s:" + \
+        datetime.now().strftime("%y") + "-%(NGL_DOC)s[%(NPR_RIGA)s]"
+    KEY_OC_FORMAT = "%(CSG_DOC)s%(NGB_SR_DOC)s:" + \
+        datetime.now().strftime("%y") + "-%(NGL_DOC)s"
         
     # -----------------
     # Utility function:
@@ -97,7 +106,8 @@ class micronaet_accounting(osv.osv):
         ''' Access to anagrafic table of transportation
             Table: MC_CAUS_MOVIMENTI
         '''
-        if self.pool.get('res.company').table_capital_name(cr, uid, context=context):
+        if self.pool.get('res.company').table_capital_name(cr, uid, 
+                context=context):
             table = "MC_CAUS_MOVIMENTI" 
         else:
             table = "mc_caus_movimenti"
@@ -116,7 +126,8 @@ class micronaet_accounting(osv.osv):
         ''' Access to anagrafic table of payments
             Table: CP_PAGAMENTI
         '''
-        if self.pool.get('res.company').table_capital_name(cr, uid, context=context):
+        if self.pool.get('res.company').table_capital_name(cr, uid, 
+                context=context):
             table = "CP_PAGAMENTI" 
         else:
             table = "cp_pagamenti"
@@ -133,14 +144,16 @@ class micronaet_accounting(osv.osv):
             Table: PC_CONDIZIONI_COMM
             (only record with payment setted up)
         '''
-        if self.pool.get('res.company').table_capital_name(cr, uid, context=context):
+        if self.pool.get('res.company').table_capital_name(cr, uid, 
+                context=context):
             table = "PC_CONDIZIONI_COMM" 
         else:
             table = "pc_condizioni_comm"
 
         cursor = self.connect(cr, uid, year=year, context=context)
-        try:#                        ID       Description
-            cursor.execute("""SELECT CKY_CNT, NKY_PAG FROM %s WHERE NKY_PAG>0;""" % table)
+        try:
+            cursor.execute("""
+                SELECT CKY_CNT, NKY_PAG FROM %s WHERE NKY_PAG>0;""" % table)
             return cursor # with the query setted up                  
         except: 
             return False  # Error return nothing
@@ -149,7 +162,8 @@ class micronaet_accounting(osv.osv):
         ''' Parent partner code for destination
             Table: PC_CONDIZIONI_COMM
         '''
-        if self.pool.get('res.company').table_capital_name(cr, uid, context=context):
+        if self.pool.get('res.company').table_capital_name(cr, uid, 
+                context=context):
             table = "PC_CONDIZIONI_COMM" 
         else:
             table = "pc_condizioni_comm"
@@ -166,12 +180,16 @@ class micronaet_accounting(osv.osv):
     # ----------
     #  PARTNER -
     # ---------
-    def get_partner(self, cr, uid, from_code, to_code, write_date_from=False, write_date_to=False, create_date_from=False, create_date_to=False, year=False, context=None):
+    def get_partner(self, cr, uid, from_code, to_code, write_date_from=False, 
+            write_date_to=False, create_date_from=False, create_date_to=False, 
+            year=False, context=None):
         ''' Import partner, customer or supplier, depend on from to code passed
             Table: PA_RUBR_PDC_CLFR
-            Extra where clause: from_code, to_code, write from/to, create from/to
+            Extra where clause: from_code, to_code, write from/to, 
+            create from/to
         '''
-        if self.pool.get('res.company').table_capital_name(cr, uid, context=context):
+        if self.pool.get('res.company').table_capital_name(cr, uid, 
+                context=context):
             table = "PA_RUBR_PDC_CLFR" 
         else:
             table = "pa_rubr_pdc_clfr"
@@ -216,11 +234,13 @@ class micronaet_accounting(osv.osv):
         except: 
             return False  # Error return nothing
 
-    def get_partner_commercial(self, cr, uid, from_code, to_code, year=False, context=None):
+    def get_partner_commercial(self, cr, uid, from_code, to_code, year=False, 
+            context=None):
         ''' Import partner extra commercial info
             Table: PC_CONDIZIONI_COMM
         '''
-        if self.pool.get('res.company').table_capital_name(cr, uid, context=context):
+        if self.pool.get('res.company').table_capital_name(cr, uid, 
+                context=context):
             table = "PC_CONDIZIONI_COMM" 
         else:
             table = "pc_condizioni_comm"
@@ -246,7 +266,7 @@ class micronaet_accounting(osv.osv):
         '''
         return record['IFL_ART_CANC'] == 'N' and record['IFL_ART_ANN'] == 'N'
         
-    def get_composition(self, cr, uid, context=None):
+    def get_composition(self, cr, uid, year=False, context=None):
         ''' Access to anagrafic table of composition (product)
             Note: Composition: Sxx format
             Table: AR_ANAGRAFICHE
@@ -264,22 +284,27 @@ class micronaet_accounting(osv.osv):
             cursor.execute(
                 """
                 SELECT 
-                    CKY_ART, CDS_ART, CSG_ART_ALT, CDS_AGGIUN_ART, 
+                    CKY_ART, CDS_ART, CSG_ART_ALT, CDS_AGGIUN_ART 
                 FROM %s 
-                WHERE CKY_ART like 'S%' and length(CKY_ART)=3;""" % table)
+                WHERE CKY_ART like 'S%s' and length(CKY_ART)=3;""" % (
+                    table,
+                    '%'))
             
             return cursor # with the query setted up                  
         except:
             return False  # Error return nothing
 
 
-    def get_product(self, cr, uid, active=True, write_date_from=False, write_date_to=False, create_date_from=False, create_date_to=False, year=False, context=None):
+    def get_product(self, cr, uid, active=True, write_date_from=False, 
+            write_date_to=False, create_date_from=False, create_date_to=False, 
+            year=False, context=None):
         ''' Access to anagrafic table of product and return dictionary read
             only active product
             Table: AR_ANAGRAFICHE
             Where clause: active, from_date, to_date
         '''
-        if self.pool.get('res.company').table_capital_name(cr, uid, context=context):
+        if self.pool.get('res.company').table_capital_name(
+                cr, uid, context=context):
             table = "AR_ANAGRAFICHE" 
         else:
             table = "ar_anagrafiche"
@@ -324,7 +349,8 @@ class micronaet_accounting(osv.osv):
         except:
             return False  # Error return nothing
 
-    def get_product_quantity(self, cr, uid, store, year_ref, year=False, context=None):
+    def get_product_quantity(self, cr, uid, store, year_ref, year=False, 
+            context=None):
         ''' Return quantity element for product
             Table: AQ_QUANTITA, fields:
                 CKY_ART NKY_DEP NDT_ANNO NQT_INV NQT_CAR NQT_SCAR NQT_ORD_FOR 
@@ -333,7 +359,8 @@ class micronaet_accounting(osv.osv):
             year_ref: store quantity depend on year (account particularity)
             year: for multi year SQL database access
         '''
-        if self.pool.get('res.company').table_capital_name(cr, uid, context=context):
+        if self.pool.get('res.company').table_capital_name(cr, uid, 
+                context=context):
             table = "AQ_QUANTITA" 
         else:
             table = "aq_quantita"
@@ -354,7 +381,8 @@ class micronaet_accounting(osv.osv):
         ''' Return price table 
             Table: AR_PREZZI
         '''
-        if self.pool.get('res.company').table_capital_name(cr, uid, context=context):
+        if self.pool.get('res.company').table_capital_name(cr, uid, 
+                context=context):
             table = "AR_PREZZI" 
         else:
             table = "ar_prezzi"
@@ -372,7 +400,8 @@ class micronaet_accounting(osv.osv):
             Table: AR_VAWC_PEROINKGPE
                    Extra table (not present in all installations)            
         '''        
-        if self.pool.get('res.company').table_capital_name(cr, uid, context=context):
+        if self.pool.get('res.company').table_capital_name(cr, uid, 
+                context=context):
             table = "AR_VAWC_PESOINKGPE" 
         else:
             table = "ar_vawc_pesoinkgpe"
@@ -385,11 +414,13 @@ class micronaet_accounting(osv.osv):
             return False  
             
     def get_product_package_columns(self, cr, uid, year=False, context=None):
-        ''' Return list of columns for table (used for get package code: NGD_* where * is the CODE)
+        ''' Return list of columns for table (used for get package code: 
+            NGD_* where * is the CODE)
             Table: AR_VAWC_PEROINKGPE
                    Extra table (not present in all installations)            
         '''        
-        if self.pool.get('res.company').table_capital_name(cr, uid, context=context):
+        if self.pool.get('res.company').table_capital_name(cr, uid, 
+                context=context):
             table = "AR_VAWC_PESOINKGPE" 
         else:
             table = "ar_vawc_pesoinkgpe"
@@ -413,7 +444,8 @@ class micronaet_accounting(osv.osv):
             Table: AB_UBICAZIONI
             @store: store dep. (every order level depend on the store chosen)
         '''
-        if self.pool.get('res.company').table_capital_name(cr, uid, context=context):
+        if self.pool.get('res.company').table_capital_name(cr, uid, 
+                context=context):
             table = "AB_UBICAZIONI" 
         else:
             table = "ab_ubicazioni"
@@ -435,15 +467,19 @@ class micronaet_accounting(osv.osv):
         ''' Return quantity element for product
             Table: OF_RIGHE
         '''        
-        if self.pool.get('res.company').table_capital_name(cr, uid, context=context):
+        if self.pool.get('res.company').table_capital_name(
+                cr, uid, context=context):
             table = "OF_RIGHE" 
         else:
             table = "of_righe"
 
         cursor = self.connect(cr, uid, year=year, context=context)
-        try:#                        Id row    Product  Deadline  UM            Qty              Convers.
-            cursor.execute("""SELECT NPR_RIGA, CKY_ART, DTT_SCAD, NGB_TIPO_QTA, NQT_RIGA_O_PLOR, NCF_CONV
-                              FROM %s;""" % table)
+        try:
+            cursor.execute("""
+                SELECT 
+                    NPR_RIGA, CKY_ART, DTT_SCAD, NGB_TIPO_QTA, 
+                    NQT_RIGA_O_PLOR, NCF_CONV
+                FROM %s;""" % table)
             # Sort: NGL_DOC, NPR_SORT_RIGA                 
             return cursor # with the query setted up                  
         except: 
@@ -456,15 +492,20 @@ class micronaet_accounting(osv.osv):
         ''' Return list of OC order (header)
             Table: OC_TESTATE
         '''        
-        if self.pool.get('res.company').table_capital_name(cr, uid, context=context):
+        if self.pool.get('res.company').table_capital_name(cr, uid, 
+                context=context):
             table = "OC_TESTATE" 
         else:
             table = "oc_testate"
 
         cursor = self.connect(cr, uid, year=year, context=context)
-        try: #                       OC       1           Num.     Date     Partner       Destinazione      Agent           Transport     Port (DAF) Note    
-            cursor.execute("""SELECT CSG_DOC, NGB_SR_DOC, NGL_DOC, DTT_DOC, CKY_CNT_CLFR, CKY_CNT_SPED_ALT, CKY_CNT_AGENTE, CKY_CNT_VETT, IST_PORTO, CDS_NOTE
-                              FROM %s;""" % table)
+        try:
+            cursor.execute("""
+                SELECT 
+                    CSG_DOC, NGB_SR_DOC, NGL_DOC, DTT_DOC, CKY_CNT_CLFR, 
+                    CKY_CNT_SPED_ALT, CKY_CNT_AGENTE, CKY_CNT_VETT, IST_PORTO, 
+                    CDS_NOTE
+                FROM %s;""" % table)
             return cursor # with the query setted up
         except: 
             return False  # Error return nothing    
@@ -473,15 +514,20 @@ class micronaet_accounting(osv.osv):
         ''' Return quantity element for product
             Table: OC_RIGHE
         '''        
-        if self.pool.get('res.company').table_capital_name(cr, uid, context=context):
+        if self.pool.get('res.company').table_capital_name(cr, uid, 
+                context=context):
             table = "OC_RIGHE" 
         else:
             table = "oc_righe"
 
         cursor = self.connect(cr, uid, year=year, context=context)
-        try: #                       OC       1           Num.     ID row    Deadline  Code     UM            Q.               Sord sequence  Convers.  Price     Description OC
-            cursor.execute("""SELECT CSG_DOC, NGB_SR_DOC, NGL_DOC, NPR_RIGA, DTT_SCAD, CKY_ART, NGB_TIPO_QTA, NQT_RIGA_O_PLOR, NPR_SORT_RIGA, NCF_CONV, NPZ_UNIT, CDS_VARIAZ_ART
-                              FROM %s;""" % (table, ))
+        try: 
+            cursor.execute("""
+                SELECT 
+                    CSG_DOC, NGB_SR_DOC, NGL_DOC, NPR_RIGA, DTT_SCAD, CKY_ART, 
+                    NGB_TIPO_QTA, NQT_RIGA_O_PLOR, NPR_SORT_RIGA, NCF_CONV, 
+                    NPZ_UNIT, CDS_VARIAZ_ART
+                FROM %s;""" % table)
             # no: NPZ_UNIT, NGL_RIF_RIGA, NPR_SORT_RIGA, NKY_CAUM, NKY_DEP
             return cursor # with the query setted up                  
         except: 
@@ -491,15 +537,19 @@ class micronaet_accounting(osv.osv):
         ''' Object for extra data in OC line
             Table: OC_FUNZ_RIGHE
         '''        
-        if self.pool.get('res.company').table_capital_name(cr, uid, context=context):
+        if self.pool.get('res.company').table_capital_name(cr, uid, 
+                context=context):
             table = "OC_FUNZ_RIGHE" 
         else:
             table = "oc_funz_righe"
 
         cursor = self.connect(cr, uid, year=year, context=context)
-        try: #                       OC          1        Num.     ID row    Q UM1         Price UM1       Pack       Provv.
-            cursor.execute("""SELECT NGB_SR_DOC, CSG_DOC, NGL_DOC, NPR_RIGA, NQT_MOVM_UM1, NMP_VALMOV_UM1, NGB_COLLI, NMP_PROVV_VLT
-                              FROM %s;""" % table)
+        try: 
+            cursor.execute("""
+                SELECT 
+                    NGB_SR_DOC, CSG_DOC, NGL_DOC, NPR_RIGA, NQT_MOVM_UM1, 
+                    NMP_VALMOV_UM1, NGB_COLLI, NMP_PROVV_VLT
+                FROM %s;""" % table)
             return cursor # with the query setted up                  
         except: 
             return False  # Error return nothing    
@@ -507,17 +557,19 @@ class micronaet_accounting(osv.osv):
     # ----------------
     #  MOVEMENT LINE -
     # ----------------
-    def get_mm_header(self, cr, uid, where_document=None, year=False, context=None):
+    def get_mm_header(self, cr, uid, where_document=None, year=False, 
+            context=None):
         ''' Return list of OC order (header)
             Table: MM_TESTATE
         '''    
         table = "mm_testate"
-        if self.pool.get('res.company').table_capital_name(cr, uid, context=context):
+        if self.pool.get('res.company').table_capital_name(cr, uid, 
+                context=context):
             table = table.upper()
 
         if where_document is None:
             where_document = ()
-        elif type(where_document) not in (list, tuple):     # single string
+        elif type(where_document) not in (list, tuple):
             where_document = (where_document, )
         else:
             where_document = tuple(where_document)            
@@ -530,8 +582,9 @@ class micronaet_accounting(osv.osv):
                     CKY_CNT_AGENTE, NKY_CAUM
                 FROM %s%s;""" % (
                     table,
-                    " WHERE CSG_DOC in %s" % (where_document, ) if where_document else "")
-        query = query.replace(",);", ");") # BAD!!! for remove , in list of documents
+                    " WHERE CSG_DOC in %s" % (
+                        where_document, ) if where_document else "")
+        query = query.replace(",);", ");") # BAD!!! for remove ","
         try: 
             cursor.execute(query)
             return cursor # with the query setted up
@@ -543,7 +596,8 @@ class micronaet_accounting(osv.osv):
             Table: MM_PIEDE
         '''    
         table = "mm_piede"
-        if self.pool.get('res.company').table_capital_name(cr, uid, context=context):
+        if self.pool.get('res.company').table_capital_name(cr, uid, 
+                context=context):
             table = table.upper()
 
         cursor = self.connect(cr, uid, year=year, context=context)
@@ -556,7 +610,8 @@ class micronaet_accounting(osv.osv):
         except: 
             return False  # Error return nothing    
         
-    def get_mm_line(self, cr, uid, where_document=False, where_partner=False, year=False, context=None):
+    def get_mm_line(self, cr, uid, where_document=False, where_partner=False, 
+            year=False, context=None):
         ''' Return quantity element for product
             where_document: list, tuple, string of document searched (ex. BS)
             where_partner: list, tuple, string for partner code searched            
@@ -564,7 +619,8 @@ class micronaet_accounting(osv.osv):
         '''        
         query = "Not loaded"
         table = "mm_righe"
-        if self.pool.get('res.company').table_capital_name(cr, uid, context=context):
+        if self.pool.get('res.company').table_capital_name(cr, uid, 
+                context=context):
             table = table.upper()
 
         cursor = self.connect(cr, uid, year=year, context=context)
@@ -584,14 +640,16 @@ class micronaet_accounting(osv.osv):
             if type(where_partner) in (str, unicode):
                 where_partner = (str(where_partner), ) 
             if where_clause: # (document clause)
-                where_clause += " AND CKY_CNT_CLFR in %s" % (tuple(where_partner), )
+                where_clause += " AND CKY_CNT_CLFR in %s" % (
+                    tuple(where_partner), )
             else:
-                where_clause += "CKY_CNT_CLFR in %s" % (tuple(where_partner), )
+                where_clause += "CKY_CNT_CLFR in %s" % (
+                    tuple(where_partner), )
 
         # Prepare for query:
         if where_clause:
             where_clause = " WHERE %s" % where_clause
-            where_clause = where_clause.replace(",)", ")") # BAD! for remove ',' in doc list
+            where_clause = where_clause.replace(",)", ")") # BAD! remove ','
             
         query = """
             SELECT 
@@ -627,7 +685,8 @@ class micronaet_accounting(osv.osv):
         table_header = "mm_testate"
         table_line = "mm_righe"
         
-        if self.pool.get('res.company').table_capital_name(cr, uid, context=context):
+        if self.pool.get('res.company').table_capital_name(cr, uid, 
+                context=context):
             table_header = table_header.upper()
             table_line = table_line.upper()
 
@@ -653,14 +712,16 @@ class micronaet_accounting(osv.osv):
             if type(where_partner) in (str, unicode):
                 where_partner = (str(where_partner), ) 
             if where_clause: # (document clause)
-                where_clause += " AND l.CKY_CNT_CLFR in %s" % (tuple(where_partner), )
+                where_clause += " AND l.CKY_CNT_CLFR in %s" % (
+                    tuple(where_partner), )
             else:
-                where_clause += "l.CKY_CNT_CLFR in %s" % (tuple(where_partner), )
+                where_clause += "l.CKY_CNT_CLFR in %s" % (
+                    tuple(where_partner), )
 
         # Prepare for query:
         if where_clause:
             where_clause = " WHERE %s" % where_clause
-            where_clause = where_clause.replace(",)", ")") # BAD! for remove ',' in doc list
+            where_clause = where_clause.replace(",)", ")") # BAD! remove ','
 
         if order_by:
             order_by = " ORDER BY %s" % order_by
@@ -712,7 +773,8 @@ class micronaet_accounting(osv.osv):
         table_header = "mm_testate"
         table_line = "mm_righe"
         
-        if self.pool.get('res.company').table_capital_name(cr, uid, context=context):
+        if self.pool.get('res.company').table_capital_name(
+                cr, uid, context=context):
             table_header = table_header.upper()
             table_line = table_line.upper()
 
@@ -728,10 +790,12 @@ class micronaet_accounting(osv.osv):
                 SELECT 
                     l.CKY_CNT_CLFR as CKY_CNT_CLFR, l.CKY_ART as CKY_ART,
                     l.CDS_VARIAB_ART as CDS_VARIAB_ART, 
-                    SUM(l.NQT_RIGA_ART_PLOR * (IF(l.NCF_CONV=0, 1, 1/l.NCF_CONV))) as TOTALE, 
+                    SUM(l.NQT_RIGA_ART_PLOR * 
+                        (IF(l.NCF_CONV=0, 1, 1/l.NCF_CONV))) as TOTALE, 
                     count(*) as CONSEGNE 
                 FROM %s h JOIN %s l 
-                    ON (h.CSG_DOC = l.CSG_DOC AND h.NGB_SR_DOC = l.NGB_SR_DOC AND
+                    ON (h.CSG_DOC = l.CSG_DOC AND h.NGB_SR_DOC = l.NGB_SR_DOC 
+                    AND
                         h.NGL_DOC = l.NGL_DOC AND h.NPR_DOC = l.NPR_DOC) 
                 GROUP BY
                     h.CSG_DOC_ORI, l.CKY_CNT_CLFR, l.CKY_ART, l.CDS_VARIAB_ART 
@@ -746,7 +810,8 @@ class micronaet_accounting(osv.osv):
             query = """
                 SELECT 
                     CKY_CNT_CLFR, CKY_ART, CDS_VARIAB_ART, 
-                    SUM(NQT_RIGA_ART_PLOR * (IF(NCF_CONV=0, 1, 1/NCF_CONV))) as TOTALE, 
+                    SUM(NQT_RIGA_ART_PLOR * (IF(NCF_CONV=0, 1, 1/NCF_CONV))) 
+                        as TOTALE, 
                     count(*) as CONSEGNE 
                 FROM 
                     %s 
@@ -764,12 +829,14 @@ class micronaet_accounting(osv.osv):
                 query, sys.exc_info()))
             return False
 
-    def get_mm_funz_line(self, cr, uid, where_document=None, year=False, context=None):
+    def get_mm_funz_line(self, cr, uid, where_document=None, year=False, 
+            context=None):
         ''' Return quantity element for product funz
             Table: MM_FUNZ_RIGHE
         '''        
         table = "mm_funz_righe"
-        if self.pool.get('res.company').table_capital_name(cr, uid, context=context):
+        if self.pool.get('res.company').table_capital_name(cr, uid, 
+                context=context):
             table = table.upper()
 
         if where_document is None:
@@ -788,7 +855,7 @@ class micronaet_accounting(osv.osv):
                     table,
                     " WHERE CSG_DOC in %s" % (
                         where_document, ) if where_document else "", )                    
-        query = query.replace(",);", ");") # BAD!!! for remove , in list of documents
+        query = query.replace(",);", ");") # BAD!!! for remove ","
         try: #                       
             cursor.execute(query)
             return cursor # with the query setted up                  
@@ -796,7 +863,7 @@ class micronaet_accounting(osv.osv):
             return False  # Error return nothing
         
     _columns = {
-        'name':fields.char('SQL table', size=80, required=True, readonly=False,),
+        'name':fields.char('SQL table', size=80, required=True),
         'datetime': fields.datetime('Last read'),
     }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
