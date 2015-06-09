@@ -79,14 +79,12 @@ class micronaet_accounting(osv.osv):
         ''' Test for empty date
             Accounting program use 01/01/1900 for no date
         '''
-        from datetime import datetime
         return data_value == datetime.strptime("1900-01-01", "%Y-%m-%d")
 
     def get_empty_date(self):
         ''' Return datetime object for empty date
             Mexal use 01/01/1900 for no date
         '''
-        from datetime import datetime        
         return datetime.strptime("1900-01-01","%Y-%m-%d")
            
     # -------------------------------------------------------------------------   
@@ -248,6 +246,33 @@ class micronaet_accounting(osv.osv):
         '''
         return record['IFL_ART_CANC'] == 'N' and record['IFL_ART_ANN'] == 'N'
         
+    def get_composition(self, cr, uid, context=None):
+        ''' Access to anagrafic table of composition (product)
+            Note: Composition: Sxx format
+            Table: AR_ANAGRAFICHE
+        '''
+        if self.pool.get('res.company').table_capital_name(
+            cr, uid, context=context):
+            table = "AR_ANAGRAFICHE" 
+        else:
+            table = "ar_anagrafiche"
+
+        cursor = self.connect(cr, uid, year=year, context=context)
+        
+        # Compose where clause:
+        try:
+            cursor.execute(
+                """
+                SELECT 
+                    CKY_ART, CDS_ART, CSG_ART_ALT, CDS_AGGIUN_ART, 
+                FROM %s 
+                WHERE CKY_ART like 'S%' and length(CKY_ART)=3;""" % table)
+            
+            return cursor # with the query setted up                  
+        except:
+            return False  # Error return nothing
+
+
     def get_product(self, cr, uid, active=True, write_date_from=False, write_date_to=False, create_date_from=False, create_date_to=False, year=False, context=None):
         ''' Access to anagrafic table of product and return dictionary read
             only active product
