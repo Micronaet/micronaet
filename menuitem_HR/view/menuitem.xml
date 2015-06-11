@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <menuitem name="Human Resources"
+            id="menu_hr_root"
+            groups="menuitem_base.show_menuitem_accounting"
+            sequence="90"/>
+    </data>
+</openerp>
+
+
+
+
+
+
