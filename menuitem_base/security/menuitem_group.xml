@@ -58,5 +58,6 @@
         <field name="category_id" ref="show_menuitem_category" />
         <field name="comment">Show menu administrator (for save installation keep original admin also)</field>
     </record>
+    <!--TODO: subsctiption, survey, sale, portal, point_of_sale, marketing, mail, lunch, itea, event, crm, association-->
  </data>
 </openerp>
