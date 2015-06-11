@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <menuitem name="Warehouse"
+            id="stock.menu_stock_root"
+            groups="menuitem_base.show_menuitem_stock"
+            sequence="70"/>
+
+    </data>
+</openerp>
+
+
+
+
+
+

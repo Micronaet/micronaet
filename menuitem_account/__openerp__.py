@@ -21,20 +21,20 @@
 ###############################################################################
 
 {
-    'name': 'Menuitem Base',
+    'name': 'Menuitem Account',
     'version': '0.1',
     'category': 'Statistic',
     'description': """
         Module that create a list of standard group for show or hide
-        top / root menu  
-        Extra Stock    
+        top / root menu   
+        Extra Account   
         """,
     'author': 'Micronaet s.r.l.',
     'website': 'http://www.micronaet.it',
     'license': 'AGPL-3',
     'depends': [
         'menuitem_base',
-        'stock',
+        'account',
         ],
     'init_xml': [],
     'demo_xml': [],

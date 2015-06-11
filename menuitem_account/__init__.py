@@ -20,29 +20,5 @@
 #
 ###############################################################################
 
-{
-    'name': 'Menuitem Base',
-    'version': '0.1',
-    'category': 'Statistic',
-    'description': """
-        Module that create a list of standard group for show or hide
-        top / root menu  
-        Extra Stock    
-        """,
-    'author': 'Micronaet s.r.l.',
-    'website': 'http://www.micronaet.it',
-    'license': 'AGPL-3',
-    'depends': [
-        'menuitem_base',
-        'stock',
-        ],
-    'init_xml': [],
-    'demo_xml': [],
-    'data': [
-        'view/menuitem.xml',
-        ],
-    'active': False,
-    'installable': True,
-    }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
