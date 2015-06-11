@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <menuitem name="Sales"
+            id="menu_base_partner"
+            groups="show_menuitem_sale"
+            sequence="20"/>
+
+        <menuitem name="Reporting"
+            id="base.menu_reporting"
+            groups="show_menuitem_reporting"
+            sequence="170"
+            />
+
+        <menuitem name="Settings"
+            id="show_menuitem_admin,base.menu_administration"
+            sequence="500"
+            />
+
+    </data>
+</openerp>
+
+
+
+
+
+
