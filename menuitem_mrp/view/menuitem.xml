@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <menuitem name="Manufacturing"
+            id="base.menu_mrp_root"
+            groups="menuitem_base.show_menuitem_mrp"
+            sequence="80"/>            
+    </data>
+</openerp>
+
+
+
+
+
+

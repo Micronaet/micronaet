@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <menuitem name="Knowledge"
+            id="knowledge.menu_document"
+            groups="menuitem_base.show_menuitem_knowledge"
+            sequence="116"/>
+    </data>
+</openerp>
+
+
+
+
+
+

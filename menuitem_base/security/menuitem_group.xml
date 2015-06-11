@@ -28,15 +28,20 @@
         <field name="category_id" ref="show_menuitem_category" />
         <field name="comment">Show menu stock</field>
     </record>
-    <record id="show_menuitem_production" model="res.groups">
-        <field name="name">Show production</field>
+    <record id="show_menuitem_mrp" model="res.groups">
+        <field name="name">Show mrp</field>
         <field name="category_id" ref="show_menuitem_category" />
-        <field name="comment">Show menu production</field>
+        <field name="comment">Show menu mrp</field>
     </record>
-    <record id="show_menuitem_knowhow" model="res.groups">
-        <field name="name">Show knowhow</field>
+    <record id="show_menuitem_HR" model="res.groups">
+        <field name="name">Show HR</field>
         <field name="category_id" ref="show_menuitem_category" />
-        <field name="comment">Show menu knowhow</field>
+        <field name="comment">Show menu HR</field>
+    </record>
+    <record id="show_menuitem_knowledge" model="res.groups">
+        <field name="name">Show knowledge</field>
+        <field name="category_id" ref="show_menuitem_category" />
+        <field name="comment">Show menu knowledge</field>
     </record>
     <record id="show_menuitem_reporting" model="res.groups">
         <field name="name">Show reporting</field>
