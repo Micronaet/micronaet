@@ -21,7 +21,7 @@
 ###############################################################################
 
 {
-    'name': 'Menuitem Base',
+    'name': 'Menuitem stock',
     'version': '0.1',
     'category': 'Statistic',
     'description': """

@@ -21,7 +21,7 @@
 ###############################################################################
 
 {
-    'name': 'Menuitem knowledge',
+    'name': 'Menuitem MRP',
     'version': '0.1',
     'category': 'Statistic',
     'description': """

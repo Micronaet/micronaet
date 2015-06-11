@@ -21,7 +21,7 @@
 ###############################################################################
 
 {
-    'name': 'Menuitem CRM',
+    'name': 'Menuitem HR',
     'version': '0.1',
     'category': 'Statistic',
     'description': """
