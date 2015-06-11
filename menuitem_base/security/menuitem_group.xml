@@ -33,6 +33,11 @@
         <field name="category_id" ref="show_menuitem_category" />
         <field name="comment">Show menu mrp</field>
     </record>
+    <record id="show_menuitem_project" model="res.groups">
+        <field name="name">Show project</field>
+        <field name="category_id" ref="show_menuitem_category" />
+        <field name="comment">Show menu project</field>
+    </record>
     <record id="show_menuitem_HR" model="res.groups">
         <field name="name">Show HR</field>
         <field name="category_id" ref="show_menuitem_category" />

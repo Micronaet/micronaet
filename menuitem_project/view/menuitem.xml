@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <menuitem name="Project"
+            id="base.menu_main_pm"
+            groups="menuitem_base.show_menuitem_mrp"
+            sequence="40"/>    
+    </data>
+</openerp>
+
+
+
+
+
+
