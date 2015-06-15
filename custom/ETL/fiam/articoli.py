@@ -168,7 +168,7 @@ pl_pricelist = [0, 0, 0, 0, 0, 0, 0, 0, 0] # Pricelist for Mexal 4 pricelist  ex
 pl_fiam = [0, 0, 0, 0, 0, 0, 0, 0, 0]    # Version of price list (Mexal 4 pricelist) ex 0,0,0,0,
 CreateAllPricelist(sock, dbname, uid, pwd, 
     ('1', '4', '5', '9', '2', '3', '6', '7', '8',), 
-    ('EUR', 'EUR', 'CHF', 'EUR', 'EUR', 'EUR', 'EUR', 'EUR', 'EUR',), 
+    ('EUR', 'EUR', 'EUR', 'EUR', 'EUR', 'EUR', 'EUR', 'EUR', 'EUR',), 
     pl_pricelist, pl_fiam)
 
 # Open CSV passed file (see arguments) mode: read / binary, delimiation char 
