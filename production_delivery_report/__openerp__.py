@@ -32,11 +32,11 @@
     'license': 'AGPL-3',
     'depends': [
         'production_line', 
+        'aeroo_report',
         ],
     'init_xml': [],
     'demo_xml': [],
     'update_xml': [
-        #'view/delivery_view.xml',
         'report/delivery_report.xml',
         ],
     'active': False,
