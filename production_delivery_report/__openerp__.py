@@ -32,7 +32,7 @@
     'license': 'AGPL-3',
     'depends': [
         'production_line', 
-        'aeroo_report',
+        'report_aeroo',
         ],
     'init_xml': [],
     'demo_xml': [],
