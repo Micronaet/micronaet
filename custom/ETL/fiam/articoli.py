@@ -240,7 +240,6 @@ try:
                   lot = 1
 
                if lot > 0 and lot < 1:
-                   import pdb; pdb.set_trace()
                    colls = 1 / lot
                else:
                    colls = 1
