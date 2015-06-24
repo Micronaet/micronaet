@@ -233,8 +233,8 @@ try:
                name = Prepare(line[1]).title()
                uom = Prepare(line[2]).title()
                taxes_id = Prepare(line[3])
-               ref2 = Prepare(line[4]) # TODO where put it?               
-               try:
+               ean = Prepare(line[4])
+               try: # Q per pack
                   lot = eval(Prepare(line[5]).replace(',', '.'))
                except:
                   lot = 0
@@ -242,6 +242,7 @@ try:
                price[1] = PrepareFloat(line[7])   # Price pricelist 4 EUR
                price[2] = PrepareFloat(line[8])   # Price pricelist 5 CHF
                price[3] = PrepareFloat(line[9])   # Price pricelist 9 EUR
+
                # Language:
                Lang_EN = Prepare(line[10]).title()  # Article EN
                Lang_2 = Prepare(line[11]).title()  # TODO Lingua 1
@@ -254,12 +255,18 @@ try:
 
                if azienda == 'fia':
                    active = True
+                   try: # Colls
+                      colls = int(Prepare(line[19]).replace(',', '.'))
+                   except:
+                      colls = 1
+                    
                elif azienda == 'gpb' and Prepare(line[17]).strip() == 'C01':
-                   active = True
+                   active = True 
                else:    
                    active = False
                
-               colour = Prepare(line[18])    
+               colour = Prepare(line[18])   
+                
                    
                item = sock.execute( # search current ref
                    dbname, uid, pwd, 'product.product', 'search', [
@@ -342,6 +349,7 @@ try:
                    'active': active, # for GPB purpose
                    'name': name,
                    'mexal_id': ref,
+                   'ean': ean,
                    'import': True,
                    'sale_ok': True,
                    'purchase_ok': True,
@@ -366,6 +374,7 @@ try:
                   data['volume'] = volume
                   data['linear_length'] = linear_length
                   data['weight'] = weight
+                  data['colls'] = colls
 
                if taxes_id and taxes_id == '21':
                   data['taxes_id'] = [(6, 0, [iva_debito])]
