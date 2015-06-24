@@ -399,8 +399,7 @@ try:
                            item, data)
                        product_id = item[0]
                    except:
-                       print ("[ERROR] Modify product, current record:", data, 
-                           sys.exc_info())
+                       print "[ERROR] Modify product, current record:", data
                        #raise  # TODO ripristinare??
                    if verbose: 
                        print "[INFO]", counter['tot'], "Already exist: ", ref, name
@@ -416,8 +415,7 @@ try:
                        product_id = sock.execute(
                            dbname, uid, pwd, 'product.product', 'create', data) 
                    except:
-                       print ("[ERROR] Create product, current record:", data,
-                           sys.exc_info())
+                       print "[ERROR] Create product, current record:", data
                        
                        #raise  # TODO ripristinare??
                    if verbose: 
