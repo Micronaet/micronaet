@@ -237,7 +237,14 @@ try:
                try: # Q per pack
                   lot = eval(Prepare(line[5]).replace(',', '.'))
                except:
-                  lot = 0
+                  lot = 1
+
+               if lot > 0 and lot < 1:
+                   import pdb; pdb.set_trace()
+                   colls = 1 / lot
+               else:
+                   colls = 1
+
                price[0] = PrepareFloat(line[6])   # Price pricelist 1 EUR
                price[1] = PrepareFloat(line[7])   # Price pricelist 4 EUR
                price[2] = PrepareFloat(line[8])   # Price pricelist 5 CHF
@@ -255,12 +262,6 @@ try:
 
                if azienda == 'fia':
                    active = True
-                   if lot > 0 and lot < 1:
-                       import pdb; pdb.set_trace()
-                       colls = 1 / lot
-                   else:
-                       colls = 1
-                    
                elif azienda == 'gpb' and Prepare(line[17]).strip() == 'C01':
                    active = True 
                else:    
@@ -350,7 +351,7 @@ try:
                    'active': active, # for GPB purpose
                    'name': name,
                    'mexal_id': ref,
-                   'ean': ean,
+                   'ean13': ean,
                    'import': True,
                    'sale_ok': True,
                    'purchase_ok': True,
@@ -394,12 +395,13 @@ try:
                # -------------------------------------
                if item: # update
                    try:
-                       modify_id = sock.execute(
+                       sock.execute(
                            dbname, uid, pwd, 'product.product', 'write', 
                            item, data)
                        product_id = item[0]
                    except:
-                       print "[ERROR] Modify product, current record:", data
+                       print ("[ERROR] Modify product, current record:", data, 
+                           sys.exc_info())
                        #raise  # TODO ripristinare??
                    if verbose: 
                        print "[INFO]", counter['tot'], "Already exist: ", ref, name
@@ -415,7 +417,9 @@ try:
                        product_id = sock.execute(
                            dbname, uid, pwd, 'product.product', 'create', data) 
                    except:
-                       print "[ERROR] Create product, current record:", data
+                       print ("[ERROR] Create product, current record:", data,
+                           sys.exc_info())
+                       
                        #raise  # TODO ripristinare??
                    if verbose: 
                        print "[INFO]", counter['tot'], "Insert: ", ref, name
