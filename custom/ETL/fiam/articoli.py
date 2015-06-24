@@ -255,10 +255,11 @@ try:
 
                if azienda == 'fia':
                    active = True
-                   try: # Colls
-                      colls = int(Prepare(line[19]).replace(',', '.'))
-                   except:
-                      colls = 1
+                   if lot > 0 and lot < 1:
+                       import pdb; pdb.set_trace()
+                       colls = 1 / lot
+                   else:
+                       colls = 1
                     
                elif azienda == 'gpb' and Prepare(line[17]).strip() == 'C01':
                    active = True 
