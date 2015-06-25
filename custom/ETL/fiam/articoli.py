@@ -256,6 +256,7 @@ try:
                Lang_2 = Prepare(line[11]).title()  # TODO Lingua 1
                Lang_3 = Prepare(line[12]).title()  # TODO Lingua 2
                Lang_4 = Prepare(line[13]).title()  # TODO Lingua 3
+               
                # Parte dimensioni:
                linear_length = PrepareFloat(line[14])   # Lunghezza lineare
                volume = PrepareFloat(line[15])   # Volume M3
