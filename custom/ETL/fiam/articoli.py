@@ -240,7 +240,7 @@ try:
                   lot = 1
 
                if lot > 0 and lot < 1:
-                   colls = 1 / lot
+                   colls = int(1 / lot)
                else:
                    colls = 1
 
