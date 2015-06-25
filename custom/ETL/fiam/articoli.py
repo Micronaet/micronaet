@@ -233,7 +233,9 @@ try:
                name = Prepare(line[1]).title()
                uom = Prepare(line[2]).title()
                taxes_id = Prepare(line[3])
-               ean = Prepare(line[4])
+               ean = Prepare(line[4]).strip()
+               if len(ean) != 13:
+                   ean = False
                try: # Q per pack
                   lot = eval(Prepare(line[5]).replace(',', '.'))
                except:
