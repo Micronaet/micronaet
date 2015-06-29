@@ -59,9 +59,9 @@ class Parser(report_sxw.rml_parse):
             
             # Q x Pack.    
             try:
-                q_x_pack = int(element.product_id.q_x_pack) or 1
+                q_x_pack = int(element.product_id.q_x_pack) or 0
             except:
-                q_x_pack = 1 # error in conversion    
+                q_x_pack = 0 # error in conversion    
 
             for i in range(1, colls + 1):
                 position += 1
