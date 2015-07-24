@@ -42,7 +42,6 @@ import base64
 import urllib
 
 class inherit_product_product(osv.osv):
-    _name = 'product.product'
     _inherit = 'product.product'
 
     def get_quotation_image(self, cr, uid, item, context=None):
@@ -117,7 +116,6 @@ class inherit_product_product(osv.osv):
 inherit_product_product()
 
 class purchase_order_extra(osv.osv):
-    _name = 'purchase.order.line'
     _inherit = 'purchase.order.line'
     
     _columns = {
