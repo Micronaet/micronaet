@@ -267,7 +267,7 @@ try:
                elif azienda == 'gpb' and Prepare(line[17]).strip() == 'C01':
                    active = True 
                else:    
-                   active = False
+                   active = True # TODO cambiato al volo per urgenza controllare
                
                colour = Prepare(line[18])   
                 
@@ -375,16 +375,17 @@ try:
                    #'seller_qty'   
                    }
                if azienda == 'fia':# TODO veder se attivarla anche per la GPB
-                  data['volume'] = volume
-                  data['linear_length'] = linear_length
-                  data['weight'] = weight
-                  data['colls'] = colls
+                   data['volume'] = volume
+                   data['linear_length'] = linear_length
+                   data['weight'] = weight
+                  
+               data['colls'] = colls # all of two!
 
                if taxes_id and taxes_id == '21':
-                  data['taxes_id'] = [(6, 0, [iva_debito])]
-                  data['supplier_taxes_id'] = [(6, 0, [iva_credito])]
+                   data['taxes_id'] = [(6, 0, [iva_debito])]
+                   data['supplier_taxes_id'] = [(6, 0, [iva_credito])]
                else:
-                  errori_iva.append("articolo: %s" % name)                                       
+                   errori_iva.append("articolo: %s" % name)                                       
  
                # PRODUCT CREATION ***************
                error = "Searching product with ref"
