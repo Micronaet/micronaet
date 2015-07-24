@@ -34,17 +34,19 @@
 
 from osv import osv, fields
 
-class purchase_order(osv.osv):
-    _inherit = 'purchase.order.line'
+class product_product(osv.osv):
+    _inherit = 'product.product'
     
     _columns = {
         'colls_number': fields.integer('Colli'), 
         'colls': fields.char('Colli', size=30), 
         }
-purchase_order()        
+    _defaults = {
+        'colls_number': lambda *x: 1,
+        }    
+product_product()        
         
 class purchase_order_extra(osv.osv):
-    _name = 'purchase.order.line'
     _inherit = 'purchase.order.line'
     
     _columns = {
