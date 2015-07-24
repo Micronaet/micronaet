@@ -44,6 +44,7 @@ separator = config.get('dbaccess', 'separator') # test
 verbose = eval(config.get('import_mode', 'verbose'))
 
 file_transcode_log = "transcode.log"
+file_transcode = "trans.tmp"
 #if azienda == 'gpb'
 #    try:
 #        convert_file = config.get('convert', 'list')
