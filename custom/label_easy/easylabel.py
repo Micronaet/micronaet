@@ -87,6 +87,15 @@ class easylabel_label(osv.osv):
             ('pallet','Pallet'), 
             ('placeholder', 'Placeholder'),           
         ],'Type of label', select=True, readonly=False),
+        'area': fields.selection([
+	        ('accounting', 'Accounting'),
+	        ('hr', 'HR'),
+	        ('project', 'Projecy'),
+	        ('purchase', 'Purchase'),
+	        ('sale', 'Sale'),
+	        ('stock', 'Stock'),
+	        ], string="Label used in this area",
+	        help="Setting the area for get a filter view when needed"),
         'counter':fields.boolean('Has counter', required=False, help='Has a parameter that write for each lot number / tot value'),        
         }
 
@@ -123,6 +132,7 @@ class easylabel_parameter(osv.osv):
             ('shipment_date','Date of shipment'), 
             ('order','Order number'),
             ('order_c','Customer order number'),
+            ('partno', 'Part number'),
             ('code','Product code'),
             ('product','Product description'),
             #('color','Product color'), # for now in easylabel DB

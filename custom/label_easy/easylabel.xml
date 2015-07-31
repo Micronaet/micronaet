@@ -76,6 +76,7 @@
                     <field name="path_id" readonly="1" />
                     <field name='folder' />  
                     <field name='label_name' />  
+                    <field name="area" />
                     <separator string="Parameter command file" colspan="4" />
                     <field name="parameter_ids" colspan="4" nolabel="1">
                          <tree string="Easylabel parameter">
