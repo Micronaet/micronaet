@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+       <!--inherit purchase.order:-->
+        <record model="ir.ui.view" id="view_purchase_order_label">
+            <field name="name">Purchase order label</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <field name="date_order" position="before">
+                    <button name="%(act_windows_easylabel_purchase_wizard)d" string="Export label" type="action" class="oe_highlight" />
+                    <newline />
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>
