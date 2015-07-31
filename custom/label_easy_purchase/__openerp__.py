@@ -27,6 +27,7 @@
     'category': 'Generic/Label',
     'author': 'Micronaet S.r.l. - Nicola Riolini',
     'website': 'http://www.micronaet.it',
+    'description': 'Easy label from purchase order',
     'license': 'AGPL-3',
     'depends': [
         'base', 
