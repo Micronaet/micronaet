@@ -23,7 +23,12 @@ import openerp.netsvc
 import logging
 from openerp.osv import osv, orm, fields
 from datetime import datetime, timedelta
-from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, DATETIME_FORMATS_MAP, float_compare
+from openerp.tools import (
+    DEFAULT_SERVER_DATE_FORMAT, 
+    DEFAULT_SERVER_DATETIME_FORMAT, 
+    DATETIME_FORMATS_MAP, 
+    float_compare,
+    )
 import openerp.addons.decimal_precision as dp
 from openerp.tools.translate import _
 
@@ -39,7 +44,8 @@ class stock_production_lot_accounting(orm.Model):
     # -----------------
     # Scheduled action:
     # -----------------
-    def scheduled_import_lot_quantity(self, cr, uid, path, filename, package=True, context=None):
+    def scheduled_import_lot_quantity(self, cr, uid, path, filename, 
+            package=True, context=None):
         ''' Scheduled function for import status lot from accounting
             self: this instance
             cr: cursor
@@ -57,6 +63,7 @@ class stock_production_lot_accounting(orm.Model):
             f = open(file_csv, 'r')
         except:
             _logger.error("Error accessing file: %s" % file_csv)
+            return False
             
         product_pool = self.pool.get("product.product")
         package_pool = self.pool.get("product.ul")
@@ -74,10 +81,10 @@ class stock_production_lot_accounting(orm.Model):
                 package_code = line_csv[2].strip()
                 stock_available_accounting = float(line_csv[3].strip() or "0")
                 accounting_ref = line_csv[4].strip()
-                
+
                 try: # correct format, ex.: 000001
-                     lot_code = "%06d" % (int(lot_code), )
-                     anomaly = False
+                    lot_code = "%06d" % (int(lot_code), )
+                    anomaly = False
                 except:
                     anomaly = True    
 
