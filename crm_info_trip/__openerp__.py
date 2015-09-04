@@ -34,6 +34,7 @@
         'report_aeroo_ooo',        
         'base_mssql_accounting',
         'partner_followup',
+        'base_mssql', # TODO serve?
         ],
     'init_xml': [],
     'demo': [],

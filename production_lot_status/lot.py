@@ -45,7 +45,7 @@ class stock_production_lot_accounting(orm.Model):
     # Scheduled action:
     # -----------------
     def scheduled_import_lot_quantity(self, cr, uid, path, filename, 
-            package=True, context=None):
+            package=True, context=None):        
         ''' Scheduled function for import status lot from accounting
             self: this instance
             cr: cursor
@@ -54,6 +54,8 @@ class stock_production_lot_accounting(orm.Model):
             filename: csv file name
             package: manage package (default False)
         '''
+        # TODO remove importation!!!!!!!
+        """
         if context is None:
             context = {}
         separator = ";"
@@ -137,18 +139,17 @@ class stock_production_lot_accounting(orm.Model):
         no_stock_ids = self.search(cr, uid, [('id', 'not in', lot_modify_ids)], context=context)
         self.write(cr, uid, no_stock_ids, {
             'stock_available_accounting': 0.0,
-            }, context=context)
+            }, context=context)"""
         return True
         
     _columns = {
         'package_id': fields.many2one('product.ul', 'Package', 
             help='Package used for package (for this lot)'),
-        'stock_available_accounting': fields.float('Stock availability', digits=(16, 2)),    
-        #'package_ref': fields.char('Package ref', size=12, 
-        #    help="Reference for import package, used to find product (or for "
-        #        "save in lot if there's no product"),
-        'accounting_ref': fields.char('Accounting ref', size=12, 
-            help="ID lot in account program"),
+            
+        #'stock_available_accounting': fields.float('Stock availability', digits=(16, 2)),    
+        #'accounting_ref': fields.char('Accounting ref', size=12, 
+        #    help="ID lot in account program"),
+
         'anomaly': fields.boolean('Anomaly', required=False),    
     }    
 
