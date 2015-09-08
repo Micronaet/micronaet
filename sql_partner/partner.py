@@ -111,6 +111,15 @@ class res_partner(osv.osv):
         return False
 
     # -------------------------------------------------------------------------
+    #                 Placeholder function (will be overrided)
+    # -------------------------------------------------------------------------
+    def get_swap_parent(self, cr, uid, context=None):
+        ''' Virtual function that will be overridef from module that manage
+            parent_id swap partner (not implemented here)
+        '''
+        return {}
+
+    # -------------------------------------------------------------------------
     #                             Scheduled action
     # -------------------------------------------------------------------------
     def schedule_sql_partner_import(self, cr, uid, verbose_log_count=100, 
@@ -181,7 +190,8 @@ class res_partner(osv.osv):
                 #'employee'),
                 ]
             parents = {}              # Client / Supplier converter
-            destination_parents = {}  # Partner code for Destination 
+            destination_parents = {}  # Partner code for Destination
+            swap_parent = self.get_swap_parent(cr, uid, context=context)
             
             # Add parent for destination in required:
             if address_link:
@@ -259,6 +269,9 @@ class res_partner(osv.osv):
                             parent_code = destination_parents.get(
                                 record['CKY_CNT'], False)
                             if parent_code: # Convert value with dict
+                                # Swap parent code:
+                                parent_code = swap_parent.get(
+                                    parent_code, parent_code)
                                 data['parent_id'] = parents.get(
                                     parent_code, False)
 
