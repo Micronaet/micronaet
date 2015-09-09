@@ -33,7 +33,6 @@ _logger = logging.getLogger(__name__)
 class res_company(osv.osv):
     ''' Extra fields for setup the module
     '''
-    _name = 'res.company'
     _inherit = 'res.company'
     
     def get_from_to_dict(self, cr, uid, context = None):
@@ -88,7 +87,6 @@ class res_company(osv.osv):
 class res_partner(osv.osv):
     ''' Extend res.partner
     '''    
-    _name = 'res.partner'
     _inherit = 'res.partner'
     
     # -------------------------------------------------------------------------
