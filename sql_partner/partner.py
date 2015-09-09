@@ -202,8 +202,17 @@ class res_partner(osv.osv):
                         "Unable to connect to parent for destination!")
                 else:
                     for record in cursor:
-                        destination_parents[
-                            record['CKY_CNT']] = record['CKY_CNT_CLI_FATT']
+                        if record['CKY_CNT_CLI_FATT'] in swap_parent:
+                            _logger.info('Partner swap from %s to %s' % (
+                                record['CKY_CNT_CLI_FATT'],
+                                swap_parent[record['CKY_CNT_CLI_FATT']]))
+                            
+                        # swapped:    
+                        destination_parents[ 
+                            record['CKY_CNT']] = swap_parent.get(
+                                record['CKY_CNT_CLI_FATT'], # search invoice to
+                                record['CKY_CNT_CLI_FATT']) # default invoice
+                                
 
             for order, key_field, from_code, to_code, block in import_loop:
                 if only_block and only_block != block:                    
@@ -264,12 +273,6 @@ class res_partner(osv.osv):
                             parent_code = destination_parents.get(
                                 record['CKY_CNT'], False)
                             if parent_code: # Convert value with dict
-                                # Swap parent code:
-                                parent_code = swap_parent.get(
-                                    parent_code, parent_code)
-                                _logger.info('Swapped parent code %s to %s' % (
-                                    record['CKY_CNT'], parent_code))
-                                        
                                 data['parent_id'] = parents.get(
                                     parent_code, False)
 

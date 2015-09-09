@@ -45,11 +45,11 @@ def PrepareFloat(valore):
        return 0.0   # for empty values
        
 def Prepare(valore):  
-            # For problems: input win output ubuntu; trim extra spaces
-            #valore=valore.decode('ISO-8859-1')
-            valore=valore.decode('cp1252')
-            valore=valore.encode('utf-8')
-            return valore.strip()
+    # For problems: input win output ubuntu; trim extra spaces
+    #valore=valore.decode('ISO-8859-1')
+    valore=valore.decode('cp1252')
+    valore=valore.encode('utf-8')
+    return valore.strip()
 
 def getCountryFromCode(sock,dbname,uid,pwd,code):
     if code: 
