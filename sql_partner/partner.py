@@ -212,14 +212,11 @@ class res_partner(osv.osv):
                     _logger.warning("Jump block: %s!" % block)
                     continue
                 cursor = self.pool.get('micronaet.accounting').get_partner(
-                    cr, uid, 
-                    from_code=from_code, 
-                    to_code=to_code, 
+                    cr, uid, from_code=from_code, to_code=to_code, 
                     write_date_from=write_date_from, 
                     write_date_to=write_date_to, 
                     create_date_from=create_date_from, 
-                    create_date_to=create_date_to, 
-                    context=context) 
+                    create_date_to=create_date_to, context=context) 
                 if not cursor:
                     _logger.error("Unable to connect, no partner!")
                     continue # next block
@@ -272,6 +269,9 @@ class res_partner(osv.osv):
                                 # Swap parent code:
                                 parent_code = swap_parent.get(
                                     parent_code, parent_code)
+                                _logger.info('Swapped parent code %s to %s' % (
+                                    record['CKY_CNT'], parent_code))
+                                        
                                 data['parent_id'] = parents.get(
                                     parent_code, False)
 
