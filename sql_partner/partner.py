@@ -201,13 +201,8 @@ class res_partner(osv.osv):
                     _logger.error(
                         "Unable to connect to parent for destination!")
                 else:
-                    for record in cursor:
-                        if record['CKY_CNT_CLI_FATT'] in swap_parent:
-                            _logger.info('Partner swap from %s to %s' % (
-                                record['CKY_CNT_CLI_FATT'],
-                                swap_parent[record['CKY_CNT_CLI_FATT']]))
-                            
-                        # swapped:    
+                    for record in cursor: 
+                        # Swapped:    
                         destination_parents[ 
                             record['CKY_CNT']] = swap_parent.get(
                                 record['CKY_CNT_CLI_FATT'], # search invoice to
