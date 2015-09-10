@@ -19,7 +19,7 @@
 ###############################################################################
 import os
 import sys
-import openerp.netsvc
+import openerp.netsvc as netsvc
 import logging
 from openerp.osv import osv, orm, fields
 from datetime import datetime, timedelta
