@@ -321,7 +321,7 @@ class pickin_import_wizard(osv.osv_memory):
                                 pass # For now not mandatory lot for BC (only for coal)
 
                         else: # BF ********************************************
-
+                            import pdb; pdb.set_trace()
                             # -----------------
                             # Test product lot:
                             # -----------------
@@ -341,7 +341,7 @@ class pickin_import_wizard(osv.osv_memory):
                                         'date': date_now, #'2012-06-05 15:13:14',
                                     })
                                     
-                                    # Create update lot imprtation history 
+                                    # Create update lot importation history 
                                     importer_order_pool.new_lot(
                                         cr, uid, product_id, partner_id, 
                                         purchase_order, lot_id, 
@@ -360,14 +360,17 @@ class pickin_import_wizard(osv.osv_memory):
                                     continue # next line
 
                             # Check if log get match with product_id on OpenERP (note: obviuosly correct for creation):
-                            lot_control_proxy=lot_proxy.browse(cr, uid, lot_id, context=context)
+                            lot_control_proxy = lot_proxy.browse(
+                                cr, uid, lot_id, context=context)
                             if not (lot_control_proxy.product_id and lot_control_proxy.product_id.id == product_id): # lot for another product
-                                update_line=wizard_line_pool.write(cr, uid, [file_item.id], {
-                                    'log_error': "Lotto %s e' per il prodotto %s, attualmente nel doc. e': %s" % (
-                                        product_lot,
-                                        lot_control_proxy.product_id.name if lot_control_proxy.product_id else "",
-                                        product_ref),
-                                    'to_import': False,}, context=context)
+                                update_line = wizard_line_pool.write(
+                                    cr, uid, [file_item.id], {
+                                        'log_error': "Lotto %s e' per il prodotto %s, attualmente nel doc. e': %s" % (
+                                            product_lot,
+                                            lot_control_proxy.product_id.name if lot_control_proxy.product_id else "",
+                                            product_ref),
+                                        'to_import': False,
+                                        }, context=context)
                                 continue # next line
                     except:
                         update_line = wizard_line_pool.write(cr, uid, [file_item.id], {
