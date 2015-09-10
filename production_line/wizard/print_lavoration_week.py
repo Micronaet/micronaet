@@ -74,7 +74,6 @@ class mrp_print_lavoration_week__wizard(osv.osv_memory):
     def default_date_from_to(self, cr, uid, data_type, reference_date=False, context=None):
         ''' Get default value for 4 type of data:
         '''        
-        import datetime
         from dateutil.relativedelta import relativedelta
         
         if reference_date:

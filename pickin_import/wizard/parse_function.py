@@ -52,9 +52,11 @@ def prepare_float(valore):
 def get_product_um(self, cr, uid, um):
     ''' Read UM from name (parsed)
     '''
-    parse = {'tn': 't',
-             'kg': 'kg',
-             'nr': 'Unità'} # TODO sono tutte??
+    parse = {
+        'tn': 't',
+        'kg': 'kg',
+        'nr': 'Unit(s)',
+        } # TODO sono tutte??
     name = parse.get(um.lower(), False) 
     if name:
         um_id = self.pool.get('product.uom').search(cr, uid, [('name', '=', name)])
