@@ -15,9 +15,6 @@ cfg_file = "openerp.cfg" # same directory
 config = ConfigParser.ConfigParser()
 config.read(cfg_file)
 
-# General parameters:
-force_file = config.get('general', 'force')
-
 # SMTP paramenter for log mail:
 smtp_server = config.get('smtp', 'server')
 smtp_user = config.get('smtp', 'user')
@@ -41,6 +38,7 @@ smtp_subject_mask = "%s > %s" % (company, config.get('smtp', 'subject_mask'))
 
 try:
     # Read parameters depend on start up company:
+    char_cr = eval(config.get(company, 'return'))                # Return format
     file_err = config.get(company, 'file_err')             # Log file from mexal (empty = OK, else error)
     mexal_company = config.get(company, 'company')
     to_addr = config.get(company, 'to_addr')
@@ -50,10 +48,14 @@ try:
     log_file_name = config.get(company, 'log_file_name')
     log_scheduler = config.get(company, 'log_scheduler_name') # Scheduler log file
     sprix_number = int(config.get(company, 'sprix_number'))
+    urgent_order = eval(config.get(company, 'urgent_order'))
+
+
     # Jump order too new:
     jump_order_days = eval(config.get(company, 'jump_order_days'))
     left_start_date = int(config.get(company, 'left_start_date'))
     left_days = int(config.get(company, 'left_days'))
+    force_file = config.get(company, 'force')
 except:
     print "[ERR] Chiamata a ditta non presente (scelte possibili: SDX o ELI)"
     sys.exit() # wrong company!
@@ -207,10 +209,16 @@ for ts, file_in in file_list:
             log_message(log_file, "Importazione forzata: %s > %s" % (path_in, file_in))
             
         elif test_date >= max_date:
-            log_message(log_file,
-                "File saltato [%s] limite %s < data file %s" % (
-                    file_in, max_date, test_date), "warning")
-            continue
+            if urgent_order and urgent_order in file_in:# test urgent orders:
+                log_message(log_file, "Importazione urgente: %s > %s" % (
+
+                    path_in, file_in))
+
+            else:
+                log_message(log_file,
+                    "File saltato [%s] limite %s < data file %s" % (
+                        file_in, max_date, test_date), "warning")
+                continue
     else:
         test_date = "Data non letta"
     log_message(log_file, "Divisione file: %s > %s" % (path_in, file_in))
@@ -233,8 +241,10 @@ for ts, file_in in file_list:
     for line in fin:
         position = 0
         for f in file_out:
-            f.write("%s\r\n" % (line[
-                file_out[f][0] : file_out[f][1]]))
+            f.write("%s%s" % (
+                line[file_out[f][0] : file_out[f][1]],
+                char_cr,
+                ))
 
     # Close all file (input and 2 splitted)       
     for f in file_out:
@@ -248,7 +258,6 @@ for ts, file_in in file_list:
         mail_error += "Errore chiudendo il file di input\n"
    
     # Run mexal:
-    #import pdb;pdb.set_trace()
     try:
         comment_err = "Chiamata mexal client"
         os.system(sprix_command)
@@ -336,4 +345,3 @@ try:
 except:
     pass
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
-
