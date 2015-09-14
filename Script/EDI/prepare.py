@@ -3,6 +3,7 @@
 import os
 import sys
 import pickle
+import shutil
 from datetime import datetime, timedelta
 from os import listdir
 from os.path import isfile, join
@@ -38,7 +39,8 @@ smtp_subject_mask = "%s > %s" % (company, config.get('smtp', 'subject_mask'))
 
 try:
     # Read parameters depend on start up company:
-    char_cr = eval(config.get(company, 'return'))                # Return format
+    char_cr = eval(config.get(company, 'return'))          # Return format
+    split_file = eval(config.get(company, 'split_file'))   # Split or simply copy
     file_err = config.get(company, 'file_err')             # Log file from mexal (empty = OK, else error)
     mexal_company = config.get(company, 'company')
     to_addr = config.get(company, 'to_addr')
@@ -50,9 +52,9 @@ try:
     sprix_number = int(config.get(company, 'sprix_number'))
     urgent_order = eval(config.get(company, 'urgent_order'))
 
-
     # Jump order too new:
     jump_order_days = eval(config.get(company, 'jump_order_days'))
+    left_date_on_file = eval(config.get(company, 'left_date_on_file'))
     left_start_date = int(config.get(company, 'left_start_date'))
     left_days = int(config.get(company, 'left_days'))
     force_file = config.get(company, 'force')
@@ -197,9 +199,13 @@ order_imported = ""
 for ts, file_in in file_list:    
     # Jump file to delivery in 'left_days' days (usually 3):
     if jump_order_days:
-        fin = open(join(path_in, file_in), "r")
-        test_date = fin.readline()[left_start_date:left_start_date + 8]
-        fin.close()
+        if left_date_on_file:
+            fin = open(join(path_in, file_in), "r")
+            test_date = fin.readline()[left_start_date:left_start_date + 8]
+            fin.close()
+        else:  #on filename
+            test_date = file_in[left_start_date:left_start_date + 8]
+            
         
         # Load every time the force list:
         force_list = load_forced(force_file)
@@ -224,12 +230,6 @@ for ts, file_in in file_list:
     log_message(log_file, "Divisione file: %s > %s" % (path_in, file_in))
     mail_error = "" # reset for every file readed
    
-    # Output file parameters (open every loop because closed after import):
-    file_out = {
-        open(join(path_out, 'ordine.1.txt'), "w"): [0, 2036],
-        open(join(path_out, 'ordine.2.txt'), "w"): [2036, 3507], # 1561
-        }
-
     # Remove log file (if present):
     try:
         os.remove(file_err)
@@ -237,26 +237,42 @@ for ts, file_in in file_list:
         pass
 
     # Split input file:
-    fin = open(join(path_in, file_in), "r")
-    for line in fin:
-        position = 0
-        for f in file_out:
-            f.write("%s%s" % (
-                line[file_out[f][0] : file_out[f][1]],
-                char_cr,
-                ))
+    order_in = join(path_in, file_in)
+    order_1 = join(path_out, 'ordine.1.txt')
+    order_2 = join(path_out, 'ordine.2.txt')
+    if split_file:        
+        # Output file parameters (open every loop because closed after import):
+        file_out = {
+            open(order_1, "w"): [0, 2036],
+            open(order_2, "w"): [2036, 3507], # 1561
+            }
+        fin = open(order_in, "r")
+        
+        for line in fin:
+            position = 0
+            for f in file_out:
+                f.write("%s%s" % (
+                    line[file_out[f][0] : file_out[f][1]],
+                    char_cr,
+                    ))
 
-    # Close all file (input and 2 splitted)       
-    for f in file_out:
-        try:
-            f.close()
+        # Close all file (input and 2 splitted)       
+        for f in file_out:
+            try:
+                f.close()
+            except:
+                mail_error += "Errore chiudendo file split\n"
+        try:       
+            fin.close()
         except:
-            mail_error += "Errore chiudendo file split\n"
-    try:       
-        fin.close()
-    except:
-        mail_error += "Errore chiudendo il file di input\n"
-   
+            mail_error += "Errore chiudendo il file di input\n"
+    else:
+        # rename file:
+        try:
+            shutil.copy(order_in, order_1)
+        except:
+            mail_error += "Errore copiando il file (no split)\n"
+        
     # Run mexal:
     try:
         comment_err = "Chiamata mexal client"
