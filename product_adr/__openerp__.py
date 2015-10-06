@@ -21,15 +21,17 @@
     'name': 'Product ADR',
     'version': '0.0.1',
     'category': 'Generic Modules/Customization',
-    'description': """Module for add a check in product list for ADR product
-                       (this is important for offer and other documents)
-                      Used also for import export with duty code
-                    """,
+    'description': """
+        Module for add a check in product list for ADR product
+           (this is important for offer and other documents)
+        Used also for import export with duty code
+        """,
     'author': 'Micronaet s.r.l.',
     'website': 'http://www.micronaet.it',
     'depends': [
         'base',
         'product',
+        'sale',
     ],
     'init_xml': [],
     'update_xml': [

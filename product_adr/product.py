@@ -23,7 +23,8 @@ import openerp.netsvc
 import logging
 from openerp.osv import osv, fields
 from datetime import datetime, timedelta
-from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, DATETIME_FORMATS_MAP, float_compare
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT, 
+    DEFAULT_SERVER_DATETIME_FORMAT, DATETIME_FORMATS_MAP, float_compare)
 import openerp.addons.decimal_precision as dp
 from openerp.tools.translate import _
 
@@ -49,7 +50,8 @@ class product_product_adr(osv.osv):
     _inherit = 'product.product'
     
     _columns = {
-        'adr':fields.boolean('ADR', required=False, help="Product that need ADR for transport"),
+        'adr':fields.boolean('ADR', required=False, 
+            help="Product that need ADR for transport"),
         'duty_id': fields.many2one('product.product.duty', 'Duty'),
     }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
