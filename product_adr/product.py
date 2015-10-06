@@ -54,4 +54,14 @@ class product_product_adr(osv.osv):
             help="Product that need ADR for transport"),
         'duty_id': fields.many2one('product.product.duty', 'Duty'),
     }
+
+class SaleOrderLineAdr(osv.osv):
+    ''' ADR sale order
+    ''' 
+    _inherit = 'sale.order.line'
+    
+    _columns = {
+        'adr': fields.related('product_id', 'adr', type='boolean', 
+            string='ADR'), 
+    }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
