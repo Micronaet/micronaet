@@ -35,15 +35,34 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+class sql_move_line(osv.osv):
+    ''' Extend sql.move.line
+    '''    
+    _inherit = 'sql.move.line'
+    
+    def _force_agent_code_update(self, cr, uid, ids, context=None):
+        ''' Update line when change partner
+        '''
+        return self.pool.get('sql.move.line').search(cr, uid, [
+            ('partner_id', 'in', ids)], context=context)
+        
+    _columns = {
+        # Agent info:
+        'agent_code': fields.related('partner_id', 'agent_code', 
+            type='char', size=15, string='Agent code', 
+            store={'res.partner': 
+                [_force_agent_code_update, ['agent_code'], 10]}),
+        }
+
 class res_partner(osv.osv):
     ''' Extend res.partner
     '''    
-    _name = 'res.partner'
     _inherit = 'res.partner'
     
     _columns = {
         # Agent info:
         'has_agent': fields.boolean('Has agent', required=False),
+        'agent_code': fields.char('Agent code', size=15),
         'agent_id':fields.many2one('res.partner', 'Agent', required=False),
     }
     
@@ -82,14 +101,16 @@ class res_partner(osv.osv):
                 try:                        
                     data = {
                         'has_agent': record['CKY_CNT_AGENTE'],
+                        'agent_code': record['CKY_CNT_AGENTE'],
                         'agent_id': False, # TODO search correctly with: partner_proxy.search(cr, uid, [(key_field, '=', record['CKY_CNT'])])
                         # usabile: get_partner_from_sql_code (self, cr, uid, code, context = None)
-                    }
+                        }
                     # Search code to update:
                     partner_ids = partner_proxy.search(cr, uid, [
                         ('sql_customer_code', '=', record['CKY_CNT'])])
                     if partner_ids: # update
-                        partner_proxy.write(cr, uid, partner_ids, data, context = context)
+                        partner_proxy.write(
+                            cr, uid, partner_ids, data, context=context)
 
                 except:
                     _logger.error('Error importing partner commercial [%s], jumped: %s' % (
@@ -99,7 +120,8 @@ class res_partner(osv.osv):
                             
             _logger.info('All partner commercial is updated!')
         except:
-            _logger.error('Error generic import partner commercial: %s' % (sys.exc_info(), ))
+            _logger.error('Error generic import partner commercial: %s' % (
+                sys.exc_info(), ))
             return False
         return True
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

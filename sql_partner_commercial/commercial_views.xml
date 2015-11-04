@@ -19,7 +19,8 @@
         <field name="inherit_id" ref="base.view_partner_tree" />
         <field name="arch" type="xml">
             <field name="user_id" position="after">
-                <field name="has_agent" />
+                <field name="has_agent" readonly="1" />
+                <field name="agent_code" readonly="1"/>
             </field>
         </field>
     </record>
@@ -30,9 +31,13 @@
         <field name="inherit_id" ref="sql_accounting_analysis.view_sql_move_line_search" />
         <field name="arch" type="xml">
             <filter name="BS" position="before">
+                <field name="agent_code" />
                 <filter icon="terp-go-home" name="has_agent_partner" string="Partner with agent" domain="[('partner_id.has_agent','=',True)]"/>
                 <newline />
             </filter>
+            <filter name="group_partner" position="after">
+                <filter name="group_agent_code" string="Group agent code" context="{'group_by': 'agent_code'}"/>
+            </filter>            
         </field>
     </record>
 
