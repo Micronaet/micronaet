@@ -122,18 +122,26 @@ class sql_move_line(osv.osv):
         move_ids = self.search(cr, uid, [
             ('partner_id', 'in', destination_ids)], context=context)
             
-        import pdb; pdb.set_trace()
+        i = 0
         for move in self.browse(cr, uid, move_ids, context=context):
+            i += 1
             if not move.bugfix_old_id: # update only once
                 data = {'bugfix_old_id': move.partner_id.id}
+                mode = 'UPDATE BUG ID'
             else: 
-                data = {}        
+                data = {}      
+                move = 'ONLY PARTNER'  
             data.update({
-                'partner_id': data.partner_id.bugfix_id.id,
+                'partner_id': move.partner_id.bugfix_id.id,
                 })    
-            self.write(cr, uid, move.id, data, context=context)    
-        # TODO                
+            self.write(cr, uid, move.id, data, context=context)
+            print "%s. Update move: %s data: %s" % (i, mode, data, )
+            
+        # TODO delete all destination:
+        partner_pool.unlink(cr, uid, destination_ids, context=context)
+        
         return True        
+        
         
     _columns = {
         'bugfix_old_id': fields.many2one('res.partner', 'Bugfix old ID'),
