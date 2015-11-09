@@ -86,7 +86,7 @@ class sql_move_line(osv.osv):
             code = destination.sql_destination_code
             data = {}
             if code and code in customer_db:
-                if destination.remove:
+                if not destination.remove:
                     data.update({
                         'name': '[RIMUOVERE] %s' % destination.name,
                         #'active': False,
@@ -97,7 +97,7 @@ class sql_move_line(osv.osv):
                         i, code, customer_db[code])
             else:
                 if code and code in supplier_db:
-                    if destination.remove:
+                    if not destination.remove:
                         data.update({
                             'name': '[RIMUOVERE] %s' % destination.name,
                             #'active': False,
@@ -107,7 +107,7 @@ class sql_move_line(osv.osv):
                         print '%s. SUPPLIER: Code: %s ID: %s' % (
                             i, code, supplier_db[code])
                 else:
-                    if destination.remove:
+                    if not destination.remove:
                         data.update({
                             'name': '[RIMUOVERE] %s' % destination.name,
                             'remove': True,
@@ -118,16 +118,25 @@ class sql_move_line(osv.osv):
                 partner_pool.write(
                     cr, uid, destination.id, data, context=context)    
 
-        # Update all lines from destination to client or supplier:
+        # Update all lines from destination to client or supplier:        
         move_ids = self.search(cr, uid, [
             ('partner_id', 'in', destination_ids)], context=context)
             
+        import pdb; pdb.set_trace()
+        for move in self.browse(cr, uid, move_ids, context=context):
+            if not move.bugfix_old_id: # update only once
+                data = {'bugfix_old_id': move.partner_id.id}
+            else: 
+                data = {}        
+            data.update({
+                'partner_id': data.partner_id.bugfix_id.id,
+                })    
+            self.write(cr, uid, move.id, data, context=context)    
         # TODO                
         return True        
         
     _columns = {
         'bugfix_old_id': fields.many2one('res.partner', 'Bugfix old ID'),
-        'remove': fields.boolean('To remove'),
         }
 
 class res_partner(osv.osv):
@@ -138,6 +147,7 @@ class res_partner(osv.osv):
     
     _columns = {
         'bugfix_id': fields.many2one('res.partner', 'Bugfix ID'),        
+        'remove': fields.boolean('To remove'),
         }
     
     
