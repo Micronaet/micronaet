@@ -43,68 +43,91 @@ class sql_move_line(osv.osv):
     '''
     _inherit = 'sql.move.line'
     
-    def force_unification_partner(self, cr, uid, ids, context=None):
+    def force_unification_partner(self, cr, uid, context=None):
         ''' Force unification for partner double
             Re assign all movement line
         '''
+        partner_pool = self.pool.get('res.partner')
         # Read customer for get convert dictionary:
-        customer_ids = self.search(cr, uid, [
+        customer_ids = partner_pool.search(cr, uid, [
             ('sql_customer_code', '!=', False),
             ('sql_import', '=', True),
             ('type', '=', 'default'),            
             ], context=context)
         customer_db = {}
-        for customer in self.browse(cr, uid, customer_ids, 
+        for customer in partner_pool.browse(cr, uid, customer_ids, 
                 context=context):
             customer_db[customer.sql_customer_code] = customer.id
-        import pdb; pdb.set_trace()    
             
         # Read customer for get convert dictionary:
-        supplier_ids = self.search(cr, uid, [
+        supplier_ids = partner_pool.search(cr, uid, [
             ('sql_supplier_code', '!=', False),
             ('sql_import', '=', True),
             ('type', '=', 'default'),            
             ], context=context)
         supplier_db = {}
-        for supplier in self.browse(cr, uid, supplier_ids, 
+        for supplier in partner_pool.browse(cr, uid, supplier_ids, 
                 context=context):
-            supplier_db[customer.sql_supplier_code] = supplier.id
-        import pdb; pdb.set_trace()    
+            supplier_db[supplier.sql_supplier_code] = supplier.id
             
         # Read customer for unlink:
-        destination_ids = self.search(cr, uid, [ # TO remove
+        destination_ids = partner_pool.search(cr, uid, [ # TO remove
             ('sql_destination_code', '!=', False),
             ('sql_import', '=', True),
             ('type', '=', 'contact'),
             ], context=context)
-        import pdb; pdb.set_trace()    
-        for destination in self.browse(cr, uid, destination_ids, 
+            
+        i = 0    
+        for destination in partner_pool.browse(cr, uid, destination_ids, 
                 context=context):
+                
+            i += 1    
             # Save changed ID:
             code = destination.sql_destination_code
             data = {}
             if code and code in customer_db:
-                data.update({
-                    'name': '[RIMUOVERE] %s' % destination.name,
-                    #'active': False,
-                    'bugfix_id': customer_db[code],
-                    })
-            else:
-                if code and code in supplier_db:
+                if destination.remove:
                     data.update({
                         'name': '[RIMUOVERE] %s' % destination.name,
                         #'active': False,
-                        'bugfix_id': supplier_db[code],
+                        'bugfix_id': customer_db[code],
+                        'remove': True,
                         })
+                    print '%s. CUSTOMER: Code: %s ID: %s' % (
+                        i, code, customer_db[code])
+            else:
+                if code and code in supplier_db:
+                    if destination.remove:
+                        data.update({
+                            'name': '[RIMUOVERE] %s' % destination.name,
+                            #'active': False,
+                            'bugfix_id': supplier_db[code],
+                            'remove': True,
+                            })
+                        print '%s. SUPPLIER: Code: %s ID: %s' % (
+                            i, code, supplier_db[code])
+                else:
+                    if destination.remove:
+                        data.update({
+                            'name': '[RIMUOVERE] %s' % destination.name,
+                            'remove': True,
+                            })
+                        print '%s. NOT FOUND: Code %s [%s]' % (
+                            i, code, destination.name)
             if data:            
-                self.write(cr, uid, destination.id, data, context=context)    
+                partner_pool.write(
+                    cr, uid, destination.id, data, context=context)    
 
         # Update all lines from destination to client or supplier:
+        move_ids = self.search(cr, uid, [
+            ('partner_id', 'in', destination_ids)], context=context)
+            
         # TODO                
         return True        
         
     _columns = {
         'bugfix_old_id': fields.many2one('res.partner', 'Bugfix old ID'),
+        'remove': fields.boolean('To remove'),
         }
 
 class res_partner(osv.osv):
