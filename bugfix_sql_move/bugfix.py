@@ -149,9 +149,12 @@ class sql_move_line(osv.osv):
             else: 
                 data = {}      
                 move = 'ONLY PARTNER'  
+            if move.partner_id.bugfix_id.agent_code: # speed up?
+                data.update({
+                    'agent_code': move.partner_id.bugfix_id.agent_code,
+                    })                
             data.update({
                 'partner_id': move.partner_id.bugfix_id.id,
-                'agent_code': move.partner_id.bugfix_id.agent_code, # agent
                 })    
                 
             self.write(cr, uid, move.id, data, context=context)
