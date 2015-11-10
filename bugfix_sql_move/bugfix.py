@@ -48,81 +48,99 @@ class sql_move_line(osv.osv):
             Re assign all movement line
         '''
         partner_pool = self.pool.get('res.partner')
+        
+        # -----------------------------------------
         # Read customer for get convert dictionary:
+        # -----------------------------------------
         customer_ids = partner_pool.search(cr, uid, [
             ('sql_customer_code', '!=', False),
             ('sql_import', '=', True),
             ('type', '=', 'default'),            
             ], context=context)
         customer_db = {}
+        print 'Customer total: %s' % len(customer_ids)
         for customer in partner_pool.browse(cr, uid, customer_ids, 
                 context=context):
             customer_db[customer.sql_customer_code] = customer.id
             
-        # Read customer for get convert dictionary:
+        # -----------------------------------------
+        # Read supplier for get convert dictionary:
+        # -----------------------------------------
         supplier_ids = partner_pool.search(cr, uid, [
             ('sql_supplier_code', '!=', False),
             ('sql_import', '=', True),
             ('type', '=', 'default'),            
             ], context=context)
         supplier_db = {}
+        print 'Supplier total: %s' % len(supplier_ids)
         for supplier in partner_pool.browse(cr, uid, supplier_ids, 
                 context=context):
             supplier_db[supplier.sql_supplier_code] = supplier.id
             
-        # Read customer for unlink:
-        destination_ids = partner_pool.search(cr, uid, [ # TO remove
+        # ---------------------------------------
+        # Read destination for correct operation:
+        # ---------------------------------------
+        destination_ids = partner_pool.search(cr, uid, [
             ('sql_destination_code', '!=', False),
             ('sql_import', '=', True),
             ('type', '=', 'contact'),
             ], context=context)
             
-        i = 0    
+        i = 0
+        remove_destination = [] # to remove and correct move line
+        print 'Destination total: %s' % len(destination_ids)
         for destination in partner_pool.browse(cr, uid, destination_ids, 
                 context=context):
-                
-            i += 1    
-            # Save changed ID:
+            i += 1
             code = destination.sql_destination_code
             data = {}
-            if code and code in customer_db:
+            if not code:
+                print '%s. ERR: Destination without code, ID: %s' % (
+                    i, code)
+                continue # remove this code?
+
+            if code in customer_db:
                 if not destination.remove:
                     data.update({
                         'name': '[RIMUOVERE] %s' % destination.name,
-                        #'active': False,
-                        'bugfix_id': customer_db[code],
+                        'bugfix_id': customer_db[code], # real customer
                         'remove': True,
                         })
+                    remove_destination.append(destination.id)    
                     print '%s. CUSTOMER: Code: %s ID: %s' % (
                         i, code, customer_db[code])
             else:
-                if code and code in supplier_db:
+                if code in supplier_db:
                     if not destination.remove:
                         data.update({
                             'name': '[RIMUOVERE] %s' % destination.name,
-                            #'active': False,
-                            'bugfix_id': supplier_db[code],
+                            'bugfix_id': supplier_db[code], # real supplier
                             'remove': True,
                             })
+                        remove_destination.append(destination.id)    
                         print '%s. SUPPLIER: Code: %s ID: %s' % (
                             i, code, supplier_db[code])
                 else:
-                    if not destination.remove:
+                    # General Account:
+                    if not destination.remove: # Tengo i movimenti, no rimoz.
                         data.update({
-                            'name': '[RIMUOVERE] %s' % destination.name,
+                            'name': '[??RIMUOVERE??] %s' % destination.name,
                             'remove': True,
                             })
+                        remove_destination.append(destination.id)    
                         print '%s. NOT FOUND: Code %s [%s]' % (
                             i, code, destination.name)
             if data:            
                 partner_pool.write(
-                    cr, uid, destination.id, data, context=context)    
+                    cr, uid, destination.id, data, context=context)
 
         # Update all lines from destination to client or supplier:        
+        print 'Destination total: %s' % len(remove_destination)
         move_ids = self.search(cr, uid, [
-            ('partner_id', 'in', destination_ids)], context=context)
+            ('partner_id', 'in', remove_destination)], context=context)
             
         i = 0
+        print 'Destination movement total: %s' % len(move_ids)
         for move in self.browse(cr, uid, move_ids, context=context):
             i += 1
             if not move.bugfix_old_id: # update only once
@@ -133,15 +151,18 @@ class sql_move_line(osv.osv):
                 move = 'ONLY PARTNER'  
             data.update({
                 'partner_id': move.partner_id.bugfix_id.id,
+                'agent_code': move.partner_id.bugfix_id.agent_code, # agent
                 })    
+                
             self.write(cr, uid, move.id, data, context=context)
             print "%s. Update move: %s data: %s" % (i, mode, data, )
             
+        print 'Update destination movement: %s' % i
+            
         # TODO delete all destination:
-        partner_pool.unlink(cr, uid, destination_ids, context=context)
-        
-        return True        
-        
+        print 'Remove destination: %s' % len(remove_destination)
+        partner_pool.unlink(cr, uid, remove_destination, context=context)        
+        return True                
         
     _columns = {
         'bugfix_old_id': fields.many2one('res.partner', 'Bugfix old ID'),
@@ -156,8 +177,6 @@ class res_partner(osv.osv):
     _columns = {
         'bugfix_id': fields.many2one('res.partner', 'Bugfix ID'),        
         'remove': fields.boolean('To remove'),
-        }
-    
-    
+        }    
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
