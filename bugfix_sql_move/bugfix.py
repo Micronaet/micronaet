@@ -163,8 +163,8 @@ class sql_move_line(osv.osv):
         _logger.info('Update destination movement: %s' % i)
             
         # TODO delete all destination:
-        _logger.info('Remove destination: %s' % len(remove_destination))
-        partner_pool.unlink(cr, uid, remove_destination, context=context)        
+        #_logger.info('Remove destination: %s' % len(remove_destination))
+        #partner_pool.unlink(cr, uid, remove_destination, context=context)        
         _logger.info('End bugfix')
         return True                
         
