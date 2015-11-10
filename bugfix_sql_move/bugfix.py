@@ -165,6 +165,7 @@ class sql_move_line(osv.osv):
         # TODO delete all destination:
         _logger.info('Remove destination: %s' % len(remove_destination))
         partner_pool.unlink(cr, uid, remove_destination, context=context)        
+        _logger.info('End bugfix')
         return True                
         
     _columns = {
