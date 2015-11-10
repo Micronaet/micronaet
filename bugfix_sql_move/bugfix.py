@@ -58,7 +58,7 @@ class sql_move_line(osv.osv):
             ('type', '=', 'default'),            
             ], context=context)
         customer_db = {}
-        print 'Customer total: %s' % len(customer_ids)
+        _logger.info('Customer total: %s' % len(customer_ids))
         for customer in partner_pool.browse(cr, uid, customer_ids, 
                 context=context):
             customer_db[customer.sql_customer_code] = customer.id
@@ -72,7 +72,7 @@ class sql_move_line(osv.osv):
             ('type', '=', 'default'),            
             ], context=context)
         supplier_db = {}
-        print 'Supplier total: %s' % len(supplier_ids)
+        _logger.info('Supplier total: %s' % len(supplier_ids))
         for supplier in partner_pool.browse(cr, uid, supplier_ids, 
                 context=context):
             supplier_db[supplier.sql_supplier_code] = supplier.id
@@ -88,15 +88,15 @@ class sql_move_line(osv.osv):
             
         i = 0
         remove_destination = [] # to remove and correct move line
-        print 'Destination total: %s' % len(destination_ids)
+        _logger.info('Destination total: %s' % len(destination_ids))
         for destination in partner_pool.browse(cr, uid, destination_ids, 
                 context=context):
             i += 1
             code = destination.sql_destination_code
             data = {}
             if not code:
-                print '%s. ERR: Destination without code, ID: %s' % (
-                    i, code)
+                _logger.error('%s. Destination without code, ID: %s' % (
+                    i, code))
                 continue # remove this code?
 
             if code in customer_db:
@@ -107,8 +107,8 @@ class sql_move_line(osv.osv):
                         'remove': True,
                         })
                     remove_destination.append(destination.id)    
-                    print '%s. CUSTOMER: Code: %s ID: %s' % (
-                        i, code, customer_db[code])
+                    _logger.info('%s. CUSTOMER: Code: %s ID: %s' % (
+                        i, code, customer_db[code]))
             else:
                 if code in supplier_db:
                     if not destination.remove:
@@ -118,8 +118,8 @@ class sql_move_line(osv.osv):
                             'remove': True,
                             })
                         remove_destination.append(destination.id)    
-                        print '%s. SUPPLIER: Code: %s ID: %s' % (
-                            i, code, supplier_db[code])
+                        _logger.info('%s. SUPPLIER: Code: %s ID: %s' % (
+                            i, code, supplier_db[code]))
                 else:
                     # General Account:
                     if not destination.remove: # Tengo i movimenti, no rimoz.
@@ -128,19 +128,19 @@ class sql_move_line(osv.osv):
                             'remove': True,
                             })
                         remove_destination.append(destination.id)    
-                        print '%s. NOT FOUND: Code %s [%s]' % (
-                            i, code, destination.name)
+                        _logger.warning('%s. NOT FOUND: Code %s [%s]' % (
+                            i, code, destination.name))
             if data:            
                 partner_pool.write(
                     cr, uid, destination.id, data, context=context)
 
         # Update all lines from destination to client or supplier:        
-        print 'Destination total: %s' % len(remove_destination)
+        _logger.info('Destination total: %s' % len(remove_destination))
         move_ids = self.search(cr, uid, [
             ('partner_id', 'in', remove_destination)], context=context)
             
         i = 0
-        print 'Destination movement total: %s' % len(move_ids)
+        _logger.info('Destination movement total: %s' % len(move_ids))
         for move in self.browse(cr, uid, move_ids, context=context):
             i += 1
             if not move.bugfix_old_id: # update only once
@@ -158,12 +158,12 @@ class sql_move_line(osv.osv):
                 })    
                 
             self.write(cr, uid, move.id, data, context=context)
-            print "%s. Update move: %s data: %s" % (i, mode, data, )
+            _logger.info("%s. Update move: %s data: %s" % (i, mode, data))
             
-        print 'Update destination movement: %s' % i
+        _logger.info('Update destination movement: %s' % i)
             
         # TODO delete all destination:
-        print 'Remove destination: %s' % len(remove_destination)
+        _logger.info('Remove destination: %s' % len(remove_destination))
         partner_pool.unlink(cr, uid, remove_destination, context=context)        
         return True                
         
