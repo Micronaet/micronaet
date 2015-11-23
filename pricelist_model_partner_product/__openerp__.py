@@ -42,13 +42,15 @@
         "pricelist_model",
         "partner_product_detail", # Micronaet/micronaet-mx (for price partic.)
     ],
-	"category" : "Custom/Pricelist",
-	"init_xml" : [],
-	"demo_xml" : [],
-	"data" : ["security/ir.model.access.csv",
-              "partner_view.xml", 
-              "scheduler.xml",
-              "report/customer_pricelist.xml",
-             ],
+	"category": "Custom/Pricelist",
+	"init_xml": [],
+	"demo_xml": [],
+	"data": [
+	    "security/pricelist_security.xml",
+	    "security/ir.model.access.csv",
+        "partner_view.xml", 
+        "scheduler.xml",
+        "report/customer_pricelist.xml",
+        ],
 	"installable": True
 }

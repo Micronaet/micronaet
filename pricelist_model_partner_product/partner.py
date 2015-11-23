@@ -80,8 +80,6 @@ class res_partner_pricelist_product(osv.osv):
            
 
     _columns = {
-        #'partner_id': fields.many2one('res.partner', 'Partner', required = True),
-        #'product_id': fields.many2one('product.product', 'Product', required = True),
         'in_pricelist': fields.boolean('In pricelist'),
         'pricelist1': fields.function(
             _get_price_from_pricelist, method = True, type = 'float', string = 'Default pricelist', store = False, multi = "Pricelist"),
@@ -292,7 +290,9 @@ class res_partner(osv.osv):
         for order in order_pool.browse(cr, uid, order_ids, context = context):
             partner_filter = ('partner_id', '=', order.partner_id.id)
             for line in order.order_line:
-                pricelist_ids = pricelist_pool.search(cr, uid, [partner_filter, ('product_id', '=', line.product_id.id)], context = context)
+                pricelist_ids = pricelist_pool.search(cr, uid, [partner_filter, 
+                    ('product_id', '=', line.product_id.id),
+                    ], context = context)
                 if not pricelist_ids: 
                     pricelist_pool.create(cr, uid, {
                         'partner_id': order.partner_id.id,
@@ -301,11 +301,12 @@ class res_partner(osv.osv):
                     }, context = context)
         
         return True
-
     
     _columns = {
         'auto_updatable': fields.boolean('Auto updatable'),
+
         # Togliere solo per demo:
-        'sale_order_line_ids': fields.one2many('sale.order.line', 'partner_id', 'Orders', required = False, readonly = False)
+        'sale_order_line_ids': fields.one2many('sale.order.line', 'partner_id', 
+            'Orders', required=False, readonly=False)
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

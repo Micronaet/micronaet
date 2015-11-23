@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
@@ -17,60 +17,57 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-##############################################################################
+###############################################################################
 from openerp.osv import fields, osv
 
 
 class product_product(osv.osv):
     '''Add extra fields to product
     '''
-    _name = "product.product"
     _inherit = "product.product"
 
     _columns = {
         'in_pricelist':fields.boolean(
-            'In pricelist', required = False, help = "If element is in pricelist"),
-    }
+            'In pricelist', help = "If element is in pricelist"),
+        }
     _defaults = {
         'in_pricelist': lambda *x: False,
-    }
+        }
 
 class product_pricelist_item(osv.osv):
     '''Add extra fields to object
     '''
-    _name = "product.pricelist.item"
     _inherit = "product.pricelist.item"
     
     _columns = {
-        'is_extra_reference': fields.boolean('Is extra reference', required = False, readonly = False),
-    }
+        'is_extra_reference': fields.boolean('Is extra reference', readonly=False),
+        }
 
 class product_pricelist_version(osv.osv):
     '''Add extra fields to object
     '''
-    _name = "product.pricelist.version"
     _inherit = "product.pricelist.version"
     
     _columns = {
-        'accounting_id':fields.char('Accounting customer', size=10, required = False, readonly = False),
-    }    
+        'accounting_id':fields.char('Accounting customer', size=10, readonly=False),
+        }    
     
 class product_pricelist(osv.osv):
     '''Add extra fields to object
     '''
-    _name = "product.pricelist"
     _inherit = "product.pricelist"
     
     _columns = {
-        'accounting_id':fields.char('Accounting customer', size=10, required = False, readonly = False),
+        'accounting_id':fields.char('Accounting customer', size=10, readonly=False),
         'customized':fields.boolean(
-            'Customized', required = False, help = "If this pricelist is for only one partner"),               
+            'Customized', help = "If this pricelist is for only one partner"),               
         'tipology':fields.selection([
             ('model','Model'),
             ('historical','Historical'),
-            ('customer','Customer'), ], 'Tipology', select=True, readonly=False), }
+            ('customer','Customer'), ], 'Tipology', select=True, readonly=False), 
+        }
 
     _defaults = {
         'customized': lambda *x: False,
-    }
+        }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

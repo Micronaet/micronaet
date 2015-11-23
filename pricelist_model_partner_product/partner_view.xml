@@ -4,21 +4,18 @@
     <!--inherit-->
     <!--res.partner.pricelist.product-->
     <record id='view_res_partner_form_pricelist' model='ir.ui.view'>
-        <field name='name'>Product for partner</field>
+        <field name='name'>partner.product.particularity.form</field>
         <field name='model'>res.partner</field>
-        <field name='inherit_id' ref='partner_product_detail.view_res_partner_form_pricelist' />
+        <field name='inherit_id' ref='partner_product_detail.view_res_partner_custom_pricelist_form' />
         <field name='arch' type='xml'>
-            <xpath expr="//fields[@name='pricelist_product_ids']" position="before">
-                <field name="auto_updatable" />
-                <newline/>
+            <xpath expr="//field[@name='pricelist_product_ids']" position="before">
+                <field name="auto_updatable" /><newline/>
             </xpath>    
-            <xpath expr="//fields[@name='pricelist_product_ids']/tree" position="after">
-                <field name="pricelist_product_ids" nolabel="1" colspan="4" context="{'default_partner_id':active_id}">
-                    <field name="in_pricelist" /> 
-                    <field name="pricelist1" readonly="1"/>
-                    <field name="pricelist2" readonly="1"/>
-                    <field name="pricelist3" readonly="1"/>
-                </field>
+            <xpath expr="//field[@name='pricelist_product_ids']/tree/field[@name='note']" position="before">
+                <field name="in_pricelist" groups="pricelist_model_partner_product.group_pricelist_manager" /> 
+                <field name="pricelist1" readonly="1" groups="pricelist_model_partner_product.group_pricelist_agent"/>
+                <field name="pricelist2" readonly="1" groups="pricelist_model_partner_product.group_pricelist_agent"/>
+                <field name="pricelist3" readonly="1" groups="pricelist_model_partner_product.group_pricelist_agent"/>
             </xpath>
         </field>
     </record>
