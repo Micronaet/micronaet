@@ -206,7 +206,7 @@
             </xpath>
             
             <field name="date_order" position="after">
-                <group name="delivery" attrs="{'invisible':[('accounting_order','=',False)]}" colspan="4" col="2">
+                <group name="delivery" colspan="4" col="2">
                    <field name="date_deadline" />
                    <!--<field name="date_previous_deadline" attrs="{'invisible':[('accounting_state','not in',('modify',))]}"/>-->
                    <field name="date_delivery" attrs="{'required':[('accounting_state','=','planned')]}"/>

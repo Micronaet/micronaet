@@ -38,8 +38,7 @@ class sale_order_line(osv.osv):
 class res_partner_pricelist_product(osv.osv):
     ''' Pricelist product usually order for partner
     '''
-    _name = 'res.partner.pricelist.product'
-    _description = 'Partner product'
+    _inherit = 'res.partner.pricelist.product'
 
     # ----------------
     # Pricelist values
@@ -81,8 +80,8 @@ class res_partner_pricelist_product(osv.osv):
            
 
     _columns = {
-        'partner_id': fields.many2one('res.partner', 'Partner', required = True),
-        'product_id': fields.many2one('product.product', 'Product', required = True),
+        #'partner_id': fields.many2one('res.partner', 'Partner', required = True),
+        #'product_id': fields.many2one('product.product', 'Product', required = True),
         'in_pricelist': fields.boolean('In pricelist'),
         'pricelist1': fields.function(
             _get_price_from_pricelist, method = True, type = 'float', string = 'Default pricelist', store = False, multi = "Pricelist"),
@@ -90,15 +89,17 @@ class res_partner_pricelist_product(osv.osv):
             _get_price_from_pricelist, method = True, type = 'float', string = 'Model pricelist', store = False, multi = "Pricelist"),
         'pricelist3': fields.function(
             _get_price_from_pricelist, method = True, type = 'float', string = 'History pricelist', store = False, multi = "Pricelist"),
-    }
+        }
 
     _defaults = {
         'in_pricelist': lambda *x: True,
-    }
+        }
 
 class res_partner(osv.osv):
     """ Extra fields for manage product pricelist
     """
+    _inherit = 'res.partner'
+
     #----------------------
     # Scheduled operations:
     #----------------------
@@ -301,13 +302,10 @@ class res_partner(osv.osv):
         
         return True
 
-    _name = 'res.partner'
-    _inherit = 'res.partner'
     
     _columns = {
-        'auto_updatable': fields.boolean('Auto updatable', ),
-        'pricelist_product_ids': fields.one2many('res.partner.pricelist.product', 'partner_id', 'Pricelist products', required = False),
+        'auto_updatable': fields.boolean('Auto updatable'),
         # Togliere solo per demo:
         'sale_order_line_ids': fields.one2many('sale.order.line', 'partner_id', 'Orders', required = False, readonly = False)
-    }
+        }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -6,26 +6,19 @@
     <record id='view_res_partner_form_pricelist' model='ir.ui.view'>
         <field name='name'>Product for partner</field>
         <field name='model'>res.partner</field>
-        <field name='inherit_id' ref='base.view_partner_form' />
+        <field name='inherit_id' ref='partner_product_detail.view_res_partner_form_pricelist' />
         <field name='arch' type='xml'>
-            <xpath expr="/form/sheet/notebook/page" position="after">
-                <page string="Product pricelist">                    
-                    <group colspan="4">
-                        <field name="auto_updatable" />
-                        <newline/>
-                        <separator string="Pricelist product:" colspan="4"/>
-                        <field name="pricelist_product_ids" nolabel="1" colspan="4" context="{'default_partner_id':active_id}">
-                           <tree string="Pricelist product" editable="bottom">
-                                <field name="partner_id" invisible="1" />  
-                                <field name="in_pricelist" /> 
-                                <field name="product_id" />  
-                                <field name="pricelist1" readonly="1"/>
-                                <field name="pricelist2" readonly="1"/>
-                                <field name="pricelist3" readonly="1"/>
-                           </tree>                        
-                        </field>
-                    </group>
-                </page>    
+            <xpath expr="//fields[@name='pricelist_product_ids']" position="before">
+                <field name="auto_updatable" />
+                <newline/>
+            </xpath>    
+            <xpath expr="//fields[@name='pricelist_product_ids']/tree" position="after">
+                <field name="pricelist_product_ids" nolabel="1" colspan="4" context="{'default_partner_id':active_id}">
+                    <field name="in_pricelist" /> 
+                    <field name="pricelist1" readonly="1"/>
+                    <field name="pricelist2" readonly="1"/>
+                    <field name="pricelist3" readonly="1"/>
+                </field>
             </xpath>
         </field>
     </record>

@@ -40,6 +40,7 @@
 	    "base",
 	    "sale",
         "pricelist_model",
+        "partner_product_detail", # Micronaet/micronaet-mx (for price partic.)
     ],
 	"category" : "Custom/Pricelist",
 	"init_xml" : [],
