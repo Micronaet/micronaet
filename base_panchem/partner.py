@@ -125,7 +125,6 @@ def CreateTitle(sock,dbname,uid,pwd,titles,table):
 class product_product_extra_fields(osv.osv):
     ''' Extra fields for ETL in product.product
     ''' 
-    _name='product.product'
     _inherit = 'product.product'
 
     # Utility function: ########################################################
