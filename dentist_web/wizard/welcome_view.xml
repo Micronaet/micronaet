@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+<!-- dentist.appointment.wizard -->        
+        <record model="ir.ui.view" id="dentist_welcome_wizard_form_view">
+            <field name="name">Schedule</field>
+            <field name="model">dentist.welcome.wizard</field>
+            <field name="arch" type="xml">
+               <form string='' version="7.0">
+                  <sheet>
+                      <group colspan="4">
+                      <field name="message" widget="html" colspan="4" readonly="1" nolabel="1"/>
+                      <newline />
+                      <button name="%(action_dentist_web_wizard_form)d" string="Request information" icon="gtk-go-forward" type="action" />
+                      </group>
+                  </sheet>    
+               </form>
+            </field>
+        </record>
+            
+        <record model="ir.actions.act_window" id="dentist_welcome_wizard_action">
+            <field name="name"> </field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dentist.welcome.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+        </record>
+
+   <record id="board_poliambulatory_welcome_form" model="ir.ui.view">
+        <field name="name">Board welcome</field>
+        <field name="model">board.board</field>
+        <field name="inherit_id" ref="dentist.board_poliambulatory_form" />
+        <field name="arch" type="xml">
+            <xpath expr="/form//action[@string='Reception']" position="before">
+                 <action colspan="4" name="%(dentist_welcome_wizard_action)d" string="" width="800" />
+            </xpath>
+        </field>
+    </record>  
+    </data>
+</openerp>

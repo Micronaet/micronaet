@@ -1,0 +1,4 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_construction_web_user","construction.web","model_construction_web","base.group_user",1,1,1,1
+"access_construction_catalog_user","construction.catalog","model_construction_catalog","base.group_user",1,1,1,1
+"access_construction_catalog_uom_user","construction.catalog.uom","model_construction_catalog_uom","base.group_user",1,1,1,1

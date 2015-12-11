@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    <!--mrp.workcenter.work.motive-->
+    <record model="ir.ui.view" id="view_mrp_workcenter_work_motive_tree">
+        <field name="name">Work motive</field>
+        <field name="model">mrp.workcenter.work.motive</field>
+        <field name="arch" type="xml">
+            <tree string="Work motive" colors="green:uptime==True">
+               <field name='sequence'/>
+               <field name='name'/>
+               <field name='note'/>
+               <field name='uptime'/>
+           </tree>
+        </field>
+    </record>    
+    <record model="ir.ui.view" id="view_mrp_workcenter_work_motive_form">
+        <field name="name">Work motive</field>
+        <field name="model">mrp.workcenter.work.motive</field>
+        <field name="arch" type="xml">
+            <form string="Work motive" version="7.0">
+               <sheet>
+                   <group colspan="4" col="4">
+                       <field name='sequence'/>
+                       <field name='name'/>
+                       <field name='uptime'/>
+                       <separator string="Note" colspan="4" />
+                       <field name='note' colspan="4" nolabel="1"/>
+                   </group>
+               </sheet>
+           </form>
+        </field>
+    </record>    
+    <record model="ir.ui.view" id="view_mrp_workcenter_work_motive_search">
+        <field name="name">Work motive</field>
+        <field name="model">mrp.workcenter.work.motive</field>
+        <field name="arch" type="xml">
+            <search string="Work motive search">
+                <field name="name" string="Motive"/>
+                <filter name="only_uptime" string="Only uptime" domain="[('uptime','=',True)]"/>
+                <filter name="only_downtime" string="Only downtime" domain="[('uptime','=',False)]"/>
+                <group expand="1" string="Group By...">
+                    <filter name="group_time" string="Type" icon="terp-partner" context="{'group_by':'uptime'}"/>
+                </group>                    
+           </search>
+        </field>
+    </record>    
+    <record model="ir.actions.act_window" id="action_mrp_work_workcenter_motive">
+        <field name="name">Work motive</field>
+        <field name="res_model">mrp.workcenter.work.motive</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_mrp_workcenter_work_motive_tree"/>
+    </record>    
+    
+    <!--mrp.workcenter.work-->
+    <record model="ir.ui.view" id="view_mrp_workcenter_work_tree">
+        <field name="name">Work Statistic</field>
+        <field name="model">mrp.workcenter.work</field>
+        <field name="arch" type="xml">
+            <tree string="Work motive" colors="green:uptime==True">
+               <field name='date'/>
+               <field name='workcenter_id'/>
+               <field name='hour'/>
+               <field name='motive_id'/>               
+           </tree>
+        </field>
+    </record>    
+    <record model="ir.ui.view" id="view_mrp_workcenter_work_form">
+        <field name="name">Work Statistic</field>
+        <field name="model">mrp.workcenter.work</field>
+        <field name="arch" type="xml">
+            <form string="Work motive" version="7.0">
+               <sheet>
+                   <group colspan="4" col="4">
+                       <field name='date'/>
+                       <field name='workcenter_id'/>
+                       <field name='hour'/>
+                       <field name='motive_id'/>               
+                   </group>
+               </sheet>
+           </form>
+        </field>
+    </record>    
+    <record model="ir.ui.view" id="view_mrp_workcenter_work_search">
+        <field name="name">Work Statistic</field>
+        <field name="model">mrp.workcenter.work</field>
+        <field name="arch" type="xml">
+            <search string="Work motive search">
+                <field name="date" string="Date"/>
+                <field name="date" string="From date" filter_domain="[('date','&gt;=',self)]"/>
+                <field name="date" string="To date" filter_domain="[('date','&lt;=',self)]"/>
+                <field name="workcenter_id" string="Line" filter_domain="[('workcenter_id','=',self)]"/>
+                <filter name="to_complete" string="To complete" domain="[('motive_id','=',False)]"/>
+                
+                <group expand="1" string="Group By...">
+                    <filter name="group_workcenter" string="Workcenter" icon="terp-partner" context="{'group_by':'workcenter_id'}"/>
+                    <filter name="group_motive" string="Motive" icon="terp-partner" context="{'group_by':'motive_id'}"/>
+                    <filter name="group_date" string="Date" icon="terp-partner" context="{'group_by':'date'}"/>
+                </group>                    
+           </search>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_mrp_workcenter_work_graph">
+        <field name="name">Work Statistic</field>
+        <field name="model">mrp.workcenter.work</field>
+        <field name="arch" type="xml">
+            <graph string="Work motive search">
+                <field name="date"/>
+                <field name="workcenter_id"/>
+                <field name="motive_id"/>
+                <field name="hour" operator="+" />                   
+           </graph>
+        </field>
+    </record>    
+    <record model="ir.actions.act_window" id="action_mrp_workcenter_work">
+        <field name="name">Line Work Statistic</field>
+        <field name="res_model">mrp.workcenter.work</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,graph</field>
+        <field name="view_id" ref="view_mrp_workcenter_work_tree"/>
+    </record>    
+    
+   <menuitem name="Statistic" parent="production_line.menu_base_production_root_reporting" id="menu_base_production_root_statistics" sequence="0" />
+      <menuitem name="Line productivity" parent="menu_base_production_root_statistics" id="menuitem_production_statistics" action="action_mrp_workcenter_work" sequence="10" />
+          <menuitem name="Work motive" parent="menuitem_production_statistics" id="menuitem_production_statistics_motive" action="action_mrp_work_workcenter_motive" sequence="10" />
+    
+   </data>
+</openerp>   

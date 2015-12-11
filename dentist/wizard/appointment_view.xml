@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+<!-- dentist.appointment.wizard -->        
+        <record model="ir.ui.view" id="dentist_appointment_wizard_form_view">
+            <field name="name">Schedule</field>
+            <field name="model">dentist.appointment.wizard</field>
+            <field name="arch" type="xml">
+               <form string='Appointment'>
+                  <field name="next_date" />
+                  <newline />
+                  <button special="cancel" string="Cancel" icon="gtk-cancel" />
+                  <button name="create_next_appointment" string="Create" icon="gtk-go-forward" type="object" />
+               </form>
+            </field>
+        </record>
+            
+        <record model="ir.actions.act_window" id="dentist_action_form_appointment_wizard">
+            <field name="name">Re-schedule appointment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dentist.appointment.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="context">{'appointment_id':active_id}</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>
+

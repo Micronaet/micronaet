@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <record model="ir.ui.view" id="view_mrp_bom_coal_form">
+        <field name="name">mrp.bom.form.coal</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view" />
+        <field name="arch" type="xml">
+            <field name="type" position="after">
+                <field name="only_coal" on_change="onchange_only_coal(only_coal)"/>
+                <field name="coal_bom_id" domain="[('product_id','=',product_id),('bom_id','=',False),('only_coal','=',True)]" attrs="{'invisible':[('only_coal','=',True)]}" context="{'default_only_coal':True,'default_product_id':product_id}"/>
+            </field>
+        </field>
+    </record>
+
+    <!--<record model="ir.ui.view" id="view_mrp_bom_coal_tree">
+        <field name="name">mrp.bom.tree.coal</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_tree_view" />
+        <field name="arch" type="xml">
+            <field name="mrp.mrp_bom_tree_view" position="before">
+                <field name="coal_bom_id" />                
+            </field>
+            <xpath expr="/tree" position="attributes">
+                <attribute name="colors">blue:method;green:coal_bom_id</attribute>
+            </xpath>
+        </field>
+    </record>-->
+    
+</data>
+</openerp>

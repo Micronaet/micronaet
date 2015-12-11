@@ -1,0 +1,224 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    <!-- INHERIT VIEW --> 
+    <!--product.product -->
+       <record id="product_normal_form_view" model="ir.ui.view">
+            <field name="name">product.normal.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="/form/sheet/notebook/page[@string='Information']" position='after'>
+                    <page string="MSDS" groups="msds_chemical.group_MSDS_manager,msds_chemical.group_MSDS_user">
+                        <separator string="MSDS" />
+                        <field name="msds_ids" context="{'embedded_product_rel': True}"/>
+                        <separator string="MSDS alias" />
+                        <field name="msds_alias_ids" context="{'embedded_alias_rel': True}"/>
+                    </page>          
+                </xpath>
+            </field>    
+      </record>
+
+    <!--res.company -->
+    <record model="ir.ui.view" id="res_company_form_msds_view">
+        <field name="name">Company MSDS</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form" />
+        <field name="arch" type="xml">
+            <xpath expr="/form/sheet/notebook/page[@string='General Information']" position="after">
+                <page string="MSDS" groups="msds_chemical.group_MSDS_manager,msds_chemical.group_MSDS_user">
+                    <group colspan="4" col="4">
+                       <field name="msds_folder_in" />
+                       <field name="msds_folder_store"/>
+                       <field name="msds_log_id" />                       
+                    </group>
+                </page>                
+            </xpath>
+        </field>
+    </record>    
+
+    <!-- NORMAL VIEW --> 
+    <!--msds.form-->
+       <record id="msds_form_search_view" model="ir.ui.view">
+            <field name="name">msds.form.form</field>
+            <field name="model">msds.form</field>
+            <field name="arch" type="xml">
+                <search string="MSDS">
+                   <!--<field name="product_id" string="Product" filter_domain="[('product_id','=',self)]"/>
+                   <field name="alias_id" string="Alias" filter_domain="[('alias_id','=',self)]"/>-->
+                   <field name="product_code" string="Product code" filter_domain="[('product_code','=',self)]"/>
+                   <field name="alias_code" string="Alias code" filter_domain="[('alias_code','=',self)]"/>
+                   <field name="language_id" string="Language" filter_domain="[('language_id','=',self)]"/>
+                   <separator/>
+                   <!--<filter string="Active" name="active" icon="terp-accessories-archiver-minus" domain="[('active','=',1)]"/>-->
+                   <group expand='0' string='Group by...'>
+                       <filter string='Product' icon="terp-stock_symbol-selection" domain="[]" context="{'group_by': 'product_code'}"/>
+                       <filter string='Alias' icon="terp-stock_symbol-selection" domain="[]" context="{'group_by': 'alias_code'}"/>
+                       <filter string='Language' icon="terp-stock_symbol-selection" domain="[]" context="{'group_by': 'language_id'}"/>
+                       <!--<filter string='Date' icon="terp-stock_symbol-selection" domain="[]" context="{'group_by': 'timestamp'}"/>-->
+                   </group>
+                </search>
+            </field>
+        </record>
+    
+       <record id="msds_form_tree_view" model="ir.ui.view">
+            <field name="name">msds.form.tree</field>
+            <field name="model">msds.form</field>
+            <field name="arch" type="xml">
+                <tree string="MSDS form">
+                    <!--<field name="product_id" invisible="context.get('embedded_msds', False)" />
+                    <field name="alias_id" invisible="context.get('embedded_alias_msds', False)" />
+                    <field name="product_id" invisible="context.get('embedded_msds', False)" />
+                    <field name="timestamp" />-->
+                    <field name="product_code" />
+                    <field name="alias_code"  />
+                    <field name="filename" readonly="1" />
+                    <field name="language_id" />
+                    <button name="open_msds_form" string="Open" type="object" class="oe_highlight" icon="gtk-file"/>
+                </tree>
+            </field>
+       </record>
+
+       <record id="msds_form_form_view" model="ir.ui.view">
+            <field name="name">msds.form.form</field>
+            <field name="model">msds.form</field>
+            <field name="arch" type="xml">
+                <form string="MSDS form" version="7.0">
+                    <sheet>
+                        <group colspan="4" col="4">
+                           <!--<field name="product_id" readonly="1" invisible="context.get('embedded_msds', False)"/>
+                           <field name="alias_id" readonly="1" />
+                           <field name="timestamp" readonly="1" />-->
+                           <field name="product_code" />
+                           <field name="alias_code"  />
+                           <field name="filename" readonly="1" />
+                           <field name="language_id" readonly="1" />
+                           
+                           <separator string="Version:" colspan="4" />
+                           <field name="version_ids" context="{'embedded_version': True}" nolabel="1" colspan="4" />
+                           
+                           <button name="open_msds_form" string="Open" type="object" class="oe_highlight" icon="gtk-file"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+       </record>
+
+        <record model="ir.actions.act_window" id="action_msds_form">
+            <field name="name">MDSD Form</field>
+            <field name="res_model">msds.form</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="msds_form_tree_view" />
+        </record>
+     
+       <!-- msds.form.version -->
+       <record id="msds_form_version_tree_view" model="ir.ui.view">
+            <field name="name">msds.form.version.tree</field>
+            <field name="model">msds.form.version</field>
+            <field name="arch" type="xml">
+                <tree string="MSDS form version">
+                    <field name="msds_id" invisible="context.get('embedded_version', False)" />
+                    <field name="timestamp" />
+                    <button name="open_msds_form" string="Open" type="object" class="oe_highlight" icon="gtk-file" />
+                </tree>
+            </field>
+       </record>
+
+       <record id="msds_form_version_form_view" model="ir.ui.view">
+            <field name="name">msds.form.version.form</field>
+            <field name="model">msds.form.version</field>
+            <field name="arch" type="xml">
+                <form string="MSDS form version" version="7.0">
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <field name="msds_id" />
+                            <field name="timestamp" />                           
+                            <button name="open_msds_form" string="Open" type="object" class="oe_highlight" icon="gtk-file"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+       </record>
+
+       <!-- msds.form.rel -->
+       <record id="msds_form_rel_tree_view" model="ir.ui.view">
+            <field name="name">msds.form.rel.tree</field>
+            <field name="model">msds.form.rel</field>
+            <field name="arch" type="xml">
+                <tree string="MSDS form rel">
+                    <field name="msds_id" invisible="1" />
+                    <field name="product_id" invisible="1"  />
+                    <field name="alias_id" invisible="1"  />
+                    <field name="product_code" />
+                    <field name="alias_code" />
+                    <field name="language_id" />
+                    <button name="open_msds_form" string="Open" type="object" class="oe_highlight" icon="gtk-file" />
+                </tree>
+            </field>
+       </record>
+
+       <record id="msds_form_rel_form_view" model="ir.ui.view">
+            <field name="name">msds.form.rel.form</field>
+            <field name="model">msds.form.rel</field>
+            <field name="arch" type="xml">
+                <form string="MSDS form rel" version="7.0">
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <field name="product_code" />
+                            <field name="alias_code" />
+                            <field name="language_id" />
+                            <button name="open_msds_form" string="Open" type="object" class="oe_highlight" icon="gtk-file" />
+                            <field name="msds_id" invisible="1" />
+                            <field name="product_id" invisible="1"  />
+                            <field name="alias_id" invisible="1"  />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+       </record>
+       
+       <!-- msds.form.language -->
+       <record id="msds_form_language_tree_view" model="ir.ui.view">
+            <field name="name">msds.form.language.tree</field>
+            <field name="model">msds.form.language</field>
+            <field name="arch" type="xml">
+                <tree string="MSDS language">
+                    <field name="code"/>
+                    <field name="name" />
+                </tree>
+            </field>
+       </record>
+
+       <record id="msds_form_language_form_view" model="ir.ui.view">
+            <field name="name">msds.form.language.form</field>
+            <field name="model">msds.form.language</field>
+            <field name="arch" type="xml">
+                <form string="MSDS language" version="7.0">
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <field name="code"/>
+                            <field name="name" />
+                            <separator string="Note" colspan="4" />
+                            <field name="note" nolabel="1" colspan="4" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+       </record>
+
+    <record model="ir.actions.act_window" id="action_msds_form_language">
+        <field name="name">MDSD form language</field>
+        <field name="res_model">msds.form.language</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="msds_form_language_tree_view"/>
+    </record>
+
+    <menuitem name="MSDS" id="menu_msds_root" sequence="10" groups="msds_chemical.group_MSDS_manager,msds_chemical.group_MSDS_user" parent="base.menu_base_config"/>
+        <menuitem name="MSDS version" id="menu_msds_form" sequence="10" parent="menu_msds_root" action="action_msds_form"/>
+        <menuitem name="MSDS language" id="menu_msds_form_language" sequence="20" parent="menu_msds_root" action="action_msds_form_language" groups="msds_chemical.group_MSDS_manager"/>
+    
+    </data>
+</openerp>    
+    

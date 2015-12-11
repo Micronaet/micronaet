@@ -1,0 +1,96 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+
+    <!--sale.order-->
+    <record id="view_sale_order_adr_form" model="ir.ui.view">
+        <field name="name">sale.order.adr.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="before">
+                    <field name="adr" />
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree" position="attributes">
+                    <attribute name="colors">red:adr==True</attribute>
+                </xpath>            
+        </field>
+    </record>         
+
+    <!--product.product.duty-->
+    <record model="ir.ui.view" id="view_product_product_duty_form">
+        <field name="name">product.product.duty.form</field>
+        <field name="model">product.product.duty</field>
+        <field name="arch" type="xml">
+            <form string="Duty" version="7.0">
+                <sheet>
+                    <group colspan="4" col="4">
+                        <field name="name" />
+                        <newline />
+                        <separator string="Note" colspan="4" />
+                        <field name="note" colspan="4" />
+                    </group>    
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_product_product_duty_tree">
+        <field name="name">product.product.duty.tree</field>
+        <field name="model">product.product.duty</field>
+        <field name="arch" type="xml">
+            <tree string="Duty" version="7.0">
+                <field name="name" />
+                <field name="note" />
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="action_product_product_duty">
+        <field name="name">Duty code</field>
+        <field name="res_model">product.product.duty</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_product_product_duty_tree"/>
+    </record>    
+    
+    <!--product.product-->
+    <record model="ir.ui.view" id="view_product_adr_form">
+        <field name="name">product.product.ads.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <field name="sale_ok" position="before">
+                <field name="adr" />
+                <label for="adr"/>
+            </field>
+            <field name="default_code" position="after">
+                <field name="duty_id" />
+            </field>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_product_adr_tree">
+        <field name="name">product.product.ads.tree</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view" />
+        <field name="arch" type="xml">
+            <field name="state" position="before">
+                <field name="adr" />
+                <field name="duty_id" />
+            </field>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_product_adr_search">
+        <field name="name">product.product.ads.search</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_search_form_view" />
+        <field name="arch" type="xml">
+            <field name="categ_id" position="before">
+                <field name="duty_id" />
+                <filter string="ADR" name="filter_adr" domain="[('adr','=',True)]"/>
+            </field>
+        </field>
+    </record>
+
+   <menuitem action="action_product_product_duty" id="menuitem_products_duty" parent="base.menu_product" sequence="20" name="Product code for duty" />
+</data>
+</openerp>
+

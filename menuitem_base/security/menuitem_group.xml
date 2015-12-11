@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<openerp>
+  <data>
+    <record id="show_menuitem_category" model="ir.module.category">
+        <field name="name">Menuitem category</field>
+        <field name="sequence">10</field>
+        <field name="description">Manage menuitem visibility (force module groups).</field>
+        <field name="visible" eval="1" />
+    </record>    
+
+    <record id="show_menuitem_sale" model="res.groups">
+        <field name="name">Show sale</field>
+        <field name="category_id" ref="show_menuitem_category" />
+        <field name="comment">Show menu administrator</field>
+    </record>
+    <record id="show_menuitem_accounting" model="res.groups">
+        <field name="name">Show accounting</field>
+        <field name="category_id" ref="show_menuitem_category" />
+        <field name="comment">Show menu accounting</field>
+    </record>
+    <record id="show_menuitem_purchase" model="res.groups">
+        <field name="name">Show purchase</field>
+        <field name="category_id" ref="show_menuitem_category" />
+        <field name="comment">Show menu purchase</field>
+    </record>
+    <record id="show_menuitem_stock" model="res.groups">
+        <field name="name">Show stock</field>
+        <field name="category_id" ref="show_menuitem_category" />
+        <field name="comment">Show menu stock</field>
+    </record>
+    <record id="show_menuitem_mrp" model="res.groups">
+        <field name="name">Show mrp</field>
+        <field name="category_id" ref="show_menuitem_category" />
+        <field name="comment">Show menu mrp</field>
+    </record>
+    <record id="show_menuitem_project" model="res.groups">
+        <field name="name">Show project</field>
+        <field name="category_id" ref="show_menuitem_category" />
+        <field name="comment">Show menu project</field>
+    </record>
+    <record id="show_menuitem_HR" model="res.groups">
+        <field name="name">Show HR</field>
+        <field name="category_id" ref="show_menuitem_category" />
+        <field name="comment">Show menu HR</field>
+    </record>
+    <record id="show_menuitem_knowledge" model="res.groups">
+        <field name="name">Show knowledge</field>
+        <field name="category_id" ref="show_menuitem_category" />
+        <field name="comment">Show menu knowledge</field>
+    </record>
+    <record id="show_menuitem_reporting" model="res.groups">
+        <field name="name">Show reporting</field>
+        <field name="category_id" ref="show_menuitem_category" />
+        <field name="comment">Show menu reporting</field>
+    </record>
+    <record id="show_menuitem_admin" model="res.groups">
+        <field name="name">Show administrator</field>
+        <field name="category_id" ref="show_menuitem_category" />
+        <field name="comment">Show menu administrator (for save installation keep original admin also)</field>
+    </record>
+    <!--TODO: subsctiption, survey, sale, portal, point_of_sale, marketing, mail, lunch, itea, event, crm, association-->
+ </data>
+</openerp>

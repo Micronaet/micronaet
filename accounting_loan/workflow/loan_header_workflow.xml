@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <!-- Workflow Acceptation: -->
+        <record model="workflow" id="wkf_loan_header">
+            <field name="name">loan.header.wkf</field>
+            <field name="osv">loan.header</field>
+            <field name="on_create">True</field>
+        </record>
+
+        <!-- Activity: -->        
+        <record model="workflow.activity" id="act_loan_header_draft">
+            <field name="wkf_id" ref="wkf_loan_header" />
+            <field name="name">draft</field>
+            <field name="kind">function</field>
+            <field name="action">wkf_loan_draft()</field>
+            <field name="flow_start">True</field>
+        </record>
+        <record model="workflow.activity" id="act_loan_header_confirmed">
+            <field name="wkf_id" ref="wkf_loan_header" />
+            <field name="name">confirmed</field>
+            <field name="kind">function</field>
+            <field name="action">wkf_loan_confirmed()</field>
+        </record>
+        <record model="workflow.activity" id="act_loan_header_approved">
+            <field name="wkf_id" ref="wkf_loan_header" />
+            <field name="name">approved</field>
+            <field name="kind">function</field>
+            <field name="action">wkf_loan_approved()</field>
+        </record>
+        <record model="workflow.activity" id="act_loan_header_close">
+            <field name="wkf_id" ref="wkf_loan_header" />
+            <field name="name">close</field>
+            <field name="kind">function</field>
+            <field name="action">wkf_loan_close()</field>
+            <field name="flow_stop">True</field>
+        </record>
+        <record model="workflow.activity" id="act_loan_header_cancel">
+            <field name="wkf_id" ref="wkf_loan_header" />
+            <field name="name">cancel</field>
+            <field name="kind">function</field>
+            <field name="action">wkf_loan_cancel()</field>
+            <field name="flow_stop">True</field>
+        </record>
+        
+        <!-- Trigger: -->
+        <record model="workflow.transition" id="lh_1">
+            <field name="act_from" ref="act_loan_header_draft" />
+            <field name="act_to" ref="act_loan_header_confirmed" />
+            <field name="signal">trigger_header_draft_confirmed</field>
+        </record>
+        <record model="workflow.transition" id="lh_2">
+            <field name="act_from" ref="act_loan_header_confirmed" />
+            <field name="act_to" ref="act_loan_header_approved" />
+            <field name="signal">trigger_header_confirmed_approved</field>
+        </record>
+        <record model="workflow.transition" id="lh_3">
+            <field name="act_from" ref="act_loan_header_approved" />
+            <field name="act_to" ref="act_loan_header_close" />
+            <field name="signal">trigger_header_approved_close</field>
+        </record>
+        <record model="workflow.transition" id="lh_4a">
+            <field name="act_from" ref="act_loan_header_confirmed" />
+            <field name="act_to" ref="act_loan_header_cancel" />
+            <field name="signal">trigger_header_confirmed_cancel</field>
+        </record>
+        <record model="workflow.transition" id="lh_4b">
+            <field name="act_from" ref="act_loan_header_approved" />
+            <field name="act_to" ref="act_loan_header_cancel" />
+            <field name="signal">trigger_header_approved_cancel</field>
+        </record>
+    </data>
+</openerp>

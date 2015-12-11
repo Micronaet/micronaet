@@ -1,0 +1,224 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <!-- etl.order -->
+    <record model="ir.ui.view" id="view_etl_order_search">
+        <field name="name">Movement list</field>
+        <field name="model">etl.order</field>
+        <field name="arch" type="xml">
+            <search string="Sales analisys line">
+                <field name="partner_id" string="Partner" filter_domain="[('partner_id','=',self)]" />
+                <field name="product_id" string="Product" filter_domain="[('product_id','=',self)]" />
+                <field name="chemical_category_id" string="Chemical category" filter_domain="[('chemical_category_id','=',self)]" />
+
+                <field name="year" string="Year" filter_domain="[('year','ilike',self)]"/>
+                <field name="order" string="Order" filter_domain="[('order','ilike',self)]"/>
+                <field name="type" string="Type" filter_domain="[('type','ilike',self)]"/>
+
+                <filter icon="terp-go-home" name="BC" string="DDT" domain="[('type','=','BC')]"/>
+                <filter icon="terp-go-home" name="FT" string="Invoice" domain="[('type','=','FT')]"/>
+                <separator />               
+                
+                <group expand="1" string="Group By...">
+                    <filter name="group_partner" string="Partner" icon="terp-partner" context="{'group_by':'partner_id'}"/>
+                    <filter name="group_product" string="Product" icon="terp-accessories-archiver" context="{'group_by':'product_id'}"/>
+                    <filter name="group_chemical" string="Chemical category" icon="terp-accessories-archiver" context="{'group_by':'chemical_category_id'}"/>
+                    <filter name="group_year" string="Year" icon="terp-stock_effects-object-colorize" context="{'group_by':'year'}"/>
+                    <filter name="group_order" string="Order" icon="terp-stock_effects-object-colorize" context="{'group_by':'order_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_etl_order_tree">
+        <field name="name">Movement list</field>
+        <field name="model">etl.order</field>
+        <field name="arch" type="xml">
+            <tree string="Sales analisys line" version="7.0">
+                <field name="type" />
+                <field name="year" />
+                <field name="name" />
+                <field name="order" />
+                <field name="date" />
+                <field name="product_id" />
+                <field name="chemical_category_id"/>
+                <field name="partner_id" />
+                <field name="quantity" />
+                <field name="unit" />
+                <field name="amount" sum="Total"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_etl_order_form">
+        <field name="name">Movement list</field>
+        <field name="model">etl.order</field>
+        <field name="arch" type="xml">
+            <form string="Sales analisys line" version="7.0">
+               <sheet>
+               <group col="6" colspan="4">
+                    <field name="type" />
+                    <field name="year" />
+                    <field name="order" />
+
+                    <field name="name" />
+                    <field name="product_id" />
+                    <field name="partner_id" />
+
+                    <field name="quantity" />
+                    <field name="unit" />
+                    <field name="amount" />
+               </group>
+               </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_etl_order_graph">
+        <field name="name">Movement list</field>
+        <field name="model">etl.order</field>
+        <field name="arch" type="xml">
+            <graph string="Sales analisys line" type="bar" orientation="horizontal">
+                <field name="partner_id"/>
+                <field name="amount" operator="+"/>
+                <field name="type" group="True"/>
+            </graph>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_etl_order_form">
+        <field name="name">Sales analisys line</field>
+        <field name="res_model">etl.order</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,graph</field>
+        <field name="view_id" ref="view_etl_order_tree"/>
+        <field name="search_view_id" ref="view_etl_order_search"/>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+    </record>
+    
+    <act_window
+        context="{'search_default_partner_id': [active_id]}"
+        domain="[('partner_id','=',active_id)]"
+        id="act_window_etl_order"
+        name="Movement situation"
+        view_mode="tree,form,graph"
+        res_model="etl.order"
+        src_model="res.partner"/>
+
+
+
+    <!-- etl.order.line -->
+    <record model="ir.ui.view" id="view_etl_order_line_search">
+        <field name="name">Order movement list</field>
+        <field name="model">etl.order.line</field>
+        <field name="arch" type="xml">
+            <search string="Order analisys line">
+                <field name="partner_id" string="Partner" filter_domain="[('partner_id','=',self)]" />
+                <field name="product_id" string="Product" filter_domain="[('product_id','=',self)]" />
+                <field name="chemical_category_id" string="Chemical category" filter_domain="[('chemical_category_id','=',self)]" />
+                <field name="name" string="Order" filter_domain="[('name','ilike',self)]"/>
+
+                <filter icon="terp-go-home" name="state_ok" string="OK" domain="[('state','=','ok')]"/>
+                <filter icon="terp-go-home" name="state_ko" string="KO" domain="[('state','=','ko')]"/>
+                <filter icon="terp-go-home" name="state_borderline" string="Borderline" domain="[('state','=','borderline')]"/>
+                <filter icon="terp-go-home" name="state_unknow" string="Unknow period" domain="[('state','=','unknow')]"/>
+                <separator />               
+                
+                <group expand="1" string="Group By...">
+                    <filter name="group_partner" string="Partner" icon="terp-partner" context="{'group_by':'partner_id'}"/>
+                    <filter name="group_product" string="Product" icon="terp-accessories-archiver" context="{'group_by':'product_id'}"/>
+                    <filter name="group_chemical" string="Chemical category" icon="terp-accessories-archiver" context="{'group_by':'chemical_category_id'}"/>
+                    <filter name="group_state" string="State" icon="terp-accessories-archiver" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_etl_order_line_tree">
+        <field name="name">Order movement list</field>
+        <field name="model">etl.order.line</field>
+        <field name="arch" type="xml">
+            <tree string="Order analisys line" version="7.0">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="deadline"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="chemical_category_id"/>
+                <field name="note"/>
+                
+                <field name="delivered" sum="Delivered"/>
+                <field name="expected"  sum="Expected"/>
+                <field name="left"  sum="Left"/>
+                <field name="total" sum="Total"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_etl_order_line_form">
+        <field name="name">Order movement list</field>
+        <field name="model">etl.order.line</field>
+        <field name="arch" type="xml">
+            <form string="Order analisys line" version="7.0">
+              <sheet>
+                <group col="4">
+                    <field name="date"/>
+                    <field name="total"/>
+
+                    <field name="name"/>
+                    <field name="delivered"/>
+                    
+                    <field name="deadline"/>
+                    <field name="expected"/>
+                    
+                    <field name="partner_id"/>
+                    <field name="left"/>
+                    
+                    <field name="product_id"/>
+                    <field name="state"/>
+                   
+                    <field name="note" colspan="4"/>    
+                </group>    
+              </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_etl_order_line_graph">
+        <field name="name">Order movement list</field>
+        <field name="model">etl.order.line</field>
+        <field name="arch" type="xml">
+            <graph string="Order analisys line" type="bar" orientation="horizontal">
+                <field name="partner_id"/>
+                <field name="total" operator="+"/>
+                <field name="left" operator="+"/>
+            </graph>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_etl_order_line_form">
+        <field name="name">Order analisys line</field>
+        <field name="res_model">etl.order.line</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,graph</field>
+        <field name="view_id" ref="view_etl_order_line_tree"/>
+        <field name="search_view_id" ref="view_etl_order_line_search"/>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+    </record>
+    
+    <act_window
+        context="{'search_default_partner_id': [active_id]}"
+        domain="[('partner_id','=',active_id)]"
+        id="act_window_etl_order_line"
+        name="Order movement situation"
+        view_mode="tree,form,graph"
+        res_model="etl.order.line"
+        src_model="res.partner"/>
+
+    <menuitem name="Sales analysis" id="menu_etl_order" parent="base.menu_sales" sequence="90" />        
+        <menuitem name="Invoice or picking delivered" id="menu_etl_order_delivery" parent="menu_etl_order" action="action_etl_order_form" sequence="10" />        
+        <menuitem name="Order delivery" id="menu_etl_order_line_delivery" parent="menu_etl_order" action="action_etl_order_line_form" sequence="20" />  
+        <!--<menuitem name="Customer not ordering" id="menu_etl_order_delivery" parent="menu_etl_order" action="action_etl_order_form" sequence="30" />-->
+</data>
+</openerp>
+

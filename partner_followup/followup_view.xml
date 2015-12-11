@@ -1,0 +1,181 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <!--inherit view-->
+        <!--res.partner-->
+        <record model="ir.ui.view" id="view_res_partner_form_add_page_followup">
+            <field name="name">Partner Followup</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+                <xpath expr="/form/sheet/notebook/page[@string='Contacts']" position="after">
+                    <page string="Followup">
+                        <field name="followup_ids" context="{'default_partner_id':active_id,'embedded':True}"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        
+        <!--res.partner.followup.category-->
+        <record model="ir.ui.view" id="view_res_partner_followup_category_tree">
+            <field name="name">Partner Followup category</field>
+            <field name="model">res.partner.followup.category</field>
+            <field name="arch" type="xml">
+                <tree string="Partner followup category">
+                    <field name="name"/>
+                    <field name="note" />                        
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_res_partner_followup_category_form">
+            <field name="name">Partner Followup category</field>
+            <field name="model">res.partner.followup.category</field>
+            <field name="arch" type="xml">
+                <form string="Partner followup category">
+                    <group col="2" colspan="4">
+                        <field name="name" />
+                        <separator string="Note" />
+                        <field name="note" nolabel="1"/>                        
+                    </group> 
+                </form>
+            </field>
+        </record>
+
+        <!--res.partner.followup-->
+        <record model="ir.ui.view" id="view_res_partner_followup_search">
+            <field name="name">Partner Followup</field>
+            <field name="model">res.partner.followup</field>
+            <field name="arch" type="xml">
+                <search string="Partner followup">
+                    <field name="name"/>
+                    <field name="partner_id" />
+                    <field name="category_id"/>
+                    <field name="state"/>
+                    <field name="todo_date"/>
+                    <field name="agent_name"/>                    
+                    <field name="urgency"/>
+
+                    <filter string="Opened" domain="[('state','=','draft')]"/>
+                    <filter string="Confirmed" domain="[('state','=','confirmed')]"/>
+                    <filter string="Close" domain="[('state','=','close')]"/>
+                    <filter string="Cancel" domain="[('state','=','cancel')]"/>
+                    <separator/>
+
+                    <group expand="1" string="Group By...">
+                        <filter string="Todo date" domain="[]" context="{'group_by':'todo_date'}"/>
+                        <filter string="Partner" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <filter string="Category" domain="[]" context="{'group_by':'category_id'}"/>
+                        <filter string="Urgency" domain="[]" context="{'group_by':'urgency'}"/>
+                        <filter string="State" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="view_res_partner_followup_tree">
+            <field name="name">Partner Followup</field>
+            <field name="model">res.partner.followup</field>
+            <field name="arch" type="xml">
+                <tree string="Partner followup" colors="red:todo_date&lt;current_date and state=='confirmed';grey:state=='cancel';blue:state=='confirmed';black:state=='close'">
+                    <field name="todo_date"/>
+                    <field name="ref"/>
+                    <field name="name"/>
+                    <field name="agent_name" />
+                    <field name="urgency"/>
+                    <field name="category_id"/>                    
+                    <!--Workflow:-->
+                    <button name="trigger_follow_draft_confirmed" string="Confirm" type="workflow" states="draft" class="oe_highlight" icon="gtk-yes"/>
+                    <button name="trigger_follow_confirmed_close" string="Close" type="workflow" states="confirmed"  icon="gtk-ok"/>
+                    <button name="trigger_follow_confirmed_cancel" string="Cancel" type="workflow" states="confirmed"  icon="gtk-cancel"/>
+                    <field name="state" />                        
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_res_partner_followup_form">
+            <field name="name">Partner Followup</field>
+            <field name="model">res.partner.followup</field>
+            <field name="arch" type="xml">
+                <form string="Partner followup" version="7.0">
+                    <header>
+                    <button name="trigger_follow_draft_confirmed" string="Confirm" type="workflow" states="draft" class="oe_highlight" icon="gtk-yes"/>
+                    <button name="trigger_follow_confirmed_close" string="Close" type="workflow" states="confirmed"  icon="gtk-ok"/>
+                    <button name="trigger_follow_confirmed_cancel" string="Cancel" type="workflow" states="confirmed"  icon="gtk-cancel"/>
+                        
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,close,cancel" />
+                    </header>
+                    <sheet>
+		                    <group col="4" colspan="4">
+                                <field name="ref" readonly="1"/>
+                                <field name="name"/>
+
+                                <field name="partner_id" invisible="context.get('embedded',False)"/>                    
+                                <field name="todo_date"/>
+
+                                <field name="urgency"/>
+                                <field name="category_id"/>                    
+
+                                <field name="created_id"/>                    
+                                <field name="assigned_id"/>                    
+                                
+                                <field name="agent_name" colspan="4"/>                    
+                           </group>
+                        
+                        <notebook colspan="4">
+                            <page string="Description">
+                                <group col="4" colspan="4">
+                                    <separator string="Note" colspan="4"/>
+                                    <field name="note" nolabel="1" colspan="4"/>                                    
+                                </group>
+                            </page>
+                            <page string="Workflow">
+                                <group col="4" colspan="4">
+                                    <field name="draft_date" />
+                                    <field name="confirmed_date" />
+                                    <field name="close_date" />
+                                    <field name="cancel_date" />
+                                </group>
+                            </page>                            
+                        </notebook>
+                    </sheet>                    
+                </form>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="view_res_partner_followup_calendar">
+            <field name="name">Partner Followup</field>
+            <field name="model">res.partner.followup</field>
+            <field name="arch" type="xml">
+                <calendar color="assigned_id" date_start="todo_date" string="Followup">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="assigned_id"/>
+                </calendar>
+            </field>
+        </record>        
+
+        <record model="ir.ui.view" id="view_res_partner_followup_graph">
+            <field name="name">Partner Followup</field>
+            <field name="model">res.partner.followup</field>
+            <field name="arch" type="xml">
+                <graph string="Loan" type="bar">
+                    <field name="assigned_id"/>
+                    <field name="counter" operator="+"/>
+                </graph>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_res_partner_followup">
+            <field name="name">Partner Followup</field>
+            <field name="res_model">res.partner.followup</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,graph,calendar</field>
+            <field name="domain">[]</field>
+        </record>
+
+        <menuitem name="Followup" parent="base.menu_sales" 
+            id="menu_res_partner_followup" 
+            action="action_res_partner_followup"  
+            sequence="10" />
+    </data>
+</openerp>

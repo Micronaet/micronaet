@@ -1,0 +1,5 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_importation_purchase_order_user","importation.purchase.order","model_importation_purchase_order","account.group_account_user",1,1,1,1
+"access_importation_purchase_order_base","importation.purchase.order","model_importation_purchase_order","base.group_user",1,1,1,1
+"access_importation_default_location_user","importation.default.location","model_importation_default_location","account.group_account_user",1,1,1,1
+"access_importation_default_location_base","importation.default.location","model_importation_default_location","base.group_user",1,1,1,1

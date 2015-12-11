@@ -1,0 +1,222 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* crm_intervent
+# <> <>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-02-02 16:59+0000\n"
+"PO-Revision-Date: 2013-02-02 18:04+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+"X-Generator: Gtranslator 2.91.5\n"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html.mako:37
+#: field:crm.meeting,relation_strength:0
+msgid "Strength"
+msgstr "Forza"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html.mako:22
+#: field:crm.meeting,relation_goal:0
+msgid "Goal"
+msgstr "Obiettivi"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html (copia).mako:25
+msgid "E-mail"
+msgstr "E-mail"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html (copia).mako:49
+msgid "Unit Price"
+msgstr "Prezzo unitario"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html.mako:13
+#: field:crm.meeting,relation_department:0
+msgid "Department"
+msgstr "Dipartimento"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html (copia).mako:44
+msgid "Document"
+msgstr "Documento"
+
+#. module: crm_intervent
+#: model:ir.model,name:crm_intervent.model_crm_meeting
+msgid "Meeting"
+msgstr "Incontro"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html (copia).mako:22
+msgid "Fax"
+msgstr "Fax"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html (copia).mako:49
+msgid "Disc.(%)"
+msgstr "Sconto (%)"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html.mako:18
+msgid "uperv. position"
+msgstr "Posizione supervisore"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html (copia).mako:49
+msgid "Description"
+msgstr "Descrizione"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html.mako:32
+#: field:crm.meeting,relation_evaluation:0
+msgid "Evaluation"
+msgstr "Valutazione"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html (copia).mako:49
+msgid "Price"
+msgstr "Prezzo"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html (copia).mako:44
+msgid "Invoice Date"
+msgstr "Data fattura"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html (copia).mako:49
+msgid "QTY"
+msgstr "Q."
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html.mako:17
+#: field:crm.meeting,relation_ref:0
+msgid "Referent"
+msgstr "Referente"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html (copia).mako:64
+msgid "Base"
+msgstr "Base"
+
+#. module: crm_intervent
+#: field:crm.meeting,relation_needed:0
+msgid "Need relation"
+msgstr "Relazione necessaria"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html.mako:46
+#: field:crm.meeting,relation_goal_future:0
+msgid "Goal for next period"
+msgstr "Obiettivi per il periodo successivo"
+
+#. module: crm_intervent
+#: view:crm.meeting:0
+msgid "Relation"
+msgstr "Relazione"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html (copia).mako:44
+msgid "Partner Ref."
+msgstr "Rif. partner"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html (copia).mako:49
+msgid "Taxes"
+msgstr "Tasse"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html (copia).mako:64
+msgid "Amount"
+msgstr "Importo"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html (copia).mako:39
+msgid "Supplier Refund"
+msgstr "Reso fornitore"
+
+#. module: crm_intervent
+#: help:crm.meeting,relation_strength:0
+msgid "Strength point and powerfull area"
+msgstr "Punto di forza e area"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html (copia).mako:19
+msgid "Tel"
+msgstr "Tel."
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html.mako:42
+#: field:crm.meeting,relation_plan:0
+msgid "Svil. plan"
+msgstr "Piano di sviluppo"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html (copia).mako:28
+msgid "VAT"
+msgstr "P. IVA"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html (copia).mako:37
+msgid "Refund"
+msgstr "RImborso"
+
+#. module: crm_intervent
+#: field:crm.meeting,relation_supervisor_position:0
+msgid "Superv. position"
+msgstr "Posizione supervisore"
+
+#. module: crm_intervent
+#: help:crm.meeting,relation_result:0
+msgid "Result and responsability (employee part)"
+msgstr "Risutato e responsabilità (parte impiegato)"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html.mako:14
+#: field:crm.meeting,relation_supervisor:0
+msgid "Supervisor"
+msgstr "Supervisore"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html (copia).mako:35
+msgid "Supplier Invoice"
+msgstr "Fattura fornitore"
+
+#. module: crm_intervent
+#: help:crm.meeting,relation_goal:0
+msgid "Goal during evaluation period"
+msgstr "Obiettivi durante il periodo di valutazione"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html.mako:27
+#: field:crm.meeting,relation_result:0
+msgid "Result"
+msgstr "Risultato"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html (copia).mako:33
+msgid "Invoice"
+msgstr "Fattura"
+
+#. module: crm_intervent
+#: help:crm.meeting,relation_evaluation:0
+msgid "Supervisor evaluation"
+msgstr "Valutazione supervisore"
+
+#. module: crm_intervent
+#: report:addons/crm_intervent/report/report_webkit_html (copia).mako:76
+msgid "Total"
+msgstr "Totale"
+
+#. module: crm_intervent
+#: model:ir.actions.report.xml,name:crm_intervent.report_relation_webkit_html
+msgid "WebKit relation"
+msgstr "Stampa relazione wk"

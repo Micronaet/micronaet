@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <!-- Workflow Acceptation: -->
+        <record model="workflow" id="wkf_followup">
+            <field name="name">res.partner.followup.wkf</field>
+            <field name="osv">res.partner.followup</field>
+            <field name="on_create">True</field>
+        </record>
+
+        <!-- Activity: -->        
+        <record model="workflow.activity" id="act_follow_draft">
+            <field name="wkf_id" ref="wkf_followup" />
+            <field name="name">draft</field>
+            <field name="kind">function</field>
+            <field name="action">wkf_follow_draft()</field>
+            <field name="flow_start">True</field>
+        </record>
+        <record model="workflow.activity" id="act_follow_confirmed">
+            <field name="wkf_id" ref="wkf_followup" />
+            <field name="name">confirmed</field>
+            <field name="kind">function</field>
+            <field name="action">wkf_follow_confirmed()</field>
+        </record>
+        <record model="workflow.activity" id="act_follow_close">
+            <field name="wkf_id" ref="wkf_followup" />
+            <field name="name">close</field>
+            <field name="kind">function</field>
+            <field name="action">wkf_follow_close()</field>
+            <field name="flow_stop">True</field>
+        </record>
+        <record model="workflow.activity" id="act_follow_cancel">
+            <field name="wkf_id" ref="wkf_followup" />
+            <field name="name">cancel</field>
+            <field name="kind">function</field>
+            <field name="action">wkf_follow_cancel()</field>
+            <field name="flow_stop">True</field>
+        </record>
+
+        <!-- Trigger: -->
+        <record model="workflow.transition" id="fu_1">
+            <field name="act_from" ref="act_follow_draft" />
+            <field name="act_to" ref="act_follow_confirmed" />
+            <field name="signal">trigger_follow_draft_confirmed</field>
+        </record>
+        <record model="workflow.transition" id="fu_2a">
+            <field name="act_from" ref="act_follow_confirmed" />
+            <field name="act_to" ref="act_follow_close" />
+            <field name="signal">trigger_follow_confirmed_close</field>
+        </record>
+        <record model="workflow.transition" id="fu_2b">
+            <field name="act_from" ref="act_follow_confirmed" />
+            <field name="act_to" ref="act_follow_cancel" />
+            <field name="signal">trigger_follow_confirmed_cancel</field>
+        </record>
+    </data>
+</openerp>

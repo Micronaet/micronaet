@@ -1,0 +1,196 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* msds_chemical
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-09-03 10:28+0000\n"
+"PO-Revision-Date: 2014-09-03 12:32+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 1.5.4\n"
+
+#. module: msds_chemical
+#: model:ir.ui.menu,name:msds_chemical.menu_msds_form
+msgid "MSDS version"
+msgstr "Schede MSDS"
+
+#. module: msds_chemical
+#: model:res.groups,name:msds_chemical.group_MSDS_user
+msgid "MSDS / User"
+msgstr "MSDS / Utente"
+
+#. module: msds_chemical
+#: field:msds.form,filename:0
+msgid "Filename"
+msgstr "Nomefile"
+
+#. module: msds_chemical
+#: view:msds.form.language:0 field:msds.form.language,note:0
+msgid "Note"
+msgstr "Note"
+
+#. module: msds_chemical
+#: help:msds.form,language_id:0
+msgid "Language for form document"
+msgstr "Lingua per scheda di sicurezza"
+
+#. module: msds_chemical
+#: help:res.company,msds_folder_store:0
+msgid ""
+"Folder for store imported PDF, default 'store' in addons root module path"
+msgstr ""
+"Cartella per depositare i file PDF importati, la cartella di default di "
+"solito è \"store\" nel percorso del modulo"
+
+#. module: msds_chemical
+#: help:res.company,msds_folder_in:0
+msgid "Folder where PDF are exported from EpyPlus (ex.: ~/msds"
+msgstr ""
+"Cartella dove i file PDF vengono esportati dal programma EpyPlus (es.: ~/etl/"
+"msds)"
+
+#. module: msds_chemical
+#: model:ir.ui.menu,name:msds_chemical.menu_msds_form_language
+#: view:msds.form.language:0
+msgid "MSDS language"
+msgstr "Lingue schede di sicurezza"
+
+#. module: msds_chemical
+#: model:ir.ui.menu,name:msds_chemical.menu_msds_root view:msds.form:0
+#: view:product.product:0 view:res.company:0
+msgid "MSDS"
+msgstr "MSDS"
+
+#. module: msds_chemical
+#: model:ir.model,name:msds_chemical.model_msds_form
+msgid "MSDS Form"
+msgstr "Scheda MSDS"
+
+#. module: msds_chemical
+#: help:msds.form,product_id:0
+msgid "Product reference"
+msgstr "Riferimento prodotto"
+
+#. module: msds_chemical
+#: help:msds.form,timestamp:0
+msgid "Time stamp for file version"
+msgstr "Timestamp per versione file"
+
+#. module: msds_chemical
+#: model:ir.actions.act_window,name:msds_chemical.action_msds_form
+msgid "MDSD Form"
+msgstr "Scheda MSDS"
+
+#. module: msds_chemical
+#: field:msds.form,alias_id:0 help:msds.form,alias_id:0
+msgid "Alias product"
+msgstr "Prodotto alias"
+
+#. module: msds_chemical
+#: model:ir.model,name:msds_chemical.model_msds_form_language
+msgid "MSDS Form language"
+msgstr "Lingua scheda MSDS"
+
+#. module: msds_chemical
+#: view:msds.form:0
+msgid "Date"
+msgstr "Data"
+
+#. module: msds_chemical
+#: field:res.company,msds_log_id:0
+msgid "Log user"
+msgstr "Utente log"
+
+#. module: msds_chemical
+#: view:msds.form:0
+msgid "MSDS form"
+msgstr "Scheda MSDS"
+
+#. module: msds_chemical
+#: help:res.company,msds_log_id:0
+msgid "User that receive all logs during importation schedule"
+msgstr "Utente che riceve i log durante l'importazione schedulata"
+
+#. module: msds_chemical
+#: view:msds.form:0 field:msds.form,language_id:0
+#: field:msds.form.language,name:0
+msgid "Language"
+msgstr "Lingua"
+
+#. module: msds_chemical
+#: model:ir.actions.act_window,name:msds_chemical.action_msds_form_language
+msgid "MDSD form language"
+msgstr "Lingua scheda MDSD"
+
+#. module: msds_chemical
+#: model:ir.model,name:msds_chemical.model_res_company
+msgid "Companies"
+msgstr "Azienda"
+
+#. module: msds_chemical
+#: model:ir.model,name:msds_chemical.model_product_product view:msds.form:0
+#: field:msds.form,product_id:0
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: msds_chemical
+#: view:msds.form:0
+msgid "Alias"
+msgstr "Prodotto alias"
+
+#. module: msds_chemical
+#: field:res.company,msds_folder_in:0
+msgid "MSDS folder in"
+msgstr "MSDS cartella input"
+
+#. module: msds_chemical
+#: model:res.groups,name:msds_chemical.group_MSDS_manager
+msgid "MSDS / Mananger"
+msgstr "MSDS / Gestore"
+
+#. module: msds_chemical
+#: field:msds.form.language,code:0
+msgid "Code"
+msgstr "Codice"
+
+#. module: msds_chemical
+#: help:msds.form,filename:0
+msgid "Original filename during importation"
+msgstr "Nome file originale elaborato durante l'importazione"
+
+#. module: msds_chemical
+#: field:product.product,msds_ids:0
+msgid "MDSD"
+msgstr "MSDS"
+
+#. module: msds_chemical
+#: field:msds.form,timestamp:0
+msgid "Datetime"
+msgstr "Data e ora"
+
+#. module: msds_chemical
+#: view:msds.form:0
+msgid "Group by..."
+msgstr "Raggruppa per..."
+
+#. module: msds_chemical
+#: field:product.product,msds_alias_ids:0
+msgid "Alias MDSD"
+msgstr "Alias MSDS"
+
+#. module: msds_chemical
+#: field:res.company,msds_folder_store:0
+msgid "MSDS folder store"
+msgstr "MSDS cartella deposito"
+
+#. module: msds_chemical
+#: view:msds.form:0
+msgid "Open"
+msgstr "Apri"

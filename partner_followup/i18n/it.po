@@ -1,0 +1,210 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* partner_followup
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-11-30 08:55+0000\n"
+"PO-Revision-Date: 2014-12-02 12:21+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 1.5.4\n"
+
+#. module: partner_followup
+#: view:res.partner.followup:0 field:res.partner.followup,category_id:0
+#: field:res.partner.followup.category,name:0
+msgid "Category"
+msgstr "Categoria"
+
+#. module: partner_followup
+#: view:res.partner.followup:0 selection:res.partner.followup,state:0
+msgid "Confirmed"
+msgstr "Confermato"
+
+#. module: partner_followup
+#: view:res.partner.followup:0
+msgid "Opened"
+msgstr "Aperto"
+
+#. module: partner_followup
+#: view:res.partner.followup:0
+msgid "Confirm"
+msgstr "Conferma"
+
+#. module: partner_followup
+#: view:res.partner.followup:0 field:res.partner.followup,note:0
+#: view:res.partner.followup.category:0
+#: field:res.partner.followup.category,note:0
+msgid "Note"
+msgstr "Note"
+
+#. module: partner_followup
+#: view:res.partner.followup:0
+msgid "Group By..."
+msgstr "Raggruppa per..."
+
+#. module: partner_followup
+#: view:res.partner.followup:0 field:res.partner.followup,state:0
+msgid "State"
+msgstr "Stato"
+
+#. module: partner_followup
+#: field:res.partner.followup,confirmed_date:0
+msgid "Confirmed Date"
+msgstr "Data conferma"
+
+#. module: partner_followup
+#: selection:res.partner.followup,state:0
+msgid "Draft"
+msgstr "Bozza"
+
+#. module: partner_followup
+#: selection:res.partner.followup,urgency:0
+msgid "Low"
+msgstr "Bassa"
+
+#. module: partner_followup
+#: selection:res.partner.followup,state:0
+msgid "Reject"
+msgstr "Annulla"
+
+#. module: partner_followup
+#: model:ir.ui.menu,name:partner_followup.menu_res_partner_followup
+#: view:res.partner:0 field:res.partner,followup_ids:0
+#: view:res.partner.followup:0
+msgid "Followup"
+msgstr "Followup"
+
+#. module: partner_followup
+#: field:res.partner.followup,assigned_id:0
+msgid "Assigned"
+msgstr "Assegnata"
+
+#. module: partner_followup
+#: selection:res.partner.followup,urgency:0
+msgid "Medium"
+msgstr "Media"
+
+#. module: partner_followup
+#: view:res.partner.followup:0 field:res.partner.followup,name:0
+msgid "Description"
+msgstr "Descrizione"
+
+#. module: partner_followup
+#: view:res.partner.followup:0
+msgid "Workflow"
+msgstr "Workflow"
+
+#. module: partner_followup
+#: help:res.partner.followup,partner_id:0
+msgid "Partner that open loan or that is referred to"
+msgstr "Cliente che ha aperto il prestito o a cui è riferito"
+
+#. module: partner_followup
+#: field:res.partner.followup,created_id:0
+msgid "Created"
+msgstr "Creata"
+
+#. module: partner_followup
+#: field:res.partner.followup,cancel_date:0
+msgid "Cancel Date"
+msgstr "Data annullamento"
+
+#. module: partner_followup
+#: field:res.partner.followup,agent_name:0
+msgid "Agent for activity"
+msgstr "Agente per attività"
+
+#. module: partner_followup
+#: model:ir.actions.act_window,name:partner_followup.action_res_partner_followup
+msgid "Partner Followup"
+msgstr "Followup clienti"
+
+#. module: partner_followup
+#: field:res.partner.followup,counter:0
+msgid "Counter"
+msgstr "Contatore"
+
+#. module: partner_followup
+#: view:res.partner.followup:0
+msgid "Todo date"
+msgstr "Data termine massimo"
+
+#. module: partner_followup
+#: model:ir.model,name:partner_followup.model_res_partner_followup_category
+#: view:res.partner.followup.category:0
+msgid "Partner followup category"
+msgstr "Categoria followup"
+
+#. module: partner_followup
+#: model:ir.model,name:partner_followup.model_res_partner
+#: view:res.partner.followup:0 field:res.partner.followup,partner_id:0
+msgid "Partner"
+msgstr "Cliente"
+
+#. module: partner_followup
+#: view:res.partner.followup:0 field:res.partner.followup,urgency:0
+msgid "Urgency"
+msgstr "Urgenza"
+
+#. module: partner_followup
+#: help:res.partner.followup,assigned_id:0
+msgid "Assigned to"
+msgstr "Assegnata a"
+
+#. module: partner_followup
+#: field:res.partner.followup,close_date:0
+msgid "Close Date"
+msgstr "Data chiusura"
+
+#. module: partner_followup
+#: help:res.partner.followup,agent_name:0 help:res.partner.followup,name:0
+msgid "Title of followp elements"
+msgstr "Titolo degli elementi followup"
+
+#. module: partner_followup
+#: view:res.partner.followup:0
+msgid "Loan"
+msgstr "Prestito"
+
+#. module: partner_followup
+#: help:res.partner.followup,created_id:0
+msgid "user that create followup"
+msgstr "Utente che ha creato il followup"
+
+#. module: partner_followup
+#: selection:res.partner.followup,urgency:0
+msgid "High"
+msgstr "Alta"
+
+#. module: partner_followup
+#: field:res.partner.followup,draft_date:0
+msgid "Create date"
+msgstr "Data creazione"
+
+#. module: partner_followup
+#: view:res.partner.followup:0
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: partner_followup
+#: view:res.partner.followup:0 selection:res.partner.followup,state:0
+msgid "Close"
+msgstr "Chiuso"
+
+#. module: partner_followup
+#: model:ir.model,name:partner_followup.model_res_partner_followup
+#: view:res.partner.followup:0
+msgid "Partner followup"
+msgstr "Followup clienti"
+
+#. module: partner_followup
+#: field:res.partner.followup,todo_date:0
+msgid "Todo max date"
+msgstr "Data termine massima"

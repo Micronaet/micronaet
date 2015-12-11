@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<openerp>
+    <data noupdate="1">
+	    <record model="ir.sequence.type" id="seq_loan_header_type">
+		    <field name="name">Loan Number</field>
+		    <field name="code">loan.header</field>
+	    </record>
+	    <record model="ir.sequence" id="seq_loan_header">
+		    <field name="name">Loan Number</field>
+		    <field name="code">loan.header</field>
+		    <field name="prefix">LOAN/</field>
+		    <field name="padding">5</field>
+		    <field name="suffix">/%(year)s</field>
+	    </record>
+    </data>
+</openerp>

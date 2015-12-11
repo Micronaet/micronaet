@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <record id='view_partner_add_fiam_fields' model='ir.ui.view'>
+        <field name='name'>Partner extra field</field>
+        <field name='model'>res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+            <field name="ref" position="after">
+                 <field name="imported" invisible="1" />
+                 <field name="mexal_c" attrs="{'invisible':[('imported','=',False)]}" />
+                 <field name="mexal_s" attrs="{'invisible':[('imported','=',False)]}" />
+                 <field name="mexal_d" attrs="{'invisible':[('imported','=',False)]}" />                 
+                 <field name="hour_cost" />                 
+            </field>
+        </field>
+    </record>    
+</data>
+</openerp>
+

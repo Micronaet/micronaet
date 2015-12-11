@@ -1,0 +1,7 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_dentist_annotation_user","dentist.annotation","model_dentist_annotation","base.group_user",1,1,1,1
+"access_dentist_room_user","dentist.room","model_dentist_room","base.group_user",1,1,1,1
+"access_dentist_appointment_user","dentist.appointment","model_dentist_appointment","base.group_user",1,1,1,1
+"access_dentist_operation_user","dentist.operation","model_dentist_operation","base.group_user",1,1,1,1
+"access_dentist_todo_user","dentist.todo","model_dentist_todo","base.group_user",1,1,1,1
+

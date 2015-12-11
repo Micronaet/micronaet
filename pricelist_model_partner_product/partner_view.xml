@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <!--inherit-->
+    <!--res.partner.pricelist.product-->
+    <record id='view_res_partner_form_pricelist' model='ir.ui.view'>
+        <field name='name'>partner.product.particularity.form</field>
+        <field name='model'>res.partner</field>
+        <field name='inherit_id' ref='partner_product_detail.view_res_partner_custom_pricelist_form' />
+        <field name='arch' type='xml'>
+            <xpath expr="//field[@name='pricelist_product_ids']" position="before">
+                <field name="auto_updatable" /><newline/>
+            </xpath>    
+            <xpath expr="//field[@name='pricelist_product_ids']/tree/field[@name='note']" position="before">
+                <field name="in_pricelist" groups="pricelist_model_partner_product.group_pricelist_manager" /> 
+                <field name="pricelist1" readonly="1" groups="pricelist_model_partner_product.group_pricelist_agent"/>
+                <field name="pricelist2" readonly="1" groups="pricelist_model_partner_product.group_pricelist_agent"/>
+                <field name="pricelist3" readonly="1" groups="pricelist_model_partner_product.group_pricelist_agent"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--res.partner.pricelist.product (not used)-->
+    <record id='view_res_partner_pricelist_product_form' model='ir.ui.view'>
+        <field name='name'>Pricelist product for partner</field>
+        <field name='model'>res.partner.pricelist.product</field>
+        <field name='arch' type='xml'>
+           <form string="Pricelist product" version="7.0">
+              <sheet>           
+                <field name="partner_id" invisible="1" />  
+                <field name="in_pricelist" />
+                <field name="product_id" />  
+              </sheet>  
+           </form>
+        </field>
+    </record>
+    <record id='view_res_partner_pricelist_product_tree' model='ir.ui.view'>
+        <field name='name'>Pricelist product for partner</field>
+        <field name='model'>res.partner.pricelist.product</field>
+        <field name='arch' type='xml'>
+           <tree string="Pricelist product">
+                <field name="partner_id" />  
+                <field name="in_pricelist" /> 
+                <field name="product_id" />  
+           </tree>
+        </field>
+    </record>   
+  </data>
+</openerp>
+

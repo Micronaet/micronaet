@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+   <data>
+        <record id="group_analysis_manager" model="res.groups">
+            <field name="name">Analysis / Mananger</field>
+        </record>
+        <record id="group_analysis_user" model="res.groups">
+            <field name="name">Analysis / User</field>
+        </record>
+   </data>
+</openerp>        

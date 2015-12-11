@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <record id="construction_category_catalog" model="product.category">
+        <field name="name">Construction catalog category</field>
+    </record>
+</data>
+</openerp>
+

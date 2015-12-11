@@ -1,0 +1,338 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <!--loan.header-->
+        <record model="ir.ui.view" id="view_loan_header_search">
+            <field name="name">Loan header</field>
+            <field name="model">loan.header</field>
+            <field name="arch" type="xml">
+                <search string="Loan">
+                    <field name="request_date"/>
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="partner_id"/>
+                    <field name="bank_id"/>
+                    <field name="guarantor_id"/>
+                    <field name="loan_type"/>
+                    <field name="analytic_account" />
+                    <field name="state"/>
+
+                    <filter string="Opened" domain="[('state','=','draft')]"/>
+                    <filter string="Confirmed" domain="[('state','=','confirmed')]"/>
+                    <filter string="Approved" domain="[('state','=','approved')]"/>
+                    <filter string="Close" domain="[('state','=','close')]"/>
+                    <filter string="Cancel" domain="[('state','=','cancel')]"/>
+                    <separator/>
+
+                    <group expand="1" string="Group By...">
+                        <filter string="Date" domain="[]" context="{'group_by':'request_date'}"/>
+                        <filter string="Partner" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <filter string="Bank" domain="[]" context="{'group_by':'bank_id'}"/>
+                        <filter string="Guarantor" domain="[]" context="{'group_by':'guarantor_id'}"/>
+                        <filter string="Loan type" domain="[]" context="{'group_by':'loan_type'}"/>
+                        <filter string="Period" domain="[]" context="{'group_by':'loan_period'}"/>
+                        <filter string="Analytic account" domain="[]" context="{'group_by':'analytic_account'}"/>                        
+                        <filter string="State" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="view_loan_header_tree">
+            <field name="name">Loan header</field>
+            <field name="model">loan.header</field>
+            <field name="arch" type="xml">
+                <tree string="Invoice Line">
+                    <field name="request_date"/>
+                    <field name="name"/>
+                    <field name="description"/>                    
+                    <field name="partner_id"/>
+                    <field name="bank_id"/>
+                    <field name="guarantor_id"/>
+                    <field name="loan_type"/>
+                    <field name="loan_period" />
+                    <field name="loan_amount" sum="amount"/>
+                    <field name="total_payed" sum="payed"/>
+                    <field name="total_interest" sum="interest"/>
+                    <field name="total_amount" sum="total" />
+                    <field name="analytic_account" />
+                    
+                    <!--Workflow:-->
+                    <button name="trigger_header_draft_confirmed" string="Confirm" type="workflow" states="draft" class="oe_highlight" icon="gtk-yes"/>
+                    <button name="trigger_header_confirmed_approved" string="Approve" type="workflow" states="confirmed"  class="oe_highlight" icon="gtk-apply"/>
+                    <button name="trigger_header_confirmed_cancel" string="Cancel" type="workflow" states="confirmed"  icon="gtk-cancel"/>
+                    <button name="trigger_header_approved_close" string="Close" type="workflow" states="approved"  class="oe_highlight" icon="gtk-goto-last"/>
+                    <button name="trigger_header_approved_cancel" string="Cancel" type="workflow" states="approved" icon="gtk-cancel"/>
+                    <field name="state" />                        
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_loan_header_form">
+            <field name="name">Loan header</field>
+            <field name="model">loan.header</field>
+            <field name="arch" type="xml">
+                <form string="Loan Details" version="7.0">
+                    <header>
+                        <button name="trigger_header_draft_confirmed" string="Confirm" type="workflow" states="draft" class="oe_highlight" icon="gtk-yes"/>
+
+                        <button name="trigger_header_confirmed_approved" string="Approve" type="workflow" states="confirmed"  class="oe_highlight" icon="gtk-apply"/>
+                        <button name="trigger_header_confirmed_cancel" string="Cancel" type="workflow" states="confirmed"  icon="gtk-cancel"/>
+                        
+                        <button name="trigger_header_approved_close" string="Close" type="workflow" states="approved"  class="oe_highlight" icon="gtk-goto-last"/>
+                        <button name="trigger_header_approved_cancel" string="Cancel" type="workflow" states="approved" icon="gtk-cancel"/>
+                        
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,approved,close,cancel" />
+                    </header>
+                    <sheet>
+		                    <h1>
+			                    <label string="Loan" states="draft" />
+			                    <field name="name" readonly="1" class="oe_inline" />
+		                    </h1>
+		                    <group col="6" colspan="4">
+                                <field name="description" colspan="6"/>
+                                
+                                <field name="partner_id" />                                                       
+                                <field name="bank_id"/>
+                                <field name="guarantor_id"/>
+
+                                <field name="loan_type" />
+                                <field name="loan_period" />
+                                
+                                <field name="rate_period" />
+                                <field name="rate" />
+                                
+                                <field name="start_date" />
+                                <field name="period" />
+                           </group>
+                        
+                        <notebook colspan="4">
+                            <page string="Loan">
+                                <group col="4" colspan="4">
+                                    <button name="generate_plan" string="Generate" type="object" />
+                                    
+                                    <separator string="Total:" colspan="4"/>
+                                    <field name="loan_amount" />
+                                    <field name="total_payed" readonly="1"/>
+                                    <field name="total_amount" readonly="1" />                                    
+                                    <field name="total_interest" readonly="1" />
+                                    
+                                    
+                                    <separator string="Interess Plan:" colspan="4"/>
+                                    <field name="rate_ids" nolabel="1" context="{'embedded':True}" colspan="4"/>
+                                    
+                                </group>
+                            </page>
+                            <page string="Changing of rate">
+                                <group col="4" colspan="4">
+                                    <button name="%(action_loan_change_rate_wizard)d" 
+                                        string="Change rate" type="action" 
+                                        context="{'loan_id':active_id}"/>
+                                    <field name="rate_change_ids" nolabel="1" colspan="4" ><!--readonly="1"-->
+                                        <tree string="Rates" editable="bottom">
+                                            <field name="rate_id" />
+                                            <field name="rate" />
+                                            <field name="rate_period" />
+                                            <!--<field name="note" />-->
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>                            
+                            <page string="Workflow">
+                                <group col="4" colspan="4">
+                                    <field name="request_date" />
+                                    <field name="confirmed_date" />
+                                    <field name="approve_date" />
+                                    <field name="close_date" />
+                                    <field name="cancel_date" />
+                                </group>
+                            </page>                            
+                        </notebook>
+                        <separator string="Note" colspan="4"/>
+                        <field name="note" nolabel="1" colspan="4" />
+                    </sheet>                    
+                </form>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="view_loan_header_calendar">
+            <field name="name">Loan header</field>
+            <field name="model">loan.header</field>
+            <field name="arch" type="xml">
+                <calendar color="state" date_start="request_date" string="Loan">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="bank_id"/>
+                    <field name="loan_amount"/>
+                </calendar>
+            </field>
+        </record>        
+
+        <record model="ir.ui.view" id="view_loan_header_graph">
+            <field name="name">Loan header</field>
+            <field name="model">loan.header</field>
+            <field name="arch" type="xml">
+                <graph string="Loan" type="bar">
+                    <field name="partner_id"/>
+                    <field name="loan_amount" operator="+"/>
+                </graph>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_loan_header">
+            <field name="name">Loan headers</field>
+            <field name="res_model">loan.header</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,graph,calendar</field>
+            <field name="domain">[]</field>
+        </record>
+
+        <!--loan.rate-->
+        <record model="ir.ui.view" id="view_loan_rate_calendar">
+            <field name="name">Loan rate</field>
+            <field name="model">loan.rate</field>
+            <field name="arch" type="xml">
+                <calendar color="state" date_start="rate_date" string="Loan">
+                    <field name="loan_id"/>
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="bank_id"/>
+                    <field name="rate_amount"/>
+                </calendar>
+            </field>
+        </record>        
+
+        <record model="ir.ui.view" id="view_loan_rate_graph">
+            <field name="name">Loan rate</field>
+            <field name="model">loan.rate</field>
+            <field name="arch" type="xml">
+                <graph string="Loan" type="bar">
+                    <field name="partner_id"/>
+                    <field name="rate_amount" operator="+"/>
+                </graph>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_loan_rate_search">
+            <field name="name">Loan rate</field>
+            <field name="model">loan.rate</field>
+            <field name="arch" type="xml">
+                <search string="Loan">
+                    <field name="name"/>
+                    <field name="rate_date"/>
+                    <field name="cancel_date"/>
+                    <field name="currency_date"/>
+                    <field name="loan_id"/>                    
+                    <field name="rate_type"/>
+                    <field name="state"/>
+
+                    <filter string="Confirmed" domain="[('state','=','confirmed')]"/>
+                    <filter string="Payed" domain="[('state','=','payed')]"/>
+                    <filter string="Cancel" domain="[('state','=','cancel')]"/>
+                    <separator/>
+
+                    <group expand="1" string="Group By...">
+                        <filter string="Date" domain="[]" context="{'group_by':'rate_date'}"/>
+                        <filter string="Pay Date" domain="[]" context="{'group_by':'pay_date'}"/>
+                        <filter string="Currency Date" domain="[]" context="{'group_by':'currency_date'}"/>
+
+                        <filter string="Rate type" domain="[]" context="{'group_by':'rate_type'}"/>
+
+                        <filter string="Loan" domain="[]" context="{'group_by':'loan_id'}"/>
+
+                        <filter string="Partner" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <filter string="Bank" domain="[]" context="{'group_by':'bank_id'}"/>
+                        <filter string="Guarantor" domain="[]" context="{'group_by':'guarantor_id'}"/>
+                        <filter string="Analytic account" domain="[]" context="{'group_by':'analytic_account'}"/>                        
+
+                        <filter string="State" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="view_loan_rate_tree">
+            <field name="name">Rate plan</field>
+            <field name="model">loan.rate</field>
+            <field name="arch" type="xml">
+                <!--red:date_maturity&lt;time.strftime('%%Y-%%m-%%d')-->
+                <tree string="Plan rates" colors="red:state != 'payed' and rate_date&lt;current_date;green:state=='payed' and rate_type=='normal';black:state=='payed';blue:rate_type=='integration'" editable="bottom">
+                    <field name="loan_id" invisible="context.get('embedded',False)"/>
+                    <field name="partner_id" invisible="1" />
+                    <field name="bank_id" invisible="1" />
+                    <field name="guarantor_id" invisible="1" />
+                    <field name="analytic_account" invisible="1" />
+                    <field name="name" readonly="1"/>
+                    <field name="rate_type" readonly="1"/>
+                    <field name="rate" readonly="1"/>
+                    <field name="rate_date" attrs="{'readonly':[('rate_type','=','normal')]}"/>
+                    <field name="currency_date" />
+                    <field name="pay_date" />
+                    <!--<field name="pay_amount" />-->
+                    <field name="capital" sum="C" readonly="1"/>
+                    <field name="interest" sum="I" attrs="{'readonly':[('rate_type','=','normal')]}"/>
+                    <field name="rate_amount" sum="M" readonly="1"/>
+                    <field name="remain" />
+                    <button name="trigger_rate_confirmed_payed" string="Payed" type="workflow" states="confirmed" class="oe_highlight" icon="gtk-yes"/>
+                    <!--<button name="trigger_rate_confirmed_cancel" string="cancel" type="workflow" states="confirmed" icon="gtk-no"/>-->
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_loan_rate_form">
+            <field name="name">Rate plan</field>
+            <field name="model">loan.rate</field>
+            <field name="arch" type="xml">
+                <form string="Loan Details" version="7.0">
+                    <header>
+                        <button name="trigger_rate_confirmed_payed" string="Payed" type="workflow" states="confirmed" class="oe_highlight" icon="gtk-yes"/>
+                        <!--<button name="trigger_rate_confirmed_cancel" string="cancel" type="workflow" states="confirmed" icon="gtk-no"/>-->
+
+                        <field name="state" widget="statusbar" statusbar_visible="confirmed,payed" />
+                    </header>
+                    <sheet>
+	                    <h1>
+		                    <label string="#" />
+		                    <field name="name" readonly="1" class="oe_inline" />
+	                    </h1>
+	                    <group col="4" colspan="4">
+                            <field name="rate_type" />
+                            <field name="capital" readonly="1"/>
+                            <field name="interest" attrs="{'readonly':[('rate_type','=','normal')]}"/>
+                            <field name="remain" readonly="1"/>
+
+                            <field name="rate_date" attrs="{'readonly':[('rate_type','=','normal')]}"/>
+                            <field name="rate_amount" readonly="1"/>
+
+                            <field name="pay_date"/>
+                            <!--<field name="pay_amount"/>-->
+
+                            <field name="currency_date"/>
+                        </group>
+                    </sheet>
+               </form>
+           </field>
+        </record>         
+
+        <record model="ir.actions.act_window" id="action_loan_rate">
+            <field name="name">Loan rate</field>
+            <field name="res_model">loan.rate</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,graph,calendar</field>
+            <field name="domain">[]</field>
+        </record>
+        
+        <menuitem name="Financial Management" id="financial_management_root" sequence="40" />
+            <menuitem name="Loan" parent="financial_management_root" 
+                id="financial_management_loan" sequence="10" />
+                <menuitem name="Loan" parent="financial_management_loan" 
+                    id="financial_management_loan_loan" 
+                    action="action_loan_header"  
+                    sequence="10" />
+                <menuitem name="Rates" parent="financial_management_loan" 
+                    id="financial_management_loan_rate" 
+                    action="action_loan_rate"  
+                    sequence="20" />
+    </data>
+</openerp>

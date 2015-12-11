@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <menuitem name="Invoicing"
+            id="menu_finance"
+            groups="menuitem_base.show_menuitem_accounting"
+            sequence="50"/>
+    </data>
+</openerp>
+
+
+
+
+
+

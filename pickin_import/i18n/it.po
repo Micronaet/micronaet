@@ -1,0 +1,640 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* pickin_import
+# <> <>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 6.0.4\n"
+"Report-Msgid-Bugs-To: support@openerp.com\n"
+"POT-Creation-Date: 2012-08-02 20:47+0000\n"
+"PO-Revision-Date: 2012-08-02 22:51+0200\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: pickin_import
+#: help:picking.import.wizard.file,log_error:0
+msgid "Error during operation"
+msgstr "Errore durante l'importazione"
+
+#. module: pickin_import
+#: help:picking.import.wizard.file,path:0
+msgid "Folder that contains no imported document"
+msgstr "La cartella non contiene documenti da importare"
+
+#. module: pickin_import
+#: field:importation.purchase.order,lot_id:0
+msgid "Lot"
+msgstr "Lotto"
+
+#. module: pickin_import
+#: model:ir.actions.act_window,name:pickin_import.picking_import_wizard_action
+#: model:ir.ui.menu,name:pickin_import.picking_import_wizard_menuitem
+msgid "Import CSV picking in"
+msgstr "Importa BF"
+
+#. module: pickin_import
+#: field:picking.import.wizard.file,imported:0
+msgid "Imported"
+msgstr "Importato"
+
+#. module: pickin_import
+#: view:picking.import.wizard:0 field:picking.import.wizard.file,log_text:0
+msgid "Log"
+msgstr "Log"
+
+#. module: pickin_import
+#: help:picking.import.wizard.file,to_import:0
+msgid "Is the file to import"
+msgstr "File da importare"
+
+#. module: pickin_import
+#: help:picking.import.wizard.file,full_name:0
+msgid "Full name of the file, according to file system syntax"
+msgstr "Nome completo del file, in accordo con la sintassi del file system"
+
+#. module: pickin_import
+#: field:picking.import.wizard.file,import_document:0
+#: field:stock.picking,import_document:0
+msgid "Document n."
+msgstr "Document n."
+
+#. module: pickin_import
+#: field:picking.import.wizard.file,wizard_id:0
+msgid "Wizard"
+msgstr "Procedura guidata"
+
+#. module: pickin_import
+#: view:picking.import.wizard:0
+msgid "IN document"
+msgstr "Documento IN (BF)"
+
+#. module: pickin_import
+#: field:picking.import.wizard,state:0
+msgid "State"
+msgstr "Stato"
+
+#. module: pickin_import
+#: selection:importation.default.location,name:0
+msgid "Internal"
+msgstr "Interno"
+
+#. module: pickin_import
+#: selection:picking.import.wizard,state:0
+msgid "Draft"
+msgstr "Bozza"
+
+#. module: pickin_import
+#: field:picking.import.wizard,log_activity:0
+msgid "Log activity"
+msgstr "Log attività"
+
+#. module: pickin_import
+#: selection:picking.import.wizard,state:0
+msgid "Loaded files"
+msgstr "Files caricati"
+
+#. module: pickin_import
+#: model:ir.model,name:pickin_import.model_stock_picking
+msgid "Picking List"
+msgstr "Lista di Prelievo"
+
+#. module: pickin_import
+#: selection:importation.default.location,name:0
+msgid "Supplier"
+msgstr "Fornitore"
+
+#. module: pickin_import
+#: field:importation.purchase.order,purchase_order:0
+msgid "Purchase order"
+msgstr "Ordine di acquisto"
+
+#. module: pickin_import
+#: view:importation.default.location:0
+#: model:ir.ui.menu,name:pickin_import.menu_importation_default_location
+msgid "Default stock import"
+msgstr "Magazzino di default"
+
+#. module: pickin_import
+#: model:ir.model,name:pickin_import.model_importation_purchase_order
+msgid "Purchase order import"
+msgstr "Importa ordine di acquisto"
+
+#. module: pickin_import
+#: view:picking.import.wizard:0 field:picking.import.wizard,line_ids:0
+msgid "Files"
+msgstr "Files"
+
+#. module: pickin_import
+#: model:ir.actions.act_window,name:pickin_import.picking_import_wizard_out_action
+#: model:ir.ui.menu,name:pickin_import.picking_import_wizard_out_menuitem
+msgid "Import CSV picking out"
+msgstr "Importa BC"
+
+#. module: pickin_import
+#: help:importation.purchase.order,purchase_order:0
+msgid "ID of PO that generate this pickin list"
+msgstr "ID dell'OF che genera il documento"
+
+#. module: pickin_import
+#: field:picking.import.wizard.file,to_import:0
+msgid "Import?"
+msgstr "Importo?"
+
+#. module: pickin_import
+#: field:importation.default.location,location_id:0
+msgid "Location stock"
+msgstr "Luogo magazzino"
+
+#. module: pickin_import
+#: field:picking.import.wizard.file,exist:0
+msgid "Exist?"
+msgstr "Esiste?"
+
+#. module: pickin_import
+#: view:picking.import.wizard:0
+msgid "Load files"
+msgstr "Carica files"
+
+#. module: pickin_import
+#: code:addons/pickin_import/wizard/importation_wizard.py:151
+#, python-format
+msgid ""
+"No %s CSV file, please export document before and save in: %s'%(file_item."
+"name,file_item.path,))\n"
+"                lines = open(file_item.full_name,'rb"
+msgstr ""
+"No %s CSV file, please export document before and save in: %s'%(file_item."
+"name,file_item.path,))\n"
+"                lines = open(file_item.full_name,'rb"
+
+#. module: pickin_import
+#: view:picking.import.wizard:0
+msgid "Close"
+msgstr "Chiudi"
+
+#. module: pickin_import
+#: model:ir.actions.act_window,name:pickin_import.action_importation_default_location
+msgid "Default stock import (BF)"
+msgstr "Magazzino default per BF"
+
+#. module: pickin_import
+#: model:ir.model,name:pickin_import.model_picking_import_wizard_file
+msgid "picking.import.wizard.file"
+msgstr "picking.import.wizard.file"
+
+#. module: pickin_import
+#: help:picking.import.wizard.file,exist:0
+msgid "If true then the file has already imported in DB"
+msgstr "Se è vero il file è già stato importato"
+
+#. module: pickin_import
+#: view:picking.import.wizard:0
+msgid "OUT document"
+msgstr "Documento in uscita"
+
+#. module: pickin_import
+#: view:picking.import.wizard:0
+msgid "Direction: document out"
+msgstr "Direzione: documento in uscita"
+
+#. module: pickin_import
+#: code:addons/pickin_import/wizard/importation_wizard.py:160
+#, python-format
+msgid ""
+"Error reading/parsing file:\n"
+"%s'%(file_item.import_document))\n"
+"\n"
+"                # Import file creatin stock.picking and stock.move (wit "
+"stock lot)\n"
+"                line_ids_to_assigned=[]\n"
+"                for line_all in lines:\n"
+"                    line=line_all.replace('"
+msgstr ""
+"Error reading/parsing file:\n"
+"%s'%(file_item.import_document))\n"
+"\n"
+"                # Import file creatin stock.picking and stock.move (wit "
+"stock lot)\n"
+"                line_ids_to_assigned=[]\n"
+"                for line_all in lines:\n"
+"                    line=line_all.replace('"
+
+#. module: pickin_import
+#: field:picking.import.wizard.file,path_history:0
+msgid "History path"
+msgstr "Percorso storico"
+
+#. module: pickin_import
+#: code:addons/pickin_import/wizard/importation_wizard.py:341
+#, python-format
+msgid "Generic error during importation"
+msgstr "Errore generico durante l'importazione"
+
+#. module: pickin_import
+#: field:picking.import.wizard,direction_in:0
+msgid "In document?"
+msgstr "Documento in ingresso"
+
+#. module: pickin_import
+#: model:ir.model,name:pickin_import.model_importation_default_location
+msgid "Default import location"
+msgstr "Luogo di import di default"
+
+#. module: pickin_import
+#: field:picking.import.wizard.file,full_name:0
+msgid "Full name"
+msgstr "Nome completo"
+
+#. module: pickin_import
+#: view:picking.import.wizard:0
+msgid "Error during operation, see bottom of this window"
+msgstr ""
+"Errore durante l'importazione, controllare la parte bassa della videata"
+
+#. module: pickin_import
+#: view:picking.import.wizard:0
+msgid "Result"
+msgstr "Risultato"
+
+#. module: pickin_import
+#: selection:importation.default.location,name:0
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: pickin_import
+#: field:picking.import.wizard,name_out:0
+msgid "Importazione OUT"
+msgstr "Importazione OUT"
+
+#. module: pickin_import
+#: help:picking.import.wizard.file,log_text:0
+msgid "Log operation"
+msgstr "Log operazione"
+
+#. module: pickin_import
+#: field:picking.import.wizard.file,path:0
+msgid "Path"
+msgstr "Percorso"
+
+#. module: pickin_import
+#: view:picking.import.wizard:0
+msgid "workflow"
+msgstr "workflow"
+
+#. module: pickin_import
+#: field:importation.purchase.order,partner_id:0
+msgid "Patner"
+msgstr "Patner"
+
+#. module: pickin_import
+#: help:picking.import.wizard.file,path_history:0
+msgid "Folder that contains old imported document"
+msgstr "Cartella che contiene documenti storicizzati durante l'import"
+
+#. module: pickin_import
+#: field:picking.import.wizard.file,name:0
+msgid "File name"
+msgstr "Nome file"
+
+#. module: pickin_import
+#: code:addons/pickin_import/wizard/importation_wizard.py:102
+#, python-format
+msgid "Error loading object"
+msgstr "Errore caricando l'oggetto"
+
+#. module: pickin_import
+#: field:picking.import.wizard,error:0
+msgid "Error importing"
+msgstr "Errore di importazione"
+
+#. module: pickin_import
+#: field:importation.default.location,name:0
+msgid "Location type"
+msgstr "Tipo di luogo"
+
+#. module: pickin_import
+#: code:addons/pickin_import/wizard/importation_wizard.py:341
+#: code:addons/pickin_import/wizard/importation_wizard.py:405
+#, python-format
+msgid "Error!"
+msgstr "Errore!"
+
+#. module: pickin_import
+#: model:ir.model,name:pickin_import.model_picking_import_out_wizard
+msgid "picking.import.out.wizard"
+msgstr "picking.import.out.wizard"
+
+#. module: pickin_import
+#: view:picking.import.wizard:0 field:picking.import.wizard.file,log_error:0
+msgid "Error"
+msgstr "Errore"
+
+#. module: pickin_import
+#: model:ir.ui.menu,name:pickin_import.configuration_picking_import
+msgid "Importation"
+msgstr "Importazione"
+
+#. module: pickin_import
+#: help:picking.import.wizard.file,imported:0
+msgid "File is imported"
+msgstr "Il file è importato"
+
+#. module: pickin_import
+#: help:picking.import.wizard.file,date:0
+msgid "Export date of the file"
+msgstr "Data esportazione del file"
+
+#. module: pickin_import
+#: view:picking.import.wizard:0
+msgid "Import CSV picking"
+msgstr "Import CSV"
+
+#. module: pickin_import
+#: help:picking.import.wizard.file,import_document:0
+#: help:stock.picking,import_document:0
+msgid "Link to original imported document, format number/year ex.: 8015/2012"
+msgstr ""
+"Collegamento al documento originale, formato numero/anno, es.: 8015/2012"
+
+#. module: pickin_import
+#: selection:picking.import.wizard,state:0
+msgid "Imported document"
+msgstr "Documento importato"
+
+#. module: pickin_import
+#: field:picking.import.wizard.file,date:0
+msgid "Export date"
+msgstr "Data esportazione"
+
+#. module: pickin_import
+#: model:ir.model,name:pickin_import.model_picking_import_wizard
+msgid "picking.import.wizard"
+msgstr "picking.import.wizard"
+
+#. module: pickin_import
+#: field:stock.picking,wizard_id:0
+msgid "Wizard ID"
+msgstr "Wizard ID"
+
+#. module: pickin_import
+#: field:importation.purchase.order,product_id:0
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: pickin_import
+#: view:picking.import.wizard:0
+msgid "Files list to import:"
+msgstr "Lista file da importare:"
+
+#. module: pickin_import
+#: field:picking.import.wizard,name:0
+msgid "Importazione IN"
+msgstr "Importazione IN"
+
+#. module: pickin_import
+#: code:addons/pickin_import/wizard/importation_wizard.py:262
+#, python-format
+msgid ""
+"Error creating picking document:\n"
+"%s'%(file_item.import_document))\n"
+"                       first=False\n"
+"                       \n"
+"                       # Calculated fields  (this only for header)\n"
+"                       address_id = partner_proxy.address_get(cr, uid, "
+"partner_id).values()[0] # TODO verificare se sono più di uno\n"
+"                       if not partner_id: # update log for the line\n"
+"                          update_line=wizard_line_pool.write(cr, uid, "
+"[file_item.id], {'log_error': \"Partner address not found: %s - %s!"
+"\"%(partner_ref, partner),\n"
+"                                                                         'to_import': "
+"False,}, context=context)\n"
+"                          continue # next line\n"
+"\n"
+"                       # stock.picking "
+"*****************************************\n"
+"                       if not test: # create pick_id\n"
+"                          import pdb; pdb.set_trace()\n"
+"                          pick_id=picking_proxy.create(cr, uid, {'origin': "
+"\"%s [OF:%s]\"%(ref,purchase_order),\n"
+"                                                                 #'name': "
+"'IN/00001','stock_journal_id':,'invoice_state': ,\n"
+"                                                                 'date': "
+"date, \n"
+"                                                                 'address_id': "
+"address_id,\n"
+"                                                                 'move_type': "
+"'direct',\n"
+"                                                                 'type': "
+"'in' if direction_in else 'out',\n"
+"                                                                 'note': "
+"'Loaded from external program',\n"
+"                                                                 'state': "
+"'done', # TODO test\n"
+"                                                                 'min_date': "
+"date, \n"
+"                                                                 'max_date': "
+"date, \n"
+"                                                                 'import_document': "
+"file_item.import_document,\n"
+"                                                                 'import_date': "
+"export_date, # for registration\n"
+"                                                                 \n"
+"                                                                 'wizard_id': "
+"wizard_proxy.id, # TODO togliere non serve, trovare il modo per il redirect "
+"finale\n"
+"                                                                 })\n"
+"\n"
+"                          if not pick_id:\n"
+"                             wizard_line_pool.write(cr, uid, [file_item.id], "
+"{'log_error':\"Error Creating picking document: %s (%s)!\"%(ref, "
+"purchase_order),\n"
+"                                                                            'to_import': "
+"False,}, context=context)\n"
+"                             continue # next line\n"
+"                          pick_ids.append(pick_id)   \n"
+"                       else: # test mode:\n"
+"                           pick_id = 0 \n"
+"                    else: # not the first\n"
+"                        pass\n"
+"\n"
+"                    if_error = _('Error creating picking movements file: "
+"%s'%(file_item.name))\n"
+"                    \n"
+"                    if not test: # create move, analysis, rename file\n"
+"                        # stock.move "
+"***********************************************\n"
+"                        product_browse=product_proxy.browse(cr, uid, "
+"product_id)\n"
+"                        data_move={'product_uos_qty': product_q,\n"
+"                                   #'create_date': '2012-06-04 18:58:05', "
+"#'price_unit': 0.0, \n"
+"                                   'product_qty': product_q, #300.0,\n"
+"                                   'product_uos': product_browse.uos_id.id "
+"if product_browse.uos_id else False,\n"
+"                                   'product_uom': uom_id, #product_browse."
+"uom_id.id if product_browse.uom_id else False, #[2, 'kg'],   <<< TODO devo "
+"caricarla come fa l'on_change!!\n"
+"                                   #'partner_id': [429, 'Luxalloys S.A.'], \n"
+"                                   'priority': '1', \n"
+"                                   #'sale_line_id': False,  'auto_validate': "
+"False, 'price_currency_id': False, \n"
+"                                   'location_id': stock_in if direction_in "
+"else stock_in,                 # depends on direction\n"
+"                                   'location_dest_id': stock_internal if "
+"direction_in else stock_out,     # depends on direction\n"
+"                                   #'company_id': [1, 'Minerals & Metals "
+"spa'], 'note': False, 'state': 'done', 'product_packaging': False, "
+"'purchase_line_id': False, 'move_history_ids': [], \n"
+"                                   'date_expected': export_date, \n"
+"                                   #'backorder_id': False, \n"
+"                                   #'move_dest_id': False, \n"
+"                                   'date': export_date, \n"
+"                                   #'production_id': False, 'is_coal': , "
+"'scrapped': False, 'tracking_id': False, 'move_history_ids2': [], \n"
+"                                   'product_id': product_id,\n"
+"                                   'name': '[%s] %s'%(product_browse.code, "
+"product_browse.name), \n"
+"                                   'picking_id': pick_id,\n"
+"                                   'state': "
+"'done',                               \n"
+"                                   'prodlot_id': lot_id,\n"
+"                                   'via_hygro': hygro, # TODO verify for VIA "
+"also in production (not override!!)\n"
+"                                   'via_number': self.pool.get('ir.sequence"
+msgstr ""
+"Error creating picking document:\n"
+"%s'%(file_item.import_document))\n"
+"                       first=False\n"
+"                       \n"
+"                       # Calculated fields  (this only for header)\n"
+"                       address_id = partner_proxy.address_get(cr, uid, "
+"partner_id).values()[0] # TODO verificare se sono più di uno\n"
+"                       if not partner_id: # update log for the line\n"
+"                          update_line=wizard_line_pool.write(cr, uid, "
+"[file_item.id], {'log_error': \"Partner address not found: %s - %s!"
+"\"%(partner_ref, partner),\n"
+"                                                                         'to_import': "
+"False,}, context=context)\n"
+"                          continue # next line\n"
+"\n"
+"                       # stock.picking "
+"*****************************************\n"
+"                       if not test: # create pick_id\n"
+"                          import pdb; pdb.set_trace()\n"
+"                          pick_id=picking_proxy.create(cr, uid, {'origin': "
+"\"%s [OF:%s]\"%(ref,purchase_order),\n"
+"                                                                 #'name': "
+"'IN/00001','stock_journal_id':,'invoice_state': ,\n"
+"                                                                 'date': "
+"date, \n"
+"                                                                 'address_id': "
+"address_id,\n"
+"                                                                 'move_type': "
+"'direct',\n"
+"                                                                 'type': "
+"'in' if direction_in else 'out',\n"
+"                                                                 'note': "
+"'Loaded from external program',\n"
+"                                                                 'state': "
+"'done', # TODO test\n"
+"                                                                 'min_date': "
+"date, \n"
+"                                                                 'max_date': "
+"date, \n"
+"                                                                 'import_document': "
+"file_item.import_document,\n"
+"                                                                 'import_date': "
+"export_date, # for registration\n"
+"                                                                 \n"
+"                                                                 'wizard_id': "
+"wizard_proxy.id, # TODO togliere non serve, trovare il modo per il redirect "
+"finale\n"
+"                                                                 })\n"
+"\n"
+"                          if not pick_id:\n"
+"                             wizard_line_pool.write(cr, uid, [file_item.id], "
+"{'log_error':\"Error Creating picking document: %s (%s)!\"%(ref, "
+"purchase_order),\n"
+"                                                                            'to_import': "
+"False,}, context=context)\n"
+"                             continue # next line\n"
+"                          pick_ids.append(pick_id)   \n"
+"                       else: # test mode:\n"
+"                           pick_id = 0 \n"
+"                    else: # not the first\n"
+"                        pass\n"
+"\n"
+"                    if_error = _('Error creating picking movements file: "
+"%s'%(file_item.name))\n"
+"                    \n"
+"                    if not test: # create move, analysis, rename file\n"
+"                        # stock.move "
+"***********************************************\n"
+"                        product_browse=product_proxy.browse(cr, uid, "
+"product_id)\n"
+"                        data_move={'product_uos_qty': product_q,\n"
+"                                   #'create_date': '2012-06-04 18:58:05', "
+"#'price_unit': 0.0, \n"
+"                                   'product_qty': product_q, #300.0,\n"
+"                                   'product_uos': product_browse.uos_id.id "
+"if product_browse.uos_id else False,\n"
+"                                   'product_uom': uom_id, #product_browse."
+"uom_id.id if product_browse.uom_id else False, #[2, 'kg'],   <<< TODO devo "
+"caricarla come fa l'on_change!!\n"
+"                                   #'partner_id': [429, 'Luxalloys S.A.'], \n"
+"                                   'priority': '1', \n"
+"                                   #'sale_line_id': False,  'auto_validate': "
+"False, 'price_currency_id': False, \n"
+"                                   'location_id': stock_in if direction_in "
+"else stock_in,                 # depends on direction\n"
+"                                   'location_dest_id': stock_internal if "
+"direction_in else stock_out,     # depends on direction\n"
+"                                   #'company_id': [1, 'Minerals & Metals "
+"spa'], 'note': False, 'state': 'done', 'product_packaging': False, "
+"'purchase_line_id': False, 'move_history_ids': [], \n"
+"                                   'date_expected': export_date, \n"
+"                                   #'backorder_id': False, \n"
+"                                   #'move_dest_id': False, \n"
+"                                   'date': export_date, \n"
+"                                   #'production_id': False, 'is_coal': , "
+"'scrapped': False, 'tracking_id': False, 'move_history_ids2': [], \n"
+"                                   'product_id': product_id,\n"
+"                                   'name': '[%s] %s'%(product_browse.code, "
+"product_browse.name), \n"
+"                                   'picking_id': pick_id,\n"
+"                                   'state': "
+"'done',                               \n"
+"                                   'prodlot_id': lot_id,\n"
+"                                   'via_hygro': hygro, # TODO verify for VIA "
+"also in production (not override!!)\n"
+"                                   'via_number': self.pool.get('ir.sequence"
+
+#. module: pickin_import
+#: view:picking.import.wizard:0
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: pickin_import
+#: view:picking.import.wizard:0
+msgid "Direction: document in"
+msgstr "Direzione: documento IN"
+
+#. module: pickin_import
+#: help:stock.picking,wizard_id:0
+msgid "Save wizard creazion ID for open stock.picking after importation"
+msgstr "Salva ID wizard per le BF dopo l'importazione"
+
+#. module: pickin_import
+#: help:picking.import.wizard,direction_in:0
+msgid "If true the document is a picking in else, picking out"
+msgstr "Se è vero il documento è una BF altrimenti una BC"
+
+#. module: pickin_import
+#: view:picking.import.wizard:0
+msgid "Import document"
+msgstr "Importa documento"

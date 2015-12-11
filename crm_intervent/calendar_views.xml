@@ -1,0 +1,92 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <!--res.partner-->
+    <!--<record model="ir.ui.view" id="view_res_partner_tree_update">
+        <field name="name">CRM meeting relation</field>
+        <field name="model">res.partner</field>  
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">                   
+           <xpath expr="/form/sheet/notebook/page" position="after">
+               <page string="CRM">
+                   <field name=""/>                   
+               </page>
+           </xpath>
+        </field>
+    </record>-->
+
+    <!--crm.meeting-->
+    <record model="ir.ui.view" id="view_crm_meeting_tree">
+        <field name="name">CRM meeting relation</field>
+        <field name="model">crm.meeting</field>  
+        <field name="inherit_id" ref="base_calendar.view_crm_meeting_tree" />
+        <field name="arch" type="xml">                   
+           <field name="name" position="after">
+               <field name="partner_ids" />
+           </field>
+           <field name="duration" position="after">
+               <field name="state" />
+           </field>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_crm_meeting_form">
+        <field name="name">CRM meeting relation</field>
+        <field name="model">crm.meeting</field>
+        <field name="inherit_id" ref="base_calendar.view_crm_meeting_form"/>
+        <field name="arch" type="xml">
+           <xpath expr="/form/sheet" position="before">
+               <header>
+                   <button name="meeting_confirmed" states="draft" type="workflow" string="Confirm" groups="base.group_user" /> 
+                   <button name="meeting_confirmed_relation" states="draft" type="workflow" string="Confirm with rel." groups="base.group_user" /> 
+
+                   <button name="action_relation_send" states="relation,close" type="object" string="Send relation" groups="base.group_user" class="oe_highlight"/> 
+
+                   <button name="meeting_close" states="confirmed" type="workflow" string="Close" groups="base.group_user" /> 
+                   <button name="meeting_close_relation" states="relation" type="workflow" string="Close" groups="base.group_user" /> 
+
+                   <field name="state" widget="statusbar" statusbar_visibile="draft,confirmed,relation,close" />
+               </header>               
+           </xpath>
+           
+		    <field name="partner_ids" position="attributes">
+		        <attribute name="context">{'force_email':False}</attribute>
+		        <attribute name="invisible">1</attribute>
+			</field>
+			<field name="partner_ids" position="after">
+			    <field name="relation_partner_id" />
+			</field>
+			        
+            <field name="name" position="after">
+                <group colspan="4">
+                    <field name="relation_needed" invisible="1"/>
+                </group> 
+            </field>
+            
+            <xpath expr="//page[@string='Invitations']" position="after">
+                <page string="Relation" attrs="{'invisible': [('relation_needed','=',False)]}">
+                   <group colspan="4">
+                       <field name="relation_manager_id" attrs="{'required': [('relation_needed','=',True)]}"/>
+
+                       <field name="relation_department" />
+                       <field name="relation_ref" />
+                       <field name="relation_supervisor" colspan="2"/>
+                       <field name="relation_supervisor_position" colspan="2" />
+
+                       <field name="relation_goal" colspan="4"/>
+                       <field name="relation_result"  colspan="4"/>
+                       <field name="relation_evaluation"  colspan="4"/>
+                       <field name="relation_strength"  colspan="4"/>
+                       <field name="relation_plan"  colspan="4"/>
+                       <field name="relation_goal_future"  colspan="4"/>
+                   </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    
+    
+</data>
+
+</openerp>
+

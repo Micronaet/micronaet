@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+<!-- dentist.appointment.wizard -->        
+        <record model="ir.ui.view" id="dentist_web_graph_form_view">
+            <field name="name">Open Web</field>
+            <field name="model">dentist.web.graph</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+               <form>
+                  <field name="name" />
+               </form>
+            </field>
+        </record>
+            
+        <record model="ir.actions.act_window" id="dentist_web_graph_wizard">
+            <field name="name">Open web graph</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dentist.web.graph</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="context">{'patient_id':active_id}</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>
+

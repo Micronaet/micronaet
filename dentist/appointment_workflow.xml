@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <!--Workflow:-->
+        <record model="workflow" id="workflow_appointment">
+            <field name="name">dentist.appointment.wkf</field>
+            <field name="osv">dentist.appointment</field>
+            <field name="on_create">True</field>
+        </record>
+
+        <!--Activity:-->
+        <record model="workflow.activity" id="action_confirmed">
+            <field name="wkf_id" ref="workflow_appointment" />
+            <field name="flow_start">True</field>
+            <field name="name">confirmed</field>
+            <field name="kind">function</field>
+            <field name="action">workflow_appointment_confirmed()</field>
+        </record>
+
+        <record model="workflow.activity" id="action_reminder">
+            <field name="wkf_id" ref="workflow_appointment" />
+            <field name="name">reminder</field>
+            <field name="kind">function</field>
+            <field name="action">workflow_appointment_reminder()</field>
+        </record>
+
+        <record model="workflow.activity" id="action_arrived">
+            <field name="wkf_id" ref="workflow_appointment" />
+            <field name="name">arrived</field>
+            <field name="kind">function</field>
+            <field name="action">workflow_appointment_arrived()</field>
+        </record>
+
+        <record model="workflow.activity" id="action_enter">
+            <field name="wkf_id" ref="workflow_appointment" />
+            <field name="name">enter</field>
+            <field name="kind">function</field>
+            <field name="action">workflow_appointment_enter()</field>
+        </record>
+
+        <record model="workflow.activity" id="action_close">
+            <field name="wkf_id" ref="workflow_appointment" />
+            <field name="name">close</field>
+            <field name="kind">function</field>
+            <field name="action">workflow_appointment_close()</field>
+            <field name="flow_stop">True</field>
+        </record>
+
+        <record model="workflow.activity" id="action_cancel">
+            <field name="wkf_id" ref="workflow_appointment" />
+            <field name="name">cancel</field>
+            <field name="kind">function</field>
+            <field name="action">workflow_appointment_cancel()</field>
+        </record>
+
+        <!--Transitions:-->
+        <record model="workflow.transition" id="transition_1">
+            <field name="act_from" ref="action_reminder" />
+            <field name="act_to" ref="action_confirmed" />
+            <field name="signal">appointment_confirmed</field>
+        </record>
+        <record model="workflow.transition" id="transition_1b">
+            <field name="act_from" ref="action_confirmed" />
+            <field name="act_to" ref="action_reminder" />
+            <field name="signal">appointment_confirmed_back</field>
+        </record>
+
+        <record model="workflow.transition" id="transition_2">
+            <field name="act_from" ref="action_confirmed" />
+            <field name="act_to" ref="action_arrived" />
+            <field name="signal">appointment_arrived</field>
+        </record>
+        <record model="workflow.transition" id="transition_2back">
+            <field name="act_from" ref="action_arrived" />
+            <field name="act_to" ref="action_confirmed" />
+            <field name="signal">appointment_arrived_back</field>
+        </record>
+
+        <record model="workflow.transition" id="transition_3">
+            <field name="act_from" ref="action_arrived" />
+            <field name="act_to" ref="action_enter" />
+            <field name="signal">appointment_enter</field>
+        </record>
+        <record model="workflow.transition" id="transition_3back">
+            <field name="act_from" ref="action_enter" />
+            <field name="act_to" ref="action_arrived" />
+            <field name="signal">appointment_enter_back</field>
+        </record>
+
+        <record model="workflow.transition" id="transition_5a">
+            <field name="act_from" ref="action_enter" />
+            <field name="act_to" ref="action_close" />
+            <field name="signal">appointment_close</field>
+        </record>
+        
+        <record model="workflow.transition" id="transition_a1">
+            <field name="act_from" ref="action_reminder" />
+            <field name="act_to" ref="action_cancel" />
+            <field name="signal">appointment_reminder_cancel</field>
+        </record>
+        <record model="workflow.transition" id="transition_a2">
+            <field name="act_from" ref="action_confirmed" />
+            <field name="act_to" ref="action_cancel" />
+            <field name="signal">appointment_confirmed_cancel</field>
+        </record>
+        <record model="workflow.transition" id="transition_a3">
+            <field name="act_from" ref="action_arrived" />
+            <field name="act_to" ref="action_cancel" />
+            <field name="signal">appointment_arrived_cancel</field>
+        </record>
+        <record model="workflow.transition" id="transition_a5">
+            <field name="act_from" ref="action_enter" />
+            <field name="act_to" ref="action_cancel" />
+            <field name="signal">appointment_enter_cancel</field>
+        </record>
+        <record model="workflow.transition" id="transition_a2c">
+            <field name="act_from" ref="action_cancel" />
+            <field name="act_to" ref="action_confirmed" />
+            <field name="signal">appointment_cancel_confirmed</field>
+        </record>
+    </data>
+</openerp>

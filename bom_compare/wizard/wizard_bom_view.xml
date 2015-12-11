@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<openerp>
+  <data>
+       <!-- etc.bom.line.wizard -->
+       <record id="etl_bom_line_wizard" model="ir.ui.view">
+            <field name="name">Print BOM</field>
+            <field name="model">etl.bom.line.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="BOM report">
+                   <field name="all"/>
+                   <field name="parent" attrs="{'invisible':[('all','=',True)]}"/> 
+                   <newline />
+                   
+                   <button string="Cancel" special="cancel" colspan="2"/>                   
+                   <button name="print_report" type="object" string="Print" icon="gtk-print" colspan="2" />
+                </form>
+            </field>
+      </record>
+      
+      <record id="etl_bom_line_wizard_action" model="ir.actions.act_window">
+        <field name="name">BOM report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">etl.bom.line.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+      </record>
+
+      <menuitem name="BOM report" 
+                id="menu_etl_bom_line_wizard" 
+                parent="menu_etl_production" 
+                action="etl_bom_line_wizard_action" 
+                sequence="10" />        
+  </data>
+</openerp>
+

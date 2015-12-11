@@ -1,0 +1,82 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <!-- etl.bom.line -->
+    <record model="ir.ui.view" id="view_etl_bom_line_search">
+        <field name="name">BOM line</field>
+        <field name="model">etl.bom.line</field>
+        <field name="arch" type="xml">
+            <search string="Search BOM line">
+                <field name="name" string="Product Name" filter_domain="[('name','ilike',self)]"/>
+                <field name="code" string="Product code" filter_domain="[('code','=',self)]" />
+                <field name="component_name" string="Component Name" filter_domain="[('component_name','ilike',self)]"/>
+                <field name="component_code" string="Component Code" filter_domain="[('component_code','=',self)]" />
+
+                <filter icon="terp-go-home" name="is_primary_filter" string="is primary" domain="[('is_primary','=',True)]"/>
+                <separator />               
+                
+                <group expand="1" string="Group By...">
+                    <filter name="group_code" string="Product code" icon="terp-partner" context="{'group_by':'code'}"/>
+                    <filter name="group_name" string="Product name" icon="terp-partner" context="{'group_by':'name'}"/>
+                    <filter name="group_primary" string="BOM model" icon="terp-accessories-archiver" context="{'group_by':'primary'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_etl_bom_line_tree">
+        <field name="name">BOM line list</field>
+        <field name="model">etl.bom.line</field>
+        <field name="arch" type="xml">
+            <tree string="BOM line" version="7.0">
+                <field name="is_primary" />
+                <field name="primary" />
+                <field name="code" />
+                <field name="name" />
+                <field name="component_code" />
+                <field name="component_name" />
+                <field name="quantity" sum="Total" />
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_etl_bom_line_form">
+        <field name="name">BOM line</field>
+        <field name="model">etl.bom.line</field>
+        <field name="arch" type="xml">
+            <form string="  line" version="7.0">
+               <sheet>
+                    <group col="4" colspan="4">
+                        <field name="is_primary" />
+                        <field name="primary" />
+                        
+                        <field name="code" />
+                        <field name="name" />
+                        
+                        <group colspan="4" col="6">
+                           <field name="component_code" />
+                           <field name="component_name" />
+                           <field name="quantity" />
+                        </group>                    
+                    </group>
+               </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_etl_bom_line_form">
+        <field name="name">BOM line</field>
+        <field name="res_model">etl.bom.line</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_etl_bom_line_tree"/>
+        <field name="search_view_id" ref="view_etl_bom_line_search"/>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+    </record>
+    
+    <menuitem name="Report" parent="base.menu_mrp_root" id="menu_etl_production" sequence="40" />
+        <menuitem name="BOM lines" id="menu_etl_order_delivery" parent="menu_etl_production" action="action_etl_bom_line_form" sequence="30" />        
+    </data>
+</openerp>
+

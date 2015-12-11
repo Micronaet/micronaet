@@ -1,0 +1,99 @@
+6,2M  6,1M  F_AGENDA.CSV: Elenco di 0,1,2 per ogni gg dal 1994
+5,6M  5,6M  F_SCHEOP.CSV: Operazioni effettuate
+5,5M  5,5M  F_PREVEN.CSV: Cognome;Nome;Codice;Cd;Cop;Descri;Qta;Prezzo;Stato;Dataprev;Listino;Importo;Sconto;Fp;Tipomov;Unico;Periodo
+752K  752K  F_TABXPA.CSV: Stessi record dell'anagra.CSV:  3562 righe, 3596 ID
+724K  724K  F_ANAGRA.CSV: Anagrafica clienti 3562 righe, 3596 ID
+200K  199K  F_APPUNT.CSV: Appuntamenti (con descrizione) 4165 righe
+188K  188K  F_PN2001.CSV: (ci sono vari anni: compenso, bilancio??) 495 righe, 265 ID  
+156K  154K  F_CICLI.CSV: ??? Codice;Periodo;Residuo
+ 84K   81K  F_CONTAB.CSV: Cognome;Nome;Codice;Tipomov;Datamov;Nfatt;Valore;Importo;Destint;Destinc;Destinn;Destini;Destinl;Destcap;Desticf;Campolib;Pagato;Saldato;Periodo;Debito;Flagsc2;Sc2;Impsc2;Flag;Tipomov2
+ 48K   47K  F_SCAPRE.CSV: Codice;Cognome;Nome;Dataprev;Importo;Flag
+ 48K   46K  F_RICHIA.CSV: Cognome;Nome;Codice;Tipo;Scarich;Gg;Confrich;Fissato;Telefono;Avvisato;Categoria;Medico;Motivo1;Motivo2;Scaduto
+ 36K   33K  F_SCADEN.CSV: Nfatt;Datafatt;Importo;Pagil;Quanto;Codice;Destinn;Destinc 
+ 20K   19K  F_DOCAPP.CSV: Frasi documenti: C01;C02;C03;C04;C05;C06;C07;C08;C09;C10;C11;C12;C13;C14;C15;C16;C17;C18;C19;C20
+ 20K   17K  F_FATSTO.CSV: Codice;Nominativo;Numfatt;Datafatt;Dapagare;Pagato;Datap;Saldo;Fp;Vis1;Vis2;Importo;Val2;Val3;Codpiva1;Perciva1;Imposta1;Imponib1;Codpiva2;Perciva2;Imposta2;Imponib2;Codpiva3;Perciva3;Imposta3;Imponib3;Codpiva4;Perciva4;Imposta4;Imponib4;Codpiva5;Perciva5;Imposta5;Imponib5;Codicec;Istituto;Descri;Numass;Casban;Tipo;Numprot;Datareg;Flag;Num nac;Tipobene1;Tipobene2;Tipobene3;Tipobene4;Tipobene5;Fatrifna1;Fatrifna2;Fatrifna3;Fatrifna4;Fatrifna5;Fatrifna6;Fatimpna1;Fatimpna2;Fatimpna3;Fatimpna4;Fatimpna5;Fatimpna6
+ 16K   16K  F_LISTIN.CSV: codice operazioni e prezzi: >>> Codice;Descri;Iva;Prezzo1;Prezzo2;Usatep;C11;C12;C13;C14;C15;C16;C17;C18;C21;C22;C23;C24;C25;C26;C27;C28;C31;C32;C33;C34;C35;C36;C37;C38;C41;C42;C43;C44;C45;C46;C47;C48;Cgen;Categoria;Tempistica
+ 16K   16K  F_PN1997.CSV: per ogni anno!!! Num;Datareg;Datamov;Cognome;Nome;Codice;Codfor;Nominativo;Indirizzo;Residenza;Codestr;Estremo;Nfatt;Codcau;Causale;Cassain;Cassaout;Codlin;Istituto;Descri;Bancain;Bancaout;Ban 2in;Ban 2out;Compenso;Movimin;Movimout;Proventi;Ritenuta;Kenpa;Varie;Ivacomp;Codper1;Perciva;Persdip;Compater;Canloc;Intpass;Assicur;Spesealb;Sperappr;Corsi;Spesevar;Ivacqui;Codper2;Perivac;Benistrum;Beniammor;P titola;V titola;Scorta1;Scorta2;Scorta3;Scorta4;Scorta5;Tipomov;Flag;Datap
+ 16K   13K  F_CATEGO.CSV: Categorie prodotti: Categoria;Descrizion;Med01;Med02;Med03;Med04;Med05;Med06;Med07;Med08;Med09;Med10;Med11;Med12;Med13;Med14;Med15;Med16;Med17;Med18;Med19;Med20;Med21;Med22;Med23;Med24;Med25;Med26;Med27;Med28;Med29;Med30;Med31;Med32;Med33;Med34;Med35;Med36;Med37;Med38;Med39;Med40;Med41;Med42;Med43;Med44;Med45;Med46;Med47;Med48;Med49;Med50;Med51;Med52;Med53;Med54;Med55;Med56;Med57;Med58;Med59;Med60;Med61;Med62;Med63;Med64;Med65;Med66;Med67;Med68;Med69;Med70;Med71;Med72;Med73;Med74;Med75;Med76;Med77;Med78;Med79;Med80;Med81;Med82;Med83;Med84;Med85;Med86;Med87;Med88;Med89;Med90;Med91;Med92;Med93;Med94;Med95;Med96;Med97;Med98;Med99
+8,0K  5,4K  F_FORNIT.CSV: Codfor;Fornitore;Indirizzo;Citta;Cap;Pr;Telefono;Piva;Cf;Banca;Agenzie;Pagamento;R1;R2;R3;R4;R5;R6;R7;R8;R9;R10;R11;R12;Bene;Fornit;Costo;Iva;Totale;Ca;Inizio;Durata;Termine;Canone;Num can;P1;P2;P3;P4;Codest;Desest;Codcau;Descau;Colcro;Regiva;Ritenute
+
+4,0K  3,1K  F_FATFOR.CSV: 
+4,0K  1,9K  F_DOCUME.CSV: 
+4,0K  1,9K  F_STORIC.CSV: 
+4,0K  1,3K  F_SA2004.CSV: Datultagg;Saldo 01;Saldo 02;Saldo 03;Saldo 04;Saldo 05;Saldo 06;Saldo 07;Saldo 08;Saldo 09;Saldo 10;Saldo 11;Saldo 12;Saldo 13;Saldo 14;Saldo 15;Saldo 16;Saldo 17;Saldo 18;Saldo 19;Saldo 20;Saldo 21;Saldo 22;Saldo 23;Saldo 24;Saldo 25;Saldo 26;Saldo 27;Saldo 28;Saldo 29;Saldo 30;Saldo 31;Saldo 32;Saldo 33;Saldo 34;Saldo 35;Saldo 36;Saldo 37;Saldo 38;Saldo 39;Saldo 40;Contat 01;Contat 02;Contat 03;Contat 04;Contat 05;Contat 06;Contat 07;Contat 08;Contat 09;Contat 10;Perliqiva;Debiva;Prorata;Interiva;Ivamin
+4,0K  1,3K  F_SA2005.CSV: 
+4,0K  1,3K  F_SA2006.CSV: 
+4,0K  1,3K  F_SA2007.CSV: 
+4,0K  1,3K  F_SA2008.CSV: 
+4,0K  1,3K  F_SA2003.CSV: 
+4,0K  1,3K  F_SA2009.CSV: 
+4,0K  1,3K  F_SA2010.CSV: 
+4,0K  1,3K  F_SALDI.CSV: 
+4,0K  1,3K  F_SA2001.CSV: 
+4,0K  1,3K  F_SA1997.CSV: 
+4,0K  1,3K  F_SA2002.CSV: 
+4,0K   970  F_DOTAGE.CSV: Age dot;Cog dot;Nom dot;Ma1 hor;Mc1 hor;Pa1 hor;Pc1 hor;Ma2 hor;Mc2 hor;Pa2 hor;Pc2 hor;Ma3 hor;Mc3 hor;Pa3 hor;Pc3 hor;Ma4 hor;Mc4 hor;Pa4 hor;Pc4 hor;Ma5 hor;Mc5 hor;Pa5 hor;Pc5 hor;Ma6 hor;Mc6 hor;Pa6 hor;Pc6 hor;Tip age;Ggn pag;Quo min;Pcn min;Ind dot;Cit dot;Pro dot;Cap dot;Tel dot;Cof dot;Can age;Sta age;Mod age;New age;Data canc
+4,0K   950  F_CODUSC.CSV: conti uscite: Codice;Mastro;Conti;Colon 
+4,0K   847  F_PN2002.CSV: 
+4,0K   847  F_PN2003.CSV: 
+4,0K   819  F_PRINOT.CSV: 
+4,0K   804  F_PN2004.CSV: 
+4,0K   657  F_PN2005.CSV: 
+4,0K   657  F_PN2006.CSV: 
+4,0K   657  F_PN2007.CSV: 
+4,0K   652  F_PN2009.CSV: 
+4,0K   652  F_PN2010.CSV: 
+4,0K   496  F_TABIVA.CSV: 
+4,0K   405  LJETHP12.CSV: 
+4,0K   373  DESK600.CSV: 
+4,0K   373  DESKJET.CSV: 
+4,0K   331  EPSON.CSV: 
+4,0K   327  F_CONTMA.CSV: 
+4,0K   306  IBMPROPR.CSV: 
+4,0K   257  F_TABEST.CSV: 
+4,0K   203  F_ANADIF.CSV: 
+4,0K   187  F_SOLLEC.CSV: 
+4,0K   153  F_INFO.CSV: 
+4,0K   115  LASEMPTY.CSV: 
+4,0K    93  F_TABCCB.CSV: 
+4,0K    85  F_TABCAU.CSV: 
+4,0K    55  STRU.CSV: 
+4,0K    53  F_CODMED.CSV: 
+4,0K     8  CODUSJOB.CSV: 
+4,0K     8  CONTAJOB.CSV: 
+4,0K     8  DOCUMJOB.CSV: 
+4,0K     8  LISTIJOB.CSV: 
+4,0K     8  MEDIOJOB.CSV: 
+4,0K     8  SUPERJOB.CSV: 
+4,0K     8  UTENTE01.CSV: 
+4,0K     8  UTENTE02.CSV: 
+4,0K     8  UTENTE03.CSV: 
+4,0K     8  UTENTE04.CSV: 
+4,0K     8  UTENTE05.CSV: 
+4,0K     8  UTENTE06.CSV: 
+4,0K     8  UTENTE07.CSV: 
+4,0K     8  UTENTE08.CSV: 
+4,0K     8  UTENTE09.CSV: 
+4,0K     8  UTENTE10.CSV: 
+4,0K     8  UTENTE11.CSV: 
+4,0K     8  UTENTE12.CSV: 
+4,0K     8  UTENTE13.CSV: 
+4,0K     8  UTENTE14.CSV: 
+4,0K     8  UTENTE15.CSV: 
+4,0K     8  UTENTE16.CSV: 
+4,0K     8  UTENTE17.CSV: 
+4,0K     8  UTENTE18.CSV: 
+4,0K     8  UTENTE19.CSV: 
+4,0K     8  UTENTE20.CSV: 
+4,0K     7  ARCHIJOB.CSV: 
+4,0K     7  DUMMYJOB.CSV: 
+4,0K     7  NOTESJOB.CSV: 
+
+   0     0  F_ASSRIC.CSV: 
+   0     0  F_CODLAB.CSV: 
+   0     0  F_DIFFER.CSV: 
+   0     0  F_PDIFFE.CSV: 
+   0     0  F_PN2008.CSV: 
+   0     0  F_PRESCR.CSV: 
+   0     0  F_SCAUSC.CSV: 
+   0     0  F_TMPFAT.CSV: 

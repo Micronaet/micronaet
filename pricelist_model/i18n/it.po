@@ -1,0 +1,569 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* pricelist_model
+# <> <>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-07-14 14:43+0000\n"
+"PO-Revision-Date: 2014-07-14 16:46+0200\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: pricelist_model
+#: help:product.product,in_pricelist:0
+msgid "If element is in pricelist"
+msgstr "Se l'elemento è nel listino"
+
+#. module: pricelist_model
+#: view:product.pricelist:0 view:product.product:0
+msgid "Group By..."
+msgstr "Raggruppa per..."
+
+#. module: pricelist_model
+#: model:ir.model,name:pricelist_model.model_product_pricelist_report_category
+msgid "Category list for print"
+msgstr "Lista categorie per stampa"
+
+#. module: pricelist_model
+#: field:product.pricelist.generator,pricelist_org_id:0
+msgid "Original pricelist"
+msgstr "Listino originale"
+
+#. module: pricelist_model
+#: help:product.pricelist.report.wizard,partner_id:0
+msgid "For type partner need to select"
+msgstr "Se il tipo di stampa è = 'cliente' allora è obbligatorio selezionarlo"
+
+#. module: pricelist_model
+#: field:product.pricelist.customer.stock,today:0
+msgid "Today"
+msgstr "Odierno"
+
+#. module: pricelist_model
+#: code:addons/pricelist_model/report/parser.py:52
+#, python-format
+msgid "Pricelist report"
+msgstr "Report listino"
+
+#. module: pricelist_model
+#: selection:product.pricelist.report.wizard,type:0
+msgid "Partner product"
+msgstr "Prodotto partner"
+
+#. module: pricelist_model
+#: view:product.pricelist.customer:0
+msgid "History:"
+msgstr "Storia:"
+
+#. module: pricelist_model
+#: help:product.pricelist.customer.stock,increment:0
+msgid "Quantity value increment stock else decrement"
+msgstr ""
+"Indica se la quantità deve incrementare il valore di magazzino altrimenti è "
+"considerata a decremento"
+
+#. module: pricelist_model
+#: help:product.pricelist.customer,pricelist_model_history_id:0
+msgid ""
+"Listino di riferimento applicato nel caso mancassero degli  articoli nel "
+"listino di base (usato per avere un raffronto nel caso esistessero "
+"particolarita'"
+msgstr ""
+"Listino di riferimento applicato nel caso mancassero degli  articoli nel "
+"listino di base (usato per avere un raffronto nel caso esistessero "
+"particolarita'"
+
+#. module: pricelist_model
+#: field:product.pricelist.customer,pricelist_model_id:0
+msgid "Compare pricelist"
+msgstr "Listino di paragone"
+
+#. module: pricelist_model
+#: view:product.pricelist.generator:0
+msgid "Create / Update"
+msgstr "Crea / Aggiorna"
+
+#. module: pricelist_model
+#: field:product.pricelist.report.category,all:0
+msgid "All product"
+msgstr "Tutti i prodotti"
+
+#. module: pricelist_model
+#: help:product.pricelist.report.wizard,commented:0
+msgid "With comment in report for write filter used"
+msgstr "Viene indicato nel report il filtro utilizzato per generare la stampa"
+
+#. module: pricelist_model
+#: field:product.pricelist.customer.stock,wizard_id:0
+#: field:product.pricelist.report.category,wizard_id:0
+msgid "Wizard"
+msgstr "Wizard"
+
+#. module: pricelist_model
+#: field:product.pricelist.report.wizard,commented:0
+msgid "Commented"
+msgstr "Commentato"
+
+#. module: pricelist_model
+#: view:product.pricelist.customer:0
+msgid "Productions:"
+msgstr "Produzioni:"
+
+#. module: pricelist_model
+#: field:product.pricelist.generator,pricelist_des_id:0
+msgid "Destination pricelist"
+msgstr "Listino destinazione"
+
+#. module: pricelist_model
+#: view:product.pricelist.customer:0
+msgid "Invoiced price"
+msgstr "Prezzo fatturato"
+
+#. module: pricelist_model
+#: view:product.product:0
+msgid "Search product"
+msgstr "Ricerca prodotto"
+
+#. module: pricelist_model
+#: field:product.pricelist.report.category,with_child:0
+msgid "With child"
+msgstr "Con figli"
+
+#. module: pricelist_model
+#: field:product.pricelist.customer,partner_id:0
+msgid "Partner"
+msgstr "Cliente"
+
+#. module: pricelist_model
+#: selection:product.pricelist.report.wizard,type:0
+msgid "Category list"
+msgstr "Lista categorie"
+
+#. module: pricelist_model
+#: report:ir.actions.report.xml:pricelist_model.aeroo_pricelist_model_report
+msgid "CODE"
+msgstr "CODE"
+
+#. module: pricelist_model
+#: model:ir.model,name:pricelist_model.model_product_pricelist_version
+msgid "Pricelist Version"
+msgstr "Versione Listino"
+
+#. module: pricelist_model
+#: field:product.pricelist.report.wizard,structured:0
+msgid "Structured"
+msgstr "Strutturato"
+
+#. module: pricelist_model
+#: model:ir.model,name:pricelist_model.model_micronaet_invoice_line
+msgid "Invoice line"
+msgstr "Riga fattura"
+
+#. module: pricelist_model
+#: selection:product.pricelist.report.wizard,type:0
+msgid "Product selected"
+msgstr "Prodotto selezionato"
+
+#. module: pricelist_model
+#: view:product.pricelist.report.wizard:0
+msgid "Print"
+msgstr "Stampa"
+
+#. module: pricelist_model
+#: field:product.pricelist.generator,new:0
+msgid "New"
+msgstr "Nuovo"
+
+#. module: pricelist_model
+#: field:product.pricelist.report.wizard,type:0
+msgid "Type"
+msgstr "Tipo"
+
+#. module: pricelist_model
+#: report:ir.actions.report.xml:pricelist_model.aeroo_pricelist_model_report
+msgid "CODICE"
+msgstr "CODICE"
+
+#. module: pricelist_model
+#: field:product.pricelist,accounting_id:0
+#: field:product.pricelist.version,accounting_id:0
+msgid "Accounting customer"
+msgstr "Utente contabile"
+
+#. module: pricelist_model
+#: model:ir.model,name:pricelist_model.model_product_pricelist
+msgid "Pricelist"
+msgstr "Listino Prezzi"
+
+#. module: pricelist_model
+#: report:ir.actions.report.xml:pricelist_model.aeroo_pricelist_model_report
+msgid "PREZZO"
+msgstr "PREZZO"
+
+#. module: pricelist_model
+#: help:product.pricelist.customer,pricelist_id:0
+#: help:product.pricelist.generator,pricelist_org_id:0
+msgid ""
+"Choose original pricelist used to calculate new complete pricelist/version"
+msgstr ""
+"Scegliere listino originale utilizzato per calcolare la nuova versione "
+"completa"
+
+#. module: pricelist_model
+#: code:addons/pricelist_model/wizard/create_pricelist.py:176
+#, python-format
+msgid "Accounting today"
+msgstr "Contabilità ad oggi"
+
+#. module: pricelist_model
+#: help:product.pricelist.report.wizard,pricelist_id:0
+msgid "Choose pricelist to print"
+msgstr "Scegliere il listino da stampare"
+
+#. module: pricelist_model
+#: help:product.pricelist.report.wizard,with_category:0
+msgid "Write category extra info in product"
+msgstr "Scrive le informazioni relative alla categoria nel prodotto"
+
+#. module: pricelist_model
+#: view:product.pricelist:0 selection:product.pricelist,tipology:0
+msgid "Historical"
+msgstr "Storico"
+
+#. module: pricelist_model
+#: field:product.pricelist.customer,price:0
+msgid "Customer pricelist"
+msgstr "Listino cliente"
+
+#. module: pricelist_model
+#: code:addons/pricelist_model/report/parser.py:103
+#, python-format
+msgid "No records with parameter selected, try change something in form"
+msgstr "Nessun record con i filtri applicati, provare a cambiarne qualcuno"
+
+#. module: pricelist_model
+#: field:product.pricelist.customer,comment:0
+msgid "Comment"
+msgstr "Commento"
+
+#. module: pricelist_model
+#: field:product.pricelist.customer,price_model_history:0
+#: field:product.pricelist.customer,pricelist_model_history_id:0
+msgid "Reference pricelist"
+msgstr "Listino riferimento"
+
+#. module: pricelist_model
+#: view:product.pricelist.customer:0
+msgid "Listino attuale"
+msgstr "Listino attuale"
+
+#. module: pricelist_model
+#: field:product.pricelist.customer.stock,availability:0
+msgid "Availability"
+msgstr "Disponibilità"
+
+#. module: pricelist_model
+#: view:product.pricelist.customer:0
+msgid "Stock status:"
+msgstr "Stato magazzino:"
+
+#. module: pricelist_model
+#: help:product.pricelist.report.category,category_id:0
+msgid "Category for print in pricelist"
+msgstr "Categoria da stampare nel listino"
+
+#. module: pricelist_model
+#: field:product.pricelist.report.category,category_id:0
+#: view:product.pricelist.report.wizard:0
+#: field:product.pricelist.report.wizard,category_ids:0 view:product.product:0
+msgid "Category"
+msgstr "Categoria"
+
+#. module: pricelist_model
+#: help:product.pricelist.customer,partner_id:0
+msgid "Choose partner to create custom pricelist or add quotations"
+msgstr ""
+"Scegliere il cliente al quale creare o ricercare una quotazione di listino"
+
+#. module: pricelist_model
+#: help:product.pricelist.customer.stock,availability:0
+msgid "Availability depend on order and productions"
+msgstr "Disponibilità dipendente da ordini e produzioni"
+
+#. module: pricelist_model
+#: view:product.pricelist.report.wizard:0
+msgid "Category:"
+msgstr "Categoria:"
+
+#. module: pricelist_model
+#: model:ir.actions.act_window,name:pricelist_model.product_pricelist_customer_action
+#: model:ir.ui.menu,name:pricelist_model.product_pricelist_customer_menuitem
+msgid "Create / Update custom partner price"
+msgstr "Crea / Aggiorna prezzo cliente personalizzato"
+
+#. module: pricelist_model
+#: help:product.pricelist.generator,new:0
+msgid "Generate a new pricelist with this name"
+msgstr "Genera un nuovo listino con questo nome"
+
+#. module: pricelist_model
+#: model:ir.model,name:pricelist_model.model_product_pricelist_customer
+msgid "Product pricelist customer"
+msgstr "Listino prodotti cliente"
+
+#. module: pricelist_model
+#: field:product.pricelist.customer.stock,date:0
+msgid "Date"
+msgstr "Data"
+
+#. module: pricelist_model
+#: field:product.pricelist.customer,price_history:0
+msgid "Historycal price"
+msgstr "Prezzo storico"
+
+#. module: pricelist_model
+#: field:product.pricelist.report.wizard,with_category:0
+msgid "With category"
+msgstr "Con categoria"
+
+#. module: pricelist_model
+#: field:product.pricelist.generator,new_name:0
+msgid "New version name"
+msgstr "Nome nuova versione"
+
+#. module: pricelist_model
+#: field:product.pricelist.customer.stock,seq:0
+msgid "Seq."
+msgstr "Seq."
+
+#. module: pricelist_model
+#: field:product.pricelist,customized:0
+msgid "Customized"
+msgstr "Personalizzato"
+
+#. module: pricelist_model
+#: field:micronaet.invoice.line,date:0 field:micronaet.invoice.line,name:0
+#: field:micronaet.invoice.line,partner:0 field:micronaet.invoice.line,price:0
+#: field:micronaet.invoice.line,product:0
+#: field:micronaet.invoice.line,quantity:0
+msgid "Invoice number"
+msgstr "Numero fattura"
+
+#. module: pricelist_model
+#: model:ir.model,name:pricelist_model.model_product_pricelist_generator
+msgid "Product pricelist generator"
+msgstr "Generatore listino prodotti"
+
+#. module: pricelist_model
+#: field:product.pricelist.customer.stock,quantity:0
+msgid "Quantity"
+msgstr "Quantità"
+
+#. module: pricelist_model
+#: field:product.pricelist.customer,pricelist_id:0
+msgid "Current pricelist"
+msgstr "Listino attuale"
+
+#. module: pricelist_model
+#: model:ir.actions.report.xml,name:pricelist_model.aeroo_pricelist_model_report
+msgid "Pricelist version"
+msgstr "Versione listino"
+
+#. module: pricelist_model
+#: view:product.pricelist.customer:0
+msgid "Refresh stock info"
+msgstr "Aggiorna info magazzino"
+
+#. module: pricelist_model
+#: view:product.pricelist.customer:0
+#: field:product.pricelist.customer,production_ids:0
+msgid "Production"
+msgstr "Produzione"
+
+#. module: pricelist_model
+#: field:product.pricelist.customer.stock,increment:0
+msgid "Increment"
+msgstr "Incrementa"
+
+#. module: pricelist_model
+#: view:product.pricelist.customer:0 view:product.pricelist.generator:0
+#: view:product.pricelist.report.wizard:0
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: pricelist_model
+#: model:ir.model,name:pricelist_model.model_product_pricelist_item
+msgid "Pricelist item"
+msgstr "Oggetto Listino"
+
+#. module: pricelist_model
+#: help:product.pricelist.report.wizard,structured:0
+msgid "List splitted into categories"
+msgstr "Divide la lista in blocchi della stessa categoria"
+
+#. module: pricelist_model
+#: help:product.pricelist.customer,comment:0
+msgid "Need to be created or updated"
+msgstr "Deve essere creato o aggiornato"
+
+#. module: pricelist_model
+#: view:product.product:0
+msgid "Pricelist product"
+msgstr "Pricelist product"
+
+#. module: pricelist_model
+#: view:product.pricelist:0 field:product.pricelist,tipology:0
+msgid "Tipology"
+msgstr "Tipologia"
+
+#. module: pricelist_model
+#: report:ir.actions.report.xml:pricelist_model.aeroo_pricelist_model_report
+msgid "DESCRIZIONE"
+msgstr "DESCRIZIONE"
+
+#. module: pricelist_model
+#: code:addons/pricelist_model/wizard/create_pricelist.py:211
+#, python-format
+msgid "OC/%s [%s]"
+msgstr "OC/%s del %s"
+
+#. module: pricelist_model
+#: model:ir.model,name:pricelist_model.model_product_pricelist_customer_stock
+#: model:ir.model,name:pricelist_model.model_wizard_id
+msgid "Product status"
+msgstr "Stato prodotti"
+
+#. module: pricelist_model
+#: field:product.pricelist.item,is_extra_reference:0
+msgid "Is extra reference"
+msgstr "E' riferimento extra"
+
+#. module: pricelist_model
+#: model:ir.model,name:pricelist_model.model_product_pricelist_report_wizard
+msgid "Print pricelist wizard"
+msgstr "Wizard stampa listino"
+
+#. module: pricelist_model
+#: model:ir.model,name:pricelist_model.model_product_product
+#: field:product.pricelist.customer,product_id:0
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: pricelist_model
+#: view:product.pricelist.customer:0
+msgid "Availability:"
+msgstr "Disponibilità:"
+
+#. module: pricelist_model
+#: field:product.pricelist.customer.stock,name:0
+#: field:product.pricelist.report.wizard,description:0
+msgid "Description"
+msgstr "Descrizione"
+
+#. module: pricelist_model
+#: view:product.product:0 field:product.product,in_pricelist:0
+msgid "In pricelist"
+msgstr "Nel listino"
+
+#. module: pricelist_model
+#: help:product.pricelist.generator,pricelist_des_id:0
+msgid "If no new pricelist, use this pricelist to upgrade fields"
+msgstr ""
+"Se non ci sono nuovi listini utilizza questo listino per aggiornare i campi"
+
+#. module: pricelist_model
+#: view:product.pricelist.customer:0
+msgid "Price"
+msgstr "Prezzo"
+
+#. module: pricelist_model
+#: model:ir.actions.act_window,name:pricelist_model.action_product_pricelist
+#: model:ir.ui.menu,name:pricelist_model.menu_product_pricelist_main
+msgid "Product in Pricelist"
+msgstr "Prodotti in listino"
+
+#. module: pricelist_model
+#: field:product.pricelist.customer,price_invoice_history:0
+msgid "Historical invoiced"
+msgstr "Storico fatturato"
+
+#. module: pricelist_model
+#: view:product.pricelist.customer:0
+msgid "Add custom price for partner"
+msgstr "Aggiunge prezzo personalizzato per cliente"
+
+#. module: pricelist_model
+#: help:product.pricelist,customized:0
+msgid "If this pricelist is for only one partner"
+msgstr "Indica se questo listino è solamente per un solo cliente"
+
+#. module: pricelist_model
+#: field:product.pricelist.customer,price_model:0
+msgid "Compare price"
+msgstr "Confronta prezzo"
+
+#. module: pricelist_model
+#: view:product.pricelist:0 selection:product.pricelist,tipology:0
+#: field:product.pricelist.report.wizard,partner_id:0
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: pricelist_model
+#: help:product.pricelist.customer,pricelist_model_id:0
+msgid ""
+"Listino di paragone per avere un raffronto con il prezzo attuale del prodotto"
+msgstr ""
+"Listino di paragone per avere un raffronto con il prezzo attuale del prodotto"
+
+#. module: pricelist_model
+#: view:product.pricelist:0 selection:product.pricelist,tipology:0
+msgid "Model"
+msgstr "Modello"
+
+#. module: pricelist_model
+#: view:product.pricelist.generator:0 view:product.pricelist.report.wizard:0
+msgid "Create / Update pricelist version"
+msgstr "Crea / Aggiorna versione listino"
+
+#. module: pricelist_model
+#: view:product.pricelist.customer:0
+#: field:product.pricelist.customer,stock_status_ids:0
+msgid "Stock status"
+msgstr "Stato magazzino"
+
+#. module: pricelist_model
+#: model:ir.actions.act_window,name:pricelist_model.product_pricelist_generator_right_action
+msgid "Create / Update pricelist"
+msgstr "Crea / Aggiorna listino"
+
+#. module: pricelist_model
+#: report:ir.actions.report.xml:pricelist_model.aeroo_pricelist_model_report
+msgid "DESCRIPTION"
+msgstr "DESCRIZIONE"
+
+#. module: pricelist_model
+#: code:addons/pricelist_model/report/parser.py:103
+#, python-format
+msgid "Error!"
+msgstr "Errore!"
+
+#. module: pricelist_model
+#: report:ir.actions.report.xml:pricelist_model.aeroo_pricelist_model_report
+msgid "PRICE"
+msgstr "PREZZO"
+
+#. module: pricelist_model
+#: model:ir.actions.act_window,name:pricelist_model.product_pricelist_report_wizard_act
+#: model:ir.actions.act_window,name:pricelist_model.product_pricelist_report_wizard_action
+#: model:ir.actions.act_window,name:pricelist_model.product_pricelist_report_wizard_partner_act
+#: model:ir.ui.menu,name:pricelist_model.product_pricelist_report_wizard_menuitem
+#: field:product.pricelist.report.wizard,pricelist_id:0
+msgid "Print pricelist"
+msgstr "Stampa listino"

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+       <!-- loan.change.rate.wizard -->
+       <record id="loan_change_rate_wizard_view" model="ir.ui.view">
+            <field name="name">Change rate</field>
+            <field name="model">loan.change.rate.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Import acceptation" version="7.0">
+                   <header>                       
+                       <button string="Cancel" special="cancel" />
+                       <button name="action_change_button" string="Cange" 
+                           type="object" icon="gtk-jump-to" class="oe_highlight" />
+                   </header>                   
+                   <group colspan="4" col="4">
+                       <field name="rate" />
+                       <field name="rate_period" />
+                       <field name="rate_id" domain="[('rate_type','=','normal'),('loan_id','=',context.get('loan_id',False))]" />
+                   </group>
+                </form>
+            </field>
+      </record>
+      <record model="ir.actions.act_window" id="action_loan_change_rate_wizard">
+          <field name="name">Change rate</field>
+          <field name="res_model">loan.change.rate.wizard</field>
+          <field name="view_type">form</field>
+          <field name="view_mode">form</field>
+          <field name="target">new</field>
+          <field name="view_id" ref="loan_change_rate_wizard_view"/>
+      </record>      
+    </data>
+</openerp>

@@ -1,0 +1,443 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* coal_tax_exemption
+# <> <>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 6.0.4\n"
+"Report-Msgid-Bugs-To: support@openerp.com\n"
+"POT-Creation-Date: 2013-02-15 12:58+0000\n"
+"PO-Revision-Date: 2013-02-15 14:00+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+"X-Generator: Gtranslator 2.91.5\n"
+
+#. module: coal_tax_exemption
+#: selection:coal.wizard.report,name:0
+msgid "Internal report"
+msgstr "Internal report"
+
+#. module: coal_tax_exemption
+#: view:product.product:0
+msgid "NC (dog.)"
+msgstr "NC (dog.)"
+
+#. module: coal_tax_exemption
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_coal_stock_trace_lot
+msgid "Lots"
+msgstr "Lotti"
+
+#. module: coal_tax_exemption
+#: model:ir.model,name:coal_tax_exemption.model_mrp_production
+msgid "Manufacturing Order"
+msgstr "Ordine di Produzione"
+
+#. module: coal_tax_exemption
+#: help:stock.move,via_number:0
+msgid "Generated automatically by counter (in BF or BP)"
+msgstr "Generato automaticamente dal contatore (in BF o BP)"
+
+#. module: coal_tax_exemption
+#: field:coal.wizard.report,start:0
+msgid "Start number"
+msgstr "Start number"
+
+#. module: coal_tax_exemption
+#: model:ir.actions.report.xml,name:coal_tax_exemption.aeroo_commercial_report_id
+msgid "Commercial Report"
+msgstr "Report commerciale"
+
+#. module: coal_tax_exemption
+#: field:product.product,coal_type:0
+msgid "Coal type"
+msgstr "Tipo di carbone (A-F)"
+
+#. module: coal_tax_exemption
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_coal_stock_internal
+msgid "Internal movement"
+msgstr "Movimentazione interna"
+
+#. module: coal_tax_exemption
+#: model:ir.actions.act_window,name:coal_tax_exemption.action_stock_location_type
+#: view:stock.location.type:0
+msgid "Stock location type"
+msgstr "Tipo di location"
+
+#. module: coal_tax_exemption
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_coal_production_root
+msgid "Production"
+msgstr "Produzione"
+
+#. module: coal_tax_exemption
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_coal_production_bom
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_coal_production_bom_bom
+msgid "BOM"
+msgstr "Ricette"
+
+#. module: coal_tax_exemption
+#: view:coal.wizard.report:0
+msgid "Print"
+msgstr "Print"
+
+#. module: coal_tax_exemption
+#: field:res.partner,combine_name:0
+msgid "Dogane code (commercial)"
+msgstr "Codice ditta (reg. comm. doganale)"
+
+#. module: coal_tax_exemption
+#: view:mrp.production:0
+msgid "Assign VIA number"
+msgstr "Assegna numero VIA"
+
+#. module: coal_tax_exemption
+#: selection:stock.location.type,name:0
+msgid "Production location"
+msgstr "Produzione"
+
+#. module: coal_tax_exemption
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_coal_commercial_journal
+msgid "Movement"
+msgstr "Movimento"
+
+#. module: coal_tax_exemption
+#: model:ir.actions.report.xml,name:coal_tax_exemption.aeroo_internal_report_id
+msgid "Internal Report"
+msgstr "Report Interno"
+
+#. module: coal_tax_exemption
+#: model:ir.model,name:coal_tax_exemption.model_product_product
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_coal_product_product
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_coal_product_root
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: coal_tax_exemption
+#: field:stock.move,via_hygro:0
+msgid "% Hygro VIA"
+msgstr "% Umidità VIA"
+
+#. module: coal_tax_exemption
+#: selection:coal.wizard.report,name:0
+msgid "VIA in"
+msgstr "VIA in"
+
+#. module: coal_tax_exemption
+#: field:res.partner,combine_name_internal:0
+msgid "Dogane code (internal)"
+msgstr "Codice interno (reg. interno dogana solo x azienda)"
+
+#. module: coal_tax_exemption
+#: model:ir.model,name:coal_tax_exemption.model_stock_move
+msgid "Stock Move"
+msgstr "Movimento di magazzino"
+
+#. module: coal_tax_exemption
+#: help:product.product,is_coal:0
+msgid "Check this if the product is for coal tax esention"
+msgstr "Spuntare se il prodotto e' esente dalla tassa sul carbone"
+
+#. module: coal_tax_exemption
+#: view:product.product:0
+msgid "Product (coal=green)"
+msgstr "Prodotto (verde=carbone)"
+
+#. module: coal_tax_exemption
+#: selection:stock.location.type,name:0
+msgid "Internal location"
+msgstr "Interno"
+
+#. module: coal_tax_exemption
+#: view:product.product:0
+msgid "Coal graph"
+msgstr "Grafico carbone"
+
+#. module: coal_tax_exemption
+#: model:ir.actions.act_window,name:coal_tax_exemption.action_coal_product_graph_dashboard
+#: model:ir.actions.act_window,name:coal_tax_exemption.action_coal_product_tree_dashboard
+msgid "Coal product"
+msgstr "Carbone"
+
+#. module: coal_tax_exemption
+#: help:stock.move,via_hygro:0
+msgid ""
+"Hygro value in % for the movement (used for move in and move to production)"
+msgstr ""
+"Valore umidità in % del movimento (usato per i movimenti in e out da "
+"produzione)"
+
+#. module: coal_tax_exemption
+#: model:ir.actions.report.xml,name:coal_tax_exemption.aeroo_via_report_id
+msgid "VIA Report"
+msgstr "Report VIA"
+
+#. module: coal_tax_exemption
+#: selection:coal.wizard.report,name:0
+msgid "VIA production"
+msgstr "VIA production"
+
+#. module: coal_tax_exemption
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_coal_report
+msgid "Report"
+msgstr "Report"
+
+#. module: coal_tax_exemption
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_coal_production_in
+msgid "Production order"
+msgstr "Ordine produzione"
+
+#. module: coal_tax_exemption
+#: help:product.product,coal_type:0
+msgid "Col name/position in internal report"
+msgstr "Nome/posizione colonna nel report interno"
+
+#. module: coal_tax_exemption
+#: field:product.product,combine_name:0
+msgid "Combine name"
+msgstr "Nomenclatura combinata"
+
+#. module: coal_tax_exemption
+#: field:product.product,is_coal:0
+msgid "Is Coal"
+msgstr "E' carbone"
+
+#. module: coal_tax_exemption
+#: view:product.product:0
+msgid "UoM"
+msgstr "U.M."
+
+#. module: coal_tax_exemption
+#: model:ir.actions.act_window,name:coal_tax_exemption.action_coal_dashboard
+msgid "Coal Dashboard"
+msgstr "Dashboard carbone"
+
+#. module: coal_tax_exemption
+#: selection:product.product,coal_type:0
+msgid "A"
+msgstr "A"
+
+#. module: coal_tax_exemption
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_coal_stock_trace
+msgid "Traceability"
+msgstr "Tracciabilità"
+
+#. module: coal_tax_exemption
+#: selection:product.product,coal_type:0
+msgid "C"
+msgstr "C"
+
+#. module: coal_tax_exemption
+#: selection:product.product,coal_type:0
+msgid "B"
+msgstr "B"
+
+#. module: coal_tax_exemption
+#: selection:product.product,coal_type:0
+msgid "E"
+msgstr "E"
+
+#. module: coal_tax_exemption
+#: selection:product.product,coal_type:0
+msgid "D"
+msgstr "D"
+
+#. module: coal_tax_exemption
+#: view:res.partner:0
+msgid "Dogane"
+msgstr "Dogane"
+
+#. module: coal_tax_exemption
+#: selection:stock.location.type,name:0
+msgid "In location"
+msgstr "Location IN"
+
+#. module: coal_tax_exemption
+#: field:stock.location.type,name:0
+msgid "Type of location"
+msgstr "Tipo di location"
+
+#. module: coal_tax_exemption
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_coal_production_bom_component
+msgid "BOM component"
+msgstr "Componenti ricetta"
+
+#. module: coal_tax_exemption
+#: model:ir.actions.act_window,name:coal_tax_exemption.action_coal_move_form
+msgid "Stock coal moves"
+msgstr "Movimenti di magazzino carbone"
+
+#. module: coal_tax_exemption
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_coal_stock_trace_movement
+msgid "Stock movements"
+msgstr "Movimenti di magazzino"
+
+#. module: coal_tax_exemption
+#: constraint:stock.move:0
+msgid "You must assign a production lot for this product"
+msgstr "È necessario assegnare un lotto di produzione per questo prodotto"
+
+#. module: coal_tax_exemption
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_coal_root
+msgid "Coal"
+msgstr "Carbone"
+
+#. module: coal_tax_exemption
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_configuration_defaul_location
+msgid "Stock location default"
+msgstr "Location default magazzino"
+
+#. module: coal_tax_exemption
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_coal_stock_in
+msgid "Incoming shipment"
+msgstr "Lista BF"
+
+#. module: coal_tax_exemption
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_coal_stock_root
+msgid "Stock"
+msgstr "Magazzino"
+
+#. module: coal_tax_exemption
+#: view:product.product:0
+msgid "Coal list (red<1 Tn - black>10 tn"
+msgstr "Lista carbone (rosso <1 - Nero >10 tn)"
+
+#. module: coal_tax_exemption
+#: model:ir.model,name:coal_tax_exemption.model_res_partner
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_rubrica_clienti
+msgid "Partner"
+msgstr "Partner"
+
+#. module: coal_tax_exemption
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_coal_wizard_report
+msgid "Wizard Report"
+msgstr "Wizard Report"
+
+#. module: coal_tax_exemption
+#: help:mrp.production,via_number:0
+msgid "Set if there's coal material, used to print VIA document"
+msgstr "Spuntare se c'è carbone, usato per stampare documento VIA"
+
+#. module: coal_tax_exemption
+#: model:ir.model,name:coal_tax_exemption.model_coal_wizard_report
+msgid "Coal wizard report"
+msgstr "Coal wizard report"
+
+#. module: coal_tax_exemption
+#: field:mrp.production,via_number:0 field:stock.move,via_number:0
+msgid "VIA number"
+msgstr "Numero VIA"
+
+#. module: coal_tax_exemption
+#: view:board.board:0
+msgid "Coal product status"
+msgstr "Stato prodotti carbone"
+
+#. module: coal_tax_exemption
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_configuration_root
+msgid "Configuration"
+msgstr "Configurazione"
+
+#. module: coal_tax_exemption
+#: field:coal.wizard.report,name:0
+msgid "Report name"
+msgstr "Report name"
+
+#. module: coal_tax_exemption
+#: view:coal.wizard.report:0
+#: model:ir.actions.act_window,name:coal_tax_exemption.action_view_coal_wizard_report
+msgid "Wizard coal report"
+msgstr "Wizard coal report"
+
+#. module: coal_tax_exemption
+#: view:board.board:0
+msgid "Coal product status graph"
+msgstr "Grafico stato carbone"
+
+#. module: coal_tax_exemption
+#: field:stock.move,is_coal:0
+msgid "Is coal"
+msgstr "E' carbone"
+
+#. module: coal_tax_exemption
+#: view:board.board:0
+msgid "Dashboard coal"
+msgstr "Dashboard carbone"
+
+#. module: coal_tax_exemption
+#: selection:coal.wizard.report,name:0
+msgid "Commercial report"
+msgstr "Commercial report"
+
+#. module: coal_tax_exemption
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_coal_journal_root
+msgid "Coal movement and report"
+msgstr "Movimenti carbone e report"
+
+#. module: coal_tax_exemption
+#: constraint:stock.move:0
+msgid "You try to assign a lot which is not from the same product"
+msgstr ""
+"Si sta cercando di assegnare un lotto che non viene dallo stesso prodotto"
+
+#. module: coal_tax_exemption
+#: model:ir.model,name:coal_tax_exemption.model_stock_location_type
+msgid "Stock Location type"
+msgstr "Tipo di location magazzino"
+
+#. module: coal_tax_exemption
+#: constraint:product.product:0
+msgid "Error: Invalid ean code"
+msgstr "Errore: codice EAN non valido"
+
+#. module: coal_tax_exemption
+#: field:coal.wizard.report,from_date:0 field:coal.wizard.report,to_date:0
+msgid "From date"
+msgstr "From date"
+
+#. module: coal_tax_exemption
+#: field:stock.location.type,location_id:0
+msgid "Location stock"
+msgstr "Location di magazzino"
+
+#. module: coal_tax_exemption
+#: view:coal.wizard.report:0
+msgid "Cancel"
+msgstr "Cancel"
+
+#. module: coal_tax_exemption
+#: constraint:mrp.production:0
+msgid "Order quantity cannot be negative or zero !"
+msgstr "La quantità ordinata non può essere negativa o zero !"
+
+#. module: coal_tax_exemption
+#: help:coal.wizard.report,start:0
+msgid ""
+"Start number for enumerate lines, passed because depend on last element "
+"write in registry"
+msgstr ""
+"Start number for enumerate lines, passed because depend on last element "
+"write in registry"
+
+#. module: coal_tax_exemption
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_coal_rubrica_root
+msgid "Rubrica"
+msgstr "Rubrica"
+
+#. module: coal_tax_exemption
+#: model:ir.actions.report.xml,name:coal_tax_exemption.aeroo_via_bf_report_id
+msgid "VIA BF Report"
+msgstr "VIA BF Report"
+
+#. module: coal_tax_exemption
+#: model:ir.ui.menu,name:coal_tax_exemption.menu_coal_stock_out
+msgid "Outgoing shipment"
+msgstr "Lista BC"
+
+#. module: coal_tax_exemption
+#: selection:stock.location.type,name:0
+msgid "Out location"
+msgstr "Location OUT"

@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+      <!--product.product-->
+    <record id='view_product_product_force_manual' model='ir.ui.view'>
+        <field name='name'>Product force manual</field>
+        <field name='model'>product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name='arch' type='xml'>
+              <field name="standard_price" position="after">
+                    <field name='force_manual' />
+                    <field name='manual_price' attrs="{'invisible': [('force_manual','=', False)]}" />
+                    <button string="Force all price" name="compute_price_from_bom_action" type="object" icon="terp-stage" />    
+              </field>
+        </field>
+    </record>
+    <record id='view_product_tree_product_force_manual' model='ir.ui.view'>
+        <field name='name'>Product tree extra fields</field>
+        <field name='model'>product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name='arch' type='xml'>
+              <field name="standard_price" position="after">
+                    <field name='force_manual' />
+                    <field name='manual_price' />
+              </field>
+        </field>
+    </record>
+    <record id='view_product_search_product_force_manual' model='ir.ui.view'>
+        <field name='name'>Product search force manual</field>
+        <field name='model'>product.product</field>
+        <field name="inherit_id" ref="product.product_search_form_view"/>
+        <field name='arch' type='xml'>
+              <field name="categ_id" position="before">
+                    <filter name="is_force_manual" string="Force manual" domain="[('force_manual','=',True)]" />
+              </field>
+        </field>
+    </record>    
+  </data>
+</openerp>
+

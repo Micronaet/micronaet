@@ -1,0 +1,5 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_msds_form_user","msds.form","model_msds_form","base.group_user",1,1,1,1
+"access_msds_form_language_user","msds.form.language","model_msds_form_language","base.group_user",1,1,1,1
+"access_msds_form_version_user","msds.form.version","model_msds_form_version","base.group_user",1,1,1,1
+"access_msds_form_rel_user","msds.form.rel","model_msds_form_rel","base.group_user",1,1,1,1

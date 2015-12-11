@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<openerp>
+    <data noupdate="1">
+        <record model="res.groups" id="group_pricelist_agent">
+            <field name="name">Pricelist - Agent</field>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+        <record model="res.groups" id="group_pricelist_manager">
+            <field name="name">Pricelist - Manager</field>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+    </data>
+</openerp>
+

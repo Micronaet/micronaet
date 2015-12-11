@@ -1,0 +1,146 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <!-- NORMAL VIEW --> 
+    <!--crm.trip-->
+       <record id="crm_trip_search_view" model="ir.ui.view">
+            <field name="name">crm.trip.search</field>
+            <field name="model">crm.trip</field>
+            <field name="arch" type="xml">
+                <search string="CRM trip">
+                   <field name="user_id" string="Sales man" filter_domain="[('user_id','=',self)]"/>
+                   <separator/>
+                   <group expand='0' string='Group by...'>
+                       <filter string='Sales man' icon="terp-stock_symbol-selection" domain="[]" context="{'group_by' : 'user_id'}"/>
+                       <filter string='Date' icon="terp-stock_symbol-selection" domain="[]" context="{'group_by' : 'from_date'}"/>
+                   </group>
+                </search>
+            </field>
+        </record>    
+       <record id="crm_trip_tree_view" model="ir.ui.view">
+            <field name="name">crm.trip.tree</field>
+            <field name="model">crm.trip</field>
+            <field name="arch" type="xml">
+                <tree string="CRM trip">
+                    <field name="name" />
+                    <field name="user_id" />
+                    <field name="from_date" />
+                    <field name="to_date" />
+                </tree>
+            </field>
+       </record>
+       <record id="crm_trip_form_view" model="ir.ui.view">
+            <field name="name">crm.trip.form</field>
+            <field name="model">crm.trip</field>
+            <field name="arch" type="xml">
+                <form string="CRM trip" version="7.0">
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <field name="name" />
+                            <field name="user_id" />
+                            <field name="from_date" />
+                            <field name="to_date" />
+                            <field name="analysis_year" />                                          
+                            <field name="product_from_date" />                            
+                            <notebook colspan="4">
+                                <page string="Customers">
+                                    <group colspan="4" col="4">
+                                        <field name="country_id" />
+                                        <button name="load_country" string="Load Nation" type="object" help="Add to partner all partner for the country selected" attrs="{'invisible':[('country_id','=',False)]}"/>
+                                        <button name="reload_country" string="Reload Nation" help="Delete all elements and reload nation" type="object" attrs="{'invisible':[('country_id','=',False)]}"/>
+                                        <separator string="Customers:" colspan="4" />
+                                        <field name="partner_ids" context="{'embedded_trip': True}" colspan="4" nolabel="1" />
+                                    </group>
+                                </page>    
+                                <page string="Report">
+                                    <group colspan="4" col="6">
+                                        <field name="with_anagraphic" />
+                                        <field name="with_note" />
+                                        <field name="with_visit" />
+                                        <field name="with_offer" />
+                                        <field name="with_order" />
+                                        <field name="with_movement" />
+                                        <field name="with_product" />
+                                        <field name="with_price" />
+                                        <field name="with_payment" />
+                                        <field name="with_sample" />
+                                        <field name="with_followup" />
+                                    </group>    
+                                </page>
+                            </notebook>    
+                            <separator string="Note" colspan="4"/>              
+                            <field name="note" colspan ="4" nolabel="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+       </record>
+        <record model="ir.actions.act_window" id="action_crm_trip">
+            <field name="name">CRM trip</field>
+            <field name="res_model">crm.trip</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="crm_trip_tree_view"/>
+        </record>
+        
+    <!--crm.trip.partner-->
+       <!--<record id="crm_trip_partner_search_view" model="ir.ui.view">
+            <field name="name">crm.trip.partner.search</field>
+            <field name="model">crm.trip.partner</field>
+            <field name="arch" type="xml">
+                <search string="CRM trip">
+                   <field name="user_id" string="Sales man" filter_domain="[('user_id','=',self)]"/>
+                   <separator/>
+                   <group expand='0' string='Group by...'>
+                       <filter string='Sales man' icon="terp-stock_symbol-selection" domain="[]" context="{'group_by' : 'user_id'}"/>
+                       <filter string='Date' icon="terp-stock_symbol-selection" domain="[]" context="{'group_by' : 'from_date'}"/>
+                   </group>
+                </search>
+            </field>
+        </record>-->
+       <record id="crm_trip_partner_tree_view" model="ir.ui.view">
+            <field name="name">crm.trip.partner.tree</field>
+            <field name="model">crm.trip.partner</field>
+            <field name="arch" type="xml">
+                <tree string="CRM trip" editable="bottom">
+                    <field name="sequence" />
+                    <field name="trip_id" invisible="context.get('embedded_trip', False)"/>
+                    <field name="partner_id" />
+                    <field name="date" />
+                    <field name="abstract" />
+                    <field name="note" />
+                </tree>
+            </field>
+       </record>
+       <record id="crm_trip_partner_form_view" model="ir.ui.view">
+            <field name="name">crm.trip.partner.form</field>
+            <field name="model">crm.trip.partner</field>
+            <field name="arch" type="xml">
+                <form string="CRM trip" version="7.0">
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <field name="trip_id" invisible="context.get('embedded_trip', False)" />
+                            <field name="partner_id" />
+                            <field name="sequence" />
+                            <field name="date" />
+                            <separator string="Abstract" colspan="2"/>
+                            <separator string="Note" colspan="2"/>
+                            <field name="abstract" colspan ="2" nolabel="1"/>
+                            <field name="note" colspan ="2" nolabel="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+       </record>
+       <!--<record model="ir.actions.act_window" id="action_crm_trip_partner">
+            <field name="name">CRM trip</field>
+            <field name="res_model">crm.trip.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="crm_trip_tree_view"/>
+        </record>-->
+        
+        <menuitem name="Manage trip" id="menu_crm_trip_manage" sequence="40" parent="base.menu_sales" action="action_crm_trip"/>
+    
+  </data>
+</openerp>

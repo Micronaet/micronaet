@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <!-- Workflow Appointment: -->
+        <record model="workflow" id="wkf_dentist_appointment">
+            <field name="name">dentist.appointment.wkf</field>
+            <field name="osv">dentist.appointment</field>
+            <field name="on_create">True</field>
+        </record>
+        
+        <!-- Activity: -->
+        
+        <record model="workflow.activity" id="act_appointment_confirmed">
+            <field name="wkf_id" ref="wkf_dentist_appointment" />
+            <field name="name">confirmed</field>
+            <field name="kind">function</field>
+            <field name="action">appointment_confirmed()</field>
+            <field name="flow_start">True</field>
+        </record>
+
+        <record model="workflow.activity" id="act_appointment_memo">
+            <field name="wkf_id" ref="wkf_dentist_appointment" />
+            <field name="name">memo</field>
+            <field name="kind">function</field>
+            <field name="action">appointment_memo()</field>
+        </record>
+
+        <record model="workflow.activity" id="act_appointment_arrived">
+            <field name="wkf_id" ref="wkf_dentist_appointment" />
+            <field name="name">arrived</field>
+            <field name="kind">function</field>
+            <field name="action">appointment_arrived()</field>
+        </record>
+
+        <record model="workflow.activity" id="act_appointment_enter">
+            <field name="wkf_id" ref="wkf_dentist_appointment" />
+            <field name="name">enter</field>
+            <field name="kind">function</field>
+            <field name="action">appointment_enter()</field>
+        </record>
+
+        <record model="workflow.activity" id="act_appointment_close">
+            <field name="wkf_id" ref="wkf_dentist_appointment" />
+            <field name="name">close</field>
+            <field name="kind">function</field>
+            <field name="action">appointment_close()</field>
+        </record>
+
+        <record model="workflow.activity" id="act_appointment_reminder">
+            <field name="wkf_id" ref="wkf_dentist_appointment" />
+            <field name="name">reminder</field>
+            <field name="kind">function</field>
+            <field name="action">appointment_reminder()</field>
+        </record>
+
+        <record model="workflow.activity" id="act_appointment_cancel">
+            <field name="wkf_id" ref="wkf_dentist_appointment" />
+            <field name="name">cancel</field>
+            <field name="kind">function</field>
+            <field name="action">appointment_cancel()</field>
+        </record>
+
+        <record model="workflow.activity" id="act_appointment_return">
+            <field name="wkf_id" ref="wkf_dentist_appointment" />
+            <field name="name">return</field>
+            <field name="kind">function</field>
+            <field name="action">appointment_return()</field>
+        </record>
+
+        <!-- Trigger: -->
+
+        <record model="workflow.transition" id="t1a">
+            <field name="act_from" ref="act_appointment_confirmed" />
+            <field name="act_to" ref="act_appointment_arrived" />
+            <field name="signal">trigger_appointment_confirmed_arrived</field>
+        </record>
+        <record model="workflow.transition" id="t1b">
+            <field name="act_from" ref="act_appointment_confirmed" />
+            <field name="act_to" ref="act_appointment_memo" />
+            <field name="signal">trigger_appointment_confirmed_memo</field>
+        </record>
+        <record model="workflow.transition" id="t1c">
+            <field name="act_from" ref="act_appointment_confirmed" />
+            <field name="act_to" ref="act_appointment_cancel" />
+            <field name="signal">trigger_appointment_confirmed_cancel</field>
+        </record>
+
+        <record model="workflow.transition" id="t2a">
+            <field name="act_from" ref="act_appointment_memo" />
+            <field name="act_to" ref="act_appointment_confirmed" />
+            <field name="signal">trigger_appointment_memo_confirmed</field>
+        </record>
+        <record model="workflow.transition" id="t2b">
+            <field name="act_from" ref="act_appointment_memo" />
+            <field name="act_to" ref="act_appointment_cancel" />
+            <field name="signal">trigger_appointment_memo_cancel</field>
+        </record>
+
+        <record model="workflow.transition" id="t3a">
+            <field name="act_from" ref="act_appointment_arrived" />
+            <field name="act_to" ref="act_appointment_enter" />
+            <field name="signal">trigger_appointment_arrived_enter</field>
+        </record>
+        <record model="workflow.transition" id="t3b">
+            <field name="act_from" ref="act_appointment_arrived" />
+            <field name="act_to" ref="act_appointment_cancel" />
+            <field name="signal">trigger_appointment_arrived_cancel</field>
+        </record>
+
+        <record model="workflow.transition" id="t4a">
+            <field name="act_from" ref="act_appointment_enter" />
+            <field name="act_to" ref="act_appointment_close" />
+            <field name="signal">trigger_appointment_enter_close</field>
+        </record>
+        <record model="workflow.transition" id="t4b">
+            <field name="act_from" ref="act_appointment_enter" />
+            <field name="act_to" ref="act_appointment_cancel" />
+            <field name="signal">trigger_appointment_enter_cancel</field>
+        </record>
+
+        <record model="workflow.transition" id="t5">
+            <field name="act_from" ref="act_appointment_close" />
+            <field name="act_to" ref="act_appointment_reminder" />
+            <field name="signal">trigger_appointment_close_reminder</field>
+        </record>
+
+        <record model="workflow.transition" id="t6">
+            <field name="act_from" ref="act_appointment_close" />
+            <field name="act_to" ref="act_appointment_reminder" />
+            <field name="signal">trigger_appointment_close_reminder</field>
+        </record>
+
+        <record model="workflow.transition" id="t7">
+            <field name="act_from" ref="act_appointment_cancel" />
+            <field name="act_to" ref="act_appointment_return" />
+            <field name="signal">trigger_appointment_cancel_return</field>
+        </record>
+
+        <record model="workflow.transition" id="t7">
+            <field name="act_from" ref="act_appointment_return" />
+            <field name="act_to" ref="act_appointment_confirmed" />
+            <field name="signal">trigger_appointment_return_confirmed</field>
+        </record>
+    </data>
+</openerp>

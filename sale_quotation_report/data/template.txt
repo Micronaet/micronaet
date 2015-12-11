@@ -1,0 +1,64 @@
+OGGETTO:
+${object.state in ('draft', 'sent') and 'Invio offerta' or 'Conferma ordine'} (Rif. ${object.name or 'n/a' })
+
+
+TESTO:
+<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+
+    <p>Spett.le ${object.partner_id.name},</p>
+    
+    <p>In allegato la vostra ${object.state in ('draft', 'sent') and 'offerta' or 'conferma d\'ordine'}. ${object.company_id.name}</p>
+
+    <p style="border-left: 1px solid #8e0000; margin-left: 30px;">
+       &nbsp;&nbsp;<strong>RIFERIMENTI</strong><br />
+       &nbsp;&nbsp;Numero documento: <strong>${object.name}</strong><br />
+       &nbsp;&nbsp;Data ordine: ${object.date_order}<br />
+       &nbsp;&nbsp;Scadenza: ${object.deadline_order}<br />
+       % if object.client_order_ref:
+       &nbsp;&nbsp;Riferimento: ${object.client_order_ref}<br />
+       % endif
+       % if object.user_id:
+       &nbsp;&nbsp;Riferimento commerciale: <a href="mailto:${object.user_id.email or ''}?subject=Documento%20${object.name}">${object.user_id.name}</a><br/>
+       % endif
+        % if object.note:
+            &nbsp;&nbsp;Note: ${object.note}<br/>
+        % endif
+    </p>
+    <br/>
+    <p>Se avete domande in merito non esitate a contattarci.</p>
+    <p>Grazie per avere scelto ${object.company_id.name or 'la nostra azienda'}!</p>
+    <br/>
+    <br/>
+    <div style="width: 375px; margin: 0px; padding: 0px; background-color: #8E0000; border-top-left-radius: 5px 5px; border-top-right-radius: 5px 5px; background-repeat: repeat no-repeat;">
+        <h3 style="margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;">
+            <strong style="text-transform:uppercase;">${object.company_id.name}</strong></h3>
+    </div>
+    <div style="width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #F2F2F2;">
+        <span style="color: #222; margin-bottom: 5px; display: block; ">
+        % if object.company_id.street:
+            ${object.company_id.street}<br/>
+        % endif
+        % if object.company_id.street2:
+            ${object.company_id.street2}<br/>
+        % endif
+        % if object.company_id.city or object.company_id.zip:
+            ${object.company_id.zip} ${object.company_id.city}<br/>
+        % endif
+        % if object.company_id.country_id:
+            ${object.company_id.state_id and ('%s, ' % object.company_id.state_id.name) or ''} ${object.company_id.country_id.name or ''}<br/>
+        % endif
+        </span>
+        % if object.company_id.phone:
+            <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
+                Phone:&nbsp; ${object.company_id.phone}
+            </div>
+        % endif
+        % if object.company_id.website:
+            <div>
+                Web :&nbsp;<a href="${object.company_id.website}">${object.company_id.website}</a>
+            </div>
+        %endif
+        <p></p>
+    </div>
+</div>
+              
