@@ -31,18 +31,6 @@ from openerp.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 
-class product_product_duty(osv.osv):
-    ''' Extra fields for ETL in product.product
-    ''' 
-    _name = 'product.product.duty'
-    _description = 'Product for duty'
-    
-    _columns = {
-        'name': fields.char('Duty code', required=True, 
-            help="Coded used for duty import / export"),
-        'note': fields.text('Duty specific'),
-    }
-    
 class product_product_adr(osv.osv):
     ''' Extra fields for ETL in product.product
     ''' 
@@ -52,7 +40,6 @@ class product_product_adr(osv.osv):
     _columns = {
         'adr':fields.boolean('ADR', required=False, 
             help="Product that need ADR for transport"),
-        'duty_id': fields.many2one('product.product.duty', 'Duty'),
     }
 
 class SaleOrderLineAdr(osv.osv):
