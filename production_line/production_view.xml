@@ -1410,6 +1410,13 @@
                       id="menu_sale_order_line_covered_wizard_establ" 
                       action="action_sale_order_line_covered_wizard_form" 
                       sequence="20" />
+                  <menuitem 
+                      name="Status analysis" 
+                      parent="menu_root_establishment_report" 
+                      id="menuitem_status_report_analysys_establ" 
+                      action="product_status_wizard_action" 
+                      string="Analisi stato magazzino"
+                      sequence="30" />
 
        <!-- Production block -->
        <menuitem name="1. OC to production order" parent="mrp.menu_mrp_manufacturing" id="menu_base_production_root_production" sequence="0" groups="group_production_admin" />
