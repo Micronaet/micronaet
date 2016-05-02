@@ -79,21 +79,24 @@ class Parser(report_sxw.rml_parse):
         if data is None:
             data = {}
         line_pool = self.pool.get('sale.order.line')
-        if data.get('report_type','order') == 'order':  # all order covered
+        mode = data.get('report_type', 'order')
+        if mode == 'order':  # all order covered
             order_pool = self.pool.get('sale.order')
             order_ids = order_pool.search(self.cr, self.uid, [
-                ('accounting_order','=',True)]) # read all order from account
+                ('accounting_order', '=', True)]) # read all order from account
             line_not_covered_ids = line_pool.search(self.cr, self.uid, [
-                ('use_accounting_qty','=',False)]) 
+                ('use_accounting_qty', '=', False)]) 
             for line in line_pool.browse(
                     self.cr, self.uid, line_not_covered_ids):
                 if line.order_id.id in order_ids:
                     order_ids.remove(line.order_id.id) # remove order 
             line_ids = line_pool.search(self.cr, self.uid, [
                 ('order_id','in', order_ids)], order='order_id,sequence') 
-        else:                                          # lines covered
+        elif mode == 'line': # lines covered
             line_ids = line_pool.search(self.cr, self.uid, [
-                ('use_accounting_qty','=',True)], order='order_id,sequence') 
+                ('use_accounting_qty', '=', True)], order='order_id,sequence') 
                 # orders?
-            
+        else: # all lines (no wizard call)
+            line_ids = line_pool.search(self.cr, self.uid, [
+                ('accounting_order', '=', True)], order='order_id,sequence') 
         return line_pool.browse(self.cr, self.uid, line_ids)
