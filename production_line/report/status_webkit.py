@@ -101,52 +101,63 @@ class report_webkit_html(report_sxw.rml_parse):
         table = {}
         error_in_print = "" # TODO manage for set in printer
         
-        lavoration_pool = self.pool.get("mrp.production.workcenter.line")
+        lavoration_pool = self.pool.get('mrp.production.workcenter.line')
         # TODO optimize:
         product_pool = self.pool.get('product.product')
-        for product in product_pool.browse(self.cr, self.uid, product_pool.search(self.cr, self.uid, [])):
+        for product in product_pool.browse(
+                self.cr, self.uid, product_pool.search(self.cr, self.uid, [])):
             minimum[product.id] = product.minimum_qty or 0.0
 
         # Init parameters:      
         col_ids = {}  
-        range_date = data.get("days", 7) + 1  # (7 cols + 1 before today + 1 medium production value)
+        # (7 cols + 1 before today + 1 medium production value)
+        range_date = data.get('days', 7) + 1  
         start_date = datetime.now()
         end_date = datetime.now() + timedelta(days = range_date - 1)
 
-        for i in range(0, range_date):        # 0 (<today), 1...n [today, today + total days], delta)
-            if i == 0:                        # today
+        # 0 (<today), 1...n [today, today + total days], delta)
+        for i in range(0, range_date):        
+            # today
+            if i == 0:                        
                 d = start_date
-                cols.append(d.strftime("%d/%m"))
-                col_ids[d.strftime("%Y-%m-%d")] = 0
-            elif i == 1:                      # before today
+                cols.append(d.strftime('%d/%m'))
+                col_ids[d.strftime('%Y-%m-%d')] = 0
+            # before today    
+            elif i == 1:                      
                 d = start_date
-                cols.append(d.strftime("< %d/%m")) 
-                col_ids["before"] = 1         # not used!                    
-            else:                             # other days
+                cols.append(d.strftime('< %d/%m')) 
+                col_ids['before'] = 1 # not used!                    
+            # other days    
+            else:                             
                 d = start_date + timedelta(days = i - 1)
-                cols.append(d.strftime("%d/%m"))
-                col_ids[d.strftime("%Y-%m-%d")] = i
+                cols.append(d.strftime('%d/%m'))
+                col_ids[d.strftime('%Y-%m-%d')] = i
 
         # ---------------------------------------------------------------------
         #                     Syncronization pre report
         # ---------------------------------------------------------------------
-        # 1. Import status material and product: ###############################
+        # 1. Import status material and product: ##############################
         
-        
-        # 2. Get OF lines with deadline: #######################################
+        # 2. Get OF lines with deadline: ######################################
         supplier_orders = {}
         # TODO Filter period?? (optimizing the query!)
-        cursor_of = self.pool.get('micronaet.accounting').get_of_line_quantity_deadline(self.cr, self.uid)
+        cursor_of = self.pool.get(
+            'micronaet.accounting').get_of_line_quantity_deadline(
+                self.cr, self.uid)
         if not cursor_of: 
-            _logger.error("Error access OF line table in accounting! (during status report webkit)")
+            _logger.error(
+                'Error access OF line table in accounting! (during status report webkit)')
         else:
             for supplier_order in cursor_of: # all open OC
                 ref = supplier_order['CKY_ART'].strip()
                 if ref not in supplier_orders:
                     supplier_orders[ref] = {}
-                of_deadline = supplier_order['DTT_SCAD'].strftime("%Y-%m-%d") # TODO verify if not present
+                # TODO verify if not present    
+                of_deadline = supplier_order['DTT_SCAD'].strftime("%Y-%m-%d") 
 
-                q = float(supplier_order['NQT_RIGA_O_PLOR'] or 0.0) * (1.0 / supplier_order['NCF_CONV'] if supplier_order['NCF_CONV'] else 1.0)
+                q = float(supplier_order['NQT_RIGA_O_PLOR'] or 0.0) * (
+                    1.0 / supplier_order['NCF_CONV'] if supplier_order[
+                        'NCF_CONV'] else 1.0)
                 if of_deadline not in supplier_orders[ref]: # TODO test UM
                     supplier_orders[ref][of_deadline] = q 
                 else:
@@ -159,17 +170,23 @@ class report_webkit_html(report_sxw.rml_parse):
         with_medium = data.get('with_medium', False)
         month_window = data.get('month_window', 2)
         if with_medium:            
-            from_date = (datetime.now() - timedelta(days=30 * month_window)).strftime(DEFAULT_SERVER_DATETIME_FORMAT)
-            lavoration_material_ids = lavoration_pool.search(self.cr, self.uid, [
-                ('real_date_planned', '>=', from_date),
-                ('state', 'in', ('done', 'startworking')),
-            ], )
-            for lavoration in lavoration_pool.browse(self.cr, self.uid, lavoration_material_ids):
+            from_date = (datetime.now() - timedelta(
+                days=30 * month_window)).strftime(
+                    DEFAULT_SERVER_DATETIME_FORMAT)
+            lavoration_material_ids = lavoration_pool.search(
+                self.cr, self.uid, [
+                    ('real_date_planned', '>=', from_date),
+                    ('state', 'in', ('done', 'startworking')),
+                    ], )
+            for lavoration in lavoration_pool.browse(
+                    self.cr, self.uid, lavoration_material_ids):
                 for material in lavoration.bom_material_ids:
                     if material.product_id.id in material_mx:
-                        material_mx[material.product_id.id] += material.quantity or 0.0
+                        material_mx[material.product_id.id] += \
+                            material.quantity or 0.0
                     else:
-                        material_mx[material.product_id.id] = material.quantity or 0.0
+                        material_mx[material.product_id.id] = \
+                            material.quantity or 0.0
 
         # ---------------------------------------------------------------------
         #                       Generate header values
@@ -178,46 +195,66 @@ class report_webkit_html(report_sxw.rml_parse):
         # > populate cols 
         order_line_pool = self.pool.get("sale.order.line")
         
-        line_ids = order_line_pool.search(self.cr, self.uid, [('date_deadline','<=',end_date.strftime("%Y-%m-%d"))]) # only active from accounting
+        # only active from accounting
+        line_ids = order_line_pool.search(self.cr, self.uid, [
+            ('date_deadline','<=',end_date.strftime('%Y-%m-%d'))]) 
         for line in order_line_pool.browse(self.cr, self.uid, line_ids):
             if line.product_id.not_in_status: # jump line
                 continue
             element = ("P: %s [%s]" % (
                     line.product_id.name, 
-                    line.product_id.default_code, ), line.product_id.id)
-            if element not in rows:           # initialize row (today, < today, +1, +2, ... +n)
+                    line.product_id.default_code, ), 
+                line.product_id.id,
+                )
+                    
+            # initialize row (today, < today, +1, +2, ... +n)        
+            if element not in rows: 
                 rows.append(element)
-                table[element[1]] = [0.0 for item in range(0, range_date)] # prepare data structure
-                table[element[1]][0] = line.product_id.accounting_qty or 0.0 # start q.
+                # prepare data structure
+                table[element[1]] = [
+                    0.0 for item in range(0, range_date)] 
+                # start q.    
+                table[element[1]][0] = line.product_id.accounting_qty or 0.0 
                         
             if line.order_id.date_deadline in col_ids: # all date
-                table[element[1]][col_ids[line.order_id.date_deadline]]-=line.product_uom_qty or 0.0  # OC deadlined this date    
-            if not line.order_id.date_deadline or line.order_id.date_deadline < start_date.strftime("%Y-%m-%d"): # only < today
-                table[element[1]][1] -= line.product_uom_qty or 0.0                                   # OC deadlined before today
+                table[element[1]][col_ids[line.order_id.date_deadline]] -= \
+                    line.product_uom_qty or 0.0  # OC deadlined this date    
+                    
+            # only < today        
+            if not line.order_id.date_deadline or line.order_id.date_deadline < start_date.strftime("%Y-%m-%d"): 
+                table[element[1]][1] -= line.product_uom_qty or 0.0 # OC deadlined before today
 
         # ---------------------------------------------------------------------
         #                   Get material list from Lavoration order
         # ---------------------------------------------------------------------
         # Populate cols
         lavoration_ids = lavoration_pool.search(self.cr, self.uid, [
-            ('real_date_planned', '<=', end_date.strftime("%Y-%m-%d 23:59:59")),     # only < max date range
-            ('state', 'not in', ('cancel','done'))] )                                # only open not canceled
-        for lavoration in lavoration_pool.browse(self.cr, self.uid, lavoration_ids): # filtered BL orders
+            ('real_date_planned', '<=', end_date.strftime(
+                '%Y-%m-%d 23:59:59')), # only < max date range
+            ('state', 'not in', ('cancel','done'))] ) # only open not canceled
+        for lavoration in lavoration_pool.browse(
+                self.cr, self.uid, lavoration_ids): # filtered BL orders
             # ----------------------------
             # Product in lavoration order:
             # ----------------------------
-            element = ("P: %s [%s]" % (
-                lavoration.product.name, 
-                lavoration.product.code,
-            ), lavoration.product.id)
+            element = (
+                'P: %s [%s]' % (
+                    lavoration.product.name, 
+                    lavoration.product.code,
+                    ), 
+                lavoration.product.id)
+                
             if element not in rows:
                 # prepare data structure:
                 rows.append(element)            
                 table[element[1]] = [0.0 for item in range(0, range_date)]       
                 table[element[1]][0] = lavoration.product.accounting_qty or 0.0
 
-            if lavoration.real_date_planned[:10] in col_ids: # Product production
-                table[element[1]][col_ids[lavoration.real_date_planned[:10]]] += lavoration.product_qty or 0.0
+            # Product production
+            if lavoration.real_date_planned[:10] in col_ids: 
+                table[element[1]][
+                    col_ids[lavoration.real_date_planned[:10]]] += \
+                        lavoration.product_qty or 0.0
             else: # < today  (element 1 - the second)
                 table[element[1]][1] += lavoration.product_qty or 0.0
 
@@ -225,40 +262,64 @@ class report_webkit_html(report_sxw.rml_parse):
             # Material in BOM:
             # ----------------                  
             for material in lavoration.bom_material_ids:     
-                if material.product_id.not_in_status: # Jump "not in status" material
+                # Jump "not in status" material
+                if material.product_id.not_in_status: 
                     continue
 
                 if with_medium and material.product_id:
-                    media = "%5.2f" % (material_mx.get(material.product_id.id, 0.0) / month_window / 1000) # t from Kg.
+                    # t from Kg.
+                    media = '%5.2f' % (material_mx.get(
+                        material.product_id.id, 0.0) / month_window / 1000) 
                 else:
-                    media = "??"
+                    media = '??'
 
-                element=("M: %s [%s]%s" % (
-                    material.product_id.name, 
-                    material.product_id.default_code,
-                    ' <b>%s t.</b>' % (media), ), material.product_id.id)
+                element = (
+                    'M: %s [%s]%s' % (
+                        material.product_id.name, 
+                        material.product_id.default_code,
+                        ' <b>%s t.</b>' % media, 
+                        ), 
+                    material.product_id.id,
+                    )
                 if element not in rows:
                     rows.append(element)
-                    table[element[1]] = [0.0 for item in range(0,range_date)] # prepare data structure
-                    table[element[1]][0] = material.product_id.accounting_qty or 0.0 # prepare data structure
+                    # prepare data structure:
+                    table[element[1]] = [0.0 for item in range(0,range_date)] 
+                    # prepare data structure:
+                    table[element[1]][0] = \
+                        material.product_id.accounting_qty or 0.0 
 
                 if lavoration.real_date_planned[:10] in col_ids:
-                    table[element[1]][col_ids[lavoration.real_date_planned[:10]]] -= material.quantity or 0.0 
+                    table[element[1]][col_ids[
+                        lavoration.real_date_planned[:10]]] -= \
+                            material.quantity or 0.0 
                 else:    # < today
                     table[element[1]][1] -= material.quantity or 0.0 
 
                 # ---------
                 # OF order:
                 # ---------                
-                if material.product_id.default_code in supplier_orders: # all OF orders
-                    for of_deadline in supplier_orders[material.product_id.default_code].keys():
-                        if of_deadline in col_ids:                            # deadline is present in the window of cols
-                            table[element[1]][col_ids[of_deadline]] += supplier_orders[material.product_id.default_code][of_deadline] or 0.0
-                            del(supplier_orders[material.product_id.default_code][of_deadline]) # delete OF value (no other additions)
-                        elif of_deadline < start_date.strftime("%Y-%m-%d"):   # deadline < today:
-                            table[element[1]][1] += supplier_orders[material.product_id.default_code][of_deadline] or 0.0
-                            del(supplier_orders[material.product_id.default_code][of_deadline]) # delete OF value (no other additions)
-                           
+                # all OF orders
+                if material.product_id.default_code in supplier_orders: 
+                    for of_deadline in supplier_orders[
+                            material.product_id.default_code].keys():
+                        # deadline is present in the window of cols    
+                        if of_deadline in col_ids:                            
+                            table[element[1]][col_ids[of_deadline]] += \
+                                supplier_orders[
+                                    material.product_id.default_code][
+                                        of_deadline] or 0.0
+                            # delete OF value (no other additions)            
+                            del(supplier_orders[
+                                material.product_id.default_code][of_deadline]) 
+                        elif of_deadline < start_date.strftime('%Y-%m-%d'):   
+                            # deadline < today:
+                            table[element[1]][1] += supplier_orders[
+                                material.product_id.default_code][
+                                    of_deadline] or 0.0
+                            # delete OF value (no other additions)    
+                            del(supplier_orders[
+                                material.product_id.default_code][of_deadline]) 
         rows.sort()
 
         # -----------------------

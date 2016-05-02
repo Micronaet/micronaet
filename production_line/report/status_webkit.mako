@@ -131,10 +131,10 @@
          <!-- ################## BODY ##################################### -->
           <tbody>
               <% i=0 %>
-              <% rows = get_rows()%>
+              <% rows = get_rows() %>
               %for row in rows:
                   % if not jump_is_all_zero(row[1], data):
-                      % if not start_product and row[0][0]=="P":
+                      % if not start_product and row[0][0] == "P":
                            <% start_product=True %>
                            <tr><td>&nbsp;</td></tr>
                            ${thead%("Product", thead_internal,)}
