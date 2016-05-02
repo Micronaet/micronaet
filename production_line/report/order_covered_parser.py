@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-# Copyright (c) 2008-2011 Alistek Ltd (http://www.alistek.com) All Rights Reserved.
-#                    General contacts <info@alistek.com>
+# Copyright (c) 2008-2011 Alistek Ltd (http://www.alistek.com) 
+# All Rights Reserved. General contacts <info@alistek.com>
 #
 # WARNING: This program as such is intended to be used by professional
 # programmers who take the whole responsability of assessing all potential
@@ -82,7 +82,7 @@ class Parser(report_sxw.rml_parse):
         if data.get('report_type','order') == 'order':  # all order covered
             order_pool = self.pool.get('sale.order')
             order_ids = order_pool.search(self.cr, self.uid, [
-                ('accounting_order','=',True)]) # read all order from accounting            
+                ('accounting_order','=',True)]) # read all order from account
             line_not_covered_ids = line_pool.search(self.cr, self.uid, [
                 ('use_accounting_qty','=',False)]) 
             for line in line_pool.browse(
@@ -92,7 +92,8 @@ class Parser(report_sxw.rml_parse):
             line_ids = line_pool.search(self.cr, self.uid, [
                 ('order_id','in', order_ids)], order='order_id,sequence') 
         else:                                          # lines covered
-            line_ids = line_pool.search(self.cr, self.uid, [('use_accounting_qty','=',True)], order='order_id,sequence') # orders?
+            line_ids = line_pool.search(self.cr, self.uid, [
+                ('use_accounting_qty','=',True)], order='order_id,sequence') 
+                # orders?
             
         return line_pool.browse(self.cr, self.uid, line_ids)
-
