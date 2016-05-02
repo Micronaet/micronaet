@@ -45,21 +45,22 @@ class sale_order_line_covered_wizard(osv.osv_memory):
         data['report_type'] = wiz_proxy.type
         
         return {
-               'type': 'ir.actions.report.xml', 
-               'report_name':'order_covered',        
-               'datas': data,
-               }
+            'type': 'ir.actions.report.xml', 
+            'report_name':'order_covered',        
+            'datas': data,
+            }
                
     _columns = {
         'type':fields.selection([
             ('line','Only covered lines'),
             ('order','Only covered order'),            
-        ],'type', select=True, readonly=False),
-    }           
+            ('all','All open order'),
+        ],'type', select=True),
+        }           
     
     _defaults = {
         'type': lambda *a: 'order',
-    }
+        }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 
 

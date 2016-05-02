@@ -51,10 +51,13 @@ class Parser(report_sxw.rml_parse):
         if data is None:
             data = {}
             
-        if data.get('report_type', 'order') == 'order':  # all order covered
+        mode = data.get('report_type', 'all')    
+        if mode == 'order':  # all order covered
             return "Ordini coperti interamente da magazzino"
-        else:
+        elif mode == 'line':
             return "Righe ordine coperte da magazzino"
+        else:
+            return "Tutte le righe ordine aperte"            
         
     def reset_break_level(self,):
         ''' Reset field that test break level
@@ -79,7 +82,7 @@ class Parser(report_sxw.rml_parse):
         if data is None:
             data = {}
         line_pool = self.pool.get('sale.order.line')
-        mode = data.get('report_type', 'order')
+        mode = data.get('report_type', 'all') # ex order
         if mode == 'order':  # all order covered
             order_pool = self.pool.get('sale.order')
             order_ids = order_pool.search(self.cr, self.uid, [
