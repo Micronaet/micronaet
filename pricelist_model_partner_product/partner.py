@@ -28,13 +28,13 @@ _logger = logging.getLogger(__name__)
 class sale_order_line(osv.osv):
     ''' Extra field in order line
     '''
-    _name = "sale.order.line"
     _inherit = "sale.order.line"
     
     _columns = {
         'partner_id': fields.related('order_id', 'partner_id', type='many2one', relation='res.partner', string='Partner', store=True),
         'price_comment': fields.text("Price comment", help = "Extra comment about price used in this quotation")
     }
+
 class res_partner_pricelist_product(osv.osv):
     ''' Pricelist product usually order for partner
     '''
