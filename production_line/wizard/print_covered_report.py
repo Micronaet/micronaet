@@ -59,7 +59,7 @@ class sale_order_line_covered_wizard(osv.osv_memory):
         }           
     
     _defaults = {
-        'type': lambda *a: 'order',
+        'type': lambda *a: 'all',
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 
