@@ -25,7 +25,7 @@
 #
 ##############################################################################
 
-from openerp.osv import fields,osv
+from openerp.osv import fields, osv
 import os
 
 class sale_order_line_covered_wizard(osv.osv_memory):
@@ -54,7 +54,7 @@ class sale_order_line_covered_wizard(osv.osv_memory):
         'type':fields.selection([
             ('line', 'Solo righe coperte'),
             ('order', 'Solo ordini coperti interamente'),            
-            ('all','Tutti le righe ordine'),
+            ('all', 'Tutti le righe ordine'),
         ],'type', select=True, required=True),
         }           
     
