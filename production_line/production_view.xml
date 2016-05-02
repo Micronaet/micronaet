@@ -1223,7 +1223,7 @@
     <record model="ir.ui.view" id="view_sale_order_establishment_tree">
         <field name="name">sale.order.establishment.tree</field>
         <field name="model">sale.order</field>
-        <field name="type">form</field>
+        <field name="priority" eval="50" />
         <field name="arch" type="xml">
             <tree string="Ordini di Vendita" fonts="bold:message_unread==True" colors="grey:state=='cancel';blue:state in ('waiting_date','manual');red:state in ('invoice_except','shipping_except')">
 	            <field name="message_unread" invisible="1" modifiers="{'readonly': true, 'tree_invisible': true}"/>
@@ -1242,13 +1242,109 @@
             </tree>
         </field>
     </record>
+        <record model="ir.ui.view" id="view_sale_order_form_establishment_form">
+            <field name="name">sale.order.form.fast</field>
+            <field name="model">sale.order</field>
+            <field name="priority" eval="50" />
+            <field name="arch" type="xml">
+                <form string="Ordini" version="7.0">                    
+                    <header>
+                        <!--<button name="print_quotation" string="Stampa" type="object" states="draft" class="oe_highlight" />
+                        <button name="print_quotation" string="Stampa" type="object" states="sent,progress,manual" />-->
+                        <!--<field name="state" widget="statusbar" statusbar_visible="draft,sent,progress,done" readonly="1" 
+                            statusbar_colors="{'shipping_except':'red','invoice_except':'red','waiting_date':'blue'}"/>-->
+                    </header>
+                    <sheet>
+                        <h1>
+                            <label string="Ordine di vendita" />
+                            <field name="name" readonly="1" />
+                        </h1>
+                        <group>
+                            <group>
+                                <field name="partner_id" readonly="1" />
+                                <field name="address_id" readonly="1"/>
+                                <field name="invoice_id" readonly="1" />
+
+                                <field name="client_order_ref" readonly="1"/>
+                                <field name="date_deadline" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="date_order" readonly="1"/>
+                                <field name="payment_term" readonly="1" />
+                            </group>
+                        </group>
+
+                        <notebook>                       
+                            <page string="Order Lines">
+                                <field name="order_line" readonly="1">
+                                    <tree string="Sales Order Lines" editable="bottom">
+                                        <field name="adr" />
+                                        <field name="sequence" invisible="1"/>
+                                        <field name="state" invisible="1"/>
+                                        <field name="product_id" />
+                                        <field name="name" string="Marcatura"/>
+                                        <field name="date_deadline" />
+                                        <field name="product_uom_qty" />
+                                        <field name="product_uom" />
+                                        <field name="product_uos_qty" invisible="1"/>
+                                        <field name="product_uos" invisible="1" />
+                                        <field name="price_unit" invisible="1"/>
+                                        <field name="discount" invisible="1" />
+                                        <field name="tax_id" invisible="1" />
+                                        <field name="th_weight" invisible="1" />
+                                        <field name="address_allotment_id" invisible="1" />
+                                        <field name="company_id" invisible="1" />
+                                        <field name="delay" invisible="1" />
+                                        <field name="product_packaging" invisible="1" />
+                                        <field name="price_subtotal" invisible="1" />
+                                    </tree>
+                                </field>
+                                <!--<group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                                    <field name="amount_untaxed" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                    <field name="amount_tax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                    <div class="oe_subtotal_footer_separator oe_inline">
+                                        <label for="amount_total" />
+                                        <button name="button_dummy"
+                                            states="draft,sent" string="(update)" type="object" class="oe_edit_only oe_link"/>
+                                    </div>
+                                    <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                </group>-->
+                                <div class="oe_clear"/>
+                                <field name="note" class="oe_inline" placeholder="Terms and conditions..."/>
+                            </page>
+                            <page string="Data ordine">
+                                <group colspan="2" col="5">
+                                    <field name="date_valid" readonly="1" />
+                                    <field name="date_confirm" readonly="1" />
+                                    <newline/>
+                                    <field name="date_booked_confirmed" readonly="1" />
+                                    <field name="date_booked" readonly="1" />
+                                    <newline/>
+                                    <field name="date_delivery_confirmed" readonly="1" />
+                                    <field name="date_delivery" readonly="1" />
+                                </group>
+                            </page>
+                            <page string="Altre informazioni">
+                                <group>
+                                    <group name="sales_person">
+                                        <field name="user_id" readonly="1" />
+                                        <field name="origin" readonly="1" />
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    
     <record model="ir.actions.act_window" id="action_sale_order_establishment_form">
         <field name="name">Sale order</field>
         <field name="res_model">sale.order</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="view_sale_order_establishment_tree"/>
-        <field name="context">{}</field>
+        <field name="context">{'form_view_ref': 'production_line.view_sale_order_form_establishment_form'}</field>
         <field name="domain">[('state','in',('draft','sent','cancel'))]</field>
     </record>
        <!-- Create production order from customer order lines-->
