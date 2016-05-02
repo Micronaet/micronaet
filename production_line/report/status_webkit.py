@@ -41,7 +41,7 @@ rows = []
 cols = []
 minimum = {}
 table = {}
-error_in_print = ""
+error_in_print = ''
 
 class report_webkit_html(report_sxw.rml_parse):    
     def __init__(self, cr, uid, name, context):
@@ -99,7 +99,7 @@ class report_webkit_html(report_sxw.rml_parse):
         cols = []
         minimum = {}
         table = {}
-        error_in_print = "" # TODO manage for set in printer
+        error_in_print = '' # TODO manage for set in printer
         
         lavoration_pool = self.pool.get('mrp.production.workcenter.line')
         # TODO optimize:
@@ -153,7 +153,7 @@ class report_webkit_html(report_sxw.rml_parse):
                 if ref not in supplier_orders:
                     supplier_orders[ref] = {}
                 # TODO verify if not present    
-                of_deadline = supplier_order['DTT_SCAD'].strftime("%Y-%m-%d") 
+                of_deadline = supplier_order['DTT_SCAD'].strftime('%Y-%m-%d') 
 
                 q = float(supplier_order['NQT_RIGA_O_PLOR'] or 0.0) * (
                     1.0 / supplier_order['NCF_CONV'] if supplier_order[
@@ -193,7 +193,7 @@ class report_webkit_html(report_sxw.rml_parse):
         # ---------------------------------------------------------------------
         # Get product list from OC lines: #####################################
         # > populate cols 
-        order_line_pool = self.pool.get("sale.order.line")
+        order_line_pool = self.pool.get('sale.order.line')
         
         # only active from accounting
         line_ids = order_line_pool.search(self.cr, self.uid, [
@@ -201,7 +201,7 @@ class report_webkit_html(report_sxw.rml_parse):
         for line in order_line_pool.browse(self.cr, self.uid, line_ids):
             if line.product_id.not_in_status: # jump line
                 continue
-            element = ("P: %s [%s]" % (
+            element = ('P: %s [%s]' % (
                     line.product_id.name, 
                     line.product_id.default_code, ), 
                 line.product_id.id,
@@ -221,7 +221,7 @@ class report_webkit_html(report_sxw.rml_parse):
                     line.product_uom_qty or 0.0  # OC deadlined this date    
                     
             # only < today        
-            if not line.order_id.date_deadline or line.order_id.date_deadline < start_date.strftime("%Y-%m-%d"): 
+            if not line.order_id.date_deadline or line.order_id.date_deadline < start_date.strftime('%Y-%m-%d'): 
                 table[element[1]][1] -= line.product_uom_qty or 0.0 # OC deadlined before today
 
         # ---------------------------------------------------------------------
@@ -262,7 +262,7 @@ class report_webkit_html(report_sxw.rml_parse):
             # Material in BOM:
             # ----------------                  
             for material in lavoration.bom_material_ids:     
-                # Jump "not in status" material
+                # Jump 'not in status' material
                 if material.product_id.not_in_status: 
                     continue
 
