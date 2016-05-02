@@ -51,7 +51,7 @@ class sale_order_line_covered_wizard(osv.osv_memory):
             }
                
     _columns = {
-        'type':fields.selection([
+        'type': fields.selection([
             ('line', 'Solo righe coperte'),
             ('order', 'Solo ordini coperti interamente'),            
             ('all', 'Tutti le righe ordine'),
