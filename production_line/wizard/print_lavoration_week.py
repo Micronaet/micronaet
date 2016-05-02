@@ -77,9 +77,10 @@ class mrp_print_lavoration_week__wizard(osv.osv_memory):
         from dateutil.relativedelta import relativedelta
         
         if reference_date:
-            ref = datetime.datetime.strptime(reference_date, "%Y-%m-%d")
+            ref = datetime.strptime(reference_date, "%Y-%m-%d")
         else:
-            ref = datetime.date.today()
+            ref = datetime.now()
+            #ref = datetime.date.today()
         iso_info = ref.isocalendar()
 
         if data_type == 'date':
