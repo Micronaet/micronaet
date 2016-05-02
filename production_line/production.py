@@ -567,6 +567,11 @@ class sale_order_line_extra(osv.osv):
     # -------------------------------------------------------------------------
     #                          Button events
     # -------------------------------------------------------------------------
+    def nothing(self, cr, uid, ids, context=None):
+        ''' Dummy button
+        '''
+        return True
+        
     def button_duelist_exposition(self, cr, uid, ids, context=None):
         ''' List of exposition for this customer
         '''

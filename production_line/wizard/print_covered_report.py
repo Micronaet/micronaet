@@ -52,10 +52,10 @@ class sale_order_line_covered_wizard(osv.osv_memory):
                
     _columns = {
         'type':fields.selection([
-            ('line','Only covered lines'),
-            ('order','Only covered order'),            
-            ('all','All open order'),
-        ],'type', select=True),
+            ('line', 'Solo righe coperte'),
+            ('order', 'Solo ordini coperti interamente'),            
+            ('all','Tutti le righe ordine'),
+        ],'type', select=True, required=True),
         }           
     
     _defaults = {
