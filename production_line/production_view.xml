@@ -1301,7 +1301,9 @@
                                         <field name="state_info" />
                                         <field name="use_accounting_qty" invisible="1" />
                                         <button name="nothing" string="Stock cover" type="object" icon="terp-stock" attrs="{'invisible':[('use_accounting_qty','=',False)]}"/>
-                                        <button name="nothing" string="Ready" type="object" icon="gtk-ok" />
+                                        <field name="deliver_ready" invisible="1" />
+                                        <button name="button_star_on" string="Move in load zone" type="object" icon="star-on" attrs="{'invisible':[('deliver_ready','=',True)]}" />
+                                        <button name="button_star_off" string="Undo move" type="object" icon="star-off" attrs="{'invisible':[('deliver_ready','=',False)]}" />
                                     </tree>
                                 </field>
                                 <!--<group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">

@@ -561,12 +561,21 @@ class sale_order_add_extra(osv.osv):
 class sale_order_line_extra(osv.osv):
     ''' Create extra fields in sale.order.line obj
     '''
-    _name = "sale.order.line"
     _inherit = "sale.order.line"
     
     # -------------------------------------------------------------------------
     #                          Button events
-    # -------------------------------------------------------------------------
+    # -------------------------------------------------------------------------    
+    def button_star_off(self, cr, uid, ids, context=None):
+        ''' Star off press
+        '''
+        return self.write(cr, uid, ids, {'deliver_ready': False}, context=None)
+
+    def button_star_on(self, cr, uid, ids, context=None):
+        ''' Star on press
+        '''
+        return self.write(cr, uid, ids, {'deliver_ready': True}, context=None)
+
     def nothing(self, cr, uid, ids, context=None):
         ''' Dummy button
         '''
@@ -603,8 +612,12 @@ class sale_order_line_extra(osv.osv):
     _columns = {
         'date_deadline': fields.date('Deadline'),
         #'date_deadline': fields.related('order_id','date_deadline', type='date', string='Deadline', store=True),
-        'partner_id': fields.related('order_id','partner_id', type='many2one', relation='res.partner', string='Partner', store=True),
-        'duelist_exposition': fields.related('partner_id','duelist_exposition', type='boolean', string='Exposed', store=False),
+        'partner_id': fields.related(
+            'order_id','partner_id', type='many2one', relation='res.partner', 
+            string='Partner', store=True),
+        'duelist_exposition': fields.related(
+            'partner_id','duelist_exposition', type='boolean', 
+            string='Exposed', store=False),
 
         #'mandatory_delivery':fields.related('order_id', 'mandatory_delivery',  type='boolean', string='Mandatory delivery'),
         'date_delivery':fields.related('order_id', 'date_delivery', type='date', string='Date delivery'),
@@ -619,6 +632,7 @@ class sale_order_line_extra(osv.osv):
         'accounting_order': fields.related('order_id', 'accounting_order', type="boolean", String="Accounting order", store=True, help="Temporary line from accounting, when order is close it is deleted from OpenERP"),
         # TODO fields.function da fare per testare quelli coperti da produzione, magazzino ordinato
         'product_ul_id':fields.many2one('product.ul', 'Required package', required=False, ondelete='set null',),
+        'deliver_ready': fields.boolean('Deliver ready'),
     }
     _defaults = {
         'to_produce': lambda *a: True,
