@@ -46,6 +46,9 @@
                                 <field name='line_id' invisible="1" />
                                 <field name='product_id'/>
                                 <field name='lot_id' />
+                
+                                <field name="xls_qty" />
+                
                                 <field name='only_chemical' invisible="1"/>
                                 <field name='analysis_id' />
                                 <field name='version' />
