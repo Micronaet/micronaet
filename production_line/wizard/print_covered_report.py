@@ -49,13 +49,16 @@ class sale_order_line_covered_wizard(osv.osv_memory):
         wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
         
         data['report_type'] = wiz_proxy.type
-        
+        data['from_date'] = wiz_proxy.from_date
+        data['to_date'] = wiz_proxy.to_date
+        data['partner_id'] = wiz_proxy.partner_id.id or False
+
         return {
             'type': 'ir.actions.report.xml', 
             'report_name': 'order_covered',        
             'datas': data,
             }
-               
+
     _columns = {
         'type': fields.selection([
             ('line', 'Solo righe coperte'),
@@ -67,7 +70,7 @@ class sale_order_line_covered_wizard(osv.osv_memory):
         'partner_id': fields.many2one(
             'res.partner', 'Partner'), 
         }
-    
+
     _defaults = {
         'type': lambda *a: 'all',
         'to_date': lambda *a: (datetime.now() + timedelta(days=7)).strftime(
