@@ -37,7 +37,6 @@ class mail_thread(osv.osv):
     ''' Add extra function for changing state in mail.thread
     '''
     _inherit = 'mail.thread'
-    _name = 'mail.thread'
 
     # --------
     # Utility:
@@ -93,7 +92,6 @@ class mail_thread(osv.osv):
 class res_company_send_mail(osv.osv):
     ''' Add utility function for send mail
     '''
-    _name = "res.company"
     _inherit = "res.company"
 
     # TODO Riscrivere con la gestione dei thread
@@ -828,7 +826,6 @@ resource_resource()"""
 class mrp_workcenter(osv.osv):
     ''' Add 2many elements in mrp.workcenter
     '''
-    _name = 'mrp.workcenter'
     _inherit = 'mrp.workcenter'
 
     _columns = {
@@ -844,7 +841,6 @@ class mrp_workcenter(osv.osv):
 class mrp_production_workcenter_line_extra(osv.osv):
     ''' Update some _defaults value
     '''
-    _name = 'mrp.production.workcenter.line'
     _inherit = 'mrp.production.workcenter.line'
 
     def add_hour(self, from_datetime, hours):
@@ -1487,7 +1483,6 @@ class sale_order_line_extra(osv.osv):
     ''' Extra fields
         Insert overrider function for log production
     '''
-    _name="sale.order.line"
     _inherit="sale.order.line"
 
     #def create(self, cr, uid, vals, context=None):
