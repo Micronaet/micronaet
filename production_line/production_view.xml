@@ -1259,6 +1259,7 @@
                         <h1>
                             <label string="Ordine di vendita" />
                             <field name="name" readonly="1" />
+               	            <button name="print_delivery_report" string="Order report" type="object" icon="gtk-print" />
                         </h1>
                         <group>
                             <group>
