@@ -561,12 +561,21 @@ class sale_order_add_extra(osv.osv):
 class sale_order_line_extra(osv.osv):
     ''' Create extra fields in sale.order.line obj
     '''
-    _name = "sale.order.line"
     _inherit = "sale.order.line"
     
     # -------------------------------------------------------------------------
     #                          Button events
-    # -------------------------------------------------------------------------
+    # -------------------------------------------------------------------------    
+    def button_star_off(self, cr, uid, ids, context=None):
+        ''' Star off press
+        '''
+        return self.write(cr, uid, ids, {'deliver_ready': False}, context=None)
+
+    def button_star_on(self, cr, uid, ids, context=None):
+        ''' Star on press
+        '''
+        return self.write(cr, uid, ids, {'deliver_ready': True}, context=None)
+
     def nothing(self, cr, uid, ids, context=None):
         ''' Dummy button
         '''
@@ -580,7 +589,8 @@ class sale_order_line_extra(osv.osv):
     def free_line(self, cr, uid, ids, context=None):
         ''' Free the line from production order 
         '''
-        return self.write(cr, uid, ids, {'mrp_production_id': False, }, context=context)
+        return self.write(cr, uid, ids, {
+            'mrp_production_id': False}, context=context)
         
     def close_with_accounting_store(self, cr, uid, ids, context=None):
         ''' This button test if there's accounting quantity enought to close
@@ -595,30 +605,58 @@ class sale_order_line_extra(osv.osv):
 
         if (sol_browse.product_uom_qty + sol_browse.product_id.linked_accounting_qty) > sol_browse.product_id.accounting_qty:
            # raise error!
-           raise osv.except_osv('Error','Cannot use store q.: %s (current) + %s (yet linked) > %s (account q.)'%(sol_browse.product_uom_qty, sol_browse.product_id.linked_accounting_qty, sol_browse.product_id.accounting_qty))
+           raise osv.except_osv(
+               'Error',
+               'Cannot use store q.: %s (current) + %s (yet linked) > %s (account q.)' % (
+                   sol_browse.product_uom_qty, 
+                   sol_browse.product_id.linked_accounting_qty, 
+                   sol_browse.product_id.accounting_qty,
+                   ))
         else:
            res=self.write(cr, uid, ids, {'use_accounting_qty':True}, context=context)
         return True
 
     _columns = {
         'date_deadline': fields.date('Deadline'),
-        #'date_deadline': fields.related('order_id','date_deadline', type='date', string='Deadline', store=True),
-        'partner_id': fields.related('order_id','partner_id', type='many2one', relation='res.partner', string='Partner', store=True),
-        'duelist_exposition': fields.related('partner_id','duelist_exposition', type='boolean', string='Exposed', store=False),
+        'partner_id': fields.related(
+            'order_id','partner_id', type='many2one', relation='res.partner', 
+            string='Partner', store=True),
+        'duelist_exposition': fields.related(
+            'partner_id','duelist_exposition', type='boolean', 
+            string='Exposed', store=False),
 
         #'mandatory_delivery':fields.related('order_id', 'mandatory_delivery',  type='boolean', string='Mandatory delivery'),
-        'date_delivery':fields.related('order_id', 'date_delivery', type='date', string='Date delivery'),
+        'date_delivery':fields.related(
+            'order_id', 'date_delivery', type='date', string='Date delivery'),
 
-        'to_produce':fields.boolean('To produce', required=False, help="During order importation test if the order line active has product that need to be produced"),
-        'use_accounting_qty':fields.boolean('Use accounting qty', help="Set the line to be carried on with store quantity present in accounting store"),
+        'to_produce':fields.boolean(
+            'To produce', 
+            required=False, 
+            help="During order importation test if the order line active has product that need to be produced"),
+        'use_accounting_qty': fields.boolean(
+            'Use accounting qty', 
+            help="Set the line to be carried on with store quantity present in accounting store",
+            ),
 
         'production_line':fields.boolean('Is for production', required=False),
-        'mrp_production_id':fields.many2one('mrp.production', 'Production order', required=False, ondelete='set null',),
-        'accounting_qty': fields.related('product_id','accounting_qty', type='float',  digits=(16, 3), string='Accounting Q.ty', store=False),
-        'state_info': fields.related('mrp_production_id', 'state_info', type="char", string="Production info", store=False),
-        'accounting_order': fields.related('order_id', 'accounting_order', type="boolean", String="Accounting order", store=True, help="Temporary line from accounting, when order is close it is deleted from OpenERP"),
+        'mrp_production_id':fields.many2one(
+            'mrp.production', 'Production order', required=False, 
+            ondelete='set null',),
+        'accounting_qty': fields.related(
+            'product_id', 'accounting_qty', type='float', digits=(16, 3), 
+            string='Accounting Q.ty', store=False),
+        'state_info': fields.related(
+            'mrp_production_id', 'state_info', type="char", 
+            string="Production info", store=False),
+        'accounting_order': fields.related(
+            'order_id', 'accounting_order', type="boolean", 
+            String="Accounting order", store=True, 
+            help="Temporary line from accounting, when order is close it is deleted from OpenERP"),
         # TODO fields.function da fare per testare quelli coperti da produzione, magazzino ordinato
-        'product_ul_id':fields.many2one('product.ul', 'Required package', required=False, ondelete='set null',),
+        'product_ul_id':fields.many2one(
+            'product.ul', 'Required package', required=False, 
+            ondelete='set null',),
+        'deliver_ready': fields.boolean('Deliver ready'),
     }
     _defaults = {
         'to_produce': lambda *a: True,
@@ -636,12 +674,21 @@ class mrp_production_material(osv.osv):
     _rec_name = "product_id"
 
     _columns = {
-        'product_id':fields.many2one('product.product', 'Product', required=True),
+        'product_id':fields.many2one('product.product', 'Product', 
+            required=True),
         'quantity': fields.float('Quantity', digits=(16, 2)),
-        'uom_id': fields.related('product_id','uom_id', type='many2one', relation='product.uom', string='UOM'),
-        'mrp_production_id':fields.many2one('mrp.production', 'Production order', ondelete="cascade", required=False),        # Link if used mrp.production object
-        'workcenter_production_id':fields.many2one('mrp.production.workcenter.line', 'Lavoration', ondelete="cascade", required=False), # Link if used mrp.production.workcenter.line object
-        'accounting_qty': fields.related('product_id','accounting_qty', type='float',  digits=(16, 3), string='Accounting Q.ty', store=False),
+        'uom_id': fields.related(
+            'product_id','uom_id', type='many2one', relation='product.uom', 
+            string='UOM'),
+        'mrp_production_id': fields.many2one(
+            'mrp.production', 'Production order', ondelete="cascade", 
+            required=False), # Link if used mrp.production object
+        'workcenter_production_id': fields.many2one(
+            'mrp.production.workcenter.line', 'Lavoration', ondelete="cascade", 
+            required=False), # Link if used mrp.production.workcenter.line object
+        'accounting_qty': fields.related(
+            'product_id','accounting_qty', type='float',  digits=(16, 3), 
+            string='Accounting Q.ty', store=False),
     }
 
 class mrp_production_workcenter_load(osv.osv):
@@ -667,7 +714,8 @@ class mrp_production_workcenter_load(osv.osv):
         wc_id = vals.get('line_id', False)
         if wc_id: # mandatory
             wc_pool = self.pool.get('mrp.production.workcenter.line')
-            for lavoration in wc_pool.browse(cr, uid, wc_id, context=context).production_id.workcenter_lines:
+            for lavoration in wc_pool.browse(
+                    cr, uid, wc_id, context=context).production_id.workcenter_lines:
                 for load in lavoration.load_ids:
                     if last < load.sequence:
                         last = load.sequence

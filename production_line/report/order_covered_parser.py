@@ -83,10 +83,36 @@ class Parser(report_sxw.rml_parse):
             data = {}
         line_pool = self.pool.get('sale.order.line')
         mode = data.get('report_type', 'all') # ex order
+        from_date = data.get('from_date', False)        
+        to_date = data.get('to_date', False)
+        partner_id = data.get('partner_id', False)
+        
+        domain = [('accounting_order', '=', True)]
+        if partner_id:
+            domain.append(('partner_id', '=', partner_id))
+            
+        if from_date:
+            domain.extend([
+                '|', #'|',
+                ('date_deadline', '>=', from_date),
+                #('date_booked', '>=', from_date), #mx_sale TODO move anywhere
+                ('date_delivery', '>=', from_date),
+                ])
+                
+        if to_date:
+            domain.extend([
+                '|', #'|',
+                ('date_deadline', '<=', to_date),
+                #('date_booked', '<=', from_date),
+                ('date_delivery', '<=', from_date),
+                ])
+            
         if mode == 'order':  # all order covered
             order_pool = self.pool.get('sale.order')
-            order_ids = order_pool.search(self.cr, self.uid, [
-                ('accounting_order', '=', True)]) # read all order from account
+            
+            # read all order from account
+            order_ids = order_pool.search(self.cr, self.uid, domain)
+            
             line_not_covered_ids = line_pool.search(self.cr, self.uid, [
                 ('use_accounting_qty', '=', False)]) 
             for line in line_pool.browse(
@@ -95,11 +121,14 @@ class Parser(report_sxw.rml_parse):
                     order_ids.remove(line.order_id.id) # remove order 
             line_ids = line_pool.search(self.cr, self.uid, [
                 ('order_id','in', order_ids)], order='order_id,sequence') 
+                
         elif mode == 'line': # lines covered
             line_ids = line_pool.search(self.cr, self.uid, [
                 ('use_accounting_qty', '=', True)], order='order_id,sequence') 
                 # orders?
-        else: # all lines (no wizard call)
-            line_ids = line_pool.search(self.cr, self.uid, [
-                ('accounting_order', '=', True)], order='order_id,sequence') 
+                
+        else: # all lines (no wizard call)            
+            line_ids = line_pool.search(self.cr, self.uid, domain, 
+                order='order_id,sequence')
+
         return line_pool.browse(self.cr, self.uid, line_ids)
