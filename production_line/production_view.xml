@@ -1239,6 +1239,7 @@
 	            <field name="extra_doc_error" invisible="1" modifiers="{'readonly': true, 'tree_invisible': true}"/>
 	            <button name="dummy_button" string="Docs error" type="object" icon="gtk-missing-image" attrs="{'invisible': [('extra_doc_error', '=', False)]}" modifiers="{'invisible': [['extra_doc_error', '=', false]]}"/>
 	            <field name="state" modifiers="{'readonly': true}"/>
+	            <button name="print_delivery_report" string="Order report" type="object" icon="gtk-print" />
             </tree>
         </field>
     </record>
