@@ -39,18 +39,18 @@ translate_name = {}
 totals = {}
 
 class report_webkit_html(report_sxw.rml_parse):
-    zero = "0.00000"
+    zero = '0.00000'
     
     def prepare_for_print(self,value):
         ''' Format quantity value
         '''
-        return "%5.5f"%(value,)   
+        return '%5.5f' % value
 
     def __init__(self, cr, uid, name, context):
         super(report_webkit_html, self).__init__(cr, uid, name, context=context)
         self.localcontext.update({
             'time': time,
-            'cr':cr,
+            'cr': cr,
             'uid': uid,
             'object_list': self._object_list,
             'create_current_bom': self._create_current_bom,
@@ -60,7 +60,7 @@ class report_webkit_html(report_sxw.rml_parse):
             'get_cols': self._get_cols,
             'get_rows': self._get_rows,
             'get_total_cols': self._get_total_cols,
-        })
+            })
 
     def _object_list(self,data=None):
         ''' Master function that generate the list of record to print:
@@ -70,15 +70,17 @@ class report_webkit_html(report_sxw.rml_parse):
                    between master bom (more or less)
         '''
         global translate_name
-        parent_list=[]
+        parent_list = []
         if data is None:
             data={}
         
-        domain=[('is_primary','=',True)]
+        domain=[('is_primary', '=', True)]
         primary = data.get('primary',False)
 
         if primary:
-            domain.append(('primary','ilike',primary),)
+            domain.append(
+                ('primary', 'ilike', primary),
+                )
         
         parent_pool = self.pool.get('etl.bom.line')
         parent_ids = parent_pool.search(self.cr, self.uid, domain)
@@ -87,7 +89,7 @@ class report_webkit_html(report_sxw.rml_parse):
         for item in parent_proxy:
             # Description
             if item.primary not in translate_name:
-                translate_name[item.primary]=item.name
+                translate_name[item.primary] = item.name
 
             # Code for loop
             if item.primary not in parent_list:
@@ -114,7 +116,8 @@ class report_webkit_html(report_sxw.rml_parse):
 
         # 1. Search lines that have passed primary name: #######################
         bom_pool = self.pool.get('etl.bom.line')
-        bom_ids = bom_pool.search(self.cr, self.uid, [('primary','=',primary)], order="is_primary,code,seq") # (only version)
+        bom_ids = bom_pool.search(self.cr, self.uid, [
+            ('primary','=',primary)], order='is_primary,code,seq') # (only version)
         bom_proxy = bom_pool.browse(self.cr, self.uid, bom_ids)
         
         # 2. Loop element searching: component, version 
@@ -135,12 +138,15 @@ class report_webkit_html(report_sxw.rml_parse):
 
             # 5. Create model dict #############################################
             if item.is_primary:
-                current_model[item.component_code] = item.quantity or 0.0 #"%5.5f"%(item.quantity or 0.0)
+                current_model[item.component_code] = item.quantity or 0.0 #'%5.5f'%(item.quantity or 0.0)
             else:    
                 current_model[item.component_code] = 0.0
 
         # 6. Row list for sort:
-        bom_ids = bom_pool.search(self.cr, self.uid, ["|",('code','=',primary),('primary','=',primary)], order="primary,code,seq") # (only version)
+        bom_ids = bom_pool.search(self.cr, self.uid, [
+            '|',
+            ('code', '=', primary),
+            ('primary', '=', primary)], order='primary,code,seq') # (only version)
         bom_proxy = bom_pool.browse(self.cr, self.uid, bom_ids)
         for item in bom_proxy:  
             if item.component_code not in rows:
@@ -148,9 +154,7 @@ class report_webkit_html(report_sxw.rml_parse):
                 if item.component_name not in translate_name:
                     translate_name[item.component_code] = item.component_name
             
-        cols.sort()     
-
-        
+        cols.sort()
         return True
 
     def _get_mp_name(self,code):
@@ -158,7 +162,7 @@ class report_webkit_html(report_sxw.rml_parse):
         '''
         global translate_name # for save all table
 
-        return translate_name.get(code,"")
+        return translate_name.get(code, '')
 
     def _get_current_bom_real(self,row,col):
         ''' Get current bom table loaded with _create_current_bom (real number)
@@ -173,7 +177,7 @@ class report_webkit_html(report_sxw.rml_parse):
 
         res = self._get_current_bom_real(row,col)
         if not res: 
-            return "-"
+            return '-'
         return self.prepare_for_print(res)
         
     def _test_bom_model(self, component_code, version_code):
@@ -190,20 +194,20 @@ class report_webkit_html(report_sxw.rml_parse):
         model=current_model.get(component_code, 0.0)
 
         if not model and not version:
-            return "="            # both zero
+            return '='            # both zero
         
         if not model:             # only version
-            return ">"
+            return '>'
         
         if not version:           # only model 
-            return "<" 
+            return '<' 
 
         if model > version:       # version less
-            return "-"   
+            return '-'   
         elif model == version:    # version equal not zero
-            return "=" 
+            return '=' 
         else:                     # version more
-            return "+"
+            return '+'
         
     def _get_cols(self):
         ''' Get current cols list loaded with _create_current_bom

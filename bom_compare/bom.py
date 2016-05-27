@@ -126,6 +126,7 @@ class etl_bom_line(osv.osv):
         
         # Generate file before from BOM
         if generate_from_bom:
+            _logger.info('Generate file [%s] from BOM' % file_name)
             self.generate_csv_file_from_bom(
                 cr, uid, file_name, context=context) 
             
