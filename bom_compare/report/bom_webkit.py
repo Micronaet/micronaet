@@ -111,14 +111,15 @@ class report_webkit_html(report_sxw.rml_parse):
 
         # initialize (every primary block is reset )
         current_bom = {}
-        totals={}
+        totals = {}
         rows = []
-        cols=[]
+        cols = []
 
         # 1. Search lines that have passed primary name: ######################
         bom_pool = self.pool.get('etl.bom.line')
         bom_ids = bom_pool.search(self.cr, self.uid, [
-            ('primary','=',primary)], order='is_primary,code,seq') # (only version)
+            ('primary', '=', primary)
+            ], order='is_primary,code,seq') # (only version)
         bom_proxy = bom_pool.browse(self.cr, self.uid, bom_ids)
         
         # 2. Loop element searching: component, version 
@@ -139,7 +140,8 @@ class report_webkit_html(report_sxw.rml_parse):
 
             # 5. Create model dict ############################################
             if item.is_primary:
-                current_model[item.component_code] = item.quantity or 0.0 #'%5.5f'%(item.quantity or 0.0)
+                #'%5.5f'%(item.quantity or 0.0)
+                current_model[item.component_code] = item.quantity or 0.0 
             else:    
                 current_model[item.component_code] = 0.0
 
@@ -147,7 +149,8 @@ class report_webkit_html(report_sxw.rml_parse):
         bom_ids = bom_pool.search(self.cr, self.uid, [
             '|',
             ('code', '=', primary),
-            ('primary', '=', primary)], order='primary,code,seq') # (only version)
+            ('primary', '=', primary),
+            ], order='primary,code,seq') # (only version)
         bom_proxy = bom_pool.browse(self.cr, self.uid, bom_ids)
         for item in bom_proxy:  
             if item.component_code not in rows:
