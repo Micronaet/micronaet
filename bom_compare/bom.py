@@ -31,22 +31,24 @@ import os
 import logging
 import csv
 from openerp.osv import osv, fields
-        
+
         
 _logger = logging.getLogger(__name__)
 
-# Utility: #####################################################################
+# -----------------------------------------------------------------------------
+#                                     Utility
+# -----------------------------------------------------------------------------
 
 def PrepareDate(valore):
     if valore: # TODO test correct date format
        return valore
     else:
-       return time.strftime("%d/%m/%Y")
+       return time.strftime('%d/%m/%Y')
 
 def PrepareFloat(valore):
     valore = valore.strip() 
     if valore: # TODO test correct date format       
-       return float(valore.replace(",", "."))
+       return float(valore.replace(',', '.'))
     else:
        return 0.0   # for empty values
        
@@ -56,11 +58,22 @@ def Prepare(valore):
     valore = valore.decode('cp1252')
     valore = valore.encode('utf-8')
     return valore.strip()
+
+def prepare_ascii(valore):  
+    ''' Return only ascii char
+    '''
+    valore = valore.strip()
+    res = ''
+    for c in valore:
+        if ord(c) < 128: # 256
+            res += c
+        else:
+            res+= '#'                
+    return res
             
 class etl_bom_line(osv.osv):
     ''' ETL bom line imported from account program
     ''' 
-
     _name = 'etl.bom.line'
     _description = 'BOM line'
     _order = 'is_primary,name,seq'    
@@ -68,27 +81,61 @@ class etl_bom_line(osv.osv):
     # -------------------------------------------------------------------------
     #                                 Utility
     # -------------------------------------------------------------------------
-    
+    def generate_csv_file_from_bom(self, cr, uid, file_name, 
+            context=None):
+        ''' Generate file from BOM (variant)
+        '''
+        bom_pool = self.pool.get('mrp.bom')
+        bom_ids = bom_pool.search(cr, uid, [
+            ('bom_id', '=', False),
+            ], context=context) 
+            
+        bom_f = open(file_name, 'w')
+        # only parent elements:
+        for bom in bom_pool.browse(cr, uid, bom_ids, context=context):
+            sequence = 0
+            for line in bom.bom_lines:
+                sequence += 1
+                bom_f.write('%s;%s;%s;%s;%s;%15.4f\n' % (
+                    # Heeader:
+                    bom.product_id.default_code,
+                    prepare_ascii(bom.product_id.name),
+                    
+                    # Lines:
+                    sequence,
+                    line.product_id.default_code,
+                    prepare_ascii(line.product_id.name),
+                    line.product_qty or 0.0,
+                    ))
+        bom_f.close()            
+        return True
 
     # -------------------------------------------------------------------------
     #                     Scheduled action (etl.bom.line)
     # -------------------------------------------------------------------------
-    def schedule_etl_bom_line_import(self, cr, uid, path, file_name, context=None):
+    def schedule_etl_bom_line_import(self, cr, uid, path, file_name, 
+            generate_from_bom=True, context=None):
         ''' ETL operations for import BOM in OpenERP (parameter setted up in
             scheduled action for file name)            
             Note: Only for report that compare BOM
+            generate_from_bom: generate file before
         '''
         # TODO Migrate to mrp.bom
         counter = 1
-
+        file_name = os.path.expanduser(os.path.join(path, file_name))
+        
+        # Generate file before from BOM
+        if generate_from_bom:
+            self.generate_csv_file_from_bom(
+                cr, uid, file_name, context=context) 
+            
         # Delete all:
-        all_ids=self.search(cr, uid, [])
-        self.unlink(cr, uid, all_ids)
+        all_ids = self.search(cr, uid, [], context=context)
+        self.unlink(cr, uid, all_ids, context=context)
         
         # Create elements:
         try:
-            file_name = os.path.expanduser(os.path.join(path, file_name))
-            lines = csv.reader(open(file_name,'rb'), delimiter = ";")
+            lines = csv.reader(open(file_name,'rb'), delimiter = ';')
             
             tot_colonne=0
             for line in lines:
@@ -120,51 +167,58 @@ class etl_bom_line(osv.osv):
                        quantity = PrepareFloat(line[csv_id]) # quantity         
                        
                        # Calculated fields:
-                       is_primary = len(code)!=7
+                       is_primary = len(code) != 7
                        primary = code[:6].strip() # also for primary
-                       name = name.replace(r"/",r"-")
+                       name = name.replace(r'/', r'-')
                        component_name = component_name.replace(r'/', r'-')
 
-                       data={'name': name,
-                             'code': code,
-                             'is_primary': is_primary,
-                             'primary': primary,
+                       data = {
+                           'name': name,
+                           'code': code,
+                           'is_primary': is_primary,
+                           'primary': primary,
 
-                             # Line:
-                             'seq': seq,
-                             'component_name': component_name,
-                             'component_code': component_code,
-                             'quantity': quantity,
-                             }
+                           # Line:
+                           'seq': seq,
+                           'component_name': component_name,
+                           'component_code': component_code,
+                           'quantity': quantity,
+                           }
                             
                        # PRODUCT CREATION ***************
                        try:
-                          product_id=self.create(cr, uid, data) 
+                           product_id = self.create(cr, uid, data, 
+                               context=context) 
                        except:
-                           _logger.info("[ERROR] Create BOM line, current record:", counter)
+                           _logger.info(
+                               "[ERROR] Create BOM line, current record:", 
+                               counter)
 
-            _logger.info('End importation: Total: %s'%(counter))
+            _logger.info('End importation: Total: %s' % counter)
         except:
             _logger.error('Error import BOM')
         return
 
     _columns = {
-               # Header:
-               'name': fields.char('BOM version', size=40, required=True),
-               'code': fields.char('Product code', size=8, required=True),
-               'is_primary': fields.boolean('is primary', required=False),
-               'primary': fields.char('BOM primary', size=24, required=False),
-
-               # Line:
-               'seq': fields.integer('seq'),
-               'component_name': fields.char('Component name', size=40, required=True),
-               'component_code': fields.char('Component code', size=8, required=True),
-               'quantity': fields.float('Q.', digits=(16, 6)),
-    }
+        # Header:
+        'name': fields.char('BOM version', size=40, required=True),
+        'code': fields.char('Product code', size=8, required=True),
+        'is_primary': fields.boolean('is primary', required=False),
+        'primary': fields.char('BOM primary', size=24, required=False),
+ 
+        # Line:
+        'seq': fields.integer('seq'),
+        'component_name': fields.char('Component name', size=40, 
+            required=True),
+        'component_code': fields.char('Component code', size=8, 
+            required=True),
+        'quantity': fields.float('Q.', digits=(16, 6)),
+        }
+        
     _defaults = {
         'is_primary': lambda *a: False,
         #'sum_for_total': lambda *a: True, # TODO remove
-    }                               
+        }                               
 
 class mrp_bom_extra_fields(osv.osv):
     ''' Add extra field to manage mrp.bom
@@ -174,7 +228,8 @@ class mrp_bom_extra_fields(osv.osv):
     # -------------------------------------------------------------------------
     #                      Scheduled action (mrp.bom)
     # -------------------------------------------------------------------------
-    def schedule_etl_bom_line_import(self, cr, uid, path, file_name, delete_before=False, context=None):
+    def schedule_etl_bom_line_import(self, cr, uid, path, file_name, 
+            delete_before=False, context=None):
         ''' ETL operations for import BOM in OpenERP (parameter setted up in
             scheduled action for file name)
         '''
@@ -196,7 +251,8 @@ class mrp_bom_extra_fields(osv.osv):
             except:
                 return False
         
-        def create_update_product(self, cr, uid, default_code, data, _logger, context=None):
+        def create_update_product(self, cr, uid, default_code, data, _logger, 
+                context=None):
             ''' Search default_code an decide to create / update record
                 logging error >1 record are present            
                 return product_id
@@ -210,7 +266,8 @@ class mrp_bom_extra_fields(osv.osv):
                         _logger.error('Too much product with code: %s' % (
                             code,))
                         
-                    mod = product_pool.write(cr, uid, [product_ids[0]], data, context=context)  # only first
+                    mod = product_pool.write(cr, uid, [product_ids[0]], data, 
+                        context=context)  # only first
                     return product_ids[0] # no update (it's not this import procedure
                 else:
                     return product_pool.create(cr, uid, data, context=context)                   
@@ -219,10 +276,12 @@ class mrp_bom_extra_fields(osv.osv):
                     sys.exc_info(), ))
                 return False       
 
-        def create_update_bom(self, cr, uid, domain, data, _logger, context=None):
+        def create_update_bom(self, cr, uid, domain, data, _logger, 
+                context=None):
             ''' Search domain list an decide to create / update record
                 logging error >1 record are present            
-                return list of bom lines (for check the line to delete at the end                
+                return list of bom lines (for check the line to delete at the 
+                end                
             '''
             try:
                 bom_ids = self.search(cr, uid, domain, context=context)
@@ -232,7 +291,8 @@ class mrp_bom_extra_fields(osv.osv):
                             domain,))
                         
                     bom_id = bom_ids[0]
-                    mod = self.write(cr, uid, [bom_id, ], data, context=context), [] # no list if news!                                                  
+                    mod = self.write(cr, uid, [
+                        bom_id, ], data, context=context), []# no list if news!                                                  
                     bom_read = self.read(cr, uid, [bom_id], context=context) # save bom_lines for test the deleted items
                     return bom_id, bom_read[0].get('bom_lines',[])
                 else:              # no bom (create)
@@ -281,12 +341,12 @@ class mrp_bom_extra_fields(osv.osv):
                        
                         try: # jump line if error:
                             counter += 1 
-                            code = Prepare(line[0]).strip()            # bom code (product)
-                            name = Prepare(line[1]).title()            # product description
-                            sequence = Prepare(line[2])                # sequence
-                            component_code = Prepare(line[3])          # bom code (material)
-                            component_name = Prepare(line[4]).title()  # material description
-                            quantity = PrepareFloat(line[5])           # quantity         
+                            code = Prepare(line[0]).strip() # bom code (product)
+                            name = Prepare(line[1]).title() # product description
+                            sequence = Prepare(line[2]) # sequence
+                            component_code = Prepare(line[3]) # bom code (material)
+                            component_name = Prepare(line[4]).title() # material description
+                            quantity = PrepareFloat(line[5]) # quantity         
 
                             if not quantity: # tot # of colums must be equal to # of column in first line
                                 _logger.error('Quantity empty, component: %s, product: %s' % (
@@ -297,7 +357,7 @@ class mrp_bom_extra_fields(osv.osv):
                             is_primary = len(code) != 7
                             primary = code[:6].strip() # also for primary  (not user for now)
                             name = name.replace(r"/", r"-")
-                            component_name = component_name.replace(r"/", r"-")
+                            component_name = component_name.replace(r'/', r'-')
 
                             # --------------------------------
                             # 1. Create or get product.product
@@ -316,7 +376,8 @@ class mrp_bom_extra_fields(osv.osv):
                                 #'taxes_id':,
                             }
                             product_id = create_update_product(
-                                self, cr, uid, code, product_data, _logger, context=context)
+                                self, cr, uid, code, product_data, _logger, 
+                                context=context)
                                         
                             # -----------------------------------
                             # 2. Create or get mrp.bom > [header]
@@ -334,11 +395,12 @@ class mrp_bom_extra_fields(osv.osv):
                                 'product_uos': uom_id,
                                 'product_uom': uom_id,
                             }
-                            bom_id, bom_id_lines[bom_id] = create_update_bom(self, cr, uid, [
-                                ('code', '=', code),
-                                ('bom_id', '=', False),
-                            ], bom_data, _logger, context=context)
-                            
+                            bom_id, bom_id_lines[bom_id] = create_update_bom(
+                                self, cr, uid, [
+                                    ('code', '=', code),
+                                    ('bom_id', '=', False),
+                                    ], bom_data, _logger, context=context)
+                                
                             if bom_id in header_bom_to_delete: # Present
                                 header_bom_to_delete.remove(bom_id)
 
@@ -356,7 +418,7 @@ class mrp_bom_extra_fields(osv.osv):
                                 'uom_po_id': uom_id,
                                 'uom_id': uom_id,
                                 #'taxes_id'?
-                            }
+                                }
                             product_id = create_update_product(
                                 self, cr, uid, component_code, component_data,
                                 _logger, context=context)
@@ -378,11 +440,11 @@ class mrp_bom_extra_fields(osv.osv):
                                 'product_uom': uom_id,
                                 #'date_start': fields.date('Valid From', help="Validity of this BoM or component. Keep empty if it's always valid."),
                                 #'date_stop': fields.date('Valid Until', help="Validity of this BoM or component. Keep empty if it's always valid."),
-                            }
+                                }
                             mp_bom_id, temp = create_update_bom(self, cr, uid, [
                                 ('code', '=', component_code),
                                 ('bom_id', '=', bom_id),
-                            ], component_data, _logger, context=context)
+                                ], component_data, _logger, context=context)
 
                             if mp_bom_id in component_bom_to_delete: # Present
                                 component_bom_to_delete.remove(mp_bom_id)
@@ -424,12 +486,14 @@ class mrp_bom_extra_fields(osv.osv):
         return
 
     _columns = {
-               'is_primary': fields.boolean('is primary', required=False),
-               # override:
-               'product_qty': fields.float('Product Quantity', required=True, digits=(8,6)),  #dp.get_precision('Product Unit of Measure')),
-    }
+        'is_primary': fields.boolean('is primary', required=False),
+        # override:
+        'product_qty': fields.float('Product Quantity', required=True, 
+            digits=(8,6)),  #dp.get_precision('Product Unit of Measure')),
+        }
+        
     _defaults = {
         'is_primary': lambda *a: False,
-    }                               
+        }                               
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
