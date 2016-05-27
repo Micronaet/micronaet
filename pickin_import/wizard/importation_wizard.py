@@ -321,7 +321,7 @@ class pickin_import_wizard(osv.osv_memory):
                                 pass # For now not mandatory lot for BC (only for coal)
 
                         else: # BF ********************************************
-                            import pdb; pdb.set_trace()
+                            ### TODO import pdb; pdb.set_trace()
                             # -----------------
                             # Test product lot:
                             # -----------------
