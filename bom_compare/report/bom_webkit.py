@@ -47,7 +47,8 @@ class report_webkit_html(report_sxw.rml_parse):
         return '%5.5f' % value
 
     def __init__(self, cr, uid, name, context):
-        super(report_webkit_html, self).__init__(cr, uid, name, context=context)
+        super(report_webkit_html, self).__init__(cr, uid, name, 
+            context=context)
         self.localcontext.update({
             'time': time,
             'cr': cr,
@@ -114,7 +115,7 @@ class report_webkit_html(report_sxw.rml_parse):
         rows = []
         cols=[]
 
-        # 1. Search lines that have passed primary name: #######################
+        # 1. Search lines that have passed primary name: ######################
         bom_pool = self.pool.get('etl.bom.line')
         bom_ids = bom_pool.search(self.cr, self.uid, [
             ('primary','=',primary)], order='is_primary,code,seq') # (only version)
@@ -127,16 +128,16 @@ class report_webkit_html(report_sxw.rml_parse):
                 if item.code not in translate_name:
                     translate_name[item.code] = item.name
     
-            # 3. Create table according to cols and rows #######################
+            # 3. Create table according to cols and rows ######################
             current_bom[(item.component_code,item.code)]=item.quantity
             
-            # 4. Total for version (test is 1 in report) #######################
+            # 4. Total for version (test is 1 in report) ######################
             if item.code in totals:
                 totals[item.code] += item.quantity
             else:   
                 totals[item.code] = item.quantity
 
-            # 5. Create model dict #############################################
+            # 5. Create model dict ############################################
             if item.is_primary:
                 current_model[item.component_code] = item.quantity or 0.0 #'%5.5f'%(item.quantity or 0.0)
             else:    
@@ -190,8 +191,8 @@ class report_webkit_html(report_sxw.rml_parse):
         '''
         global current_model
         
-        version=self._get_current_bom_real(component_code, version_code)
-        model=current_model.get(component_code, 0.0)
+        version = self._get_current_bom_real(component_code, version_code)
+        model = current_model.get(component_code, 0.0)
 
         if not model and not version:
             return '='            # both zero
@@ -227,7 +228,9 @@ class report_webkit_html(report_sxw.rml_parse):
         global rows
         return rows
 
-report_sxw.report_sxw('report.webkitbomline',
-                       'etl.bom.line', 
-                       'addons/bom_compare/report/bom_webkit.mako',
-                       parser=report_webkit_html)
+report_sxw.report_sxw(
+    'report.webkitbomline',
+    'etl.bom.line', 
+    'addons/bom_compare/report/bom_webkit.mako',
+    parser=report_webkit_html,
+    )
