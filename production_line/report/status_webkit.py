@@ -28,7 +28,7 @@
 ##############################################################################
 import sys
 import os
-from openerp.osv import osv
+from openerp.osv import fields, osv, expression, orm
 from datetime import datetime, timedelta
 from openerp.report import report_sxw
 import time, logging
@@ -43,47 +43,16 @@ minimum = {}
 table = {}
 error_in_print = ''
 
-class report_webkit_html(report_sxw.rml_parse):    
-    def __init__(self, cr, uid, name, context):
-        super(report_webkit_html, self).__init__(cr, uid, name, context=context)
-        self.localcontext.update({
-            'time': time,
-            'cr': cr,
-            'uid': uid,
-            'start_up': self._start_up,
-            'get_rows': self._get_rows,
-            'get_cols': self._get_cols,
-            'get_cel': self._get_cel,
-            #'has_negative': self._has_negative,
-            'jump_is_all_zero': self._jump_is_all_zero,
-        })
 
-    def _jump_is_all_zero(self, row, data=None):
-        ''' Test if line has all elements = 0 
-            Response according with wizard filter
-        '''
-        if data is None:
-            data = {}
-
-        global table
-            
-        if data.get('active', False):  # only active lines?
-            return not any(table[row]) # jump line (True)
-        return False # write line
-
-    #def _has_negative(self, row, data=None):
-    #    ''' Test if line has all elements = 0 
-    #        Response according with wizard filter
-    #    '''
-    #    if data is None:
-    #        data={}
-    #    global table
-    #        
-    #    if data.get('active',False):  # only active lines?
-    #    return True
-
-    def _start_up(self, data=None):
-        ''' Master function for prepare report
+class MrpProduction(orm.Model):
+    """ Model name: MrpProduction
+    """    
+    _inherit = 'mrp.production'
+    
+    # Prepare data for report (put here to be overrided):
+    def start_up_status_report(self, cr, uid, data=None, context=None):
+        ''' Procedure that calculate data for report, put in object for 
+            overrided (module that store data in OpenERP)
         '''
         # Utility:
         #def format_element(product, rows):            
@@ -105,7 +74,7 @@ class report_webkit_html(report_sxw.rml_parse):
         # TODO optimize:
         product_pool = self.pool.get('product.product')
         for product in product_pool.browse(
-                self.cr, self.uid, product_pool.search(self.cr, self.uid, [])):
+                cr, uid, product_pool.search(cr, uid, [])):
             minimum[product.id] = product.minimum_qty or 0.0
 
         # Init parameters:      
@@ -136,14 +105,17 @@ class report_webkit_html(report_sxw.rml_parse):
         # ---------------------------------------------------------------------
         #                     Syncronization pre report
         # ---------------------------------------------------------------------
-        # 1. Import status material and product: ##############################
+        # --------------------------------------
+        # 1. Import status material and product:
+        # --------------------------------------
         
-        # 2. Get OF lines with deadline: ######################################
+        # ------------------------------
+        # 2. Get OF lines with deadline:
+        # ------------------------------
         supplier_orders = {}
         # TODO Filter period?? (optimizing the query!)
         cursor_of = self.pool.get(
-            'micronaet.accounting').get_of_line_quantity_deadline(
-                self.cr, self.uid)
+            'micronaet.accounting').get_of_line_quantity_deadline(cr, uid)
         if not cursor_of: 
             _logger.error(
                 'Error access OF line table in accounting! (during status report webkit)')
@@ -163,9 +135,13 @@ class report_webkit_html(report_sxw.rml_parse):
                 else:
                     supplier_orders[ref][of_deadline] += q
 
-        # 3. Get OC elements ??? ##############################################
+        # -----------------------
+        # 3. Get OC elements ??? 
+        # -----------------------
 
-        # 4. Get m(x) for production ##########################################        
+        # ---------------------------
+        # 4. Get m(x) for production:
+        # ---------------------------
         material_mx = {}
         with_medium = data.get('with_medium', False)
         month_window = data.get('month_window', 2)
@@ -174,12 +150,12 @@ class report_webkit_html(report_sxw.rml_parse):
                 days=30 * month_window)).strftime(
                     DEFAULT_SERVER_DATETIME_FORMAT)
             lavoration_material_ids = lavoration_pool.search(
-                self.cr, self.uid, [
+                cr, uid, [
                     ('real_date_planned', '>=', from_date),
                     ('state', 'in', ('done', 'startworking')),
                     ], )
             for lavoration in lavoration_pool.browse(
-                    self.cr, self.uid, lavoration_material_ids):
+                    cr, uid, lavoration_material_ids):
                 for material in lavoration.bom_material_ids:
                     if material.product_id.id in material_mx:
                         material_mx[material.product_id.id] += \
@@ -191,14 +167,16 @@ class report_webkit_html(report_sxw.rml_parse):
         # ---------------------------------------------------------------------
         #                       Generate header values
         # ---------------------------------------------------------------------
-        # Get product list from OC lines: #####################################
+        # -------------------------------
+        # Get product list from OC lines:
+        # -------------------------------
         # > populate cols 
         order_line_pool = self.pool.get('sale.order.line')
         
         # only active from accounting
-        line_ids = order_line_pool.search(self.cr, self.uid, [
+        line_ids = order_line_pool.search(cr, uid, [
             ('date_deadline','<=',end_date.strftime('%Y-%m-%d'))]) 
-        for line in order_line_pool.browse(self.cr, self.uid, line_ids):
+        for line in order_line_pool.browse(cr, uid, line_ids):
             if line.product_id.not_in_status: # jump line
                 continue
             element = ('P: %s [%s]' % (
@@ -221,19 +199,22 @@ class report_webkit_html(report_sxw.rml_parse):
                     line.product_uom_qty or 0.0  # OC deadlined this date    
                     
             # only < today        
-            if not line.order_id.date_deadline or line.order_id.date_deadline < start_date.strftime('%Y-%m-%d'): 
-                table[element[1]][1] -= line.product_uom_qty or 0.0 # OC deadlined before today
-
+            if not line.order_id.date_deadline or \
+                line.order_id.date_deadline < start_date.strftime(
+                    '%Y-%m-%d'): 
+                # OC deadlined before today:
+                table[element[1]][1] -= line.product_uom_qty or 0.0 
+                
         # ---------------------------------------------------------------------
         #                   Get material list from Lavoration order
         # ---------------------------------------------------------------------
         # Populate cols
-        lavoration_ids = lavoration_pool.search(self.cr, self.uid, [
+        lavoration_ids = lavoration_pool.search(cr, uid, [
             ('real_date_planned', '<=', end_date.strftime(
                 '%Y-%m-%d 23:59:59')), # only < max date range
             ('state', 'not in', ('cancel','done'))] ) # only open not canceled
         for lavoration in lavoration_pool.browse(
-                self.cr, self.uid, lavoration_ids): # filtered BL orders
+                cr, uid, lavoration_ids): # filtered BL orders
             # ----------------------------
             # Product in lavoration order:
             # ----------------------------
@@ -331,6 +312,51 @@ class report_webkit_html(report_sxw.rml_parse):
         # > Import OC product in line with deadline:
         # > Import OF material with deadline:
         return True
+
+class report_webkit_html(report_sxw.rml_parse):    
+    def __init__(self, cr, uid, name, context):
+        super(report_webkit_html, self).__init__(cr, uid, name, context=context)
+        self.localcontext.update({
+            'time': time,
+            'cr': cr,
+            'uid': uid,
+            'start_up': self._start_up,
+            'get_rows': self._get_rows,
+            'get_cols': self._get_cols,
+            'get_cel': self._get_cel,
+            #'has_negative': self._has_negative,
+            'jump_is_all_zero': self._jump_is_all_zero,
+        })
+
+    def _jump_is_all_zero(self, row, data=None):
+        ''' Test if line has all elements = 0 
+            Response according with wizard filter
+        '''
+        if data is None:
+            data = {}
+
+        global table
+            
+        if data.get('active', False):  # only active lines?
+            return not any(table[row]) # jump line (True)
+        return False # write line
+
+    #def _has_negative(self, row, data=None):
+    #    ''' Test if line has all elements = 0 
+    #        Response according with wizard filter
+    #    '''
+    #    if data is None:
+    #        data={}
+    #    global table
+    #        
+    #    if data.get('active',False):  # only active lines?
+    #    return True
+
+    def _start_up(self, data=None):
+        ''' Master function for prepare report
+        '''
+        return self.pool.get('mrp.production').start_up_status_report(
+            self.cr, self.uid, data)
 
     def _get_rows(self):
         ''' Rows list (generated by _start_up function)
