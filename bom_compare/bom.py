@@ -66,6 +66,11 @@ class etl_bom_line(osv.osv):
     _order = 'is_primary,name,seq'    
 
     # -------------------------------------------------------------------------
+    #                                 Utility
+    # -------------------------------------------------------------------------
+    
+
+    # -------------------------------------------------------------------------
     #                     Scheduled action (etl.bom.line)
     # -------------------------------------------------------------------------
     def schedule_etl_bom_line_import(self, cr, uid, path, file_name, context=None):
@@ -92,7 +97,8 @@ class etl_bom_line(osv.osv):
                 else: 
                    if not tot_colonne:
                        tot_colonne=len(line)
-                       _logger.info('Start sync of BOM [cols=%s, file=%s]'%(tot_colonne, file_name))
+                       _logger.info('Start sync of BOM [cols=%s, file=%s]' % (
+                           tot_colonne, file_name))
                       
                    if len(line): # jump empty lines
                        if tot_colonne != len(line): # tot # of colums must be equal to # of column in first line
@@ -101,23 +107,23 @@ class etl_bom_line(osv.osv):
                        
                        counter += 1 
                        csv_id=0
-                       code = Prepare(line[csv_id]).strip()               # bom code (product)
+                       code = Prepare(line[csv_id]).strip() # bom code (product)
                        csv_id+=1
-                       name = Prepare(line[csv_id]).title()               # product description
+                       name = Prepare(line[csv_id]).title() # product description
                        csv_id+=1
-                       seq = Prepare(line[csv_id])                        # sequence
+                       seq = Prepare(line[csv_id]) # sequence
                        csv_id+=1
-                       component_code = Prepare(line[csv_id])             # bom code (material)
+                       component_code = Prepare(line[csv_id]) # bom code (material)
                        csv_id+=1
-                       component_name = Prepare(line[csv_id]).title()     # material description
+                       component_name = Prepare(line[csv_id]).title() # material description
                        csv_id+=1
-                       quantity = PrepareFloat(line[csv_id])              # quantity         
+                       quantity = PrepareFloat(line[csv_id]) # quantity         
                        
                        # Calculated fields:
                        is_primary = len(code)!=7
                        primary = code[:6].strip() # also for primary
                        name = name.replace(r"/",r"-")
-                       component_name = component_name.replace(r"/",r"-")
+                       component_name = component_name.replace(r'/', r'-')
 
                        data={'name': name,
                              'code': code,
@@ -163,7 +169,6 @@ class etl_bom_line(osv.osv):
 class mrp_bom_extra_fields(osv.osv):
     ''' Add extra field to manage mrp.bom
     ''' 
-    _name = 'mrp.bom'
     _inherit = 'mrp.bom'
 
     # -------------------------------------------------------------------------
