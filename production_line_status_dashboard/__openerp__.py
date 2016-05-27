@@ -18,7 +18,7 @@
 ###############################################################################
 
 {
-    'name': 'Dashboard for stock status',
+    'name': 'Dashboard for stock status', 
     'version': '0.1',
     'category': 'MRP',
     'description': '''
