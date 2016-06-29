@@ -15,7 +15,7 @@
 		                <field name="product_id" required="1" />
 		                <field name="ref" />
 		                <field name="package_id"  />
-		                <!--<field name="stock_available_accounting" readonly="1"/>-->
+		                <field name="stock_available_accounting" readonly="1"/><!--remove when manage stock status-->
 	                </group>
                 </sheet>
             </form>        
@@ -31,7 +31,7 @@
 	            <field name="ref" />
 	            <field name="product_id" invisible="context.get('embedded',False)"/>
                 <field name="package_id" />
-	            <!--<field name="stock_available_accounting" sum="Total" />-->
+	            <field name="stock_available_accounting" sum="Total" /><!--remove when manage stock status-->
 	            <field name="date" />                
 	            <field name="anomaly" invisible="1" />
             </tree>
@@ -46,7 +46,7 @@
                 <attribute name="invisible">1</attribute>
             </field>
             <field name="stock_available" position="after">
-   	            <!--<field name="stock_available_accounting" sum="Total"/>-->
+   	            <field name="stock_available_accounting" sum="Total" /><!--remove when manage stock status-->
    	            <field name="anomaly" invisible="1" />
             </field>
             <xpath expr="/tree" position="attributes"> 
