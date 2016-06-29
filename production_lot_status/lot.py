@@ -55,7 +55,7 @@ class stock_production_lot_accounting(orm.Model):
             package: manage package (default False)
         '''
         # TODO remove importation!!!!!!!
-        """
+        
         if context is None:
             context = {}
         separator = ";"
@@ -139,16 +139,16 @@ class stock_production_lot_accounting(orm.Model):
         no_stock_ids = self.search(cr, uid, [('id', 'not in', lot_modify_ids)], context=context)
         self.write(cr, uid, no_stock_ids, {
             'stock_available_accounting': 0.0,
-            }, context=context)"""
+            }, context=context)
         return True
         
     _columns = {
         'package_id': fields.many2one('product.ul', 'Package', 
             help='Package used for package (for this lot)'),
-            
-        #'stock_available_accounting': fields.float('Stock availability', digits=(16, 2)),    
-        #'accounting_ref': fields.char('Accounting ref', size=12, 
-        #    help="ID lot in account program"),
+        # TODO remove
+        'stock_available_accounting': fields.float('Stock availability', digits=(16, 2)),    
+        'accounting_ref': fields.char('Accounting ref', size=12, 
+            help="ID lot in account program"),
 
         'anomaly': fields.boolean('Anomaly', required=False),    
     }    
