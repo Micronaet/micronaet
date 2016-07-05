@@ -34,8 +34,7 @@ _logger = logging.getLogger(__name__)
 class res_company(osv.osv):
     ''' Extra fields for res.company object
     '''
-    _name="res.company"
-    _inherit="res.company"
+    _inherit = 'res.company'
 
     _columns = {
         'msds_folder_in': fields.char('MSDS folder in', size=128,
@@ -45,12 +44,12 @@ class res_company(osv.osv):
             "root module path"),
         'msds_log_id': fields.many2one('res.users', 'Log user',
             help="User that receive all logs during importation schedule"),
-    }
+        }
 
     _defaults = {
         'msds_folder_in': lambda *a: '~/msds',
         'msds_folder_store': lambda *a: False,
-    }
+        }
 
 class msds_form_language(orm.Model):
     ''' MSDS language for Form documents
@@ -62,7 +61,7 @@ class msds_form_language(orm.Model):
         'name': fields.char('Language', size=64, required=True),
         'code': fields.char('Code', size=4, required=True),
         'note': fields.text('Note'),
-    }
+        }
 
 class msds_form(orm.Model):
     ''' MSDS Form, all elements are form for product (present in more version)
@@ -386,7 +385,6 @@ class msds_form_version(orm.Model):
 class msds_form(orm.Model):
     ''' Inherit for relations
     '''
-    _name = 'msds.form'
     _inherit = 'msds.form'
 
     _columns = {
@@ -434,11 +432,10 @@ class product_product(orm.Model):
     """ Add extra info in product
     """
     _inherit = 'product.product'
-    _name = 'product.product'
 
     _columns = {
         'msds_ids': fields.one2many('msds.form.rel', 'product_id', 'MDSD'),
         'msds_alias_ids': fields.one2many(
             'msds.form.rel', 'alias_id', 'Alias MDSD'),
-    }
+        }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
