@@ -101,7 +101,7 @@ class res_partner(osv.osv):
     #----------------------
     # Scheduled operations:
     #----------------------
-    def schedules_pricelist_partner(self, cr, uid, file_name, context = None):
+    def schedules_pricelist_partner(self, cr, uid, file_name, context=None):
         ''' Create a customer pricelist depend on partner particularity
         '''
         _logger.info("Start import pricelist:")
@@ -201,20 +201,22 @@ class res_partner(osv.osv):
                        status = "Start search product"
                        if product_id not in products:
                            product_pool = self.pool.get('product.product')
-                           product_ids = product_pool.search(cr, uid, [('mexal_id', '=', product_id)], context = context)                           
+                           product_ids = product_pool.search(cr, uid, [
+                               ('mexal_id', '=', product_id)], context=context)
                            if product_ids:
                                products[product_id] = product_ids[0]
                            else:    
-                               _logger.error("No product found: %s" % (product_id, ) )
-                               continue
-                               
+                               _logger.error("No product found: %s" % (
+                                   product_id, ) )
+                               continue                               
                        product_openerp_id = products[product_id]                       
                        
                        # ----------------------
                        # Create history product
                        # ----------------------
                        status = "Create history partner-product"
-                       history_pool = self.pool.get('res.partner.pricelist.product')
+                       history_pool = self.pool.get(
+                           'res.partner.pricelist.product')
                        history_ids = history_pool.search(cr, uid, [
                            ('product_id','=',product_openerp_id), 
                            ('partner_id', '=', pricelist[accounting_id][0]),
@@ -240,9 +242,12 @@ class res_partner(osv.osv):
                                }
 
                            item_ids = item_pool.search(cr, uid, [
-                               ('price_version_id', '=', version_id), ('product_id', '=', product_openerp_id)], context = context)
+                               ('price_version_id', '=', version_id), 
+                               ('product_id', '=', product_openerp_id),
+                               ], context = context)
                            if item_ids: # update
-                               item_pool.write(cr, uid, item_ids, item_data, context = context)
+                               item_pool.write(
+                                   cr, uid, item_ids, item_data, context=context)
                            else:    
                                item_pool.create(cr, uid, item_data, context = context)
                        _logger.info("[Row %s] PL item import %s:" % (tot, line))
@@ -278,7 +283,7 @@ class res_partner(osv.osv):
         _logger.info("End import pricelist particular for customer") 
         return True   
         
-    def scheduled_product_creations(self, cr, uid, context = None):
+    def scheduled_product_creations(self, cr, uid, context=None):
         ''' Check in order, invoice and also importation (if present) what are
             the product that usually bought the customer
             This list are for product a pricelist depend on his default
@@ -298,8 +303,7 @@ class res_partner(osv.osv):
                         'partner_id': order.partner_id.id,
                         'product_id': line.product_id.id,
                         'in_pricelist': True,
-                    }, context = context)
-        
+                    }, context = context)        
         return True
     
     _columns = {
