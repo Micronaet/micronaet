@@ -125,8 +125,8 @@ class msds_form(orm.Model):
         ''' Scheduled import for MSDS form
         '''
         _logger.info(_('Start import PDF MSDS forms'))
-        log_message = ""
-        log_imported = ""
+        log_message = ''
+        log_imported = ''
 
         # ---------------
         # Get parameters:
