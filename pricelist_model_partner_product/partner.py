@@ -291,11 +291,12 @@ class res_partner(osv.osv):
         order_pool = self.pool.get('sale.order')
         pricelist_pool = self.pool.get('res.partner.pricelist.product')
         
-        order_ids = order_pool.search(cr, uid, [], context = context)
-        for order in order_pool.browse(cr, uid, order_ids, context = context):
+        order_ids = order_pool.search(cr, uid, [], context=context)
+        for order in order_pool.browse(cr, uid, order_ids, context=context):
             partner_filter = ('partner_id', '=', order.partner_id.id)
             for line in order.order_line:
-                pricelist_ids = pricelist_pool.search(cr, uid, [partner_filter, 
+                pricelist_ids = pricelist_pool.search(cr, uid, [
+                    partner_filter, 
                     ('product_id', '=', line.product_id.id),
                     ], context = context)
                 if not pricelist_ids: 
