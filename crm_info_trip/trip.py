@@ -21,11 +21,15 @@ import os
 import sys
 import openerp.netsvc
 import logging
+from openerp import SUPERUSER_ID
 from openerp.osv import osv, orm, fields
 from datetime import datetime, timedelta
-from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, DATETIME_FORMATS_MAP, float_compare
+from openerp.tools import (
+    DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, 
+    DATETIME_FORMATS_MAP, float_compare)
 import openerp.addons.decimal_precision as dp
 from openerp.tools.translate import _
+
 
 
 _logger = logging.getLogger(__name__)
@@ -194,8 +198,9 @@ class res_partner(osv.osv):
     def create_open_analysis_document(self, cr, uid, ids, context=None):
         ''' Create a fake visit for partner statistic analysis
         '''
+        import pdb; pdb.set_trace()
         partner_proxy = self.browse(cr, uid, ids, context=context)[0]
-        crm_trip_id = partner_proxy.crm_trip_id
+        crm_trip_id = partner_proxy.crm_trip_id.id
         
         if not crm_trip_id:
             # ----------------------
@@ -205,6 +210,7 @@ class res_partner(osv.osv):
             crm_trip_id = self.pool.get('crm.trip').create(cr, uid, {
                 'partner': True,
                 'name': partner_proxy.name,
+                'user_id': SUPERUSER_ID,
                 'from_date': datetime.now().strftime(
                     DEFAULT_SERVER_DATE_FORMAT),
                 'to_date': datetime.now().strftime(
@@ -229,10 +235,10 @@ class res_partner(osv.osv):
             'view_type': 'form',
             'view_mode': 'form',
             'res_id': crm_trip_id,
-            'res_model': 'crm.trip.partner',
+            'res_model': 'crm.trip',
             #'view_id': view_id, # False
             'views': [(False, 'form')],
-            'domain': [],
+            'domain': [('id', '=', crm_trip_id)],
             'context': context,
             'target': 'current', # 'new'
             'nodestroy': False,
