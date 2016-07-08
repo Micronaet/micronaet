@@ -36,14 +36,15 @@
                 <form string="CRM trip" version="7.0">
                     <sheet>
                         <group colspan="4" col="4">
-                            <field name="name" />
-                            <field name="user_id" />
+                            <field name="name" attrs="{'invisible':[('partner','=',True)]}"/>
+                            <field name="user_id" attrs="{'invisible':[('partner','=',True)]}" />
                             <field name="from_date" />
                             <field name="to_date" />
                             <field name="analysis_year" />                                          
                             <field name="product_from_date" />                            
+                            <field name="partner" invisible="1"/>
                             <notebook colspan="4">
-                                <page string="Customers">
+                                <page string="Customers"  attrs="{'invisible':[('partner','=',True)]}">
                                     <group colspan="4" col="4">
                                         <field name="country_id" />
                                         <button name="load_country" string="Load Nation" type="object" help="Add to partner all partner for the country selected" attrs="{'invisible':[('country_id','=',False)]}"/>
@@ -68,8 +69,8 @@
                                     </group>    
                                 </page>
                             </notebook>    
-                            <separator string="Note" colspan="4"/>              
-                            <field name="note" colspan ="4" nolabel="1"/>
+                            <separator string="Note" colspan="4" attrs="{'invisible':[('partner','=',True)]}"/>
+                            <field name="note" colspan ="4" nolabel="1" attrs="{'invisible':[('partner','=',True)]}"/>
                         </group>
                     </sheet>
                 </form>
@@ -80,6 +81,7 @@
             <field name="res_model">crm.trip</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
+            <field name="domain">[('partner','=',False)]</field>
             <field name="view_id" ref="crm_trip_tree_view"/>
         </record>
         
@@ -139,7 +141,18 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="crm_trip_tree_view"/>
         </record>-->
-        
+
+        <!--res.partner-->        
+        <record model="ir.ui.view" id="view_res_partner_analisys_button_form">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <button name="create_open_analysis_document" string="CRM Analysis" type="object" />
+                </field>
+            </field>
+        </record>
         <menuitem name="Manage trip" id="menu_crm_trip_manage" sequence="40" parent="base.menu_sales" action="action_crm_trip"/>
     
   </data>

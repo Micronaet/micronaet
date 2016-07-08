@@ -98,14 +98,16 @@ class crm_trip(osv.osv):
         return res
         
     _columns = {
+        'partner':fields.boolean('Partner trip',
+            help='Partner trip for get status without trip generation'),
         'name': fields.char('Name', required=True, size=40, 
             help='Trip short name'),
         'user_id': fields.many2one('res.users', 'Sales man', required=True),
         'from_date': fields.date('From date', required=True),
         'to_date': fields.date('To date'),
         'product_from_date': fields.date('Product buy date',
-            help="""Evaluation date for product, filter product last buy date
-                after this date (also for sample product)"""),
+            help='''Evaluation date for product, filter product last buy date
+                after this date (also for sample product)'''),
         'analysis_year': fields.selection(_get_analysis_year, "Analysis year",
             help="Choose from what year start analysis (depend on export "
             "mirror in databases selected on SQL DBMS"),
@@ -164,6 +166,9 @@ class crm_trip_partner(osv.osv):
             'Abstract', help='Topic argument for the visit'),
         'note': fields.text('Note', help='Extra information about trip'),
         'trip_id': fields.many2one('crm.trip', 'Visit'),
+        # TODO needed?
+        'partner': fields.related(
+            'trip_id', 'partner', type='boolean', string='Partner trip'), 
         }
         
     _default = {    
@@ -184,11 +189,60 @@ class crm_trip(osv.osv):
 class res_partner(osv.osv):
     ''' Extra relation in partner
     '''
-    _name = 'res.partner'
     _inherit = 'res.partner'
 
+    def create_open_analysis_document(self, cr, uid, ids, context=None):
+        ''' Create a fake visit for partner statistic analysis
+        '''
+        partner_proxy = self.browse(cr, uid, ids, context=context)[0]
+        crm_trip_id = partner_proxy.crm_trip_id
+        
+        if not crm_trip_id:
+            # ----------------------
+            # Generate (first time):
+            # ----------------------
+            # Header
+            crm_trip_id = self.pool.get('crm.trip').create(cr, uid, {
+                'partner': True,
+                'name': partner_proxy.name,
+                'from_date': datetime.now().strftime(
+                    DEFAULT_SERVER_DATE_FORMAT),
+                'to_date': datetime.now().strftime(
+                    DEFAULT_SERVER_DATE_FORMAT),                    
+                'note': _('Automatic generation from partner, used for setup'),    
+                }, context=context)
+            
+            # Lines
+            self.pool.get('crm.trip.partner').create(cr, uid, {
+                'sequence': 1,
+                'partner_id': ids[0],                   
+                'trip_id': crm_trip_id,
+                }, context=context)
+            
+            # Update partner for future ref    
+            self.write(cr, uid, ids, {
+                'crm_trip_id': crm_trip_id}, context=context)    
+        
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Analysis parameters'),
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_id': crm_trip_id,
+            'res_model': 'crm.trip.partner',
+            #'view_id': view_id, # False
+            'views': [(False, 'form')],
+            'domain': [],
+            'context': context,
+            'target': 'current', # 'new'
+            'nodestroy': False,
+            }
+    
     _columns = {
         'trip_ids': fields.one2many(
-            'crm.trip.partner', 'partner_id', 'Visit'),
+            'crm.trip.partner', 'partner_id', 'Visit', domain=[
+                ('partner', '=', False)]),
+        'crm_trip_id': fields.many2one(
+            'crm.trip', 'Analysis parameters'),
         }        
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
