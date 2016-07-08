@@ -44,6 +44,15 @@ class crm_trip(osv.osv):
     # -------------
     # Button event:
     # -------------
+    def open_crm_partner_report(self, cr, uid, ids, context=None):
+       ''' Open report for partner
+       '''       
+       return { # action report
+           'type': 'ir.actions.report.xml',
+           'report_name': 'crm_trip_info_report',
+           #'datas': datas,
+           }            
+       
     def reload_country(self, cr, uid, ids, context=None):
         ''' Load nation but before delete all elements
         '''
@@ -182,7 +191,6 @@ class crm_trip_partner(osv.osv):
 class crm_trip(osv.osv):
     ''' CRM Trip object
     '''
-    _name = 'crm.trip'
     _inherit = 'crm.trip'
 
     _columns = {

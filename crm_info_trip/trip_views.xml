@@ -44,7 +44,7 @@
                             <field name="product_from_date" />                            
                             <field name="partner" invisible="1"/>
                             <notebook colspan="4">
-                                <page string="Customers"  attrs="{'invisible':[('partner','=',True)]}">
+                                <page string="Customers" attrs="{'invisible':[('partner','=',True)]}">
                                     <group colspan="4" col="4">
                                         <field name="country_id" />
                                         <button name="load_country" string="Load Nation" type="object" help="Add to partner all partner for the country selected" attrs="{'invisible':[('country_id','=',False)]}"/>
@@ -54,6 +54,7 @@
                                     </group>
                                 </page>    
                                 <page string="Report">
+                                    <button name="open_crm_partner_report" string="CRM report" type="object" icon="gtk-print" attrs="{'invisible':[('partner','=',False)]}" class="oe_highlight"/>
                                     <group colspan="4" col="6">
                                         <field name="with_anagraphic" />
                                         <field name="with_note" />
