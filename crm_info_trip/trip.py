@@ -198,18 +198,21 @@ class res_partner(osv.osv):
     def create_open_analysis_document(self, cr, uid, ids, context=None):
         ''' Create a fake visit for partner statistic analysis
         '''
-        import pdb; pdb.set_trace()
         partner_proxy = self.browse(cr, uid, ids, context=context)[0]
         crm_trip_id = partner_proxy.crm_trip_id.id
         
-        if not crm_trip_id:
+        if not crm_trip_id: # else update evaluation period?
             # ----------------------
             # Generate (first time):
             # ----------------------
-            # Header
+            current_year = datetime.now().year       
+            # Header                        
             crm_trip_id = self.pool.get('crm.trip').create(cr, uid, {
                 'partner': True,
                 'name': partner_proxy.name,
+                'analysis_year': '%s' % (current_year -1),
+                'product_from_date': datetime.now().strftime(
+                    '%d-01-01' % (current_year - 1)),
                 'user_id': SUPERUSER_ID,
                 'from_date': datetime.now().strftime(
                     DEFAULT_SERVER_DATE_FORMAT),
