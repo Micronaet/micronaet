@@ -47,7 +47,7 @@
     'init_xml': [],
     'demo_xml': [],
     'update_xml': [
-        #'security/visibility_group.xml',
+        'security/visibility_group.xml',
         'security/ir.model.access.csv',                     
         'wizard/confirm_production_wizard.xml',
         'wizard/split_lavoration_wizard.xml',
