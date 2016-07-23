@@ -204,6 +204,9 @@ class confirm_mrp_production_wizard(osv.osv_memory):
 
         lavoration_browse = lavoration_pool.browse(
             cr, uid, current_lavoration_id, context=context)
+        # readability:
+        mrp = lavoration_browse.production_id # Production reference
+            
 
         # Only if not to close have a partial or fully load:
         # 1. First close: all material are unloaded from stock accounting
@@ -215,12 +218,12 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             # -----------------------------------------------------------------
             # Verify thet if is the last load no lavoration are open:
             if not wiz_proxy.partial:
-                for l in lavoration_browse.production_id.workcenter_lines:
+                for l in mrp.workcenter_lines:
                     if l.state not in ('done', 'cancel'): # not closed
                         raise osv.except_osv(
                             _('Last lavoration:'),
                             _('When is the last lavoration all lavoration must be in closed state!'))
-            if lavoration_browse.production_id.accounting_state in ('cancel'):
+            if mrp.accounting_state in ('cancel'):
                 raise osv.except_osv(
                     _('Production error:'),
                     _('Could not add other extra load (production cancelled)!'))
@@ -267,7 +270,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 wiz_proxy.product_id.default_code, # Product code
                 lavoration_browse.workcenter_id.code[:2], # Workcenter
                 '%06d#%01d' % (
-                    int(lavoration_browse.production_id.name[3:]),
+                    int(mrp.name[3:]),
                     sequence,
                 ),    # Job <<<<<< TODO use production (test, production is 5)
                 wiz_proxy.package_id.code if package_id else '', # Package
@@ -279,10 +282,10 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             # TODO potrebbe generare problemi se annullassero carichi o simili!
             # Better: reload from dbmirror (but in real time)
             product_pool.write(
-                cr, uid, lavoration_browse.production_id.product_id.id,    
+                cr, uid, mrp.product_id.id,    
                 # XXX Now update accounting_qty on db for speed up
                 {'accounting_qty': (
-                    lavoration_browse.production_id.product_id.accounting_qty or 0.0) + (wiz_proxy.real_product_qty or 0.0),
+                    mrp.product_id.accounting_qty or 0.0) + (wiz_proxy.real_product_qty or 0.0),
             }, context=context)
 
             # Export CL for product with new generated code:
@@ -367,7 +370,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 total = 0.0 # net production total
                 
                 # Partial (calculated every load on all production)                
-                for l in lavoration_browse.production_id.workcenter_lines:
+                for l in mrp.workcenter_lines:
                     for partial in l.load_ids:
                         total += partial.product_qty or 0.0
 
@@ -410,7 +413,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                     # ----------------------------------------------
                     # All unload cost of materials (all production):
                     # ----------------------------------------------
-                    for lavoration in lavoration_browse.production_id.workcenter_lines:
+                    for lavoration in mrp.workcenter_lines:
                         for unload in lavoration.bom_material_ids:
                             try:
                                 unload_cost_total += unload.product_id.standard_price * unload.quantity
@@ -421,7 +424,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                     # ------------------------------
                     # All unload package and pallet:
                     # ------------------------------
-                    for l in lavoration_browse.production_id.workcenter_lines:                    
+                    for l in mrp.workcenter_lines:                    
                         for load in l.load_ids:
                             try:
                                 # Package:
@@ -450,7 +453,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                         unload_cost_total, unload_cost, ))
 
                     # Update all production with value calculated: #TODO serve?
-                    for l in lavoration_browse.production_id.workcenter_lines:                    
+                    for l in mrp.workcenter_lines:                    
                         for load in l.load_ids:
                             load_pool.write(cr, uid, load.id, {
                                 'accounting_cost': unload_cost * load.product_qty,
@@ -510,17 +513,17 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                     # ---------------------------------------------------------
                     # TODO Non occorre più verificare togliee questa parte:
                     # Close production order:
-                    #if lavoration_browse.production_id.accounting_state in ('draft', 'production'):
-                    #    if lavoration_browse.production_id.accounting_state in ('production'):
+                    #if mrp.accounting_state in ('draft', 'production'):
+                    #    if mrp.accounting_state in ('production'):
                     #        all_closed = True
-                    #        for lavoration in lavoration_browse.production_id.workcenter_lines:
+                    #        for lavoration in mrp.workcenter_lines:
                     #            if lavoration.state not in ('done','cancel'):
                     #                all_closed = False
                     #                break
                     #        if all_closed:
                     wf_service.trg_validate(
                         uid, 'mrp.production', 
-                        lavoration_browse.production_id.id,
+                        mrp.id,
                         'trigger_accounting_close',
                         cr)
 
