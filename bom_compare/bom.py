@@ -487,14 +487,9 @@ class mrp_bom_extra_fields(osv.osv):
         return
 
     _columns = {
-        'is_primary': fields.boolean('is primary', required=False),
+        'is_primary': fields.boolean('is primary'),
         # override:
-        'product_qty': fields.float('Product Quantity', required=True, 
-            digits=(8,6)),  #dp.get_precision('Product Unit of Measure')),
+        'product_qty': fields.float('Product Quantity', digits=(8,6)),  
+        #dp.get_precision('Product Unit of Measure')),
         }
-        
-    _defaults = {
-        'is_primary': lambda *a: False,
-        }                               
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
