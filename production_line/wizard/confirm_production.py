@@ -238,7 +238,8 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             wrong = wiz_proxy.wrong
             recycle = wiz_proxy.recycle
             recycle_product_id = wiz_proxy.recycle_product_id
-            package_id = wiz_proxy.package_id.id if wiz_proxy.package_id else False
+            package_id = \
+                wiz_proxy.package_id.id if wiz_proxy.package_id else False
             price = 0.0   # TODO create a function for compute: sum ( q. x std. cost)
             load_id = load_pool.create(cr, uid, {
                 'product_qty': product_qty, # only the wrote total
@@ -252,28 +253,36 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 'recycle_product_id': recycle_product_id.id if recycle_product_id else False,
                 'wrong': wrong,
                 'wrong_comment': wiz_proxy.wrong_comment,
-            })
-            sequence = load_pool.browse( # TODO crearla in funzione della produzione
-                cr, uid, load_id, context=context).sequence # reload record for get sequence value
+                })
+            # TODO crearla in funzione della produzione    
+            sequence = load_pool.browse(
+                cr, uid, load_id, context=context).sequence 
+            # reload record for get sequence value
 
             # TODO manage recycle product!!!!! <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-            # [(1)Famiglia-(6)Prodotto-(1).Pezzatura-(1)Versione]-[(5)Partita-#(2)SequenzaCarico]-[(10)Imballo]
+            # [(1)Famiglia-(6)Prodotto-(1).Pezzatura-(1)Versione]-
+            # [(5)Partita-#(2)SequenzaCarico]-[(10)Imballo]
             product_code = '%-8s%-2s%-10s%-10s' % (
-                wiz_proxy.product_id.default_code,                                            # Product code
-                lavoration_browse.workcenter_id.code[:2],                                     # Workcenter
+                wiz_proxy.product_id.default_code, # Product code
+                lavoration_browse.workcenter_id.code[:2], # Workcenter
                 '%06d#%01d' % (
                     int(lavoration_browse.production_id.name[3:]),
                     sequence,
-                ),    # Job         <<<<<<< TODO use production (test, production is 5)
-                wiz_proxy.package_id.code if package_id else '',                              # Package
-            )
-            load_pool.write(cr, uid, load_id, {'product_code': product_code}, context=context)
+                ),    # Job <<<<<< TODO use production (test, production is 5)
+                wiz_proxy.package_id.code if package_id else '', # Package
+                )
+            load_pool.write(cr, uid, load_id, {
+                'product_code': product_code}, context=context)
 
-            ### Write load on accounting: # TODO potrebbe generare problemi se annullassero carichi o cose del genere!!!
+            ### Write load on accounting: 
+            # TODO potrebbe generare problemi se annullassero carichi o simili!
             # Better: reload from dbmirror (but in real time)
-            product_pool.write(cr, uid, lavoration_browse.production_id.product_id.id,    # Now update accounting_qty on db for speed up
-                {'accounting_qty': (lavoration_browse.production_id.product_id.accounting_qty or 0.0) + (wiz_proxy.real_product_qty or 0.0),
+            product_pool.write(
+                cr, uid, lavoration_browse.production_id.product_id.id,    
+                # XXX Now update accounting_qty on db for speed up
+                {'accounting_qty': (
+                    lavoration_browse.production_id.product_id.accounting_qty or 0.0) + (wiz_proxy.real_product_qty or 0.0),
             }, context=context)
 
             # Export CL for product with new generated code:
