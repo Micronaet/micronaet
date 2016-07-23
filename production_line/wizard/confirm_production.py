@@ -40,63 +40,8 @@ class MrpProduction(osv.osv_memory):
     
     # -----------------------------------
     # Utility used also in forced module:
-    # -----------------------------------
-    
-    def create_unload_file(self, cr, uid, file_sl, lavoration_browse, 
-            force_stock=False, context=None):
-        ''' Procedure for save in fullname file passed the lavoration element
-            used for pass file to import account procedure        
-        '''
-        # Pool used:
-        product_pool = self.pool.get('product.product')
-        
-        try:
-            f_sl = open(file_sl, 'w')
-            for unload in lavoration_browse.bom_material_ids:
-                default_code = unload.product_id.default_code
-                if not default_code:
-                    raise osv.except_osv(
-                        _('Material code error:'),
-                        _('No code for MP: %s') % unload.product_id.name,
-                        )
-                    
-                # Export SL for material used for entire production:
-                f_sl.write('%-10s%-25s%10.2f\r\n' % (
-                    default_code,
-                    lavoration_browse.name[4:],
-                    unload.quantity,
-                    ))
-                
-                if force_stock:
-                    try:
-                        # XXX Now update accounting_qty on db for speed up
-                        product_pool.write(cr, uid, [unload.product_id.id],    
-                            {'accounting_qty': 
-                                (unload.product_id.accounting_qty or 0.0) - \
-                                (unload.quantity or 0.0), 
-                                },
-                        context=context)
-                    except:
-                        pass # no error raise if problems
-            f_sl.close()        
-        except:
-            raise osv.except_osv(
-                _('Transit file SL:'),
-                _('Problem accessing file: %s '
-                    '(maybe open in accounting program or error'
-                    ' during export)!') % file_sl,
-            )
-        return True
-
-class confirm_mrp_production_wizard(osv.osv_memory):
-    ''' Wizard that confirm production/lavoration
-    '''
-    _name = 'mrp.production.confirm.wizard'
-
-    # -------------------------------------------------------------------------
-    #                             Utility function
-    # -------------------------------------------------------------------------
-    def get_parameter(self, cr, uid, context=None):
+    # -----------------------------------    
+    def get_sl_cl_parameter(self, cr, uid, context=None):
         ''' Get parameter browse obj for connection info
         '''
         try:
@@ -157,8 +102,8 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 _('Interchange file!'),
                 _('Error create interchange file name!'))
         return file_cl, file_cl_upd, file_sl
-        
-    def get_xmlrpc_server(self, cr, uid, parameter, context=None):
+
+    def get_xmlrpc_sl_cl_server(self, cr, uid, parameter, context=None):
         ''' Configure and retur XML-RPC server for accounting        
         '''
         try:
@@ -176,7 +121,58 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 )
                 
         return xmlrpclib.ServerProxy(xmlrpc_server)
+
+    def create_unload_file(self, cr, uid, file_sl, lavoration_browse, 
+            force_stock=False, context=None):
+        ''' Procedure for save in fullname file passed the lavoration element
+            used for pass file to import account procedure        
+        '''
+        # Pool used:
+        product_pool = self.pool.get('product.product')
         
+        try:
+            f_sl = open(file_sl, 'w')
+            for unload in lavoration_browse.bom_material_ids:
+                default_code = unload.product_id.default_code
+                if not default_code:
+                    raise osv.except_osv(
+                        _('Material code error:'),
+                        _('No code for MP: %s') % unload.product_id.name,
+                        )
+                    
+                # Export SL for material used for entire production:
+                f_sl.write('%-10s%-25s%10.2f\r\n' % (
+                    default_code,
+                    lavoration_browse.name[4:],
+                    unload.quantity,
+                    ))
+                
+                if force_stock:
+                    try:
+                        # XXX Now update accounting_qty on db for speed up
+                        product_pool.write(cr, uid, [unload.product_id.id],    
+                            {'accounting_qty': 
+                                (unload.product_id.accounting_qty or 0.0) - \
+                                (unload.quantity or 0.0), 
+                                },
+                        context=context)
+                    except:
+                        pass # no error raise if problems
+            f_sl.close()        
+        except:
+            raise osv.except_osv(
+                _('Transit file SL:'),
+                _('Problem accessing file: %s '
+                    '(maybe open in accounting program or error'
+                    ' during export)!') % file_sl,
+            )
+        return True
+
+class confirm_mrp_production_wizard(osv.osv_memory):
+    ''' Wizard that confirm production/lavoration
+    '''
+    _name = 'mrp.production.confirm.wizard'
+
     # ---------------
     # Onchange event:
     # ---------------
@@ -235,6 +231,12 @@ class confirm_mrp_production_wizard(osv.osv_memory):
         if context is None:
             context = {}
 
+        # Pool used:
+        mrp_pool = self.pool.get('mrp.production')
+        lavoration_pool = self.pool.get('mrp.production.workcenter.line')
+        product_pool = self.pool.get('product.product')
+        load_pool = self.pool.get('mrp.production.workcenter.load')
+
         wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
         current_lavoration_id = context.get('active_id', 0)
 
@@ -242,24 +244,17 @@ class confirm_mrp_production_wizard(osv.osv_memory):
         #                          Initial setup:
         # ---------------------------------------------------------------------
         # get parameters
-        parameter = self.get_parameter(cr, uid, context=context)
+        parameter = mrp_pool.get_sl_cl_parameter(cr, uid, context=context)
         wf_service = netsvc.LocalService('workflow')
         error_prefix = '#ERR' # TODO configuration area?
 
         # Interchange file:
-        file_cl, file_cl_upd, file_sl = self.get_interchange_files(
+        file_cl, file_cl_upd, file_sl = mrp_pool.get_interchange_files(
             cr, uid, parameter, context=context)
         
         # XMLRPC server:
-        mx_server = self.get_xmlrpc_server(cr, uid, parameter, context=context)
-
-        # ---------------------------------------------------------------------
-        #                               Load pool
-        # ---------------------------------------------------------------------
-        mrp_pool = self.pool.get('mrp.production')
-        lavoration_pool = self.pool.get('mrp.production.workcenter.line')
-        product_pool = self.pool.get('product.product')
-        load_pool = self.pool.get('mrp.production.workcenter.load')
+        mx_server = mrp_pool.get_xmlrpc_sl_cl_server(
+            cr, uid, parameter, context=context)
 
         lavoration_browse = lavoration_pool.browse(
             cr, uid, current_lavoration_id, context=context)
