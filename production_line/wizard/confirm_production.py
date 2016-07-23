@@ -204,9 +204,10 @@ class confirm_mrp_production_wizard(osv.osv_memory):
 
         lavoration_browse = lavoration_pool.browse(
             cr, uid, current_lavoration_id, context=context)
+            
         # readability:
         mrp = lavoration_browse.production_id # Production reference
-            
+        pallet = wiz_proxy.pallet_product_id    
 
         # Only if not to close have a partial or fully load:
         # 1. First close: all material are unloaded from stock accounting
@@ -231,7 +232,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 raise osv.except_osv(
                     _('Package error:'),
                     _('If package is present quantity is mandatory!'))
-            if wiz_proxy.pallet_product_id and not wiz_proxy.pallet_qty:
+            if pallet and not wiz_proxy.pallet_qty:
                 raise osv.except_osv(
                     _('Pallet error:'),
                     _('If pallet is present quantity is mandatory!'))
@@ -243,14 +244,15 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             recycle_product_id = wiz_proxy.recycle_product_id
             package_id = \
                 wiz_proxy.package_id.id if wiz_proxy.package_id else False
-            price = 0.0   # TODO create a function for compute: sum ( q. x std. cost)
+            # TODO create a function for compute: sum ( q. x std. cost)    
+            price = 0.0   
             load_id = load_pool.create(cr, uid, {
                 'product_qty': product_qty, # only the wrote total
                 'line_id': lavoration_browse.id,
                 'partial': wiz_proxy.partial,
                 'package_id': package_id,
                 'ul_qty': wiz_proxy.ul_qty,
-                'pallet_product_id': wiz_proxy.pallet_product_id.id if wiz_proxy.pallet_product_id else False,
+                'pallet_product_id': pallet.id if pallet else False,
                 'pallet_qty': wiz_proxy.pallet_qty or 0.0,
                 'recycle': recycle,
                 'recycle_product_id': recycle_product_id.id if recycle_product_id else False,
@@ -323,10 +325,10 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                     ))
             else:
                 pass # TODO raise error if no package? (no if wrong!)
-            if wiz_proxy.pallet_product_id and wiz_proxy.pallet_qty:
+            if pallet and wiz_proxy.pallet_qty:
                 f_cl.write(
                     '%-10s%-25s%10.2f%-10s\r\n' % ( # TODO 10 extra space
-                        wiz_proxy.pallet_product_id.default_code,
+                        pallet.default_code,
                         ' ' * 25, #lavoration_browse.name[4:],
                         - wiz_proxy.pallet_qty,
                         lavoration_browse.accounting_sl_code, #' ' * 10, # no value
