@@ -175,13 +175,15 @@ class MrpProduction(orm.Model):
         
         # only active from accounting
         line_ids = order_line_pool.search(cr, uid, [
-            ('date_deadline','<=',end_date.strftime('%Y-%m-%d'))]) 
+            ('date_deadline', '<=', end_date.strftime('%Y-%m-%d'))]) 
         for line in order_line_pool.browse(cr, uid, line_ids):
             if line.product_id.not_in_status: # jump line
                 continue
-            element = ('P: %s [%s]' % (
+            element = (
+                'P: %s [%s]' % (
                     line.product_id.name, 
-                    line.product_id.default_code, ), 
+                    line.product_id.default_code, 
+                    ), 
                 line.product_id.id,
                 )
                     
@@ -212,7 +214,9 @@ class MrpProduction(orm.Model):
         lavoration_ids = lavoration_pool.search(cr, uid, [
             ('real_date_planned', '<=', end_date.strftime(
                 '%Y-%m-%d 23:59:59')), # only < max date range
-            ('state', 'not in', ('cancel','done'))] ) # only open not canceled
+            ('state', 'not in', ('cancel','done')),
+            ]) # only open not canceled
+            
         for lavoration in lavoration_pool.browse(
                 cr, uid, lavoration_ids): # filtered BL orders
             # ----------------------------

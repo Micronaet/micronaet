@@ -534,7 +534,10 @@
                 <field name="product_code" />
                 <field name="workcenter_line_id" />
 	            <field name="product_id" />
-                
+
+                <field name="date" string="From date" filter_domain="[('date', '>=', self)]"/>
+                <field name="date" string="To date" filter_domain="[('date', '&lt;=', self)]"/>
+
                 <!--<field name="wrong" />
                 <field name="recycle" />
                 <field name="partial" />-->
@@ -547,6 +550,9 @@
                 <newline/>
                 <filter icon="terp-go-home" name="partial" string="Partial load" domain="[('partial','=',True)]" />
                 <filter icon="terp-go-home" name="last" string="Last load" domain="[('partial','=',False)]" />
+                
+                <!---<filter icon="terp-go-home" name="data_year_current" string="Current year" domain="[('data','>=',datetime.datetime.today().strftime('%%Y-01-01 00:00:00'))]" />-->
+                
                 <!--<field name="workcenter_production_id" string="Workcenter" filter_domain="[('workcenter_id','=',self)]"/>
                 <filter icon="terp-go-home" name="only_open" string="Only open" domain="[('state','not in',('done','cancel'))]" />-->
                 <group expand="1" string="Group By...">
@@ -650,12 +656,22 @@
             </form>                                
         </field>
     </record>
-    
+    <record model="ir.ui.view" id="action_mrp_production_workcenter_load_graph">
+        <field name="name">mrp.production.workcenter.load.graph</field>
+        <field name="model">mrp.production.workcenter.load</field>
+        <field name="type">graph</field>
+        <field name="arch" type="xml">
+            <graph string="CL load" type="bar">
+                <field name="workcenter_line_id"/>
+                <field name="product_qty" operator="+"/>
+            </graph>
+        </field>
+    </record>
     <record model="ir.actions.act_window" id="action_mrp_production_workcenter_load">
         <field name="name">Production load</field>
         <field name="res_model">mrp.production.workcenter.load</field>
         <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,graph</field>
         <field name="view_id" ref="default_mrp_production_workcenter_load_tree_readonly_view"/>
         <field name="context">{}</field>
         <field name="domain">[]</field>
@@ -1357,9 +1373,10 @@
         <field name="context">{'form_view_ref': 'production_line.view_sale_order_form_establishment_form'}</field>
         <field name="domain">[('state','in',('draft','sent','cancel'))]</field>
     </record>
+    
        <!-- Create production order from customer order lines-->
        <!--Override parent: -->
-       <record id="base.menu_mrp_root" model="ir.ui.menu">
+       <!--<record id="base.menu_mrp_root" model="ir.ui.menu">
          <field name="groups_id" eval="[(6,0,[ref('group_production_admin'),ref('group_production_commercial'),ref('group_production_logistic'),ref('group_production_stock')])]"/>
        </record>
        <record id="base.menu_reporting" model="ir.ui.menu">
@@ -1382,7 +1399,7 @@
        </record>
        <record id="mail.mail_feeds_main" model="ir.ui.menu">
          <field name="groups_id" eval="[(6,0,[ref('group_production_admin'),ref('group_production_comunication')])]"/>
-       </record>
+       </record>-->
 
       <!-- Establishment:  -->      
        <menuitem name="Establishment" id="root_establishment" sequence="0" 

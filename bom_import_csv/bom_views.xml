@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <openerp>
   <data>  
-      <record id='mrp_bom_form_view_force_bom' model='ir.ui.view'>
+      <!--<record id='mrp_bom_form_view_force_bom' model='ir.ui.view'>
         <field name='name'>BOM force import</field>
         <field name='model'>mrp.bom</field>
         <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
@@ -21,7 +21,7 @@
                <button name='force_bom_import' type='object' string='Import BOM' class="oe_highlight" />                
             </xpath>
         </field>
-      </record>  
+      </record> -->
   </data>
 </openerp>
 
