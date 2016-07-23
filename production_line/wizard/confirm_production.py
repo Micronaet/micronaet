@@ -85,15 +85,17 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             path_list = eval(parameter.production_path)
             path = os.path.expanduser(os.path.join(*path_list))
 
-            if not parameter.production_demo and parameter.production_mount_mandatory and not os.path.ismount(path):
+            if not parameter.production_demo and \
+                    parameter.production_mount_mandatory and \
+                    not os.path.ismount(path):
                 # Test if the folder is mounted (here is a UNC mount)
                 raise osv.except_osv(
                     _('Mount error!'),
-                    _('Interchange path is not mount %s!') % (path, ))
+                    _('Interchange path is not mount %s!') % path)
 
             file_cl = os.path.join(path, parameter.production_cl)
             file_cl_upd = os.path.join(path, parameter.production_cl_upd)
-            file_sl =  os.path.join(path, parameter.production_sl)
+            file_sl = os.path.join(path, parameter.production_sl)
         except:
             raise osv.except_osv(
                 _('Interchange file!'),
@@ -110,18 +112,20 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             xmlrpc_server = 'http://%s:%s' % (
                 mx_parameter_server,
                 mx_parameter_port,
-            )
+                )
         except:
             raise osv.except_osv(
                 _('Import CL error!'),
-                _('XMLRPC for calling importation is not response'), )
+                _('XMLRPC for calling importation is not response'), 
+                )
                 
         return xmlrpclib.ServerProxy(xmlrpc_server)
         
     # ---------------
     # Onchange event:
     # ---------------
-    def onchange_package_id(self, cr, uid, ids, package_id, product_id, total, context=None):
+    def onchange_package_id(self, cr, uid, ids, package_id, product_id, total, 
+            context=None):
         ''' Get selected package_id and calculate total package
         '''
         res = {}
@@ -140,7 +144,8 @@ class confirm_mrp_production_wizard(osv.osv_memory):
         res['value']['ul_qty'] = 0
         return res
 
-    def onchange_pallet_id(self, cr, uid, ids, pallet_product_id, real_product_qty, pallet_max_weight, context=None):
+    def onchange_pallet_id(self, cr, uid, ids, pallet_product_id, 
+            real_product_qty, pallet_max_weight, context=None):
         ''' Get total pallet with real qty and pallet selected
         '''
         res = {}
@@ -148,27 +153,31 @@ class confirm_mrp_production_wizard(osv.osv_memory):
         res['value']['pallet_qty'] = 0.0
         res['value']['pallet_max_weight'] = 0.0
 
+        product_pool = self.pool.get('product.product')
         try:
             if pallet_product_id and real_product_qty:
                 if not pallet_max_weight:
-                    pallet_max_weight = self.pool.get('product.product').browse(
-                        cr, uid, pallet_product_id, context=context).pallet_max_weight or 0.0
-                res['value']['pallet_qty'] = real_product_qty // pallet_max_weight + (0 if real_product_qty % pallet_max_weight == 0 else 1)
+                    pallet_max_weight = product_pool.browse(
+                        cr, uid, pallet_product_id, context=context
+                        ).pallet_max_weight or 0.0
+                res['value'][
+                    'pallet_qty'] = real_product_qty // pallet_max_weight + (
+                        0 if real_product_qty % pallet_max_weight == 0 else 1)
                 res['value']['pallet_max_weight'] = pallet_max_weight
         except:
             pass # set qty to 0.0
         return res
+        
     # --------------
     # Wizard button:
     # --------------
     def action_confirm_mrp_production_order(self, cr, uid, ids, context=None):
-        ''' Write confirmed weight
+        ''' Write confirmed weight (load or unload documents)
         '''
         if context is None:
             context = {}
 
-        wiz_proxy = self.browse(
-            cr, uid, ids, context=context)[0]
+        wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
         current_lavoration_id = context.get('active_id', 0)
 
         # ---------------------------------------------------------------------
