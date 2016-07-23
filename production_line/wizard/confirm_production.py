@@ -210,7 +210,8 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             
         # readability:
         mrp = lavoration_browse.production_id # Production reference
-        pallet = wiz_proxy.pallet_product_id    
+        pallet = wiz_proxy.pallet_product_id   
+        wc = lavoration_browse.workcenter_id 
 
         # Only if not to close have a partial or fully load:
         # 1. First close: all material are unloaded from stock accounting
@@ -284,12 +285,12 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             # [(1)Famiglia - (6)Prodotto - (1).Pezzatura - (1)Versione] -
             # [(5)Partita - #(2)SequenzaCarico] - [(10)Imballo]
             product_code = '%-8s%-2s%-10s%-10s' % (
-                wiz_proxy.product_id.default_code, # Product code
-                lavoration_browse.workcenter_id.code[:2], # Workcenter
+                wiz_proxy.product_id.default_code,
+                wc.code[:2],
                 '%06d#%01d' % (
                     int(mrp.name[3:]),
                     sequence,
-                    ), # Job <<<<<< TODO use production (test, mrp is 5)
+                    ), # Job <<< TODO use production (test, mrp is 5)
                 wiz_proxy.package_id.code if package_id else '', # Package
                 )
             load_pool.write(cr, uid, load_id, {
@@ -421,7 +422,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                     # Lavoration K cost:
                     # ------------------
                     try:
-                        cost_line = lavoration_browse.workcenter_id.cost_product_id.standard_price or 0.0
+                        cost_line = wc.cost_product_id.standard_price or 0.0
                     except:
                         cost_line = 0.0
 
@@ -591,9 +592,16 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 f_sl = open(file_sl, 'w')
 
                 for unload in lavoration_browse.bom_material_ids:
+                    default_code = unload.product_id.default_code
+                    if not default_code:
+                        raise osv.except_osv(
+                            _('Material code error:'),
+                            _('No code for MP: %s') % unload.product_id.name,
+                            )
+                        
                     # Export SL for material used for entire production:
                     f_sl.write('%-10s%-25s%10.2f\r\n' % (
-                        unload.product_id.default_code,
+                        default_code,
                         lavoration_browse.name[4:],
                         unload.quantity))
                     try:
