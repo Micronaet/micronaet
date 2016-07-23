@@ -33,6 +33,61 @@ from openerp.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 
+class MrpProduction(osv.osv_memory):
+    ''' Utility for file operations
+    '''
+    _inherit = 'mrp.production'
+    
+    # -----------------------------------
+    # Utility used also in forced module:
+    # -----------------------------------
+    
+    def create_unload_file(self, cr, uid, file_sl, lavoration_browse, 
+            force_stock=False, context=None):
+        ''' Procedure for save in fullname file passed the lavoration element
+            used for pass file to import account procedure        
+        '''
+        # Pool used:
+        product_pool = self.pool.get('product.product')
+        
+        try:
+            f_sl = open(file_sl, 'w')
+            for unload in lavoration_browse.bom_material_ids:
+                default_code = unload.product_id.default_code
+                if not default_code:
+                    raise osv.except_osv(
+                        _('Material code error:'),
+                        _('No code for MP: %s') % unload.product_id.name,
+                        )
+                    
+                # Export SL for material used for entire production:
+                f_sl.write('%-10s%-25s%10.2f\r\n' % (
+                    default_code,
+                    lavoration_browse.name[4:],
+                    unload.quantity,
+                    ))
+                
+                if force_stock:
+                    try:
+                        # XXX Now update accounting_qty on db for speed up
+                        product_pool.write(cr, uid, [unload.product_id.id],    
+                            {'accounting_qty': 
+                                (unload.product_id.accounting_qty or 0.0) - \
+                                (unload.quantity or 0.0), 
+                                },
+                        context=context)
+                    except:
+                        pass # no error raise if problems
+            f_sl.close()        
+        except:
+            raise osv.except_osv(
+                _('Transit file SL:'),
+                _('Problem accessing file: %s '
+                    '(maybe open in accounting program or error'
+                    ' during export)!') % file_sl,
+            )
+        return True
+
 class confirm_mrp_production_wizard(osv.osv_memory):
     ''' Wizard that confirm production/lavoration
     '''
@@ -201,6 +256,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         #                               Load pool
         # ---------------------------------------------------------------------
+        mrp_pool = self.pool.get('mrp.production')
         lavoration_pool = self.pool.get('mrp.production.workcenter.line')
         product_pool = self.pool.get('product.product')
         load_pool = self.pool.get('mrp.production.workcenter.load')
@@ -588,38 +644,9 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             # -----------------------------------------------------------------
             #                              SL Document
             # -----------------------------------------------------------------
-            try: # SL file:
-                f_sl = open(file_sl, 'w')
-
-                for unload in lavoration_browse.bom_material_ids:
-                    default_code = unload.product_id.default_code
-                    if not default_code:
-                        raise osv.except_osv(
-                            _('Material code error:'),
-                            _('No code for MP: %s') % unload.product_id.name,
-                            )
-                        
-                    # Export SL for material used for entire production:
-                    f_sl.write('%-10s%-25s%10.2f\r\n' % (
-                        default_code,
-                        lavoration_browse.name[4:],
-                        unload.quantity))
-                    try:
-                        # Now update accounting_qty on db for speed up
-                        product_pool.write(cr, uid, [unload.product_id.id],    
-                            {'accounting_qty': 
-                                (unload.product_id.accounting_qty or 0.0) - \
-                                (unload.quantity or 0.0), 
-                                },
-                        context=context)
-                    except:
-                        pass # no error raise if problems
-                f_sl.close()
-            except:
-                raise osv.except_osv(
-                    _('Transit file SL:'),
-                    _('Problem accessing file: %s (maybe open in accounting program or error during export)!') % (file_sl),
-                )
+            mrp_pool.create_unload_file(
+                cr, uid, file_sl, lavoration_browse, force_stock=True, 
+                context=context)
 
             # -----------------------------------------------------------------
             #                      XMLRPC call for import SL 
