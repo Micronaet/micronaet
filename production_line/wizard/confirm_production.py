@@ -246,7 +246,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
         # get parameters
         parameter = mrp_pool.get_sl_cl_parameter(cr, uid, context=context)
         wf_service = netsvc.LocalService('workflow')
-        error_prefix = '#ERR' # TODO configuration area?
+        error_prefix = '#' # TODO configuration area?
 
         # Interchange file:
         file_cl, file_cl_upd, file_sl = mrp_pool.get_interchange_files(
@@ -668,7 +668,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                         raise osv.except_osv(
                             _('Import SL error!'),
                             _('Error from accounting:\n%s') % (
-                                accounting_sl_code[4:], ),
+                                accounting_sl_code[len(error_prefix):], ),
                             )
 
                 error = (
