@@ -483,7 +483,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                     if not cost_line:    
                         raise osv.except_osv(
                             _('Calculate lavoration cost!'),
-                            _('Error calculating lavoration cost, verifiy if the workcenter has product linked'), )
+                            _('Error calculating lavoration cost, verify if the workcenter has product linked'), )
 
                     unload_cost_total = cost_line * total
                     _logger.info(_('Lavoration %s [%s]') % (
