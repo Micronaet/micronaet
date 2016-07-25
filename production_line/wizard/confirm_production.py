@@ -370,10 +370,13 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             # wrong > new code = (recycle code = code with R in 8th position)
             if wrong:
                 f_cl.write('%-35s%10.2f%10.2f\r\n' % (
-                    '%sR%s' % (product_code[:7],
-                    product_code[8:]),
+                    '%sR%s' % (
+                        product_code[:7],
+                        product_code[8:],
+                        ),
                     product_qty,
-                    price))
+                    price,
+                    ))
             else:
                 f_cl.write('%-35s%10.2f%10.2f\r\n' % (
                     product_code, product_qty, price))
