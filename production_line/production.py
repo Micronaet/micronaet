@@ -242,7 +242,7 @@ class sale_order_add_extra(osv.osv):
         #                               IMPORT HEADER
         # ---------------------------------------------------------------------
         # TODO rimuovere questo problema alcuni ordini hanno state empty!
-        cr.execute('update sale_order set state='draft' where state is null;')
+        cr.execute('update sale_order set state=\'draft\' where state is null;')
         all_order_ids = self.search(cr, uid, [
             ('accounting_order', '=', True)]) # for delete extra elements (on update order id is deleted from here)
         all_order_updated_ids = [] # list of all modified orders header (for load lines to test deletion)
@@ -549,7 +549,7 @@ class sale_order_add_extra(osv.osv):
             HAVING use_accounting_qty = True and sum(product_uom_qty)>product_product.accounting_qty;''')
 
         for product_id, accounting_qty, default_code, total in cr.fetchall():
-            over_store_error += 'Product %s covered for %s but in accounting there's %s\n' % (
+            over_store_error += 'Product %s covered for %s but in accounting there\'s %s\n' % (
                 default_code, total, accounting_qty)
 
         # Send mail for log error:
@@ -830,8 +830,8 @@ class mrp_workcenter_history(osv.osv):
 
 # Not work!!
 '''class resource_resource(osv.osv):
-    ''' Class where inherits mrp.workcenter (changing order)
-    '''
+    """ Class where inherits mrp.workcenter (changing order)
+    """
     _name = 'resource.resource'
     _inherit = 'resource.resource'
     _order = 'name'
@@ -879,8 +879,7 @@ class mrp_production_workcenter_line_extra(osv.osv):
         @param view_id: list of fields, which required to read signatures
         @param view_type: defines a view type. it can be one of (form, tree, graph, calender, gantt, search, mdx)
         @param context: context arguments, like lang, time zone
-        @param toolbar: contains a list of reports, wizards, and links related to current model
-        
+        @param toolbar: contains a list of reports, wizards, and links related to current model        
         @return: returns a dict that contains definition for fields, views, and toolbars
         """        
         if view_type == 'form' and no_establishment_group(self, cr, uid, context=context):
@@ -1153,8 +1152,8 @@ class mrp_production_workcenter_line_extra(osv.osv):
         return True
 
     '''def action_start_working(self, cr, uid, ids, context=None):
-        ''' Override start method to update real product qty
-        '''
+        """ Override start method to update real product qty
+        """
         result = super(mrp_production_workcenter_line_extra, self).action_start_working(cr, uid, ids, context=context)
         lavoration_browse=self.browse(cr, uid, ids, context=context)[0]
 
@@ -1594,7 +1593,7 @@ class sale_order_line_extra(osv.osv):
             self.pool.get('mrp.production').write_thread_message(
                 cr, uid, [mrp_production_id], 
                 subject = subject, 
-                body = _('<table class='oe_list_content'><tr><td>Order</td>'
+                body = _('<table class=\'oe_list_content\'><tr><td>Order</td>'
                     '<td>Product</td><td>Q.</td><td>Deadline</td></tr>'
                     '%s</table>') % body,
                     context=context)
