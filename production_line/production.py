@@ -762,7 +762,7 @@ class mrp_production_workcenter_load(osv.osv):
         'partial': fields.boolean('Partial'),
         'user_id': fields.many2one('res.users', 'User', required=True),
         'line_id': fields.many2one('mrp.production.workcenter.line', 
-            required=True, 'Workcenter line'), #XXX ha generato cancellazione?
+            'Workcenter line', required=True), #XXX ha generato cancellazione?
 
         'package_id':fields.many2one('product.ul', 'Package'),
         'ul_qty': fields.integer(
