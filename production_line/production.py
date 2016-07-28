@@ -953,7 +953,10 @@ class mrp_production_workcenter_line_extra(osv.osv):
                 res['value']['single_cycle_qty'] = history_proxy.single_cycle_qty
                 res['force_cycle_default'] = False
                 if real_date_planned:
-                    res['value']['real_date_planned_end'] = self.add_hour(real_date_planned, history_proxy.single_cycle_duration)
+                    res['value']['real_date_planned_end'] = self.add_hour(
+                        real_date_planned, 
+                        history_proxy.single_cycle_duration,
+                        )
 
                 # Warning message because totals are reset and hourly are loaded from history:
                 res['warning'] = {
@@ -962,7 +965,9 @@ class mrp_production_workcenter_line_extra(osv.osv):
                 }
         return res
 
-    def onchange_cycle_values(self, cr, uid, ids, cycle, single_cycle_duration, single_cycle_qty, real_date_planned, hour, product_qty, context=None):#, mode='value', context=None):
+    def onchange_cycle_values(self, cr, uid, ids, cycle, single_cycle_duration, 
+            single_cycle_qty, real_date_planned, hour, product_qty, 
+            context=None):#, mode='value', context=None):
         ''' On change cycle parameters (one function for all elements for loop
             problems.
             self: obj instance
