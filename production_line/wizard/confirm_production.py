@@ -33,7 +33,7 @@ from openerp.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 
-class MrpProduction(osv.osv_memory):
+class MrpProduction(osv.osv):
     ''' Utility for file operations
     '''
     _inherit = 'mrp.production'
