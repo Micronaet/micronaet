@@ -369,17 +369,18 @@ class confirm_mrp_production_wizard(osv.osv_memory):
 
             # wrong > new code = (recycle code = code with R in 8th position)
             if wrong:
-                f_cl.write('%-35s%10.2f%10.2f\r\n' % (
+                f_cl.write('%-35s%10.2f%13.5f%16s\r\n' % (
                     '%sR%s' % (
                         product_code[:7],
                         product_code[8:],
                         ),
                     product_qty,
                     price,
+                    '', 
                     ))
             else:
-                f_cl.write('%-35s%10.2f%10.2f\r\n' % (
-                    product_code, product_qty, price))
+                f_cl.write('%-35s%10.2f%13.5f%16s\r\n' % (
+                    product_code, product_qty, price, ''))
 
             # TODO mode in product (end movement)
             convert_load_id = {} # list for convert CL code in load.id
@@ -390,22 +391,24 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             # -----------------------------------------------------
             if wiz_proxy.package_id and wiz_proxy.ul_qty:
                 f_cl.write(
-                    '%-10s%-25s%10.2f%-10s\r\n' % ( # TODO 10 extra space
+                    '%-10s%-25s%10.2f%-13s%16s\r\n' % ( # TODO 10 extra space
                         wiz_proxy.package_id.linked_product_id.default_code,
-                        ' ' * 25, #lavoration_browse.name[4:],
+                        '', #lavoration_browse.name[4:],
                         - wiz_proxy.ul_qty,
                         lavoration_browse.accounting_sl_code,
-                    ))
+                        '',
+                        ))
             else:
                 pass # TODO raise error if no package? (no if wrong!)
             if pallet and wiz_proxy.pallet_qty:
                 f_cl.write(
-                    '%-10s%-25s%10.2f%-10s\r\n' % ( # TODO 10 extra space
+                    '%-10s%-25s%10.2f%-13s%16s\r\n' % ( # TODO 10 extra space
                         pallet.default_code,
-                        ' ' * 25, #lavoration_browse.name[4:],
+                        '', #lavoration_browse.name[4:],
                         - wiz_proxy.pallet_qty,
                         lavoration_browse.accounting_sl_code,
-                    ))
+                        '',
+                        ))
             else:
                 pass                
             f_cl.close()
