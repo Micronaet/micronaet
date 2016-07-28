@@ -762,7 +762,7 @@ class mrp_production_workcenter_load(osv.osv):
         'partial': fields.boolean('Partial'),
         'user_id': fields.many2one('res.users', 'User', required=True),
         'line_id': fields.many2one('mrp.production.workcenter.line', 
-            'Workcenter line'),
+            required=True, 'Workcenter line'), #XXX ha generato cancellazione?
 
         'package_id':fields.many2one('product.ul', 'Package'),
         'ul_qty': fields.integer(
@@ -1658,7 +1658,7 @@ class sale_order_line_extra(osv.osv):
             _function_get_mandatory_delivery, method=True, type='boolean', 
             string='Mandatory delivery', store=False),
         'accounting_state': fields.selection([
-            ('not','Not Confirmed'), # Not confirmed (first step during importation)
+            ('not','Not Confirmed'), # first step during importation
             ('new','New'), # Confirmed
             ('modified','Modified'), # Quantity only (for production or linked to store)
             ('updated','Updated'), # after new if line is the same
