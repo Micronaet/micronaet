@@ -92,6 +92,7 @@ class etl_bom_line(osv.osv):
             
         bom_f = open(file_name, 'w')
         # only parent elements:
+        import pdb; pdb.set_trace()
         for bom in bom_pool.browse(cr, uid, bom_ids, context=context):
             sequence = 0
             for line in bom.bom_lines:
