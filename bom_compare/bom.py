@@ -96,7 +96,7 @@ class etl_bom_line(osv.osv):
             sequence = 0
             for line in bom.bom_lines:
                 sequence += 1
-                bom_f.write('%s;%s;%s;%s;%s;%15.4f\n' % (
+                row = '%s;%s;%s;%s;%s;%15.4f\n\r' % (
                     # Heeader:
                     bom.product_id.default_code,
                     prepare_ascii(bom.product_id.name),
@@ -106,7 +106,9 @@ class etl_bom_line(osv.osv):
                     line.product_id.default_code,
                     prepare_ascii(line.product_id.name),
                     line.product_qty or 0.0,
-                    ))
+                    )
+                row = row.replace('.', ',') # old account stype    
+                bom_f.write(row)
         bom_f.close()            
         return True
 
