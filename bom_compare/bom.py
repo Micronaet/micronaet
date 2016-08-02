@@ -96,7 +96,7 @@ class etl_bom_line(osv.osv):
             sequence = 0
             for line in bom.bom_lines:
                 sequence += 1
-                row = '%s;%s;%s;%s;%s;%15.4f\n\r' % (
+                row = '%s;%s;%s;%s;%s;%15.4f\r\n' % (
                     # Heeader:
                     bom.product_id.default_code,
                     prepare_ascii(bom.product_id.name),
