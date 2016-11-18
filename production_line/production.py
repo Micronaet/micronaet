@@ -1055,7 +1055,8 @@ class mrp_production_workcenter_line_extra(osv.osv):
     # -----------------
     # Utility function:
     # -----------------
-    def _create_bom_lines(self, cr, uid, lavoration_id, from_production=False, context=None):
+    def _create_bom_lines(self, cr, uid, lavoration_id, from_production=False, 
+            context=None):
         ''' Create a BOM list for the passed lavoration
             Actual items will be deleted and reloaded with quantity passed
         '''
@@ -1079,15 +1080,19 @@ class mrp_production_workcenter_line_extra(osv.osv):
                 for element in mrp.bom_material_ids:
                     material_pool.create(cr, uid, {
                         'product_id': element.product_id.id,
-                        'quantity': element.quantity / mrp.product_qty * lavoration_browse.product_qty if mrp.product_qty else 0.0,
+                        'quantity': element.quantity / mrp.product_qty * \
+                            lavoration_browse.product_qty \
+                            if mrp.product_qty else 0.0,
                         'uom_id': element.product_id.uom_id.id,
                         'workcenter_production_id': lavoration_id,
                     }, context=context)
-            else:
+            else:                
                 for element in bom.bom_lines:
                     material_pool.create(cr, uid, {
                         'product_id': element.product_id.id,
-                        'quantity': element.product_qty * lavoration_browse.product_qty / bom.product_qty if bom.product_qty else 0.0,
+                        'quantity': element.product_qty * \
+                            lavoration_browse.product_qty / bom.product_qty \
+                            if bom.product_qty else 0.0,
                         'uom_id': element.product_id.uom_id.id,
                         'workcenter_production_id': lavoration_id,
                     }, context=context)
@@ -1318,21 +1323,22 @@ class mrp_production_extra(osv.osv):
             lavorations
         '''
         production_browse = self.browse(cr, uid, item_id, context=context)
-        if not production_browse.bom_id and not production_browse.product_qty:
+        mrp = production_browse.bom_id
+        if not mrp and not production_browse.product_qty:
             return True # TODO raise error
 
         # Delete all elements:
-        material_pool=self.pool.get('mrp.production.material')
-        material_ids=material_pool.search(cr, uid, [
+        material_pool = self.pool.get('mrp.production.material')
+        material_ids = material_pool.search(cr, uid, [
             ('mrp_production_id','=',item_id)], context=context)
         material_pool.unlink(cr, uid, material_ids, context=context)
 
         # Create elements from bom:
         table = _('<tr><td>Product</td><td>Q.</td></tr>')
-        for element in production_browse.bom_id.bom_lines:
+        for element in mrp.bom_lines:
             quantity = element.product_qty * production_browse.product_qty / \
-                production_browse.bom_id.product_qty \
-                    if production_browse.bom_id.product_qty else 0.0
+                mrp.product_qty \
+                    if mrp.product_qty else 0.0
             material_pool.create(cr, uid, {
                 'product_id': element.product_id.id,
                 'quantity': quantity,
