@@ -133,7 +133,7 @@ class mrp_production_split_wizard(osv.osv_memory):
                 cr, uid, data, context=context)
             lavoration_pool._create_bom_lines(
                 cr, uid, lavoration_id, 
-                #from_production=True, 
+                from_production=True, 
                 context=context)
             
         if context is None: 
@@ -205,7 +205,7 @@ class mrp_production_split_wizard(osv.osv_memory):
             cr, uid, [origin_lavoration_id], update_data, context=context)
         lavoration_pool._create_bom_lines(
             cr, uid, origin_lavoration_id, 
-            #from_production=True, 
+            from_production=True, 
             context=context)
             
         return {'type':'ir.actions.act_window_close'}   # sostituire con l'apertura della nuova lavorazione (vedere se è il caso)
