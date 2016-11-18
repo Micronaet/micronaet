@@ -1404,7 +1404,7 @@ class mrp_production_extra(osv.osv):
                 'uom_id': element.product_id.uom_id.id,
                 'mrp_production_id': item_id,
             }, context=context)
-            table += '<tr><td>Res.: [%s] %s</td><td>%s %s</td></tr>' % (
+            table += '<tr><td>Recupero: [%s] %s</td><td>%s %s</td></tr>' % (
                 element.product_id.default_code or '',
                 element.product_id.name or _('Unknown'),
                 element.quantity,
