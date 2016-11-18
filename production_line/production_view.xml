@@ -397,6 +397,7 @@
                 <attribute name="invisible">1</attribute>
             </button>
             <button name="button_done" position="after">
+                <!--TODO Hide button when closed?-->
                 <button name="%(action_confirm_mrp_production_wizard_form)d" string="Completata" states="startworking" type="action" class="oe_highlight" context="{'default_state':'material'}" />
                 <button name="%(action_confirm_mrp_production_wizard_form)d" string="Carichi" states="done" type="action" class="oe_highlight" context="{'default_state':'product'}"/>
             </button>    
