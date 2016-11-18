@@ -750,13 +750,15 @@ class mrp_production_workcenter_load(osv.osv):
         if wc_id: # mandatory
             wc_pool = self.pool.get('mrp.production.workcenter.line')
             for lavoration in wc_pool.browse(
-                    cr, uid, wc_id, context=context).production_id.workcenter_lines:
+                    cr, uid, wc_id, context=context
+                    ).production_id.workcenter_lines:
                 for load in lavoration.load_ids:
                     if last < load.sequence:
                         last = load.sequence
         sequence = last + 1
-        vals['sequence']=sequence
-        res_id = super(mrp_production_workcenter_load, self).create(cr, uid, vals, context=context)
+        vals['sequence'] = sequence
+        res_id = super(mrp_production_workcenter_load, self).create(
+            cr, uid, vals, context=context)
         return res_id
 
     _columns = {
@@ -787,13 +789,20 @@ class mrp_production_workcenter_load(osv.osv):
         'recycle': fields.boolean('Recycle', help='Recycle product'),
         'recycle_product_id': fields.many2one('product.product', 'Product'),
 
-        'wrong':fields.boolean('Wrong', help='Wrong product, coded with a standard code'),
+        'wrong':fields.boolean(
+            'Wrong', help='Wrong product, coded with a standard code'),
         'wrong_comment': fields.text('Wrong comment'),
 
         'sequence': fields.integer('Seq. n.'),
-        'production_id': fields.related('line_id', 'production_id', type='many2one', relation='mrp.production', string='Production', store=True),
-        'product_id': fields.related('line_id', 'product', type='many2one', relation='product.product', string='Product', store=True),
-        'workcenter_line_id': fields.related('line_id', 'workcenter_id', type='many2one', relation='mrp.workcenter', string='Line', store=True),
+        'production_id': fields.related(
+            'line_id', 'production_id', type='many2one', 
+            relation='mrp.production', string='Production', store=True),
+        'product_id': fields.related(
+            'line_id', 'product', type='many2one', relation='product.product', 
+            string='Product', store=True),
+        'workcenter_line_id': fields.related('line_id', 'workcenter_id', 
+            type='many2one', relation='mrp.workcenter', string='Line', 
+            store=True),
         }
 
     _defaults={
@@ -813,10 +822,15 @@ class mrp_workcenter_history(osv.osv):
 
     _columns = {
         'date': fields.datetime('Date', help='Operation date', required=True),
-        'product_id': fields.many2one('product.product', 'Product', required=True),
-        'workcenter_id': fields.many2one('mrp.workcenter', 'Workcenter', required=True),
-        'single_cycle_duration': fields.float('Cycle duration', digits=(8, 3), help='Duration time for one cycle'),
-        'single_cycle_qty': fields.float('Cycle quantity', digits=(8, 3), help='Production quantity for one cycle'),
+        'product_id': fields.many2one('product.product', 'Product', 
+            required=True),
+        'workcenter_id': fields.many2one('mrp.workcenter', 'Workcenter', 
+            required=True),
+        'single_cycle_duration': fields.float('Cycle duration', digits=(8, 3), 
+        
+            help='Duration time for one cycle'),
+        'single_cycle_qty': fields.float('Cycle quantity', digits=(8, 3), 
+            help='Production quantity for one cycle'),
         # Parameter:
         'parameter_note':fields.text('Parameter note'),
 
@@ -824,14 +838,17 @@ class mrp_workcenter_history(osv.osv):
         'parameter_hammer':fields.char('Hammers', size=15),
         'parameter_grid':fields.char('Grid', size=15),
         'parameter_speed':fields.char('Speed m/s', size=15),
-        'parameter_temperature':fields.char('Temperature', size=15), # also G grassi    O oli      F fosfatanti
+        'parameter_temperature':fields.char('Temperature', size=15), 
+        # also G grassi    O oli      F fosfatanti
 
         #  X panflux    N sali
-        'parameter_time_misc': fields.float('Time misc.', digits=(8, 3), help='Time for misc.'), # also G grassi    O oli      F fosfatanti
+        'parameter_time_misc': fields.float('Time misc.', digits=(8, 3), 
+            help='Time for misc.'), # also G grassi    O oli      F fosfatanti
         }
 
     _defaults={
-        'date': lambda *x: datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT),
+        'date': lambda *x: datetime.now().strftime(
+            DEFAULT_SERVER_DATETIME_FORMAT),
         }
 
 # Not work!!
@@ -1323,8 +1340,8 @@ class mrp_production_extra(osv.osv):
             lavorations
         '''
         production_browse = self.browse(cr, uid, item_id, context=context)
-        mrp = production_browse.bom_id
-        if not mrp and not production_browse.product_qty:
+        bom = production_browse.bom_id
+        if not bom and not production_browse.product_qty:
             return True # TODO raise error
 
         # Delete all elements:
@@ -1335,10 +1352,24 @@ class mrp_production_extra(osv.osv):
 
         # Create elements from bom:
         table = _('<tr><td>Product</td><td>Q.</td></tr>')
-        for element in mrp.bom_lines:
-            quantity = element.product_qty * production_browse.product_qty / \
-                mrp.product_qty \
-                    if mrp.product_qty else 0.0
+        total = production_browse.product_qty
+        waste_total = sum([
+            item.quantity for item in production_browse.bom_waste_ids])
+        total -= waste_total
+
+        # Check total presence:
+        if total <= 0:
+            raise osv.except_osv(
+                _('Total error'), 
+                _('No total production or all waste(division by zero)'),
+                )
+        
+        # ---------------------------------------------------------------------
+        # Create bom elements:
+        # ---------------------------------------------------------------------
+        for element in bom.bom_lines:
+            quantity = element.product_qty * total / \
+                bom.product_qty
             material_pool.create(cr, uid, {
                 'product_id': element.product_id.id,
                 'quantity': quantity,
@@ -1349,6 +1380,23 @@ class mrp_production_extra(osv.osv):
                 element.product_id.default_code or '',
                 element.product_id.name or _('Unknown'),
                 quantity,
+                element.product_id.uom_id.name,
+                )
+
+        # ---------------------------------------------------------------------
+        # Create waste elements:
+        # ---------------------------------------------------------------------
+        for element in production_browse.bom_waste_ids:
+            material_pool.create(cr, uid, {
+                'product_id': element.product_id.id,
+                'quantity': element.quantity,
+                'uom_id': element.product_id.uom_id.id,
+                'mrp_production_id': item_id,
+            }, context=context)
+            table += '<tr><td>Res.: [%s] %s</td><td>%s %s</td></tr>' % (
+                element.product_id.default_code or '',
+                element.product_id.name or _('Unknown'),
+                element.quantity,
                 element.product_id.uom_id.name,
                 )
         
