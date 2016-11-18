@@ -839,6 +839,18 @@
 					        </field>
 					    </group>
 				    </page>
+			        <page string="Recuperi">
+				        <group string="Recuperi da utilizzare">				
+					        <field name="bom_waste_ids" nolabel="1" colspan="4">
+					            <tree string="Lista recuperi" editable="bottom">
+                                    <field name="product_id" />
+                                    <field name="uom_id" readonly="1" />
+                                    <field name="quantity" sum="total"/>
+                                    <field name="accounting_qty" />
+                                </tree>                                
+					        </field>
+					    </group>
+				    </page>
 			        <page string="Bolle di lavorazione">
 				        <group string="Bolle di lavorazione">				              
 					        <field name="workcenter_lines" nolabel="1" context="{'default_production_id':id,}">

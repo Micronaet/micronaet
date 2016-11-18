@@ -709,12 +709,18 @@ class mrp_production_material(osv.osv):
         'uom_id': fields.related(
             'product_id','uom_id', type='many2one', relation='product.uom', 
             string='UOM'),
+            
+        # Link if used mrp.production object    
         'mrp_production_id': fields.many2one(
-            'mrp.production', 'Production order', ondelete='cascade', 
-            required=False), # Link if used mrp.production object
+            'mrp.production', 'Production order', ondelete='cascade'), 
+        # Link production for waste material
+        'mrp_waste_id': fields.many2one(
+            'mrp.production', 'Production waste', ondelete='cascade'),
+        # Link if used mrp.production object            
         'workcenter_production_id': fields.many2one(
-            'mrp.production.workcenter.line', 'Lavoration', ondelete='cascade', 
-            required=False), # Link if used mrp.production.workcenter.line object
+            'mrp.production.workcenter.line', 'Lavoration', 
+            ondelete='cascade'),
+            
         'accounting_qty': fields.related(
             'product_id','accounting_qty', type='float',  digits=(16, 3), 
             string='Accounting Q.ty', store=False),
@@ -1499,6 +1505,8 @@ class mrp_production_extra(osv.osv):
         'bom_material_ids': fields.one2many(
             'mrp.production.material', 'mrp_production_id', 
             'BOM material lines'),
+        'bom_waste_ids': fields.one2many(
+            'mrp.production.material', 'mrp_waste_id', 'Waste material'),
         'package_ids': fields.one2many(
             'mrp.production.package', 'production_id', 'Package'),
         'load_ids': fields.one2many(
