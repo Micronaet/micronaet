@@ -132,7 +132,9 @@ class mrp_production_split_wizard(osv.osv_memory):
             lavoration_id = lavoration_pool.create(
                 cr, uid, data, context=context)
             lavoration_pool._create_bom_lines(
-                cr, uid, lavoration_id, from_production=True, context=context)
+                cr, uid, lavoration_id, 
+                #from_production=True, 
+                context=context)
             
         if context is None: 
             context={}                
@@ -154,7 +156,9 @@ class mrp_production_split_wizard(osv.osv_memory):
 
             if not cycle or cycle >= lavoration_proxy.cycle:
                 return {'type':'ir.actions.act_window_close'} # Comunicare l'errore se i cicli sono maggiori 
-            create_lavoration(self, cr, uid, lavoration_proxy, cycle, date_start, sequence, context=context)
+            create_lavoration(
+                self, cr, uid, lavoration_proxy, cycle, date_start, sequence, 
+                context=context)
             first_cycle = lavoration_proxy.cycle - cycle # to update first lavoration element
             
         else:
@@ -200,7 +204,8 @@ class mrp_production_split_wizard(osv.osv_memory):
         lavoration_pool.write(
             cr, uid, [origin_lavoration_id], update_data, context=context)
         lavoration_pool._create_bom_lines(
-            cr, uid, origin_lavoration_id, from_production=True, 
+            cr, uid, origin_lavoration_id, 
+            #from_production=True, 
             context=context)
             
         return {'type':'ir.actions.act_window_close'}   # sostituire con l'apertura della nuova lavorazione (vedere se è il caso)

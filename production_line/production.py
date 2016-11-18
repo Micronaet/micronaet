@@ -1134,7 +1134,8 @@ class mrp_production_workcenter_line_extra(osv.osv):
 
         res_id = super(mrp_production_workcenter_line_extra, self).create(
             cr, uid, vals, context=context)
-        if res_id: # Create bom for this lavoration: (only during creations)!! # TODO test if is it is not created (or block qty if present)?
+        if res_id: # Create bom for this lavoration: (only during creations)!! 
+            # TODO test if is it is not created (or block qty if present)?
             mrp_proxy = self.pool.get('mrp.production').browse(
                 cr, uid, [vals.get('production_id',0)], context=context)[0]
             total = mrp_proxy.product_qty
