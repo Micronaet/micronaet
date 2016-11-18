@@ -14,11 +14,11 @@
                    </header>                   
                    <group colspan="4" col="6" string="Confirm production (User)" attrs="{'invisible':[('state','=','material')]}">
                         <field name="recycle" />
-                        <field name="wrong" />
+                        <field name="wrong" invisible="1"/>
                         <newline />
 
                         <field name="product_id" readonly="1" colspan="6" attrs="{'invisible':[('recycle','=',True)],}"/>
-                        <field name="recycle_product_id" colspan="6" attrs="{'invisible':[('recycle','=',False)],'required':[('recycle','=',True)]}"/>
+                        <field name="recycle_product_id" colspan="6" invisible="1" /><!--attrs="{'invisible':[('recycle','=',False)],'required':[('recycle','=',True)]}"/>-->
 
                         <field name="real_product_qty" on_change="onchange_package_id(package_id,product_id,real_product_qty)"/>
                         <field name="partial" />
@@ -36,7 +36,7 @@
                    <group colspan="4" col="4" groups="stock.group_stock_manager" string="List of unload to confirm (Manager):" attrs="{'invisible':[('state','=','product')]}">
                         <field name="list_unload" colspan="4" nolabel="1" readonly="1"/>
                    </group>
-                   <group colspan="4" col="4" string="Wrong production comment:" attrs="{'invisible':[('wrong','=',False)]}">
+                   <group colspan="4" col="4" string="Production comment:" attrs="{'invisible':[('recycle','=',False)]}">
                         <field name="wrong_comment" colspan="4" nolabel="1"/>
                    </group>
                 </form>

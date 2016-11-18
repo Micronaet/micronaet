@@ -305,7 +305,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             product_qty = wiz_proxy.real_product_qty or 0.0
             wrong = wiz_proxy.wrong
             recycle = wiz_proxy.recycle
-            recycle_product_id = wiz_proxy.recycle_product_id
+            #recycle_product_id = wiz_proxy.recycle_product_id
             package_id = \
                 wiz_proxy.package_id.id if wiz_proxy.package_id else False
             # TODO create a function for compute: sum ( q. x std. cost)    
@@ -319,8 +319,8 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 'pallet_product_id': pallet.id if pallet else False,
                 'pallet_qty': wiz_proxy.pallet_qty or 0.0,
                 'recycle': recycle,
-                'recycle_product_id': 
-                    recycle_product_id.id if recycle_product_id else False,
+                'recycle_product_id': False,
+                #    recycle_product_id.id if recycle_product_id else False,
                 'wrong': wrong,
                 'wrong_comment': wiz_proxy.wrong_comment,
                 })
@@ -335,8 +335,13 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             # Code for product, syntax:
             # [(1)Famiglia - (6)Prodotto - (1).Pezzatura - (1)Versione] -
             # [(5)Partita - #(2)SequenzaCarico] - [(10)Imballo]
+            if recycle:
+                # Pass product with R + code without first char:
+                code = 'R%s' % wiz_proxy.product_id.default_code[1:]
+            else:    
+                code = wiz_proxy.product_id.default_code
             product_code = '%-8s%-2s%-10s%-10s' % (
-                wiz_proxy.product_id.default_code,
+                code,
                 wc.code[:2],
                 '%06d#%01d' % (
                     int(mrp.name[3:]),
@@ -361,6 +366,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             # Export CL for product with new generated code:
             try:
                 f_cl = open(file_cl, 'w')
+                _logger.info('Open CL file: %s' % file_cl)    
             except:
                 raise osv.except_osv(
                     _('Transit file problem accessing!'),
@@ -368,19 +374,20 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                     )
 
             # wrong > new code = (recycle code = code with R in 8th position)
-            if wrong:
-                f_cl.write('%-35s%10.2f%13.5f%16s\r\n' % (
-                    '%sR%s' % (
-                        product_code[:7],
-                        product_code[8:],
-                        ),
-                    product_qty,
-                    price,
-                    '', 
-                    ))
-            else:
-                f_cl.write('%-35s%10.2f%13.5f%16s\r\n' % (
-                    product_code, product_qty, price, ''))
+            # NOTE remove wrong part, no more used!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            #if wrong:
+            #    f_cl.write('%-35s%10.2f%13.5f%16s\r\n' % (
+            #        '%sR%s' % (
+            #            product_code[:7],
+            #            product_code[8:],
+            #            ),
+            #        product_qty,
+            #        price,
+            #        '', 
+            #        ))
+            #else:
+            f_cl.write('%-35s%10.2f%13.5f%16s\r\n' % (
+                product_code, product_qty, price, ''))                
 
             # TODO mode in product (end movement)
             convert_load_id = {} # list for convert CL code in load.id
