@@ -757,9 +757,8 @@ class mrp_production_workcenter_load(osv.osv):
                         last = load.sequence
         sequence = last + 1
         vals['sequence'] = sequence
-        res_id = super(mrp_production_workcenter_load, self).create(
+        return super(mrp_production_workcenter_load, self).create(
             cr, uid, vals, context=context)
-        return res_id
 
     _columns = {
         #'name': fields.char('Name',),
@@ -1125,19 +1124,26 @@ class mrp_production_workcenter_line_extra(osv.osv):
         """ Override create method only for generare BOM materials in subfield
             bom_materials_ids, initially is a copy of mrp.production ones
         """
-        vals['real_date_planned_end'] = self.add_hour(vals.get('real_date_planned',False), vals.get('hour',False))
+        vals['real_date_planned_end'] = self.add_hour(
+            vals.get('real_date_planned',False), 
+            vals.get('hour',False))
         if vals.get('force_cycle_default', False):
             res = self.cycle_historyzation(cr, uid, vals, context=context)
-            vals['force_cycle_default'] = False # after historization force return False
+            vals['force_cycle_default'] = False 
+            # after historization force return False
 
-        res_id = super(mrp_production_workcenter_line_extra, self).create(cr, uid, vals, context=context)
+        res_id = super(mrp_production_workcenter_line_extra, self).create(
+            cr, uid, vals, context=context)
         if res_id: # Create bom for this lavoration: (only during creations)!! # TODO test if is it is not created (or block qty if present)?
-            production_order_browse=self.pool.get('mrp.production').browse(cr, uid, [vals.get('production_id',0)], context=context)[0]
-            for item in production_order_browse.bom_material_ids:
+            mrp_proxy = self.pool.get('mrp.production').browse(
+                cr, uid, [vals.get('production_id',0)], context=context)[0]
+            total = mrp_proxy.product_qty
+            for item in mrp_proxy.bom_material_ids:
                 # proportionally created on total production order and total lavoration order
-                item_id=self.pool.get('mrp.production.material').create(cr, uid, {
+                item_id = self.pool.get('mrp.production.material').create(cr, uid, {
                     'product_id': item.product_id.id,
-                    'quantity': item.quantity * vals.get('product_qty',0.0) / production_order_browse.product_qty if production_order_browse.product_qty else 0.0,
+                    'quantity': item.quantity * vals.get(
+                        'product_qty', 0.0) / total if total else 0.0,
                     'workcenter_production_id': res_id, # current yet created WC line
                 }, context=context)
         return res_id
@@ -1148,7 +1154,10 @@ class mrp_production_workcenter_line_extra(osv.osv):
         """
         wk_proxy=self.browse(cr, uid, ids, context=context)[0] # for load missing values:
         if vals.get('real_date_planned',False) or vals.get('hour',False):
-            vals['real_date_planned_end'] = self.add_hour(vals.get('real_date_planned',wk_proxy.real_date_planned), vals.get('hour',wk_proxy.hour))
+            vals['real_date_planned_end'] = self.add_hour(
+                vals.get('real_date_planned', wk_proxy.real_date_planned), 
+                vals.get('hour',wk_proxy.hour),
+                )
 
         if vals.get('force_cycle_default', False): # must save parameters for lavoration product-line
             # Update value if not present in write operation:
@@ -1158,7 +1167,8 @@ class mrp_production_workcenter_line_extra(osv.osv):
             vals['single_cycle_qty'] = vals.get('single_cycle_qty', wk_proxy.single_cycle_qty)
             vals['force_cycle_default'] = False # Return to false because the update operation is done!
             update = self.cycle_historyzation(cr, uid, vals, context=context) # Update history of product-workcenter
-        return super(mrp_production_workcenter_line_extra, self).write(cr, uid, ids, vals, context=context, update=False)
+        return super(mrp_production_workcenter_line_extra, self).write(
+            cr, uid, ids, vals, context=context, update=False)
 
         '''#TODO: process before updating resource
         real_date_planned=vals.get('real_date_planned', False)

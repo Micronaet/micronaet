@@ -74,7 +74,7 @@ class mrp_production_split_wizard(osv.osv_memory):
                     lavoration_proxy.single_cycle_qty,               # Tot Q. per lavoration
                     cycle * lavoration_proxy.single_cycle_qty,       # Tot Q. per day                                                                                   
                 )
-                current_date = current_date + relativedelta(days = 1)
+                current_date = current_date + relativedelta(days=1)
             
             res['value'] = {'split_daily_note': note}
         else:             
@@ -88,8 +88,10 @@ class mrp_production_split_wizard(osv.osv_memory):
         from datetime import datetime
         
         lavoration_pool = self.pool.get("mrp.production.workcenter.line")
+        
         # Utility function:
-        def create_lavoration(self, cr, uid, lavoration_proxy, cycle, date_start, sequence, context=None):
+        def create_lavoration(self, cr, uid, lavoration_proxy, cycle, 
+                date_start, sequence, context=None):
             ''' Create a lavoration with passed parameters, according to the one
                 used as reference
                 lavoration_proxy: reference object for get parameter (default)
@@ -106,7 +108,8 @@ class mrp_production_split_wizard(osv.osv_memory):
 
                 'cycle': cycle,
                 'single_cycle_qty': lavoration_proxy.single_cycle_qty,
-                'single_cycle_duration': lavoration_proxy.single_cycle_duration,
+                'single_cycle_duration': 
+                    lavoration_proxy.single_cycle_duration,
                 'product_qty': cycle * lavoration_proxy.single_cycle_qty, 
                 'hour': cycle * lavoration_proxy.single_cycle_duration,
                   
@@ -126,8 +129,10 @@ class mrp_production_split_wizard(osv.osv_memory):
                 'force_cycle_default': False,
                 'production_id': lavoration_proxy.production_id.id,
             }
-            lavoration_id = lavoration_pool.create(cr, uid, data, context=context)
-            lavoration_pool._create_bom_lines(cr, uid, lavoration_id, context=context)
+            lavoration_id = lavoration_pool.create(
+                cr, uid, data, context=context)
+            lavoration_pool._create_bom_lines(
+                cr, uid, lavoration_id, from_production=True, context=context)
             
         if context is None: 
             context={}                
@@ -135,7 +140,8 @@ class mrp_production_split_wizard(osv.osv_memory):
         wizard_browse = self.browse(cr, uid, ids, context=context)[0] # wizard fields proxy
         origin_lavoration_id = context.get("active_id", 0)
         
-        lavoration_proxy = lavoration_pool.browse(cr, uid, origin_lavoration_id,context=context)
+        lavoration_proxy = lavoration_pool.browse(
+            cr, uid, origin_lavoration_id,context=context)
         
         if not wizard_browse.split_daily: 
             # ---------------------------------
@@ -180,7 +186,9 @@ class mrp_production_split_wizard(osv.osv_memory):
                 sequence = lavoration_proxy.sequence + 1                    
                 cycle = remain if remain > 0 and i + 1 == split_days else daily_cycle
                 date_start = current_date.strftime("%Y-%m-%d 06:00:00")                
-                create_lavoration(self, cr, uid, lavoration_proxy, cycle, date_start, sequence, context=context)                
+                create_lavoration(
+                    self, cr, uid, lavoration_proxy, cycle, date_start, 
+                    sequence, context=context)                
                 current_date = current_date + relativedelta(days = 1)
 
         # Update origin lavoration:
@@ -188,9 +196,12 @@ class mrp_production_split_wizard(osv.osv_memory):
             'cycle': first_cycle,
             'product_qty': first_cycle * lavoration_proxy.single_cycle_qty, 
             'hour': first_cycle * lavoration_proxy.single_cycle_duration,
-        }
-        lavoration_pool.write(cr, uid, [origin_lavoration_id], update_data, context=context)
-        lavoration_pool._create_bom_lines(cr, uid, origin_lavoration_id, context=context)
+            }
+        lavoration_pool.write(
+            cr, uid, [origin_lavoration_id], update_data, context=context)
+        lavoration_pool._create_bom_lines(
+            cr, uid, origin_lavoration_id, from_production=True, 
+            context=context)
             
         return {'type':'ir.actions.act_window_close'}   # sostituire con l'apertura della nuova lavorazione (vedere se è il caso)
 
@@ -203,16 +214,19 @@ class mrp_production_split_wizard(osv.osv_memory):
         return wc_browse.cycle - 1.0 if wc_browse else 1.0
 
     _columns = {
-        'cycle_remain': fields.integer('Cycle remain', required=False),
-        'datetime': fields.datetime('Date next', help='Date next lavoration', required=False),
-        'split_daily': fields.boolean('Daily split', help='Is checked this lavoration is splitted depending on working hour'),
-        'split_daily_note': fields.text('Daily split note', help='List of all division cycle per day according to hour per line daily'),
+        'cycle_remain': fields.integer('Cycle remain'),
+        'datetime': fields.datetime('Date next', help='Date next lavoration'),
+        'split_daily': fields.boolean('Daily split', 
+            help='Is checked this lavoration is splitted depending on working hour'),
+        'split_daily_note': fields.text('Daily split note', 
+            help='List of all division cycle per day according to hour per line daily'),
     }
         
     _defaults = {
-        'cycle_remain': lambda s, cr, uid, c: s.default_quantity(cr, uid, context=c),
+        'cycle_remain': lambda s, cr, uid, c: s.default_quantity(
+            cr, uid, context=c),
         'split_daily': lambda *x: False,
-    }    
+        }    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 
 
