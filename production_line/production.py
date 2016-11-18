@@ -1059,37 +1059,41 @@ class mrp_production_workcenter_line_extra(osv.osv):
         ''' Create a BOM list for the passed lavoration
             Actual items will be deleted and reloaded with quantity passed
         '''
-        lavoration_browse = self.browse(cr, uid, lavoration_id, context=context)
+        lavoration_browse = self.browse(
+            cr, uid, lavoration_id, context=context)
         try:
-            if not lavoration_browse.production_id.bom_id and not lavoration_browse.product_qty:
+            mrp = lavoration_browse.production_id
+            bom = mrp.bom_id
+            if not bom and not lavoration_browse.product_qty:
                 return False # TODO raise error
 
             # Delete all elements:
             material_pool = self.pool.get('mrp.production.material')
-            material_ids = material_pool.search(cr, uid, [('workcenter_production_id','=', lavoration_id)], context=context)
+            material_ids = material_pool.search(cr, uid, [
+                ('workcenter_production_id','=', lavoration_id),
+                ], context=context)
             material_pool.unlink(cr, uid, material_ids, context=context)
 
             # Create elements from bom:
             if from_production:
-                for element in lavoration_browse.production_id.bom_material_ids:
+                for element in mrp.bom_material_ids:
                     material_pool.create(cr, uid, {
                         'product_id': element.product_id.id,
-                        'quantity': element.quantity / lavoration_browse.production_id.product_qty * lavoration_browse.product_qty if lavoration_browse.production_id.product_qty else 0.0,
+                        'quantity': element.quantity / mrp.product_qty * lavoration_browse.product_qty if mrp.product_qty else 0.0,
                         'uom_id': element.product_id.uom_id.id,
                         'workcenter_production_id': lavoration_id,
                     }, context=context)
             else:
-                for element in lavoration_browse.production_id.bom_id.bom_lines:
+                for element in bom.bom_lines:
                     material_pool.create(cr, uid, {
                         'product_id': element.product_id.id,
-                        'quantity': element.product_qty * lavoration_browse.product_qty / lavoration_browse.production_id.bom_id.product_qty if lavoration_browse.production_id.bom_id.product_qty else 0.0,
+                        'quantity': element.product_qty * lavoration_browse.product_qty / bom.product_qty if bom.product_qty else 0.0,
                         'uom_id': element.product_id.uom_id.id,
                         'workcenter_production_id': lavoration_id,
                     }, context=context)
         except:
             return False
         return True
-
 
     # ------------------
     # Override function:
