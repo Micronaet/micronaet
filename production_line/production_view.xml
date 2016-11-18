@@ -546,7 +546,7 @@
                 <newline/>                
                 <filter icon="terp-go-home" name="cl" string="CL sync" domain="[('accounting_cl_code','!=',False)]" />
 
-                <filter icon="terp-go-home" name="wrong" string="Wrong" domain="[('wrong','=',True)]" />
+                <!--<filter icon="terp-go-home" name="wrong" string="Wrong" domain="[('wrong','=',True)]" />-->
                 <filter icon="terp-go-home" name="recycle" string="Recycle" domain="[('recycle','=',True)]" />
                 <newline/>
                 <filter icon="terp-go-home" name="partial" string="Partial load" domain="[('partial','=',True)]" />
@@ -579,9 +579,10 @@
                 <field name="line_id" invisible="context.get('embedded',False)"/>
                 <field name="user_id" invisible="1"/>
                 <field name="product_qty" sum="total" />
-                <field name="wrong" />
+                <field name="wrong" invisible="1"/>
                 <field name="recycle" />
-                <field name="recycle_product_id" />                
+                <!--<field name="recycle_product_id" />-->
+                <field name="wrong_comment" />
                 <field name="partial" />
                 <field name="package_id" />
                 <field name="ul_qty" />
@@ -605,9 +606,10 @@
 	            <field name="product_id" readonly="1" />
                 <field name="product_code" readonly="1" />
                 <field name="product_qty" sum="total"  readonly="1"/>
-                <field name="wrong" readonly="1"/>
+                <field name="wrong" invisible="1"/>
                 <field name="recycle" readonly="1"/>
-                <field name="recycle_product_id"  readonly="1"/>                
+                <field name="wrong_comment" />
+                <!--<field name="recycle_product_id"  readonly="1"/>-->
                 <field name="partial" readonly="1"/>
                 <field name="package_id" readonly="1"/>
                 <field name="ul_qty" readonly="1"/>
@@ -646,10 +648,10 @@
                         <field name="recycle" />
                         <field name="recycle_product_id" />                
 
-                        <field name="wrong" />
+                        <!--<field name="wrong" />-->
                         <field name="partial" />
 
-                        <group colspan="4" col="4" string="Wrong production comment:" attrs="{'invisible':[('wrong','=',False)]}">
+                        <group colspan="4" col="4" string="Production comment:" attrs="{'invisible':[('recycle','=',False)]}">
                             <field name="wrong_comment" colspan="4" nolabel="1"/>
                         </group>
                     </group>
