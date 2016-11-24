@@ -122,18 +122,23 @@ class create_mrp_production_wizard(osv.osv_memory):
         ''' Get list of order for confirm as default
         '''
         sol_pool = self.pool.get('sale.order.line')
-        ids = sol_pool.search(cr, uid, [('id','in',context.get("active_ids",[]))], context=context)
+        ids = sol_pool.search(cr, uid, [
+            ('id','in',context.get("active_ids",[]))], context=context)
+        if not ids:
+            return False
         sol_browse = sol_pool.browse(cr, uid, ids, context=context) 
-                
+        product = sol_browse[0].product_id
         default = {
             "list": _("- Q. in store (don't produce): %6.3f\n") % (
-                sol_browse[0].product_id.accounting_qty if (len(sol_browse)>0 and sol_browse[0].product_id) else 0.0), 
+                product.accounting_qty if (len(sol_browse)>0 and product) else 0.0), 
             "error": False, 
-            "total": 0.0 - (sol_browse[0].product_id.accounting_qty if (len(sol_browse)>0 and sol_browse[0].product_id) else 0.0), 
+            "total": 0.0 - (product.accounting_qty if (len(sol_browse)>0 and product) else 0.0), 
             "product": False, 
             "deadline": False, 
-            "bom": False
-        }
+            "bom": False,
+            "mrp_yield": product.mrp_yield,
+            "mrp_waste": product.mrp_waste,
+            }
              
         res = default.get(field, False)
         
@@ -145,7 +150,8 @@ class create_mrp_production_wizard(osv.osv_memory):
             return False    
         try:
             if field=="bom":
-                return self.pool.get("mrp.bom").search(cr, uid, [('product_id','=',sol_browse[0].product_id.id)], context=context)
+                return self.pool.get("mrp.bom").search(cr, uid, [
+                    ('product_id', '=', product.id)], context=context)
         except:
             return False    
         
@@ -171,15 +177,17 @@ class create_mrp_production_wizard(osv.osv_memory):
             elif field == "error":
                 if item.product_id.id != old_product_id:
                     return True
-            elif field == "total":
+            elif field == "total" or field == "mrp_yield_total":
                 res += item.product_uom_qty or 0.0
             elif field == "deadline":
                 if not res:
                     res = item.date_deadline
                 if item.date_deadline < res:
-                    res = item.date_deadline      
+                    res = item.date_deadline
+        if field == "mrp_yield_total": 
+            return res * product.mrp_yield / 100.0  
         return res
-   
+        
     _columns = {
         'name':fields.text('List of OC elements',),
         'error':fields.boolean('Error', required=False),        
@@ -187,17 +195,37 @@ class create_mrp_production_wizard(osv.osv_memory):
         'total': fields.float('Total', digits=(16, 2), required=True),
         'product_id':fields.many2one('product.product', 'Product', required=True),
         'bom_id':fields.many2one('mrp.bom', 'BOM', required=True),
-        'date_deadline': fields.date('Date deadline', required=True, help="Generated automatically based on min deadline of order header selected, changeable form user but not tipped!"),
+        'date_deadline': fields.date(
+            'Date deadline', required=True, 
+            help="Generated automatically based on min deadline of order header selected, changeable form user but not tipped!"),
+        'mrp_yield': fields.float('Yield rate',
+            digits=(16, 2), readonly=True),
+        'mrp_waste': fields.float('Yield waste',
+            digits=(16, 2), readonly=True),
+        'mrp_yield_total': fields.float('Yield total',
+            digits=(16, 2), readonly=True),
         }
         
     _defaults = {
-        'name':  lambda s, cr, uid, c: s.default_oc_list(cr, uid, "list", context=c),
+        'name':  lambda s, cr, uid, c: s.default_oc_list(
+            cr, uid, "list", context=c),
         'all_in_one': lambda *a: False,
-        'error': lambda s, cr, uid, c: s.default_oc_list(cr, uid, "error", context=c),
-        'total': lambda s, cr, uid, c: s.default_oc_list(cr, uid, "total", context=c),        
-        'product_id': lambda s, cr, uid, c: s.default_oc_list(cr, uid, "product", context=c),        
-        'bom_id': lambda s, cr, uid, c: s.default_oc_list(cr, uid, "bom", context=c),        
-        'date_deadline': lambda s, cr, uid, c: s.default_oc_list(cr, uid, "deadline", context=c),        
+        'error': lambda s, cr, uid, c: s.default_oc_list(
+            cr, uid, "error", context=c),
+        'total': lambda s, cr, uid, c: s.default_oc_list(
+            cr, uid, "total", context=c),        
+        'product_id': lambda s, cr, uid, c: s.default_oc_list(
+            cr, uid, "product", context=c),        
+        'bom_id': lambda s, cr, uid, c: s.default_oc_list(
+            cr, uid, "bom", context=c),        
+        'date_deadline': lambda s, cr, uid, c: s.default_oc_list(
+            cr, uid, "deadline", context=c),        
+        'mrp_yield': lambda s, cr, uid, c: s.default_oc_list(
+            cr, uid, "mrp_yield", context=c),        
+        'mrp_waste': lambda s, cr, uid, c: s.default_oc_list(
+            cr, uid, "mrp_waste", context=c),        
+        'mrp_yield_total': lambda s, cr, uid, c: s.default_oc_list(
+            cr, uid, "mrp_yield_total", context=c),        
     }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 

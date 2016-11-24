@@ -266,8 +266,7 @@ class product_product_extra(osv.osv):
             help='Max weight of the load on this pallet'),
         
         'mrp_yield': fields.float('MRP m(x) yield', digits=(16, 3)),
-        'mrp_yield_waste': fields.float('MRP m(x) yield waste', 
-            digits=(16, 3)),        
+        'mrp_waste': fields.float('MRP m(x) waste', digits=(16, 3)),        
         }
 
     _defaults = {
