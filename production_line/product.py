@@ -84,7 +84,6 @@ class product_ul_extra(osv.osv):
 class product_product_extra(osv.osv):
     ''' Extra fields for product.product object
     '''
-    _name = "product.product"
     _inherit = "product.product"
 
     # -------------
@@ -250,15 +249,25 @@ class product_product_extra(osv.osv):
         
     _columns = {
         'accounting_qty': fields.float('Account quantity', digits=(16, 3)),
-        'linked_accounting_qty': fields.function(_function_linked_accounting_qty, method=True, type='float', string='OC qty linked to store', store=False, multi=False),
+        'linked_accounting_qty': fields.function(
+            _function_linked_accounting_qty, method=True, type='float', 
+            string='OC qty linked to store', store=False, multi=False),
                 
         'minimum_qty': fields.float('Minimum alert quantity', digits=(16, 3)),
         'maximum_qty': fields.float('Maximum alert quantity', digits=(16, 3)),
-        'not_in_status': fields.boolean('Not in status', help='If checked in webkit report of status doesn\'t appear'), 
-        #'to_produce': fields.boolean('To produce', help='If checked this product appear on list of os lines during creation of production orders'), 
+        'not_in_status': fields.boolean('Not in status', 
+            help='If checked in webkit report of status doesn\'t appear'), 
+        # 'to_produce': fields.boolean('To produce', help='If checked this 
+        # product appear on list of os lines during creation of production 
+        # orders'), 
         
         'is_pallet': fields.boolean('Is a pallet', help='The product is a pallet '), 
-        'pallet_max_weight': fields.float('Pallet weight', digits=(16, 3), help='Max weight of the load on this pallet'),
+        'pallet_max_weight': fields.float('Pallet weight', digits=(16, 3), 
+            help='Max weight of the load on this pallet'),
+        
+        'mrp_yield': fields.float('MRP m(x) yield', digits=(16, 3)),
+        'mrp_yield_waste': fields.float('MRP m(x) yield waste', 
+            digits=(16, 3)),        
         }
 
     _defaults = {
