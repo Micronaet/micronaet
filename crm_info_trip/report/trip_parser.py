@@ -195,7 +195,7 @@ class Parser(report_sxw.rml_parse):
                         record['TOTALE'],
                         record['IMPONIBILE'],
                         )
-                    self.total_invoiced[year] += record['TOTALE']
+                    self.total_invoiced[year] += record['IMPONIBILE']
                     # TODO also imponibile
                     
         else:
