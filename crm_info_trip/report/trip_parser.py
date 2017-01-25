@@ -218,8 +218,9 @@ class Parser(report_sxw.rml_parse):
                     price = round(invoice['NPZ_UNIT'] / (
                         1.0 / invoice['NCF_CONV'] if invoice['NCF_CONV'] else 1.0
                         ), 4)
-                    # TODO ORIDINALE: date = self.format_date(invoice['DTT_DOC_ORI'])
-                    date = self.format_date(invoice['DTT_DOC'])
+                    date = self.format_date(invoice['DTT_DOC_ORI'])
+                    date_doc = self.format_date(invoice['DTT_DOC'])
+                    #total = price * invoice['']
                     
                     if invoice['CKY_ART'] not in self.products:
                         self.products[invoice['CKY_ART']] = []
@@ -229,7 +230,7 @@ class Parser(report_sxw.rml_parse):
                     if invoice['CKY_ART'] not in last or last[invoice['CKY_ART']] != price:
                         last[invoice['CKY_ART']] = price
                         self.products[invoice['CKY_ART']].append((
-                            date, price))
+                            date, price, date_doc))
         return
 
     def get_price_variation(self, product_code, mode='price'):
