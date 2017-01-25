@@ -215,8 +215,7 @@ class Parser(report_sxw.rml_parse):
         if self.load_mysql_partner(partner_code, ref_year, 'invoice_header'):
             for year in self.get_data('invoice_header')['data']:
                 for invoice in year:
-                    print invoice
-                        
+                    import pdb; pdb.set_trace()                        
                     price = round(invoice['NPZ_UNIT'] / (
                         1.0 / invoice['NCF_CONV'] if invoice['NCF_CONV'] else 1.0
                         ), 4)
