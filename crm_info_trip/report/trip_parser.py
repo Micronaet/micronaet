@@ -215,7 +215,7 @@ class Parser(report_sxw.rml_parse):
         if self.load_mysql_partner(partner_code, ref_year, 'invoice_header'):
             for year in self.get_data('invoice_header')['data']:
                 for invoice in year:
-                    if invoice['CKY_ART'] == 'G4210':
+                    if invoice['CKY_ART'].strip() == 'SO041':
                         print invoice
                         
                     price = round(invoice['NPZ_UNIT'] / (
