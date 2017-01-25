@@ -162,7 +162,7 @@ class Parser(report_sxw.rml_parse):
                     where_partner=partner_code,
                     originator=True,
                     year=year,
-                    order_by="DTT_DOC desc",
+                    order_by="DTT_DOC_ORI desc", # XX before DDT_DOC
                     )
                 mysql_data.append(mysql_cursor.fetchall())
                 
