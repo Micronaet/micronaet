@@ -189,14 +189,16 @@ class Parser(report_sxw.rml_parse):
                             record['CDS_VARIAB_ART'], # description
                             {}, # delivery per year
                             ]
-                    # Add totals for this year        
+                    # Add totals for this year  
+                    # TODO correct in query: get_mm_situation base_mssql_accounting
+                    imponibile = record['IMPONIBILE'] / 1000.0       
                     mysql_data[record['CKY_ART']][1][year] = (
                         record['CONSEGNE'],
                         record['TOTALE'],
-                        record['IMPONIBILE'],
+                        imponibile,
                         )
-                    self.total_invoiced[year] += record['IMPONIBILE']
-                    # TODO also imponibile
+                    self.total_invoiced[year] += imponibile
+                    # TODO also TOTALE?
                     
         else:
             return False
