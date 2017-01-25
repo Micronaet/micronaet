@@ -193,8 +193,10 @@ class Parser(report_sxw.rml_parse):
                     mysql_data[record['CKY_ART']][1][year] = (
                         record['CONSEGNE'],
                         record['TOTALE'],
+                        record['IMPONIBILE'],
                         )
                     self.total_invoiced[year] += record['TOTALE']
+                    # TODO also imponibile
                     
         else:
             return False
@@ -219,7 +221,7 @@ class Parser(report_sxw.rml_parse):
                         1.0 / invoice['NCF_CONV'] if invoice['NCF_CONV'] else 1.0
                         ), 4)
                     date = self.format_date(invoice['DTT_DOC_ORI'])
-                    date_doc = self.format_date(invoice['DTT_DOC'])
+                    #date_doc = self.format_date(invoice['DTT_DOC'])
                     #total = price * invoice['']
                     
                     if invoice['CKY_ART'] not in self.products:
@@ -230,7 +232,9 @@ class Parser(report_sxw.rml_parse):
                     if invoice['CKY_ART'] not in last or last[invoice['CKY_ART']] != price:
                         last[invoice['CKY_ART']] = price
                         self.products[invoice['CKY_ART']].append((
-                            date, price, date_doc))
+                            date, price, 
+                            #date_doc # real data document
+                            ))
         return
 
     def get_price_variation(self, product_code, mode='price'):
