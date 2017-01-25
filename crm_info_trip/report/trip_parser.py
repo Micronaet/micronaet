@@ -215,11 +215,11 @@ class Parser(report_sxw.rml_parse):
         if self.load_mysql_partner(partner_code, ref_year, 'invoice_header'):
             for year in self.get_data('invoice_header')['data']:
                 for invoice in year:
-                    import pdb; pdb.set_trace()                        
                     price = round(invoice['NPZ_UNIT'] / (
                         1.0 / invoice['NCF_CONV'] if invoice['NCF_CONV'] else 1.0
                         ), 4)
-                    date = self.format_date(invoice['DTT_DOC_ORI'])
+                    # TODO ORIDINALE: date = self.format_date(invoice['DTT_DOC_ORI'])
+                    date = self.format_date(invoice['DTT_DOC'])
                     
                     if invoice['CKY_ART'] not in self.products:
                         self.products[invoice['CKY_ART']] = []
