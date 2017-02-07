@@ -142,7 +142,7 @@ class Parser(report_sxw.rml_parse):
             for year in years:
                 mysql_cursor = query.get_mm_header_line( #get_mm_line(
                     self.cr, self.uid, 
-                    where_document=("BC", "BS"), # TODO no FT only BC in this DB
+                    where_document=("BC", "BS"), #TODO no FT only BC in this DB
                     where_partner=partner_code,
                     originator=True,
                     year=year,
