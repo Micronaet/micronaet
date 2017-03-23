@@ -492,10 +492,20 @@ class sale_order_add_extra(osv.osv):
                         item.mrp_production_id.name,
                         )
     
-            if delete_oc_in_production_error and self.send_mail(cr, uid, 'Import sale order: Warning deletion of OC line in production', delete_oc_in_production_error, context=context):
-                _logger.warning('Send mail for error / warning (OC line in production deleted)!')
-            else:
-                _logger.error('Server SMTP not setted up, no mail will be sent!')
+            try:            
+                #and self.send_mail(
+                #        cr, uid, 
+                #        'Import sale order: Warning deletion of OC line in production', 
+                #        delete_oc_in_production_error, context=context)
+                if delete_oc_in_production_error:
+                    _logger.warning(
+                        'Send mail for error / warning (OC line in production deleted)!')
+                else:
+                    _logger.error(
+                        'Server SMTP not setted up, no mail will be sent!')
+            except:        
+                _logger.error('Error sending email!')
+                    
 
             for del_id in to_delete_ids:
                 try:
@@ -552,12 +562,15 @@ class sale_order_add_extra(osv.osv):
             over_store_error += 'Product %s covered for %s but in accounting there\'s %s\n' % (
                 default_code, total, accounting_qty)
 
-        # Send mail for log error:
-        if over_store_error:
-            if self.send_mail(cr, uid, 'Import sale order: Warning variation in store cover', over_store_error, context=context):
-                _logger.warning('Send mail for error / warning (OC not covered with store)!')
-            else:
-                _logger.error('Server SMTP not setted up, no mail will be sent!')
+        # Send mail for log error:        
+        #if over_store_error:
+        #    try:
+        #        if self.send_mail(cr, uid, 'Import sale order: Warning variation in store cover', over_store_error, context=context):
+        #            _logger.warning('Send mail for error / warning (OC not covered with store)!')
+        #        else:
+        #            _logger.error('Server SMTP not setted up, no mail will be sent!')
+        #    except:
+        #        _logger.error('Error sending email!')
 
         # TODO testare bene gli ordini di produzione che potrebbero avere delle mancanze!
         _logger.info('End importation OC header and line!')
