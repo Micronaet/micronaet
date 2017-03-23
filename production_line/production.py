@@ -563,7 +563,8 @@ class sale_order_add_extra(osv.osv):
                 default_code, total, accounting_qty)
 
         # Send mail for log error:        
-        #if over_store_error:
+        if over_store_error:
+            _logger.warning('OC not covered with store!')
         #    try:
         #        if self.send_mail(cr, uid, 'Import sale order: Warning variation in store cover', over_store_error, context=context):
         #            _logger.warning('Send mail for error / warning (OC not covered with store)!')
