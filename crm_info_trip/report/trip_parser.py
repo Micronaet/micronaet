@@ -142,11 +142,11 @@ class Parser(report_sxw.rml_parse):
             for year in years:
                 mysql_cursor = query.get_mm_header_line( #get_mm_line(
                     self.cr, self.uid, 
-                    where_document=("BC", "BS"), #TODO no FT only BC in this DB
+                    where_document=('BC', 'BS'), #TODO no FT only BC in this DB
                     where_partner=partner_code,
                     originator=True,
                     year=year,
-                    order_by="DTT_DOC desc",
+                    order_by="DTT_DOC desc", #XXX desc
                     )
                 mysql_data.append(mysql_cursor.fetchall())
                 
@@ -218,7 +218,8 @@ class Parser(report_sxw.rml_parse):
 
         if self.load_mysql_partner(partner_code, ref_year, 'invoice_header'):
             for year in self.get_data('invoice_header')['data']:
-                for invoice in year:
+                # sorted DTT_DOC_ORI (for change price):  
+                for invoice in sorted(year, key=lambda y: y['DTT_DOC_ORI']): 
                     price = round(invoice['NPZ_UNIT'] / (
                         1.0 / invoice['NCF_CONV'] if invoice['NCF_CONV'] else 1.0
                         ), 4)
