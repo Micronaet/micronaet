@@ -131,7 +131,7 @@ class Parser(report_sxw.rml_parse):
                 # Generate list of year (for DB search)
                 years.extend(range(from_year, current_year))
         years.append(current_year) # Last year (order crescent for year)
-        years.sort(reverse=True) # reverse year list
+        #years.sort(reverse=True) # reverse year list # XXX reverse ok but purchase not!
 
         # Parametric code depend on dict_type:
         if dict_type == 'invoice': 
@@ -229,8 +229,7 @@ class Parser(report_sxw.rml_parse):
                     
                     if invoice['CKY_ART'] not in self.products:
                         self.products[invoice['CKY_ART']] = []
-                    if invoice['CKY_ART'] not in self.products_last:
-                        self.products_last[invoice['CKY_ART']] = date # first
+                    self.products_last[invoice['CKY_ART']] = date #last(XXX better)
                         
                     if invoice['CKY_ART'] not in last or last[invoice['CKY_ART']] != price:
                         last[invoice['CKY_ART']] = price
