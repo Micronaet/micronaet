@@ -170,11 +170,14 @@ class product_status_wizard(osv.osv_memory):
                     write_xls_mrp_line(WS, i, header)
                     i += 1 # jump one line
                                         
-                status_line = 0.0                
-                title = row[0].split(': ')[1].split('<b>')
+                status_line = 0.0         
+
+                title = row[0].split(': ')[1]
+                title_list = title.split('<b>')
                 body = [
-                    title[0],
-                    title[1].replace('</b>', ''),                    
+                    title[0] if len(title_list) == 2 else title,
+                    title[1].replace('</b>', '') \
+                        if len(title_list) == 2 else '?'
                     ]
                 j = 0
                 for col in mrp_pool._get_cols():
