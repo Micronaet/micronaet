@@ -159,8 +159,9 @@ class product_status_wizard(osv.osv_memory):
         # Start loop for design table for product and material status:
         # Header: 
         header = [
-            _('Material'), 
-            _('Need t./month [stat.: %s]') % data['month_window'],
+            (_('Material'), format_title), 
+            (_('Need t./month [stat.: %s]') % data['month_window'], 
+                format_title),
             ]        
         for col in mrp_pool._get_cols():
             header.append((col, format_title))
@@ -174,7 +175,7 @@ class product_status_wizard(osv.osv_memory):
                 if not start_product and row[0][0] == 'P':
                     i += 1 # jump one line
                     start_product = True
-                    header[0] = (_('Product'), format_title)
+                    header[0] = ((_('Product'), format_title))
                     write_xls_mrp_line(WS, i, header)
                     i += 1 # jump one line
                                         
