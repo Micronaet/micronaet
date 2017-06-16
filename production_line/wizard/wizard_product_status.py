@@ -24,7 +24,21 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import osv, fields
+import os
+import sys
+import logging
+import openerp
+import xlsxwriter
+from openerp.osv import fields, osv, expression
+from datetime import datetime, timedelta
+from openerp.tools.translate import _
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT, 
+    DEFAULT_SERVER_DATETIME_FORMAT, 
+    DATETIME_FORMATS_MAP, 
+    float_compare)
+
+
+_logger = logging.getLogger(__name__)
 
 
 # WIZARD PRINT REPORT ########################################################
@@ -34,12 +48,13 @@ class product_status_wizard(osv.osv_memory):
     _name = 'product.status.wizard'
     _description = 'Product status wizard'
 
+    # -------------------------------------------------------------------------
     # Button events:
-    def print_report(self, cr, uid, ids, context=None):
-        ''' Redirect to bom report passing parameters
-        ''' 
+    # -------------------------------------------------------------------------
+    def prepare_data(self, cr, uid, ids, context=None):
+        ''' Prepare data dict
+        '''
         wiz_proxy = self.browse(cr, uid, ids)[0]
-
         datas = {}
         if wiz_proxy.days:
             datas['days'] = wiz_proxy.days
@@ -48,12 +63,151 @@ class product_status_wizard(osv.osv_memory):
         datas['negative'] = wiz_proxy.negative
         datas['with_medium'] = wiz_proxy.with_medium
         datas['month_window'] = wiz_proxy.month_window
+        return datas
 
+    # -------------------------------------------------------------------------
+    # Button events:
+    # -------------------------------------------------------------------------
+    def export_excel(self, cr, uid, ids, context=None):
+        ''' Export excel file
+        '''
+        # ---------------------------------------------------------------------
+        # Utility:
+        # ---------------------------------------------------------------------
+        def write_xls_mrp_line(WS, row, line):
+            ''' Write line in excel file
+            '''
+            col = 0
+            for item in line:
+                WS.write(row, col, item)
+                col += 1
+            return True
+            
+        # Pool used:
+        mrp_pool = self.pool.get('mrp.production')    
+        data = self.prepare_data(cr, uid, ids, context=context)
+
+        # ---------------------------------------------------------------------
+        # XLS file:
+        # ---------------------------------------------------------------------
+        filename = '~/production_status.xlsx'
+        filename = os.path.expanduser(filename)
+        _logger.info('Start export status on %s' % filename)
+        
+        # Open file and write header
+        WB = xlsxwriter.Workbook(filename)
+        WS = WB.add_worksheet('Material')
+        # WS.write(0, 0, 'Codice')
+
+        # ---------------------------------------------------------------------
+        # Format elements:
+        # ---------------------------------------------------------------------
+        format_header = WB.add_format({
+            'bold': True, 
+            'font_name': 'Arial',
+            'font_size': 11,
+            })
+
+        format_title = WB.add_format({
+            'bold': True, 
+            'font_color': 'black',
+            'font_name': 'Arial',
+            'font_size': 10,
+            'align': 'center',
+            'valign': 'center',
+            'bg_color': 'gray',
+            'border': 1,
+            })
+
+        format_hidden = WB.add_format({
+            'font_color': 'white',
+            'font_name': 'Arial',
+            'font_size': 8,
+            })
+
+        format_data_text = WB.add_format({
+            'font_name': 'Arial',
+            'font_size': 10,
+            })
+
+        format_data_number = WB.add_format({
+            'font_name': 'Arial',
+            'font_size': 10,
+            'align': 'right',
+            })
+
+        # ---------------------------------------------------------------------
+        # Format columns:
+        # ---------------------------------------------------------------------
+        # Column dimension:
+        #WS.set_column ('A:A', 0, None, {'hidden': 1}) # ID column        
+        WS.set_column ('A:A', 40) # Image colums
+            
+        # Generate report for export:
+        context['lang'] = 'it_IT'
+        mrp_pool._start_up(cr, uid, data, context=context)
+        start_product = False
+        
+        # Start loop for design table for product and material status:
+        # Header: 
+        header = [
+            _('Material'), 
+            _('Need t./month [stat.: %s]') % data['month_window'],
+            ]        
+        for col in mrp_pool._get_cols():
+            header.append(col)
+        write_xls_mrp_line(WS, 0, header)
+        
+        # Body:
+        i = 1 # row position (before 0)
+        rows = mrp_pool._get_rows()
+        for row in rows:
+            if not mrp_pool._jump_is_all_zero(row[1], data):
+                if not start_product and row[0][0] == 'P':
+                    i += 1 # jump one line
+                    start_product = True
+                    header[0] = _('Product')
+                    write_xls_mrp_line(WS, i, header)
+                    i += 1 # jump one line
+                                        
+                status_line = 0.0                
+                title = row[0].split(': ')[1].split('<b>')
+                body = [
+                    title[0],
+                    title[1].replace('</b>', ''),                    
+                    ]
+                j = 0
+                for col in mrp_pool._get_cols():
+                    (q, minimum) = mrp_pool._get_cel(j, row[1])
+                    j += 1
+                    status_line += q
+                    body.append(status_line)
+                    
+                    # Choose the color setup:
+                    if not status_line: # value = 0
+                        pass # White
+                    elif status_line > minimum: # > minimum value (green)
+                        pass # Green
+                    elif status_line > 0.0: # under minimum (yellow)
+                        pass # Yellow
+                    elif status_line < 0.0: # under 0 (red)
+                        pass# Red
+                    else: # ("=", "<"): # not present!!!
+                        pass # Error!
+                write_xls_mrp_line(WS, i, body)
+                i += 1                
+        _logger.info('End export status on %s' % filename)
+        return True
+        
+    def print_report(self, cr, uid, ids, context=None):
+        ''' Redirect to bom report passing parameters
+        ''' 
+        datas = self.prepare_data(cr, uid, ids, context=context)
         return {
             'type': 'ir.actions.report.xml',
             'report_name': 'webkitstatus',
             'datas': datas,
-        }
+            }
         
     _columns = {
         'days':fields.integer('Days from today', required=True),
