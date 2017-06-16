@@ -159,7 +159,7 @@ class product_status_wizard(osv.osv_memory):
         # Start loop for design table for product and material status:
         # Header: 
         header = [
-            [_('Material'), format_title], # list for update after
+            [_('Material'), format_title], # list for update after for product
             (_('Need t./month [stat.: %s]') % data['month_window'], 
                 format_title),
             ]        
