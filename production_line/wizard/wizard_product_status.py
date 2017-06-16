@@ -78,8 +78,8 @@ class product_status_wizard(osv.osv_memory):
             ''' Write line in excel file
             '''
             col = 0
-            for item in line:
-                WS.write(row, col, item)
+            for item, format_cell in line:
+                WS.write(row, col, item, format_cell)
                 col += 1
             return True
             
@@ -102,12 +102,6 @@ class product_status_wizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         # Format elements:
         # ---------------------------------------------------------------------
-        format_header = WB.add_format({
-            'bold': True, 
-            'font_name': 'Arial',
-            'font_size': 11,
-            })
-
         format_title = WB.add_format({
             'bold': True, 
             'font_color': 'black',
@@ -119,21 +113,35 @@ class product_status_wizard(osv.osv_memory):
             'border': 1,
             })
 
-        format_hidden = WB.add_format({
-            'font_color': 'white',
-            'font_name': 'Arial',
-            'font_size': 8,
-            })
-
         format_data_text = WB.add_format({
             'font_name': 'Arial',
-            'font_size': 10,
+            'align': 'left',
+            'font_size': 9,
             })
 
-        format_data_number = WB.add_format({
+        format_white = WB.add_format({
             'font_name': 'Arial',
-            'font_size': 10,
+            'font_size': 9,
             'align': 'right',
+            'bg_color': 'white',
+            })
+        format_yellow = WB.add_format({
+            'font_name': 'Arial',
+            'font_size': 9,
+            'align': 'right',
+            'bg_color': 'yellow',
+            })
+        format_red = WB.add_format({
+            'font_name': 'Arial',
+            'font_size': 9,
+            'align': 'right',
+            'bg_color': 'red',
+            })
+        format_green = WB.add_format({
+            'font_name': 'Arial',
+            'font_size': 9,
+            'align': 'right',
+            'bg_color': 'green',
             })
 
         # ---------------------------------------------------------------------
@@ -155,7 +163,7 @@ class product_status_wizard(osv.osv_memory):
             _('Need t./month [stat.: %s]') % data['month_window'],
             ]        
         for col in mrp_pool._get_cols():
-            header.append(col)
+            header.append((col, format_title))
         write_xls_mrp_line(WS, 0, header)
         
         # Body:
@@ -166,7 +174,7 @@ class product_status_wizard(osv.osv_memory):
                 if not start_product and row[0][0] == 'P':
                     i += 1 # jump one line
                     start_product = True
-                    header[0] = _('Product')
+                    header[0] = (_('Product'), format_title)
                     write_xls_mrp_line(WS, i, header)
                     i += 1 # jump one line
                                         
@@ -175,28 +183,27 @@ class product_status_wizard(osv.osv_memory):
                 title = row[0].split(': ')[1]
                 title_list = title.split('<b>')
                 body = [
-                    title[0] if len(title_list) == 2 else title,
-                    title[1].replace('</b>', '') \
-                        if len(title_list) == 2 else '?'
+                    title_list[0] if len(title_list) == 2 else title,
+                    title_list[1].replace('</b>', '') \
+                        if len(title_list) == 2 else ''
                     ]
                 j = 0
                 for col in mrp_pool._get_cols():
                     (q, minimum) = mrp_pool._get_cel(j, row[1])
                     j += 1
-                    status_line += q
-                    body.append(status_line)
-                    
-                    # Choose the color setup:
+                    status_line += q                    
+                    # Choose the color:
                     if not status_line: # value = 0
-                        pass # White
+                        body.append((status_line, format_white))
                     elif status_line > minimum: # > minimum value (green)
+                        body.append((status_line, format_green))
                         pass # Green
                     elif status_line > 0.0: # under minimum (yellow)
-                        pass # Yellow
+                        body.append((status_line, format_yellow))
                     elif status_line < 0.0: # under 0 (red)
-                        pass# Red
+                        body.append((status_line, format_red))
                     else: # ("=", "<"): # not present!!!
-                        pass # Error!
+                        body.append((status_line, format_white))
                 write_xls_mrp_line(WS, i, body)
                 i += 1                
         _logger.info('End export status on %s' % filename)
