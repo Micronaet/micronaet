@@ -59,8 +59,9 @@ class product_status_wizard(osv.osv_memory):
         if wiz_proxy.days:
             datas['days'] = wiz_proxy.days
 
-        datas['active'] = wiz_proxy.active
-        datas['negative'] = wiz_proxy.negative
+        datas['row_mode'] = wiz_proxy.row_mode
+        #datas['active'] = wiz_proxy.row_mode
+        #datas['negative'] = wiz_proxy.negative
         datas['with_medium'] = wiz_proxy.with_medium
         datas['month_window'] = wiz_proxy.month_window
         return datas
@@ -84,28 +85,26 @@ class product_status_wizard(osv.osv_memory):
             return True
         
         def use_row(row, data=None):
-            ''' Check if row must be used 
-                Case: only non zero
-                Case: only negative
+            ''' Check if row must be used depend on row_mode
             '''
             if data is None:
-                data = {}
-                
-            active = data.get('active', False)
-            negative = data.get('negative', False)
+                data = {}            
+            row_mode = data.get('row_mode', 'active')
             
             # All record, All value
-            if not active and not negative:
+            if row_mode == 'all':
                return True # no filter is required
          
             # Record with data but no elements:   
-            if active and not any(row):
+            elif row_mode == 'active' and not any(row):
                 return False
             
             # Only negative but no any negative:
-            if negative and not any([True for item in row if item < 0.0]):
+            elif row_mode == 'negative' and not any(
+                    [True for item in row if item < 0.0]):
                 return False
-            return True
+            else:
+                return True
             
         # Pool used:
         mrp_pool = self.pool.get('mrp.production')    
@@ -114,7 +113,7 @@ class product_status_wizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         # XLS file:
         # ---------------------------------------------------------------------
-        filename = '~/production_status.xlsx'
+        filename = '~/etl/production_status.xlsx'
         filename = os.path.expanduser(filename)
         _logger.info('Start export status on %s' % filename)
         
@@ -266,10 +265,18 @@ class product_status_wizard(osv.osv_memory):
         
     _columns = {
         'days':fields.integer('Days from today', required=True),
-        'active':fields.boolean('Only record with data', required=False, 
-            help="Show only product and material with movement"),
-        'negative': fields.boolean('Only negative', required=False, 
-            help="Show only product and material with negative value in range"),
+        # REMOVE:
+        #'active':fields.boolean('Only record with data', required=False, 
+        #    help="Show only product and material with movement"),
+        #'negative': fields.boolean('Only negative', required=False, 
+        #    help="Show only product and material with negative value in range"),
+        # USE:
+        'row_mode': fields.selection([
+            ('all', 'All data'),
+            ('active', 'With data'),
+            ('negative', 'With negative'),
+            ], 'Row mode', required=True),            
+                
         'month_window':fields.integer('Statistic production window ', 
             required=True, help="Month back for medium production monthly index (Kg / month of prime material)"),
         'with_medium': fields.boolean('With m(x)', required=False, 
@@ -278,9 +285,8 @@ class product_status_wizard(osv.osv_memory):
         
     _defaults = {
         'days': lambda *a: 7,
-        'active': lambda *a: False,
-        'negative': lambda *a: False,
         'month_window': lambda *x: 2,
         'with_medium': lambda *x: True,
+        'row_mode': lambda *x: 'active',
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
