@@ -23,6 +23,7 @@
 import company
 import product
 import production
+import production_xls # for extract XLS report file
 import partner
 import sale # NOTE: only for state bug in sale.order
 

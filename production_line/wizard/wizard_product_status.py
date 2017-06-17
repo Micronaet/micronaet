@@ -215,10 +215,10 @@ class product_status_wizard(osv.osv_memory):
         for row in rows:
             # Check mode: only active
             if not use_row(table[row[1]], data):
-                 _logger.error('No: %s' % (row, ))
+                 _logger.error('No: %s' % (table[row[1]], ))
                  continue
             else:     
-                 _logger.info('Yes: %s' % (row, ))
+                 _logger.info('Yes: %s' % (table[row[1]], ))
 
             if not start_product and row[0][0] == 'P':
                 WS = WS_product # change ref. for use second sheet
