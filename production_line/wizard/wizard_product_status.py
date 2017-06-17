@@ -96,8 +96,9 @@ class product_status_wizard(osv.osv_memory):
         
         # Open file and write header
         WB = xlsxwriter.Workbook(filename)
+        # 2 Sheets
         WS = WB.add_worksheet('Material')
-        # WS.write(0, 0, 'Codice')
+        WS_product = WB.add_worksheet('Product')
 
         # ---------------------------------------------------------------------
         # Format elements:
@@ -113,10 +114,13 @@ class product_status_wizard(osv.osv_memory):
             'border': 1,
             })
 
-        format_data_text = WB.add_format({
+        format_text = WB.add_format({
             'font_name': 'Arial',
             'align': 'left',
+            'valign': 'center',
             'font_size': 9,
+            'border': 1,
+            'text_wrap': True,
             })
 
         format_white = WB.add_format({
@@ -124,32 +128,42 @@ class product_status_wizard(osv.osv_memory):
             'font_size': 9,
             'align': 'right',
             'bg_color': 'white',
+            'border': 1,
+            'num_format': '0.00',
             })
         format_yellow = WB.add_format({
             'font_name': 'Arial',
             'font_size': 9,
             'align': 'right',
-            'bg_color': 'yellow',
+            'bg_color': '#ffff99', #'yellow',
+            'border': 1,
+            'num_format': '0.00',
             })
         format_red = WB.add_format({
             'font_name': 'Arial',
             'font_size': 9,
             'align': 'right',
-            'bg_color': 'red',
+            'bg_color': '#ff9999', #'red',
+            'border': 1,
+            'num_format': '0.00',
             })
         format_green = WB.add_format({
             'font_name': 'Arial',
             'font_size': 9,
             'align': 'right',
-            'bg_color': 'green',
+            'bg_color': '#c1ef94', #'green',
+            'border': 1,
+            'num_format': '0.00',
             })
 
         # ---------------------------------------------------------------------
         # Format columns:
         # ---------------------------------------------------------------------
         # Column dimension:
-        #WS.set_column ('A:A', 0, None, {'hidden': 1}) # ID column        
         WS.set_column ('A:A', 40) # Image colums
+        WS.set_row(0, 30)
+        WS_product.set_column ('A:A', 40) # Image colums
+        WS_product.set_row(0, 30)
             
         # Generate report for export:
         context['lang'] = 'it_IT'
@@ -160,12 +174,17 @@ class product_status_wizard(osv.osv_memory):
         # Header: 
         header = [
             [_('Material'), format_title], # list for update after for product
-            (_('Need t./month [stat.: %s]') % data['month_window'], 
+            (_('m(x) (check %s month)') % data['month_window'], 
                 format_title),
             ]        
         for col in mrp_pool._get_cols():
             header.append((col, format_title))
+            
+        # Material header:
         write_xls_mrp_line(WS, 0, header)
+        # Product header
+        header[0][0] = _('Product')
+        write_xls_mrp_line(WS_product, 0, header)
         
         # Body:
         i = 1 # row position (before 0)
@@ -173,20 +192,19 @@ class product_status_wizard(osv.osv_memory):
         for row in rows:
             if not mrp_pool._jump_is_all_zero(row[1], data):
                 if not start_product and row[0][0] == 'P':
-                    i += 1 # jump one line
+                    WS = WS_product # change ref. for use second sheet
                     start_product = True
-                    header[0][0] = _('Product')
-                    write_xls_mrp_line(WS, i, header)
-                    i += 1 # jump one line
+                    i = 1 # jump one line
                                         
                 status_line = 0.0         
 
                 title = row[0].split(': ')[1]
                 title_list = title.split('<b>')
                 body = [
-                    title_list[0] if len(title_list) == 2 else title,
-                    title_list[1].replace('</b>', '') \
-                        if len(title_list) == 2 else ''
+                    (title_list[0] if len(title_list) == 2 else title, 
+                        format_text),
+                    (title_list[1].replace('</b>', '') \
+                        if len(title_list) == 2 else '', format_text),
                     ]
                 j = 0
                 for col in mrp_pool._get_cols():
