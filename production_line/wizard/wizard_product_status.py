@@ -82,6 +82,30 @@ class product_status_wizard(osv.osv_memory):
                 WS.write(row, col, item, format_cell)
                 col += 1
             return True
+        
+        def use_row(row, data=None):
+            ''' Check if row must be used 
+                Case: only non zero
+                Case: only negative
+            '''
+            if data is None:
+                data = {}
+                
+            active = data.get('active', False)
+            negative = data.get('negative', False)
+            
+            # All record, All value
+            if not active and not negative:
+               return True # no filter is required
+         
+            # Record with data but no elements:   
+            if active and not any(row):
+                return False
+            
+            # Only negative but no any negative:
+            if negative and not any([True for item in row if item < 0.0]):
+                return False
+            return True
             
         # Pool used:
         mrp_pool = self.pool.get('mrp.production')    
@@ -187,13 +211,13 @@ class product_status_wizard(osv.osv_memory):
         # Body:
         i = 1 # row position (before 0)
         rows = mrp_pool._get_rows()
-        import pdb; pdb.set_trace()
+
+        table = mrp_pool._get_table() # For check row state
         for row in rows:
             # Check mode: only active
-            if data.get('active', False) and not any(row[1]):
-                continue
-            #if mrp_pool._jump_is_all_zero(row[1], data):
-            #    continue
+            if not use_row(table[row[1]], data):
+                 continue
+
             if not start_product and row[0][0] == 'P':
                 WS = WS_product # change ref. for use second sheet
                 start_product = True
