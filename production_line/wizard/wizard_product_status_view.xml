@@ -10,7 +10,6 @@
                 <form string="Product and material status" version="7.0">
                     <header>
                         <button string="Cancel" special="cancel" />                   
-                        <!--<button name="print_report" type="object" string="Print" icon="gtk-print" colspan="1" class="oe_highlight"/>-->
                         <button name="export_excel" type="object" string="Export XLS" icon="terp-go-month" class="oe_highlight"/>
                     </header>
                     <sheet>
@@ -18,9 +17,6 @@
                             <separator string="Filters:" colspan="4" />
                             <field name="days" />
                             <field name="row_mode" />
-
-                            <!--<field name="active" />
-                            <field name="negative" />-->
 
                             <field name="with_medium"/>
                             <field name="month_window" attrs="{'invisible':[('with_medium','=',False)]}"/>
