@@ -109,18 +109,17 @@ class product_status_wizard(osv.osv_memory):
             'font_name': 'Arial',
             'font_size': 10,
             'align': 'center',
-            'valign': 'center',
+            'valign': 'vcenter',
             'bg_color': 'gray',
             'border': 1,
+            'text_wrap': True,
             })
 
         format_text = WB.add_format({
             'font_name': 'Arial',
             'align': 'left',
-            'valign': 'center',
             'font_size': 9,
             'border': 1,
-            'text_wrap': True,
             })
 
         format_white = WB.add_format({
@@ -174,8 +173,7 @@ class product_status_wizard(osv.osv_memory):
         # Header: 
         header = [
             [_('Material'), format_title], # list for update after for product
-            (_('m(x) (check %s month)') % data['month_window'], 
-                format_title),
+            (_('m(x) last %s month') % data['month_window'], format_title),
             ]        
         for col in mrp_pool._get_cols():
             header.append((col, format_title))
