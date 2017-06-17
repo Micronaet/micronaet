@@ -1497,6 +1497,7 @@ class mrp_production_extra(osv.osv):
                 '%Y-%m-%d 23:59:59')),     
             ('state', 'not in', ('cancel','done')),
             ], context=context) # only open not canceled
+
         for lavoration in lavoration_pool.browse(
                 cr, uid, lavoration_ids, context=context): # filtered BL orders
                 

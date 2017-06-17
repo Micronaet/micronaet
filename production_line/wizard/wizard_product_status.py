@@ -187,42 +187,46 @@ class product_status_wizard(osv.osv_memory):
         # Body:
         i = 1 # row position (before 0)
         rows = mrp_pool._get_rows()
+        import pdb; pdb.set_trace()
         for row in rows:
-            if not mrp_pool._jump_is_all_zero(row[1], data):
-                if not start_product and row[0][0] == 'P':
-                    WS = WS_product # change ref. for use second sheet
-                    start_product = True
-                    i = 1 # jump one line
-                                        
-                status_line = 0.0         
-
-                title = row[0].split(': ')[1]
-                title_list = title.split('<b>')
-                body = [
-                    (title_list[0] if len(title_list) == 2 else title, 
-                        format_text),
-                    (title_list[1].replace('</b>', '') \
-                        if len(title_list) == 2 else '', format_text),
-                    ]
-                j = 0
-                for col in mrp_pool._get_cols():
-                    (q, minimum) = mrp_pool._get_cel(j, row[1])
-                    j += 1
-                    status_line += q                    
-                    # Choose the color:
-                    if not status_line: # value = 0
-                        body.append((status_line, format_white))
-                    elif status_line > minimum: # > minimum value (green)
-                        body.append((status_line, format_green))
-                        pass # Green
-                    elif status_line > 0.0: # under minimum (yellow)
-                        body.append((status_line, format_yellow))
-                    elif status_line < 0.0: # under 0 (red)
-                        body.append((status_line, format_red))
-                    else: # ("=", "<"): # not present!!!
-                        body.append((status_line, format_white))
-                write_xls_mrp_line(WS, i, body)
-                i += 1                
+            # Check mode: only active
+            if data.get('active', False) and not any(row[1]):
+                continue
+            #if mrp_pool._jump_is_all_zero(row[1], data):
+            #    continue
+            if not start_product and row[0][0] == 'P':
+                WS = WS_product # change ref. for use second sheet
+                start_product = True
+                i = 1 # jump one line
+                                    
+            status_line = 0.0
+            title = row[0].split(': ')[1]
+            title_list = title.split('<b>')
+            body = [
+                (title_list[0] if len(title_list) == 2 else title, 
+                    format_text),
+                (title_list[1].replace('</b>', '') \
+                    if len(title_list) == 2 else '', format_text),
+                ]
+            j = 0
+            for col in mrp_pool._get_cols():
+                (q, minimum) = mrp_pool._get_cel(j, row[1])
+                j += 1
+                status_line += q                    
+                # Choose the color:
+                if not status_line: # value = 0
+                    body.append((status_line, format_white))
+                elif status_line > minimum: # > minimum value (green)
+                    body.append((status_line, format_green))
+                    pass # Green
+                elif status_line > 0.0: # under minimum (yellow)
+                    body.append((status_line, format_yellow))
+                elif status_line < 0.0: # under 0 (red)
+                    body.append((status_line, format_red))
+                else: # ("=", "<"): # not present!!!
+                    body.append((status_line, format_white))
+            write_xls_mrp_line(WS, i, body)
+            i += 1                
         _logger.info('End export status on %s' % filename)
         return True
         
