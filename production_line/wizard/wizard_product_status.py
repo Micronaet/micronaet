@@ -93,21 +93,17 @@ class product_status_wizard(osv.osv_memory):
             
             # All record, All value
             if row_mode == 'all':
-               _logger.info('Keep: %s' % (row, ))
                return True # no filter is required
          
             # Record with data but no elements:   
             elif row_mode == 'active' and not any(row):
-                _logger.error('No: %s' % (row, ))
                 return False
             
             # Only negative but no any negative:
             elif row_mode == 'negative' and not any(
                     [True for item in row if item < 0.0]):
-                _logger.error('No: %s' % (row, ))
                 return False
             else:
-                _logger.info('Keep: %s' % (row, ))
                 return True
             
         # Pool used:
@@ -219,7 +215,10 @@ class product_status_wizard(osv.osv_memory):
         for row in rows:
             # Check mode: only active
             if not use_row(table[row[1]], data):
+                 _logger.error('No: %s' % (row, ))
                  continue
+            else:     
+                 _logger.info('Yes: %s' % (row, ))
 
             if not start_product and row[0][0] == 'P':
                 WS = WS_product # change ref. for use second sheet
