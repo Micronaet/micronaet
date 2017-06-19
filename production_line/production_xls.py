@@ -307,7 +307,6 @@ class mrp_production_extra(osv.osv):
         # ---------------------------------------------------------------------
         #                 Production simulation:
         # ---------------------------------------------------------------------
-
         for fake in data['fake_ids']:
             qty = fake.qty     
             # Read BOM materials:
@@ -320,7 +319,8 @@ class mrp_production_extra(osv.osv):
                     # Medium block:
                     with_medium, material_mx, month_window,
                     # Period:
-                    start_date, range_date, real_date_planned,
+                    start_date, range_date, 
+                    fake.production_date,
                     # OF data:                    
                     col_ids, supplier_orders,
                     )            
