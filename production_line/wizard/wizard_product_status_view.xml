@@ -30,7 +30,6 @@
                                      <field name="bom_id" domain="[('product_id', '=', product_id)]"/>
                                  </tree>
                             </field> 
-                            	
                         </group>
                     </sheet>
                 </form>

@@ -109,6 +109,7 @@ class product_status_wizard(osv.osv_memory):
             
         # Pool used:
         mrp_pool = self.pool.get('mrp.production')    
+        attachment_pool = self.pool.get('ir.attachment')
         data = self.prepare_data(cr, uid, ids, context=context)
 
         # ---------------------------------------------------------------------
@@ -255,8 +256,33 @@ class product_status_wizard(osv.osv_memory):
                     body.append((status_line, format_white))
             write_xls_mrp_line(WS, i, body)
             i += 1                
-        _logger.info('End export status on %s' % filename)
-        return True
+        _logger.info('End export status on %s' % filename)        
+        WB.close()
+
+        b64 = open(filename, 'rb').read().encode('base64')
+        attachment_id = attachment_pool.create(cr, uid, {
+            'name': 'Status MRP Report',
+            'datas_fname': 'status_report.xlsx',
+            'type': 'binary',
+            'datas': b64,
+            'partner_id': 1,
+            'res_model':'res.partner',
+            'res_id': 1,
+            }, context=context)
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('XLS file status'),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_id': attachment_id,
+            'res_model': 'ir.attachment',
+            'views': [(False, 'form')],
+            'context': context,
+            'target': 'current',
+            'nodestroy': False,
+            }         
         
     def print_report(self, cr, uid, ids, context=None):
         ''' Redirect to bom report passing parameters
@@ -305,7 +331,7 @@ class ProductStatusProductionFakeWizard(osv.osv_memory):
     _columns = {
         'product_id': fields.many2one(
             'product.product', 'Product', required=True),
-        'qty': fields.float('Q.ty', digits=(16, 3), required=True),
+        'qty': fields.float('Q.ty (Kg.)', digits=(16, 3), required=True),
         'production_date': fields.date('Date production', required=True),
         'bom_id': fields.many2one('mrp.bom', 'BOM', required=True),
         'wizard_id': fields.many2one(
