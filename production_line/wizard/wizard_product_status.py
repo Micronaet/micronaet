@@ -110,12 +110,13 @@ class product_status_wizard(osv.osv_memory):
         # Pool used:
         mrp_pool = self.pool.get('mrp.production')    
         attachment_pool = self.pool.get('ir.attachment')
+        
         data = self.prepare_data(cr, uid, ids, context=context)
 
         # ---------------------------------------------------------------------
         # XLS file:
         # ---------------------------------------------------------------------
-        filename = '~/etl/production_status.xlsx'
+        filename = '/tmp/production_status.xlsx'
         filename = os.path.expanduser(filename)
         _logger.info('Start export status on %s' % filename)
         
