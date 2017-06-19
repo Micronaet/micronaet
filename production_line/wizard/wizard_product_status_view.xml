@@ -20,6 +20,16 @@
 
                             <field name="with_medium"/>
                             <field name="month_window" attrs="{'invisible':[('with_medium','=',False)]}"/>
+                            
+                            <separator string="Fake production:" colspan="4" />
+                            <field name="fake_ids" colspan="4" nolabel="1">
+                                 <tree string="Fake production" editable="bottom">
+                                     <field name="product_id" />
+                                     <field name="qty" />
+                                     <field name="production_date" />
+                                     <field name="bom_id" domain="[('product_id', '=', product_id)]"/>
+                                 </tree>
+                            </field> 
                             	
                         </group>
                     </sheet>

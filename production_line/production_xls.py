@@ -40,11 +40,72 @@ class mrp_production_extra(osv.osv):
     _inherit = ['mrp.production', 'mail.thread']
 
     # -------------------------------------------------------------------------
+    # Utility for procedure:
+    # -------------------------------------------------------------------------
+    def add_element_material_composition(
+            self, product, quantity, table, rows, with_medium, material_mx,
+            month_window, start_date, range_date, real_date_planned, 
+            col_ids, supplier_orders,
+            ):
+        ''' Block used for unload materials and for simulation
+        '''            
+        default_code = product.default_code
+        
+        if product.not_in_status: # Jump 'not in status' material
+            return
+
+        if with_medium and product:
+            # t from Kg.
+            media = '%5.2f' % (
+                material_mx.get(product.id, 0.0) / month_window / 1000) 
+        else:
+            media = '/'
+
+        element = ('M: %s [%s]%s' % (
+            product.name, 
+            default_code,
+            ' <b>%s t.</b>' % (media), 
+            ), product.id)
+        if element not in rows:
+            rows.append(element)
+            # prepare data structure:
+            table[element[1]] = [0.0 for item in range(0,range_date)] 
+            # prepare data structure:
+            table[element[1]][0] = product.accounting_qty or 0.0 
+
+        if real_date_planned in col_ids:
+            table[element[1]][col_ids[real_date_planned]] -= \
+                quantity or 0.0 
+        else:    # < today
+            table[element[1]][1] -= quantity or 0.0 
+
+        # -------------------------------------------------------------
+        # OF order:
+        # -------------------------------------------------------------
+        if default_code in supplier_orders: # all OF orders
+            for of_deadline in supplier_orders[default_code].keys():
+                # deadline is present in the window of cols
+                if of_deadline in col_ids:                            
+                    table[element[1]][col_ids[of_deadline]] += \
+                        supplier_orders[default_code][of_deadline] or\
+                            0.0
+                    # delete OF value (no other additions):        
+                    del(supplier_orders[default_code][of_deadline]) 
+                    
+                elif of_deadline < start_date.strftime('%Y-%m-%d'):
+                    # deadline < today:   
+                    table[element[1]][1] += supplier_orders[
+                        default_code][of_deadline] or 0.0
+                    # delete OF value (no other additions):
+                    del(supplier_orders[default_code][of_deadline]) 
+        return
+
+    # -------------------------------------------------------------------------
     # Utility for report:
     # -------------------------------------------------------------------------
     def _start_up(self, cr, uid, data=None, context=None):
         ''' Master function for prepare report
-        '''
+        '''        
         if data is None:
             data = {}
 
@@ -52,6 +113,7 @@ class mrp_production_extra(osv.osv):
         accounting_pool = self.pool.get('micronaet.accounting')
         lavoration_pool = self.pool.get('mrp.production.workcenter.line')
         product_pool = self.pool.get('product.product')
+        order_line_pool = self.pool.get('sale.order.line')
         
         # Global parameters:    
         global rows, cols, table, minimum, error_in_print
@@ -96,8 +158,7 @@ class mrp_production_extra(osv.osv):
         # --------------------------------------
         # 1. Import status material and product:
         # --------------------------------------
-        
-        
+                
         # ------------------------------
         # 2. Get OF lines with deadline:
         # ------------------------------
@@ -157,7 +218,6 @@ class mrp_production_extra(osv.osv):
         # Get product list from OC lines:
         # -------------------------------
         # > populate cols 
-        order_line_pool = self.pool.get('sale.order.line')
         
         line_ids = order_line_pool.search(cr, uid, [
             ('date_deadline', '<=', end_date.strftime('%Y-%m-%d')),
@@ -206,9 +266,9 @@ class mrp_production_extra(osv.osv):
                 
             real_date_planned = lavoration.real_date_planned[:10] # readability
             
-            # ----------------------------
+            # -----------------------------------------------------------------
             # Product in lavoration order:
-            # ----------------------------
+            # -----------------------------------------------------------------
             element = ('P: %s [%s]' % (
                 lavoration.product.name, 
                 lavoration.product.code,
@@ -227,61 +287,43 @@ class mrp_production_extra(osv.osv):
             else: # < today  (element 1 - the second)
                 table[element[1]][1] += lavoration.product_qty or 0.0
 
-            # ----------------
+            # -----------------------------------------------------------------
             # Material in BOM:
-            # ----------------                  
+            # -----------------------------------------------------------------
             for material in lavoration.bom_material_ids:     
-                # Readability:
-                product = material.product_id
-                default_code = product.default_code
-                
-                if product.not_in_status: # Jump 'not in status' material
-                    continue
+                self.add_element_material_composition(
+                    material.product_id, 
+                    material.quantity,                    
+                    table, 
+                    rows,
+                    # Medium block:
+                    with_medium, material_mx, month_window,
+                    # Period:
+                    start_date, range_date, real_date_planned,
+                    # OF data:                    
+                    col_ids, supplier_orders,
+                    )                
 
-                if with_medium and product:
-                    # t from Kg.
-                    media = '%5.2f' % (
-                        material_mx.get(product.id, 0.0) / month_window / 1000) 
-                else:
-                    media = '??'
+        # ---------------------------------------------------------------------
+        #                 Production simulation:
+        # ---------------------------------------------------------------------
 
-                element = ('M: %s [%s]%s' % (
-                    product.name, 
-                    default_code,
-                    ' <b>%s t.</b>' % (media), 
-                    ), product.id)
-                if element not in rows:
-                    rows.append(element)
-                    # prepare data structure:
-                    table[element[1]] = [0.0 for item in range(0,range_date)] 
-                    # prepare data structure:
-                    table[element[1]][0] = product.accounting_qty or 0.0 
-
-                if real_date_planned in col_ids:
-                    table[element[1]][col_ids[real_date_planned]] -= \
-                        material.quantity or 0.0 
-                else:    # < today
-                    table[element[1]][1] -= material.quantity or 0.0 
-
-                # ---------
-                # OF order:
-                # ---------                
-                if default_code in supplier_orders: # all OF orders
-                    for of_deadline in supplier_orders[default_code].keys():
-                        # deadline is present in the window of cols
-                        if of_deadline in col_ids:                            
-                            table[element[1]][col_ids[of_deadline]] += \
-                                supplier_orders[default_code][of_deadline] or\
-                                    0.0
-                            # delete OF value (no other additions):        
-                            del(supplier_orders[default_code][of_deadline]) 
-                            
-                        elif of_deadline < start_date.strftime('%Y-%m-%d'):
-                            # deadline < today:   
-                            table[element[1]][1] += supplier_orders[
-                                default_code][of_deadline] or 0.0
-                            # delete OF value (no other additions):
-                            del(supplier_orders[default_code][of_deadline]) 
+        for fake in data['fake_ids']:
+            qty = fake.qty     
+            # Read BOM materials:
+            for material in fake.bom_id.bom_lines:
+                self.add_element_material_composition(
+                    material.product_id, 
+                    qty * material.product_qty,
+                    table, 
+                    rows,
+                    # Medium block:
+                    with_medium, material_mx, month_window,
+                    # Period:
+                    start_date, range_date, real_date_planned,
+                    # OF data:                    
+                    col_ids, supplier_orders,
+                    )            
         rows.sort()
 
         # -----------------------
@@ -289,6 +331,7 @@ class mrp_production_extra(osv.osv):
         # -----------------------
         # > Setup initial value:
         # > Import -q for material in lavoration:
+        # > Import -q for sumulation of production:
         # > Import +q for product in lavoration:
         # > Import OC product in line with deadline:
         # > Import OF material with deadline:
@@ -328,5 +371,5 @@ class mrp_production_extra(osv.osv):
         if row in table:
             return (table[row][col], minimum.get(row, 0.0))
         return (0.0, 0.0)
-
+ 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

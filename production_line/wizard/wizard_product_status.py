@@ -64,6 +64,7 @@ class product_status_wizard(osv.osv_memory):
         #datas['negative'] = wiz_proxy.negative
         datas['with_medium'] = wiz_proxy.with_medium
         datas['month_window'] = wiz_proxy.month_window
+        datas['fake_ids'] = wiz_proxy.fake_ids
         return datas
 
     # -------------------------------------------------------------------------
@@ -189,8 +190,9 @@ class product_status_wizard(osv.osv_memory):
             
         # Generate report for export:
         context['lang'] = 'it_IT'
-        mrp_pool._start_up(cr, uid, data, context=context)
+        mrp_pool._start_up(cr, uid, data, context=context)        
         start_product = False
+        cols = mrp_pool._get_cols()
         
         # Start loop for design table for product and material status:
         # Header: 
@@ -198,7 +200,7 @@ class product_status_wizard(osv.osv_memory):
             [_('Material'), format_title], # list for update after for product
             (_('m(x) last %s month') % data['month_window'], format_title),
             ]        
-        for col in mrp_pool._get_cols():
+        for col in cols:
             header.append((col, format_title))
             
         # Material header:
@@ -235,7 +237,7 @@ class product_status_wizard(osv.osv_memory):
                     if len(title_list) == 2 else '', format_text),
                 ]
             j = 0
-            for col in mrp_pool._get_cols():
+            for col in cols:
                 (q, minimum) = mrp_pool._get_cel(j, row[1])
                 j += 1
                 status_line += q                    
@@ -292,4 +294,33 @@ class product_status_wizard(osv.osv_memory):
         'with_medium': lambda *x: True,
         'row_mode': lambda *x: 'active',
         }
+
+class ProductStatusProductionFakeWizard(osv.osv_memory):
+    """ Model name: MrpProductionFake
+    """    
+    _name = 'product.status.production.fake.wizard'
+    _rec_name = 'product_id'
+    _order = 'product_id'
+    
+    _columns = {
+        'product_id': fields.many2one(
+            'product.product', 'Product', required=True),
+        'qty': fields.float('Q.ty', digits=(16, 3), required=True),
+        'production_date': fields.date('Date production', required=True),
+        'bom_id': fields.many2one('mrp.bom', 'BOM', required=True),
+        'wizard_id': fields.many2one(
+            'product.status.wizard', 'Wizard ID'),
+        }
+
+class product_status_wizard(osv.osv_memory):
+    ''' Parameter for product status per day
+    '''    
+    _inherit = 'product.status.wizard'
+    
+    _columns = {
+        'fake_ids': fields.one2many(
+            'product.status.production.fake.wizard', 'wizard_id', 
+            'Production fake'),
+        }
+           
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
