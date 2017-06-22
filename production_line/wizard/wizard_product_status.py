@@ -72,6 +72,8 @@ class product_status_wizard(osv.osv_memory):
     # -------------------------------------------------------------------------
     def export_excel(self, cr, uid, ids, context=None):
         ''' Export excel file
+            Procedure used also for sent mail (used context parameter 
+            sendmail for activate with datas passed)
         '''
         # ---------------------------------------------------------------------
         # Utility:
@@ -106,12 +108,20 @@ class product_status_wizard(osv.osv_memory):
                 return False
             else:
                 return True
+                
+        if context is None:
+            context = {}
             
+        if context.get('datas', False):
+            sendmail = True
+            data = context.get('datas', {})
+        else:    
+            sendmail = False
+            data = self.prepare_data(cr, uid, ids, context=context)
+
         # Pool used:
         mrp_pool = self.pool.get('mrp.production')    
         attachment_pool = self.pool.get('ir.attachment')
-        
-        data = self.prepare_data(cr, uid, ids, context=context)
 
         # ---------------------------------------------------------------------
         # XLS file:
@@ -260,30 +270,79 @@ class product_status_wizard(osv.osv_memory):
         _logger.info('End export status on %s' % filename)        
         WB.close()
 
-        b64 = open(filename, 'rb').read().encode('base64')
+        xlsx_raw = open(filename, 'rb').read()
+        b64 = xlsx_raw.encode('base64')
         attachment_id = attachment_pool.create(cr, uid, {
             'name': 'Status MRP Report',
             'datas_fname': 'status_report.xlsx',
             'type': 'binary',
             'datas': b64,
             'partner_id': 1,
-            'res_model':'res.partner',
+            'res_model': 'res.partner',
             'res_id': 1,
             }, context=context)
 
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('XLS file status'),
-            'type': 'ir.actions.act_window',
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_id': attachment_id,
-            'res_model': 'ir.attachment',
-            'views': [(False, 'form')],
-            'context': context,
-            'target': 'current',
-            'nodestroy': False,
-            }         
+        if sendmail:
+            # ---------------------------------------------------------------------
+            # Send via mail:
+            # ---------------------------------------------------------------------
+            date = datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+
+            # Send mail with attachment:
+            group_pool = self.pool.get('res.groups')
+            model_pool = self.pool.get('ir.model.data')
+            thread_pool = self.pool.get('mail.thread')
+            group_id = model_pool.get_object_reference(
+                cr, uid, 'production_line', 'group_stock_negative_status')[1]    
+            partner_ids = []
+            for user in group_pool.browse(
+                    cr, uid, group_id, context=context).users:
+                partner_ids.append(user.partner_id.id)
+                
+            thread_pool = self.pool.get('mail.thread')
+            thread_pool.message_post(cr, uid, False, 
+                type='email', 
+                body=_('Negative stock status report'), 
+                subject='Stock status: %s' % date,
+                partner_ids=[(6, 0, partner_ids)],
+                attachments=[
+                    ('stock_status.xlsx', xlsx_raw)], 
+                context=context,
+                )
+        else:
+            # ---------------------------------------------------------------------
+            # Open attachment form:
+            # ---------------------------------------------------------------------
+            return {
+                'type': 'ir.actions.act_window',
+                'name': _('XLS file status'),
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_id': attachment_id,
+                'res_model': 'ir.attachment',
+                'views': [(False, 'form')],
+                'context': context,
+                'target': 'current',
+                'nodestroy': False,
+                }       
+
+    def schedule_send_negative_report(self, cr, uid, context=None):
+        ''' Send mail to group user for negative elements
+        '''                
+        if context is None:
+            context = {}
+            
+        context['datas'] = {
+            'days': 30,
+            'row_mode': 'negative',
+            'with_medium': True,
+            'month_window': 3,
+            'fake_ids': [],
+            }
+            
+        self.export_excel(cr, uid, False, context=context)    
+        return True    
         
     def print_report(self, cr, uid, ids, context=None):
         ''' Redirect to bom report passing parameters

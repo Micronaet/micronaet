@@ -9,6 +9,12 @@
         <field name="visible" eval="1" />
     </record>
 
+        <record id="group_stock_negative_status" model="res.groups">
+            <field name="name">Negative report users</field>
+            <field name="category_id" ref="module_production_line" />
+            <field name="comment">User that receive negative report scheduled daily</field>
+        </record>
+        
         <record id="group_production_production" model="res.groups">
             <field name="name">Production visibility production</field>
             <field name="category_id" ref="module_production_line" />
