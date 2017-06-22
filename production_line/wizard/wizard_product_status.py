@@ -49,23 +49,25 @@ class product_status_wizard(osv.osv_memory):
     _description = 'Product status wizard'
 
     # -------------------------------------------------------------------------
-    # Button events:
+    # Events:
     # -------------------------------------------------------------------------
-    def prepare_data(self, cr, uid, ids, context=None):
-        ''' Prepare data dict
+    def get_data_description(self, data=None):
+        ''' Prepare description filter string from data dict
         '''
-        wiz_proxy = self.browse(cr, uid, ids)[0]
-        datas = {}
-        if wiz_proxy.days:
-            datas['days'] = wiz_proxy.days
+        if data is None:
+           return _('No filter')
 
-        datas['row_mode'] = wiz_proxy.row_mode
-        #datas['active'] = wiz_proxy.row_mode
-        #datas['negative'] = wiz_proxy.negative
-        datas['with_medium'] = wiz_proxy.with_medium
-        datas['month_window'] = wiz_proxy.month_window
-        datas['fake_ids'] = wiz_proxy.fake_ids
-        return datas
+        res = ''
+        res += 'Period in days: %s -' % datas.get('days', '')
+        res += 'Row mode: %s -' % datas.get('row_mode', '')
+        res += 'With medium: %s [month period %s]-' % (
+            'yes' if datas.get('with_medium', False) else 'no',
+            datas.get('month_window', '/'),
+            )
+        res += 'With fake order: %s -' % (
+            'yes' if datas.get('fake_ids', False) else 'no',
+            )            
+        return res
 
     # -------------------------------------------------------------------------
     # Button events:
@@ -103,12 +105,16 @@ class product_status_wizard(osv.osv_memory):
                 return False
             
             # Only negative but no any negative:
-            elif row_mode == 'negative' and not any(
-                    [True for item in row if item < 0.0]):
+            elif row_mode == 'negative':
+                partial = 0
+                for q in row:
+                    partial += q
+                    if partial < 0:
+                        return True
                 return False
             else:
                 return True
-                
+
         if context is None:
             context = {}
             
@@ -226,6 +232,7 @@ class product_status_wizard(osv.osv_memory):
         rows = mrp_pool._get_rows()
 
         table = mrp_pool._get_table() # For check row state
+
         for row in rows:
             # Check mode: only active
             if not use_row(table[row[1]], data):
