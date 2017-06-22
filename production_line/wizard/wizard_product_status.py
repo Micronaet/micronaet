@@ -272,16 +272,6 @@ class product_status_wizard(osv.osv_memory):
 
         xlsx_raw = open(filename, 'rb').read()
         b64 = xlsx_raw.encode('base64')
-        attachment_id = attachment_pool.create(cr, uid, {
-            'name': 'Status MRP Report',
-            'datas_fname': 'status_report.xlsx',
-            'type': 'binary',
-            'datas': b64,
-            'partner_id': 1,
-            'res_model': 'res.partner',
-            'res_id': 1,
-            }, context=context)
-
         if sendmail:
             # ---------------------------------------------------------------------
             # Send via mail:
@@ -313,6 +303,16 @@ class product_status_wizard(osv.osv_memory):
             # ---------------------------------------------------------------------
             # Open attachment form:
             # ---------------------------------------------------------------------
+            attachment_id = attachment_pool.create(cr, uid, {
+                'name': 'Status MRP Report',
+                'datas_fname': 'status_report.xlsx',
+                'type': 'binary',
+                'datas': b64,
+                'partner_id': 1,
+                'res_model': 'res.partner',
+                'res_id': 1,
+                }, context=context)
+
             return {
                 'type': 'ir.actions.act_window',
                 'name': _('XLS file status'),
