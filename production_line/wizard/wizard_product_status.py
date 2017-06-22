@@ -282,6 +282,7 @@ class product_status_wizard(osv.osv_memory):
             group_pool = self.pool.get('res.groups')
             model_pool = self.pool.get('ir.model.data')
             thread_pool = self.pool.get('mail.thread')
+            
             group_id = model_pool.get_object_reference(
                 cr, uid, 'production_line', 'group_stock_negative_status')[1]    
             partner_ids = []
