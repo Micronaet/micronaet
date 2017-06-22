@@ -48,6 +48,47 @@ class product_status_wizard(osv.osv_memory):
     _name = 'product.status.wizard'
     _description = 'Product status wizard'
 
+    # Utility:
+    def send_mail(
+            self, send_from, send_to, subject, text, xls_filename, server, 
+            port, username='', password='', isTls=False):
+        ''' Send mail procedure:
+        '''    
+        import smtplib
+        import ssl
+        from email.mime.multipart import MIMEMultipart
+        from email.mime.base import MIMEBase
+        from email.mime.text import MIMEText
+        from email.utils import formatdate
+        from email import encoders
+
+        msg = MIMEMultipart()
+        msg['From'] = send_from
+        msg['To'] = send_to
+        msg['Date'] = formatdate(localtime=True)
+        msg['Subject'] = subject
+        msg.attach(MIMEText(text))
+
+        part = MIMEBase('application', 'octet-stream')
+        part.set_payload(open(xls_filename, 'rb').read())
+        encoders.encode_base64(part)
+        part.add_header(
+            'Content-Disposition', 
+            'attachment; filename=stato_magazzino.xlsx',
+            )
+        msg.attach(part)
+
+        #context = ssl.SSLContext(ssl.PROTOCOL_SSLv3)
+        #SSL connection only working on Python 3+
+        smtp = smtplib.SMTP(server, port)
+        if isTls:
+            smtp.starttls()
+        smtp.login(username,password)
+        smtp.sendmail(send_from, send_to, msg.as_string())        
+        smtp.quit()
+        return True
+        
+    
     # -------------------------------------------------------------------------
     # Events:
     # -------------------------------------------------------------------------
@@ -135,7 +176,7 @@ class product_status_wizard(osv.osv_memory):
         filename = '/tmp/production_status.xlsx'
         filename = os.path.expanduser(filename)
         _logger.info('Start export status on %s' % filename)
-        
+
         # Open file and write header
         WB = xlsxwriter.Workbook(filename)
         # 2 Sheets
@@ -232,7 +273,6 @@ class product_status_wizard(osv.osv_memory):
         rows = mrp_pool._get_rows()
 
         table = mrp_pool._get_table() # For check row state
-
         for row in rows:
             # Check mode: only active
             if not use_row(table[row[1]], data):
@@ -292,21 +332,34 @@ class product_status_wizard(osv.osv_memory):
             
             group_id = model_pool.get_object_reference(
                 cr, uid, 'production_line', 'group_stock_negative_status')[1]    
-            partner_ids = []
+            partner_email = []
             for user in group_pool.browse(
                     cr, uid, group_id, context=context).users:
-                partner_ids.append(user.partner_id.id)
+                partner_email.append(user.partner_id.email) # .id
                 
-            thread_pool = self.pool.get('mail.thread')
-            thread_pool.message_post(cr, uid, False, 
-                type='email', 
-                body=_('Negative stock status report'), 
-                subject='Stock status: %s' % date,
-                partner_ids=[(6, 0, partner_ids)],
-                attachments=[
-                    ('stock_status.xlsx', xlsx_raw)], 
-                context=context,
-                )
+            #thread_pool = self.pool.get('mail.thread')
+            #thread_pool.message_post(cr, uid, False, 
+            #    type='email', 
+            #    body=_('Negative stock status report'), 
+            #    subject='Stock status: %s' % date,
+            #    partner_ids=[(6, 0, partner_ids)],
+            #    attachments=[
+            #        ('stock_status.xlsx', xlsx_raw)], 
+            #    context=context,
+            #    )
+            for email in partner_email:
+                self.send_mail(
+                    'openerp@micronaet.com', 
+                    email, 
+                    _('Negative stock status report'), 
+                    _('Stock status for negative product with production'),
+                    filename, 
+                    'shout01.ot-mail.it', # TODO used mail system
+                    25, 
+                    username='1257744.out.ot-mail.it', 
+                    password='qZwDVajZkFZK', 
+                    isTls=False,
+                    )
         else:
             # ---------------------------------------------------------------------
             # Open attachment form:
