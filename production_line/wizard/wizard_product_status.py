@@ -259,9 +259,9 @@ class product_status_wizard(osv.osv_memory):
         # Format columns:
         # ---------------------------------------------------------------------
         # Column dimension:
-        WS.set_column ('A:A', 40) # Image colums
+        WS.set_column ('A:A', 35) # Image colums
         WS.set_row(0, 30)
-        WS_product.set_column ('A:A', 40) # Image colums
+        WS_product.set_column ('A:A', 35) # Image colums
         WS_product.set_row(0, 30)
             
         # Generate report for export:
