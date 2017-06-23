@@ -110,6 +110,22 @@ class product_status_wizard(osv.osv_memory):
             )            
         return res
 
+    def prepare_data(self, cr, uid, ids, context=None):
+        ''' Prepare data dict
+        '''
+        wiz_proxy = self.browse(cr, uid, ids)[0]
+        datas = {}
+        if wiz_proxy.days:
+            datas['days'] = wiz_proxy.days
+
+        datas['row_mode'] = wiz_proxy.row_mode
+        #datas['active'] = wiz_proxy.row_mode
+        #datas['negative'] = wiz_proxy.negative
+        datas['with_medium'] = wiz_proxy.with_medium
+        datas['month_window'] = wiz_proxy.month_window
+        datas['fake_ids'] = wiz_proxy.fake_ids
+        return datas
+
     # -------------------------------------------------------------------------
     # Button events:
     # -------------------------------------------------------------------------
@@ -257,6 +273,7 @@ class product_status_wizard(osv.osv_memory):
         # Header: 
         header = [
             [_('Material'), format_title], # list for update after for product
+            [_('Min. stock'), format_title],
             (_('m(x) last %s month') % data['month_window'], format_title),
             ]        
         for col in cols:
@@ -292,6 +309,7 @@ class product_status_wizard(osv.osv_memory):
             body = [
                 (title_list[0] if len(title_list) == 2 else title, 
                     format_text),
+                row[2], # XXX min stock    
                 (title_list[1].replace('</b>', '') \
                     if len(title_list) == 2 else '', format_text),
                 ]

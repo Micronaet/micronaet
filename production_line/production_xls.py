@@ -230,6 +230,7 @@ class mrp_production_extra(osv.osv):
                 line.product_id.default_code, 
                 ), 
                 line.product_id.id,
+                line.product_id, # XXX used for minimum qty
                 )
             # initialize row (today, < today, +1, +2, ... +n)                
             if element not in rows: 
