@@ -61,11 +61,15 @@ class mrp_production_extra(osv.osv):
         else:
             media = '/'
 
-        element = ('M: %s [%s]%s' % (
-            product.name, 
-            default_code,
-            ' <b>%s t.</b>' % (media), 
-            ), product.id)
+        element = (
+            'M: %s [%s]%s' % (
+                product.name, 
+                default_code,
+                ' <b>%s t.</b>' % (media), 
+                ), 
+            product.id,
+            product, # XXX for minimum
+            )
         if element not in rows:
             rows.append(element)
             # prepare data structure:
