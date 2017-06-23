@@ -202,7 +202,7 @@ class product_status_wizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         # Format elements:
         # ---------------------------------------------------------------------
-        num_format = '0.00' # '#,##0.00'
+        num_format = '#,##0.00'
         format_title = WB.add_format({
             'bold': True, 
             'font_color': 'black',
@@ -274,6 +274,7 @@ class product_status_wizard(osv.osv_memory):
         # Header: 
         header = [
             [_('Material'), format_title], # list for update after for product
+            [_('Code'), format_title],
             [_('Min. stock'), format_title],
             (_('m(x) last %s month') % data['month_window'], format_title),
             ]        
@@ -305,9 +306,9 @@ class product_status_wizard(osv.osv_memory):
                 i = 1 # jump one line
                                     
             status_line = 0.0
-            title = row[0].split(': ')[1]
             body = [
-                (title, format_text),
+                (row[2].name, format_text),
+                (row[2].default_code or '/', format_text),
                 (row[2].minimum_qty, format_white),
                 (row[3], format_white),
                 ]

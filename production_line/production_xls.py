@@ -64,10 +64,7 @@ class mrp_production_extra(osv.osv):
             media = 0.0
 
         element = (
-            'M: %s [%s]' % (
-                product.name, 
-                default_code,
-                ), 
+            'M:%s' % product.name,
             product.id,
             product, # XXX for minimum
             media,
@@ -234,10 +231,7 @@ class mrp_production_extra(osv.osv):
                     'Not in status product: %s' % line.product_id.name)
                 continue
             element = (
-                'P: %s [%s]' % (
-                    line.product_id.name, 
-                    line.product_id.default_code, 
-                    ), 
+                'P:%s' % line.product_id.name, 
                 line.product_id.id,
                 line.product_id, # XXX used for minimum qty
                 0.0,
