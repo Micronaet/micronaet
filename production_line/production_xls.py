@@ -225,10 +225,11 @@ class mrp_production_extra(osv.osv):
         for line in order_line_pool.browse(cr, uid, line_ids, context=context):
             if line.product_id.not_in_status: # jump line
                 continue
-            element = ('P: %s [%s]' % (
-                line.product_id.name, 
-                line.product_id.default_code, 
-                ), 
+            element = (
+                'P: %s [%s]' % (
+                    line.product_id.name, 
+                    line.product_id.default_code, 
+                    ), 
                 line.product_id.id,
                 line.product_id, # XXX used for minimum qty
                 )
@@ -270,10 +271,14 @@ class mrp_production_extra(osv.osv):
             # -----------------------------------------------------------------
             # Product in lavoration order:
             # -----------------------------------------------------------------
-            element = ('P: %s [%s]' % (
-                lavoration.product.name, 
-                lavoration.product.code,
-            ), lavoration.product.id)
+            element = (
+                'P: %s [%s]' % (
+                    lavoration.product.name, 
+                    lavoration.product.code,
+                    ), 
+                lavoration.product.id, 
+                lavoration.product,
+                )
 
             if element not in rows:
                 # prepare data structure:
