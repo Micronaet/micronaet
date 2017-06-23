@@ -329,6 +329,7 @@ class product_status_wizard(osv.osv_memory):
             group_pool = self.pool.get('res.groups')
             model_pool = self.pool.get('ir.model.data')
             thread_pool = self.pool.get('mail.thread')
+            server_pool = self.pool.get('ir.mail_server')
             
             group_id = model_pool.get_object_reference(
                 cr, uid, 'production_line', 'group_stock_negative_status')[1]    
@@ -347,6 +348,14 @@ class product_status_wizard(osv.osv_memory):
             #        ('stock_status.xlsx', xlsx_raw)], 
             #    context=context,
             #    )
+            server_ids = server_pool.search(cr, uid, [
+                ('active', '=', True),
+                ], order='sequence', context=context)
+            if not server_ids:
+                _logger.error('No server for send mail!')
+                return False
+            server_proxy = server_pool.browse(
+                cr, uid, server_ids, context=context)[0]
             for email in partner_email:
                 self.send_mail(
                     'openerp@micronaet.com', 
@@ -354,10 +363,10 @@ class product_status_wizard(osv.osv_memory):
                     _('Negative stock status report'), 
                     _('Stock status for negative product with production'),
                     filename, 
-                    'shout01.ot-mail.it', # TODO used mail system
-                    25, 
-                    username='1257744.out.ot-mail.it', 
-                    password='qZwDVajZkFZK', 
+                    server_proxy.smtp_host,
+                    server_proxy.smtp_port, 
+                    username=server_proxy.smtp_user, 
+                    password=server_proxy.smtp_pass, 
                     isTls=False,
                     )
         else:
