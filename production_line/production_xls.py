@@ -64,7 +64,7 @@ class mrp_production_extra(osv.osv):
             media = 0.0
 
         element = (
-            'M:%s' % product.name,
+            'M',
             product.id,
             product, # XXX for minimum
             media,
@@ -231,7 +231,7 @@ class mrp_production_extra(osv.osv):
                     'Not in status product: %s' % line.product_id.name)
                 continue
             element = (
-                'P:%s' % line.product_id.name, 
+                'P', 
                 line.product_id.id,
                 line.product_id, # XXX used for minimum qty
                 0.0,
@@ -275,10 +275,7 @@ class mrp_production_extra(osv.osv):
             # Product in lavoration order:
             # -----------------------------------------------------------------
             element = (
-                'P: %s [%s]' % (
-                    lavoration.product.name, 
-                    lavoration.product.code,
-                    ), 
+                'P', 
                 lavoration.product.id, 
                 lavoration.product,
                 0.0,

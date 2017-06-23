@@ -300,7 +300,7 @@ class product_status_wizard(osv.osv_memory):
             else:     
                  _logger.info('Yes: %s' % (table[row[1]], ))
 
-            if not start_product and row[0][0] == 'P':
+            if not start_product and row[0] == 'P':
                 WS = WS_product # change ref. for use second sheet
                 start_product = True
                 i = 1 # jump one line
