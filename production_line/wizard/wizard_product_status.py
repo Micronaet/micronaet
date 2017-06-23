@@ -306,7 +306,6 @@ class product_status_wizard(osv.osv_memory):
             status_line = 0.0
             title = row[0].split(': ')[1]
             title_list = title.split('<b>')
-            import pdb; pdb.set_trace()
             body = [
                 (title_list[0] if len(title_list) == 2 else title, 
                     format_text),
