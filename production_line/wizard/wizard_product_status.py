@@ -309,7 +309,7 @@ class product_status_wizard(osv.osv_memory):
             body = [
                 (title_list[0] if len(title_list) == 2 else title, 
                     format_text),
-                row[2], # XXX min stock    
+                (row[2].minimum_qty, format_text),
                 (title_list[1].replace('</b>', '') \
                     if len(title_list) == 2 else '', format_text),
                 ]
