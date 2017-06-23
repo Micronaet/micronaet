@@ -337,10 +337,11 @@ class product_status_wizard(osv.osv_memory):
 
         xlsx_raw = open(filename, 'rb').read()
         b64 = xlsx_raw.encode('base64')
-        if sendmail:
+        if sendmail:        
             # ---------------------------------------------------------------------
             # Send via mail:
             # ---------------------------------------------------------------------
+            _logger.info('Sending status via mail: %s' % filename)
             date = datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
 
             # Send mail with attachment:
@@ -374,7 +375,13 @@ class product_status_wizard(osv.osv_memory):
                 return False
             server_proxy = server_pool.browse(
                 cr, uid, server_ids, context=context)[0]
+            _logger.info('SMTP server: %s:%s user: %s' % (
+                server_proxy.smtp_host,
+                server_proxy.smtp_port, 
+                server_proxy.smtp_user, 
+                ))    
             for email in partner_email:
+                _logger.warning('... sending mail: %s' % email)
                 self.send_mail(
                     'openerp@micronaet.com', 
                     email, 
