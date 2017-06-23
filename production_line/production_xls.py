@@ -55,20 +55,22 @@ class mrp_production_extra(osv.osv):
             return
 
         if with_medium and product:
-            # t from Kg.
-            media = '%5.2f' % (
-                material_mx.get(product.id, 0.0) / month_window / 1000) 
+            # Kg.
+            try:
+                media = material_mx.get(product.id, 0.0) / month_window
+            except:
+                media = 0.0    
         else:
-            media = '/'
+            media = 0.0
 
         element = (
-            'M: %s [%s]%s' % (
+            'M: %s [%s]' % (
                 product.name, 
                 default_code,
-                ' <b>%s t.</b>' % (media), 
                 ), 
             product.id,
             product, # XXX for minimum
+            media,
             )
         if element not in rows:
             rows.append(element)
@@ -238,6 +240,7 @@ class mrp_production_extra(osv.osv):
                     ), 
                 line.product_id.id,
                 line.product_id, # XXX used for minimum qty
+                0.0,
                 )
             # initialize row (today, < today, +1, +2, ... +n)                
             if element not in rows: 
@@ -284,6 +287,7 @@ class mrp_production_extra(osv.osv):
                     ), 
                 lavoration.product.id, 
                 lavoration.product,
+                0.0,
                 )
 
             if element not in rows:

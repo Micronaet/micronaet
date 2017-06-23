@@ -202,6 +202,7 @@ class product_status_wizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         # Format elements:
         # ---------------------------------------------------------------------
+        num_format = '0.00' # '#.##0,00'
         format_title = WB.add_format({
             'bold': True, 
             'font_color': 'black',
@@ -227,7 +228,7 @@ class product_status_wizard(osv.osv_memory):
             'align': 'right',
             'bg_color': 'white',
             'border': 1,
-            'num_format': '0.00',
+            'num_format': num_format,
             })
         format_yellow = WB.add_format({
             'font_name': 'Arial',
@@ -235,7 +236,7 @@ class product_status_wizard(osv.osv_memory):
             'align': 'right',
             'bg_color': '#ffff99', #'yellow',
             'border': 1,
-            'num_format': '0.00',
+            'num_format': num_format,
             })
         format_red = WB.add_format({
             'font_name': 'Arial',
@@ -243,7 +244,7 @@ class product_status_wizard(osv.osv_memory):
             'align': 'right',
             'bg_color': '#ff9999', #'red',
             'border': 1,
-            'num_format': '0.00',
+            'num_format': num_format,
             })
         format_green = WB.add_format({
             'font_name': 'Arial',
@@ -251,7 +252,7 @@ class product_status_wizard(osv.osv_memory):
             'align': 'right',
             'bg_color': '#c1ef94', #'green',
             'border': 1,
-            'num_format': '0.00',
+            'num_format': num_format,
             })
 
         # ---------------------------------------------------------------------
@@ -305,13 +306,10 @@ class product_status_wizard(osv.osv_memory):
                                     
             status_line = 0.0
             title = row[0].split(': ')[1]
-            title_list = title.split('<b>')
             body = [
-                (title_list[0] if len(title_list) == 2 else title, 
-                    format_text),
-                (row[2].minimum_qty, format_text),
-                (title_list[1].replace('</b>', '') \
-                    if len(title_list) == 2 else '', format_text),
+                (title, format_text),
+                (row[2].minimum_qty, format_white),
+                (row[3], format_white),
                 ]
             j = 0
             for col in cols:
