@@ -150,7 +150,7 @@ class product_status_wizard(osv.osv_memory):
             for d, q in record.iteritems():
                 res += '%s-%s-%s Q.: %s' % (
                     d[8:10], d[5:7], d[:4],
-                    q,
+                    int(q),
                     )
             return res        
                 
