@@ -202,7 +202,7 @@ class product_status_wizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         # Format elements:
         # ---------------------------------------------------------------------
-        num_format = '#,##0.00'
+        num_format = '#,##0'
         format_title = WB.add_format({
             'bold': True, 
             'font_color': 'black',
