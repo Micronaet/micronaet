@@ -336,7 +336,7 @@ class product_status_wizard(osv.osv_memory):
                 i = 1 # jump one line
                                     
             status_line = 0.0
-            default_code = row[2].default_code or '/'
+            default_code = (row[2].default_code or '/').strip()
             body = [
                 (row[2].name, format_text),
                 (default_code, format_text),
