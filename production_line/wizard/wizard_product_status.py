@@ -341,8 +341,9 @@ class product_status_wizard(osv.osv_memory):
                 (row[2].name, format_text),
                 (default_code, format_text),
                 (row[2].minimum_qty, format_white),
-                (write_supplier_order_detail(
-                    supplier_orders.get(default_code, '')), format_text),
+                #(write_supplier_order_detail(
+                #    supplier_orders.get(default_code, '')), format_text),
+                ('%s' % supplier_orders.get(row[2].default_code, ''), format_text),
                 (row[3], format_white),
                 ]
             j = 0
