@@ -32,7 +32,6 @@ from utility import *
 
 _logger = logging.getLogger(__name__)
 
-supplier_orders = {}
     
 class mrp_production_extra(osv.osv):
     ''' Create extra fields in mrp.production obj
@@ -125,7 +124,7 @@ class mrp_production_extra(osv.osv):
         # initialize globals:
         rows = []
         cols = []
-        #supplier_orders = {}
+        supplier_orders = {}
         minimum = {}
         table = {}
         error_in_print = '' # TODO manage for set in printer

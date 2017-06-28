@@ -294,6 +294,7 @@ class product_status_wizard(osv.osv_memory):
         start_product = False
         cols = mrp_pool._get_cols()
         
+        import pdb; pdb.set_trace()
         if data.get('with_order_detail', False):
             supplier_orders = mrp_pool._get_supplier_orders()
         else:
@@ -461,6 +462,7 @@ class product_status_wizard(osv.osv_memory):
         if context is None:
             context = {}
             
+        # Default if not parameter    
         context['datas'] = {
             'days': 30,
             'row_mode': 'negative',
