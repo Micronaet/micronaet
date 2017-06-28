@@ -322,8 +322,8 @@ class product_status_wizard(osv.osv_memory):
             body = [
                 (row[2].name, format_text),
                 (default_code, format_text),
-                (supplier_orders.get(default_code), format_text),
                 (row[2].minimum_qty, format_white),
+                ('%s' % (supplier_orders.get(default_code, ''),), format_text),
                 (row[3], format_white),
                 ]
             j = 0
