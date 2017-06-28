@@ -141,6 +141,19 @@ class product_status_wizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         # Utility:
         # ---------------------------------------------------------------------
+        def write_supplier_order_detail(record):
+            '''
+            '''
+            if not record:
+                return ''
+            res = ''
+            for d, q in record.iteritems():
+                res += '%s-%s-%s Q.: %s' % (
+                    d[8:10], d[5:7], d[:4],
+                    q,
+                    )
+            return res        
+                
         def write_xls_mrp_line(WS, row, line):
             ''' Write line in excel file
             '''
@@ -322,7 +335,8 @@ class product_status_wizard(osv.osv_memory):
                 (row[2].name, format_text),
                 (default_code, format_text),
                 (row[2].minimum_qty, format_white),
-                ('%s' % (supplier_orders.get(default_code, ''),), format_text),
+                (write_supplier_order_detail(
+                    supplier_orders.get(default_code, '')), format_text),
                 (row[3], format_white),
                 ]
             j = 0
