@@ -187,7 +187,7 @@ class mrp_production_extra(osv.osv):
                     supplier_orders[ref][of_deadline] = q 
                 else:
                     supplier_orders[ref][of_deadline] += q
-        import pdb; pdb.set_trace()
+
         # -------------------
         # 3. Get OC elements:
         # -------------------
