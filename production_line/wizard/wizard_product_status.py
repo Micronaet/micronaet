@@ -321,7 +321,9 @@ class product_status_wizard(osv.osv_memory):
         rows = mrp_pool._get_rows()
 
         table = mrp_pool._get_table() # For check row state
-
+        
+        print '\n%s\n\n' % supplier_orders
+        
         for row in rows:
             # Check mode: only active
             if not use_row(table[row[1]], data):
