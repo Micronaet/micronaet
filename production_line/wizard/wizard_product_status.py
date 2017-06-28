@@ -146,7 +146,6 @@ class product_status_wizard(osv.osv_memory):
             '''
             if not record:
                 return ''
-            return '%s' % record
                 
             res = ''
             for d, q in record.iteritems():
