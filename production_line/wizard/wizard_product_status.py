@@ -294,9 +294,9 @@ class product_status_wizard(osv.osv_memory):
         cols = mrp_pool._get_cols()
         
         if data.get('with_order_detail', False):
-            supplier_orders = mrp_pool._get_supplier_orders()
+            history_supplier_orders = mrp_pool._get_history_supplier_orders()
         else:
-            supplier_orders = {}        
+            history_supplier_orders = {}        
         
         # Start loop for design table for product and material status:
         # Header: 
@@ -322,8 +322,6 @@ class product_status_wizard(osv.osv_memory):
 
         table = mrp_pool._get_table() # For check row state
         
-        print '\n%s\n\n' % supplier_orders
-        
         for row in rows:
             # Check mode: only active
             if not use_row(table[row[1]], data):
@@ -344,9 +342,10 @@ class product_status_wizard(osv.osv_memory):
                 (row[2].name, format_text),
                 (default_code, format_text),
                 (row[2].minimum_qty, format_white),
-                #(write_supplier_order_detail(
-                #    supplier_orders.get(default_code, '')), format_text),
-                ('%s' % supplier_orders.get(row[2].default_code, ''), format_text),
+                (write_supplier_order_detail(
+                    history_supplier_orders.get(default_code, '')), 
+                    format_text,
+                    ),
                 (row[3], format_white),
                 ]
             j = 0
