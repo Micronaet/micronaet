@@ -168,6 +168,7 @@ class mrp_production_extra(osv.osv):
         # ------------------------------
         # TODO Filter period?? (optimizing the query!)
         cursor_of = accounting_pool.get_of_line_quantity_deadline(cr, uid)
+        supplier_orders = {}
         if not cursor_of: 
             _logger.error(
                 'Error access OF line table in accounting! (status webkit)')
