@@ -19,6 +19,7 @@
 ###############################################################################
 import os
 import sys
+import copy
 import openerp.netsvc as netsvc
 import logging
 from openerp.osv import osv, fields
