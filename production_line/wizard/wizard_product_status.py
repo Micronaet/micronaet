@@ -148,11 +148,14 @@ class product_status_wizard(osv.osv_memory):
                 return ''
             res = ''
             for d, q in record.iteritems():
-                res += '[%s-%s-%s Q.: %s] ' % (
-                    d[8:10], d[5:7], d[:4],
-                    int(q),
-                    )
-            return res        
+                try:
+                    res += '[%s-%s-%s Q.: %s] ' % (
+                        d[8:10], d[5:7], d[:4],
+                        int(q),
+                        )
+                except:
+                    return _('ERROR!')
+            return res    
                 
         def write_xls_mrp_line(WS, row, line):
             ''' Write line in excel file
@@ -298,11 +301,11 @@ class product_status_wizard(osv.osv_memory):
         # Header: 
         header = [
             [_('Material'), format_title], # list for update after for product
-            [_('Code'), format_title],
-            [_('Min. stock'), format_title],
-            [_('OF detail'), format_title],
+            (_('Code'), format_title),
+            (_('Min. stock'), format_title),
+            (_('OF detail'), format_title),
             (_('m(x) last %s month') % data['month_window'], format_title),
-            ]        
+            ]
         for col in cols:
             header.append((col, format_title))
             
