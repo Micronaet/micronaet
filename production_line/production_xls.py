@@ -188,6 +188,8 @@ class mrp_production_extra(osv.osv):
                 else:
                     supplier_orders[ref][of_deadline] += q
 
+        print '\n%s\n\n' % supplier_orders
+
         # -------------------
         # 3. Get OC elements:
         # -------------------
