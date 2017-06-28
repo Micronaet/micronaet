@@ -286,7 +286,7 @@ class product_status_wizard(osv.osv_memory):
         # Product header
         header[0][0] = _('Product')
         write_xls_mrp_line(WS_product, 0, header)
-        
+
         # Body:
         i = 1 # row position (before 0)
         rows = mrp_pool._get_rows()
@@ -421,7 +421,7 @@ class product_status_wizard(osv.osv_memory):
                 'nodestroy': False,
                 }       
 
-    def schedule_send_negative_report(self, cr, uid, context=None):
+    def schedule_send_negative_report(self, cr, uid, wizard=None, context=None):
         ''' Send mail to group user for negative elements
         '''                
         if context is None:
@@ -434,6 +434,9 @@ class product_status_wizard(osv.osv_memory):
             'month_window': 3,
             'fake_ids': [],
             }
+
+        if wizard is not None:
+            context['datas'].update(wizard)
             
         self.export_excel(cr, uid, False, context=context)    
         return True    
