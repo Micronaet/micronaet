@@ -148,7 +148,7 @@ class product_status_wizard(osv.osv_memory):
                 return ''
             res = ''
             for d, q in record.iteritems():
-                res += '%s-%s-%s Q.: %s' % (
+                res += '[%s-%s-%s Q.: %s] ' % (
                     d[8:10], d[5:7], d[:4],
                     int(q),
                     )
@@ -276,9 +276,11 @@ class product_status_wizard(osv.osv_memory):
         # Format columns:
         # ---------------------------------------------------------------------
         # Column dimension:
-        WS.set_column ('A:A', 35) # Image colums
+        WS.set_column ('A:A', 35)
+        WS.set_column ('D:D', 20)
         WS.set_row(0, 30)
-        WS_product.set_column ('A:A', 35) # Image colums
+        WS_product.set_column ('A:A', 35)
+        WS_product.set_column ('D:D', 20)
         WS_product.set_row(0, 30)
             
         # Generate report for export:
