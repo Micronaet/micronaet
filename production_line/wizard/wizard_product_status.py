@@ -105,6 +105,8 @@ class product_status_wizard(osv.osv_memory):
             'yes' if datas.get('with_medium', False) else 'no',
             datas.get('month_window', '/'),
             )
+        res += 'With OF detail' if datas.get(
+            'with_order_detail', False) else 'No OF detail',
         res += 'With fake order: %s -' % (
             'yes' if datas.get('fake_ids', False) else 'no',
             )            
@@ -123,6 +125,8 @@ class product_status_wizard(osv.osv_memory):
         #datas['negative'] = wiz_proxy.negative
         datas['with_medium'] = wiz_proxy.with_medium
         datas['month_window'] = wiz_proxy.month_window
+        datas['with_order_detail'] = wiz_proxy.with_order_detail
+        
         datas['fake_ids'] = wiz_proxy.fake_ids
         return datas
 
@@ -270,12 +274,19 @@ class product_status_wizard(osv.osv_memory):
         start_product = False
         cols = mrp_pool._get_cols()
         
+        import pdb; pdb.set_trace()
+        if data.get('with_order_detail', False):
+            supplier_orders = mrp_pool._get_supplier_orders()
+        else:
+            supplier_orders = {}        
+        
         # Start loop for design table for product and material status:
         # Header: 
         header = [
             [_('Material'), format_title], # list for update after for product
             [_('Code'), format_title],
             [_('Min. stock'), format_title],
+            [_('OF detail'), format_title],
             (_('m(x) last %s month') % data['month_window'], format_title),
             ]        
         for col in cols:
@@ -292,6 +303,7 @@ class product_status_wizard(osv.osv_memory):
         rows = mrp_pool._get_rows()
 
         table = mrp_pool._get_table() # For check row state
+
         for row in rows:
             # Check mode: only active
             if not use_row(table[row[1]], data):
@@ -306,9 +318,11 @@ class product_status_wizard(osv.osv_memory):
                 i = 1 # jump one line
                                     
             status_line = 0.0
+            default_code = row[2].default_code or '/'
             body = [
                 (row[2].name, format_text),
-                (row[2].default_code or '/', format_text),
+                (default_code, format_text),
+                (supplier_orders.get(default_code), format_text),
                 (row[2].minimum_qty, format_white),
                 (row[3], format_white),
                 ]
@@ -432,6 +446,7 @@ class product_status_wizard(osv.osv_memory):
             'row_mode': 'negative',
             'with_medium': True,
             'month_window': 3,
+            'with_order_detail': True,
             'fake_ids': [],
             }
 
@@ -469,6 +484,7 @@ class product_status_wizard(osv.osv_memory):
             required=True, help="Month back for medium production monthly index (Kg / month of prime material)"),
         'with_medium': fields.boolean('With m(x)', required=False, 
             help="if check in report there's production m(x), if not check report is more fast"),        
+        'with_order_detail': fields.boolean('With OF detail'),
         }
         
     _defaults = {
