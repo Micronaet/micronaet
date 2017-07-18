@@ -660,6 +660,10 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             #                      XMLRPC call for import SL 
             # -----------------------------------------------------------------
             try: 
+                error = (
+                    _('Generic error!'),
+                    _('Startup error'),
+                    )
                 # an error here could mean that the document is created in 
                 # accounting program 
                 # TODO manage this problem
@@ -687,7 +691,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 error = (
                     _('Update SL error!'),
                     _('Error updating yet created SL link in OpenERP'),
-                )
+                    )
                 lavoration_pool.write(
                     cr, uid, [current_lavoration_id], {
                         'accounting_sl_code': accounting_sl_code,
