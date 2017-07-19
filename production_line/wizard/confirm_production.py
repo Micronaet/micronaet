@@ -261,8 +261,8 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             
         # readability:
         mrp = lavoration_browse.production_id # Production reference
-        pallet = wiz_proxy.pallet_product_id   
-        wc = lavoration_browse.workcenter_id 
+        pallet = wiz_proxy.pallet_product_id or False  
+        wc = lavoration_browse.workcenter_id of False
 
         # Only if not to close have a partial or fully load:
         # 1. First close: all material are unloaded from stock accounting
@@ -659,7 +659,8 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             # -----------------------------------------------------------------
             #                      XMLRPC call for import SL 
             # -----------------------------------------------------------------
-            try: 
+            try:
+                import pdb; pdb.set_trace() 
                 error = (
                     _('Generic error!'),
                     _('Startup error'),
