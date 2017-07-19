@@ -676,18 +676,21 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                     # ---------------------------------------------------------
                     try:
                         accounting_sl_code = mx_server.sprix('SL')
-                    except:    
-                        raise osv.except_osv(
-                        _('Import SL error!'),
-                        _('XMLRPC error calling import SL procedure'), )
+                    except:
+                        error = (
+                            _('Import SL error!'),
+                            _('XMLRPC error calling import SL procedure'), 
+                            )
+                        raise osv.except_osv(*error)
 
                     # Test if there's an error during importation:
                     if accounting_sl_code.startswith(error_prefix):
-                        raise osv.except_osv(
+                        error = (
                             _('Import SL error!'),
-                            _('Error from accounting:\n%s') % (
-                                accounting_sl_code[len(error_prefix):], ),
+                            _('Error from accounting:\n%s') % \
+                                accounting_sl_code[len(error_prefix):],
                             )
+                        raise osv.except_osv(*error)
 
                 error = (
                     _('Update SL error!'),
@@ -706,10 +709,12 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                     wf_service.trg_validate(
                         uid, 'mrp.production.workcenter.line',
                         current_lavoration_id, 'button_done', cr)
-                except:    
-                    raise osv.except_osv(
-                    _('Workflow error:'),
-                    _('Error closing lavoration!'), )
+                except:
+                    error = (
+                        _('Workflow error:'),
+                        _('Error closing lavoration!'), 
+                        )
+                    raise osv.except_osv(*error)
             except:
                 raise osv.except_osv(*error)                
         return {'type':'ir.actions.act_window_close'}
