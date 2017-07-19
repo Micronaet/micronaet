@@ -660,7 +660,6 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             #                      XMLRPC call for import SL 
             # -----------------------------------------------------------------
             try:
-                import pdb; pdb.set_trace() 
                 error = (
                     _('Generic error!'),
                     _('Startup error'),
