@@ -262,7 +262,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
         # readability:
         mrp = lavoration_browse.production_id # Production reference
         pallet = wiz_proxy.pallet_product_id or False  
-        wc = lavoration_browse.workcenter_id of False
+        wc = lavoration_browse.workcenter_id or False
 
         # Only if not to close have a partial or fully load:
         # 1. First close: all material are unloaded from stock accounting
