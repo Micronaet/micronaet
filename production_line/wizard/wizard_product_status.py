@@ -418,7 +418,7 @@ class product_status_wizard(osv.osv_memory):
             for email in partner_email:
                 _logger.warning('... sending mail: %s' % email)
                 self.send_mail(
-                    'openerp@micronaet.com', 
+                    server_proxy.smtp_user,#'openerp@micronaet.com', 
                     email, 
                     _('Negative stock status report'), 
                     _('Stock status for negative product with production'),
@@ -457,7 +457,8 @@ class product_status_wizard(osv.osv_memory):
                 'nodestroy': False,
                 }       
 
-    def schedule_send_negative_report(self, cr, uid, wizard=None, context=None):
+    def schedule_send_negative_report(
+            self, cr, uid, wizard=None, context=None):
         ''' Send mail to group user for negative elements
         '''                
         if context is None:
