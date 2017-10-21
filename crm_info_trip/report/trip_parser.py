@@ -92,8 +92,8 @@ class Parser(report_sxw.rml_parse):
                 _logger.error('Product without code: %s' % product.name)
                 continue
             self.products_uom[product.default_code] = (
-                product.uom_id.account_ref, 
-                product.uom_id.moltiplicator,
+                product.uom_id.account_ref or '', 
+                product.uom_id.moltiplicator or 1,
                 )
 
     def get_total_invoiced(self, ):
@@ -215,7 +215,9 @@ class Parser(report_sxw.rml_parse):
                     # Add totals for this year  
                     # TODO correct in query: get_mm_situation base_mssql_accounting<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
                     uom_name, moltiplicator = self.products_uom.get(
-                        default_code, ('t', 1000.0))
+                        default_code, ('TN', 1000.0))
+                    if moltiplicator == 1000:
+                        uom_name = 'KG' # t became Kg
                     imponibile = record['IMPONIBILE'] / moltiplicator       
                     mysql_data[default_code][1][year] = (
                         record['CONSEGNE'],

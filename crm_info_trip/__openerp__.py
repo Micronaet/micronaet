@@ -30,6 +30,7 @@
     'license': 'AGPL-3',
     'depends': [
         'base',
+        'product',
         'report_aeroo',
         'report_aeroo_ooo',        
         'base_mssql_accounting',
