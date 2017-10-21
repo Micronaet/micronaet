@@ -213,11 +213,11 @@ class Parser(report_sxw.rml_parse):
                             {}, # delivery per year
                             ]
                     # Add totals for this year  
-                    # TODO correct in query: get_mm_situation base_mssql_accounting<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                    # TODO correct in query: 
+                    # get_mm_situation base_mssql_accounting
                     uom_name, moltiplicator = self.products_uom.get(
-                        default_code, ('TN', 1000.0))
-                    if moltiplicator == 1000:
-                        uom_name = 'KG' # t became Kg
+                        default_code, ('KG', 1000.0))
+
                     imponibile = record['IMPONIBILE'] / moltiplicator       
                     mysql_data[default_code][1][year] = (
                         record['CONSEGNE'],
