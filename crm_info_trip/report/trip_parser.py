@@ -52,19 +52,28 @@ class Parser(report_sxw.rml_parse):
             'get_price_variation': self.get_price_variation,          
         })
 
+        cr = self.cr
+        uid = self.uid
+        context = {}
+        
         # Parameters:
         self.values = {}         # dictionary for get/set manage
         self.products = {}       # for price variations
         self.products_last = {}  # last date of delivery        
+        self.products_uom = {}   # uom of product
+        
         self.dictionary = {      # Query cursor dictionary
             'invoice': {'data': None},         # Browse object
             'invoice_header': {'data': None},
             'total': {'data': None}
             }
+            
         self.causal = {}         # Causal movement list    
         self.total_invoiced = {} # Total invoiced per year
             
         today = datetime.now()
+        
+        # Load status parameters:
         self.status = {        
             'green': today.strftime(
                 DEFAULT_SERVER_DATE_FORMAT), # 6 month
@@ -73,6 +82,19 @@ class Parser(report_sxw.rml_parse):
             'red': (today - timedelta(days=365)).strftime(
                 DEFAULT_SERVER_DATE_FORMAT), # 1 year + 6 month
             }
+            
+        # Load UOM parameters:
+        product_pool = self.pool.get('product.product')
+        product_ids = product_pool.search(cr, uid, [], context=context)
+        for product in product_pool.browse(cr, uid, product_ids, 
+                context=context):
+            if not  product.default_code:  
+                _logger.error('Product without code: %s' % product.name)
+                continue
+            self.products_uom[product.default_code] = (
+                product.uom_id.account_ref, 
+                product.uom_id.moltiplicator,
+                )
 
     def get_total_invoiced(self, ):
         ''' Return total_invoiced
@@ -183,19 +205,23 @@ class Parser(report_sxw.rml_parse):
 
                 # Generate dictionary for report directly:
                 for record in mysql_cursor.fetchall():
-                    if record['CKY_ART'] not in mysql_data:
+                    default_code = record['CKY_ART']
+                    if default_code not in mysql_data:
                         # Create default element:
-                        mysql_data[record['CKY_ART']] = [
+                        mysql_data[default_code] = [
                             record['CDS_VARIAB_ART'], # description
                             {}, # delivery per year
                             ]
                     # Add totals for this year  
-                    # TODO correct in query: get_mm_situation base_mssql_accounting
-                    imponibile = record['IMPONIBILE'] / 1000.0       
-                    mysql_data[record['CKY_ART']][1][year] = (
+                    # TODO correct in query: get_mm_situation base_mssql_accounting<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                    uom_name, moltiplicator = self.products_uom.get(
+                        default_code, ('t', 1000.0))
+                    imponibile = record['IMPONIBILE'] / moltiplicator       
+                    mysql_data[default_code][1][year] = (
                         record['CONSEGNE'],
                         record['TOTALE'],
                         imponibile,
+                        uom_name,
                         )
                     self.total_invoiced[year] += imponibile
                     # TODO also TOTALE?

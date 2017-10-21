@@ -34,6 +34,19 @@ from openerp.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 
+class ProductUom(orm.Model):
+    """ Model name: ProductUom
+    """    
+    _inherit = 'product.uom'
+    
+    _columns = {
+        'moltiplicator': fields.integer('Moltiplicator'),
+        }
+
+    _defaults = {
+       'moltiplicator': lambda *a: 1,
+        }
+
 class crm_trip(osv.osv):
     ''' CRM Trip object
     '''
