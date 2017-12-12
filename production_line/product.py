@@ -113,7 +113,7 @@ class product_product_extra(osv.osv):
         ''' Import from MSSQL DB linked to Company AQ_QUANTITY elements
         '''
         _logger.info("Start import packages list")
-        
+        import pdb; pdb.set_trace()
         try:
             cursor = self.pool.get('micronaet.accounting').get_product_package_columns(cr, uid, context=context) 
             if not cursor or not file_name_package:

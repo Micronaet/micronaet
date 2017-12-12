@@ -45,7 +45,7 @@
                     <group expand="1" string="Group By...">
                         <filter name="group_partner" string="Partner" icon="terp-partner" context="{'group_by':'partner_id'}"/>
                         <filter name="group_type" string="Type" icon="terp-partner" context="{'group_by':'type'}"/>
-                        <filter name="group_type" string="Deadline" icon="terp-partner" context="{'group_by':'deadline'}"/>
+                        <filter name="group_deadline" string="Deadline" icon="terp-partner" context="{'group_by':'deadline'}"/>
                     </group>                    
             </search>
         </field>
