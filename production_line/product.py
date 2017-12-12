@@ -169,7 +169,7 @@ class product_product_extra(osv.osv):
                     for key in codepackage_2_id.keys(): # loop on all elements/columns (package NGD_* *=code of package)
                         try:                    
                              if not key:
-                                 _logger.error('Key not present!)
+                                 _logger.error('Key not present!')
                                  continue
                              code = "NGD_" + key
                              qty = product_package.get(code, 0.0) # Q. is the value of the fields NDG_code!
