@@ -113,7 +113,6 @@ class product_product_extra(osv.osv):
         ''' Import from MSSQL DB linked to Company AQ_QUANTITY elements
         '''
         _logger.info("Start import packages list")
-        import pdb; pdb.set_trace()
         try:
             cursor = self.pool.get('micronaet.accounting').get_product_package_columns(cr, uid, context=context) 
             if not cursor or not file_name_package:
@@ -169,6 +168,9 @@ class product_product_extra(osv.osv):
                     product_id = product_ids[0]
                     for key in codepackage_2_id.keys(): # loop on all elements/columns (package NGD_* *=code of package)
                         try:                    
+                             if not key:
+                                 _logger.error('Key not present!)
+                                 continue
                              code = "NGD_" + key
                              qty = product_package.get(code, 0.0) # Q. is the value of the fields NDG_code!
                              if qty > 0.0:  # search if present and > 0
