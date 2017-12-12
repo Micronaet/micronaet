@@ -166,8 +166,7 @@ class product_product_extra(osv.osv):
                         continue # next record!
 
                     product_id = product_ids[0]
-                    import pdb; pdb.set_trace()
-                    for key in codepackage_2_id.keys(): # loop on all elements/columns (package NGD_* *=code of package)
+                    for key in codepackage_2_id: # loop on all elements/columns (package NGD_* *=code of package)
                         try:                    
                              if not key:
                                  _logger.error('Key not present!')
