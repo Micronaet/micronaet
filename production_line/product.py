@@ -167,7 +167,8 @@ class product_product_extra(osv.osv):
 
                     product_id = product_ids[0]
                     for key in codepackage_2_id: # loop on all elements/columns (package NGD_* *=code of package)
-                        try:                    
+                        try:
+                             # TODO why a False value??!?!?!?!?                    
                              if not key:
                                  _logger.error('Key not present!')
                                  continue
