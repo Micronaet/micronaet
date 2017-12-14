@@ -29,6 +29,7 @@
     'license': 'AGPL-3',
     'depends': [
         'base',
+        'mrp',
         'production_line',
         'report_aeroo',
         'report_aeroo_ooo',
@@ -36,7 +37,7 @@
     'init_xml': [],
     'demo': [],
     'data': [
-        'report/setup_view.xml',
+        'report/setup_report.xml',
         ],
     'active': False,
     'installable': True,
