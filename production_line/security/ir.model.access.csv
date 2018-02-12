@@ -3,3 +3,5 @@
 "access_mrp_production_workcenter_load","mrp.production.workcenter.load","model_mrp_production_workcenter_load","mrp.group_mrp_user",1,1,1,1
 "access_mrp_workcenter_history","mrp.workcenter.history","model_mrp_workcenter_history","mrp.group_mrp_user",1,1,1,1
 "access_mrp_production_package","mrp.production.package","model_mrp_production_package","mrp.group_mrp_user",1,1,1,1
+"access_mrp_production_product_packaging","mrp.production.product.packaging","model_mrp_production_product_packaging","mrp.group_mrp_user",1,1,1,1
+

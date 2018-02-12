@@ -705,6 +705,20 @@ class sale_order_line_extra(osv.osv):
         'use_accounting_qty': lambda *a: False,
     }
 
+class mrp_production_product_packaging(osv.osv):
+    ''' Manage packaging for production of product
+    '''
+    _name = 'mrp.production.product.packaging'
+    _description= 'Production product packaging'
+    _rec_name = 'ul_id'
+
+    _columns = {
+        'production_id': fields.many2one('mrp.production', 'MRP'),
+        'ul_id': fields.many2one('product.ul', 'Package'),
+        'lot_code': fields.char('Lot', size=64), # XXX needed?
+        'account_id': fields.char('Account ID', size=10),
+        }
+
 class mrp_production_material(osv.osv):
     ''' Create object mrp.production.material seems the bom explosed on product
         quantity used as a model for bom list
@@ -1450,6 +1464,52 @@ class mrp_production_extra(osv.osv):
         ''' Dummy refresh (simple pression of button)
         '''
         return True
+
+    # Refresh product ul packaging        
+    def load_package_for_production(self, cr, uid, ids, context=None):
+        ''' Load product package current present for this element
+            (from product when created the production)
+        '''
+        assert len(ids) == 1, 'Works only with one record a time'
+        
+        # Pool used:
+        ul_pool = self.pool.get('mrp.production.product.packaging')        
+
+        mrp_proxy = self.browse(cr, uid, ids, context=context)[0]
+        product = mrp_proxy.bom_id.product_id
+
+        # ---------------------------------------------------------------------
+        # Delete not accounting codes:
+        # ---------------------------------------------------------------------
+        unlink_ids = [] # ID to remove
+        keep_ul_ids = [] # ul_id yet present
+        for package in mrp_proxy.product_packaging_ids:
+            if package.account_id: # yet sync
+                keep_ul_ids.append(package.ul_id.id)
+            else: # no sync
+                unlink_ids.append(package.id)
+                
+        # Remove yet present item:        
+        if unlink_ids:
+            ul_pool.unlink(cr, uid, unlink_ids, context=context)
+        _logger.warning('Keep: %s, Removed: %s' % (
+            len(keep_ul_ids), 
+            len(unlink_ids),
+            ))
+        
+        # ---------------------------------------------------------------------
+        # Create UL new code:
+        # ---------------------------------------------------------------------
+        for package in product.packaging:
+            ul_id = package.ul.id
+            if ul_id in keep_ul_ids:
+                continue # yet present and sync
+                
+            ul_pool.create(cr, uid, {
+                'production_id': mrp_proxy.id,
+                'ul_id': ul_id,
+                }, context=context)
+        return True
         
     # ----------------
     # Workflow action:
@@ -1591,6 +1651,9 @@ class mrp_production_extra(osv.osv):
             'mrp.production.material', 'mrp_waste_id', 'Waste material'),
         'package_ids': fields.one2many(
             'mrp.production.package', 'production_id', 'Package'),
+        'product_packaging_ids': fields.one2many(
+            'mrp.production.product.packaging', 'production_id', 
+            'Product Package'),
         'load_ids': fields.one2many(
             'mrp.production.workcenter.load', 
             'production_id', 'Loads'),

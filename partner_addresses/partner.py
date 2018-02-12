@@ -33,30 +33,38 @@ class res_partner(osv.osv):
     }
 
     def name_get(self, cr, uid, ids, context=None):
+        ''' Override original name method
+        '''
         if context is None:
             context = {}
+            
         if isinstance(ids, (int, long)):
             ids = [ids]
+            
         res = []
         for record in self.browse(cr, uid, ids, context=context):
-            name = record.name
-            if record.parent_id:
-                name =  "%s (%s)" % (name, record.parent_id.name)
-            if context.get('show_address'):
-                name = name + "\n" + self._display_address(cr, uid, record, without_company=True, context=context)
-                name = name.replace('\n\n','\n')
-                name = name.replace('\n\n','\n')
-            if context.get('show_email') and record.email:
-                name = "%s <%s>" % (name, record.email)
-            if record.is_address:
-                #if context.get('show_naked'): # Let see only delivery name
-                name = "%s (%s)" % (record.name, record.type)
-                #else:
-                #    address = self._display_address(cr, uid, record, without_company=True, context=context)
-                #    address = address.replace('\n',' ')
-                #    address = re.sub(r'\s+', ' ', address)
-                #    name = "%s, %s (%s)" % (record.parent_id.name, address, record.type)
-            res.append((record.id, name))
+            try:
+                name = record.name
+                if record.parent_id:
+                    name =  "%s (%s)" % (name, record.parent_id.name)
+                if context.get('show_address'):
+                    name = name + "\n" + self._display_address(cr, uid, record, without_company=True, context=context)
+                    name = name.replace('\n\n','\n')
+                    name = name.replace('\n\n','\n')
+                if context.get('show_email') and record.email:
+                    name = "%s <%s>" % (name, record.email)
+                if record.is_address:
+                    #if context.get('show_naked'): # Let see only delivery name
+                    name = "%s (%s)" % (record.name, record.type)
+                    #else:
+                    #    address = self._display_address(cr, uid, record, without_company=True, context=context)
+                    #    address = address.replace('\n',' ')
+                    #    address = re.sub(r'\s+', ' ', address)
+                    #    name = "%s, %s (%s)" % (record.parent_id.name, address, record.type)
+                res.append((record.id, name))
+            except:
+                res.append((record.id, '?'))
+                    
         return res
 
     def address_get_obj(self, cr, uid, ids, adr_type=None, context=None):

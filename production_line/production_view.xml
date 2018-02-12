@@ -909,6 +909,23 @@
                                 </form>
 					        </field>
 				        </group>
+                        <button name="load_package_for_production" string="Reload" type="object" confirm="All package will be removed except yet sync in Account, confirm?"/>
+				        <group string="Imballaggi prodotto (lotti creati subito nel gestionale)">				              
+					        <field name="product_packaging_ids" nolabel="1">
+					            <tree string="Product package" editable="bottom" color="blue:account_id!=False">
+                                    <field name="production_id" invisible="1"/>
+                                    <field name="ul_id" readonly="1"/>
+                                    <field name="account_id" readonly="1"/>
+                                    <field name="lot_code" invisible="1"/>
+                                </tree>
+					            <form string="Product package">
+                                    <field name="production_id" invisible="1"/>
+                                    <field name="ul_id" />
+                                    <field name="account_id" />
+                                    <field name="lot_code" invisible="1"/>
+                                </form>
+					        </field>
+				        </group>
 				        <group string="Package">				              
 					        <field name="package_ids" nolabel="1">
 					            <tree string="Package" editable="bottom">
