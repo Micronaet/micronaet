@@ -1349,6 +1349,88 @@ class mrp_production_extra(osv.osv):
     _name = 'mrp.production'
     _inherit = ['mrp.production', 'mail.thread']
 
+    # -------------------------------------------------------------------------
+    # Scheduled
+    # -------------------------------------------------------------------------
+    def update_load_package_for_production(self, cr, uid, from_date, 
+            context=None):
+        ''' Schedule update of production on accounting
+        '''
+        # Utility:
+        def clean_mrp(name):
+            '''
+            '''
+            name = name.split('/')[-1]
+            name = name[2:]
+            return name
+            
+        # TODO Change in string passed:
+        file_out = '/tmp/ul.txt'
+        file_in = '/tmp/id.txt'
+        
+        # Get new production to be sync:
+        production_ids = self.search(cr, uid, [
+            # From date filter for not all old importation (limit):
+            ('create_date', '>=', from_date),            
+            # New production:
+            ('ul_state', '=', 'draft'),
+            # Draft or production (other lot are created)
+            ('state', 'in', ('draft', 'production')),
+            ], context=context)
+            
+        # 1. Launch for every production the regenerate button
+        _logger.info('%s production to update UL' % len(production_ids))
+        for item_id in production_ids:
+            self.load_package_for_production(cr, uid, [item_id], 
+                context=context)
+            
+        # 2. Write lines not present
+        ul_pool = self.pool.get('mrp.production.product.packaging')
+        ul_ids = ul_pool.search(cr, uid, [
+            # Only not sync:
+            ('production_id.ul_state', '=', 'draft'), # MRP to be sync
+            ('account_id', '=', False), # Not sync
+            ], context=context)
+        
+        # Generate file to be passed:
+        tmp_out = open(file_out, 'w')        
+        mrp_done = {} # Used for change state in 
+        for ul in ul_pool.browse(cr, uid, ul_ids, context=context):
+            if ul.production_id.id not in mrp_done:
+                mrp_done[ul.production_id.id] = []
+            mrp_done[ul.production_id.id].append(ul.id)
+                
+            tmp_out.write('%-15s%-15s%-15s%-15s\r\n' % (
+                ul.id,
+                clean_mrp(ul.production_id.name),
+                ul.production_id.bom_id.product_id.default_code or '',
+                ul.ul_id.code or '',                
+                ))
+        _logger.info('File out created: %s' % file_out)        
+        tmp_out.close()
+        
+        # TODO launch import procedure
+        
+        # TODO read confirmation (removing ID from mrp)
+        try:
+            tmp_in = open(file_in, 'r')
+            for line in tmp_in:
+                l = line.strip(line).split('|')
+                item_id = l[0]
+                account_id = l[1]
+                ul_pool.write(cr, uid, [item_id], {
+                    'account_id', account_id,
+                    }, context=context)
+        except:
+            return False    
+        
+        # TODO update 
+        for mrp, ul in mrp_done:
+            if not ul: # all removed so sync
+                self.write(cr, uid, {
+                    'ul_state': 'accounting',
+                    }, context=context)
+        return True        
     # -----------------
     # Utility function:
     # -----------------
@@ -1684,15 +1766,24 @@ class mrp_production_extra(osv.osv):
             _function_total_material, method=True, type='boolean', 
             string='Material anomaly', store=False, multi='material'),
         
-        # Workflow:
+
+        # Manual workflow:
+        'ul_state': fields.selection([
+            ('draft', 'Draft'),
+            ('account', 'Account sync'),
+            ('deleted', 'Account delete'),
+            ], 'UL state'),
+        
         'accounting_state':fields.selection([
                ('draft','Draft'),
                ('production','In production'),
                ('close','Close'),
                ('cancel','Cancel'),
-        ],'Accounting state', select=True, readonly=True),
+        ], 'Accounting state', select=True, readonly=True),
     }
+
     _defaults = {
+        'ul_state': lambda *a: 'draft',
         'accounting_state': lambda *a: 'draft',
     }
 
