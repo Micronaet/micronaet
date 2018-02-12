@@ -1422,6 +1422,7 @@ class mrp_production_extra(osv.osv):
                     'account_id', account_id,
                     }, context=context)
         except:
+            _logger.error('Not found esit file: %s' % file_in)
             return False    
         
         # TODO update 
