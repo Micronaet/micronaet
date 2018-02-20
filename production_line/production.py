@@ -795,6 +795,8 @@ class mrp_production_workcenter_load(osv.osv):
         'product_qty': fields.float('Quantity', digits=(16, 6), required=True),
         'product_code': fields.char('Product code', size=64,
             help='Long code for product: product - lavoration - package - ecc. (used for traceability)'),
+        'product_code_id': fields.char('Product code ID', size=20,
+            help='ID lot from accounting (if created from)'),
         'partial': fields.boolean('Partial'),
         'user_id': fields.many2one('res.users', 'User', required=True),
         'line_id': fields.many2one('mrp.production.workcenter.line', 
