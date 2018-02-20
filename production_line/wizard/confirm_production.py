@@ -424,6 +424,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 wiz_proxy.package_id.code if package_id else '', # Package
                 )
             load_pool.write(cr, uid, load_id, {
+                'product_code_id': lot_created_id,
                 'product_code': real_product_code,
                 }, context=context)
 
