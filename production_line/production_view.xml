@@ -636,7 +636,7 @@
                         <field name="accounting_cost" readonly="1" />
                         <field name="accounting_cost_confirmed" readonly="1" />
 
-                        <field name="product_code_id" readonly="1"/>
+                        <field name="product_code_id" attrs="{'invisible': [('product_code_id','=',False)]}" readonly="1"/>
                         <newline/>
                         <field name="product_code" />                                    
                         <field name="product_qty" sum="total" />
