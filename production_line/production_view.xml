@@ -308,10 +308,10 @@
         <field name="model">mrp.production.workcenter.line</field>
         <field name="arch" type="xml">
             <calendar color="workcenter_id" date_start="real_date_planned" date_delay="hour" string="Lavorazioni" mode="week">
-	            <field name="product" />
-	            <field name="product_qty" />
-	            <field name="uom" />
-	            <field name="production_id" />
+                <field name="product" />
+                <field name="product_qty" />
+                <field name="uom" />
+                <field name="production_id" />
             </calendar>
         </field>
     </record>    
@@ -323,36 +323,36 @@
         <field name="priority" eval="40" />
         <field name="arch" type="xml">
              <form string="Prodotto" version="7.0">
-	            <sheet>
-            		<field name="image_medium" widget="image" class="oe_avatar oe_left" readonly="1"/>
-		            <div class="oe_title">
-			            <div class="oe_edit_only">
-				            <label for="name" string="Nome prodotto"/>
-			            </div>
-			            <h1>
-				            <field name="name"  readonly="1"/>
-			            </h1>
-			            <!--<label for="categ_id" class="oe_edit_only"/>
-			            <h2>
-				            <field name="categ_id" readonly="1" />
-			            </h2>-->
-			            <div name="options">
-				            <field name="adr" readonly="1"/>
-				            <label for="adr"/>
-				            <field name="sale_ok" readonly="1"/>
-				            <label for="sale_ok"/>
-				            <field name="purchase_ok" readonly="1"/>
-				            <label for="purchase_ok" />
-			            </div>
-            		</div>
-            		<group colspan="4" col="4">
-				        <field name="default_code" readonly="1"/>
-				        <field name="statistic_category" readonly="1"/>
-         				<field name="ean13" readonly="1"/>
-				        <field name="active" readonly="1" />
-				        <field name="description_sale" readonly="1" colspan="4"/>
-				    </group>     
-            	</sheet>
+                <sheet>
+                    <field name="image_medium" widget="image" class="oe_avatar oe_left" readonly="1"/>
+                    <div class="oe_title">
+                        <div class="oe_edit_only">
+                            <label for="name" string="Nome prodotto"/>
+                        </div>
+                        <h1>
+                            <field name="name"  readonly="1"/>
+                        </h1>
+                        <!--<label for="categ_id" class="oe_edit_only"/>
+                        <h2>
+                            <field name="categ_id" readonly="1" />
+                        </h2>-->
+                        <div name="options">
+                            <field name="adr" readonly="1"/>
+                            <label for="adr"/>
+                            <field name="sale_ok" readonly="1"/>
+                            <label for="sale_ok"/>
+                            <field name="purchase_ok" readonly="1"/>
+                            <label for="purchase_ok" />
+                        </div>
+                    </div>
+                    <group colspan="4" col="4">
+                        <field name="default_code" readonly="1"/>
+                        <field name="statistic_category" readonly="1"/>
+                         <field name="ean13" readonly="1"/>
+                        <field name="active" readonly="1" />
+                        <field name="description_sale" readonly="1" colspan="4"/>
+                    </group>     
+                </sheet>
              </form>           
          </field>
     </record>   
@@ -430,7 +430,7 @@
             </field>
             <xpath expr="/form/sheet/notebook" position="inside">
                 <page string="Material"> 
-			        <group string="Used material (for all loads)" colspan="4" col="4">				              
+                    <group string="Used material (for all loads)" colspan="4" col="4">                              
                         <button type="object" colspan="2" name="load_materials_from_bom" string="Reload element from BOM" class="oe_highlight" attrs="{'invisible':[('unload_confirmed','=',True)]}"/> 
                         <button type="object" colspan="2" name="load_materials_from_production" string="Reload from Production" class="oe_highlight" attrs="{'invisible':[('unload_confirmed','=',True)]}"/>
 
@@ -438,31 +438,31 @@
                         <field name="accounting_sl_code" readonly="1" attrs="{'invisible':[('unload_confirmed','=',False)]}"/>
                         <newline/>
                         <field name="material_from_production" invisible="1" />
-				        <field name="bom_material_ids" nolabel="1" colspan="4"  attrs="{'readonly':[('unload_confirmed','=',True)]}">
-				            <tree string="Material BOM list" editable="bottom">
+                        <field name="bom_material_ids" nolabel="1" colspan="4"  attrs="{'readonly':[('unload_confirmed','=',True)]}">
+                            <tree string="Material BOM list" editable="bottom">
                                 <field name="product_id" />
                                 <field name="uom_id" readonly="1" />
                                 <field name="quantity" sum="total"/>
                                 <field name="accounting_qty" readonly="1"/>                                
                             </tree>                                
-				        </field>
-				        <group colspan="2" col="2">
-    				        <separator string="Lavoration note:" colspan="2" />
-    				        <field name="lavoration_note" colspan="2" nolabel="1" />
-				        </group>
-				        <group colspan="2" col="2">
-				            <separator string="Anomalies:" colspan="2" />
-    				        <field name="anomalie_note" colspan="2" nolabel="1" />
-				        </group>
-				    </group>                
+                        </field>
+                        <group colspan="2" col="2">
+                            <separator string="Lavoration note:" colspan="2" />
+                            <field name="lavoration_note" colspan="2" nolabel="1" />
+                        </group>
+                        <group colspan="2" col="2">
+                            <separator string="Anomalies:" colspan="2" />
+                            <field name="anomalie_note" colspan="2" nolabel="1" />
+                        </group>
+                    </group>                
                 </page>
                 <page string="Load">
-			        <group string="List of partial load">				              			            
+                    <group string="List of partial load">                                                      
                         <group colspan="4" col="4">
-				            <field name="load_ids" nolabel="1" colspan="4" context="{'embedded':True, }" />
-				        </group>    
-				    </group>                  
-				 </page>
+                            <field name="load_ids" nolabel="1" colspan="4" context="{'embedded':True, }" />
+                        </group>    
+                    </group>                  
+                 </page>
             </xpath>
         </field>
     </record>  
@@ -534,7 +534,7 @@
                 <field name="accounting_cl_code" />
                 <field name="product_code" />
                 <field name="workcenter_line_id" />
-	            <field name="product_id" />
+                <field name="product_id" />
 
                 <field name="date" string="From date" filter_domain="[('date', '>=', self)]"/>
                 <field name="date" string="To date" filter_domain="[('date', '&lt;=', self)]"/>
@@ -603,7 +603,7 @@
                 <field name="line_id" readonly="1"/>
                 <field name="workcenter_line_id" readonly="1"/>
                 <field name="user_id" invisible="1"/>
-	            <field name="product_id" readonly="1" />
+                <field name="product_id" readonly="1" />
                 <field name="product_code" readonly="1" />
                 <field name="product_qty" sum="total"  readonly="1"/>
                 <field name="wrong" invisible="1"/>
@@ -759,18 +759,18 @@
         <field name="priority" eval="30" />
         <field name="arch" type="xml">
             <tree colors="red:total_production_material_anomaly==True" string="Production order">
-	            <field name="total_production_material_anomaly" invisible="1"/>
-	            <field name="name" />
-	            <field name="date_planned" />
-	            <field name="product_id" />
-	            <field name="product_uom" invisible="1"/>
-	            <field name="product_qty" sum="Qtà totale" />
-	            <field name="total_production_material" />
-	            <field name="lavoration_planned" />
-	            <field name="lavoration_all_planned" />
-	            <field name="total_production_loaded" sum="Qtà totale" />
-	            <field name="accounting_state" />
-	            <field name="state" invisible="1" />
+                <field name="total_production_material_anomaly" invisible="1"/>
+                <field name="name" />
+                <field name="date_planned" />
+                <field name="product_id" />
+                <field name="product_uom" invisible="1"/>
+                <field name="product_qty" sum="Qtà totale" />
+                <field name="total_production_material" />
+                <field name="lavoration_planned" />
+                <field name="lavoration_all_planned" />
+                <field name="total_production_loaded" sum="Qtà totale" />
+                <field name="accounting_state" />
+                <field name="state" invisible="1" />
             </tree>
         </field>
     </record>        
@@ -802,9 +802,9 @@
                     <button name="trigger_accounting_draft" type="workflow" class="oe_highlight" string="Restart" attrs="{'invisible':[('accounting_state','not in',('cancel',))],}" />
 
                     <button name="dummy_refresh" type="object" icon="gtk-refresh" string="Refresh" attrs="{'invisible':[('accounting_state','in',('cancel','close'))],}" />
-		            <field name="accounting_state" widget="statusbar" statusbar_visible="draft,production,close,cancel" />
-		            <field name="state" invisible="1" />
-	            </header>       
+                    <field name="accounting_state" widget="statusbar" statusbar_visible="draft,production,close,cancel" />
+                    <field name="state" invisible="1" />
+                </header>       
             </xpath>            
             <field name="product_qty" position="attributes">
                 <attribute name="on_change">on_change_qty_alert()</attribute>
@@ -827,125 +827,130 @@
 
             <!--New notebook -->
             <xpath expr="/form/sheet/notebook" position="after">
-                <notebook>
-			        <page string="Prodotti Utilizzati">
-				        <group string="Articoli Prodotti">				
-                            <button type="object" colspan="2" name="load_materials_from_bom" string="Load element from BOM" class="oe_highlight"/>
-                            <newline />
-					        <field name="bom_material_ids" nolabel="1" colspan="4">
-					            <tree string="Material BOM list" editable="bottom">
-                                    <field name="product_id" />
-                                    <field name="uom_id" readonly="1" />
-                                    <field name="quantity" sum="total"/>
-                                    <field name="accounting_qty" />
-                                </tree>                                
-					        </field>
-					    </group>
-				    </page>
-			        <page string="Recuperi">
-				        <group string="Recuperi da utilizzare">				
-					        <field name="bom_waste_ids" nolabel="1" colspan="4">
-					            <tree string="Lista recuperi" editable="bottom">
-                                    <field name="product_id" />
-                                    <field name="uom_id" readonly="1" />
-                                    <field name="quantity" sum="total"/>
-                                    <field name="accounting_qty" />
-                                </tree>                                
-					        </field>
-					    </group>
-				    </page>
-			        <page string="Bolle di lavorazione">
-				        <group string="Bolle di lavorazione">				              
-					        <field name="workcenter_lines" nolabel="1" context="{'default_production_id':id,}">
-					            <tree string="Workcenter lines" colors="blue:state == 'startworking';geen:state == 'done';grey:state == 'draft';red:(state in ('pause','cancel'))">
-                                    <field name="name" />
-                                    <field name="real_date_planned" />                                    
-                                    <field name="name" invisible="1"/>
-                                    <field name="workcenter_id"/>
-                                    <field name="product_qty" sum="total"/>
-                                    <field name="real_product_qty" sum="total" />
-                                    <button name="%(action_split_mrp_production_wizard_form)d" string="Split" type="action" attrs="{'invisible':[('state','in',('done','cancel'))]}" icon="gtk-dnd-multiple"/>
-                                    <field name="state" />
-                                </tree>
-					        </field>
-				        </group>
-			        </page>
-			        <page string="Loads">
-				        <group string="Loads">				              
-					        <field name="load_ids" nolabel="1" readonly="1">
-					        </field>
-				        </group>
-			        </page>
-			        <page string="Righe ordine evase">
-				        <group string="Articoli Prodotti">				              
-					        <field name="order_lines_ids" nolabel="1">
-					            <tree string="OC line">
-                                    <field name="order_id" />                   
-                                    <field name="name" />
-                                    <field name="partner_id" />
-                                    <field name="date_deadline" />                    
-                                    <field name="product_uom_qty" sum="Total" />
-                                    <field name="product_uom" string="UOM"/>
-                                    <field name="product_ul_id" string="Package"/>
-                                    <field name="state" invisible="1" />
-                                    <button name="free_line" type="object" string="Free line" icon="gtk-disconnect" />
-                                </tree>
-					            <form string="OC line">
-					                <group colspan="4" col="4">
-                                        <field name="sequence" readonly="1" />
-                                        <field name="order_id" readonly="1" />                   
-                                        
-                                        <field name="name" readonly="1"/>
-                                        <field name="partner_id" readonly="1"/>
-                                        
-                                        <field name="product_uom_qty" readonly="1"/>
-                                        <field name="product_uom" readonly="1"/>
-
+               <notebook>
+                        <page string="Prodotti Utilizzati">
+                            <group string="Articoli Prodotti">                
+                                <button type="object" colspan="2" name="load_materials_from_bom" string="Load element from BOM" class="oe_highlight"/>
+                                <newline />
+                                <field name="bom_material_ids" nolabel="1" colspan="4">
+                                    <tree string="Material BOM list" editable="bottom">
+                                        <field name="product_id" />
+                                        <field name="uom_id" readonly="1" />
+                                        <field name="quantity" sum="total"/>
+                                        <field name="accounting_qty" />
+                                    </tree>                                
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Recuperi">
+                            <group string="Recuperi da utilizzare">                
+                                <field name="bom_waste_ids" nolabel="1" colspan="4">
+                                    <tree string="Lista recuperi" editable="bottom">
+                                        <field name="product_id" />
+                                        <field name="uom_id" readonly="1" />
+                                        <field name="quantity" sum="total"/>
+                                        <field name="accounting_qty" />
+                                    </tree>                                
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Bolle di lavorazione">
+                            <group string="Bolle di lavorazione">                              
+                                <field name="workcenter_lines" nolabel="1" context="{'default_production_id':id,}">
+                                    <tree string="Workcenter lines" colors="blue:state == 'startworking';geen:state == 'done';grey:state == 'draft';red:(state in ('pause','cancel'))">
+                                        <field name="name" />
+                                        <field name="real_date_planned" />                                    
+                                        <field name="name" invisible="1"/>
+                                        <field name="workcenter_id"/>
+                                        <field name="product_qty" sum="total"/>
+                                        <field name="real_product_qty" sum="total" />
+                                        <button name="%(action_split_mrp_production_wizard_form)d" string="Split" type="action" attrs="{'invisible':[('state','in',('done','cancel'))]}" icon="gtk-dnd-multiple"/>
+                                        <field name="state" />
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Loads">
+                            <group string="Loads">                              
+                                <field name="load_ids" nolabel="1" readonly="1">
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Righe ordine evase">
+                            <group string="Articoli Prodotti">                              
+                                <field name="order_lines_ids" nolabel="1">
+                                    <tree string="OC line">
+                                        <field name="order_id" />                   
+                                        <field name="name" />
+                                        <field name="partner_id" />
+                                        <field name="date_deadline" />                    
+                                        <field name="product_uom_qty" sum="Total" />
+                                        <field name="product_uom" string="UOM"/>
                                         <field name="product_ul_id" string="Package"/>
-                                        <field name="date_deadline" readonly="1"/>                    
-
                                         <field name="state" invisible="1" />
-                                    </group>    
-                                </form>
-					        </field>
-				        </group>
-                        <button name="load_package_for_production" string="Reload" type="object" confirm="All package will be removed except yet sync in Account, confirm?"/>
-				        <group string="Imballaggi prodotto (lotti creati subito nel gestionale)">				              
-					        <field name="product_packaging_ids" nolabel="1">
-					            <tree string="Product package" editable="bottom" color="blue:account_id!=False">
-                                    <field name="production_id" invisible="1"/>
-                                    <field name="ul_id" readonly="1"/>
-                                    <field name="account_id" readonly="1"/>
-                                    <field name="lot_code" invisible="1"/>
-                                </tree>
-					            <form string="Product package">
-                                    <field name="production_id" invisible="1"/>
-                                    <field name="ul_id" />
-                                    <field name="account_id" />
-                                    <field name="lot_code" invisible="1"/>
-                                </form>
-					        </field>
-				        </group>
-				        <group string="Package">				              
-					        <field name="package_ids" nolabel="1">
-					            <tree string="Package" editable="bottom">
-                                    <field name="production_id" invisible="1"/>
-					                <field name="stock" />
-                                    <field name="partner_id" attrs="{'required':[('stock','=',False)]}"/>
-                                    <field name="quantity" sum="total"/>
-                                    <field name="product_ul_id" />                                    
-                                </tree>
-					            <form string="Package extra sale order">
-                                    <field name="stock" />
-                                    <field name="product_ul_id" />                                    
-                                    <field name="partner_id" attrs="{'required':[('stock','=',False)]}"/>
-                                    <field name="production_id" invisible="1"/>
-                                    <field name="quantity" sumn="total"/>
-                                </form>
-					        </field>
-				        </group>
-			        </page>
-                </notebook>		
+                                        <button name="free_line" type="object" string="Free line" icon="gtk-disconnect" />
+                                    </tree>
+                                    <form string="OC line">
+                                        <group colspan="4" col="4">
+                                            <field name="sequence" readonly="1" />
+                                            <field name="order_id" readonly="1" />                   
+                                            
+                                            <field name="name" readonly="1"/>
+                                            <field name="partner_id" readonly="1"/>
+                                            
+                                            <field name="product_uom_qty" readonly="1"/>
+                                            <field name="product_uom" readonly="1"/>
+
+                                            <field name="product_ul_id" string="Package"/>
+                                            <field name="date_deadline" readonly="1"/>                    
+
+                                            <field name="state" invisible="1" />
+                                        </group>    
+                                    </form>
+                                </field>
+                            </group>
+                            <group colspan="4" col="4">
+                                <button name="load_package_for_production" string="Reload" type="object" confirm="All package will be removed except yet sync in Account, confirm?"/>
+                                <field name="ul_state" readonly="1"/>
+                                <group string="Imballaggi prodotto (lotti creati subito nel gestionale, rossi = cancellati, blu = da sincr.)" colspan="4">
+                                    <field name="product_packaging_ids" nolabel="1">
+                                        <tree string="Product package (red=deleted)" editable="bottom" colors="red:deleted==True;blue:account_id!=False">
+                                            <field name="production_id" invisible="1"/>
+                                            <field name="ul_id" readonly="1"/>
+                                            <field name="account_id" readonly="1"/>
+                                            <field name="lot_code" invisible="1"/>
+                                            <field name="deleted" invisible="1"/>
+                                        </tree>
+                                        <form string="Product package">
+                                            <field name="production_id" invisible="1"/>
+                                            <field name="ul_id" />
+                                            <field name="account_id" />
+                                            <field name="lot_code" invisible="1"/>
+                                            <field name="deleted" invisible="1"/>
+                                        </form>
+                                    </field>
+                                </group>
+                            </group>
+                            <group string="Package">                              
+                                <field name="package_ids" nolabel="1">
+                                    <tree string="Package" editable="bottom">
+                                        <field name="production_id" invisible="1"/>
+                                        <field name="stock" />
+                                        <field name="partner_id" attrs="{'required':[('stock','=',False)]}"/>
+                                        <field name="quantity" sum="total"/>
+                                        <field name="product_ul_id" />                                    
+                                    </tree>
+                                    <form string="Package extra sale order">
+                                        <field name="stock" />
+                                        <field name="product_ul_id" />                                    
+                                        <field name="partner_id" attrs="{'required':[('stock','=',False)]}"/>
+                                        <field name="production_id" invisible="1"/>
+                                        <field name="quantity" sumn="total"/>
+                                    </form>
+                                </field>
+                            </group>
+                        </page>
+                </notebook>        
             </xpath>            
         </field>
     </record>
@@ -1274,20 +1279,20 @@
         <field name="priority" eval="50" />
         <field name="arch" type="xml">
             <tree string="Ordini di Vendita" fonts="bold:message_unread==True" colors="grey:state=='cancel';blue:state in ('waiting_date','manual');red:state in ('invoice_except','shipping_except')">
-	            <field name="message_unread" invisible="1" modifiers="{'readonly': true, 'tree_invisible': true}"/>
-	            <field name="name" string="Numero Ordine" modifiers="{'readonly': [['state', 'not in', ['draft', 'sent']]], 'required': true}"/>
-	            <field name="date_order" />
-	            <field name="date_deadline" />
-	            <field name="date_booked" />
-	            <field name="date_delivery" />
-	            <field name="partner_id" />
-	            <field name="user_id" modifiers="{}"/>
-	            <field name="amount_total" invisible="1" sum="Totale (tasse incluse)" modifiers="{'readonly': true}"/>
-	            <field name="extra_doc_status" modifiers="{'readonly': true}"/>
-	            <field name="extra_doc_error" invisible="1" modifiers="{'readonly': true, 'tree_invisible': true}"/>
-	            <button name="dummy_button" string="Docs error" type="object" icon="gtk-missing-image" attrs="{'invisible': [('extra_doc_error', '=', False)]}" modifiers="{'invisible': [['extra_doc_error', '=', false]]}"/>
-	            <field name="state" modifiers="{'readonly': true}"/>
-	            <button name="print_delivery_report" string="Order report" type="object" icon="gtk-print" />
+                <field name="message_unread" invisible="1" modifiers="{'readonly': true, 'tree_invisible': true}"/>
+                <field name="name" string="Numero Ordine" modifiers="{'readonly': [['state', 'not in', ['draft', 'sent']]], 'required': true}"/>
+                <field name="date_order" />
+                <field name="date_deadline" />
+                <field name="date_booked" />
+                <field name="date_delivery" />
+                <field name="partner_id" />
+                <field name="user_id" modifiers="{}"/>
+                <field name="amount_total" invisible="1" sum="Totale (tasse incluse)" modifiers="{'readonly': true}"/>
+                <field name="extra_doc_status" modifiers="{'readonly': true}"/>
+                <field name="extra_doc_error" invisible="1" modifiers="{'readonly': true, 'tree_invisible': true}"/>
+                <button name="dummy_button" string="Docs error" type="object" icon="gtk-missing-image" attrs="{'invisible': [('extra_doc_error', '=', False)]}" modifiers="{'invisible': [['extra_doc_error', '=', false]]}"/>
+                <field name="state" modifiers="{'readonly': true}"/>
+                <button name="print_delivery_report" string="Order report" type="object" icon="gtk-print" />
             </tree>
         </field>
     </record>
@@ -1307,7 +1312,7 @@
                         <h1>
                             <label string="Ordine di vendita" />
                             <field name="name" readonly="1" />
-               	            <button name="print_delivery_report" string="Order report" type="object" icon="gtk-print" />
+                               <button name="print_delivery_report" string="Order report" type="object" icon="gtk-print" />
                         </h1>
                         <group>
                             <group>

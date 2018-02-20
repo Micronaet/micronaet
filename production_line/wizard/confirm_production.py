@@ -176,6 +176,48 @@ class confirm_mrp_production_wizard(osv.osv_memory):
     # ---------------
     # Onchange event:
     # ---------------
+    def onchange_use_mrp_package(self, cr, uid, ids, use_mrp_package, 
+            package_id, context=None):
+        ''' Change package domain filter
+        '''
+        res = {
+            'domain': {
+                'package_id': False,
+                },
+            }    
+                
+        if not use_mrp_package:
+            return res
+
+        
+        # Read info in 
+        wc_pool = self.pool.get('mrp.production.workcenter.line')
+        wc_id = context.get('active_id', 0)
+        if not wc_id:
+            raise osv.except_osv(
+                _('Errore'), 
+                _('Non trovato lavorazione corrente'),
+                )
+            
+        wc_browse = wc_pool.browse(
+            cr, uid, wc_id, context=context)
+        package_ids = []
+        import pdb; pdb.set_trace()
+        for ul in wc_browse.production_id.product_packaging_ids:
+            package_ids.append(ul.ul_id.id)
+        
+        if package_id not in package_ids:
+            package_id = False # reset package
+            
+        return {
+            'domain': {
+                'package_id': [('id', 'in', package_ids)],
+                },
+            'value': {
+                'package_id': package_id,
+                }
+            }
+        
     def onchange_package_id(self, cr, uid, ids, package_id, product_id, total, 
             context=None):
         ''' Get selected package_id and calculate total package
@@ -815,6 +857,8 @@ class confirm_mrp_production_wizard(osv.osv_memory):
         'confirm_material': fields.boolean('Confirm material', 
             help='This confirm update of material on account program and close definitively the lavoration!'),
 
+        'use_mrp_package': fields.boolean('Usa solo imballi produzione', 
+            help='Mostra solo gli imballaggi attivi nella produzione'),
         'package_id': fields.many2one('product.ul', 'Package'),
         'ul_qty': fields.integer(
             'Package q.', help='Package quantity to unload from accounting'),
@@ -852,5 +896,6 @@ class confirm_mrp_production_wizard(osv.osv_memory):
         'partial': lambda *a: True,
         'list_unload': lambda s, cr, uid, ctx: s.default_list_unload(
             cr, uid, context=ctx),
+        'use_mrp_package': lambda *x: True,    
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

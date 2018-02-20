@@ -24,6 +24,9 @@
                         <field name="partial" />
                         <newline />
                         
+                        <field name="use_mrp_package" on_change="onchange_use_mrp_package(use_mrp_package, package_id, context)" options="{'limit': 15, 'create': false, 'create_edit': false}"/>
+                        <newline/>
+                        
                         <field name="package_id" attrs="{'required':[('wrong','=',False),('state','=','product')]}" on_change="onchange_package_id(package_id,product_id,real_product_qty)"/>
                         <field name="ul_qty"  attrs="{'required':[('package_id','!=',False),('state','=','product')]}"/>
                         <newline />

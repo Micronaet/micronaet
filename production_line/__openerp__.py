@@ -43,6 +43,7 @@
         'base_mssql_accounting',
         'partner_addresses',
         'base_log_scheduler',        
+        #'web_m2o_enhanced',
         ],
     'init_xml': [],
     'demo_xml': [],
