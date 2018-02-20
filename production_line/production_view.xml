@@ -912,7 +912,7 @@
                             <group colspan="4" col="4">
                                 <button name="load_package_for_production" string="Reload" type="object" confirm="All package will be removed except yet sync in Account, confirm?"/>
                                 <field name="ul_state" readonly="1"/>
-                                <group string="Imballaggi prodotto (lotti creati subito nel gestionale, rossi = cancellati, blu = da sincr.)" colspan="4">
+                                <group string="Imballaggi prodotto (lotti creati subito nel gestionale, rossi = cancellati, blu = sincronizzati)" colspan="4">
                                     <field name="product_packaging_ids" nolabel="1">
                                         <tree string="Product package (red=deleted)" editable="bottom" colors="red:deleted==True;blue:account_id!=False">
                                             <field name="production_id" invisible="1"/>

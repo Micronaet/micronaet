@@ -1354,6 +1354,16 @@ class mrp_production_extra(osv.osv):
     # -----------------
     # Utility function:
     # -----------------
+    def get_account_yet_created_ul(self, cr, uid, mrp_id, ul_id, context=None):
+        ''' check the mrp_id if ul_id is presente
+            @return account reference
+        '''
+        mrp_proxy = self.browse(cr, uid, mrp_id, context=context)
+        for pack in mrp_proxy.product_packaging_ids:
+            if ul_id == pack.ul_id.id:
+                return pack.account_id
+        return False        
+        
     def action_auto_status_depends_on_lavoration(self, cr, uid, ids, 
             actual_action, context=None):
         ''' Test status of workcenter, generate mrp.production accounting_state

@@ -173,6 +173,18 @@ class confirm_mrp_production_wizard(osv.osv_memory):
     '''
     _name = 'mrp.production.confirm.wizard'
 
+    def get_mrp_id(self, cr, uid, context=None):
+        ''' Read mrp_id from context WC
+        '''
+        if context is None:
+            return False
+            
+        wc_id = context.get('active_id', 0)        
+        wc_pool = self.pool.get('mrp.production.workcenter.line')            
+        wc_browse = wc_pool.browse(
+            cr, uid, wc_id, context=context)
+        return wc_browse.production_id.id
+        
     # ---------------
     # Onchange event:
     # ---------------
@@ -202,7 +214,6 @@ class confirm_mrp_production_wizard(osv.osv_memory):
         wc_browse = wc_pool.browse(
             cr, uid, wc_id, context=context)
         package_ids = []
-        import pdb; pdb.set_trace()
         for ul in wc_browse.production_id.product_packaging_ids:
             package_ids.append(ul.ul_id.id)
         
@@ -382,17 +393,39 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 code = 'R%s' % wiz_proxy.product_id.default_code[1:]
             else:    
                 code = wiz_proxy.product_id.default_code
+            
+            # TODO Check if lot is yet created:
+            mrp_id = self.get_mrp_id(cr, uid, context=context)
+            if mrp_id:            
+                lot_created_id = mrp_pool.get_account_yet_created_ul(
+                    cr, uid, mrp_id, wiz_proxy.package_id.id, context=context)
+                ref_lot_id = '#%-9s' % lot_created_id
+            else:        
+                ref_lot_id = False
+                
+            ref_lot_name = '%06d#%01d' % (
+                int(mrp.name[3:]),
+                sequence,
+                ) # Job <<< TODO use production (test, mrp is 5)
+
+            # Written in CL info:                
+            real_product_code = '%-8s%-2s%-10s%-10s' % (
+                code,
+                wc.code[:2],
+                ref_lot_name,
+                wiz_proxy.package_id.code if package_id else '', # Package
+                )
+                
+            # Passed to account    
             product_code = '%-8s%-2s%-10s%-10s' % (
                 code,
                 wc.code[:2],
-                '%06d#%01d' % (
-                    int(mrp.name[3:]),
-                    sequence,
-                    ), # Job <<< TODO use production (test, mrp is 5)
+                ref_lot_id or ref_lot_name,
                 wiz_proxy.package_id.code if package_id else '', # Package
                 )
             load_pool.write(cr, uid, load_id, {
-                'product_code': product_code}, context=context)
+                'product_code': real_product_code,
+                }, context=context)
 
             ### Write load on accounting: 
             # XXX potrebbe generare problemi se annullassero carichi o simili!
