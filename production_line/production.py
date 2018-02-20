@@ -716,7 +716,7 @@ class mrp_production_product_packaging(osv.osv):
         'production_id': fields.many2one('mrp.production', 'MRP'),
         'ul_id': fields.many2one('product.ul', 'Package'),
         'lot_code': fields.char('Lot', size=64), # XXX needed?
-        'account_id': fields.char('Account ID', size=10),
+        'account_id': fields.char('Account ID', size=15),
         'deleted': fields.boolean('Deleted', 
             help='Deleted no load in account'),
         }
