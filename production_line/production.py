@@ -1487,40 +1487,30 @@ class mrp_production_extra(osv.osv):
         assert len(ids) == 1, 'Works only with one record a time'
         
         # Pool used:
-        ul_pool = self.pool.get('mrp.production.product.packaging')        
-
+        ul_pool = self.pool.get('mrp.production.product.packaging')
+        
         mrp_proxy = self.browse(cr, uid, ids, context=context)[0]
         product = mrp_proxy.bom_id.product_id
-
-        # ---------------------------------------------------------------------
-        # Delete not accounting codes:
-        # ---------------------------------------------------------------------
-        unlink_ids = [] # ID to remove
-        keep_ul_ids = [] # ul_id yet present
-        for package in mrp_proxy.product_packaging_ids:
-            if package.account_id: # yet sync
-                keep_ul_ids.append(package.ul_id.id)
-            else: # no sync
-                unlink_ids.append(package.id)
-                
-        # Remove yet present item:        
-        if unlink_ids:
-            ul_pool.unlink(cr, uid, unlink_ids, context=context)
-        _logger.warning('Keep: %s, Removed: %s' % (
-            len(keep_ul_ids), 
-            len(unlink_ids),
-            ))
         
         # ---------------------------------------------------------------------
-        # Create UL new code:
+        # All UL set:
         # ---------------------------------------------------------------------
-        for package in product.packaging:
-            ul_id = package.ul.id
-            if ul_id in keep_ul_ids:
-                continue # yet present and sync
-                
+        product_ids = set([package.ul.id for package in product.packaging])
+        mrp_ids = set([package.ul_id.id for package in \
+            mrp_proxy.product_packaging_ids])
+        mrp_sync_ids = set([package.ul_id.id for package in \
+            mrp_proxy.product_packaging_ids if package.account_id])
+        
+        # Find create & delete set:
+        create_ids = product_ids - mrp_ids
+        delete_ids = mrp_ids - product_ids # but no the account sync
+        delete_ids -= mrp_sync_ids
+        
+        ul_pool.unlink(cr, uid, delete_ids, context=context)
+        _logger.warning('Create %s, Delete %s' % (create_ids, delete_ids))
+        for ul_id in create_ids:
             ul_pool.create(cr, uid, {
-                'production_id': mrp_proxy.id,
+                'production_id': ids[0],
                 'ul_id': ul_id,
                 }, context=context)
         return True
