@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-24 17:03+0000\n"
-"PO-Revision-Date: 2016-11-24 18:05+0100\n"
+"POT-Creation-Date: 2018-02-21 13:18+0000\n"
+"PO-Revision-Date: 2018-02-21 14:29+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -62,6 +62,11 @@ msgid "Accounting order"
 msgstr "Ordine da contab."
 
 #. module: production_line
+#: view:mrp.production:0
+msgid "UL account"
+msgstr "Imballo in contabilità"
+
+#. module: production_line
 #: view:mrp.production.workcenter.line:0
 msgid "Lavorazioni"
 msgstr "Lavorazioni"
@@ -92,9 +97,9 @@ msgid "Refresh"
 msgstr "Aggiorna"
 
 #. module: production_line
-#: model:ir.actions.act_window,name:production_line.action_view_lavoration_open
-msgid "Lavoration open to plan"
-msgstr "Lavorazioni aperte da pianif."
+#: view:mrp.production.confirm.wizard:0
+msgid "Confirm production (User)"
+msgstr "Conferma produzione (Utente)"
 
 #. module: production_line
 #: view:sale.order:0
@@ -183,11 +188,6 @@ msgid "Anomalies:"
 msgstr "Anomalie:"
 
 #. module: production_line
-#: help:product.status.wizard,active:0
-msgid "Show only product and material with movement"
-msgstr "Mostra solo prodotti e materiali movimentati"
-
-#. module: production_line
 #: field:mrp.production.workcenter.load,line_id:0
 msgid "Workcenter line"
 msgstr "Linea lavorazione"
@@ -203,11 +203,17 @@ msgid "UOM"
 msgstr "U.M."
 
 #. module: production_line
+#: model:res.groups,name:production_line.group_stock_negative_status
+msgid "Negative report users"
+msgstr "Negative report users"
+
+#. module: production_line
 #: model:ir.model,name:production_line.model_sale_order
 msgid "Sales Order"
 msgstr "Ordine di vendita"
 
 #. module: production_line
+#: field:mrp.production.product.packaging,deleted:0
 #: selection:sale.order,accounting_state:0
 #: selection:sale.order.line,accounting_state:0
 msgid "Deleted"
@@ -217,6 +223,11 @@ msgstr "Eliminati"
 #: view:sale.order.line:0
 msgid "Produce (month 2)"
 msgstr "Da Prod. (mese 2)"
+
+#. module: production_line
+#: help:mrp.production.product.packaging,deleted:0
+msgid "Deleted no load in account"
+msgstr "Deleted no load in account"
 
 #. module: production_line
 #: field:mrp.production.confirm.wizard,wrong:0
@@ -279,6 +290,11 @@ msgstr ""
 #: field:mrp.production.confirm.wizard,real_product_qty:0
 msgid "Confirm production"
 msgstr "Conferma produzione"
+
+#. module: production_line
+#: model:ir.ui.menu,name:production_line.menu_base_production_root_reporting
+msgid "Reporting"
+msgstr "Reportistica"
 
 #. module: production_line
 #: field:res.company,production_path:0
@@ -358,6 +374,13 @@ msgid "Ordini di Vendita"
 msgstr "Ordini di Vendita"
 
 #. module: production_line
+#: view:mrp.production:0
+msgid "All package will be removed except yet sync in Account, confirm?"
+msgstr ""
+"Ricaricare gli imballi prendendoli dal prodotto (verranno confermati "
+"eventuali già sincronizzati), confermi?"
+
+#. module: production_line
 #: model:res.groups,name:production_line.group_production_production
 msgid "Production visibility production"
 msgstr "Visibilità Produzione: Produzione"
@@ -376,6 +399,11 @@ msgstr "Scadenze mese 1"
 #: field:product.product,maximum_qty:0
 msgid "Maximum alert quantity"
 msgstr "Livello massimo di allarme"
+
+#. module: production_line
+#: selection:mrp.production,ul_state:0
+msgid "Account sync"
+msgstr "Sincronizzato in contabilità"
 
 #. module: production_line
 #: view:mrp.production:0 view:mrp.production.material:0
@@ -524,6 +552,16 @@ msgid "Planned for delivery"
 msgstr "Pianificato per consegna"
 
 #. module: production_line
+#: view:product.status.wizard:0
+msgid "Export XLS"
+msgstr "Exporta XLS"
+
+#. module: production_line
+#: field:product.status.production.fake.wizard,production_date:0
+msgid "Date production"
+msgstr "Data produzione"
+
+#. module: production_line
 #: view:mrp.production.workcenter.line:0
 msgid "Used material (for all loads)"
 msgstr "Materiale utilizzato (per tutti i carichi)"
@@ -531,12 +569,17 @@ msgstr "Materiale utilizzato (per tutti i carichi)"
 #. module: production_line
 #: help:res.company,production_port:0
 msgid "XMLRPC port, example: 8000"
-msgstr "Porta XMLRPC, esempio: 8000"
+msgstr "Porta XMLRPC, esempio: 7007"
 
 #. module: production_line
 #: field:sale.order.line,state_info:0
 msgid "Production info"
 msgstr "Info produzione"
+
+#. module: production_line
+#: view:mrp.production.workcenter.load:0
+msgid "Last load"
+msgstr "Ultimo carico"
 
 #. module: production_line
 #: model:ir.ui.menu,name:production_line.menuitem_sale_order_line_d10
@@ -549,16 +592,20 @@ msgid "State info"
 msgstr "Info stato"
 
 #. module: production_line
+#: model:res.groups,comment:production_line.group_production_stock
+msgid "User can see stock menus"
+msgstr "Utente che può accedere al menu: Magazzino"
+
+#. module: production_line
 #: model:ir.model,name:production_line.model_mrp_production_workcenter_load
 #: view:mrp.production.workcenter.line:0
 msgid "Workcenter load"
 msgstr "Carico lavorazione"
 
 #. module: production_line
-#: model:ir.actions.act_window,name:production_line.action_sale_order_line_covered_wizard_form
-#: model:ir.model,name:production_line.model_sale_order_line_covered_wizard
-msgid "Open covered report"
-msgstr "Apri report OC coperti"
+#: field:product.status.wizard,fake_ids:0
+msgid "Production fake"
+msgstr "Produzione fittizia"
 
 #. module: production_line
 #: model:ir.ui.menu,name:production_line.menu_base_production_root_lavoration_plan
@@ -584,11 +631,6 @@ msgstr "Carica prodotti (scarica imballaggi)"
 #: model:ir.actions.act_window,name:production_line.product_status_wizard_action
 msgid "Product and material wizard"
 msgstr "Wizard prodotti e materiali"
-
-#. module: production_line
-#: field:product.status.wizard,active:0
-msgid "Only record with data"
-msgstr "Solo record con dati"
 
 #. module: production_line
 #: help:mrp.production.workcenter.line,max_hour_day:0
@@ -657,6 +699,15 @@ msgid "Parameter note"
 msgstr "Note parametri"
 
 #. module: production_line
+#: help:sale.order.line,to_produce:0
+msgid ""
+"During order importation test if the order line active has product that need "
+"to be produced"
+msgstr ""
+"Durante l'importazione ordine controlla se le righe ordine hanno degli "
+"articoli da produrre"
+
+#. module: production_line
 #: field:mrp.print.lavoration.week.wizard,date:0
 msgid "Reference date"
 msgstr "Data di riferimento"
@@ -702,6 +753,11 @@ msgid "Speed m/s"
 msgstr "Velocità m/s"
 
 #. module: production_line
+#: model:ir.model,name:production_line.model_mrp_print_lavoration_week_wizard
+msgid "mrp.print.lavoration.week.wizard"
+msgstr "mrp.print.lavoration.week.wizard"
+
+#. module: production_line
 #: view:mrp.production.workcenter.load:0
 msgid "Load list"
 msgstr "Lista carichi"
@@ -715,6 +771,11 @@ msgstr "Utente che può accedere al menu: Contabilità"
 #: field:res.company,production_cl_upd:0 field:res.company,production_sl:0
 msgid "Production interchange file SL"
 msgstr "File di scambio produzione (SL)"
+
+#. module: production_line
+#: model:ir.ui.menu,name:production_line.menu_root_establishment_report
+msgid "Report"
+msgstr "Report"
 
 #. module: production_line
 #: help:mrp.workcenter.history,parameter_time_misc:0
@@ -759,6 +820,11 @@ msgid ""
 msgstr ""
 "Generate automaticamente basandosi sul minimo della scadenze delle testate "
 "ordine selezionate, si può cambiare ma non è consigliato!"
+
+#. module: production_line
+#: field:mrp.production.product.packaging,production_id:0
+msgid "MRP"
+msgstr "MRP"
 
 #. module: production_line
 #: help:mrp.workcenter,cost_product_id:0
@@ -824,6 +890,12 @@ msgid "Sales Order Line"
 msgstr "Linea d'ordine di vendita"
 
 #. module: production_line
+#: model:ir.actions.act_window,name:production_line.action_sale_order_line_covered_wizard_form
+#: model:ir.model,name:production_line.model_sale_order_line_covered_wizard
+msgid "Open covered report"
+msgstr "Apri report OC coperti"
+
+#. module: production_line
 #: view:sale.order.line:0
 msgid "Situation:"
 msgstr "Situazione:"
@@ -831,7 +903,7 @@ msgstr "Situazione:"
 #. module: production_line
 #: field:sale.order.line.covered.wizard,from_date:0
 msgid "From"
-msgstr "From"
+msgstr "Da"
 
 #. module: production_line
 #: field:product.product,is_pallet:0
@@ -844,9 +916,9 @@ msgid "Is for production"
 msgstr "E' da produrre?"
 
 #. module: production_line
-#: view:mrp.production.workcenter.load:0
-msgid "Production check"
-msgstr "Controllo produzione"
+#: field:mrp.production.split.wizard,split_daily:0
+msgid "Daily split"
+msgstr "Dividi giornalmente"
 
 #. module: production_line
 #: view:mrp.production:0 view:mrp.production.split.wizard:0
@@ -856,10 +928,10 @@ msgstr "Dividi"
 #. module: production_line
 #: model:ir.ui.menu,name:production_line.menu_root_establishment_todo-1
 msgid "Passed"
-msgstr "Passed"
+msgstr "Passato"
 
 #. module: production_line
-#: view:mrp.print.lavoration.week.wizard:0 view:product.status.wizard:0
+#: view:mrp.print.lavoration.week.wizard:0
 msgid "Print"
 msgstr "Stampa"
 
@@ -896,6 +968,11 @@ msgid "File name for SL exhange file"
 msgstr "Nome file per scambio dati SL"
 
 #. module: production_line
+#: model:ir.model,name:production_line.model_product_status_production_fake_wizard
+msgid "product.status.production.fake.wizard"
+msgstr "product.status.production.fake.wizard"
+
+#. module: production_line
 #: view:mrp.production.workcenter.line:0
 msgid "Material"
 msgstr "Materiali"
@@ -912,14 +989,19 @@ msgid "Load element from BOM"
 msgstr "Carica da ricetta"
 
 #. module: production_line
-#: model:ir.ui.menu,name:production_line.menu_root_establishment_report
-msgid "Report"
-msgstr "Report"
+#: model:ir.actions.act_window,name:production_line.action_view_lavoration_open
+msgid "Lavoration open to plan"
+msgstr "Lavorazioni aperte da pianif."
 
 #. module: production_line
-#: view:sale.order:0
-msgid "Ordine di vendita"
-msgstr "Ordine di vendita"
+#: field:product.status.wizard,with_order_detail:0
+msgid "With OF detail"
+msgstr "Con dettaglio OF"
+
+#. module: production_line
+#: view:mrp.production.workcenter.line:0
+msgid "Reload element from BOM"
+msgstr "Ricarica elementi dalla ricetta"
 
 #. module: production_line
 #: model:ir.model,name:production_line.model_mrp_production_material
@@ -1039,6 +1121,11 @@ msgid "Production Report"
 msgstr "Stampa produzione"
 
 #. module: production_line
+#: model:res.groups,comment:production_line.group_stock_negative_status
+msgid "User that receive negative report scheduled daily"
+msgstr "Utente che riceve il report giornaliero negativi"
+
+#. module: production_line
 #: help:mrp.production.create.wizard,all_in_one:0
 msgid "All the production is made in one lavoration"
 msgstr "Tutta la produzione è fatta in una sola lavorazione"
@@ -1081,7 +1168,7 @@ msgstr "sconosciuto"
 #. module: production_line
 #: view:mrp.production.confirm.wizard:0 view:mrp.production.workcenter.load:0
 msgid "Production comment:"
-msgstr "Production comment:"
+msgstr "Commento produzione:"
 
 #. module: production_line
 #: view:sale.order:0
@@ -1099,6 +1186,11 @@ msgstr "Costo confermato"
 #: field:mrp.workcenter.history,date:0
 msgid "Date"
 msgstr "Data"
+
+#. module: production_line
+#: view:product.status.wizard:0
+msgid "Fake production"
+msgstr "Produzione fittizia"
 
 #. module: production_line
 #: model:res.groups,comment:production_line.group_production_purchase
@@ -1125,6 +1217,11 @@ msgstr ""
 "spostata"
 
 #. module: production_line
+#: help:mrp.production.confirm.wizard,use_mrp_package:0
+msgid "Mostra solo gli imballaggi attivi nella produzione"
+msgstr "Mostra solo gli imballaggi attivi nella produzione"
+
+#. module: production_line
 #: field:mrp.production,accounting_state:0 field:sale.order,accounting_state:0
 #: field:sale.order.line,accounting_state:0
 msgid "Accounting state"
@@ -1138,7 +1235,7 @@ msgstr "Dashboard"
 #. module: production_line
 #: view:sale.order:0
 msgid "Order report"
-msgstr "Order report"
+msgstr "Report ordine"
 
 #. module: production_line
 #: field:mrp.production.confirm.wizard,pallet_max_weight:0
@@ -1229,6 +1326,11 @@ msgid "Line-Product parameters:"
 msgstr "Parametri linea-prodotto"
 
 #. module: production_line
+#: view:res.company:0
+msgid "Production parameters"
+msgstr "Parametri produzione"
+
+#. module: production_line
 #: model:ir.actions.act_window,name:production_line.action_mrp_production_material
 msgid "Lavoration unload"
 msgstr "Scarico lavorazioni"
@@ -1249,9 +1351,9 @@ msgid "Analysis required"
 msgstr "Analisi richiesta"
 
 #. module: production_line
-#: view:mrp.production.confirm.wizard:0
-msgid "Confirm production (User)"
-msgstr "Conferma produzione (Utente)"
+#: view:mrp.production.workcenter.line:0
+msgid "Production total q."
+msgstr "Produzione totale q."
 
 #. module: production_line
 #: field:mrp.print.lavoration.week.wizard,workcenter_ids:0
@@ -1282,15 +1384,21 @@ msgstr "Lavorazioni aperte"
 #. module: production_line
 #: view:mrp.production:0 field:mrp.production,package_ids:0
 #: field:mrp.production.confirm.wizard,package_id:0
+#: field:mrp.production.product.packaging,ul_id:0
 #: view:mrp.production.workcenter.load:0
 #: field:mrp.production.workcenter.load,package_id:0 view:sale.order.line:0
 msgid "Package"
 msgstr "Imballaggio"
 
 #. module: production_line
-#: model:res.groups,comment:production_line.group_production_stock
-msgid "User can see stock menus"
-msgstr "Utente che può accedere al menu: Magazzino"
+#: selection:mrp.production,ul_state:0
+msgid "Account delete"
+msgstr "Pulito in contabilità"
+
+#. module: production_line
+#: field:mrp.production.workcenter.load,product_code_id:0
+msgid "Product code ID"
+msgstr "ID codice prodotto"
 
 #. module: production_line
 #: model:ir.ui.menu,name:production_line.menuitem_sale_order_line_d20
@@ -1320,7 +1428,7 @@ msgstr "In produzione"
 #. module: production_line
 #: model:ir.model,name:production_line.model_mail_thread
 msgid "Email Thread"
-msgstr "Thread Email"
+msgstr "Email"
 
 #. module: production_line
 #: field:mrp.production.workcenter.line,material_from_production:0
@@ -1389,7 +1497,7 @@ msgstr ""
 #. module: production_line
 #: field:sale.order.line,deliver_ready:0
 msgid "Deliver ready"
-msgstr "Deliver ready"
+msgstr "Consegna pronta"
 
 #. module: production_line
 #: model:res.groups,comment:production_line.group_production_production
@@ -1458,6 +1566,11 @@ msgid "Partial load"
 msgstr "Carico parziale"
 
 #. module: production_line
+#: selection:product.status.wizard,row_mode:0
+msgid "With negative"
+msgstr "Con negativi"
+
+#. module: production_line
 #: help:product.product,not_in_status:0
 msgid "If checked in webkit report of status doesn't appear"
 msgstr "Se spuntato lo stato del report degli stati non appare"
@@ -1472,9 +1585,19 @@ msgstr ""
 "chiude definitivamente la lavorazione!"
 
 #. module: production_line
+#: selection:product.status.wizard,row_mode:0
+msgid "With data"
+msgstr "Con data"
+
+#. module: production_line
 #: view:mrp.production.create.wizard:0
 msgid "Create"
 msgstr "Crea"
+
+#. module: production_line
+#: field:mrp.production.confirm.wizard,linked_product_id:0
+msgid "Linked product"
+msgstr "Prodotto collegato"
 
 #. module: production_line
 #: view:mrp.production.workcenter.line:0
@@ -1482,6 +1605,15 @@ msgid ""
 "onchange_workcenter_load_cycle(product,workcenter_id,real_date_planned,cycle)"
 msgstr ""
 "onchange_workcenter_load_cycle(product,workcenter_id,real_date_planned,cycle)"
+
+#. module: production_line
+#: view:mrp.production:0
+msgid ""
+"Imballaggi prodotto (lotti creati subito nel gestionale, rossi = cancellati, "
+"blu = sincronizzati)"
+msgstr ""
+"Imballaggi prodotto (lotti creati subito nel gestionale, rossi = cancellati, "
+"blu = sincronizzati)"
 
 #. module: production_line
 #: help:mrp.production.confirm.wizard,pallet_qty:0
@@ -1499,9 +1631,9 @@ msgid "Posterize cycle not competed"
 msgstr "Posticipa cicli non completati"
 
 #. module: production_line
-#: model:ir.ui.menu,name:production_line.menuitem_sale_order_line
-msgid "OC line (all open)"
-msgstr "Linee OC (tutti)"
+#: model:ir.model,name:production_line.model_mrp_production_product_packaging
+msgid "Production product packaging"
+msgstr "Imballi prodotto-produzione"
 
 #. module: production_line
 #: view:mrp.production:0
@@ -1548,11 +1680,6 @@ msgid "Supply method"
 msgstr "Metodo approvvigionamento"
 
 #. module: production_line
-#: field:product.status.wizard,negative:0
-msgid "Only negative"
-msgstr "Solo negativi"
-
-#. module: production_line
 #: help:mrp.production.split.wizard,split_daily_note:0
 msgid "List of all division cycle per day according to hour per line daily"
 msgstr ""
@@ -1589,20 +1716,30 @@ msgid "Temperature"
 msgstr "Temperatura"
 
 #. module: production_line
+#: view:mrp.production:0
+msgid "UL deleted"
+msgstr "Imballo pulito in contab."
+
+#. module: production_line
 #: model:ir.actions.report.xml,name:production_line.aeroo_order_covered_report_id
 msgid "Order covered"
 msgstr "Ordini coperti"
 
 #. module: production_line
-#: field:mrp.production.confirm.wizard,linked_product_id:0
-msgid "Linked product"
-msgstr "Prodotto collegato"
+#: view:sale.order.line:0
+msgid "Note"
+msgstr "Note"
 
 #. module: production_line
 #: model:ir.actions.act_window,name:production_line.action_assign_mrp_production_wizard_form
 #: view:sale.order.line:0
 msgid "Assign lavoration"
 msgstr "Assegna lavorazione"
+
+#. module: production_line
+#: field:mrp.production.product.packaging,lot_code:0
+msgid "Lot"
+msgstr "Lotto"
 
 #. module: production_line
 #: field:mrp.production.confirm.wizard,ul_qty:0
@@ -1662,7 +1799,7 @@ msgstr "Mese 0 (tutti)"
 #. module: production_line
 #: model:ir.actions.report.xml,name:production_line.aeroo_bom_report_id
 msgid "BOM Structure Report"
-msgstr "BOM Structure Report"
+msgstr "Report struttura Dist. base"
 
 #. module: production_line
 #: view:mrp.production.workcenter.load:0
@@ -1673,6 +1810,11 @@ msgstr "CL"
 #: help:mrp.production.assign.wizard,note:0
 msgid "Annotation about production opened with selected product"
 msgstr "Annotazione circa le produzioni aperte con prodotti selezionati"
+
+#. module: production_line
+#: field:product.status.production.fake.wizard,qty:0
+msgid "Q.ty (Kg.)"
+msgstr "Q.tà (Kg.)"
 
 #. module: production_line
 #: field:mrp.production,total_production_loaded:0
@@ -1787,6 +1929,7 @@ msgstr "Magazzino"
 #: field:mrp.production.workcenter.load,product_id:0
 #: field:mrp.production.workcenter.load,recycle_product_id:0
 #: view:mrp.workcenter.history:0 field:mrp.workcenter.history,product_id:0
+#: field:product.status.production.fake.wizard,product_id:0
 #: view:sale.order.line:0
 msgid "Product"
 msgstr "Prodotto"
@@ -1807,11 +1950,6 @@ msgid "Updated"
 msgstr "Aggiornato"
 
 #. module: production_line
-#: field:mrp.production.split.wizard,split_daily:0
-msgid "Daily split"
-msgstr "Dividi giornalmente"
-
-#. module: production_line
 #: view:mrp.production.workcenter.line:0
 msgid "Tomorrow lavorations"
 msgstr "Lavorazioni domani"
@@ -1827,9 +1965,19 @@ msgid "Material for production"
 msgstr "Materiale per produzione"
 
 #. module: production_line
+#: view:mrp.production:0
+msgid "Product package (red=deleted)"
+msgstr "Imballo prodotto (rosso = eliminato da contabilità)"
+
+#. module: production_line
 #: view:mrp.production.workcenter.load:0
 msgid "Load info:"
 msgstr "Info carico:"
+
+#. module: production_line
+#: field:mrp.production.confirm.wizard,use_mrp_package:0
+msgid "Usa solo imballi produzione"
+msgstr "Usa solo imballi produzione"
 
 #. module: production_line
 #: field:sale.order,date_previous_deadline:0
@@ -1847,9 +1995,9 @@ msgid "Not in status"
 msgstr "Non nel report di stato"
 
 #. module: production_line
-#: view:mrp.production.workcenter.line:0
-msgid "Reload element from BOM"
-msgstr "Ricarica elementi dalla ricetta"
+#: view:sale.order:0
+msgid "Ordine di vendita"
+msgstr "Ordine di vendita"
 
 #. module: production_line
 #: view:mrp.production.workcenter.line:0
@@ -1857,9 +2005,11 @@ msgid "Lavoration note:"
 msgstr "Note lavorazione:"
 
 #. module: production_line
-#: model:ir.model,name:production_line.model_mrp_print_lavoration_week_wizard
-msgid "mrp.print.lavoration.week.wizard"
-msgstr "mrp.print.lavoration.week.wizard"
+#: field:mrp.print.lavoration.week.wizard,workcenter_id:0
+#: view:mrp.production.material:0 view:mrp.workcenter.history:0
+#: field:mrp.workcenter.history,workcenter_id:0
+msgid "Workcenter"
+msgstr "Linea"
 
 #. module: production_line
 #: field:product.product,mrp_yield:0
@@ -1892,11 +2042,6 @@ msgid "Analysis Note"
 msgstr "Note analisi"
 
 #. module: production_line
-#: field:product.status.wizard,month_window:0
-msgid "Statistic production window "
-msgstr "Finestra statistica di produzione"
-
-#. module: production_line
 #: model:ir.actions.act_window,help:production_line.action_view_sale_order_line
 msgid ""
 "<p class=\"oe_view_nocontent_create\">Show all active order lines loaded "
@@ -1913,15 +2058,16 @@ msgstr "E' pianificato"
 #. module: production_line
 #: view:sale.order:0
 msgid "Move in load zone"
-msgstr "Move in load zone"
+msgstr "Muovi in zona di carico"
 
 #. module: production_line
-#: view:mrp.production.workcenter.line:0
-msgid "Production total q."
-msgstr "Produzione totale q."
+#: field:product.status.wizard,month_window:0
+msgid "Statistic production window "
+msgstr "Finestra statistica di produzione"
 
 #. module: production_line
 #: field:mrp.production.create.wizard,bom_id:0
+#: field:product.status.production.fake.wizard,bom_id:0
 msgid "BOM"
 msgstr "Ricetta"
 
@@ -1946,6 +2092,11 @@ msgid "OC sales analysis"
 msgstr "OC analisi vendite"
 
 #. module: production_line
+#: view:mrp.production:0
+msgid "Product package"
+msgstr "Imballo prodotto"
+
+#. module: production_line
 #: field:mrp.print.lavoration.week.wizard,to_date:0
 msgid "Date to"
 msgstr "Alla data"
@@ -1959,6 +2110,11 @@ msgstr "Utente che può accedere al menu: Comunicazioni"
 #: model:ir.actions.act_window,name:production_line.action_view_lavoration_today_todo+1
 msgid "Lavoration open future"
 msgstr "Lavorazioni future"
+
+#. module: production_line
+#: selection:product.status.wizard,row_mode:0
+msgid "All data"
+msgstr "All data"
 
 #. module: production_line
 #: view:mrp.production.assign.wizard:0
@@ -1979,14 +2135,22 @@ msgstr "Anomalia produzione"
 #. module: production_line
 #: view:sale.order:0
 msgid "Stock cover"
-msgstr "Stock cover"
+msgstr "Coperto magazzino"
 
 #. module: production_line
-#: field:mrp.print.lavoration.week.wizard,workcenter_id:0
-#: view:mrp.production.material:0 view:mrp.workcenter.history:0
-#: field:mrp.workcenter.history,workcenter_id:0
-msgid "Workcenter"
-msgstr "Linea"
+#: view:mrp.production:0
+msgid "UL draft"
+msgstr "Imballo bozza"
+
+#. module: production_line
+#: field:mrp.production,ul_state:0
+msgid "UL state"
+msgstr "Stato imballo"
+
+#. module: production_line
+#: field:mrp.production,product_packaging_ids:0
+msgid "Product Package"
+msgstr "Imballo prodotto"
 
 #. module: production_line
 #: field:res.company,production_host:0
@@ -2102,9 +2266,9 @@ msgid "Sales Order Lines"
 msgstr "Righe Ordine di Vendita"
 
 #. module: production_line
-#: model:ir.ui.menu,name:production_line.menu_base_production_root_reporting
-msgid "Reporting"
-msgstr "Reportistica"
+#: model:ir.ui.menu,name:production_line.menu_base_manager_analysis_scheduling
+msgid "Importation log"
+msgstr "Importa log"
 
 #. module: production_line
 #: model:ir.module.category,description:production_line.module_production_line
@@ -2115,6 +2279,11 @@ msgstr "Gestisce i gruppi di produzione"
 #: help:res.company,production_mount_mandatory:0
 msgid "Test if folder for interchange files must be mounted"
 msgstr "Controlla se la cartella di scambio è stata montata (risorsa remota)"
+
+#. module: production_line
+#: view:product.status.wizard:0
+msgid "Fake production:"
+msgstr "Produzione fittizia:"
 
 #. module: production_line
 #: view:sale.order.line:0
@@ -2177,9 +2346,9 @@ msgid "Create MRP"
 msgstr "Crea MRP"
 
 #. module: production_line
-#: view:mrp.production.workcenter.load:0
-msgid "Last load"
-msgstr "Ultimo carico"
+#: help:mrp.production.workcenter.load,product_code_id:0
+msgid "ID lot from accounting (if created from)"
+msgstr "ID lotto dalla contabilità (se è stato creato)"
 
 #. module: production_line
 #: field:product.product,linked_accounting_qty:0
@@ -2209,7 +2378,7 @@ msgstr "Carichi"
 #. module: production_line
 #: model:ir.ui.menu,name:production_line.menu_root_order_open
 msgid "Opened"
-msgstr "Opened"
+msgstr "Aperta"
 
 #. module: production_line
 #: view:sale.order.line:0
@@ -2219,10 +2388,11 @@ msgstr "Usa mag."
 #. module: production_line
 #: view:mrp.production.workcenter.load:0
 msgid "CL load"
-msgstr "CL load"
+msgstr "CL carico"
 
 #. module: production_line
 #: selection:mrp.production,accounting_state:0
+#: selection:mrp.production,ul_state:0
 msgid "Draft"
 msgstr "Bozza"
 
@@ -2277,19 +2447,14 @@ msgid "Production:"
 msgstr "Produzione:"
 
 #. module: production_line
-#: view:res.company:0
-msgid "Production parameters"
-msgstr "Parametri produzione"
+#: field:mrp.production.product.packaging,account_id:0
+msgid "Account ID"
+msgstr "ID conto"
 
 #. module: production_line
 #: view:mrp.print.lavoration.week.wizard:0
 msgid "Print lavorarion week"
 msgstr "Stampa lavorazione della settimana"
-
-#. module: production_line
-#: view:sale.order.line:0
-msgid "Note"
-msgstr "Note"
 
 #. module: production_line
 #: model:ir.ui.menu,name:production_line.menu_base_production_root_production
@@ -2300,6 +2465,11 @@ msgstr "1. OC >> Ordine prod."
 #: field:mrp.production.create.wizard,error:0
 msgid "Error"
 msgstr "Errore"
+
+#. module: production_line
+#: field:product.status.production.fake.wizard,wizard_id:0
+msgid "Wizard ID"
+msgstr "Wizard ID"
 
 #. module: production_line
 #: view:mrp.production:0 field:mrp.production,load_ids:0
@@ -2341,6 +2511,11 @@ msgstr "Q. bancale"
 #: view:sale.order.line:0
 msgid "Produce (month 1)"
 msgstr "Da Prod. (mese 1)"
+
+#. module: production_line
+#: view:mrp.production.workcenter.load:0
+msgid "Production check"
+msgstr "Controllo produzione"
 
 #. module: production_line
 #: field:sale.order.line.covered.wizard,type:0
@@ -2390,7 +2565,7 @@ msgstr "Utente che può accedere al menu: Vendite"
 #. module: production_line
 #: field:sale.order.line.covered.wizard,to_date:0
 msgid "To"
-msgstr "To"
+msgstr "A"
 
 #. module: production_line
 #: model:ir.actions.act_window,name:production_line.action_view_mrp_production_standard
@@ -2481,11 +2656,6 @@ msgid "Customer"
 msgstr "Cliente"
 
 #. module: production_line
-#: model:ir.ui.menu,name:production_line.menu_base_manager_analysis_scheduling
-msgid "Importation log"
-msgstr "Importa log"
-
-#. module: production_line
 #: view:mrp.production.assign.wizard:0
 msgid "Unassign"
 msgstr "Non assegnato"
@@ -2501,14 +2671,14 @@ msgid "File name for CL exhange file"
 msgstr "File scambio CL per produzione"
 
 #. module: production_line
-#: help:product.status.wizard,negative:0
-msgid "Show only product and material with negative value in range"
-msgstr "Mostra solo prodotti e materiali con valori negativi nel range"
+#: view:mrp.production:0
+msgid "Reload"
+msgstr "Ricarica"
 
 #. module: production_line
 #: model:ir.ui.menu,name:production_line.menu_root_establishment_todo+1
 msgid "Future"
-msgstr "Future"
+msgstr "Futuro"
 
 #. module: production_line
 #: help:mrp.print.lavoration.week.wizard,extended:0
@@ -2527,13 +2697,9 @@ msgid "Date delivery"
 msgstr "Date scadenza"
 
 #. module: production_line
-#: help:sale.order.line,to_produce:0
-msgid ""
-"During order importation test if the order line active has product that need "
-"to be produced"
-msgstr ""
-"Durante l'importazione ordine controlla se le righe ordine hanno degli "
-"articoli da produrre"
+#: model:ir.ui.menu,name:production_line.menuitem_sale_order_line
+msgid "OC line (all open)"
+msgstr "Linee OC (tutti)"
 
 #. module: production_line
 #: view:mrp.production.workcenter.line:0
@@ -2550,3 +2716,8 @@ msgstr "Quantità imballo da scaricare dalla contabilità"
 #: view:sale.order.line:0
 msgid "Use store"
 msgstr "Usa magazzino"
+
+#. module: production_line
+#: field:product.status.wizard,row_mode:0
+msgid "Row mode"
+msgstr "Modo riga"
