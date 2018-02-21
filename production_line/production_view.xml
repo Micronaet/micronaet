@@ -753,6 +753,7 @@
             </field>
             <field name="state" position="after">
                <field name="accounting_state" />
+               <field name="ul_state" invisible="1"/>
             </field>
         </field>
     </record>    
@@ -774,6 +775,7 @@
                 <field name="lavoration_all_planned" />
                 <field name="total_production_loaded" sum="Qtà totale" />
                 <field name="accounting_state" />
+                <field name="ul_state" invisible="1"/>
                 <field name="state" invisible="1" />
             </tree>
         </field>
@@ -1204,6 +1206,11 @@
         <field name="inherit_id" ref="mrp.view_mrp_production_filter"/>
         <field name="arch" type="xml">
            <field name="name" position="after">
+                <filter icon="terp-go-home" name="ul_state_draft" string="UL draft" domain="[('ul_state','=','draft')]" />
+                <filter icon="terp-go-home" name="ul_state_account" string="UL account" domain="[('ul_state','=','account')]" />
+                <filter icon="terp-go-home" name="ul_state_deleted" string="UL deleted" domain="[('ul_state','=','deleted')]" />
+                <newline/>
+
                 <filter icon="terp-go-home" name="only_open" string="Only open" domain="[('accounting_state','in',('draft','production'))]" />
            </field>    
         </field>
