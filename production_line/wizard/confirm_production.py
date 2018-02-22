@@ -395,13 +395,13 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 code = wiz_proxy.product_id.default_code
             
             # TODO Check if lot is yet created:
+            ref_lot_id = False
             mrp_id = self.get_mrp_id(cr, uid, context=context)
             if mrp_id:            
                 lot_created_id = mrp_pool.get_account_yet_created_ul(
                     cr, uid, mrp_id, wiz_proxy.package_id.id, context=context)
-                ref_lot_id = '#%-9s' % lot_created_id
-            else:        
-                ref_lot_id = False
+                if lot_created_id:
+                    ref_lot_id = '#%-9s' % lot_created_id
                 
             ref_lot_name = '%06d#%01d' % (
                 int(mrp.name[3:]),
