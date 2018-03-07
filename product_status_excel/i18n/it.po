@@ -1,0 +1,109 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* product_status_excel
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-03-07 09:31+0000\n"
+"PO-Revision-Date: 2018-03-07 10:33+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: product_status_excel
+#: field:product.product.extract.xls.wizard,categ_id:0
+msgid "Category"
+msgstr "Categoria"
+
+#. module: product_status_excel
+#: selection:product.product.extract.xls.wizard,sort:0
+msgid "Statistic category"
+msgstr "Categoria statistica"
+
+#. module: product_status_excel
+#: model:ir.model,name:product_status_excel.model_product_product_extract_xls_wizard
+msgid "product.product.extract.xls.wizard"
+msgstr "Estrai stato prodotti"
+
+#. module: product_status_excel
+#: field:product.product.extract.xls.wizard,sort:0
+msgid "Sort mode"
+msgstr "Modalità ordinamento"
+
+#. module: product_status_excel
+#: selection:product.product.extract.xls.wizard,sort:0
+msgid "Product name"
+msgstr "Nome prodotto"
+
+#. module: product_status_excel
+#: selection:product.product.extract.xls.wizard,mode:0
+msgid "Positive (>0)"
+msgstr "Positivi (>0)"
+
+#. module: product_status_excel
+#: selection:product.product.extract.xls.wizard,sort:0
+msgid "Product code"
+msgstr "Codice prodotto"
+
+#. module: product_status_excel
+#: view:product.product.extract.xls.wizard:0
+msgid "Print"
+msgstr "Stampa"
+
+#. module: product_status_excel
+#: field:product.product.extract.xls.wizard,to_code:0
+msgid "To code"
+msgstr "Al codice"
+
+#. module: product_status_excel
+#: field:product.product.extract.xls.wizard,statistic_category:0
+msgid "Statistic_category"
+msgstr "Categoria statistica"
+
+#. module: product_status_excel
+#: field:product.product.extract.xls.wizard,from_code:0
+msgid "From code"
+msgstr "Dal codice"
+
+#. module: product_status_excel
+#: selection:product.product.extract.xls.wizard,sort:0
+msgid "Categoria prodotto"
+msgstr "Categoria prodotto"
+
+#. module: product_status_excel
+#: view:product.product.extract.xls.wizard:0
+msgid "Extract product"
+msgstr "Estrai prodotti"
+
+#. module: product_status_excel
+#: selection:product.product.extract.xls.wizard,mode:0
+msgid "Negative (<=0)"
+msgstr "Negativi (<=0)"
+
+#. module: product_status_excel
+#: field:product.product.extract.xls.wizard,mode:0
+msgid "Mode"
+msgstr "Modalità"
+
+#. module: product_status_excel
+#: model:ir.actions.act_window,name:product_status_excel.action_product_extract_xls_wizard_form
+#: model:ir.ui.menu,name:product_status_excel.menu_action_product_extract_xls_wizard
+msgid "Extract product status"
+msgstr "Estrai stato prodotti"
+
+#. module: product_status_excel
+#: selection:product.product.extract.xls.wizard,mode:0
+msgid "All products"
+msgstr "Tutti i prodotti"
+
+#. module: product_status_excel
+#: view:product.product.extract.xls.wizard:0
+msgid "Cancel"
+msgstr "Annulla"

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+       <!-- product.product.extract.xls.wizard-->
+       <record id="product_extract_xls_wizard_form_view" model="ir.ui.view">
+            <field name="name">Extract product status</field>
+            <field name="model">product.product.extract.xls.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Extract product" version="7.0">
+                   <header>
+                       <button string="Cancel" special="cancel" />
+                       <button name="action_done" string="Print" type="object" icon="gtk-print" class="oe_highlight" />
+                   </header>                   
+                   <group colspan="4" col="4">
+                        <field name="mode"/>          
+                        <field name="sort" />
+
+                        <field name="from_code"/>
+                        <field name="to_code"/>
+                        <field name="statistic_category"/>
+                        <field name="categ_id"/>
+                   </group>
+                </form>
+            </field>
+      </record>
+
+      <record model="ir.actions.act_window" id="action_product_extract_xls_wizard_form">
+          <field name="name">Extract product status</field>
+          <field name="res_model">product.product.extract.xls.wizard</field>
+          <field name="view_type">form</field>
+          <field name="view_mode">form</field>
+          <field name="target">new</field>
+          <field name="view_id" ref="product_extract_xls_wizard_form_view"/>
+      </record>
+      
+      <menuitem 
+          parent="base.menu_product" 
+          id="menu_action_product_extract_xls_wizard" 
+          action="action_product_extract_xls_wizard_form"
+          sequence="10"
+          />
+      
+    </data>
+</openerp>
