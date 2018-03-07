@@ -31,6 +31,7 @@
         'base',
         'production_lot_status',
         'production_line',
+        'xmlrpc_operation_change_lot_pack', # for pass data
         ],
     'init_xml': [], 
     'data': [

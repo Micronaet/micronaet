@@ -35,28 +35,11 @@ class move_lot_wizard(osv.osv_memory):
     '''
     _name = "stock.production.lot.move.wizard"
 
-    """def get_xmlrpc_server(self, cr, uid, parameter, context=None):
-        ''' Configure and retur XML-RPC server for accounting        
-        '''
-        try:
-            mx_parameter_server = parameter.production_host
-            mx_parameter_port = parameter.production_port
-
-            xmlrpc_server = "http://%s:%s" % (
-                mx_parameter_server,
-                mx_parameter_port,
-            )
-        except:
-            raise osv.except_osv(
-                _('Import CL error!'),
-                _('XMLRPC for calling importation is not response'), )
-                
-        return xmlrpclib.ServerProxy(xmlrpc_server)"""
-        
     # ---------------
     # Onchange event:
     # ---------------
-    #def onchange_move_type(self, cr, uid, ids, move_type, from_product_id, context=None):
+    #def onchange_move_type(
+    #        self, cr, uid, ids, move_type, from_product_id, context=None):
     #    ''' On change move type set to_product
     #    '''
     #    res = {}
@@ -91,39 +74,23 @@ class move_lot_wizard(osv.osv_memory):
         if context is None:
             context = {}
 
-        wiz_proxy = self.browse(
-            cr, uid, ids, context=context)[0]
+        # Pool used:
+        product_pool = self.pool.get('product.product')
+        
+        wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
 
         if not wiz_proxy.move_qty:
             raise osv.except_osv(
                 _('Empty quantity:'),
                 _('Please fill quantity for the stock move!'))
 
-        # XMLRPC server:
-        xmlrpc_server = self.pool.get('res.company').xmlrpc_get_server(cr, uid, context=context)
-        if not xmlrpc_server:
-            raise osv.except_osv(
-                _('Accounting connection error:'),
-                _('Unable to connect to accounting server, check parameter or'
-                  'server state!'))
-        
-        line = "%10s%16s%10.2f" % (
-            wiz_proxy.from_lot_id.ref, # ID lot in accounting
-            "XXXXXX%-10s" % wiz_proxy.to_package_id.code if wiz_proxy.to_new_lot else wiz_proxy.to_lot_id.name, # Lot
-            wiz_proxy.move_qty,
-            )
-        
-        try:
-            error = xmlrpc_server.sprix("MOVE", {'line': line, })
-            if error:
-                raise osv.except_osv(
-                    _('Accounting error:'),
-                    _('Error managing movement in accounting!'))
-        except:            
-            raise osv.except_osv(
-                _('XMLRPC error:'),
-                _('Error launching procedure!'))
-
+        # XMLRPC server call:        
+        product_pool.xmlrpc_export_lot_change_log_package(self, cr, uid, 
+            wiz_proxy.move_qty, 
+            wiz_proxy.from_lot_id, # From lot
+            False if wiz_proxy.to_new_lot else to_lot_id, # To lot
+            pack_obj=wiz_proxy.to_package_id if wiz_proxy.to_new else False, 
+            context=context)            
         return {'type':'ir.actions.act_window_close'}
 
     _columns = {
@@ -136,8 +103,8 @@ class move_lot_wizard(osv.osv_memory):
         'to_new_lot': fields.boolean('To new lot'),
         'move_qty': fields.float('Move qty', digits=(16, 2), required=True),
         }
+
     _defaults = {
         'to_new_lot': lambda *x: False,
-    }
-
+        }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
