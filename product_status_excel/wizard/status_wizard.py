@@ -149,7 +149,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 ], format_text)
                 
         return excel_pool.return_attachment(cr, uid, 'Prodotti', 
-            name_of_file=False, version='7.0', php=True, # True
+            name_of_file=False, version='7.0', php=False,
             context=context)
 
     _columns = {
