@@ -79,7 +79,6 @@ class move_lot_wizard(osv.osv_memory):
         product_pool = self.pool.get('product.product')
         
         wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
-
         if not wiz_proxy.move_qty:
             raise osv.except_osv(
                 _('Empty quantity:'),
