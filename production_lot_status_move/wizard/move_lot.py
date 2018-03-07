@@ -48,7 +48,8 @@ class move_lot_wizard(osv.osv_memory):
     #        res['value']['to_product_id'] = from_product_id # same product
     #    return res
 
-    def onchange_from_lot(self, cr, uid, ids, from_lot_id, move_qty, context=None):
+    def onchange_from_lot(
+            self, cr, uid, ids, from_lot_id, move_qty, context=None):
         ''' On change move type set to_product
         '''
         res = {}
