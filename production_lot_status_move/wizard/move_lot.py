@@ -88,7 +88,7 @@ class move_lot_wizard(osv.osv_memory):
         product_pool.xmlrpc_export_lot_change_log_package(self, cr, uid, 
             wiz_proxy.move_qty, 
             wiz_proxy.from_lot_id, # From lot
-            False if wiz_proxy.to_new_lot else to_lot_id, # To lot
+            False if wiz_proxy.to_new_lot else wiz_proxy.to_lot_id, # To lot
             pack_obj=wiz_proxy.to_package_id if wiz_proxy.to_new else False, 
             context=context)            
         return {'type':'ir.actions.act_window_close'}

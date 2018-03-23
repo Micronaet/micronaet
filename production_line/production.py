@@ -1506,7 +1506,13 @@ class mrp_production_extra(osv.osv):
         delete_ids = mrp_ids - product_ids # but no the account sync
         delete_ids -= mrp_sync_ids
         
-        ul_pool.unlink(cr, uid, delete_ids, context=context)
+        for item_id in delete_ids:
+            try:
+                ul_pool.unlink(cr, uid, item_id, context=context)
+            except:
+                _logger.error('Cannot unlink ul ID: %s' % item_id
+                continue
+                    
         _logger.warning('Create %s, Delete %s' % (create_ids, delete_ids))
         for ul_id in create_ids:
             ul_pool.create(cr, uid, {
