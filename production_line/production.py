@@ -1510,7 +1510,7 @@ class mrp_production_extra(osv.osv):
             try:
                 ul_pool.unlink(cr, uid, item_id, context=context)
             except:
-                _logger.error('Cannot unlink ul ID: %s' % item_id
+                _logger.error('Cannot unlink ul ID: %s' % item_id)
                 continue
                     
         _logger.warning('Create %s, Delete %s' % (create_ids, delete_ids))
