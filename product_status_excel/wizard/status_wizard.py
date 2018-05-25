@@ -67,10 +67,13 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         filter_used = ''
         if wiz_browse.mode == 'negative':
             domain.append(('accounting_qty', '<=', 0.0))
-            filter_used += 'Solo prodotti negativi (<=0)'
+            filter_used += 'Solo prodotti negativi (<0)'
         elif wiz_browse.mode == 'positive':
             domain.append(('accounting_qty', '>', 0.0))
             filter_used += 'Solo prodotti positivi (>0)'
+        elif wiz_browse.mode == 'zero':
+            domain.append(('accounting_qty', '=', 0.0))
+            filter_used += 'Solo prodotti zero (=0)'
         else:    
             filter_used += 'Tutti i prodotti'
 
@@ -161,7 +164,8 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         'mode': fields.selection([
             ('all', 'All products'),
             ('positive', 'Positive (>0)'),
-            ('negative', 'Negative (<=0)'),
+            ('negative', 'Negative (<0)'),
+            ('zero', 'Zero (=0)'),
             ], 'Mode', required=True),
         'sort': fields.selection([
             ('default_code', 'Product code'),
