@@ -40,8 +40,10 @@ def no_establishment_group(self, cr, uid, context=None):
     group_pool = self.pool.get('res.groups')
     group_ids = group_pool.search(
         cr, uid, [
-            ('name','=','Production visibility production')], 
-        context=context)
+            '|',
+            ('name', '=', 'Visibilità Produzione: Produzione'),
+            ('name', '=', 'Production visibility production'),
+            ], context=context)
     group_proxy = group_pool.read(
         cr, uid, group_ids, ('users',), context=context)[0]
     return uid in group_proxy['users']
