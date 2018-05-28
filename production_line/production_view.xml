@@ -1482,13 +1482,6 @@
                       id="menu_sale_order_line_covered_wizard_establ" 
                       action="action_sale_order_line_covered_wizard_form" 
                       sequence="20" />
-                  <menuitem 
-                      name="Status analysis" 
-                      parent="menu_root_establishment_report" 
-                      id="menuitem_status_report_analysys_establ" 
-                      action="product_status_wizard_action" 
-                      string="Analisi stato magazzino"
-                      sequence="30" />
 
        <!-- Production block -->
        <menuitem name="1. OC to production order" parent="mrp.menu_mrp_manufacturing" id="menu_base_production_root_production" sequence="0" groups="group_production_admin" />
@@ -1496,20 +1489,17 @@
           <menuitem name="OC (Month 1)" parent="menu_base_production_root_production" id="menuitem_sale_order_line_d20" action="action_view_sale_order_line_d20" sequence="20" />
           <menuitem name="OC (Month 2)" parent="menu_base_production_root_production" id="menuitem_sale_order_line_d30" action="action_view_sale_order_line_d30" sequence="30" />
           <menuitem name="OC line (all open)" parent="menu_base_production_root_production" id="menuitem_sale_order_line" action="action_view_sale_order_line" sequence="40" />
-          <menuitem name="Status analysis" parent="menu_base_production_root_production" id="menuitem_status_analysys_1" action="product_status_wizard_action" sequence="50" />
           <menuitem name="Covered report"  parent="menu_base_production_root_production" id="menu_sale_order_line_covered_wizard_1" action="action_sale_order_line_covered_wizard_form" sequence="60" />
 
        <!-- Create and plan lavoration order from production order -->
        <menuitem name="2. Production to lavoration order" parent="mrp.menu_mrp_manufacturing" id="menu_base_production_root_lavoration" sequence="0" action="action_view_mrp_production_standard" groups="group_production_admin" />
           <menuitem name="Production order (incomplete)" parent="menu_base_production_root_lavoration" id="menu_base_production_root_lavoration_incomplete" action="action_view_mrp_production_incomplete" sequence="10" />
           <menuitem name="Production order (all)" parent="menu_base_production_root_lavoration" id="menu_base_production_root_lavoration_open" action="action_view_mrp_production" sequence="20" />
-          <menuitem name="Status analysis" parent="menu_base_production_root_lavoration" id="menuitem_status_analysys_2" action="product_status_wizard_action" sequence="30" />
 
        <!-- Plan lavoration  -->
        <menuitem name="3. Plan lavoration" parent="mrp.menu_mrp_manufacturing" id="menu_base_production_root_lavoration_plan" sequence="0" action="action_view_lavoration_today_standard" groups="group_production_admin" />
           <menuitem name="Lavoration open" parent="menu_base_production_root_lavoration_plan" id="menu_base_production_root_lavoration_plan_open" action="action_view_lavoration_open" sequence="10" />
           <menuitem name="Weekly planner" parent="menu_base_production_root_lavoration_plan" id="menu_base_production_root_reporting_wizard_3" action="action_mrp_print_lavoration_week_wizard_view" sequence="20" />
-          <menuitem name="Status analysis" parent="menu_base_production_root_lavoration_plan" id="menuitem_status_analysys_3" action="product_status_wizard_action" sequence="30" />
 
        <!-- Fabbrica  -->
        <menuitem name="4. Lavoration" parent="mrp.menu_mrp_manufacturing" id="menu_base_production_root_lavoration_mrp" sequence="0" action="action_view_lavoration_today_standard" groups="group_production_admin" />
@@ -1519,11 +1509,9 @@
        <!-- Sale  -->
        <menuitem name="5. Sale and delivery" parent="mrp.menu_mrp_manufacturing" id="menu_base_production_root_delivery" sequence="0" groups="group_production_admin,group_production_logistic"/>
           <menuitem name="Production status for delivery" parent="menu_base_production_root_delivery" id="menu_base_production_root_delivery_line" action="action_view_sale_order_line_sale" sequence="10" />
-          <menuitem name="Status analysis" parent="menu_base_production_root_delivery" id="menuitem_status_analysys_5" action="product_status_wizard_action" sequence="20" />
 
        <!-- Reporting -->
        <menuitem name="Reporting" parent="mrp.menu_mrp_manufacturing" id="menu_base_production_root_reporting" sequence="0" groups="group_production_admin,group_production_logistic,group_production_stock" />
-          <menuitem name="Status analysis" parent="menu_base_production_root_reporting" id="menuitem_status_analysys" action="product_status_wizard_action" sequence="20" />
           <menuitem name="Weekly planner"  parent="menu_base_production_root_reporting" id="menu_base_production_root_reporting_wizard" action="action_mrp_print_lavoration_week_wizard_view" sequence="10" />
           <menuitem name="Covered report"  parent="menu_base_production_root_reporting" id="menu_sale_order_line_covered_wizard" action="action_sale_order_line_covered_wizard_form" sequence="30" />
 

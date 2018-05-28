@@ -44,6 +44,11 @@
         'partner_addresses',
         'base_log_scheduler',        
         #'web_m2o_enhanced',
+        #'product_adr', # field: adr
+        #'sql_product', # field: statistic category
+        #'sale_address', # field: address_id
+        #'sale_booked', # fields for booking (ex mx_sale)
+        #'report_webkit', # for reports
         ],
     'init_xml': [],
     'demo_xml': [],

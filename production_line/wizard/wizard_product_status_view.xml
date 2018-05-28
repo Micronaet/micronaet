@@ -83,6 +83,15 @@
         res_model="product.status.wizard"
         key2="client_action_multi"
         src_model="mrp.production"/>                
+
+      <menuitem name="Status analysis" parent="menu_base_production_root_production" id="menuitem_status_analysys_1" action="product_status_wizard_action" sequence="50" />
+      <menuitem name="Status analysis" parent="menu_base_production_root_lavoration" id="menuitem_status_analysys_2" action="product_status_wizard_action" sequence="30" />
+      <menuitem name="Status analysis" parent="menu_base_production_root_lavoration_plan" id="menuitem_status_analysys_3" action="product_status_wizard_action" sequence="30" />
+      <menuitem name="Status analysis" parent="menu_base_production_root_delivery" id="menuitem_status_analysys_5" action="product_status_wizard_action" sequence="20" />
+      <menuitem name="Status analysis" parent="menu_base_production_root_reporting" id="menuitem_status_analysys" action="product_status_wizard_action" sequence="20" />
+      <menuitem name="Status analysis" parent="menu_root_establishment_report" id="menuitem_status_report_analysys_establ" action="product_status_wizard_action" string="Analisi stato magazzino"
+          sequence="30" />
+        
   </data>
 </openerp>
 
