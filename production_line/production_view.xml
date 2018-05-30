@@ -951,7 +951,7 @@
                                         <field name="product_ul_id" />                                    
                                         <field name="partner_id" attrs="{'required':[('stock','=',False)]}"/>
                                         <field name="production_id" invisible="1"/>
-                                        <field name="quantity" sumn="total"/>
+                                        <field name="quantity" sum="total"/>
                                     </form>
                                 </field>
                             </group>
