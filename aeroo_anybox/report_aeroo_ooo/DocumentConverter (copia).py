@@ -35,14 +35,14 @@ except ImportError:
     from StringIO import StringIO
 
 import uno
-import unohelper
-from com.sun.star.beans import PropertyValue
-from com.sun.star.uno import Exception as UnoException
-from com.sun.star.connection import NoConnectException, ConnectionSetupException
-from com.sun.star.beans import UnknownPropertyException
-from com.sun.star.lang import IllegalArgumentException
-from com.sun.star.io import XOutputStream
-from com.sun.star.io import IOException
+#import unohelper
+#from com.sun.star.beans import PropertyValue
+#from com.sun.star.uno import Exception as UnoException
+#from com.sun.star.connection import NoConnectException, ConnectionSetupException
+#from com.sun.star.beans import UnknownPropertyException
+#from com.sun.star.lang import IllegalArgumentException
+#from com.sun.star.io import XOutputStream
+#from com.sun.star.io import IOException
 from openerp.tools.translate import _
 
 logger = logging.getLogger(__name__)
@@ -55,7 +55,7 @@ class DocumentConversionException(Exception):
     def __str__(self):
         return self.message
 
-class OutputStreamWrapper(unohelper.Base, XOutputStream): # XXX Micronaet 
+class OutputStreamWrapper():#unohelper.Base, XOutputStream):
     """ Minimal Implementation of XOutputStream """
     def __init__(self, debug=True):
         self.debug = debug
