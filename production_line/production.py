@@ -865,10 +865,11 @@ class mrp_workcenter_history(osv.osv):
         'parameter_note':fields.text('Parameter note'),
 
         #  E energo     S lubrificanti polvere
-        'parameter_hammer':fields.char('Hammers', size=15),
-        'parameter_grid':fields.char('Grid', size=15),
-        'parameter_speed':fields.char('Speed m/s', size=15),
-        'parameter_temperature':fields.char('Temperature', size=15), 
+        'parameter_hammer': fields.char('Hammers', size=15),
+        'parameter_grid': fields.char('Grid', size=15),
+        'parameter_speed': fields.char('Speed m/s', size=15),
+        'parameter_temperature': fields.char('Temperature', size=15), 
+        'parameter_aspiration': fields.char('Aspiration', size=15),
         # also G grassi    O oli      F fosfatanti
 
         #  X panflux    N sali

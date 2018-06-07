@@ -373,9 +373,9 @@ class product_status_wizard(osv.osv_memory):
         xlsx_raw = open(filename, 'rb').read()
         b64 = xlsx_raw.encode('base64')
         if sendmail:        
-            # ---------------------------------------------------------------------
+            # -----------------------------------------------------------------
             # Send via mail:
-            # ---------------------------------------------------------------------
+            # -----------------------------------------------------------------
             _logger.info('Sending status via mail: %s' % filename)
             date = datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
 
@@ -430,9 +430,9 @@ class product_status_wizard(osv.osv_memory):
                     isTls=False,
                     )
         else:
-            # ---------------------------------------------------------------------
+            # -----------------------------------------------------------------
             # Open attachment form:
-            # ---------------------------------------------------------------------
+            # -----------------------------------------------------------------
             attachment_id = attachment_pool.create(cr, uid, {
                 'name': 'Status MRP Report',
                 'datas_fname': 'status_report.xlsx',
