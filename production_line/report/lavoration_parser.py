@@ -42,8 +42,56 @@ class Parser(report_sxw.rml_parse):
             'load_parameter': self.load_parameter,
             'get_parameter': self.get_parameter,            
             'get_analysis_info': self.get_analysis_info,
+            'translate_static': self.translate_static,
         })
-
+        
+    def translate_static(self, term, lang):
+        ''' Translate static text for module
+        '''     
+        languages = {
+            #'en_US': {
+            #    },
+            'es_AR': {
+                'ORDINE DI PRODUZIONE': u'ORDER DE FABBRICACION',
+                'Ordine di lavorazione': u'Orden de Fabricación',
+                'FOGLIO PRODUZIONE ': u'HOJA DE PRODUCCION',
+                'FOGLIO PRODUZIONE': u'HOLA DE ALMACEN',
+                'N. Partita': u'N.Partida',
+                'Prodotto:': u'Producto', 
+                'Impianto:': u'Planta',
+                'Data': u'Fecha',
+                'Lavorazioni:': u'Fecha',
+                'Cod. Dogan.': u'Cod. Dog.',
+                'Componenti': u'Componente',
+                'KG': u'KG',
+                'LT': u'LT',
+                'SAC': u'SAC',
+                'Lotto': u'Lote',
+                'Variazioni': u'Modificación',
+                'Totale': u'Total',
+                'Quantità da produrre:': u'Ciclos totales:',
+                'Quantità prodotta:': u'Cantidad Producida:',
+                'Griglia:': u'Malla',
+                'Martelli:': u'Martillos',
+                'Imballo:': u'Tipo de envase',
+                'Analisi:': u'Analisis',
+                'Operatori:': u'Operador',
+                'Macchine:': u'Ciclos producidos:',
+                'Velocità:': u'Velocidad',
+                'Note lavorazione:': u'Notas',
+                'Tempo miscelaz.:': u'Tiempo',
+                'Anomalie riscontrate:': u'Anomalias de maquinaria:',
+                'Temperatura:': u'Temperatura:',
+                'Note:': u'Notas:',
+                'Aspirazione:': u'Aspiración',
+                },
+                
+            }
+        if lang == 'it_IT' or lang not in languages:
+            return term
+        
+        return languages[lang].get(term, term)
+        
     def load_parameter(self, product_id, workcenter_id):
         ''' Load browse object for get parameters
         '''
