@@ -30,6 +30,7 @@ import os
 import sys
 import logging
 import openerp
+import pytz
 import openerp.netsvc as netsvc
 import openerp.addons.decimal_precision as dp
 from openerp.osv import fields, osv, expression, orm
@@ -57,35 +58,6 @@ class crm_meeting_relation_fields(osv.osv):
     _name = 'crm.meeting'    
     _inherit = 'crm.meeting'
     
-    '''def formatLang(self, cr, uid, value, date=False, datetime=False, 
-            context=None):
-        """ Convert datetime with TZ
-        """
-        if context is None:
-            context = {
-                'lang': 'it_IT',
-                }
-
-        DEFAULT_SERVER_TIME_FORMAT = 'HH:MM:SS'
-        if not value:
-            return ''
-
-        if datetime:
-            value = value.split('.')[0]
-            date_format = '%s %s' % (
-                DEFAULT_SERVER_DATETIME_FORMAT,
-                DEFAULT_SERVER_TIME_FORMAT,
-                )
-            parse_format = DEFAULT_SERVER_DATETIME_FORMAT
-            # Convert datetime values to the expected client/context timezone
-            date = datetime_field.context_timestamp(
-                cr, uid, timestamp=date, context=context)#self.localcontext)
-        else:    
-            date_format = DEFAULT_SERVER_DATE_FORMAT
-            parse_format = DEFAULT_SERVER_DATE_FORMAT
-            date = datetime(*value.timetuple()[:6])
-        return date.strftime(date_format.encode('utf-8'))'''
-
     # Workflow trigger action ##################################################
     def meeting_draft(self, cr, uid, ids):
         ''' Activity when a new crm.meeting is created
@@ -147,20 +119,58 @@ class crm_meeting_relation_fields(osv.osv):
             'context': ctx,
         }
 
+    def _function_convert_date_it(self, cr, uid, ids, fields, args, 
+            context=None):
+        ''' Fields function for calculate 
+        '''
+        def utc_to_local(utc):
+            ''' Return Rome time from GMT
+            '''            
+            if not utc:
+                return False
+            local_tz = pytz.timezone('Europe/Rome')
+            utc_dt = datetime.strptime(utc, DEFAULT_SERVER_DATETIME_FORMAT)
+            local_dt = utc_dt.replace(tzinfo=pytz.utc).astimezone(local_tz)
+            return local_tz.normalize(local_dt)
+
+        res = {}        
+        for item in self.browse(cr, uid, ids, context=context):
+            res[item.id] = utc_to_local(item.date)
+        return res
+
     _columns = {
-        'relation_manager_id':fields.many2one('res.partner', 'Relation manager', domain=[('is_company','=',False)], required=False),
-        'relation_partner_id':fields.many2one('res.partner', 'Relation partner', domain=[('is_company','=',True)], required=False),
-        'relation_needed':fields.boolean('Need relation', required=False),
-        'relation_department': fields.char('Department', size=64, required=False, readonly=False),
-        'relation_ref': fields.char('Referent', size=64, required=False, readonly=False),
-        'relation_supervisor': fields.char('Supervisor', size=64, required=False, readonly=False),
-        'relation_supervisor_position': fields.char('Superv. position', size=64, required=False, readonly=False),
-        'relation_goal': fields.text('Goal', help="Goal during evaluation period"),
-        'relation_result': fields.text('Result', help="Result and responsability (employee part)"),
-        'relation_evaluation': fields.text('Evaluation', help="Supervisor evaluation"),
-        'relation_strength': fields.text('Strength', help="Strength point and powerfull area"),
-        'relation_plan': fields.text('Svil. plan',),
-        'relation_goal_future': fields.text('Goal for next period',),
+        'date_it': fields.function(
+            _function_convert_date_it, method=True, 
+            type='datetime', string='Date IT', store=False), 
+                        
+        'relation_manager_id':fields.many2one(
+            'res.partner', 'Relation manager', 
+            domain=[('is_company','=',False)], required=False),
+        'relation_partner_id':fields.many2one(
+            'res.partner', 'Relation partner', 
+            domain=[('is_company','=',True)], required=False),
+        'relation_needed':fields.boolean(
+            'Need relation', required=False),
+        'relation_department': fields.char(
+            'Department', size=64, required=False, readonly=False),
+        'relation_ref': fields.char(
+            'Referent', size=64, required=False, readonly=False),
+        'relation_supervisor': fields.char(
+            'Supervisor', size=64, required=False, readonly=False),
+        'relation_supervisor_position': fields.char(
+            'Superv. position', size=64, required=False, readonly=False),
+        'relation_goal': fields.text(
+            'Goal', help="Goal during evaluation period"),
+        'relation_result': fields.text(
+            'Result', help="Result and responsability (employee part)"),
+        'relation_evaluation': fields.text(
+            'Evaluation', help="Supervisor evaluation"),
+        'relation_strength': fields.text(
+            'Strength', help="Strength point and powerfull area"),
+        'relation_plan': fields.text(
+            'Svil. plan',),
+        'relation_goal_future': fields.text(
+            'Goal for next period'),
         
         'state':fields.selection([
                 ('draft','Draft'),
