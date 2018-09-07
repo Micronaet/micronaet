@@ -57,7 +57,7 @@ class crm_meeting_relation_fields(osv.osv):
     _name = 'crm.meeting'    
     _inherit = 'crm.meeting'
     
-    def formatLang(self, cr, uid, value, date=False, datetime=False, 
+    '''def formatLang(self, cr, uid, value, date=False, datetime=False, 
             context=None):
         """ Convert datetime with TZ
         """
@@ -67,13 +67,12 @@ class crm_meeting_relation_fields(osv.osv):
                 }
 
         DEFAULT_SERVER_TIME_FORMAT = 'HH:MM:SS'
-        import pdb; pdb.set_trace()
         if not value:
             return ''
 
         if datetime:
             value = value.split('.')[0]
-            date_format = '%s %s ' % (
+            date_format = '%s %s' % (
                 DEFAULT_SERVER_DATETIME_FORMAT,
                 DEFAULT_SERVER_TIME_FORMAT,
                 )
@@ -85,7 +84,7 @@ class crm_meeting_relation_fields(osv.osv):
             date_format = DEFAULT_SERVER_DATE_FORMAT
             parse_format = DEFAULT_SERVER_DATE_FORMAT
             date = datetime(*value.timetuple()[:6])
-        return date.strftime(date_format.encode('utf-8'))
+        return date.strftime(date_format.encode('utf-8'))'''
 
     # Workflow trigger action ##################################################
     def meeting_draft(self, cr, uid, ids):
