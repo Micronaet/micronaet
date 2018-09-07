@@ -58,7 +58,7 @@ class crm_meeting_relation_fields(osv.osv):
     _name = 'crm.meeting'    
     _inherit = 'crm.meeting'
     
-    # Workflow trigger action ##################################################
+    # Workflow trigger action #################################################
     def meeting_draft(self, cr, uid, ids):
         ''' Activity when a new crm.meeting is created
         '''
@@ -84,19 +84,21 @@ class crm_meeting_relation_fields(osv.osv):
         self.write(cr, uid, ids, { 'state': 'close'})
         return True
 
-    # Button action ############################################################
+    # Button action ###########################################################
     def action_relation_send(self, cr, uid, ids, context=None):
-        '''
-        This function opens a window to compose an email, with the edi sale template message loaded by default
+        ''' This function opens a window to compose an email, with the edi sale 
+            template message loaded by default
         '''
         assert len(ids) == 1, 'This option should only be used for a single id at a time.'
         ir_model_data = self.pool.get('ir.model.data')
         try:
-            template_id = ir_model_data.get_object_reference(cr, uid, 'crm_intervent', 'email_crm_interven_relation')[1]
+            template_id = ir_model_data.get_object_reference(
+                cr, uid, 'crm_intervent', 'email_crm_interven_relation')[1]
         except ValueError:
             template_id = False
         try:
-            compose_form_id = ir_model_data.get_object_reference(cr, uid, 'mail', 'email_compose_message_wizard_form')[1]
+            compose_form_id = ir_model_data.get_object_reference(
+                cr, uid, 'mail', 'email_compose_message_wizard_form')[1]
         except ValueError:
             compose_form_id = False 
         ctx = dict(context)
