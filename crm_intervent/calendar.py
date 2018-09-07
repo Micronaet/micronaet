@@ -26,7 +26,30 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import osv, fields
+import os
+import sys
+import logging
+import openerp
+import openerp.netsvc as netsvc
+import openerp.addons.decimal_precision as dp
+from openerp.osv import fields, osv, expression, orm
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
+from openerp import SUPERUSER_ID#, api
+from openerp import tools
+from openerp.tools.translate import _
+from openerp.tools.float_utils import float_round as round
+from openerp.tools import (
+    DEFAULT_SERVER_DATE_FORMAT, 
+    DEFAULT_SERVER_DATETIME_FORMAT, 
+    DATETIME_FORMATS_MAP, 
+    float_compare,
+    )
+from openerp.osv.fields datetime as datetime_field
+
+
+_logger = logging.getLogger(__name__)
+
 
 class crm_meeting_relation_fields(osv.osv):
     """ CRM meeting extra field for send relation about appointment
@@ -34,6 +57,36 @@ class crm_meeting_relation_fields(osv.osv):
     _name = 'crm.meeting'    
     _inherit = 'crm.meeting'
     
+    def formatLang(self, cr, uid, value, date=False, datetime=False, 
+            context=None):
+        """ Convert datetime with TZ
+        """
+        if context is None:
+            context = {
+                'lang': 'it_IT',
+                }
+
+        DEFAULT_SERVER_TIME_FORMAT = 'HH:MM:SS'
+        import pdb; pdb.set_trace()
+        if not value:
+            return ''
+
+        if datetime:
+            value = value.split('.')[0]
+            date_format = '%s %s ' % (
+                DEFAULT_SERVER_DATETIME_FORMAT,
+                DEFAULT_SERVER_TIME_FORMAT,
+                )
+            parse_format = DEFAULT_SERVER_DATETIME_FORMAT
+            # Convert datetime values to the expected client/context timezone
+            date = datetime_field.context_timestamp(
+                cr, uid, timestamp=date, context=context)#self.localcontext)
+        else:    
+            date_format = DEFAULT_SERVER_DATE_FORMAT
+            parse_format = DEFAULT_SERVER_DATE_FORMAT
+            date = datetime(*value.timetuple()[:6])
+        return date.strftime(date_format.encode('utf-8'))
+
     # Workflow trigger action ##################################################
     def meeting_draft(self, cr, uid, ids):
         ''' Activity when a new crm.meeting is created
