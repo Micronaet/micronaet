@@ -46,7 +46,6 @@ from openerp.tools import (
     DATETIME_FORMATS_MAP, 
     float_compare,
     )
-from openerp.osv.fields datetime as datetime_field
 
 
 _logger = logging.getLogger(__name__)
