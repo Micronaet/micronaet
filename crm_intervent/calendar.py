@@ -132,7 +132,10 @@ class crm_meeting_relation_fields(osv.osv):
             local_tz = pytz.timezone('Europe/Rome')
             utc_dt = datetime.strptime(utc, DEFAULT_SERVER_DATETIME_FORMAT)
             local_dt = utc_dt.replace(tzinfo=pytz.utc).astimezone(local_tz)
-            return local_tz.normalize(local_dt)[:19]
+            return datetime.strftime(
+                local_tz.normalize(local_dt), 
+                DEFAULT_SERVER_DATETIME_FORMAT,
+                )
 
         res = {}        
         for item in self.browse(cr, uid, ids, context=context):
