@@ -24,7 +24,7 @@
                 <tree string="Pedimento" version="7.0" editable="bottom">
                     <field name="product_id" invisible="context.get('embedded', False)"/>
                     <field name="name" />
-                    <field name="product_qty" />                            
+                    <field name="product_qty" sum="Total"/>                            
                 </tree>
             </field>
         </record>
@@ -37,7 +37,8 @@
                 <xpath expr="//page[2]" position="after">
                     <page string="Pedimento">
                         <group col="4" colspan="4">
-                            <field name="pedimento_ids" context="{'embedded': True}"/>
+                            <separator string="Pedimento:" colspan="4"/>
+                            <field name="pedimento_ids" context="{'embedded': True}" readonly="1" nolabel="1"/>
                         </group>    
                     </page>
                 </xpath>                
