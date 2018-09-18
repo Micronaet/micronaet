@@ -112,9 +112,9 @@ class product_product_extra(osv.osv):
             # Total update:
             # -----------------------------------------------------------------
             if product_id not in total:
-                total[product_id] = 0
+                total[product_id] = [0, cost]
                 
-            total[product_id] += qty
+            total[product_id][0] += qty
 
             # -----------------------------------------------------------------
             # Pedimento:
@@ -141,11 +141,13 @@ class product_product_extra(osv.osv):
             'accounting_qty': 0.0,
             }, context=context)    
         for product_id in total:
+            qty, cost = total[product_id]
             # -----------------------------------------------------------------
             # Update product data:
             # -----------------------------------------------------------------
             self.write(cr, uid, product_id, {
-                'accounting_qty': total[product_id],
+                'accounting_qty': qty,
+                'standard_price': cost,
                 }, context=context)
         _logger.info('End import product account status')
         return True
