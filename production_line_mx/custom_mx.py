@@ -54,7 +54,6 @@ class product_product_extra(osv.osv):
             self, cr, uid, filename=False, start=1, context=None):
         ''' Import from Import Excel file from accounting
         '''
-        import pdb; pdb.set_trace()
         _logger.info('Start import product account status')
         if not filename:
             _logger.error('No file XLSX passed: %s' % filename)
@@ -62,11 +61,12 @@ class product_product_extra(osv.osv):
         filename = os.path.expanduser(filename)
 
         # Pool used:        
-        pedimento_pool = self.pool.get('product.pedimento')
+        pedimento_pool = self.pool.get('product.product.pedimento')
         
         # ---------------------------------------------------------------------
         # Clean pedimento:
         # ---------------------------------------------------------------------
+        import pdb; pdb.set_trace()
         _logger.info('Delete pedimentos')
         pedimento_ids = pedimento_pool.search(cr, uid, [], context=context)
         pedimento_pool.unlink(cr, uid, pedimento_ids, context=context)
