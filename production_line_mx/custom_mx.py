@@ -43,7 +43,6 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
-
 class product_product_extra(osv.osv):
     ''' Extra fields for product.product object
     '''
@@ -56,20 +55,14 @@ class product_product_extra(osv.osv):
         ''' Import from Import Excel file from accounting
         '''
         _logger.info('Start import product account status')
+        if not filename:
+            _logger.error('No file XLSX passed: %s' % filename)
+            return False            
         filename = os.path.expanduser(filename)
 
         # Pool used:        
         pedimento_pool = self.pool.get('product.pedimento')
-        #ul_pool = self.pool.get('product.ul')
         
-        # ---------------------------------------------------------------------
-        # Read package:
-        # ---------------------------------------------------------------------
-        #ul_ids = ul_pool.search(cr, uid, [], context=context)
-        #package_db = {} # from code to ID            
-        #for item in ul_pool.browse(cr, uid, ul_ids, context=context):
-        #     package_db[item.code] = item.id
-             
         # ---------------------------------------------------------------------
         # Clean pedimento:
         # ---------------------------------------------------------------------

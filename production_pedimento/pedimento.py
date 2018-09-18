@@ -77,6 +77,4 @@ class MrpProductionMaterial(orm.Model):
         'pedimento_id': fields.many2one(
             'product.product.pedimento', 'Pedimento'),
         }
-
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
