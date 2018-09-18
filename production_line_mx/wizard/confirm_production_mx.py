@@ -93,6 +93,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
         contipaq_samba_folder = os.path.expanduser(contipaq_samba_folder)
         folder = {
             'root': contipaq_samba_folder,
+            'whoami': os.path.join(contipaq_samba_folder, 'whoami.winsrv'),
             'load': {
                 'data': os.path.join(
                     contipaq_samba_folder, 'load', 'load.xlsx'),
@@ -111,6 +112,12 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                 },           
             }
 
+        if not os.path.isfile(folder['whoami']):
+            raise osv.except_osv(
+                _('Mount error'),
+                _('Windows server not mounted!'),
+                )
+        
         lavoration_browse = lavoration_pool.browse(
             cr, uid, current_lavoration_id, context=context)
             
