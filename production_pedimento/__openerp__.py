@@ -34,7 +34,7 @@
     'depends': [
         'base',
         'production_line',
-        'web_m2x_options', # fields options
+        #'web_m2x_options', # fields options
         ],
     'init_xml': [],
     'demo': [],
