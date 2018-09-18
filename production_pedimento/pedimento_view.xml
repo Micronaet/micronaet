@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
-        <!--<record model="ir.ui.view" id="view_product_material_pedimento_form">
+        <record model="ir.ui.view" id="view_product_material_pedimento_form">
             <field name="name">Material Pedimento</field>
             <field name="model">mrp.production.workcenter.line</field>
             <field name="inherit_id" ref="production_line.default_mrp_production_workcenter_line_view"/>
@@ -10,7 +10,7 @@
                     <field name="pedimento_id" domain="[('product_id', '=', product_id)]" widget="selection"/>                    
                 </xpath>
             </field>
-        </record>-->
+        </record>
         
         <!--<record model="ir.ui.view" id="view_product_material_pedimento_form">
             <field name="name">Material Pedimento</field>
