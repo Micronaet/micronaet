@@ -66,7 +66,6 @@ class product_product_extra(osv.osv):
         # ---------------------------------------------------------------------
         # Clean pedimento:
         # ---------------------------------------------------------------------
-        import pdb; pdb.set_trace()
         _logger.info('Delete pedimentos')
         pedimento_ids = pedimento_pool.search(cr, uid, [], context=context)
         pedimento_pool.unlink(cr, uid, pedimento_ids, context=context)
@@ -89,7 +88,7 @@ class product_product_extra(osv.osv):
             default_code = WS.cell(row, 0).value
             pedimento = WS.cell(row, 1).value
             cost = WS.cell(row, 2).value
-            qty = WS.cell(row, 3).value
+            product_qty = WS.cell(row, 3).value
             # TODO log management
             
             # -----------------------------------------------------------------
@@ -114,15 +113,16 @@ class product_product_extra(osv.osv):
             if product_id not in total:
                 total[product_id] = [0, cost]
                 
-            total[product_id][0] += qty
+            total[product_id][0] += product_qty
 
             # -----------------------------------------------------------------
             # Pedimento:
             # -----------------------------------------------------------------
-            if pedimento and qty > 0: # Pedimento present with q positive
+            if pedimento and product_qty > 0: # Pedimento present with q positive
                 pedimento_pool.create(cr, uid, {
                     'name': pedimento,
                     'product_id': product_id,
+                    'product_qty': product_qty,
                     }, context=context)
 
             # -----------------------------------------------------------------
@@ -141,12 +141,12 @@ class product_product_extra(osv.osv):
             'accounting_qty': 0.0,
             }, context=context)    
         for product_id in total:
-            qty, cost = total[product_id]
+            product_qty, cost = total[product_id]
             # -----------------------------------------------------------------
             # Update product data:
             # -----------------------------------------------------------------
             self.write(cr, uid, product_id, {
-                'accounting_qty': qty,
+                'accounting_qty': product_qty,
                 'standard_price': cost,
                 }, context=context)
         _logger.info('End import product account status')

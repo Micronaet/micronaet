@@ -54,6 +54,7 @@ class ProductProductPedimento(orm.Model):
     _columns = {
         'name': fields.char('Name', size=64, required=True),
         'product_id': fields.many2one('product.product', 'Product'),
+        'product_qty': fields.float('Qty', digits=(16, 3)),
         }
         
 class ProductProduct(orm.Model):
