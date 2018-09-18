@@ -21,8 +21,6 @@
 #
 ###############################################################################
 
-from . import custom_mx
-from . import wizard
-
+from . import confirm_production
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
