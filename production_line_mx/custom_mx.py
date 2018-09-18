@@ -54,6 +54,7 @@ class product_product_extra(osv.osv):
             self, cr, uid, filename=False, start=1, context=None):
         ''' Import from Import Excel file from accounting
         '''
+        import pdb; pdb.set_trace()
         _logger.info('Start import product account status')
         if not filename:
             _logger.error('No file XLSX passed: %s' % filename)
