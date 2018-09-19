@@ -158,6 +158,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
 
             # Create movement in list:
             product_qty = wiz_proxy.real_product_qty
+            # TODO To be managed wrong and recycle load
             wrong = wiz_proxy.wrong
             recycle = wiz_proxy.recycle
             package_id = \
@@ -229,7 +230,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             # Better: reload from dbmirror (but in real time)
             product_pool.write(
                 cr, uid, mrp.product_id.id,    
-                # XXX Now update accounting_qty on db for speed up
+                # Update accounting_qty on db for speed up
                 {'accounting_qty': 
                     mrp.product_id.accounting_qty + \
                         wiz_proxy.real_product_qty,
@@ -243,6 +244,9 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                 product_code, product_qty, price, ''))                
             convert_load_id = {} # list for convert CL code in load.id
 
+            # -----------------------------------------------------------------
+            #                          Write Excel SL:
+            # -----------------------------------------------------------------
             # B. Unload package:
             if wiz_proxy.package_id and wiz_proxy.ul_qty:
                 f_cl.write(
@@ -273,7 +277,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             #                         Load CL for product
             # -----------------------------------------------------------------
             try:
-                accounting_cl_code = 'CHANGE' # TODO counter for CL
+                accounting_cl_code = 'CLXXX' # TODO counter for CL
 
                 error = (
                     _('Update OpenERP with CL error!'),
@@ -410,8 +414,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                             convert_load_id[accounting_cl_code] = load.id
                             # TODO problema con il file di ritorno !!!!!!!!!!!!
 
-                    # Temporary update accounting_qty on db for speed up 
-                    # (till new synd for product state with correct value)
+                    # Temporary update accounting_qty on db for speed up
                     # TODO Verificare perchè dovrebbe essere già stato 
                     # tolto alla creazione della CL!!
                     # product_pool.write(cr, uid, unload.product_id.id, 
@@ -469,7 +472,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             #                              SL Document
             # -----------------------------------------------------------------
             # extract XLSX file:
-            accounting_sl_code = 'SL000' # TODO change
+            accounting_sl_code = 'SLXXX' # TODO change
             # TODO load operation
 
             ws_name = 'unload'
