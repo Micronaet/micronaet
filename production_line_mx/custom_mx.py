@@ -104,7 +104,6 @@ class product_product_extra(osv.osv):
                 _logger.error('%s. Code not found in ODOO %s (jump line)' % (
                     row, default_code))
                 continue
-
             product_id = product_ids[0]
 
             # -----------------------------------------------------------------

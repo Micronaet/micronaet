@@ -81,7 +81,9 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         wf_service = netsvc.LocalService('workflow')
 
+        # ---------------------------------------------------------------------
         # Get parameters
+        # ---------------------------------------------------------------------
         contipaq_samba_folder = company_pool.browse(
             cr, uid, 1, context=context).contipaq_samba_folder
 
@@ -112,6 +114,9 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                 },           
             }
 
+        # ---------------------------------------------------------------------
+        # Check mount test file:
+        # ---------------------------------------------------------------------
         if not os.path.isfile(folder['whoami']):
             raise osv.except_osv(
                 _('Mount error'),
@@ -123,15 +128,18 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             
         # Readability:
         mrp = lavoration_browse.production_id # Production reference
-        pallet = wiz_proxy.pallet_product_id or False  
-        wc = lavoration_browse.workcenter_id or False
+        pallet = wiz_proxy.pallet_product_id
+        wc = lavoration_browse.workcenter_id
 
+        # ---------------------------------------------------------------------
+        #                      CL  (lavoration load)
+        # ---------------------------------------------------------------------
         # Only if not to close have a partial or fully load:
         if wiz_proxy.state == 'product':
             # -----------------------------------------------------------------
-            #                      CL  (lavoration load)
+            # Check operations:
             # -----------------------------------------------------------------
-            # Verify thet if is the last load no lavoration are open:
+            # Last lavoration must all closed state:
             if not wiz_proxy.partial:
                 for l in mrp.workcenter_lines:
                     if l.state not in ('done', 'cancel'): # not closed
@@ -139,13 +147,15 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                             _('Last lavoration:'),
                             _('When is the last lavoration all lavoration must be in closed state!'),
                             )
-                            
+
+            # MRP in cancel:                            
             if mrp.accounting_state in ('cancel'):
                 raise osv.except_osv(
                     _('Production error:'),
                     _('Could not add other extra load (production cancelled)!')
                     )
-                    
+            
+            
             if wiz_proxy.package_id and not wiz_proxy.ul_qty:
                 raise osv.except_osv(
                     _('Package error:'),
@@ -499,7 +509,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             excel_pool.save_file_as(folder['unload']['data'])
             
             # TODO confirm load procedure
-            unload_confirmed = False # TODO Change
+            unload_confirmed = True
             lavoration_pool.write(
                 cr, uid, [current_lavoration_id], {
                     'accounting_sl_code': accounting_sl_code,
@@ -536,4 +546,16 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                         unload.pedimento_id else '/',
                     )
         return res
+        
+    _columns = {
+        'partial': fields.boolean('Partial', 
+            help='If the product qty indicated is a partial load (not close lavoration)'),
+        'use_mrp_package': fields.boolean('Usa solo imballi produzione', 
+            help='Mostra solo gli imballaggi attivi nella produzione'),
+        }
+        
+    _defaults = {
+        'partial': lambda *a: False,        
+        'use_mrp_package': lambda *x: False,        
+        }    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

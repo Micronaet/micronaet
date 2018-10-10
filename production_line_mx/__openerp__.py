@@ -43,6 +43,7 @@
         #'security/ir.model.access.csv',    
         'custom_mx_view.xml',
         'wizard/parameter_view.xml',
+        'wizard/confirm_production_mx_wizard.xml',
         'scheduler.xml',        
         ],
     'active': False,
