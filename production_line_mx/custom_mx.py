@@ -76,7 +76,7 @@ class product_product_extra(osv.osv):
         # ---------------------------------------------------------------------
         path = os.path.expanduser(path)
         history = os.path.join(path, 'imported')
-        import pdb; pdb.set_trace()
+
         for root, folders, files in os.walk(path):
             for f in files:
                 filename = os.path.join(path, f)
@@ -163,7 +163,12 @@ class product_product_extra(osv.osv):
                 # -------------------------------------------------------------
                 # Move file on history
                 # -------------------------------------------------------------
+                try:
+                    WB.close()
+                except:
+                    _logger.info('Error close %s' % filename)
                 shutil.move(filename, history_name)
+                _logger.info('Move %s in %s' % (filename, history_name))
                 
                 break # TODO manage file order
         return True
