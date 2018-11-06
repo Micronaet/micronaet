@@ -76,7 +76,7 @@ class product_product_extra(osv.osv):
         # ---------------------------------------------------------------------
         path = os.path.expanduser(path)
         history = os.path.join(path, 'imported')
-        import pdb; pdb.set_trace()
+
         for root, files, folders in os.walk(path):
             for f in files:
                 filename = os.join(path, f)
