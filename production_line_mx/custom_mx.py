@@ -79,8 +79,8 @@ class product_product_extra(osv.osv):
         import pdb; pdb.set_trace()
         for root, folders, files in os.walk(path):
             for f in files:
-                filename = os.join(path, f)
-                history_name = os.join(history, f)
+                filename = os.path.join(path, f)
+                history_name = os.path.join(history, f)
                 try:
                     WB = xlrd.open_workbook(filename)
                 except:
