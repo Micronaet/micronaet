@@ -69,6 +69,8 @@ class MrpProduction(osv.Model):
             Package used during lavoration process
         '''
         excel_pool = self.pool.get('excel.writer')
+        lavoration_pool = self.pool.get('mrp.production.workcenter.line')
+
         ws_name = 'load'
         excel_pool.create_worksheet(ws_name)
 
@@ -145,8 +147,8 @@ class MrpProduction(osv.Model):
 
         # Update all loads with total:
         for load in lavoration.load_ids:        
-            load_pool.write(cr, uid, uid, [load.id], {
-                'accounting_cost': unload_cost * load.product_qty,
+            load_pool.write(cr, uid, [load.id], {
+                'accounting_cost': unit_cost * load.product_qty,
                 }, context=context)
         
         # ---------------------------------------------------------------------
@@ -177,7 +179,12 @@ class MrpProduction(osv.Model):
         excel_pool.save_file_as(folder['load']['data'] % lavoration.id)
         
         # After creating CL write SL document
-        return self.write_excel_SL(lavoration, folder)
+        self.write_excel_SL(lavoration, folder)
+
+        # Lavoration is done now:
+        return lavoration_pool.write(cr, uid, [lavoration.id], {
+            'state': 'done',
+            }, context=context)
         
     def write_excel_SL(self, lavoration, folder):
         ''' Write SL document in Excel file
@@ -208,12 +215,13 @@ class MrpProduction(osv.Model):
                 _('Lot'),
                 ])
 
-        for l in mrp.workcenter_lines:
+        for l in mrp.workcenter_lines:            
             for load in l.load_ids:
                 # -------------------------------------------------------------
                 # Unload package:
                 # -------------------------------------------------------------
                 product = load.package_id.linked_product_id
+                row +=1 
                 excel_pool.write_xls_line(ws_name, row, [
                     product.default_code,
                     load.ul_qty,
@@ -227,7 +235,8 @@ class MrpProduction(osv.Model):
                 # Unload Palled:
                 # -------------------------------------------------------------
                 if load.pallet_product_id:
-                    product = load.pallet_product_id.linked_product_id
+                    product = load.pallet_product_id
+                    row +=1 
                     excel_pool.write_xls_line(ws_name, row, [
                         product.default_code,
                         load.pallet_qty,
@@ -254,7 +263,7 @@ class MrpProduction(osv.Model):
                     unload.pedimento_id else '',
                 '', # lot
                 ])
-        excel_pool.save_file_as(folder['unload']['data'] % lavoration.id)
+        excel_pool.save_file_as(folder['unload']['data'] % lavoration.id)        
         return True
     
     # -------------------------------------------------------------------------    
@@ -340,7 +349,6 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
         pallet = wiz_proxy.pallet_product_id
         wc = lavoration_browse.workcenter_id
 
-        import pdb; pdb.set_trace()
         # ---------------------------------------------------------------------
         #                      CL  (lavoration load)
         # ---------------------------------------------------------------------
@@ -446,7 +454,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             # -----------------------------------------------------------------
             #                          Write Excel CL:
             # -----------------------------------------------------------------
-            mrp_pool.write_excel_CL(cr, uid, lavoration, folder, 
+            mrp_pool.write_excel_CL(cr, uid, lavoration_browse, folder, 
                 context=context)
             wf_service.trg_validate(
                 uid, 'mrp.production', 
