@@ -59,6 +59,125 @@ class MrpProduction(osv.Model):
     # -------------------------------------------------------------------------
     # Utility for SL and CL movement:
     # -------------------------------------------------------------------------
+    def write_excel_CL(self, cr, uid, excel_pool, lavoration, folder, 
+            context=None):
+        ''' Write CL document in Excel file
+            excel_pool: Excel file manager
+            lavoration: Laboration browse obj
+            folder: Folder parameter
+            
+            Prepare Excel file in correct parameter folder with material and 
+            Package used during lavoration process
+        '''
+        excel_pool = self.pool.get('excel.writer')
+        ws_name = 'load'
+        excel_pool.create_worksheet(ws_name)
+
+        mrp = lavoration.production_id
+        wc = lavoration.workcenter_id
+        load_pool = self.pool.get('mrp.production.workcenter.load')
+
+        # ---------------------------------------------------------------------
+        #                          Cost calculation:
+        # ---------------------------------------------------------------------
+        # Total final product (net):
+        total = 0.0 
+        # XXX Calculated every load on all production (current 1)
+        for l in mrp.workcenter_lines:
+            for load in l.load_ids:
+                total += load.product_qty or 0.0
+
+        # ---------------------------------------------------------------------
+        # Lavoration K cost (for line):
+        # ---------------------------------------------------------------------
+        try:
+            cost_line = wc.cost_product_id.standard_price or 0.0
+        except:
+            cost_line = 0.0
+        if not cost_line:    
+            raise osv.except_osv(
+                _('Calculate lavoration cost!'),
+                _('Error calculating lavoration cost, verify if '
+                    'the workcenter has product linked'))
+        unload_cost_total = cost_line * total # Lavoration cost
+
+        for l in mrp.workcenter_lines:
+            # -----------------------------------------------------------------
+            # Unload materials:
+            # -----------------------------------------------------------------
+            for unload in l.bom_material_ids:
+                try:
+                    unload_cost_total += \
+                        unload.product_id.standard_price * unload.quantity
+                except:
+                    _logger.error(_('Error calculating unload lavoration'))
+
+            # -----------------------------------------------------------------
+            # Unload package and pallet:
+            # -----------------------------------------------------------------
+            for load in l.load_ids:
+                # -------------------------------------------------------------
+                # Package:
+                # -------------------------------------------------------------
+                package = load.package_id
+                link_product = package.linked_product_id
+                
+                if not package:
+                    raise osv.except_osv(
+                        _('Calculate lavoration cost!'),
+                        _('No package in load'))
+                if not link_product:
+                    raise osv.except_osv(
+                        _('Calculate lavoration cost!'),
+                        _('No package product in load'))    
+                
+                unload_cost_total += \
+                    link_product.standard_price * load.ul_qty
+
+                # -------------------------------------------------------------
+                # Package:
+                # -------------------------------------------------------------
+                pallet = load.pallet_product_id
+                if pallet: # there's pallet
+                    unload_cost_total += \
+                        pallet.standard_price * load.pallet_qty
+                    
+        unit_cost = unload_cost_total / total
+
+        # Update all loads with total:
+        for load in lavoration.load_ids:        
+            load_pool.write(cr, uid, uid, [load.id], {
+                'accounting_cost': unload_cost * load.product_qty,
+                }, context=context)
+        
+        # ---------------------------------------------------------------------
+        #                             Excel file:
+        # ---------------------------------------------------------------------
+        row = 0
+        excel_pool.write_xls_line(ws_name, row, [
+                _('Code'),
+                _('Quantity'),
+                _('UOM'),
+                _('Cost'),
+                _('Lot'), # Pedimento
+                ])
+
+        # ---------------------------------------------------------------------
+        # Explode materials:
+        # ---------------------------------------------------------------------
+        for load in lavoration.load_ids:        
+            row += 1
+            product = load.product_id
+            excel_pool.write_xls_line(ws_name, row, [
+                product.default_code,
+                load.product_qty,
+                product.uom_id.name, # TODO account ref
+                unit_cost,
+                load.product_code, # Lot code
+                ])
+        excel_pool.save_file_as(folder['load']['data'] % lavoration.id)
+        return True
+        
     def write_excel_SL(self, excel_pool, lavoration, folder):
         ''' Write SL document in Excel file
             self, cr, uid
@@ -69,11 +188,14 @@ class MrpProduction(osv.Model):
             Prepare Excel file in correct parameter folder with material and 
             Package used during lavoration process
         '''
+        excel_pool = self.pool.get('excel.writer')
         ws_name = 'unload'
         excel_pool.create_worksheet(ws_name)
+
+        mrp = lavoration.production_id
         
         # ---------------------------------------------------------------------
-        # Header: 
+        #                          Excel file:
         # ---------------------------------------------------------------------
         row = 0
         excel_pool.write_xls_line(ws_name, row, [
@@ -84,11 +206,43 @@ class MrpProduction(osv.Model):
                 _('Pedimento'),
                 _('Lot'),
                 ])
-        
+
+        for l in mrp.workcenter_lines:
+            for load in l.load_ids:
+                # -------------------------------------------------------------
+                # Unload package:
+                # -------------------------------------------------------------
+                product = load.package_id.linked_product_id
+                excel_pool.write_xls_line(ws_name, row, [
+                    product.default_code,
+                    load.ul_qty,
+                    product.uom_id.name, # TODO account ref
+                    product.standard_price,
+                    '', # pedimento
+                    '', # lot
+                    ])
+
+                # -------------------------------------------------------------
+                # Unload Palled:
+                # -------------------------------------------------------------
+                if load.pallet_product_id:
+                    product = load.pallet_product_id.linked_product_id
+                    excel_pool.write_xls_line(ws_name, row, [
+                        product.default_code,
+                        load.pallet_qty,
+                        product.uom_id.name, # TODO account ref
+                        product.standard_price,
+                        '', # pedimento
+                        '', # lot
+                        ])
+
         # ---------------------------------------------------------------------
         # Explode materials:
         # ---------------------------------------------------------------------
-        for unload in lavoration_browse.bom_material_ids:
+        for unload in lavoration.bom_material_ids:
+            # -----------------------------------------------------------------
+            # Unload materials:
+            # -----------------------------------------------------------------
             row += 1
             excel_pool.write_xls_line(ws_name, row, [
                 unload.product_id.default_code,
@@ -99,13 +253,12 @@ class MrpProduction(osv.Model):
                     unload.pedimento_id else '',
                 '', # lot
                 ])
-        excel_pool.save_file_as(folder['unload']['data'])
+        excel_pool.save_file_as(folder['unload']['data'] % lavoration.id)
         return True
     
     # -------------------------------------------------------------------------    
     # TODO Procedure to update accounting_sl_code
     # -------------------------------------------------------------------------    
-    
     
 class ConfirmMrpProductionWizard(osv.osv_memory):
     ''' Wizard that confirm production/lavoration
@@ -127,7 +280,6 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
         lavoration_pool = self.pool.get('mrp.production.workcenter.line')
         product_pool = self.pool.get('product.product')
         load_pool = self.pool.get('mrp.production.workcenter.load')
-        excel_pool = self.pool.get('excel.writer')
 
         wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
         current_lavoration_id = context.get('active_id', 0)
@@ -154,7 +306,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             'whoami': os.path.join(contipaq_samba_folder, 'whoami.winsrv'),
             'load': {
                 'data': os.path.join(
-                    contipaq_samba_folder, 'load', 'load.xlsx'),
+                    contipaq_samba_folder, 'load', 'load_%s.xlsx'),
                 'history': os.path.join(
                     contipaq_samba_folder, 'load', 'history'),
                 'log': os.path.join(
@@ -162,7 +314,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                 },
             'unload': {
                 'data': os.path.join(
-                    contipaq_samba_folder, 'unload', 'unload.xlsx'),
+                    contipaq_samba_folder, 'unload', 'unload_%s.xlsx'),
                 'history': os.path.join(
                     contipaq_samba_folder, 'unload', 'history'),
                 'log': os.path.join(
@@ -192,18 +344,19 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         # Only if not to close have a partial or fully load:
         if wiz_proxy.state == 'product':
+            import pdb; pdb.set_trace()
             # -----------------------------------------------------------------
-            # Check operations:
+            # Check operations before CL:
             # -----------------------------------------------------------------
+            #TODO Manage partial ?? if not wiz_proxy.partial:
             # Last lavoration must all closed state:
-            if not wiz_proxy.partial:
-                for l in mrp.workcenter_lines:
-                    if l.state not in ('done', 'cancel'): # not closed
-                        raise osv.except_osv(
-                            _('Last lavoration:'),
-                            _('When is the last lavoration all lavoration '
-                                'must be in closed state!'),
-                            )
+            for l in mrp.workcenter_lines:
+                if l.state not in ('done', 'cancel'): # not closed
+                    raise osv.except_osv(
+                        _('Last lavoration:'),
+                        _('When is the last lavoration all lavoration '
+                            'must be in closed state!'),
+                        )
 
             # MRP in cancel:                            
             if mrp.accounting_state in ('cancel'):
@@ -222,7 +375,10 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                     _('Pallet error:'),
                     _('If pallet is present quantity is mandatory!'))
 
+            # -----------------------------------------------------------------
             # Create movement in list:
+            # -----------------------------------------------------------------
+            accounting_cl_code = 'CLXXX' # TODO counter for CL
             product_qty = wiz_proxy.real_product_qty
             # TODO To be managed wrong and recycle load
             wrong = wiz_proxy.wrong
@@ -231,6 +387,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                 wiz_proxy.package_id.id if wiz_proxy.package_id else False
             price = 0.0   
             load_id = load_pool.create(cr, uid, {
+                'accounting_cl_code': accounting_cl_code,
                 'product_qty': product_qty, # only the wrote total
                 'line_id': lavoration_browse.id,
                 'partial': wiz_proxy.partial,
@@ -259,42 +416,22 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             else:    
                 code = wiz_proxy.product_id.default_code
             
-            ref_lot_id = False
-            mrp_id = self.get_mrp_id(cr, uid, context=context)
-            #if mrp_id:        
-            #    lot_created_id = mrp_pool.get_account_yet_created_ul(
-            #        cr, uid, mrp_id, wiz_proxy.package_id.id, context=context)
-            #    if lot_created_id:
-            #        ref_lot_id = '#%-9s' % lot_created_id
-                
+            #ref_lot_id = False
             ref_lot_name = '%06d#%01d' % (
                 int(mrp.name[3:]),
                 sequence,
                 ) # Job <<< TODO use production (test, mrp is 5)
 
-            # Written in CL info:                
-            real_product_code = '%-8s%-2s%-10s%-10s' % (
+            product_code = '%-8s%-2s%-10s%-10s' % (
                 code,
                 wc.code[:2],
                 ref_lot_name,
                 wiz_proxy.package_id.code if package_id else '', # Package
                 )
-                
-            # Passed to account    
-            product_code = '%-8s%-2s%-10s%-10s' % (
-                code,
-                wc.code[:2],
-                ref_lot_id or ref_lot_name,
-                wiz_proxy.package_id.code if package_id else '', # Package
-                )
             load_pool.write(cr, uid, load_id, {
-                'product_code_id': lot_created_id,
-                'product_code': real_product_code,
+                #'product_code_id': lot_created_id,
+                'product_code': product_code,
                 }, context=context)
-
-
-
-
 
             # Better: reload from dbmirror (but in real time)
             #product_pool.write(
@@ -308,218 +445,13 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             # -----------------------------------------------------------------
             #                          Write Excel CL:
             # -----------------------------------------------------------------
-            # A. Product load:
-            f_cl.write('%-35s%10.2f%13.5f%16s\r\n' % (
-                product_code, product_qty, price, ''))                
-            convert_load_id = {} # list for convert CL code in load.id
-
-            # -----------------------------------------------------------------
-            #                          Write Excel SL:
-            # -----------------------------------------------------------------
-            # B. Unload package:
-            if wiz_proxy.package_id and wiz_proxy.ul_qty:
-                f_cl.write(
-                    '%-10s%-25s%10.2f%-13s%16s\r\n' % ( # TODO 10 extra space
-                        wiz_proxy.package_id.linked_product_id.default_code,
-                        '', #lavoration_browse.name[4:],
-                        - wiz_proxy.ul_qty,
-                        lavoration_browse.accounting_sl_code,
-                        '',
-                        ))
-            else:
-                pass # TODO raise error if no package? (no if wrong!)
-
-            # C. Unload pallet:
-            if pallet and wiz_proxy.pallet_qty:
-                f_cl.write(
-                    '%-10s%-25s%10.2f%-13s%16s\r\n' % ( # TODO 10 extra space
-                        pallet.default_code,
-                        '', #lavoration_browse.name[4:],
-                        - wiz_proxy.pallet_qty,
-                        lavoration_browse.accounting_sl_code,
-                        '',
-                        ))
-            else:
-                pass
-
-            # -----------------------------------------------------------------
-            #                         Load CL for product
-            # -----------------------------------------------------------------
-            try:
-                accounting_cl_code = 'CLXXX' # TODO counter for CL
-
-                error = (
-                    _('Update OpenERP with CL error!'),
-                    _('Cannot write in OpenERP CL number for this load!'),
-                    )
-                load_pool.write(cr, uid, load_id, {
-                    'accounting_cl_code': accounting_cl_code,
-                    }, context=context)
-
-                # --------------------------------
-                # Update lavoration with new info:
-                # --------------------------------
-                total = 0.0 # net production total
-                
-                # Partial (calculated every load on all production)                
-                for l in mrp.workcenter_lines:
-                    for partial in l.load_ids:
-                        total += partial.product_qty or 0.0
-
-                # TODO togliere i commenti nei log e metterli magari nella
-                # lavorazione per sapere come sono stati calcolati
-                _logger.info(_('Production real total: %s') % (total, ))
-                ######################### data = {'real_product_qty': total}
-
-
-
-                # Last unload document (extra op. needed)
-                if not wiz_proxy.partial: 
-                    # TODO togliere il load_confirmed
-                    # data['load_confirmed'] = True # No other loads are admit!
-                    # ---------------------------------------------------------
-                    #                     CL update price file
-                    # ---------------------------------------------------------
-                    try:        
-                        f_cl_upd = open(file_cl_upd, 'w')
-                    except:    
-                        raise osv.except_osv(
-                            _('Transit file!'),
-                            _('Problem accessing file: %s (maybe open in accounting program)!') % (
-                                file_cl_upd))
-                    unload_cost_total = 0.0
-
-                    # ------------------
-                    # Lavoration K cost:
-                    # ------------------
-                    try:
-                        cost_line = wc.cost_product_id.standard_price or 0.0
-                    except:
-                        cost_line = 0.0
-
-                    if not cost_line:    
-                        raise osv.except_osv(
-                            _('Calculate lavoration cost!'),
-                            _('Error calculating lavoration cost, verify if the workcenter has product linked'), )
-
-                    unload_cost_total = cost_line * total
-                    _logger.info(_('Lavoration %s [%s]') % (
-                        cost_line, unload_cost_total, ))
-
-                    # ----------------------------------------------
-                    # All unload cost of materials (all production):
-                    # ----------------------------------------------
-                    for lavoration in mrp.workcenter_lines:
-                        for unload in lavoration.bom_material_ids:
-                            try:
-                                unload_cost_total += \
-                                    unload.product_id.standard_price * \
-                                    unload.quantity
-                            except:
-                                _logger.error(
-                                    _('Error calculating unload lavoration'))    
-                    _logger.info(
-                        _('With materials [%s]') % unload_cost_total)
-
-                    # ------------------------------
-                    # All unload package and pallet:
-                    # ------------------------------
-                    for l in mrp.workcenter_lines:                    
-                        for load in l.load_ids:
-                            try:
-                                # Package:
-                                if load.package_id: # there's pallet
-                                    link_product = \
-                                        load.package_id.linked_product_id
-                                    unload_cost_total += \
-                                        link_product.standard_price * \
-                                        load.ul_qty
-                                    _logger.info(_('Package cost %s [%s]') % (
-                                        link_product.standard_price, 
-                                        load.ul_qty,
-                                    ))
-                            except:
-                                _logger.error(
-                                    _('Error calculating package price'))    
-                                
-                            try:
-                                # Pallet:
-                                pallet_in = load.pallet_product_id
-                                if pallet_in: # there's pallet
-                                    unload_cost_total += \
-                                        pallet_in.standard_price * \
-                                        load.pallet_qty
-                                    _logger.info(_('Pallet cost %s [%s]') % (
-                                        pallet_in.standard_price,
-                                        load.pallet_qty,
-                                    ))
-                            except:
-                                _logger.error(
-                                    _('Error calculating pallet price'))    
-                                
-                    unload_cost = unload_cost_total / total
-                    _logger.info(_('With package  %s [unit.: %s]') % (
-                        unload_cost_total, unload_cost, ))
-
-                    # Update all production with value calculated: #TODO serve?
-                    for l in mrp.workcenter_lines:                    
-                        for load in l.load_ids:
-                            load_pool.write(cr, uid, load.id, {
-                                'accounting_cost': 
-                                    unload_cost * load.product_qty,
-                                }, context=context)
-
-                            # Export CL for update product price:
-                            if not load.accounting_cl_code:
-                                raise osv.except_osv(
-                                    _('CL list!'),
-                                    _('Error CL without number finded!'), )
-                                
-                            accounting_cl_code = \
-                                load.accounting_cl_code.strip()
-                            f_cl_upd.write(
-                                '%-6s%10.5f\r\n' % (
-                                    accounting_cl_code,
-                                    unload_cost, ), # unit
-                                )
-                            convert_load_id[accounting_cl_code] = load.id
-                            # TODO problema con il file di ritorno !!!!!!!!!!!!
-
-                    # Temporary update accounting_qty on db for speed up
-                    # TODO Verificare perchè dovrebbe essere già stato 
-                    # tolto alla creazione della CL!!
-                    # product_pool.write(cr, uid, unload.product_id.id, 
-                    # {'accounting_qty':(unload.accounting_qty or 0.0) - 
-                    # (unload.quantity or 0.0),}, context=context)
-                    # TODO Vedere per scarico imballaggi
-                    f_cl_upd.close()
-
-                    # ---------------------------------------------------------
-                    #                   CL update for product cost
-                    # ---------------------------------------------------------
-                    # TODO load operation
-                    # >>>> mrp_pool.write_excel_SL(excel_pool, lavoration, folder)
-                    # TODO {'accounting_cost_confirmed': True},
-
-
-                    wf_service.trg_validate(
-                        uid, 'mrp.production', 
-                        mrp.id,
-                        'trigger_accounting_close',
-                        cr)
-
-            except:
-                raise osv.except_osv(
-                    _('Generic error'), 
-                    '%s' % (sys.exc_info(), )
-                    )
-
-
-
-
-
-
-
+            mrp_pool.write_excel_CL(cr, uid, excel_pool, lavoration, folder, 
+                context=context)
+            wf_service.trg_validate(
+                uid, 'mrp.production', 
+                mrp.id,
+                'trigger_accounting_close',
+                cr)
 
         else: # state == 'material' >> unload all material and package:
             # -----------------------------------------------------------------
@@ -529,23 +461,17 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             accounting_sl_code = 'SLXXX' # TODO change when confirmed
             unload_confirmed = True
             lavoration_pool.write(
-                cr, uid, [lavoration.id], {
+                cr, uid, [lavoration_browse.id], {
                     'accounting_sl_code': accounting_sl_code,
                     'unload_confirmed': unload_confirmed,
                     },
                 context=context)
             if unload_confirmed:
-                try:  # If not error till now close WF for this lavoration:
-                    wf_service.trg_validate(
-                        uid, 'mrp.production.workcenter.line',
-                        lavoration.id, 'button_done', cr)
-                except:
-                    error = (
-                        _('Workflow error:'),
-                        _('Error closing lavoration!'), 
-                        )
+                wf_service.trg_validate(
+                    uid, 'mrp.production.workcenter.line',
+                    lavoration_browse.id, 'button_done', cr)
                         
-        return {'type':'ir.actions.act_window_close'}
+        return {'type': 'ir.actions.act_window_close'}
 
     def default_list_unload(self, cr, uid, context=None):
         ''' Get default value, if load_confirmed so to_close is True
