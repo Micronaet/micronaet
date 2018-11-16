@@ -59,8 +59,7 @@ class MrpProduction(osv.Model):
     # -------------------------------------------------------------------------
     # Utility for SL and CL movement:
     # -------------------------------------------------------------------------
-    def write_excel_CL(self, cr, uid, excel_pool, lavoration, folder, 
-            context=None):
+    def write_excel_CL(self, cr, uid, lavoration, folder, context=None):
         ''' Write CL document in Excel file
             excel_pool: Excel file manager
             lavoration: Laboration browse obj
@@ -176,9 +175,11 @@ class MrpProduction(osv.Model):
                 load.product_code, # Lot code
                 ])
         excel_pool.save_file_as(folder['load']['data'] % lavoration.id)
-        return True
         
-    def write_excel_SL(self, excel_pool, lavoration, folder):
+        # After creating CL write SL document
+        return self.write_excel_SL(lavoration, folder)
+        
+    def write_excel_SL(self, lavoration, folder):
         ''' Write SL document in Excel file
             self, cr, uid
             excel_pool: Excel file manager
@@ -339,12 +340,12 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
         pallet = wiz_proxy.pallet_product_id
         wc = lavoration_browse.workcenter_id
 
+        import pdb; pdb.set_trace()
         # ---------------------------------------------------------------------
         #                      CL  (lavoration load)
         # ---------------------------------------------------------------------
         # Only if not to close have a partial or fully load:
         if wiz_proxy.state == 'product':
-            import pdb; pdb.set_trace()
             # -----------------------------------------------------------------
             # Check operations before CL:
             # -----------------------------------------------------------------
@@ -445,7 +446,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             # -----------------------------------------------------------------
             #                          Write Excel CL:
             # -----------------------------------------------------------------
-            mrp_pool.write_excel_CL(cr, uid, excel_pool, lavoration, folder, 
+            mrp_pool.write_excel_CL(cr, uid, lavoration, folder, 
                 context=context)
             wf_service.trg_validate(
                 uid, 'mrp.production', 
