@@ -266,11 +266,25 @@ class MrpProduction(osv.Model):
             # -----------------------------------------------------------------
             for unload in l.bom_material_ids:
                 row += 1
+                
+                # Check:                
+                default_code = unload.product_id.default_code
+                if not default_code:
+                    raise osv.except_osv(
+                        _('Unload material error:'),
+                        _('No default code found for product'))
+
+                standard_price = unload.product_id.default_code
+                if not default_code:
+                    raise osv.except_osv(
+                        _('Unload material error:'),
+                        _('No standard price %s') % default_code)
+
                 excel_pool.write_xls_line(ws_name, row, [
-                    unload.product_id.default_code,
+                    default_code,
                     unload.quantity,
                     unload.product_id.uom_id.name, # TODO account ref
-                    unload.product_id.standard_price,
+                    standard_price,
                     unload.pedimento_id.name if \
                         unload.pedimento_id else '',
                     '', # lot
