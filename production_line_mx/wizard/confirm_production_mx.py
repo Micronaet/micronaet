@@ -68,29 +68,22 @@ class MrpProduction(osv.Model):
             Prepare Excel file in correct parameter folder with material and 
             Package used during lavoration process
         '''
+        # Pool used:
         excel_pool = self.pool.get('excel.writer')
         lavoration_pool = self.pool.get('mrp.production.workcenter.line')
+        load_pool = self.pool.get('mrp.production.workcenter.load')
 
         ws_name = 'load'
         excel_pool.create_worksheet(ws_name)
 
+        # Readability:
         mrp = lavoration.production_id
         wc = lavoration.workcenter_id
-        load_pool = self.pool.get('mrp.production.workcenter.load')
 
         # ---------------------------------------------------------------------
         #                          Cost calculation:
         # ---------------------------------------------------------------------
-        # Total final product (net):
-        total = 0.0 
-        # XXX Calculated every load on all production (current 1)
-        for l in mrp.workcenter_lines:
-            for load in l.load_ids:
-                total += load.product_qty or 0.0
-
-        # ---------------------------------------------------------------------
         # Lavoration K cost (for line):
-        # ---------------------------------------------------------------------
         try:
             cost_line = wc.cost_product_id.standard_price or 0.0
         except:
@@ -100,23 +93,33 @@ class MrpProduction(osv.Model):
                 _('Calculate lavoration cost!'),
                 _('Error calculating lavoration cost, verify if '
                     'the workcenter has product linked'))
-        unload_cost_total = cost_line * total # Lavoration cost
 
-        for l in mrp.workcenter_lines:
+        # ---------------------------------------------------------------------
+        # Unloaded material, package and pallet:
+        # ---------------------------------------------------------------------
+        unload_cost_total = total = 0.0 
+        for l in mrp.workcenter_lines: # All lavoration in MRP:
+            mrp = l.production_id
+
             # -----------------------------------------------------------------
-            # Unload materials:
+            # Master MRP Materials:
             # -----------------------------------------------------------------
-            for unload in l.bom_material_ids:
+            for unload in mrp.bom_material_ids:
+                # Q:
+                total += unload.product_qty or 0.0
+                
+                # Cost for material:
                 try:
                     unload_cost_total += \
                         unload.product_id.standard_price * unload.quantity
                 except:
-                    _logger.error(_('Error calculating unload lavoration'))
+                    _logger.error(
+                        _('Error calculating unload material (missed cost'))
 
             # -----------------------------------------------------------------
-            # Unload package and pallet:
+            # Package and pallet:
             # -----------------------------------------------------------------
-            for load in l.load_ids:
+            for load in mrp.load_ids:
                 # -------------------------------------------------------------
                 # Package:
                 # -------------------------------------------------------------
@@ -132,21 +135,27 @@ class MrpProduction(osv.Model):
                         _('Calculate lavoration cost!'),
                         _('No package product in load'))    
                 
+                # Package cost:
                 unload_cost_total += \
                     link_product.standard_price * load.ul_qty
 
                 # -------------------------------------------------------------
-                # Package:
+                # Pallet:
                 # -------------------------------------------------------------
                 pallet = load.pallet_product_id
-                if pallet: # there's pallet
+                # Pallet cost:
+                if pallet: # There's pallet
                     unload_cost_total += \
                         pallet.standard_price * load.pallet_qty
-                    
+
+        # Total cost of MRP production:
+        unload_cost_total = cost_line * total # K of Line (medium cost)
         unit_cost = unload_cost_total / total
 
-        # Update all loads with total:
-        for load in lavoration.load_ids:        
+        # ---------------------------------------------------------------------
+        # Update all loads with total (master):
+        # ---------------------------------------------------------------------
+        for load in mrp.load_ids:        
             load_pool.write(cr, uid, [load.id], {
                 'accounting_cost': unit_cost * load.product_qty,
                 }, context=context)
@@ -166,7 +175,7 @@ class MrpProduction(osv.Model):
         # ---------------------------------------------------------------------
         # Explode materials:
         # ---------------------------------------------------------------------
-        for load in lavoration.load_ids:        
+        for load in mrp.load_ids:        
             row += 1
             product = load.product_id
             excel_pool.write_xls_line(ws_name, row, [
@@ -215,7 +224,8 @@ class MrpProduction(osv.Model):
                 _('Lot'),
                 ])
 
-        for l in mrp.workcenter_lines:            
+        for l in mrp.workcenter_lines:
+            # For every load product:
             for load in l.load_ids:
                 # -------------------------------------------------------------
                 # Unload package:
@@ -249,20 +259,22 @@ class MrpProduction(osv.Model):
         # ---------------------------------------------------------------------
         # Explode materials:
         # ---------------------------------------------------------------------
-        for unload in lavoration.bom_material_ids:
+        # All lavoratoin in master MRP:
+        for l in mrp.workcenter_lines:
             # -----------------------------------------------------------------
-            # Unload materials:
+            # All material in lavoration:
             # -----------------------------------------------------------------
-            row += 1
-            excel_pool.write_xls_line(ws_name, row, [
-                unload.product_id.default_code,
-                unload.quantity,
-                unload.product_id.uom_id.name, # TODO account ref
-                unload.product_id.standard_price,
-                unload.pedimento_id.name if \
-                    unload.pedimento_id else '',
-                '', # lot
-                ])
+            for unload in l.bom_material_ids:
+                row += 1
+                excel_pool.write_xls_line(ws_name, row, [
+                    unload.product_id.default_code,
+                    unload.quantity,
+                    unload.product_id.uom_id.name, # TODO account ref
+                    unload.product_id.standard_price,
+                    unload.pedimento_id.name if \
+                        unload.pedimento_id else '',
+                    '', # lot
+                    ])
         excel_pool.save_file_as(folder['unload']['data'] % lavoration.id)        
         return True
     
@@ -348,6 +360,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
         mrp = lavoration_browse.production_id # Production reference
         pallet = wiz_proxy.pallet_product_id
         wc = lavoration_browse.workcenter_id
+        partial = wiz_proxy.partial
 
         # ---------------------------------------------------------------------
         #                      CL  (lavoration load)
@@ -454,13 +467,15 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             # -----------------------------------------------------------------
             #                          Write Excel CL:
             # -----------------------------------------------------------------
-            mrp_pool.write_excel_CL(cr, uid, lavoration_browse, folder, 
-                context=context)
-            wf_service.trg_validate(
-                uid, 'mrp.production', 
-                mrp.id,
-                'trigger_accounting_close',
-                cr)
+            if not partial:
+                # Export Excel file and complete production:
+                mrp_pool.write_excel_CL(cr, uid, lavoration_browse, folder, 
+                    context=context)
+                wf_service.trg_validate(
+                    uid, 'mrp.production', 
+                    mrp.id,
+                    'trigger_accounting_close',
+                    cr)
 
         else: # state == 'material' >> unload all material and package:
             # -----------------------------------------------------------------
@@ -478,8 +493,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             if unload_confirmed:
                 wf_service.trg_validate(
                     uid, 'mrp.production.workcenter.line',
-                    lavoration_browse.id, 'button_done', cr)
-                        
+                    lavoration_browse.id, 'button_done', cr)                        
         return {'type': 'ir.actions.act_window_close'}
 
     def default_list_unload(self, cr, uid, context=None):
@@ -502,14 +516,14 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
         return res
         
     _columns = {
-        'partial': fields.boolean('Partial', 
-            help='If the product qty indicated is a partial load (not close lavoration)'),
+        #'partial': fields.boolean('Partial', 
+        #    help='If the product qty indicated is a partial load (not close lavoration)'),
         'use_mrp_package': fields.boolean('Usa solo imballi produzione', 
             help='Mostra solo gli imballaggi attivi nella produzione'),
         }
         
     _defaults = {
-        'partial': lambda *a: False,        
+        #'partial': lambda *a: False,        
         'use_mrp_package': lambda *x: False,        
         }    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
