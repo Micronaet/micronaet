@@ -40,6 +40,15 @@ from openerp.tools import (
 
 _logger = logging.getLogger(__name__)
 
+class ProductUom(osv.Model):
+    ''' Product uom
+    '''
+    _inherit = 'product.uom'
+    
+    _columns = {
+        'contipaq_ref': fields.char('ContipaQ ref.', size=15),
+        }
+
 class ResCompany(orm.Model):
     """ Model name: ResCompany
     """
@@ -55,7 +64,13 @@ class MrpProduction(osv.Model):
     ''' MRP production
     '''
     _inherit = 'mrp.production'
-    
+
+    _columns = {    
+        'accounting_sl_code': fields.char('Accounting SL code', size=16, 
+            help='SL Code assigned during importation in accounting program'),
+        'accounting_cl_code': fields.char('Accounting CL code', size=16, 
+            help='CL Code assigned during importation in accounting program'),
+        }    
     # -------------------------------------------------------------------------
     # Utility for SL and CL movement:
     # -------------------------------------------------------------------------
@@ -106,7 +121,7 @@ class MrpProduction(osv.Model):
             # -----------------------------------------------------------------
             for unload in mrp.bom_material_ids:
                 # Q:
-                total += unload.product_qty or 0.0
+                total += unload.quantity or 0.0
                 
                 # Cost for material:
                 try:
@@ -148,8 +163,12 @@ class MrpProduction(osv.Model):
                     unload_cost_total += \
                         pallet.standard_price * load.pallet_qty
 
+        # ---------------------------------------------------------------------
         # Total cost of MRP production:
-        unload_cost_total = cost_line * total # K of Line (medium cost)
+        # ---------------------------------------------------------------------
+        # Add also Lavoration cost:
+        unload_cost_total += (cost_line * total) # K of Line (medium cost)
+        # Calculate unit cost:
         unit_cost = unload_cost_total / total
 
         # ---------------------------------------------------------------------
@@ -175,21 +194,22 @@ class MrpProduction(osv.Model):
         # ---------------------------------------------------------------------
         # Explode materials:
         # ---------------------------------------------------------------------
-        for load in mrp.load_ids:        
+        for load in mrp.load_ids:
             row += 1
             product = load.product_id
             excel_pool.write_xls_line(ws_name, row, [
                 product.default_code,
                 load.product_qty,
-                product.uom_id.name, # TODO account ref
+                product.uom_id.contipaq_ref,
                 unit_cost,
                 load.product_code, # Lot code
                 ])
         excel_pool.save_file_as(folder['load']['data'] % lavoration.id)
         
         # After creating CL write SL document
+        del(excel_pool) 
         self.write_excel_SL(lavoration, folder)
-
+        
         # Lavoration is done now:
         return lavoration_pool.write(cr, uid, [lavoration.id], {
             'state': 'done',
@@ -206,6 +226,7 @@ class MrpProduction(osv.Model):
             Package used during lavoration process
         '''
         excel_pool = self.pool.get('excel.writer')
+        
         ws_name = 'unload'
         excel_pool.create_worksheet(ws_name)
 
@@ -235,7 +256,7 @@ class MrpProduction(osv.Model):
                 excel_pool.write_xls_line(ws_name, row, [
                     product.default_code,
                     load.ul_qty,
-                    product.uom_id.name, # TODO account ref
+                    product.uom_id.contipaq_ref,
                     product.standard_price,
                     '', # pedimento
                     '', # lot
@@ -250,7 +271,7 @@ class MrpProduction(osv.Model):
                     excel_pool.write_xls_line(ws_name, row, [
                         product.default_code,
                         load.pallet_qty,
-                        product.uom_id.name, # TODO account ref
+                        product.uom_id.contipaq_ref,
                         product.standard_price,
                         '', # pedimento
                         '', # lot
@@ -274,8 +295,8 @@ class MrpProduction(osv.Model):
                         _('Unload material error:'),
                         _('No default code found for product'))
 
-                standard_price = unload.product_id.default_code
-                if not default_code:
+                standard_price = unload.product_id.standard_price
+                if not standard_price:
                     raise osv.except_osv(
                         _('Unload material error:'),
                         _('No standard price %s') % default_code)
@@ -283,13 +304,13 @@ class MrpProduction(osv.Model):
                 excel_pool.write_xls_line(ws_name, row, [
                     default_code,
                     unload.quantity,
-                    unload.product_id.uom_id.name, # TODO account ref
+                    unload.product_id.uom_id.contipaq_ref,
                     standard_price,
                     unload.pedimento_id.name if \
                         unload.pedimento_id else '',
                     '', # lot
                     ])
-        excel_pool.save_file_as(folder['unload']['data'] % lavoration.id)        
+        excel_pool.save_file_as(folder['unload']['data'] % mrp.id)        
         return True
     
     # -------------------------------------------------------------------------    
@@ -404,17 +425,21 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             if wiz_proxy.package_id and not wiz_proxy.ul_qty:
                 raise osv.except_osv(
                     _('Package error:'),
-                    _('If package is present quantity is mandatory!'))
+                    _('If package is present quantity is mandatory [%s]!') % (
+                        wiz_proxy.package_id.name,
+                        ))
                     
             if pallet and not wiz_proxy.pallet_qty:
                 raise osv.except_osv(
                     _('Pallet error:'),
-                    _('If pallet is present quantity is mandatory!'))
+                    _('If pallet is present quantity is mandatory! [%s]' % (
+                        pallet.name,
+                        )))
 
             # -----------------------------------------------------------------
             # Create movement in list:
             # -----------------------------------------------------------------
-            accounting_cl_code = 'CLXXX' # TODO counter for CL
+            #accounting_cl_code = 'CLXXX' # TODO counter for CL
             product_qty = wiz_proxy.real_product_qty
             # TODO To be managed wrong and recycle load
             wrong = wiz_proxy.wrong
@@ -423,7 +448,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                 wiz_proxy.package_id.id if wiz_proxy.package_id else False
             price = 0.0   
             load_id = load_pool.create(cr, uid, {
-                'accounting_cl_code': accounting_cl_code,
+                #'accounting_cl_code': accounting_cl_code,
                 'product_qty': product_qty, # only the wrote total
                 'line_id': lavoration_browse.id,
                 'partial': wiz_proxy.partial,
@@ -496,11 +521,11 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             #                              SL Unload material
             # -----------------------------------------------------------------
             # Now go ahead only:
-            accounting_sl_code = 'SLXXX' # TODO change when confirmed
+            #accounting_sl_code = 'SLXXX' # TODO change when confirmed
             unload_confirmed = True
             lavoration_pool.write(
                 cr, uid, [lavoration_browse.id], {
-                    'accounting_sl_code': accounting_sl_code,
+                    #'accounting_sl_code': accounting_sl_code,
                     'unload_confirmed': unload_confirmed,
                     },
                 context=context)
@@ -522,7 +547,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             for unload in wc_browse.bom_material_ids:
                 res += '[%s %s] - %s [Ped. %s]\n' % (
                     unload.quantity,
-                    unload.uom_id.name,
+                    unload.uom_id.contipaq_ref,
                     unload.product_id.name,
                     unload.pedimento_id.name if \
                         unload.pedimento_id else '/',
