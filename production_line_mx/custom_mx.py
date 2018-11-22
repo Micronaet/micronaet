@@ -63,13 +63,6 @@ class product_product_extra(osv.osv):
 
         # Pool used:        
         pedimento_pool = self.pool.get('product.product.pedimento')
-        
-        # ---------------------------------------------------------------------
-        # Clean pedimento:
-        # ---------------------------------------------------------------------
-        _logger.info('Delete pedimentos')
-        pedimento_ids = pedimento_pool.search(cr, uid, [], context=context)
-        pedimento_pool.unlink(cr, uid, pedimento_ids, context=context)
 
         # ---------------------------------------------------------------------
         # Read product status:
@@ -82,6 +75,13 @@ class product_product_extra(osv.osv):
             if not files:
                 break
                 
+            # -----------------------------------------------------------------
+            # Clean pedimento:
+            # -----------------------------------------------------------------
+            _logger.info('Delete pedimentos')
+            pedimento_ids = pedimento_pool.search(cr, uid, [], context=context)
+            pedimento_pool.unlink(cr, uid, pedimento_ids, context=context)
+
             # -----------------------------------------------------------------
             # Use last for import, most updated!            
             # -----------------------------------------------------------------
