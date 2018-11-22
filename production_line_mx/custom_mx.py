@@ -170,7 +170,6 @@ class product_product_extra(osv.osv):
             # -----------------------------------------------------------------
             # Move file on history
             # -----------------------------------------------------------------
-            import pdb; pdb.set_trace()
             try:
                 WB.release_resources()
                 del WB
@@ -192,6 +191,8 @@ class product_product_extra(osv.osv):
                 shutil.move(filename, history_name)
                 _logger.info('Not used too old: %s > %s' % (
                     filename, history_name))        
+
+            break # no more walk folder        
         return True
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
