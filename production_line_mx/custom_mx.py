@@ -76,102 +76,120 @@ class product_product_extra(osv.osv):
         # ---------------------------------------------------------------------
         path = os.path.expanduser(path)
         history = os.path.join(path, 'imported')
-        import pdb; pdb.set_trace()
 
         for root, folders, files in os.walk(path):
-            for f in files:
-                filename = os.path.join(path, f)
-                history_name = os.path.join(history, f)
-                try:
-                    WB = xlrd.open_workbook(filename)
-                except:
-                    _logger.error('Cannot read XLS file: %s' % filename)
-                _logger.info('Read XLS file: %s' % filename)
+            files = sorted(files, key=lambda x: (x[4:8], x[2:4], x[:2])
+            if not files:
+                break
                 
-                WS = WB.sheet_by_index(0)
-                total = {}
-                for row in range(start, WS.nrows):
-                    # ---------------------------------------------------------
-                    # Read fields:
-                    # ---------------------------------------------------------
-                    default_code = WS.cell(row, 0).value
-                    pedimento = WS.cell(row, 1).value
-                    cost = WS.cell(row, 2).value
-                    product_qty = WS.cell(row, 3).value
-                    # TODO log management
-                    
-                    # ---------------------------------------------------------
-                    # Mandatory fields check:
-                    # ---------------------------------------------------------
-                    if not default_code:
-                        _logger.error('%s. Code empty (jump line)' % row)
-                        continue
-
-                    product_ids = self.search(cr, uid, [
-                        ('default_code', '=', default_code),
-                        ], context=context)
-                    if not product_ids:
-                        _logger.error(
-                            '%s. Code not found in ODOO %s (jump line)' % (
-                                row, default_code))
-                        continue
-                    product_id = product_ids[0]
-
-                    # ---------------------------------------------------------
-                    # Total update:
-                    # ---------------------------------------------------------
-                    if product_id not in total:
-                        total[product_id] = [0, cost]                        
-                    total[product_id][0] += product_qty
-
-                    # ---------------------------------------------------------
-                    # Pedimento:
-                    # ---------------------------------------------------------
-                    # Pedimento present with q positive
-                    if pedimento and product_qty > 0: 
-                        pedimento_pool.create(cr, uid, {
-                            'name': pedimento,
-                            'product_id': product_id,
-                            'product_qty': product_qty,
-                            }, context=context)
-
-                    # ---------------------------------------------------------
-                    # Log management
-                    # ---------------------------------------------------------
-                    # TODO 
-
+            # -----------------------------------------------------------------
+            # Use last for import, most updated!            
+            # -----------------------------------------------------------------
+            filename = os.path.join(path, files[-1])
+            history_name = os.path.join(history, files[-1])
+            try:
+                WB = xlrd.open_workbook(filename)
+            except:
+                _logger.error('Cannot read XLS file: %s' % filename)
+            _logger.info('Read XLS file: %s' % filename)
+            
+            WS = WB.sheet_by_index(0)
+            total = {}
+            for row in range(start, WS.nrows):
                 # -------------------------------------------------------------
-                # Reset accounting qty in ODOO:
+                # Read fields:
                 # -------------------------------------------------------------
-                _logger.info('Update product total:')
+                default_code = WS.cell(row, 0).value
+                pedimento = WS.cell(row, 1).value
+                cost = WS.cell(row, 2).value
+                product_qty = WS.cell(row, 3).value
+                # TODO log management
+                
+                # -------------------------------------------------------------
+                # Mandatory fields check:
+                # -------------------------------------------------------------
+                if not default_code:
+                    _logger.error('%s. Code empty (jump line)' % row)
+                    continue
+
                 product_ids = self.search(cr, uid, [
-                    ('accounting_qty', '!=', 0),
+                    ('default_code', '=', default_code),
                     ], context=context)
-                self.write(cr, uid, product_ids, {
-                    'accounting_qty': 0.0,
-                    }, context=context)    
-                for product_id in total:
-                    product_qty, cost = total[product_id]
-                    # ---------------------------------------------------------
-                    # Update product data:
-                    # ---------------------------------------------------------
-                    self.write(cr, uid, product_id, {
-                        'accounting_qty': product_qty,
-                        'standard_price': cost,
+                if not product_ids:
+                    _logger.error(
+                        '%s. Code not found in ODOO %s (jump line)' % (
+                            row, default_code))
+                    continue
+                product_id = product_ids[0]
+
+                # -------------------------------------------------------------
+                # Total update:
+                # -------------------------------------------------------------
+                if product_id not in total:
+                    total[product_id] = [0, cost]                        
+                total[product_id][0] += product_qty
+
+                # -------------------------------------------------------------
+                # Pedimento:
+                # -------------------------------------------------------------
+                # Pedimento present with q positive
+                if pedimento and product_qty > 0: 
+                    pedimento_pool.create(cr, uid, {
+                        'name': pedimento,
+                        'product_id': product_id,
+                        'product_qty': product_qty,
                         }, context=context)
-                _logger.info('End import product account status')
-                
+
                 # -------------------------------------------------------------
-                # Move file on history
+                # Log management
                 # -------------------------------------------------------------
-                try:
-                    WB.close()
-                except:
-                    _logger.info('Error close %s' % filename)
+                # TODO 
+
+            # -----------------------------------------------------------------
+            # Reset accounting qty in ODOO:
+            # -----------------------------------------------------------------
+            _logger.info('Update product total:')
+            product_ids = self.search(cr, uid, [
+                ('accounting_qty', '!=', 0),
+                ], context=context)
+            self.write(cr, uid, product_ids, {
+                'accounting_qty': 0.0,
+                }, context=context)
+
+            for product_id in total:
+                product_qty, cost = total[product_id]
+                # -------------------------------------------------------------
+                # Update product data:
+                # -------------------------------------------------------------
+                self.write(cr, uid, product_id, {
+                    'accounting_qty': product_qty,
+                    'standard_price': cost,
+                    }, context=context)
+            _logger.info('End import product account status')
+            
+            # -----------------------------------------------------------------
+            # Move file on history
+            # -----------------------------------------------------------------
+            try:
+                WB.close()
+            except:
+                _logger.info('Error close %s' % filename)
+            try:
                 shutil.move(filename, history_name)
                 _logger.info('Move %s in %s' % (filename, history_name))
-                
-                break # TODO manage file order
+            except:
+                _logger.info('Error moving file %s > %s' % (
+                    filename, history_name))
+                    
+            # -----------------------------------------------------------------
+            # Move old files
+            # -----------------------------------------------------------------
+            for f in files[:-1]:
+                filename = os.path.join(path, f)
+                history_name = os.path.join(history, f)
+                shutil.move(filename, history_name)
+                _logger.info('Not used too old: %s > %s' % (
+                    filename, history_name))        
         return True
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
