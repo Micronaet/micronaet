@@ -21,6 +21,20 @@
                 </field>
             </field>
         </record>
+        <record model="ir.ui.view" id="view_mrp_extra_Data_form">
+            <field name="name">mrp.production.form</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="after">
+                    <field name="accounting_sl_code" readonly="1"/>
+                    <field name="accounting_cl_code" readonly="1"/>
+                </field>
+                <field name="date_planned" position="after">
+                    <field name="force_production_rate" />
+                </field>
+            </field>
+        </record>
     </data>
 </openerp>
 

@@ -70,7 +70,9 @@ class MrpProduction(osv.Model):
             help='SL Code assigned during importation in accounting program'),
         'accounting_cl_code': fields.char('Accounting CL code', size=16, 
             help='CL Code assigned during importation in accounting program'),
-        }    
+        'force_production_rate': fields.float('Force rate', digits=(16, 4), 
+            help='Force line rate only for this production.'),    
+        }
     # -------------------------------------------------------------------------
     # Utility for SL and CL movement:
     # -------------------------------------------------------------------------
@@ -100,7 +102,9 @@ class MrpProduction(osv.Model):
         # ---------------------------------------------------------------------
         # Lavoration K cost (for line):
         try:
-            cost_line = wc.cost_product_id.standard_price or 0.0
+            # Check if forced during production
+            cost_line = mrp.force_production_rate or \
+                wc.cost_product_id.standard_price or 0.0
         except:
             cost_line = 0.0
         if not cost_line:    
