@@ -78,7 +78,7 @@ class product_product_extra(osv.osv):
         history = os.path.join(path, 'imported')
 
         for root, folders, files in os.walk(path):
-            files = sorted(files, key=lambda x: (x[4:8], x[2:4], x[:2])
+            files = sorted(files, key=lambda x: (x[4:8], x[2:4], x[:2]))
             if not files:
                 break
                 
