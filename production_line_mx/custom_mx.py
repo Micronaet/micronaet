@@ -170,6 +170,7 @@ class product_product_extra(osv.osv):
             # -----------------------------------------------------------------
             # Move file on history
             # -----------------------------------------------------------------
+            import pdb; pdb.set_trace()
             try:
                 WB.close()
             except:
