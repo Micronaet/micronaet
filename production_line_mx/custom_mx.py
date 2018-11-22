@@ -173,7 +173,7 @@ class product_product_extra(osv.osv):
             import pdb; pdb.set_trace()
             try:
                 WB.release_resources()
-                del WS
+                del WB
             except:
                 _logger.info('Error close %s' % filename)
             try:
