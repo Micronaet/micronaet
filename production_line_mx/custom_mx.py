@@ -53,7 +53,6 @@ class product_product_extra(osv.osv):
             self, cr, uid, stock, context=None):
         ''' Launched externally (store procedure and passed database)
         '''
-        import pdb; pdb.set_trace()
         _logger.info('Import stock status from external')
 
         # Pool used:        
@@ -68,7 +67,7 @@ class product_product_extra(osv.osv):
             pedimento_pool.unlink(cr, uid, pedimento_ids, context=context)
 
             total = {}
-            for row in store:
+            for row in stock:
                 # -------------------------------------------------------------
                 # Read fields:
                 # -------------------------------------------------------------
