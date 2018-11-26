@@ -48,6 +48,100 @@ class product_product_extra(osv.osv):
     ''' Extra fields for product.product object
     '''
     _inherit = "product.product"
+
+    def rpc_import_stock_status_mx(
+            self, cr, uid, stock, context=None):
+        ''' Launched externally (store procedure and passed database)
+        '''
+        import pdb; pdb.set_trace()
+        _logger.info('Import stock status from external')
+
+        # Pool used:        
+        pedimento_pool = self.pool.get('product.product.pedimento')
+
+        if stock: 
+            # -----------------------------------------------------------------
+            # Clean pedimento:
+            # -----------------------------------------------------------------
+            _logger.info('Delete pedimentos')
+            pedimento_ids = pedimento_pool.search(cr, uid, [], context=context)
+            pedimento_pool.unlink(cr, uid, pedimento_ids, context=context)
+
+            total = {}
+            for row in store:
+                # -------------------------------------------------------------
+                # Read fields:
+                # -------------------------------------------------------------
+                default_code = row[0]
+                name = row[1]
+                pedimento = row[2]
+                cost = row[3]
+                product_qty = row[4]
+                # TODO log management
+                
+                # -------------------------------------------------------------
+                # Mandatory fields check:
+                # -------------------------------------------------------------
+                if not default_code:
+                    _logger.error('%s. Code empty (jump line)' % row)
+                    continue
+
+                product_ids = self.search(cr, uid, [
+                    ('default_code', '=', default_code),
+                    ], context=context)
+                if not product_ids:
+                    _logger.error(
+                        '%s. Code not found in ODOO %s (jump line)' % (
+                            row, default_code))
+                    continue
+                product_id = product_ids[0]
+
+                # -------------------------------------------------------------
+                # Total update:
+                # -------------------------------------------------------------
+                if product_id not in total:
+                    total[product_id] = [0, cost]                        
+                total[product_id][0] += product_qty
+
+                # -------------------------------------------------------------
+                # Pedimento:
+                # -------------------------------------------------------------
+                # Pedimento present with q positive
+                if pedimento and product_qty > 0: 
+                    pedimento_pool.create(cr, uid, {
+                        'name': pedimento,
+                        'product_id': product_id,
+                        'product_qty': product_qty,
+                        }, context=context)
+
+                # -------------------------------------------------------------
+                # Log management
+                # -------------------------------------------------------------
+                # TODO 
+
+            # -----------------------------------------------------------------
+            # Reset accounting qty in ODOO:
+            # -----------------------------------------------------------------
+            _logger.info('Update product total:')
+            product_ids = self.search(cr, uid, [
+                ('accounting_qty', '!=', 0),
+                ], context=context)
+            self.write(cr, uid, product_ids, {
+                'accounting_qty': 0.0,
+                }, context=context)
+
+            for product_id in total:
+                product_qty, cost = total[product_id]
+                # -------------------------------------------------------------
+                # Update product data:
+                # -------------------------------------------------------------
+                self.write(cr, uid, product_id, {
+                    'accounting_qty': product_qty,
+                    'standard_price': cost,
+                    }, context=context)
+            _logger.info('End import product account status')
+        return True
+    
     # -------------------------------------------------------------------------
     #                               Scheduled actions
     # -------------------------------------------------------------------------
