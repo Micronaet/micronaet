@@ -72,7 +72,9 @@ stock = []
 for record in cr.fetchall():
     row = tuple(record)
     stock.append(row)
+    print row
 
 product_pool = erp.model('product.product')
 product_pool.rpc_import_stock_status_mx(stock)
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
