@@ -69,7 +69,7 @@ erp = get_erp(URL, database, user, password)
 
 cr.execute('sp_existence_Pedimento_Product')
 stock = []
-for record in cr.fetchall();
+for record in cr.fetchall():
     row = tuple(record)
     stock.append(row)
 
