@@ -56,7 +56,7 @@ class product_product_extra(osv.osv):
         _logger.info('Import stock status from external')
 
 
-        if not stock or not pedimento_stock: 
+        if not stock: 
             _logger.error('Cannot import, no stock and pedimento stock passed')
             return False            
             
@@ -72,28 +72,23 @@ class product_product_extra(osv.osv):
 
         # Import pedimento and stock:
         total = {}
-        for row in pedimento_stock:
-            if len(row) == 3:
-                mode = 'lot'
-            else:
-                mode = 'pedimento'
-                
+        for row in stock:
             # -----------------------------------------------------------------
             # Read parameters:
             # -----------------------------------------------------------------
-            if mode == 'pedimento':
+            if len(row) == 3:
+                default_code = row[0]
+                name = row[1]
+                product_qty = row[4]
+                pedimento = False
+            else:
                 default_code = row[0]
                 name = row[1]
                 pedimento = row[2]
                 cost = row[3]
                 product_qty = row[4]
                 # TODO log management
-            else: # lot
-                default_code = row[0]
-                name = row[1]
-                product_qty = row[4]
-                pedimento = False
-     
+                     
             # -------------------------------------------------------------
             # Mandatory fields check:
             # -------------------------------------------------------------

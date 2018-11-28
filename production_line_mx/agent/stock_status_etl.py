@@ -82,7 +82,6 @@ for record in cr.fetchall():
 # -----------------------------------------------------------------------------
 # Lot stock:
 # -----------------------------------------------------------------------------
-import pdb; pdb.set_trace()
 print 'Start reading lot product'
 cr.execute('sp_existence_Product')
 for record in cr.fetchall():
@@ -92,5 +91,4 @@ for record in cr.fetchall():
 
 product_pool = erp.model('product.product')
 product_pool.rpc_import_stock_status_mx(stock)
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
