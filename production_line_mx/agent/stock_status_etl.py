@@ -67,8 +67,24 @@ cr = connection.cursor()
 # OPENERP Obj: 
 erp = get_erp(URL, database, user, password)
 
-cr.execute('sp_existence_Pedimento_Product')
 stock = []
+
+# -----------------------------------------------------------------------------
+# Pedimento stock:
+# -----------------------------------------------------------------------------
+print 'Start reading pedimento product'
+cr.execute('sp_existence_Pedimento_Product')
+for record in cr.fetchall():
+    row = tuple(record)
+    stock.append(row)
+    print row
+
+# -----------------------------------------------------------------------------
+# Lot stock:
+# -----------------------------------------------------------------------------
+print 'Start reading lot product'
+cr.execute('sp_existence_Product')
+import pdb; pdb.set_trace()
 for record in cr.fetchall():
     row = tuple(record)
     stock.append(row)
