@@ -79,7 +79,7 @@ class product_product_extra(osv.osv):
             if len(row) == 3:
                 default_code = row[0]
                 name = row[1]
-                product_qty = row[4]
+                product_qty = row[2]
                 pedimento = False
             else:
                 default_code = row[0]
