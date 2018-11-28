@@ -82,9 +82,9 @@ for record in cr.fetchall():
 # -----------------------------------------------------------------------------
 # Lot stock:
 # -----------------------------------------------------------------------------
+import pdb; pdb.set_trace()
 print 'Start reading lot product'
 cr.execute('sp_existence_Product')
-import pdb; pdb.set_trace()
 for record in cr.fetchall():
     row = tuple(record)
     stock.append(row)
