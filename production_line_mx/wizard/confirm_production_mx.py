@@ -49,6 +49,17 @@ class ProductUom(osv.Model):
         'contipaq_ref': fields.char('ContipaQ ref.', size=15),
         }
 
+class MrpProductionWorkcenterLoad(orm.Model):
+    """ Model name: Load
+    """
+    
+    _inherit = 'mrp.production.workcenter.load'
+    
+    _columns = {
+        'package_pedimento_id': fields.many2one(
+            'product.product.pedimento', 'Pedimento')
+        }
+
 class ResCompany(orm.Model):
     """ Model name: ResCompany
     """
@@ -262,7 +273,7 @@ class MrpProduction(osv.Model):
                     load.ul_qty,
                     product.uom_id.contipaq_ref,
                     product.standard_price,
-                    '', # pedimento
+                    product.package_pedimento_id.name or '', # pedimento
                     '', # lot
                     ])
 
@@ -457,6 +468,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                 'line_id': lavoration_browse.id,
                 'partial': wiz_proxy.partial,
                 'package_id': package_id,
+                'package_pedimento_id': wiz_proxy.package_pedimento_id.id,
                 'ul_qty': wiz_proxy.ul_qty,
                 'pallet_product_id': pallet.id if pallet else False,
                 'pallet_qty': wiz_proxy.pallet_qty or 0.0,
@@ -557,12 +569,36 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                         unload.pedimento_id else '/',
                     )
         return res
+
+    # Override onchange action
+    def onchange_package_id(self, cr, uid, ids, package_id, product_id, 
+            real_product_qty, context=None):       
+        ''' Integration on onchange for package (inser domain filter)
+        '''
+        res = super(ConfirmMrpProductionWizard, self).onchange_package_id(
+            cr, uid, ids, package_id, product_id, real_product_qty, 
+            context=context)
+        if not package_id:
+            return res
+            
+        # Update domain depend on package:
+        ul_pool = self.pool.get('product.ul')
+        ul_proxy = ul_pool.browse(cr, uid, package_id, context=context)
+        product_id = ul_proxy.linked_product_id.id
         
+        if 'domain' not in res:
+            res['domain'] = {}
+        res['domain']['package_pedimento_id'] = [
+            ('product_id', '=', product_id)]
+        return res    
+            
     _columns = {
         #'partial': fields.boolean('Partial', 
         #    help='If the product qty indicated is a partial load (not close lavoration)'),
         'use_mrp_package': fields.boolean('Usa solo imballi produzione', 
             help='Mostra solo gli imballaggi attivi nella produzione'),
+        'package_pedimento_id': fields.many2one(
+            'product.product.pedimento', 'Pedimento')
         }
         
     _defaults = {

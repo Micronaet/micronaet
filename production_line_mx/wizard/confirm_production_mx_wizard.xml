@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
-    <data>
-    
+    <data>    
        <!-- mrp.production.confirm.wizard -->
-       <record id="mrp_production_confirm_wizard_mx_view" model="ir.ui.view">
+       <record id="mrp_production_confirm_wizard_mx_update_view" model="ir.ui.view">
             <field name="name">Lavoration final confirmation</field>
             <field name="model">mrp.production.confirm.wizard</field>
             <field name="inherit_id" ref="production_line.mrp_production_confirm_wizard_view"/>
             <field name="arch" type="xml">
-                <field name="recycle" position="attributes">
+                <field name="recycle" position="attributes"><!--TODO remove-->
                     <attribute name="invisible">1</attribute>
                 </field>
-                <!--<field name="partial" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </field>-->
                 <field name="use_mrp_package" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </field>
@@ -21,10 +17,48 @@
                 <field name="package_id" position="attributes">
                     <attribute name="widget">selection</attribute>
                 </field>
+                <field name="package_id" position="after">
+                    <field name="package_pedimento_id" attrs="{'required': [('state','=','product')]}"/>
+                </field>
                 <field name="pallet_product_id" position="attributes">
                     <attribute name="widget">selection</attribute>
                 </field>                
             </field>
       </record>
-    </data>
+      
+      <record model="ir.ui.view" id="view_default_mrp_production_workcenter_load_pedimento_tree">
+          <field name="name">mrp.production.workcenter.load.tree.pedimento</field>
+          <field name="model">mrp.production.workcenter.load</field>
+          <field name="inherit_id" ref="production_line.default_mrp_production_workcenter_load_tree_view"/>
+          <field name="arch" type="xml">
+              <field name="package_id" position="after">
+                  <field name="package_pedimento_id" />
+              </field>
+          </field>
+      </record>
+      <record model="ir.ui.view" id="view_default_mrp_production_workcenter_load_pedimento_list_form">
+          <field name="name">mrp.production.workcenter.load.tree2.pedimento</field>
+          <field name="model">mrp.production.workcenter.load</field>
+          <field name="inherit_id" ref="production_line.default_mrp_production_workcenter_load_tree_readonly_view"/>
+          <field name="arch" type="xml">
+              <field name="package_id" position="after">
+                  <field name="package_pedimento_id" />
+              </field>
+          </field>
+      </record>
+      
+      <record model="ir.ui.view" id="view_default_mrp_production_workcenter_load_form_pedimento_view">
+          <field name="name">mrp.production.workcenter.load.from.pedimento</field>
+          <field name="model">mrp.production.workcenter.load</field>
+          <field name="inherit_id" ref="production_line.default_mrp_production_workcenter_load_form_view"/>
+          <field name="arch" type="xml">
+              <field name="package_id" position="after">
+                  <field name="package_pedimento_id" />
+              </field>
+              <field name="ul_qty" position="after">
+                  <newline/>
+              </field>
+          </field>
+      </record>
+   </data>
 </openerp>
