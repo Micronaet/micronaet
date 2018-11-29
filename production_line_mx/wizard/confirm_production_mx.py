@@ -583,11 +583,21 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             
         # Update domain depend on package:
         ul_pool = self.pool.get('product.ul')
-        ul_proxy = ul_pool.browse(cr, uid, package_id, context=context)
+        ul_proxy = ul_pool.browse(cr, uid, package_id, context=context)        
         product_id = ul_proxy.linked_product_id.id
-        
+
+        if len(ul_proxy.linked_product_id.pedimento_ids) == 1:        
+            package_pedimento_id = \
+                ul_proxy.linked_product_id.pedimento_ids[0].id
+        else:
+            package_pedimento_id = False
+
+        if 'value' not in res:
+            res['value'] = {}        
         if 'domain' not in res:
             res['domain'] = {}
+        
+        res['value']['package_pedimento_id'] = package_pedimento_id
         res['domain']['package_pedimento_id'] = [
             ('product_id', '=', product_id)]
         return res    
