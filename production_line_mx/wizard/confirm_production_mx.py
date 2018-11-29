@@ -273,7 +273,7 @@ class MrpProduction(osv.Model):
                     load.ul_qty,
                     product.uom_id.contipaq_ref,
                     product.standard_price,
-                    product.package_pedimento_id.name or '', # pedimento
+                    load.package_pedimento_id.name or '', # pedimento
                     '', # lot
                     ])
 
