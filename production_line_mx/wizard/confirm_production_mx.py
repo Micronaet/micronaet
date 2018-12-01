@@ -147,7 +147,7 @@ class MrpProduction(osv.Model):
         #                          Cost calculation:
         # ---------------------------------------------------------------------
         # Readability:
-        mrp = lavoration.production_id
+        mrp = lavoration.production_id # for force rate
         wc = lavoration.workcenter_id
 
         # Lavoration K cost (for line):
@@ -169,10 +169,9 @@ class MrpProduction(osv.Model):
         unload_cost_total = total = 0.0 
 
         # ---------------------------------------------------------------------
-        # A. Master MRP Materials:
+        # A. Lavoration materials:
         # ---------------------------------------------------------------------
         for unload in lavoration.bom_material_ids:
-            mrp = l.production_id
             product = unload.product_id
             total += unload.quantity # Q
 
@@ -225,7 +224,7 @@ class MrpProduction(osv.Model):
                     pallet.standard_price * load.pallet_qty
 
         # ---------------------------------------------------------------------
-        # D. Total cost of MRP production:
+        # D. Total cost of lavoration:
         # ---------------------------------------------------------------------
         load_qty = load.product_qty
         raise osv.except_osv(
@@ -242,10 +241,10 @@ class MrpProduction(osv.Model):
         # Update all loads with total (master):
         # ---------------------------------------------------------------------
         # XXX Note: Only one
-        for load in mrp.load_ids:        
-            load_pool.write(cr, uid, [load.id], {
-                'accounting_cost': unit_cost * load.product_qty,
-                }, context=context)
+        load_ids = [load.id for load in lavoration.load_ids]
+        load_pool.write(cr, uid, load.ids, {
+            'accounting_cost': unit_cost * load.product_qty,
+            }, context=context)
         
         # ---------------------------------------------------------------------
         #                             Excel file:
@@ -262,7 +261,7 @@ class MrpProduction(osv.Model):
         # ---------------------------------------------------------------------
         # Explode materials:
         # ---------------------------------------------------------------------
-        for load in mrp.load_ids:
+        for load in lavoration.load_ids:
             row += 1
             if load.recycle: 
                 product = load.waste_id # Product was waste
@@ -315,8 +314,6 @@ class MrpProduction(osv.Model):
         ws_name = 'unload'
         excel_pool.create_worksheet(ws_name)
 
-        mrp = lavoration.production_id
-        
         # ---------------------------------------------------------------------
         #                          Excel file:
         # ---------------------------------------------------------------------
