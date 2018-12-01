@@ -337,6 +337,39 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
     '''
     _inherit = 'mrp.production.confirm.wizard'
 
+    # -------------------------------------------------------------------------
+    # Onchange:
+    # -------------------------------------------------------------------------
+    def onchange_waste_qty(self, cr, uid, ids, product_qty, waste_qty, 
+            context=None):
+        ''' Check qty for waste
+        ''' 
+        if product_qty < waste_qty:
+            return {'warning': {
+                'title': _('Error'), 
+                'message': _('Waste cannot exceed the production qty!'),
+                }}
+        return {}
+        
+    def onchange_waste(self, cr, uid, ids, product_id, recycle, context=None):         
+        ''' Change filter for 
+        '''
+        res = {}
+        if not recycle or not product_id:
+            return res
+        
+        product_pool = self.pool.get('product.product')
+        product_proxy = product_pool.browse(
+            cr, uid, product_id, context=context) 
+
+        waste_id = product_proxy.waste_id.id or False
+        res['value'] = {
+            'waste_id': waste_id,
+            #'waste_id': [('id', '=', waste_id)],
+            }
+        print res    
+        return res
+
     # --------------
     # Wizard button:
     # --------------
@@ -415,8 +448,14 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         #                      CL  (lavoration load)
         # ---------------------------------------------------------------------
-        # Only if not to close have a partial or fully load:
+        # Only if not to close have a partial or fully load:        
         if wiz_proxy.state == 'product':
+            if len(lavoration_browse.load_ids) > 0:
+                    raise osv.except_osv(
+                        _('Load present:'),
+                        _('Load is yet present, no other is possibile!'),
+                        )
+                
             # -----------------------------------------------------------------
             # Check operations before CL:
             # -----------------------------------------------------------------
@@ -454,16 +493,24 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             # -----------------------------------------------------------------
             # Create movement in list:
             # -----------------------------------------------------------------
-            #accounting_cl_code = 'CLXXX' # TODO counter for CL
+            accounting_cl_code = 'CLXXX'
+            #wrong = wiz_proxy.wrong
             product_qty = wiz_proxy.real_product_qty
-            # TODO To be managed wrong and recycle load
-            wrong = wiz_proxy.wrong
+            
+            # Manage recycle load
             recycle = wiz_proxy.recycle
+            if recycle:
+                waste_id = wiz_proxy.waste_id.id or False
+                waste_qty = wiz_proxy.waste_qty
+            else:    
+                waste_id = False
+                waste_qty = 0.0
+
             package_id = \
                 wiz_proxy.package_id.id if wiz_proxy.package_id else False
             price = 0.0   
             load_id = load_pool.create(cr, uid, {
-                #'accounting_cl_code': accounting_cl_code,
+                'accounting_cl_code': accounting_cl_code,
                 'product_qty': product_qty, # only the wrote total
                 'line_id': lavoration_browse.id,
                 'partial': wiz_proxy.partial,
@@ -472,10 +519,17 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                 'ul_qty': wiz_proxy.ul_qty,
                 'pallet_product_id': pallet.id if pallet else False,
                 'pallet_qty': wiz_proxy.pallet_qty or 0.0,
-                'recycle': recycle,
-                'recycle_product_id': False,
+                
+                'waste_id': waste_id,
+                'waste_qty': waste_qty,
+                # TODO change waste management total!
+                
+                # Not used here:
+                #'recycle': recycle,
+                #'recycle_product_id': False,
+                
                 #    recycle_product_id.id if recycle_product_id else False,
-                'wrong': wrong,
+                #'wrong': wrong,
                 'wrong_comment': wiz_proxy.wrong_comment,
                 })
                 
@@ -487,11 +541,11 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             # Code for product, syntax:
             # [(1)Famiglia - (6)Prodotto - (1).Pezzatura - (1)Versione] -
             # [(5)Partita - #(2)SequenzaCarico] - [(10)Imballo]
-            if recycle:
-                # Pass product with R + code without first char:
-                code = 'R%s' % wiz_proxy.product_id.default_code[1:]
-            else:    
-                code = wiz_proxy.product_id.default_code
+            #if recycle:
+            #    # Pass product with R + code without first char:
+            #    code = 'R%s' % wiz_proxy.product_id.default_code[1:]
+            #else:    
+            code = wiz_proxy.product_id.default_code
             
             #ref_lot_id = False
             ref_lot_name = '%06d#%01d' % (
@@ -537,11 +591,11 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             #                              SL Unload material
             # -----------------------------------------------------------------
             # Now go ahead only:
-            #accounting_sl_code = 'SLXXX' # TODO change when confirmed
+            accounting_sl_code = 'SLXXX' # TODO change when confirmed
             unload_confirmed = True
             lavoration_pool.write(
                 cr, uid, [lavoration_browse.id], {
-                    #'accounting_sl_code': accounting_sl_code,
+                    'accounting_sl_code': accounting_sl_code,
                     'unload_confirmed': unload_confirmed,
                     },
                 context=context)
@@ -603,16 +657,16 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
         return res    
             
     _columns = {
-        #'partial': fields.boolean('Partial', 
-        #    help='If the product qty indicated is a partial load (not close lavoration)'),
         'use_mrp_package': fields.boolean('Usa solo imballi produzione', 
             help='Mostra solo gli imballaggi attivi nella produzione'),
         'package_pedimento_id': fields.many2one(
-            'product.product.pedimento', 'Pedimento')
+            'product.product.pedimento', 'Pedimento'),
+        'waste_id': fields.many2one('product.product', 'Waste product',
+            help='When there\'s some waste production this product is loaded'),
+        'waste_qty': fields.float('Waste Qty', digits=(16, 2)),
         }
         
     _defaults = {
-        #'partial': lambda *a: False,        
         'use_mrp_package': lambda *x: False,        
         }    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

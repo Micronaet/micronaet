@@ -69,14 +69,4 @@ class ProductProduct(orm.Model):
             'product.product.pedimento', 'product_id', 'Pedimento'),
         }
 
-class MrpProductionMaterial(orm.Model):
-    """ Model name: Material pedimento
-    """
-    
-    _inherit = 'mrp.production.material'
-    
-    _columns = {
-        'pedimento_id': fields.many2one(
-            'product.product.pedimento', 'Pedimento'),
-        }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -1108,6 +1108,7 @@ class mrp_production_workcenter_line_extra(osv.osv):
         ''' Create a BOM list for the passed lavoration
             Actual items will be deleted and reloaded with quantity passed
         '''
+        import pdb; pdb.set_trace()
         lavoration_browse = self.browse(
             cr, uid, lavoration_id, context=context)
         try:

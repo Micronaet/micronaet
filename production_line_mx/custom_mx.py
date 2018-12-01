@@ -41,8 +41,31 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
     DATETIME_FORMATS_MAP, 
     float_compare)
 
-
 _logger = logging.getLogger(__name__)
+
+class MrpProductionWorkcenterLoad(orm.Model):
+    """ Model name: MrpProductionWorkcenterLoad
+        Add extra fields for waste management:
+    """
+    
+    _inherit = 'mrp.production.workcenter.load'
+    
+    _columns = {
+        'waste_id': fields.many2one('product.product', 'Waste product',
+            help='When there\'s some waste production this product is loaded'),
+        'waste_qty': fields.float('Waste Qty', digits=(16, 2)),
+        }
+
+class MrpProductionMaterial(orm.Model):
+    """ Model name: Material pedimento
+    """
+    
+    _inherit = 'mrp.production.material'
+    
+    _columns = {
+        'pedimento_id': fields.many2one(
+            'product.product.pedimento', 'Pedimento'),
+        }
 
 class product_product_extra(osv.osv):
     ''' Extra fields for product.product object
@@ -55,11 +78,9 @@ class product_product_extra(osv.osv):
         '''
         _logger.info('Import stock status from external')
 
-
         if not stock: 
             _logger.error('Cannot import, no stock and pedimento stock passed')
-            return False            
-            
+            return False
             
         # ---------------------------------------------------------------------
         #                          PEDIMENTO STOCK:
@@ -299,4 +320,128 @@ class product_product_extra(osv.osv):
             break # no more walk folder        
         return True
 
+    def get_waste_product(self, cr, uid, ids, context=None):
+        ''' Update if present same product with R
+        '''
+        current_proxy = self.browse(cr, uid, ids, context=context)[0]
+        default_code = current_proxy.default_code or ''
+        waste_code = 'R' + default_code[1:] # Same as code but used R* format
+        product_ids = self.search(cr, uid, [
+            ('default_code', '=', waste_code),
+            ], context=context)
+        if product_ids:
+            return self.write(cr, uid, ids, {
+                'waste_ids': product_ids[0],
+                }, context=context)
+        else:
+            raise osv.except_osv(
+                _('Waste code'), 
+                _('Product %s doesn\'t have waste code: %s' % (
+                    default_code,
+                    waste_code,
+                    )),
+                )            
+        return True
+
+    _columns = {
+        'waste_id': fields.many2one('product.product', 'Waste product',
+            help='When there\'s some waste production this product is loaded'),
+        }
+
+class MrpProductionWorkcenterLineExtra(osv.osv):
+    ''' Update some _defaults value
+    '''
+    _inherit = 'mrp.production.workcenter.line'
+
+    # Override for manage pedimento
+    # >>> ORM Function:
+    def create(self, cr, uid, vals, context=None):
+        """ Override create method only for generare BOM materials in subfield
+            bom_materials_ids, initially is a copy of mrp.production ones
+        """
+        mrp_pool = self.pool.get('mrp.production')
+        material_pool = self.pool.get('mrp.production.material')
+        
+        vals['real_date_planned_end'] = self.add_hour(
+            vals.get('real_date_planned',False), 
+            vals.get('hour',False))
+        if vals.get('force_cycle_default', False):
+            res = self.cycle_historyzation(cr, uid, vals, context=context)
+            vals['force_cycle_default'] = False 
+            # after historization force return False
+
+        res_id = super(MrpProductionWorkcenterLineExtra, self).create(
+            cr, uid, vals, context=context)
+        if res_id: # Create bom for this lavoration: (only during creations)!! 
+            # TODO test if is it is not created (or block qty if present)?
+            mrp_proxy = mrp_pool.browse(
+                cr, uid, [vals.get('production_id', 0)], context=context)[0]
+            total = mrp_proxy.product_qty
+
+            # Delete previous procedure records:            
+            material_ids = material_pool.search(cr, uid, [
+                ('workcenter_production_id','=', res_id),
+                ], context=context)                
+            material_pool.unlink(cr, uid, material_ids, context=context)
+            
+            for item in mrp_proxy.bom_material_ids:
+                # proportionally created on total production order 
+                # and total lavoration order
+                item_id = material_pool.create(cr, uid, {
+                    'product_id': item.product_id.id,
+                    'quantity': item.quantity * vals.get(
+                        'product_qty', 0.0) / total if total else 0.0,
+                    # current yet created WC line:    
+                    'workcenter_production_id': res_id, 
+                    'pedimento_id': item.pedimento_id.id or False,
+                    }, context=context)
+        return res_id
+
+    def _create_bom_lines(self, cr, uid, lavoration_id, from_production=False, 
+            context=None):
+        ''' Create a BOM list for the passed lavoration
+            Actual items will be deleted and reloaded with quantity passed
+        '''
+        lavoration_browse = self.browse(
+            cr, uid, lavoration_id, context=context)
+        try:
+            mrp = lavoration_browse.production_id
+            bom = mrp.bom_id
+            if not bom and not lavoration_browse.product_qty:
+                return False # TODO raise error
+
+            # Delete all elements:
+            material_pool = self.pool.get('mrp.production.material')
+            material_ids = material_pool.search(cr, uid, [
+                ('workcenter_production_id','=', lavoration_id),
+                ], context=context)
+            material_pool.unlink(cr, uid, material_ids, context=context)
+
+            # Create elements from bom:
+            if from_production:
+                for element in mrp.bom_material_ids:
+                    material_pool.create(cr, uid, {
+                        'product_id': element.product_id.id,
+                        'quantity': element.quantity / mrp.product_qty * \
+                            lavoration_browse.product_qty \
+                            if mrp.product_qty else 0.0,
+                        'pedimento_id': element.pedimento_id.id,    
+                        'uom_id': element.product_id.uom_id.id,
+                        'workcenter_production_id': lavoration_id,
+                    }, context=context)
+            else:                
+                for element in bom.bom_lines:
+                    material_pool.create(cr, uid, {
+                        'product_id': element.product_id.id,
+                        'quantity': element.product_qty * \
+                            lavoration_browse.product_qty / bom.product_qty \
+                            if bom.product_qty else 0.0,
+                        'pedimento_id': False,
+                        'uom_id': element.product_id.uom_id.id,
+                        'workcenter_production_id': lavoration_id,
+                    }, context=context)
+            return True
+        except:
+            return False
+        
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

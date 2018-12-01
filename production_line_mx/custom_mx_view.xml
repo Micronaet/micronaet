@@ -1,6 +1,89 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+        <!--<record model="ir.ui.view" id="view_product_material_pedimento_form">
+            <field name="name">Material Pedimento</field>
+            <field name="model">mrp.production.workcenter.line</field>
+            <field name="inherit_id" ref="production_line.default_mrp_production_workcenter_line_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='bom_material_ids']/tree/field[@name='product_id']" position="after">
+                    <field name="pedimento_id"  domain="[('product_id', '=', product_id)]" options="{'create': false, 'create_edit': false}"/>
+                </xpath>
+            </field>
+        </record>-->
+
+        <record model="ir.ui.view" id="view_product_product_waste_tree">
+            <field name="name">product.product.tree</field>
+            <field name="model">product.product</field>
+            <field name="priority" eval="40" />
+            <field name="arch" type="xml">
+                <tree string="Product" editable="bottom" colors="blue:waste_id!=False">        
+                    <field name="name" readonly="1"/>
+                    <field name="default_code" readonly="1" />
+                    <field name="waste_id" />
+                    <!--<button name="get_waste_product" string="Auto" type="object" attrs="{'invisible': [('waste_id','!=',False)]}" />-->
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_product_product_waste">
+            <field name="name">Waste product</field>
+            <field name="res_model">product.product</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_product_product_waste_tree"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
+        <menuitem 
+            parent="mrp.menu_mrp_bom" 
+            id="menu_action_product_product_waste"
+            action="action_product_product_waste"
+            />
+        
+        <record model="ir.ui.view" id="default_mrp_production_workcenter_line_pedimento_view">
+            <field name="name">Lavoration default</field>
+            <field name="model">mrp.production.workcenter.line</field>
+            <field name="inherit_id" ref="production_line.default_mrp_production_workcenter_line_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='bom_material_ids']/tree/field[@name='product_id']" position="after">
+                    <field name="pedimento_id" domain="[('product_id', '=', product_id)]" options="{'create': false, 'create_edit': false}"/>
+                </xpath>
+            </field>
+        </record>    
+
+        <record model="ir.ui.view" id="default_mrp_production_form_view">
+            <field name="name">Production default</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="production_line.default_mrp_production_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='bom_material_ids']/tree/field[@name='product_id']" position="after">
+                    <field name="pedimento_id" domain="[('product_id', '=', product_id)]" options="{'create': false, 'create_edit': false}"/>
+                </xpath>
+            </field>
+        </record>    
+
+        <!--mrp.production.material-->
+        <record model="ir.ui.view" id="view_mrp_production_material_pedimento_tree">
+            <field name="name">Production material</field>
+            <field name="model">mrp.production.material</field>
+            <field name="inherit_id" ref="production_line.view_mrp_production_material_tree"/>
+            <field name="arch" type="xml">
+                   <field name='product_id' position="after">
+                       <field name="pedimento_id" domain="[('product_id', '=', product_id)]" options="{'create': false, 'create_edit': false}"/>
+                   </field>    
+            </field>
+        </record>    
+        <record model="ir.ui.view" id="view_mrp_production_material_pedimento_form">
+            <field name="name">Production material</field>
+            <field name="model">mrp.production.material</field>
+            <field name="inherit_id" ref="production_line.view_mrp_production_material_form" />
+            <field name="arch" type="xml">
+               <field name='product_id' position="after" >
+                   <field name="pedimento_id" domain="[('product_id', '=', product_id)]" options="{'create': false, 'create_edit': false}"/>
+               </field>    
+            </field>
+        </record>    
+        
         <record model="ir.ui.view" id="view_product_uom_ref_form">
             <field name="name">product.uom.form</field>
             <field name="model">product.uom</field>

@@ -7,19 +7,28 @@
             <field name="model">mrp.production.confirm.wizard</field>
             <field name="inherit_id" ref="production_line.mrp_production_confirm_wizard_view"/>
             <field name="arch" type="xml">
-                <field name="recycle" position="attributes"><!--TODO remove-->
+                <field name="partial" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </field>
+                <field name="recycle" position="attributes">
+                    <attribute name="on_change">onchange_waste(product_id,recycle)</attribute>
+                </field>
+                <field name="recycle" position="after">
+                    <field name="waste_id" attrs="{'required': [('recycle','=',True)], 'invisible': [('recycle','=',False)]}" widget="selection" domain="[('default_code', '=ilike', 'R%%')]"/>
+                    <field name="waste_qty" attrs="{'required': [('recycle','=',True)], 'invisible': [('recycle','=',False)]}" on_change="onchange_waste_qty(product_qty, waste_qty)"/>
+                </field>
+                   
                 <field name="use_mrp_package" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </field>
-                
+                                
                 <field name="package_id" position="attributes">
                     <attribute name="widget">selection</attribute>
                 </field>
                 <field name="package_id" position="after">
                     <field name="package_pedimento_id" attrs="{'required': [('state','=','product')]}"/>
                 </field>
+                
                 <field name="pallet_product_id" position="attributes">
                     <attribute name="widget">selection</attribute>
                 </field>                

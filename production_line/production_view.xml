@@ -9,7 +9,7 @@
             <tree string="Material for production">
                <field name='product_id'/>
                <!--<field name='mrp_production_id'/>-->
-               <field name='workcenter_production_id'/>
+               <field name='workcenter_production_id'/>               
                <!--<field name='accounting_qty'/>-->
                <field name='quantity' sum="total"/>
                <field name='uom_id'/>
