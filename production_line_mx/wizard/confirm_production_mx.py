@@ -166,18 +166,18 @@ class MrpProduction(osv.Model):
         # ---------------------------------------------------------------------
         # 1. Unloaded material this lavoration and package and pallet:
         # ---------------------------------------------------------------------
-        unload_cost_total = total = 0.0 
+        unload_cost = unload_qty = 0.0 
 
         # ---------------------------------------------------------------------
         # A. Lavoration materials:
         # ---------------------------------------------------------------------
         for unload in lavoration.bom_material_ids:
             product = unload.product_id
-            total += unload.quantity # Q
+            unload_qty += unload.quantity # Q
 
             # Cost for material:
             try:
-                unload_cost_total += \
+                unload_cost += \
                     product.standard_price * unload.quantity
             except:
                 raise osv.except_osv(
@@ -188,7 +188,10 @@ class MrpProduction(osv.Model):
         # 2. Unload from loading operation:
         # ---------------------------------------------------------------------
         # XXX Note: only one load
+        load_qty = 0.0
         for load in lavoration.load_ids:
+            load_qty = load.product_qty
+            
             # -----------------------------------------------------------------
             # B. Package:
             # -----------------------------------------------------------------
@@ -206,7 +209,7 @@ class MrpProduction(osv.Model):
                     _('No package product in load'))    
             
             # Package cost:
-            unload_cost_total += \
+            unload_cost += \
                 link_product.standard_price * load.ul_qty
 
             # -------------------------------------------------------------
@@ -220,22 +223,21 @@ class MrpProduction(osv.Model):
                     raise osv.except_osv(
                         _('Lavoration cost error!'),
                         _('Pallet product without cost!'))    
-                unload_cost_total += \
+                unload_cost += \
                     pallet.standard_price * load.pallet_qty
 
         # ---------------------------------------------------------------------
         # D. Total cost of lavoration:
         # ---------------------------------------------------------------------
-        load_qty = load.product_qty
         raise osv.except_osv(
             _('Lavoration cost error!'),
             _('Load qty must be present!'))    
         
         # Add also Lavoration cost:
-        unload_cost_total += (line_rate_cost * total) # K of Line (medium cost)
+        unload_cost += (line_rate_cost * unload_qty) # K of Line (medium cost)
         
         # Calculate unit cost for production:
-        unit_cost = unload_cost_total / load_qty#total #XXX before was material
+        unit_cost = unload_cost / load_qty #unload_qty #XXX before was material
 
         # ---------------------------------------------------------------------
         # Update all loads with total (master):
