@@ -110,10 +110,13 @@ class MrpProduction(osv.Model):
     _inherit = 'mrp.production'
 
     _columns = {    
+        # No more necessary:
         'accounting_sl_code': fields.char('Accounting SL code', size=16, 
             help='SL Code assigned during importation in accounting program'),
         'accounting_cl_code': fields.char('Accounting CL code', size=16, 
             help='CL Code assigned during importation in accounting program'),
+        # ---------------------------------------------------------------------
+    
         'force_production_rate': fields.float('Force rate', digits=(16, 4), 
             help='Force line rate only for this production.'),    
         }
@@ -662,8 +665,24 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
         res['domain']['package_pedimento_id'] = [
             ('product_id', '=', product_id)]
         return res    
+
+    # -------------------------------------------------------------------------
+    # Default function:
+    # -------------------------------------------------------------------------
+    def default_quantity(self, cr, uid, context=None):
+        ''' Get default value
+        '''
+        wc_pool = self.pool.get('mrp.production.workcenter.line')
+        wc_proxy = wc_pool.browse(
+            cr, uid, context.get('active_id', 0), context=context)
+
+        # Production default is sum of material in this lavoration:        
+        return sum(
+            [material.quantity for material in wc_proxy.bom_material_ids])
             
     _columns = {
+        'real_product_qty': fields.float(
+            'Confirm production', digits=(16, 2), required=True),
         'use_mrp_package': fields.boolean('Usa solo imballi produzione', 
             help='Mostra solo gli imballaggi attivi nella produzione'),
         'package_pedimento_id': fields.many2one(
@@ -674,6 +693,8 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
         }
         
     _defaults = {
+        'real_product_qty':  lambda s, cr, uid, c: s.default_quantity(
+            cr, uid, context=c),
         'use_mrp_package': lambda *x: False,        
         }    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
