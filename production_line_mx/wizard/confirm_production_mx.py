@@ -65,7 +65,40 @@ class ResCompany(orm.Model):
     """
     
     _inherit = 'res.company'
-    
+
+    def get_contipaq_folder_parameters(self, cr, uid, context=None):
+        ''' Return dict with parameter structure:
+        ''' 
+        contipaq_samba_folder = self.browse(
+            cr, uid, 1, context=context).contipaq_samba_folder
+
+        if not contipaq_samba_folder:
+            raise osv.except_osv(
+                _('Setup parameter'), 
+                _('No root folder setted up in company management'),
+                )
+        contipaq_samba_folder = os.path.expanduser(contipaq_samba_folder)
+        return {
+            'root': contipaq_samba_folder,
+            'whoami': os.path.join(contipaq_samba_folder, 'whoami.winsrv'),
+            'load': {
+                'data': os.path.join(
+                    contipaq_samba_folder, 'load', 'load_%s.xlsx'),
+                'history': os.path.join(
+                    contipaq_samba_folder, 'load', 'history'),
+                'log': os.path.join(
+                    contipaq_samba_folder, 'log', 'load.log'),
+                },
+            'unload': {
+                'data': os.path.join(
+                    contipaq_samba_folder, 'unload', 'unload_%s.xlsx'),
+                'history': os.path.join(
+                    contipaq_samba_folder, 'unload', 'history'),
+                'log': os.path.join(
+                    contipaq_samba_folder, 'log', 'unload.log'),
+                },           
+            }
+
     _columns = {
         'contipaq_samba_folder': fields.char(
             'ContipaQ Samba folder', size=180),
@@ -338,7 +371,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
     _inherit = 'mrp.production.confirm.wizard'
 
     # -------------------------------------------------------------------------
-    # Onchange:
+    #                                Onchange:
     # -------------------------------------------------------------------------
     def onchange_waste_qty(self, cr, uid, ids, product_qty, waste_qty, 
             context=None):
@@ -363,16 +396,12 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             cr, uid, product_id, context=context) 
 
         waste_id = product_proxy.waste_id.id or False
-        res['value'] = {
-            'waste_id': waste_id,
-            #'waste_id': [('id', '=', waste_id)],
-            }
-        print res    
+        res['value'] = {'waste_id': waste_id, }        
         return res
 
-    # --------------
-    # Wizard button:
-    # --------------
+    # -------------------------------------------------------------------------
+    #                        Wizard button events:
+    # -------------------------------------------------------------------------
     def action_confirm_mrp_production_order(self, cr, uid, ids, context=None):
         ''' Write confirmed weight (load or unload documents)
         '''
@@ -392,40 +421,12 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         #                          Initial setup:
         # ---------------------------------------------------------------------
+        # Wf management:
         wf_service = netsvc.LocalService('workflow')
 
-        # ---------------------------------------------------------------------
-        # Get parameters
-        # ---------------------------------------------------------------------
-        contipaq_samba_folder = company_pool.browse(
-            cr, uid, 1, context=context).contipaq_samba_folder
-
-        if not contipaq_samba_folder:
-            raise osv.except_osv(
-                _('Setup parameter'), 
-                _('No root folder setted up in company management'),
-                )
-        contipaq_samba_folder = os.path.expanduser(contipaq_samba_folder)
-        folder = {
-            'root': contipaq_samba_folder,
-            'whoami': os.path.join(contipaq_samba_folder, 'whoami.winsrv'),
-            'load': {
-                'data': os.path.join(
-                    contipaq_samba_folder, 'load', 'load_%s.xlsx'),
-                'history': os.path.join(
-                    contipaq_samba_folder, 'load', 'history'),
-                'log': os.path.join(
-                    contipaq_samba_folder, 'log', 'load.log'),
-                },
-            'unload': {
-                'data': os.path.join(
-                    contipaq_samba_folder, 'unload', 'unload_%s.xlsx'),
-                'history': os.path.join(
-                    contipaq_samba_folder, 'unload', 'history'),
-                'log': os.path.join(
-                    contipaq_samba_folder, 'log', 'unload.log'),
-                },           
-            }
+        # Get parameters:
+        folder = company_pool.get_contipaq_folder_parameters(
+            cr, uid, context=context)
 
         # ---------------------------------------------------------------------
         # Check mount test file:
@@ -436,53 +437,62 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                 _('Windows server not mounted!'),
                 )
         
-        lavoration_browse = lavoration_pool.browse(
+        lavoration_proxy = lavoration_pool.browse(
             cr, uid, current_lavoration_id, context=context)
             
         # Readability:
-        mrp = lavoration_browse.production_id # Production reference
+        mrp = lavoration_proxy.production_id # Production reference
         pallet = wiz_proxy.pallet_product_id
-        wc = lavoration_browse.workcenter_id
-        partial = wiz_proxy.partial
+        wc = lavoration_proxy.workcenter_id
+        partial = False # XXX Always last load! wiz_proxy.partial
 
-        # ---------------------------------------------------------------------
-        #                      CL  (lavoration load)
-        # ---------------------------------------------------------------------
-        # Only if not to close have a partial or fully load:        
-        if wiz_proxy.state == 'product':
-            if len(lavoration_browse.load_ids) > 0:
+        if wiz_proxy.state == 'material': # >> unload all material and package:
+            # -----------------------------------------------------------------
+            #                              SL Unload material
+            # -----------------------------------------------------------------
+            # Now go ahead only:
+            accounting_sl_code = 'SL???' # TODO change when confirmed
+            unload_confirmed = True
+            lavoration_pool.write(
+                cr, uid, [lavoration_proxy.id], {
+                    'accounting_sl_code': accounting_sl_code,
+                    'unload_confirmed': unload_confirmed,
+                    },
+                context=context)
+            if unload_confirmed:
+                wf_service.trg_validate(
+                    uid, 'mrp.production.workcenter.line',
+                    lavoration_proxy.id, 'button_done', cr)                        
+
+        else: # wiz_proxy.state == 'product':
+            # -----------------------------------------------------------------
+            #                      CL  (lavoration load)
+            # -----------------------------------------------------------------
+            # XXX One load for one lavoration:
+            if len(lavoration_proxy.load_ids) > 0:
                     raise osv.except_osv(
                         _('Load present:'),
                         _('Load is yet present, no other is possibile!'),
                         )
-                
+
             # -----------------------------------------------------------------
             # Check operations before CL:
             # -----------------------------------------------------------------
-            #TODO Manage partial ?? if not wiz_proxy.partial:
-            # Last lavoration must all closed state:
-            for l in mrp.workcenter_lines:
-                if l.state not in ('done', 'cancel'): # not closed
-                    raise osv.except_osv(
-                        _('Last lavoration:'),
-                        _('When is the last lavoration all lavoration '
-                            'must be in closed state!'),
-                        )
-
             # MRP in cancel:                            
             if mrp.accounting_state in ('cancel'):
                 raise osv.except_osv(
                     _('Production error:'),
                     _('Could not add other extra load (production cancelled)!')
                     )
-            
+
+            # Q. present if package:            
             if wiz_proxy.package_id and not wiz_proxy.ul_qty:
                 raise osv.except_osv(
                     _('Package error:'),
                     _('If package is present quantity is mandatory [%s]!') % (
                         wiz_proxy.package_id.name,
                         ))
-                    
+            # Q. present if pallet:
             if pallet and not wiz_proxy.pallet_qty:
                 raise osv.except_osv(
                     _('Pallet error:'),
@@ -491,68 +501,71 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                         )))
 
             # -----------------------------------------------------------------
-            # Create movement in list:
+            #                    Create movement in list:
             # -----------------------------------------------------------------
-            accounting_cl_code = 'CLXXX'
-            #wrong = wiz_proxy.wrong
+            accounting_cl_code = 'CL???'
             product_qty = wiz_proxy.real_product_qty
+            #wrong = wiz_proxy.wrong
             
+            # -----------------------------------------------------------------
             # Manage recycle load
+            # -----------------------------------------------------------------
             recycle = wiz_proxy.recycle
             if recycle:
                 waste_id = wiz_proxy.waste_id.id or False
                 waste_qty = wiz_proxy.waste_qty
+                if waste_qty > product_qty:
+                    raise osv.except_osv(
+                        _('Waste error:'),
+                        _('Waste %s must be <= of total lavoration: %s' % (
+                            waste_qty, product_qty)))
             else:    
                 waste_id = False
                 waste_qty = 0.0
 
+            # -----------------------------------------------------------------
+            # Write record:
+            # -----------------------------------------------------------------
             package_id = \
                 wiz_proxy.package_id.id if wiz_proxy.package_id else False
             price = 0.0   
             load_id = load_pool.create(cr, uid, {
                 'accounting_cl_code': accounting_cl_code,
                 'product_qty': product_qty, # only the wrote total
-                'line_id': lavoration_browse.id,
-                'partial': wiz_proxy.partial,
+                'line_id': lavoration_proxy.id,
+                #XXX not manage, alwasy last! 'partial': wiz_proxy.partial,
+                
+                # Package:
                 'package_id': package_id,
                 'package_pedimento_id': wiz_proxy.package_pedimento_id.id,
                 'ul_qty': wiz_proxy.ul_qty,
+                
+                # Pallet:
                 'pallet_product_id': pallet.id if pallet else False,
                 'pallet_qty': wiz_proxy.pallet_qty or 0.0,
                 
+                # Recycle:
+                'recycle': recycle, # XXX not necessary!
                 'waste_id': waste_id,
                 'waste_qty': waste_qty,
-                # TODO change waste management total!
-                
-                # Not used here:
-                #'recycle': recycle,
-                #'recycle_product_id': False,
-                
-                #    recycle_product_id.id if recycle_product_id else False,
-                #'wrong': wrong,
-                'wrong_comment': wiz_proxy.wrong_comment,
+                'wrong_comment': wiz_proxy.wrong_comment,                
                 })
                 
             # Reload record for get sequence value:
             sequence = load_pool.browse(
                 cr, uid, load_id, context=context).sequence 
 
-            # TODO manage recycle product!!!!! <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            # Code for product, syntax:
-            # [(1)Famiglia - (6)Prodotto - (1).Pezzatura - (1)Versione] -
-            # [(5)Partita - #(2)SequenzaCarico] - [(10)Imballo]
-            #if recycle:
-            #    # Pass product with R + code without first char:
-            #    code = 'R%s' % wiz_proxy.product_id.default_code[1:]
-            #else:    
+            # -----------------------------------------------------------------
+            # Lot coding:
+            # -----------------------------------------------------------------
+            # Lot syntax:
+            #     [(1)Famiglia - (6)Prodotto - (1).Pezzatura - (1)Versione] -
+            #     [(5)Partita - #(2)SequenzaCarico] - [(10)Imballo]
+            # Recycle product:
+            #     recycle_code = 'R%s' % default_code[1:]
             code = wiz_proxy.product_id.default_code
             
-            #ref_lot_id = False
-            ref_lot_name = '%06d#%01d' % (
-                int(mrp.name[3:]),
-                sequence,
-                ) # Job <<< TODO use production (test, mrp is 5)
-
+            ref_lot_name = '%06d#%01d' % (int(mrp.name[3:]), sequence)
             product_code = '%-8s%-2s%-10s%-10s' % (
                 code,
                 wc.code[:2],
@@ -560,7 +573,6 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                 wiz_proxy.package_id.code if package_id else '', # Package
                 )
             load_pool.write(cr, uid, load_id, {
-                #'product_code_id': lot_created_id,
                 'product_code': product_code,
                 }, context=context)
 
@@ -576,33 +588,28 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             # -----------------------------------------------------------------
             #                          Write Excel CL:
             # -----------------------------------------------------------------
-            if not partial:
-                # Export Excel file and complete production:
-                mrp_pool.write_excel_CL(cr, uid, lavoration_browse, folder, 
-                    context=context)
+            mrp_pool.write_excel_CL(cr, uid, lavoration_proxy, folder, 
+                context=context)
+                
+            # -----------------------------------------------------------------
+            # Workflow operation:    
+            # -----------------------------------------------------------------
+            # Check if it is the last lavoration:
+            mrp_lavoration = lavoration_proxy.production_id.workcenter_lines
+            last = True
+            # Last if all lavoration done with 1 load 
+            for lavoration in mrp_lavoration:
+                if lavoration.state != 'done' or not lavoration.load_ids:
+                    last = False
+                    break
+
+            if last:    
                 wf_service.trg_validate(
                     uid, 'mrp.production', 
                     mrp.id,
                     'trigger_accounting_close',
                     cr)
 
-        else: # state == 'material' >> unload all material and package:
-            # -----------------------------------------------------------------
-            #                              SL Unload material
-            # -----------------------------------------------------------------
-            # Now go ahead only:
-            accounting_sl_code = 'SLXXX' # TODO change when confirmed
-            unload_confirmed = True
-            lavoration_pool.write(
-                cr, uid, [lavoration_browse.id], {
-                    'accounting_sl_code': accounting_sl_code,
-                    'unload_confirmed': unload_confirmed,
-                    },
-                context=context)
-            if unload_confirmed:
-                wf_service.trg_validate(
-                    uid, 'mrp.production.workcenter.line',
-                    lavoration_browse.id, 'button_done', cr)                        
         return {'type': 'ir.actions.act_window_close'}
 
     def default_list_unload(self, cr, uid, context=None):

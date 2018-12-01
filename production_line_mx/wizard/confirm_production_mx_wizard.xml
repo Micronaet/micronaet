@@ -15,7 +15,7 @@
                 </field>
                 <field name="recycle" position="after">
                     <field name="waste_id" attrs="{'required': [('recycle','=',True)], 'invisible': [('recycle','=',False)]}" widget="selection" domain="[('default_code', '=ilike', 'R%%')]"/>
-                    <field name="waste_qty" attrs="{'required': [('recycle','=',True)], 'invisible': [('recycle','=',False)]}" on_change="onchange_waste_qty(product_qty, waste_qty)"/>
+                    <field name="waste_qty" attrs="{'required': [('recycle','=',True)], 'invisible': [('recycle','=',False)]}" on_change="onchange_waste_qty(real_product_qty, waste_qty)"/>
                 </field>
                    
                 <field name="use_mrp_package" position="attributes">
