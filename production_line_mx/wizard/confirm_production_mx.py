@@ -137,94 +137,111 @@ class MrpProduction(osv.Model):
         lavoration_pool = self.pool.get('mrp.production.workcenter.line')
         load_pool = self.pool.get('mrp.production.workcenter.load')
 
+        # ---------------------------------------------------------------------
+        # Excel startup:
+        # ---------------------------------------------------------------------
         ws_name = 'load'
         excel_pool.create_worksheet(ws_name)
-
-        # Readability:
-        mrp = lavoration.production_id
-        wc = lavoration.workcenter_id
 
         # ---------------------------------------------------------------------
         #                          Cost calculation:
         # ---------------------------------------------------------------------
+        # Readability:
+        mrp = lavoration.production_id
+        wc = lavoration.workcenter_id
+
         # Lavoration K cost (for line):
         try:
             # Check if forced during production
-            cost_line = mrp.force_production_rate or \
+            line_rate_cost = mrp.force_production_rate or \
                 wc.cost_product_id.standard_price or 0.0
         except:
-            cost_line = 0.0
-        if not cost_line:    
+            line_rate_cost = 0.0
+        if not line_rate_cost:    
             raise osv.except_osv(
                 _('Calculate lavoration cost!'),
                 _('Error calculating lavoration cost, verify if '
                     'the workcenter has product linked'))
 
         # ---------------------------------------------------------------------
-        # Unloaded material, package and pallet:
+        # Unloaded material this lavoration and package and pallet:
         # ---------------------------------------------------------------------
         unload_cost_total = total = 0.0 
-        for l in mrp.workcenter_lines: # All lavoration in MRP:
+
+        # ---------------------------------------------------------------------
+        # A. Master MRP Materials:
+        # ---------------------------------------------------------------------
+        for unload in lavoration.bom_material_ids:
             mrp = l.production_id
+            product = unload.product_id
+            total += unload.quantity # Q
 
-            # -----------------------------------------------------------------
-            # Master MRP Materials:
-            # -----------------------------------------------------------------
-            for unload in mrp.bom_material_ids:
-                # Q:
-                total += unload.quantity or 0.0
-                
-                # Cost for material:
-                try:
-                    unload_cost_total += \
-                        unload.product_id.standard_price * unload.quantity
-                except:
-                    _logger.error(
-                        _('Error calculating unload material (missed cost'))
-
-            # -----------------------------------------------------------------
-            # Package and pallet:
-            # -----------------------------------------------------------------
-            for load in mrp.load_ids:
-                # -------------------------------------------------------------
-                # Package:
-                # -------------------------------------------------------------
-                package = load.package_id
-                link_product = package.linked_product_id
-                
-                if not package:
-                    raise osv.except_osv(
-                        _('Calculate lavoration cost!'),
-                        _('No package in load'))
-                if not link_product:
-                    raise osv.except_osv(
-                        _('Calculate lavoration cost!'),
-                        _('No package product in load'))    
-                
-                # Package cost:
+            # Cost for material:
+            try:
                 unload_cost_total += \
-                    link_product.standard_price * load.ul_qty
+                    product.standard_price * unload.quantity
+            except:
+                raise osv.except_osv(
+                    _('Lavoration cost error!'),
+                    _('Material without cost: %s' % product.default_code))
+        
+        # ---------------------------------------------------------------------
+        #                    Unload from loading operation:
+        # ---------------------------------------------------------------------
+        # XXX Note: only one load
+        for load in lavoration.load_ids:
+            # -----------------------------------------------------------------
+            # B. Package:
+            # -----------------------------------------------------------------
+            package = load.package_id
+            link_product = package.linked_product_id
+            
+            if not package:
+                raise osv.except_osv(
+                    _('Lavoration cost error!'),
+                    _('No package in load'))
+                    
+            if not link_product:
+                raise osv.except_osv(
+                    _('Lavoration cost errort!'),
+                    _('No package product in load'))    
+            
+            # Package cost:
+            unload_cost_total += \
+                link_product.standard_price * load.ul_qty
 
-                # -------------------------------------------------------------
-                # Pallet:
-                # -------------------------------------------------------------
-                pallet = load.pallet_product_id
-                # Pallet cost:
-                if pallet: # There's pallet
-                    unload_cost_total += \
-                        pallet.standard_price * load.pallet_qty
+            # -------------------------------------------------------------
+            # C. Pallet:
+            # -------------------------------------------------------------
+            pallet = load.pallet_product_id
+            
+            # Pallet cost:
+            if pallet: # There's pallet
+                if not load.pallet_qty:
+                    raise osv.except_osv(
+                        _('Lavoration cost error!'),
+                        _('Pallet product without cost!'))    
+                unload_cost_total += \
+                    pallet.standard_price * load.pallet_qty
 
         # ---------------------------------------------------------------------
-        # Total cost of MRP production:
+        # D. Total cost of MRP production:
         # ---------------------------------------------------------------------
+        load_qty = load.product_qty
+        raise osv.except_osv(
+            _('Lavoration cost error!'),
+            _('Load qty must be present!'))    
+        
         # Add also Lavoration cost:
-        unload_cost_total += (cost_line * total) # K of Line (medium cost)
-        # Calculate unit cost:
-        unit_cost = unload_cost_total / total
+        unload_cost_total += (line_rate_cost * total) # K of Line (medium cost)
+        
+        # Calculate unit cost for production:
+        unit_cost = unload_cost_total / load_qty#total #XXX before was material
 
         # ---------------------------------------------------------------------
         # Update all loads with total (master):
         # ---------------------------------------------------------------------
+        # XXX Note: Only one
         for load in mrp.load_ids:        
             load_pool.write(cr, uid, [load.id], {
                 'accounting_cost': unit_cost * load.product_qty,
@@ -247,10 +264,25 @@ class MrpProduction(osv.Model):
         # ---------------------------------------------------------------------
         for load in mrp.load_ids:
             row += 1
-            product = load.product_id
+            if load.recycle: 
+                product = load.waste_id # Product was waste
+                qty = load.waste_qty                            
+                # Generate waste load:
+                excel_pool.write_xls_line(ws_name, row, [
+                    product.default_code,
+                    qty,
+                    product.uom_id.contipaq_ref,
+                    unit_cost,
+                    False, # No lot
+                    ])
+                qty = load.product_qty - waste_qty # remove waste
+            else:        
+                qty = load.waste_qty # all is good product
+                
+            product = load.product_id # Real product:
             excel_pool.write_xls_line(ws_name, row, [
                 product.default_code,
-                load.product_qty,
+                qty,
                 product.uom_id.contipaq_ref,
                 unit_cost,
                 load.product_code, # Lot code
@@ -634,7 +666,9 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                     )
         return res
 
-    # Override onchange action
+    # -------------------------------------------------------------------------
+    # Onchange action (override)
+    # -------------------------------------------------------------------------
     def onchange_package_id(self, cr, uid, ids, package_id, product_id, 
             real_product_qty, context=None):       
         ''' Integration on onchange for package (inser domain filter)
