@@ -104,6 +104,16 @@ class ResCompany(orm.Model):
             'ContipaQ Samba folder', size=180),
         }
 
+
+class MrpProductionWorkcenterLine(osv.Model):
+    ''' MRP production
+    '''
+    _inherit = 'mrp.production.workcenter.line'
+
+    _columns = {
+        'product_price_calc': fields.text('Product price calc'),
+         }
+         
 class MrpProduction(osv.Model):
     ''' MRP production
     '''
@@ -123,6 +133,7 @@ class MrpProduction(osv.Model):
     # -------------------------------------------------------------------------
     # Utility for SL and CL movement:
     # -------------------------------------------------------------------------
+    # TODO move in mrp.production.workcenter.line?
     def write_excel_CL(self, cr, uid, lavoration_id, folder, context=None):
         ''' Write CL document in Excel file
             excel_pool: Excel file manager
@@ -152,7 +163,6 @@ class MrpProduction(osv.Model):
         # Readability:
         mrp = lavoration.production_id # for force rate
         wc = lavoration.workcenter_id
-        
 
         # Lavoration K cost (for line):
         try:
@@ -175,24 +185,42 @@ class MrpProduction(osv.Model):
         # ---------------------------------------------------------------------
         # A. Lavoration materials:
         # ---------------------------------------------------------------------
+        calc = _(u'Raw materials:<br/>')
         for unload in lavoration.bom_material_ids:
             product = unload.product_id
-            unload_qty += unload.quantity # Q
+            
+            # Field used:
+            default_code = product.default_code
+            quantity = unload.quantity
+            price = product.standard_price
+            
+            unload_qty += quantity
 
             # Cost for material:
             try:
-                unload_cost += \
-                    product.standard_price * unload.quantity
+                subtotal = price * quantity
+                unload_cost += subtotal
+
+                calc += u'[%s] %s %s x %s = %s<br/>' % (
+                    default_code,
+                    quantity,                    
+                    product.uom_id.contipaq_ref or '?',
+                    price,
+                    subtotal,
+                    ) 
             except:
                 raise osv.except_osv(
                     _('Lavoration cost error!'),
-                    _('Material without cost: %s' % product.default_code))
+                    _('Material without cost: %s' % default_code))
+                calc += u'[%s] ERROR calc subtota for line<br/>' % \
+                    default_code
         
         # ---------------------------------------------------------------------
         # 2. Unload from loading operation:
         # ---------------------------------------------------------------------
         # XXX Note: only one load
         load_qty = 0.0
+        calc += _('<br/>Package and pallet:<br/>')
         for load in lavoration.load_ids:
             load_qty += load.product_qty
             
@@ -211,10 +239,18 @@ class MrpProduction(osv.Model):
                 raise osv.except_osv(
                     _('Lavoration cost errort!'),
                     _('No package product in load'))    
-            
-            # Package cost:
-            unload_cost += \
-                link_product.standard_price * load.ul_qty
+
+            # Package cost (always present!):
+            subtotal = link_product.standard_price * load.ul_qty
+            unload_cost += subtotal
+
+            calc += _(u'Pack: [%s] %s %s x %s = %s<br/>') % (
+                link_product.default_code,
+                load.ul_qty,                    
+                link_product.uom_id.contipaq_ref or '?',
+                link_product.standard_price,
+                subtotal,
+                ) 
 
             # -------------------------------------------------------------
             # C. Pallet:
@@ -227,8 +263,17 @@ class MrpProduction(osv.Model):
                     raise osv.except_osv(
                         _('Lavoration cost error!'),
                         _('Pallet product without cost!'))    
-                unload_cost += \
-                    pallet.standard_price * load.pallet_qty
+                        
+                subtotal = pallet.standard_price * load.pallet_qty
+                unload_cost += subtotal
+
+                calc += _(u'Pallet: [%s] %s %s x %s = %s<br/>') % (
+                    pallet.default_code,
+                    load.pallet_qty,                    
+                    pallet.uom_id.contipaq_ref or '?',
+                    pallet.standard_price,
+                    subtotal,
+                    )
 
         # ---------------------------------------------------------------------
         # D. Total cost of lavoration:
@@ -239,11 +284,31 @@ class MrpProduction(osv.Model):
                 _('Load qty must be present!'))    
             
         # Add also Lavoration cost:
-        unload_cost += (line_rate_cost * unload_qty) # K of Line (medium cost)
+        subtotal = (line_rate_cost * unload_qty) # K of Line (medium cost)
+        unload_cost += subtotal
+        calc += _(u'<br>Lavoration: [K rate] %s x [unload] %s = %s<br/>') % (
+            line_rate_cost,
+            unload_qty,
+            subtotal,
+            )
         
         # Calculate unit cost for production:
         unit_cost = unload_cost / load_qty #unload_qty #XXX before was material
 
+        calc += _(u'<br/>Q. total:<br/>')
+        calc += _(
+            u'Unload = %s<br/>Load = %s<br/>') % (
+            unload_qty,
+            load_qty,
+            )
+        
+        calc += _(u'<br/>Medium price:<br/>')
+        calc += _(u'Load price: [Cost] %s / [Q. load] %s = <b>%s</b>') % (
+            unload_cost,
+            load_qty,
+            unit_cost,
+            )
+            
         # ---------------------------------------------------------------------
         # Update all loads with total (master):
         # ---------------------------------------------------------------------
@@ -305,6 +370,7 @@ class MrpProduction(osv.Model):
         # ---------------------------------------------------------------------
         return lavoration_pool.write(cr, uid, [lavoration.id], {
             'state': 'done',
+            'product_price_calc': calc,
             }, context=context)
         
     def write_excel_SL(self, lavoration, folder):

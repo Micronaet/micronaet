@@ -118,6 +118,21 @@
                 </field>
             </field>
         </record>
+
+        <record model="ir.ui.view" id="default_mrp_production_workcenter_line_calc_view">
+            <field name="name">Lavoration default calc</field>
+            <field name="model">mrp.production.workcenter.line</field>
+            <field name="inherit_id" ref="production_line.default_mrp_production_workcenter_line_view" />
+            <field name="arch" type="xml">
+                <page string="Load" position="after">
+                    <page string="Load calc" attrs="{'invisible': [('product_price_calc','=',False)]}">
+                        <separator string="Calculation:" colspan="4"/>
+                        <field name="product_price_calc" widget="html" colspan="4" nolabel="1"/>
+                    </page>
+                </page>                    
+            </field>
+        </record>
+        
     </data>
 </openerp>
 
