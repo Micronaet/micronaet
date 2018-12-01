@@ -164,7 +164,7 @@ class MrpProduction(osv.Model):
                     'the workcenter has product linked'))
 
         # ---------------------------------------------------------------------
-        # Unloaded material this lavoration and package and pallet:
+        # 1. Unloaded material this lavoration and package and pallet:
         # ---------------------------------------------------------------------
         unload_cost_total = total = 0.0 
 
@@ -186,7 +186,7 @@ class MrpProduction(osv.Model):
                     _('Material without cost: %s' % product.default_code))
         
         # ---------------------------------------------------------------------
-        #                    Unload from loading operation:
+        # 2. Unload from loading operation:
         # ---------------------------------------------------------------------
         # XXX Note: only one load
         for load in lavoration.load_ids:
@@ -293,7 +293,9 @@ class MrpProduction(osv.Model):
         del(excel_pool) 
         self.write_excel_SL(lavoration, folder)
         
-        # Lavoration is done now:
+        # ---------------------------------------------------------------------
+        # wrkflow: lavoration is done:
+        # ---------------------------------------------------------------------
         return lavoration_pool.write(cr, uid, [lavoration.id], {
             'state': 'done',
             }, context=context)
@@ -328,72 +330,70 @@ class MrpProduction(osv.Model):
                 _('Lot'),
                 ])
 
-        for l in mrp.workcenter_lines:
-            # For every load product:
-            for load in l.load_ids:
-                # -------------------------------------------------------------
-                # Unload package:
-                # -------------------------------------------------------------
-                product = load.package_id.linked_product_id
+        # ---------------------------------------------------------------------
+        # 1. Unload data from loading operation:
+        # ---------------------------------------------------------------------
+        for load in lavoration.load_ids:
+            # -----------------------------------------------------------------
+            # A. Unload package:
+            # -----------------------------------------------------------------
+            product = load.package_id.linked_product_id
+            row +=1 
+            excel_pool.write_xls_line(ws_name, row, [
+                product.default_code,
+                load.ul_qty,
+                product.uom_id.contipaq_ref,
+                product.standard_price,
+                load.package_pedimento_id.name or '', # pedimento
+                '', # lot
+                ])
+
+            # -----------------------------------------------------------------
+            # A. Unload Pallet:
+            # -----------------------------------------------------------------
+            if load.pallet_product_id:
+                product = load.pallet_product_id
                 row +=1 
                 excel_pool.write_xls_line(ws_name, row, [
                     product.default_code,
-                    load.ul_qty,
+                    load.pallet_qty,
                     product.uom_id.contipaq_ref,
                     product.standard_price,
-                    load.package_pedimento_id.name or '', # pedimento
-                    '', # lot
+                    '', # No pedimento
+                    '', # No lot
                     ])
 
-                # -------------------------------------------------------------
-                # Unload Palled:
-                # -------------------------------------------------------------
-                if load.pallet_product_id:
-                    product = load.pallet_product_id
-                    row +=1 
-                    excel_pool.write_xls_line(ws_name, row, [
-                        product.default_code,
-                        load.pallet_qty,
-                        product.uom_id.contipaq_ref,
-                        product.standard_price,
-                        '', # pedimento
-                        '', # lot
-                        ])
-
         # ---------------------------------------------------------------------
-        # Explode materials:
+        # 2. Explode materials:
         # ---------------------------------------------------------------------
-        # All lavoratoin in master MRP:
-        for l in mrp.workcenter_lines:
+        for unload in lavoration.bom_material_ids:
+            row += 1
+            
             # -----------------------------------------------------------------
-            # All material in lavoration:
+            # Check:                
             # -----------------------------------------------------------------
-            for unload in l.bom_material_ids:
-                row += 1
-                
-                # Check:                
-                default_code = unload.product_id.default_code
-                if not default_code:
-                    raise osv.except_osv(
-                        _('Unload material error:'),
-                        _('No default code found for product'))
+            default_code = unload.product_id.default_code
+            if not default_code:
+                raise osv.except_osv(
+                    _('Unload material error:'),
+                    _('No default code found for product'))
 
-                standard_price = unload.product_id.standard_price
-                if not standard_price:
-                    raise osv.except_osv(
-                        _('Unload material error:'),
-                        _('No standard price %s') % default_code)
+            standard_price = unload.product_id.standard_price
+            if not standard_price:
+                raise osv.except_osv(
+                    _('Unload material error:'),
+                    _('No standard price %s') % default_code)
 
-                excel_pool.write_xls_line(ws_name, row, [
-                    default_code,
-                    unload.quantity,
-                    unload.product_id.uom_id.contipaq_ref,
-                    standard_price,
-                    unload.pedimento_id.name if \
-                        unload.pedimento_id else '',
-                    '', # lot
-                    ])
-        excel_pool.save_file_as(folder['unload']['data'] % mrp.id)        
+            excel_pool.write_xls_line(ws_name, row, [
+                default_code,
+                unload.quantity,
+                unload.product_id.uom_id.contipaq_ref,
+                standard_price,
+                unload.pedimento_id.name if \
+                    unload.pedimento_id else '',
+                '', # lot
+                ])
+        excel_pool.save_file_as(folder['unload']['data'] % lavoration.id)        
         return True
     
     # -------------------------------------------------------------------------    
