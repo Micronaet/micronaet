@@ -123,7 +123,7 @@ class MrpProduction(osv.Model):
     # -------------------------------------------------------------------------
     # Utility for SL and CL movement:
     # -------------------------------------------------------------------------
-    def write_excel_CL(self, cr, uid, lavoration, folder, context=None):
+    def write_excel_CL(self, cr, uid, lavoration_id, folder, context=None):
         ''' Write CL document in Excel file
             excel_pool: Excel file manager
             lavoration: Laboration browse obj
@@ -137,6 +137,9 @@ class MrpProduction(osv.Model):
         lavoration_pool = self.pool.get('mrp.production.workcenter.line')
         load_pool = self.pool.get('mrp.production.workcenter.load')
 
+        # Reload data (to get relation fields updated:
+        lavoration = lavoration_pool.browse(
+            cr, uid, lavoration_id, context=context)
         # ---------------------------------------------------------------------
         # Excel startup:
         # ---------------------------------------------------------------------
@@ -149,6 +152,7 @@ class MrpProduction(osv.Model):
         # Readability:
         mrp = lavoration.production_id # for force rate
         wc = lavoration.workcenter_id
+        
 
         # Lavoration K cost (for line):
         try:
@@ -190,7 +194,7 @@ class MrpProduction(osv.Model):
         # XXX Note: only one load
         load_qty = 0.0
         for load in lavoration.load_ids:
-            load_qty = load.product_qty
+            load_qty += load.product_qty
             
             # -----------------------------------------------------------------
             # B. Package:
@@ -229,10 +233,11 @@ class MrpProduction(osv.Model):
         # ---------------------------------------------------------------------
         # D. Total cost of lavoration:
         # ---------------------------------------------------------------------
-        raise osv.except_osv(
-            _('Lavoration cost error!'),
-            _('Load qty must be present!'))    
-        
+        if not load_qty:
+            raise osv.except_osv(
+                _('Lavoration cost error!'),
+                _('Load qty must be present!'))    
+            
         # Add also Lavoration cost:
         unload_cost += (line_rate_cost * unload_qty) # K of Line (medium cost)
         
@@ -244,7 +249,7 @@ class MrpProduction(osv.Model):
         # ---------------------------------------------------------------------
         # XXX Note: Only one
         load_ids = [load.id for load in lavoration.load_ids]
-        load_pool.write(cr, uid, load.ids, {
+        load_pool.write(cr, uid, load_ids, {
             'accounting_cost': unit_cost * load.product_qty,
             }, context=context)
         
@@ -265,20 +270,21 @@ class MrpProduction(osv.Model):
         # ---------------------------------------------------------------------
         for load in lavoration.load_ids:
             row += 1
+            qty = load.product_qty
             if load.recycle: 
                 product = load.waste_id # Product was waste
-                qty = load.waste_qty                            
+                waste_qty = load.waste_qty                            
+
                 # Generate waste load:
                 excel_pool.write_xls_line(ws_name, row, [
                     product.default_code,
-                    qty,
+                    waste_qty,
                     product.uom_id.contipaq_ref,
                     unit_cost,
                     False, # No lot
                     ])
-                qty = load.product_qty - waste_qty # remove waste
-            else:        
-                qty = load.waste_qty # all is good product
+                row += 1    
+                qty -= waste_qty # remove waste
                 
             product = load.product_id # Real product:
             excel_pool.write_xls_line(ws_name, row, [
@@ -450,7 +456,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
         load_pool = self.pool.get('mrp.production.workcenter.load')
 
         wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
-        current_lavoration_id = context.get('active_id', 0)
+        lavoration_id = context.get('active_id', 0)
 
         # ---------------------------------------------------------------------
         #                          Initial setup:
@@ -472,7 +478,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                 )
         
         lavoration_proxy = lavoration_pool.browse(
-            cr, uid, current_lavoration_id, context=context)
+            cr, uid, lavoration_id, context=context)
             
         # Readability:
         mrp = lavoration_proxy.production_id # Production reference
@@ -622,7 +628,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             # -----------------------------------------------------------------
             #                          Write Excel CL:
             # -----------------------------------------------------------------
-            mrp_pool.write_excel_CL(cr, uid, lavoration_proxy, folder, 
+            mrp_pool.write_excel_CL(cr, uid, lavoration_id, folder, 
                 context=context)
                 
             # -----------------------------------------------------------------
@@ -633,11 +639,15 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             last = True
             # Last if all lavoration done with 1 load 
             for lavoration in mrp_lavoration:
+                if lavoration.id == lavoration_id:
+                    continue # This not in the test!
+
                 if lavoration.state != 'done' or not lavoration.load_ids:
                     last = False
                     break
-
+            
             if last:    
+                _logger.warning('Close production, was last lavoration')
                 wf_service.trg_validate(
                     uid, 'mrp.production', 
                     mrp.id,
