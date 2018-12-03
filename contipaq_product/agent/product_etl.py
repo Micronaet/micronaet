@@ -110,6 +110,7 @@ except:
 product_pool = erp.ProductProduct
 
 import pdb; pdb.set_trace()
+update_uom = []
 for row in cr.fetchall():
     item_id = row[0]
     default_code = row[1]
@@ -129,9 +130,10 @@ for row in cr.fetchall():
     else:
         product_pool.create(data)
         print 'Insert: %s' % name
-    
-    # Update UOM via command line:
-    query = '''
-        update 
-        '''
+   
+   uom_id = uom_db.get(contipaq_uom_id, False)
+   if uom_id:
+        update_uom.append((product_ids[0], uom_id))
+import pdb; pdb.set_trace()        
+product_pool.update_uom(update_uom)
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
