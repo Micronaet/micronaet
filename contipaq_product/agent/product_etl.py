@@ -84,7 +84,7 @@ except:
 
 for row in cr.fetchall():
     contipaq_id = row[0]
-    contipaq_name = row[1]
+    contipaq_name = row[1].strip()
     uom_ids = uom_pool.search([
         ('contipaq_ref', '=', contipaq_name)])
     if uom_ids:
