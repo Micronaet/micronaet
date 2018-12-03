@@ -70,7 +70,6 @@ erp = get_erp(URL, database, user, password)
 # -----------------------------------------------------------------------------
 # UOM data:
 # -----------------------------------------------------------------------------
-import pdb; pdb.set_trace()
 uom_pool = erp.ProductUom
 uom_db = {}
 query = ''' 
