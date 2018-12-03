@@ -68,11 +68,36 @@ cr = connection.cursor()
 erp = get_erp(URL, database, user, password)
 
 # -----------------------------------------------------------------------------
+# UOM data:
+# -----------------------------------------------------------------------------
+uom_pool = erp.ProductUom
+uom_db = {}
+query = ''' 
+    SELECT CIDUNIDAD, CNOMBREUNIDAD 
+    FROM dbo.admTiposCambio;
+    '''
+try:
+    cr.execute(query)
+except:
+    print 'Error: %s' % (sys.exc_info(), )
+
+for rom in cr.fetchall():
+    contipaq_id = row[0]
+    contipaq_name = row[1]
+    uom_ids = uom_pool.search([
+        ('contipaq_ref', '=', contipaq_name)])
+    if uom_ids:
+        uom_db[contipaq_id] = uom_ids[0]
+    else:
+        print 'UOM: %s not found on ODOO' % contipaq_name    
+
+# -----------------------------------------------------------------------------
 # Read partner:
 # -----------------------------------------------------------------------------
 query = '''
     SELECT 
-        CIDPRODUCTO, CCODIGOPRODUCTO, CNOMBREPRODUCTO, CTIPOPRODUCTO
+        CIDPRODUCTO, CCODIGOPRODUCTO, CNOMBREPRODUCTO, CTIPOPRODUCTO, 
+        CIDUNIDADBASE
     FROM dbo.admProductos;
     '''
 try:
@@ -82,11 +107,13 @@ except:
 
 product_pool = erp.ProductProduct
 
+import pdb; pdb.set_trace()
 for row in cr.fetchall():
     item_id = row[0]
     default_code = row[1]
     name = row[2]
     product_type = row[3]
+    contipaq_uom_id = row[4]
 
     data = {
         'default_code': default_code,
@@ -100,4 +127,9 @@ for row in cr.fetchall():
     else:
         product_pool.create(data)
         print 'Insert: %s' % name
+    
+    # Update UOM via command line:
+    query = '''
+        update 
+        '''
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

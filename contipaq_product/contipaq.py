@@ -43,6 +43,33 @@ class ProductProduct(orm.Model):
     """    
     _inherit = 'product.product'
     
+    def update_uom(self, cr, uid, db, contex=None):
+        ''' Update product
+            [(product_id, uom_id)]
+        ''' 
+        # Template ID database:
+        template_db = {}       
+        product_ids = self.search(cr, uid, [], context=None)
+        for product in self.browse(
+                cr, uid, product_ids, context=context):
+            template_db[product.id] = product.product_tmpl_id.id
+                    
+        # Update UOM in template:
+        not_updated = []
+        import pdb; pdb.set_trace()
+        for record in db
+            product_id, uom_id = record
+            template_id = template_db.get(product_id, False)
+            if not template_id:
+                not_updated.append(product_id)
+            query = '''
+                UPDATE template_product 
+                SET uom_id = %s, uos_id = %s, uom_po_id = %s 
+                WHERE id = %s
+                ''' 
+            cr.execute(query, (uom_id, uom_id, uom_id, template_id))
+        return not_updated
+        
     _columns = {
         #'contipaq_import': fields.boolean('Contipaq import'),
         }
