@@ -56,7 +56,8 @@ class ProductProduct(orm.Model):
                     
         # Update UOM in template:
         not_updated = []
-        import pdb; pdb.set_trace()
+
+        _logger.warning('Update %s template' % len(db))
         for record in db:
             product_id, uom_id = record
             template_id = template_db.get(product_id, False)
@@ -68,6 +69,8 @@ class ProductProduct(orm.Model):
                 WHERE id = %s
                 ''' 
             cr.execute(query, (uom_id, uom_id, uom_id, template_id))
+            
+        _logger.warning('Not updated  %s template' % (not_updated, ))
         return not_updated
         
     _columns = {
