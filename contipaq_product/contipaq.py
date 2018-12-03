@@ -56,7 +56,7 @@ class ProductProduct(orm.Model):
                     
         # Update UOM in template:
         not_updated = []
-        for record in db
+        for record in db:
             product_id, uom_id = record
             template_id = template_db.get(product_id, False)
             if not template_id:
