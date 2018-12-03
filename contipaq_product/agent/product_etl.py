@@ -75,7 +75,7 @@ uom_pool = erp.ProductUom
 uom_db = {}
 query = ''' 
     SELECT CIDUNIDAD, CNOMBREUNIDAD 
-    FROM dbo.admTiposCambio;
+    FROM dbo.admUnidadesMedidaPeso;
     '''
 try:
     cr.execute(query)
