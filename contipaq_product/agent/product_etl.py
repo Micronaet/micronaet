@@ -131,8 +131,8 @@ for row in cr.fetchall():
         product_pool.create(data)
         print 'Insert: %s' % name
    
-   uom_id = uom_db.get(contipaq_uom_id, False)
-   if uom_id:
+    uom_id = uom_db.get(contipaq_uom_id, False)
+    if uom_id:
         update_uom.append((product_ids[0], uom_id))
 import pdb; pdb.set_trace()        
 product_pool.update_uom(update_uom)
