@@ -43,7 +43,7 @@ class ProductProduct(orm.Model):
     """    
     _inherit = 'product.product'
     
-    def update_uom(self, cr, uid, db, contex=None):
+    def update_uom(self, cr, uid, db, context=None):
         ''' Update product
             [(product_id, uom_id)]
         ''' 
