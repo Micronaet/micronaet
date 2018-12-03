@@ -47,6 +47,7 @@ class ProductProduct(orm.Model):
         ''' Update product
             [(product_id, uom_id)]
         ''' 
+        import pdb; pdb.set_trace()
         # Template ID database:
         template_db = {}       
         product_ids = self.search(cr, uid, [], context=None)
