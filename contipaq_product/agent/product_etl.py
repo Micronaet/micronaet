@@ -95,6 +95,7 @@ for row in cr.fetchall():
 # -----------------------------------------------------------------------------
 # Read partner:
 # -----------------------------------------------------------------------------
+cr = connection.cursor()
 query = '''
     SELECT 
         CIDPRODUCTO, CCODIGOPRODUCTO, CNOMBREPRODUCTO, CTIPOPRODUCTO, 
