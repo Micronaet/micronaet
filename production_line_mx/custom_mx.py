@@ -83,16 +83,15 @@ class product_product_extra(osv.osv):
             return False
             
         # ---------------------------------------------------------------------
-        #                          PEDIMENTO STOCK:
+        #                          PEDIMENTO MANAGEMENT:
         # ---------------------------------------------------------------------
         pedimento_pool = self.pool.get('product.product.pedimento')
         _logger.info('Reset stock for pedimentos if present')
         pedimento_ids = pedimento_pool.search(cr, uid, [], context=context)
-        if pedimento_ids:
-            pedimento_pool.write(
-                cr, uid, pedimento_ids, {
-                    'product_qty': 0.0,
-                    }, context=context)
+        pedimento_pool.write(
+            cr, uid, pedimento_ids, {
+                'product_qty': 0.0,
+                }, context=context)
         
         # Save pedimentos reference:        
         pedimento_db = {}
@@ -120,9 +119,9 @@ class product_product_extra(osv.osv):
                 product_qty = row[4]
                 # TODO log management
                      
-            # -------------------------------------------------------------
+            # -----------------------------------------------------------------
             # Mandatory fields check:
-            # -------------------------------------------------------------
+            # -----------------------------------------------------------------
             if not default_code:
                 _logger.error('%s. Code empty (jump line)' % row)
                 continue
@@ -137,21 +136,21 @@ class product_product_extra(osv.osv):
                 continue
             product_id = product_ids[0]
 
-            # -------------------------------------------------------------
+            # -----------------------------------------------------------------
             # Total update:
-            # -------------------------------------------------------------
+            # -----------------------------------------------------------------
             if product_id not in total:
                 total[product_id] = [0, cost]                        
             total[product_id][0] += product_qty
 
-            # -------------------------------------------------------------
+            # -----------------------------------------------------------------
             # Pedimento:
-            # -------------------------------------------------------------
+            # -----------------------------------------------------------------
             # Pedimento present
             if pedimento: 
                 if pedimento in pedimento_db:
                     # Update pedimento:
-                    pedimento_pool.write(cr, uid, [pedimento_db[pedimento]],{
+                    pedimento_pool.write(cr, uid, [pedimento_db[pedimento]], {
                         'product_id': product_id, # XXX necessary?
                         'product_qty': product_qty,
                         'standard_price': cost,
@@ -165,14 +164,14 @@ class product_product_extra(osv.osv):
                         'standard_price': cost,
                         }, context=context)
 
-            # -------------------------------------------------------------
+            # -----------------------------------------------------------------
             # Log management
-            # -------------------------------------------------------------
+            # -----------------------------------------------------------------
             # TODO 
 
-        # -----------------------------------------------------------------
+        # ---------------------------------------------------------------------
         # Reset accounting qty in ODOO:
-        # -----------------------------------------------------------------
+        # ---------------------------------------------------------------------
         _logger.info('Update product total:')
         product_ids = self.search(cr, uid, [
             ('accounting_qty', '!=', 0),
@@ -183,9 +182,9 @@ class product_product_extra(osv.osv):
 
         for product_id in total:
             product_qty, cost = total[product_id]
-            # -------------------------------------------------------------
+            # -----------------------------------------------------------------
             # Update product data:
-            # -------------------------------------------------------------
+            # -----------------------------------------------------------------
             self.write(cr, uid, product_id, {
                 'accounting_qty': product_qty,
                 'standard_price': cost,
