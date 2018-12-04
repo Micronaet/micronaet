@@ -196,6 +196,7 @@ class MrpProduction(osv.Model):
             unload_qty += quantity
             
             # If pedimento use pedimento's product standard_price
+            import pdb; pdb.set_trace()
             if forced_price:
                 standard_price = forced_price
             else:    
