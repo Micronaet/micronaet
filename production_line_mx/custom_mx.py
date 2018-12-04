@@ -85,11 +85,20 @@ class product_product_extra(osv.osv):
         # ---------------------------------------------------------------------
         #                          PEDIMENTO STOCK:
         # ---------------------------------------------------------------------
-        # Clean pedimento:
         pedimento_pool = self.pool.get('product.product.pedimento')
-        _logger.info('Delete pedimentos')
+        _logger.info('Reset stock for pedimentos if present')
         pedimento_ids = pedimento_pool.search(cr, uid, [], context=context)
-        pedimento_pool.unlink(cr, uid, pedimento_ids, context=context)
+        if pedimento_ids:
+            pedimento_pool.write(
+                cr, uid, pedimento_ids, {
+                    'product_qty': 0.0,
+                    }, context=context)
+        
+        # Save pedimentos reference:        
+        pedimento_db = {}
+        for pedimento in pedimento_pool.browse(cr, uid, pedimento_ids, 
+                context=context):
+            pedimento_db[pedimento.name] = pedimento.id
 
         # Import pedimento and stock:
         total = {}
@@ -138,14 +147,23 @@ class product_product_extra(osv.osv):
             # -------------------------------------------------------------
             # Pedimento:
             # -------------------------------------------------------------
-            # Pedimento present with q positive
-            if pedimento and product_qty > 0: 
-                pedimento_pool.create(cr, uid, {
-                    'name': pedimento,
-                    'product_id': product_id,
-                    'product_qty': product_qty,
-                    'standard_price': cost,
-                    }, context=context)
+            # Pedimento present
+            if pedimento: 
+                if pedimento in pedimento_db:
+                    # Update pedimento:
+                    pedimento_pool.write(cr, uid, [pedimento_db[pedimento]],{
+                        'product_id': product_id, # XXX necessary?
+                        'product_qty': product_qty,
+                        'standard_price': cost,
+                        }, context=context)
+                else:
+                    # Create pedimento:
+                    pedimento_pool.create(cr, uid, {
+                        'name': pedimento,
+                        'product_id': product_id,
+                        'product_qty': product_qty,
+                        'standard_price': cost,
+                        }, context=context)
 
             # -------------------------------------------------------------
             # Log management
@@ -182,145 +200,8 @@ class product_product_extra(osv.osv):
             self, cr, uid, path=False, start=1, context=None):
         ''' Import from Import Excel file from accounting
         '''
-        _logger.info('Start import product account status on path %s' % path)
-
-        if not path:
-            _logger.error('No file path XLSX: %s' % path)
-            return False       
-
-        # Pool used:        
-        pedimento_pool = self.pool.get('product.product.pedimento')
-
-        # ---------------------------------------------------------------------
-        # Read product status:
-        # ---------------------------------------------------------------------
-        path = os.path.expanduser(path)
-        history = os.path.join(path, 'imported')
-
-        for root, folders, files in os.walk(path):
-            files = sorted(files, key=lambda x: (x[4:8], x[2:4], x[:2]))
-            if not files:
-                break
-                
-            # -----------------------------------------------------------------
-            # Clean pedimento:
-            # -----------------------------------------------------------------
-            _logger.info('Delete pedimentos')
-            pedimento_ids = pedimento_pool.search(cr, uid, [], context=context)
-            pedimento_pool.unlink(cr, uid, pedimento_ids, context=context)
-
-            # -----------------------------------------------------------------
-            # Use last for import, most updated!            
-            # -----------------------------------------------------------------
-            filename = os.path.join(path, files[-1])
-            history_name = os.path.join(history, files[-1])
-            try:
-                WB = xlrd.open_workbook(filename)
-            except:
-                _logger.error('Cannot read XLS file: %s' % filename)
-            _logger.info('Read XLS file: %s' % filename)
-            
-            WS = WB.sheet_by_index(0)
-            total = {}
-            for row in range(start, WS.nrows):
-                # -------------------------------------------------------------
-                # Read fields:
-                # -------------------------------------------------------------
-                default_code = WS.cell(row, 0).value
-                pedimento = WS.cell(row, 1).value
-                cost = WS.cell(row, 2).value
-                product_qty = WS.cell(row, 3).value
-                # TODO log management
-                
-                # -------------------------------------------------------------
-                # Mandatory fields check:
-                # -------------------------------------------------------------
-                if not default_code:
-                    _logger.error('%s. Code empty (jump line)' % row)
-                    continue
-
-                product_ids = self.search(cr, uid, [
-                    ('default_code', '=', default_code),
-                    ], context=context)
-                if not product_ids:
-                    _logger.error(
-                        '%s. Code not found in ODOO %s (jump line)' % (
-                            row, default_code))
-                    continue
-                product_id = product_ids[0]
-
-                # -------------------------------------------------------------
-                # Total update:
-                # -------------------------------------------------------------
-                if product_id not in total:
-                    total[product_id] = [0, cost]                        
-                total[product_id][0] += product_qty
-
-                # -------------------------------------------------------------
-                # Pedimento:
-                # -------------------------------------------------------------
-                # Pedimento present with q positive
-                if pedimento and product_qty > 0: 
-                    pedimento_pool.create(cr, uid, {
-                        'name': pedimento,
-                        'product_id': product_id,
-                        'product_qty': product_qty,
-                        }, context=context)
-
-                # -------------------------------------------------------------
-                # Log management
-                # -------------------------------------------------------------
-                # TODO 
-
-            # -----------------------------------------------------------------
-            # Reset accounting qty in ODOO:
-            # -----------------------------------------------------------------
-            _logger.info('Update product total:')
-            product_ids = self.search(cr, uid, [
-                ('accounting_qty', '!=', 0),
-                ], context=context)
-            self.write(cr, uid, product_ids, {
-                'accounting_qty': 0.0,
-                }, context=context)
-
-            for product_id in total:
-                product_qty, cost = total[product_id]
-                # -------------------------------------------------------------
-                # Update product data:
-                # -------------------------------------------------------------
-                self.write(cr, uid, product_id, {
-                    'accounting_qty': product_qty,
-                    'standard_price': cost,
-                    }, context=context)
-            _logger.info('End import product account status')
-            
-            # -----------------------------------------------------------------
-            # Move file on history
-            # -----------------------------------------------------------------
-            try:
-                WB.release_resources()
-                del WB
-            except:
-                _logger.info('Error close %s' % filename)
-            try:
-                shutil.move(filename, history_name)
-                _logger.info('Move %s in %s' % (filename, history_name))
-            except:
-                _logger.info('Error moving file %s > %s' % (
-                    filename, history_name))
-                    
-            # -----------------------------------------------------------------
-            # Move old files
-            # -----------------------------------------------------------------
-            for f in files[:-1]:
-                filename = os.path.join(path, f)
-                history_name = os.path.join(history, f)
-                shutil.move(filename, history_name)
-                _logger.info('Not used too old: %s > %s' % (
-                    filename, history_name))        
-
-            break # no more walk folder        
         return True
+        # TODO remove, called from external:
 
     def get_waste_product(self, cr, uid, ids, context=None):
         ''' Update if present same product with R
