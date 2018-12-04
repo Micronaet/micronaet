@@ -196,9 +196,9 @@ class MrpProduction(osv.Model):
             unload_qty += quantity
             
             # If pedimento use pedimento's product standard_price
-            import pdb; pdb.set_trace()
             if forced_price:
                 standard_price = forced_price
+                pedimento = False
             else:    
                 pedimento = unload.pedimento_id
                 if pedimento:
@@ -256,6 +256,7 @@ class MrpProduction(osv.Model):
             # Package cost (always present!):
             if forced_price:
                 package_price = forced_price
+                package_pedimento = False
             else:    
                 package_pedimento = load.package_pedimento_id
                 if package_pedimento:
@@ -446,6 +447,7 @@ class MrpProduction(osv.Model):
             # If pedimento use pedimento's price
             if forced_price:
                 standard_price = forced_price
+                pedimento = False
             else:    
                 pedimento = load.package_pedimento_id
                 if pedimento:
@@ -504,6 +506,7 @@ class MrpProduction(osv.Model):
             forced_price = product.forced_price
             if forced_price:
                 standard_price = forced_price
+                pedimento = False
             else:   
                 pedimento = unload.pedimento_id
                 if pedimento:
