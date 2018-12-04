@@ -503,7 +503,7 @@ class MrpProduction(osv.Model):
             forced_price = product.forced_price
             if forced_price:
                 standard_price = forced_price
-            else.    
+            else:   
                 pedimento = unload.pedimento_id
                 if pedimento:
                     standard_price = pedimento.standard_price
