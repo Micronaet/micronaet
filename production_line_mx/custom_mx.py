@@ -102,6 +102,7 @@ class product_product_extra(osv.osv):
                 name = row[1]
                 product_qty = row[2]
                 pedimento = False
+                cost = 0.0 # TODO
             else:
                 default_code = row[0]
                 name = row[1]
@@ -143,6 +144,7 @@ class product_product_extra(osv.osv):
                     'name': pedimento,
                     'product_id': product_id,
                     'product_qty': product_qty,
+                    'standard_price': cost,
                     }, context=context)
 
             # -------------------------------------------------------------
