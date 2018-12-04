@@ -192,20 +192,26 @@ class MrpProduction(osv.Model):
             # Field used:
             default_code = product.default_code
             quantity = unload.quantity
-            price = product.standard_price
-            
             unload_qty += quantity
+            
+            # If pedimento use pedimento's price
+            pedimento = unload.pedimento_id
+            if pedimento:
+                price = pedimento.standard_price
+            else:    
+                price = product.standard_price
 
             # Cost for material:
             try:
                 subtotal = price * quantity
                 unload_cost += subtotal
 
-                calc += u'[%s] %s %s x %s = %s<br/>' % (
+                calc += u'[%s] %s %s x %s%s = %s<br/>' % (
                     default_code,
                     quantity,                    
                     product.uom_id.contipaq_ref or '?',
                     price,
+                    '*' if pedimento else '',
                     subtotal,
                     ) 
             except:
@@ -241,14 +247,20 @@ class MrpProduction(osv.Model):
                     _('No package product in load'))    
 
             # Package cost (always present!):
-            subtotal = link_product.standard_price * load.ul_qty
+            package_pedimento = load.package_pedimento_id
+            if package_pedimento:
+                package_price = package_pedimento.standard_price
+            else:
+                package_price = link_product.standard_price
+            subtotal = package_price * load.ul_qty
             unload_cost += subtotal
 
-            calc += _(u'Pack: [%s] %s %s x %s = %s<br/>') % (
+            calc += _(u'Pack: [%s] %s %s x %s%s = %s<br/>') % (
                 link_product.default_code,
                 load.ul_qty,                    
                 link_product.uom_id.contipaq_ref or '?',
-                link_product.standard_price,
+                package_price,
+                '*' if package_pedimento else '',
                 subtotal,
                 ) 
 
@@ -410,11 +422,19 @@ class MrpProduction(osv.Model):
             # -----------------------------------------------------------------
             product = load.package_id.linked_product_id
             row +=1 
+
+            # If pedimento use pedimento's price
+            pedimento = load.package_pedimento_id
+            if pedimento:
+                standard_price = pedimento.standard_price
+            else:    
+                standard_price = product.standard_price
+
             excel_pool.write_xls_line(ws_name, row, [
                 product.default_code,
                 load.ul_qty,
                 product.uom_id.contipaq_ref,
-                product.standard_price,
+                standard_price,
                 load.package_pedimento_id.name or '', # pedimento
                 '', # lot
                 ])
@@ -449,7 +469,13 @@ class MrpProduction(osv.Model):
                     _('Unload material error:'),
                     _('No default code found for product'))
 
-            standard_price = unload.product_id.standard_price
+            # If pedimento use pedimento's price
+            pedimento = unload.pedimento_id
+            if pedimento:
+                standard_price = pedimento.standard_price
+            else:    
+                standard_price = unload.product_id.standard_price
+
             if not standard_price:
                 raise osv.except_osv(
                     _('Unload material error:'),
