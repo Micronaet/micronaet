@@ -348,6 +348,9 @@ class product_product_extra(osv.osv):
     _columns = {
         'waste_id': fields.many2one('product.product', 'Waste product',
             help='When there\'s some waste production this product is loaded'),
+        'forced_price': fields.float(
+            'Forced price', digits=(16, 3), 
+            help='Force price for raw material in product price'),
         }
 
 class MrpProductionWorkcenterLineExtra(osv.osv):
