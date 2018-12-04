@@ -20,6 +20,8 @@
                 <tree string="Product" editable="bottom" colors="blue:waste_id!=False">        
                     <field name="name" readonly="1"/>
                     <field name="default_code" readonly="1" />
+                    <field name="standard_price" readonly="1" />
+                    <field name="forced_price" />
                     <field name="waste_id" />
                     <!--<button name="get_waste_product" string="Auto" type="object" attrs="{'invisible': [('waste_id','!=',False)]}" />-->
                 </tree>
