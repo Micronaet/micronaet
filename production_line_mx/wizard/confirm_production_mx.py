@@ -194,23 +194,23 @@ class MrpProduction(osv.Model):
             quantity = unload.quantity
             unload_qty += quantity
             
-            # If pedimento use pedimento's price
+            # If pedimento use pedimento's product standard_price
             pedimento = unload.pedimento_id
             if pedimento:
-                price = pedimento.standard_price
+                standard_price = pedimento.standard_price
             else:    
-                price = product.standard_price
+                standard_price = product.standard_price
 
             # Cost for material:
             try:
-                subtotal = price * quantity
+                subtotal = standard_price * quantity
                 unload_cost += subtotal
 
                 calc += u'[%s] %s %s x %s%s = %s<br/>' % (
                     default_code,
                     quantity,                    
                     product.uom_id.contipaq_ref or '?',
-                    price,
+                    standard_price,
                     '*' if pedimento else '',
                     subtotal,
                     ) 
@@ -418,7 +418,7 @@ class MrpProduction(osv.Model):
         # ---------------------------------------------------------------------
         for load in lavoration.load_ids:
             # -----------------------------------------------------------------
-            # A. Unload package:
+            # A. Unload package (from load):
             # -----------------------------------------------------------------
             product = load.package_id.linked_product_id
             row +=1 
