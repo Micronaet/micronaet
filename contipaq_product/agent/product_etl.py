@@ -82,6 +82,7 @@ except:
     print 'Error: %s' % (sys.exc_info(), )
 
 for row in cr.fetchall():
+    print row
     contipaq_id = row[0]
     contipaq_name = row[1].strip()
     uom_ids = uom_pool.search([
