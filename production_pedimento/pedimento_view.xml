@@ -12,18 +12,20 @@
                             <field name="product_id" />
                             <field name="name" />
                             <field name="product_qty" />                            
+                            <field name="standard_price" />
                         </group>
                     </sheet>        
                 </form>
             </field>
         </record>
         <record model="ir.ui.view" id="view_product_product_pedimento_tree">
-            <field name="name">product.product.pedimento.form</field>
+            <field name="name">product.product.pedimento.tree</field>
             <field name="model">product.product.pedimento</field>
             <field name="arch" type="xml">
                 <tree string="Pedimento" version="7.0" editable="bottom">
                     <field name="product_id" invisible="context.get('embedded', False)"/>
                     <field name="name" />
+                    <field name="standard_price" />
                     <field name="product_qty" sum="Total"/>                            
                 </tree>
             </field>
@@ -35,6 +37,7 @@
                 <search string="Pedimento" version="7.0">        
                     <field name="name" />
                     <field name="product_id" filter_domain="[('product_id','=',self)]"/>
+                    <field name="standard_price" />
                     <group expand="0" string="Group By...">
                         <filter name="group_product" string="Product" context="{'group_by': 'product_id'}"/>
                     </group>                
