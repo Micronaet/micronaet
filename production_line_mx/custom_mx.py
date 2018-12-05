@@ -152,7 +152,7 @@ class product_product_extra(osv.osv):
             # Pedimento present
             if pedimento:
                 key = (pedimento, product_id) 
-                if pedimento in pedimento_db:
+                if key in pedimento_db:
                     # Update pedimento:
                     pedimento_pool.write(cr, uid, [pedimento_db[key]], {
                         'product_id': product_id, # XXX necessary?
