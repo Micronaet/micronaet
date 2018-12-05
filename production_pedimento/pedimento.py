@@ -64,17 +64,17 @@ class ProductProductPedimento(orm.Model):
             @return: returns a list of tupples contains id, name
         """
         
-            if isinstance(ids, (list, tuple)) and not len(ids):
-                return []
-            if isinstance(ids, (long, int)):
-                ids = [ids]            
-            res = []
-            for record in self.browse(cr, uid, ids, context=context):
-                res.append((
-                    record.id, 
-                    _(u'%s [Q. %s]') % (record.name, record.product_qty),
-                    ))
-            return res
+        if isinstance(ids, (list, tuple)) and not len(ids):
+            return []
+        if isinstance(ids, (long, int)):
+            ids = [ids]            
+        res = []
+        for record in self.browse(cr, uid, ids, context=context):
+            res.append((
+                record.id, 
+                _(u'%s [Q. %s]') % (record.name, record.product_qty),
+                ))
+        return res
     
     _columns = {
         'name': fields.char('Name', size=64, required=True),
