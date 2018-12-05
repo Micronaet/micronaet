@@ -97,7 +97,8 @@ class product_product_extra(osv.osv):
         pedimento_db = {}
         for pedimento in pedimento_pool.browse(cr, uid, pedimento_ids, 
                 context=context):
-            pedimento_db[pedimento.name] = pedimento.id
+            key = (pedimento.name, product_id.id)
+            pedimento_db[key] = pedimento.id
 
         # Import pedimento and stock:
         total = {}
@@ -149,10 +150,11 @@ class product_product_extra(osv.osv):
             # Pedimento:
             # -----------------------------------------------------------------
             # Pedimento present
-            if pedimento: 
+            if pedimento:
+                key = (pedimento, product_id) 
                 if pedimento in pedimento_db:
                     # Update pedimento:
-                    pedimento_pool.write(cr, uid, [pedimento_db[pedimento]], {
+                    pedimento_pool.write(cr, uid, [pedimento_db[key]], {
                         'product_id': product_id, # XXX necessary?
                         'product_qty': product_qty,
                         'standard_price': last_cost,
