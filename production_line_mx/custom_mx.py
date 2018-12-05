@@ -97,7 +97,7 @@ class product_product_extra(osv.osv):
         pedimento_db = {}
         for pedimento in pedimento_pool.browse(cr, uid, pedimento_ids, 
                 context=context):
-            key = (pedimento.name, product_id.id)
+            key = (pedimento.name, pedimento.product_id.id)
             pedimento_db[key] = pedimento.id
 
         # Import pedimento and stock:
