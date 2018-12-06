@@ -111,6 +111,7 @@ product_pool = erp.ProductProduct
 
 update_uom = []
 for row in cr.fetchall():
+    print row,
     item_id = row[0]
     default_code = row[1]
     name = row[2]
@@ -125,10 +126,10 @@ for row in cr.fetchall():
     product_ids = product_pool.search([('default_code', '=', default_code)])
     if product_ids:
         product_pool.write(product_ids, data)
-        print 'Update: %s' % name
+        print ' >> Update: %s' % name
     else:
         product_pool.create(data)
-        print 'Insert: %s' % name
+        print ' >> Insert: %s' % name
    
     uom_id = uom_db.get(contipaq_uom_id, False)
     if uom_id:
