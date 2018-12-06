@@ -105,7 +105,7 @@ query = '''
 try:
     cr.execute(query)
 except:
-    print 'Error: %s' % (sys.exc_info(), )
+    print u'Error: %s' % (sys.exc_info(), )
 
 product_pool = erp.ProductProduct
 
@@ -126,10 +126,10 @@ for row in cr.fetchall():
     product_ids = product_pool.search([('default_code', '=', default_code)])
     if product_ids:
         product_pool.write(product_ids, data)
-        print ' >> Update: %s' % name
+        print u' >> Update: %s' % name
     else:
         product_pool.create(data)
-        print ' >> Insert: %s' % name
+        print u' >> Insert: %s' % name
    
     uom_id = uom_db.get(contipaq_uom_id, False)
     if uom_id:
