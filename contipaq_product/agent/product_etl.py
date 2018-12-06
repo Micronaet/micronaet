@@ -133,7 +133,10 @@ for row in cr.fetchall():
    
     uom_id = uom_db.get(contipaq_uom_id, False)
     if uom_id:
-        update_uom.append((product_ids[0], uom_id))
+        try:
+            update_uom.append((product_ids[0], uom_id))
+        except:
+            import pdb; pdb.set_trace()    
 
 product_pool.update_uom(update_uom)
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
