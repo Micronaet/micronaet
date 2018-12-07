@@ -145,6 +145,9 @@ class MrpProduction(osv.Model):
         '''
         # Pool used:
         excel_pool = self.pool.get('excel.writer')
+        del(excel_pool)
+        excel_pool = self.pool.get('excel.writer')
+        
         lavoration_pool = self.pool.get('mrp.production.workcenter.line')
         load_pool = self.pool.get('mrp.production.workcenter.load')
 
