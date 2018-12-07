@@ -54,12 +54,12 @@ class MrpProduction(orm.Model):
         '''
         production_id = ids[0]
         mask = 'DELETE FROM %s WHERE %s = %s;'        
-        
+
+        # Delete workcenter line:        
         delete_line = [
             ('mrp_production_material', 'workcenter_production_id'),
             ('mrp_production_workcenter_load', 'line_id'),        
             ]
-        _logger.warning('Remove line link data:')    
         for mrp in self.browse(cr, uid, ids, context=context):
             for line in mrp.workcenter_lines:
                 line_id = line.id
@@ -67,11 +67,10 @@ class MrpProduction(orm.Model):
                     table, field = record
                     query = mask % (table, field, line_id)
                     print query
-                    #cr.execute(query)
+                    cr.execute(query)
                     
                 
         # Delete linked document query:
-        _logger.warning('Remove production link data:')    
         delete_record = [
             # Cascade:
             #('mrp_production_assign_wizard', 'production_id'),
@@ -97,6 +96,6 @@ class MrpProduction(orm.Model):
             table, field = record
             query = mask % (table, field, production_id)
             print query
-            #cr.execute(query)
+            cr.execute(query)
         return True        
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
