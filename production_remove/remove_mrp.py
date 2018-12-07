@@ -74,12 +74,13 @@ class MrpProduction(orm.Model):
             ('stock_move', 'production_id'),
             
             # This:
-            ('mrp_produciton', 'id'),
+            ('mrp_production', 'id'),
             ]
         mask = 'DELETE FROM %s WHERE %s = %s;'        
         for record in delete_record:
             table, field in record
             query = mask % (table, field, production_id)
-            cr.execute(query)
+            print query
+            #cr.execute(query)
         return True        
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
