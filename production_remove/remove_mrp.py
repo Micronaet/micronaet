@@ -59,9 +59,9 @@ class MrpProduction(orm.Model):
             ('mrp_production_material', 'workcenter_production_id'),
             ('mrp_production_workcenter_load', 'line_id'),        
             ]
-            
-        for mrp in self.browse(cr, uid, production_id, context=context):
-            for line in workcenter_lines:
+        _logger.warning('Remove line link data:')    
+        for mrp in self.browse(cr, uid, ids, context=context):
+            for line in mrp.workcenter_lines:
                 line_id = line.id
                 for record in delete_line:
                     table, field = record
@@ -71,6 +71,7 @@ class MrpProduction(orm.Model):
                     
                 
         # Delete linked document query:
+        _logger.warning('Remove production link data:')    
         delete_record = [
             # Cascade:
             #('mrp_production_assign_wizard', 'production_id'),
