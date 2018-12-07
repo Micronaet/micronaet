@@ -7,7 +7,7 @@
             <field name="type">form</field>
             <field name="inherit_id" ref="mrp.mrp_production_form_view" /> 
             <field name="arch" type="xml">
-                <xpath expr="//header/button[1]" position="before">
+                <xpath expr="//notebook" position="before">
                     <button name="remove_production" string="Remove production" type="object" confirm="Remove clean all record link to this production. Confirm operation?" groups="production_remove.group_mrp_remove_mrp"/>
                 </xpath> 
             </field>
