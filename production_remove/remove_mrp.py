@@ -53,7 +53,23 @@ class MrpProduction(orm.Model):
         ''' Remove MRP document and all linked documents
         '''
         production_id = ids[0]
+        mask = 'DELETE FROM %s WHERE %s = %s;'        
         
+        delete_line = [
+            ('mrp_production_material', 'workcenter_production_id'),
+            ('mrp_production_workcenter_load', 'line_id'),        
+            ]
+            
+        for mrp in self.browse(cr, uid, production_id, context=context):
+            for line in workcenter_lines:
+                line_id = line.id
+                for record in delete_line:
+                    table, field = record
+                    query = mask % (table, field, line_id)
+                    print query
+                    #cr.execute(query)
+                    
+                
         # Delete linked document query:
         delete_record = [
             # Cascade:
@@ -76,9 +92,8 @@ class MrpProduction(orm.Model):
             # This:
             ('mrp_production', 'id'),
             ]
-        mask = 'DELETE FROM %s WHERE %s = %s;'        
         for record in delete_record:
-            table, field in record
+            table, field = record
             query = mask % (table, field, production_id)
             print query
             #cr.execute(query)
