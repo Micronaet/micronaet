@@ -355,11 +355,11 @@ class MrpProduction(osv.Model):
         # ---------------------------------------------------------------------
         row = 0
         excel_pool.write_xls_line(ws_name, row, [
-                _('Code'),
-                _('Quantity'),
-                _('UOM'),
-                _('Cost'),
-                _('Lot'), # Pedimento
+                _('product_code'),
+                _('quantity'),
+                _('uom'),
+                _('cost'),
+                _('lot'), # Pedimento
                 ])
 
         # ---------------------------------------------------------------------
@@ -425,12 +425,12 @@ class MrpProduction(osv.Model):
         # ---------------------------------------------------------------------
         row = 0
         excel_pool.write_xls_line(ws_name, row, [
-                _('Code'),
-                _('Quantity'),
-                _('UOM'),
-                _('Cost'),
-                _('Pedimento'),
-                _('Lot'),
+                _('material_code'),
+                _('quantity'),
+                _('uom'),
+                _('cost'),
+                _('pedimento'),
+                #_('Lot'),
                 ])
 
         # ---------------------------------------------------------------------
@@ -461,7 +461,7 @@ class MrpProduction(osv.Model):
                 product.uom_id.contipaq_ref,
                 standard_price,
                 load.package_pedimento_id.name or '', # pedimento
-                '', # lot
+                #'', # lot
                 ])
 
             # -----------------------------------------------------------------
@@ -483,7 +483,7 @@ class MrpProduction(osv.Model):
                     product.uom_id.contipaq_ref,
                     standard_price,
                     '', # No pedimento
-                    '', # No lot
+                    #'', # No lot
                     ])
 
         # ---------------------------------------------------------------------
@@ -526,7 +526,7 @@ class MrpProduction(osv.Model):
                 standard_price,
                 unload.pedimento_id.name if \
                     unload.pedimento_id else '',
-                '', # lot
+                #'', # lot
                 ])
         excel_pool.save_file_as(folder['unload']['data'] % lavoration.id)        
         return True
