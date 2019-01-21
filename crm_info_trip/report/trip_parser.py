@@ -220,7 +220,9 @@ class Parser(report_sxw.rml_parse):
 
                     imponibile = record['IMPONIBILE'] / moltiplicator       
 
+                    # ---------------------------------------------------------
                     # XXX 21 gen 2018 Bugfix:        
+                    # ---------------------------------------------------------
                     if year not in mysql_data[default_code][1]:
                         mysql_data[default_code][1][year] = False
                     slot = mysql_data[default_code][1][year]
@@ -229,23 +231,16 @@ class Parser(report_sxw.rml_parse):
                         slot[1] += record['TOTALE']
                         slot[2] += imponibile
                     else:
-                        #mysql_data[default_code][1][year] = (
                         mysql_data[default_code][1][year] = [
                             record['CONSEGNE'],
                             record['TOTALE'],
                             imponibile,
                             uom_name,
                             ]
+                    # ---------------------------------------------------------
+
                     self.total_invoiced[year] += imponibile
                     # TODO also TOTALE?
-
-                # -------------------------------------------------------------
-                # Debug:
-                #if year == 2018 and partner_code == '270.00357':
-                #    print '>>>>>>>>>>>', mysql_data[default_code]
-                #    import pdb; pdb.set_trace()
-                # -------------------------------------------------------------
-                    
         else:
             return False
         
