@@ -212,10 +212,6 @@ class Parser(report_sxw.rml_parse):
                             record['CDS_VARIAB_ART'], # description
                             {}, # delivery per year
                             ]
-                    # XXX 21 gen 2018 Bugfix:        
-                    if year not in mysql_data[default_code][1]:
-                        mysql_data[default_code][1][year] = []
-                        
                     # Add totals for this year  
                     # TODO correct in query: 
                     # get_mm_situation base_mssql_accounting
@@ -225,13 +221,21 @@ class Parser(report_sxw.rml_parse):
                     imponibile = record['IMPONIBILE'] / moltiplicator       
 
                     # XXX 21 gen 2018 Bugfix:        
-                    #mysql_data[default_code][1][year] = (
-                    mysql_data[default_code][1][year].append((
-                        record['CONSEGNE'],
-                        record['TOTALE'],
-                        imponibile,
-                        uom_name,
-                        ))
+                    if year not in mysql_data[default_code][1]:
+                        mysql_data[default_code][1][year] = False
+                    slot = mysql_data[default_code][1][year][0]
+                    if slot:
+                        slot[0] += record['CONSEGNE']
+                        slot[1] += record['TOTALE']
+                        slot[2] += imponibile
+                    else:
+                        #mysql_data[default_code][1][year] = (
+                        mysql_data[default_code][1][year][0] = [
+                            record['CONSEGNE'],
+                            record['TOTALE'],
+                            imponibile,
+                            uom_name,
+                            ]
                     self.total_invoiced[year] += imponibile
                     # TODO also TOTALE?
 
