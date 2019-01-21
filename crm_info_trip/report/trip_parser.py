@@ -223,14 +223,14 @@ class Parser(report_sxw.rml_parse):
                     # XXX 21 gen 2018 Bugfix:        
                     if year not in mysql_data[default_code][1]:
                         mysql_data[default_code][1][year] = False
-                    slot = mysql_data[default_code][1][year][0]
+                    slot = mysql_data[default_code][1][year]
                     if slot:
                         slot[0] += record['CONSEGNE']
                         slot[1] += record['TOTALE']
                         slot[2] += imponibile
                     else:
                         #mysql_data[default_code][1][year] = (
-                        mysql_data[default_code][1][year][0] = [
+                        mysql_data[default_code][1][year] = [
                             record['CONSEGNE'],
                             record['TOTALE'],
                             imponibile,
