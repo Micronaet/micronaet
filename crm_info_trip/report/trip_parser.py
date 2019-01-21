@@ -197,8 +197,7 @@ class Parser(report_sxw.rml_parse):
             for year in years:
                 # -------------------------------------------------------------
                 # Debug:
-                print '>>>>>>', year, partner_code
-                if year == '2018' and partner_code == '270.00357':
+                if year == 2018 and partner_code == '270.00357':
                     import pdb; pdb.set_trace()
                 # -------------------------------------------------------------
                 
