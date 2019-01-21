@@ -195,12 +195,6 @@ class Parser(report_sxw.rml_parse):
             mysql_data = {} # this is a dict not list
             
             for year in years:
-                # -------------------------------------------------------------
-                # Debug:
-                if year == 2018 and partner_code == '270.00357':
-                    import pdb; pdb.set_trace()
-                # -------------------------------------------------------------
-                
                 self.total_invoiced[year] = 0.0
                 mysql_cursor = query.get_mm_situation(
                     self.cr, self.uid, 
@@ -233,6 +227,13 @@ class Parser(report_sxw.rml_parse):
                         )
                     self.total_invoiced[year] += imponibile
                     # TODO also TOTALE?
+
+                # -------------------------------------------------------------
+                # Debug:
+                if year == 2018 and partner_code == '270.00357':
+                    print '>>>>>>>>>>>', mysql_data[default_code]
+                    import pdb; pdb.set_trace()
+                # -------------------------------------------------------------
                     
         else:
             return False
