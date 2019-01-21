@@ -212,7 +212,7 @@ class Parser(report_sxw.rml_parse):
                             record['CDS_VARIAB_ART'], # description
                             {}, # delivery per year
                             ]
-                    # 21 gen 2018 Bugfix:        
+                    # XXX 21 gen 2018 Bugfix:        
                     if year not in mysql_data[default_code][1]:
                         mysql_data[default_code][1][year] = []
                         
@@ -224,9 +224,9 @@ class Parser(report_sxw.rml_parse):
 
                     imponibile = record['IMPONIBILE'] / moltiplicator       
 
-                    # 21 gen 2018 Bugfix:        
+                    # XXX 21 gen 2018 Bugfix:        
                     #mysql_data[default_code][1][year] = (
-                    mysql_data[default_code][1][year].append)(
+                    mysql_data[default_code][1][year].append((
                         record['CONSEGNE'],
                         record['TOTALE'],
                         imponibile,
