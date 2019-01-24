@@ -49,16 +49,20 @@ class product_ul_extra(osv.osv):
         for line in open(filename, 'r'):
             try:
                  code = line[:10].strip()
-                 name = "%s [%s]"%(line[10:40].strip().title(), code)
+                 name = "%s [%s]" % (
+                     line[10:40].strip().title(), 
+                     code,
+                     )
                  product_code = line[40:47].strip()
                  
-                 linked_product_id = self.pool.get('product.product').search(cr, uid, [
-                     ('default_code','=',product_code)
+                 linked_product_id = self.pool.get('product.product').search(
+                     cr, uid, [
+                         ('default_code','=',product_code)
                  ], context=context)
                  if not linked_product_id:
                      # log error
                      continue # jump line
-                 linked_product_id=linked_product_id[0]    
+                 linked_product_id = linked_product_id[0]    
  
                  ul_id = self.search(cr, uid, [
                      ('code', '=', code)], context=context)
@@ -79,7 +83,12 @@ class product_ul_extra(osv.osv):
     _columns = {
         'code': fields.char('Code', size=10, required=False, readonly=False),
         'linked_product_id': fields.many2one('product.product', 'Product linked', required=False, help="Used for unload package product after lavoration"),
-    }
+        'is_active': fields.boolean('Is Active'),
+        }
+
+    _defaults = {
+        'is_active': lambda *x: True,
+        }
 
 class product_product_extra(osv.osv):
     ''' Extra fields for product.product object

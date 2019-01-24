@@ -8,6 +8,7 @@
         <field name="inherit_id" ref="product.product_ul_tree" />
         <field name="arch" type="xml">
             <field name="name" position="before">
+                <field name="is_active" />
                 <field name="code" />
             </field>
             <field name="type" position="after">
@@ -22,6 +23,7 @@
         <field name="arch" type="xml">
             <field name="name" position="before">
                 <field name="code" />
+                <field name="is_active" />
             </field>
             <field name="type" position="after">
                 <field name="linked_product_id" />
