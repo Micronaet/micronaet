@@ -32,11 +32,25 @@ from utility import no_establishment_group
 
 _logger = logging.getLogger(__name__)
 
+
+class product_packaging(osv.osv):
+    ''' Extra fields for product.packaging object
+    '''    
+    _name = 'product.packaging'
+    _inherit = 'product.packaging'
+    
+    _columns = {
+        'is_active': fields.boolean('Is Active'),
+        }
+        
+    _defaults = {
+        'is_active': lambda *x: True,
+        }    
 class product_ul_extra(osv.osv):
     ''' Extra fields for product.product object
     '''    
-    _name = "product.ul"
-    _inherit = "product.ul"
+    _name = 'product.ul'
+    _inherit = 'product.ul'
     
     # TODO maybe a scheduled action (not yes scheduled):
     def import_ul(self, cr, uid, file_name_package, context=None):    
@@ -93,7 +107,7 @@ class product_ul_extra(osv.osv):
 class product_product_extra(osv.osv):
     ''' Extra fields for product.product object
     '''
-    _inherit = "product.product"
+    _inherit = 'product.product'
 
     # -------------
     # Override ORM:

@@ -1,6 +1,40 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+    <record model="ir.ui.view" id="view_product_packaging_active_form">
+        <field name="name">product.packaging.form</field>
+        <field name="model">product.packaging</field>
+        <field name="inherit_id" ref="product.product_packaging_form_view"/>
+        <field name="arch" type="xml">
+            <field name="qty" position="before">
+                <field name="is_active" />                
+            </field>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_product_packaging_tree">
+        <field name="name">product.packaging.tree</field>
+        <field name="model">product.packaging</field>
+        <field name="inherit_id" ref="product.product_packaging_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="sequence" position="after">
+                <field name="is_active" />                
+            </field>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_product_product_active_form">
+        <field name="name">product.product.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='packaging']/form/group/field[@name='ean']" position="before">
+                <field name="is_active" />
+            </xpath>
+            <!--<xpath expr="//field[@name='packaging']/tree" position="attributes">
+                <attribute name="colors">red:is_active==False</attribute>
+            </xpath>-->
+        </field>
+    </record>
+
     <!--product.ul--> 
     <record model="ir.ui.view" id="product_ul_tree_extra">
         <field name="name">Product UL extra</field>
@@ -8,7 +42,6 @@
         <field name="inherit_id" ref="product.product_ul_tree" />
         <field name="arch" type="xml">
             <field name="name" position="before">
-                <!--<field name="is_active" />-->
                 <field name="code" />
             </field>
             <field name="type" position="after">
@@ -23,7 +56,6 @@
         <field name="arch" type="xml">
             <field name="name" position="before">
                 <field name="code" />
-                <!--<field name="is_active" />-->
             </field>
             <field name="type" position="after">
                 <field name="linked_product_id" />
