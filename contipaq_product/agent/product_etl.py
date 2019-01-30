@@ -127,12 +127,13 @@ for row in cr.fetchall():
     if product_ids:
         product_pool.write(product_ids, data)
         print u' >> Update: %s' % name
+        product_id = product_ids[0]
     else:
-        product_pool.create(data)
+        product_id = product_pool.create(data)
         print u' >> Insert: %s' % name
    
     uom_id = uom_db.get(contipaq_uom_id, False)
     if uom_id:
-        update_uom.append((product_ids[0], uom_id))
+        update_uom.append((product_id, uom_id))
 product_pool.update_uom(update_uom)
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
