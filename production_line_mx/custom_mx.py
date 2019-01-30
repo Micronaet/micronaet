@@ -75,6 +75,25 @@ class product_product_extra(osv.osv):
     def rpc_import_stock_status_mx(
             self, cr, uid, stock, context=None):
         ''' Launched externally (store procedure and passed database)
+
+            -------------------------------------------------------
+            |                     Read parameters:                |
+            -------------------------------------------------------
+            |PEDIMENTO: dbo.sp_existence_Pedimento_Product (col 9)|
+            |STANDARD:  dbo.sp_existence_Product           (col 6)|
+            -------------------------------------------------------
+            |       Field             | PEDIMENTO   |  STANDARD   |
+            | Code                    |     0       |      0      |
+            | Name                    |     1       |      1      |
+            | Type: MP                |     2       |      3      |
+            | Control:                |     3       |      2      |
+            |     pediment, unit      |             |             |
+            | Pediment                |     4       |             |
+            | Lot                     |     5       |             |
+            | Existence               |     6       |      4      |
+            | Cost                    |     7       |             |
+            | Last cost               |     8       |      5      |
+            -------------------------------------------------------
         '''
         _logger.info('Import stock status from external')
 
@@ -93,7 +112,7 @@ class product_product_extra(osv.osv):
                 'product_qty': 0.0,
                 }, context=context)
         
-        # Save pedimentos reference:        
+        # Load pedimentos reference:        
         pedimento_db = {}
         for pedimento in pedimento_pool.browse(cr, uid, pedimento_ids, 
                 context=context):
@@ -103,24 +122,27 @@ class product_product_extra(osv.osv):
         # Import pedimento and stock:
         total = {}
         for row in stock:
-            # -----------------------------------------------------------------
-            # Read parameters:
-            # -----------------------------------------------------------------
-            if len(row) == 4:
+            
+            if len(row) == 6: # unit col 6
                 default_code = row[0]
                 name = row[1]
-                product_qty = row[2]
-                last_cost = row[3]
+                control = row[2] # unit 
+                product_type = row[3] # MP
                 pedimento = False
-                cost = 0.0 # TODO
-            else:
+                lot = False
+                product_qty = row[4]
+                cost = 0.0
+                last_cost = row[5]
+            else: # pediment: col 9 
                 default_code = row[0]
                 name = row[1]
-                pedimento = row[2]
-                cost = row[3]
-                product_qty = row[4]
-                last_cost = row[5]
-                # TODO log management
+                product_type = row[2] # MP
+                control = row[3] # pediment
+                pedimento = row[4]
+                let = row[5]
+                product_qty = row[6]
+                cost = row[7]
+                last_cost = row[8]
                      
             # -----------------------------------------------------------------
             # Mandatory fields check:
