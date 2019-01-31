@@ -699,7 +699,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                         unload_cost_total, unload_cost, ))
 
                     cost_detail += u'<br/><b>Costo totale:</b><br/>'
-                    cost_detail += u'€ %s : q. %s = €/unit %s (carico)<br/>' % (
+                    cost_detail += u'€ %s : q. %s = <b>€/unit %s (carico)</b><br/>' % (
                             unload_cost_total,
                             total,
                             unload_cost,
