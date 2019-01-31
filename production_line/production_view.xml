@@ -880,9 +880,11 @@
                             </group>
                         </page>
                         <page string="Loads">
-                            <group string="Loads">                              
-                                <field name="load_ids" nolabel="1" readonly="1">
-                                </field>
+                            <group string="Loads" colspan="4" col="2">
+                                <field name="load_ids" nolabel="1" readonly="1"/>
+
+                                <separator string="Cost detail:" colspan="4" attrs="{'invisible': [('cost_detail','=',False)]}"/>
+                                <field name="cost_detail" colspan="2" nolabel="1" attrs="{'invisible': [('cost_detail','=',False)]}" widget="html"/>
                             </group>
                         </page>
                         <page string="Righe ordine evase">

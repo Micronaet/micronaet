@@ -1695,6 +1695,9 @@ class mrp_production_extra(osv.osv):
             _function_total_material, method=True, type='boolean', 
             string='Material anomaly', store=False, multi='material'),
         
+        'cost_detail': fields.text(
+            'Cost detail', readonly=True, widget='html',
+            help='Cost detail for product load when production closed'),
 
         # Manual workflow:
         'ul_state': fields.selection([

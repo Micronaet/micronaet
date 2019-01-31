@@ -404,7 +404,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                     ref_lot_id = '#%-9s' % lot_created_id
                 
             ref_lot_name = '%06d#%01d' % (
-                int(mrp.name[3:]),
+                int(mrp.name[-5:]),
                 sequence,
                 ) # Job <<< TODO use production (test, mrp is 5)
 
@@ -525,17 +525,29 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 load_pool.write(cr, uid, load_id, {
                     'accounting_cl_code': accounting_cl_code}, context=context)
 
-                # --------------------------------
+                # -------------------------------------------------------------
                 # Update lavoration with new info:
-                # --------------------------------
+                # -------------------------------------------------------------
+                cost_detail = u'' # To update MRP at the end of procedure
+                
                 # TODO portare l'informazione sulla produzione qui non ha
                 # più senso con i carichi sballati
                 total = 0.0 # net production total
                 
                 # Partial (calculated every load on all production)                
+                cost_detail += u'<b>Lavorazioni toccate:</b><br/>'
+                cost_line_ref = ''
                 for l in mrp.workcenter_lines:
                     for partial in l.load_ids:
+                        if not cost_line_ref:
+                            cost_line_ref = l.workcenter_id.name or '?'
                         total += partial.product_qty or 0.0
+                        cost_detail += u' [%s q.: %s]' % (
+                            l.name,
+                            partial.product_qty,
+                            )
+                cost_detail += \
+                    u'<br/>Totale carichi: <b>%s</b><br/>' % total
 
                 # TODO togliere i commenti nei log e metterli magari nella 
                 # lavorazione per sapere come sono stati calcolati
@@ -558,14 +570,14 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                                 file_cl_upd))
                     unload_cost_total = 0.0
 
-                    # ------------------
+                    # ---------------------------------------------------------
                     # Lavoration K cost:
-                    # ------------------
+                    # ---------------------------------------------------------                    
                     try:
                         cost_line = wc.cost_product_id.standard_price or 0.0
                     except:
                         cost_line = 0.0
-
+                    
                     if not cost_line:    
                         raise osv.except_osv(
                             _('Calculate lavoration cost!'),
@@ -574,61 +586,124 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                     unload_cost_total = cost_line * total
                     _logger.info(_('Lavoration %s [%s]') % (
                         cost_line, unload_cost_total, ))
+                    cost_detail += \
+                        u'<br/>Lavorazione %s: <b>€/kg. %s x %s = %s</b><br/>' % (
+                            cost_line_ref,
+                            cost_line,
+                            total,
+                            unload_cost_total,
+                            )
 
-                    # ----------------------------------------------
+                    # ---------------------------------------------------------
                     # All unload cost of materials (all production):
-                    # ----------------------------------------------
+                    # ---------------------------------------------------------
+                    cost_detail += \
+                        u'<br/><b>Costi materie prime:</b><br/>'
+                    cost_detail_subtotal = 0.0
                     for lavoration in mrp.workcenter_lines:
+                        cost_detail += \
+                            u'Lavoratione <b>%s</b>:<br/>' % lavoration.name
                         for unload in lavoration.bom_material_ids:
                             try:
-                                unload_cost_total += \
-                                    unload.product_id.standard_price * \
+                                subtotal = unload.product_id.standard_price * \
                                     unload.quantity
+                                unload_cost_total += subtotal
+                                cost_detail_subtotal += subtotal
+                                    
+                                cost_detail += \
+                                    u' - %s: € %s x q. %s = %s<br/>' % (
+                                        unload.product_id.default_code or '?',
+                                        unload.product_id.standard_price,
+                                        unload.quantity,
+                                        subtotal,
+                                        )
                             except:
                                 _logger.error(
                                     _('Error calculating unload lavoration'))    
                     _logger.info(
-                        _('With materials [%s]') % unload_cost_total)
+                        _('With materials [%s]') % unload_cost_total)                        
+                    cost_detail += \
+                        u'<b>Totale materie prime: %s</b><br/>' % cost_detail_subtotal
 
-                    # ------------------------------
+                    # ---------------------------------------------------------
                     # All unload package and pallet:
-                    # ------------------------------
+                    # ---------------------------------------------------------
+                    cost_detail += \
+                        u'<br/><b>Costi imballi e pallet:</b><br/>'
+                    cost_detail_subtotal = 0.0
                     for l in mrp.workcenter_lines:                    
                         for load in l.load_ids:
                             try:
+                                # ---------------------------------------------
                                 # Package:
-                                if load.package_id: # there's pallet
+                                # ---------------------------------------------
+                                package = load.package_id                                
+                                if package: # There's pallet
                                     link_product = \
-                                        load.package_id.linked_product_id
-                                    unload_cost_total += \
-                                        link_product.standard_price * \
+                                        package.linked_product_id
+                                    subtotal = link_product.standard_price * \
                                         load.ul_qty
+                                    unload_cost_total += subtotal
+                                    cost_detail_subtotal += subtotal
+                                        
                                     _logger.info(_('Package cost %s [%s]') % (
                                         link_product.standard_price, 
                                         load.ul_qty,
                                     ))
+                                cost_detail += \
+                                    u' - Imballo [%s] %s: € %s x q. %s = %s<br/>' % (
+                                        l.name,
+                                        link_product.default_code or '?',
+                                        link_product.standard_price,
+                                        load.ul_qty,
+                                        subtotal,
+                                        )
+
                             except:
                                 _logger.error(
                                     _('Error calculating package price'))    
                                 
                             try:
+                                # ---------------------------------------------
                                 # Pallet:
+                                # ---------------------------------------------
                                 pallet_in = load.pallet_product_id
                                 if pallet_in: # there's pallet
-                                    unload_cost_total += \
-                                        pallet_in.standard_price * \
+                                    subtotal = pallet_in.standard_price * \
                                         load.pallet_qty
+                                    unload_cost_total += subtotal
+                                    cost_detail_subtotal += subtotal
+                                        
                                     _logger.info(_('Pallet cost %s [%s]') % (
                                         pallet_in.standard_price,
                                         load.pallet_qty,
                                     ))
+                                    cost_detail += \
+                                        u' - Pallet [%s] %s: € %s x q. %s = %s <br/>' % (
+                                            l.name,
+                                            pallet_in.default_code or '?',
+                                            pallet_in.standard_price,
+                                            load.pallet_qty,
+                                            subtotal,
+                                            )
+
                             except:
                                 _logger.error(
                                     _('Error calculating pallet price'))    
-                                
+
+                    cost_detail += \
+                        u'<b>Totale imballi: %s</b><br/>' % cost_detail_subtotal
+
                     unload_cost = unload_cost_total / total
                     _logger.info(_('With package  %s [unit.: %s]') % (
                         unload_cost_total, unload_cost, ))
+
+                    cost_detail += u'<br/><b>Costo totale:</b><br/>'
+                    cost_detail += u'€ %s : q. %s = €/unit %s (carico)<br/>' % (
+                            unload_cost_total,
+                            total,
+                            unload_cost,
+                            )
 
                     # Update all production with value calculated: #TODO serve?
                     for l in mrp.workcenter_lines:                    
@@ -649,7 +724,8 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                             f_cl_upd.write(
                                 '%-6s%10.5f\r\n' % (
                                     accounting_cl_code,
-                                    unload_cost, ), # unit
+                                    unload_cost, # unit
+                                    ), 
                                 )
                             convert_load_id[accounting_cl_code] = load.id
                             # TODO problema con il file di ritorno !!!!!!!!!!!!
@@ -714,6 +790,11 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                         mrp.id,
                         'trigger_accounting_close',
                         cr)
+                    
+                    # Update MRP with cost detail:    
+                    mrp_pool.write(cr, uid, [mrp.id], {
+                        'cost_detail': cost_detail,
+                        }, context=context)
 
                 # togliere: scriveva il totale carico e il load_confirmed
                 # lavoration_pool.write(cr, uid, [lavoration_browse.id], data, 
