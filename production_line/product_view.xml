@@ -59,7 +59,19 @@
             </field>
             <field name="type" position="after">
                 <field name="linked_product_id" />
+                <separator string="Prodotti che lo utilizzano:" colspan="4"/>
+                <field name="product_ids" nolabel="1" colspan="4">
+                    <tree string="Product packaging" editable="bottom">
+                        <field name="is_active" />                        
+                        <field name="product_id" />
+                        <field name="qty" />
+                        <field name="ean" />
+                        <field name="code" />
+                        <!--<field name="rows" />-->
+                    </tree>
+                </field>
             </field>
+            
         </field>
     </record>  
 

@@ -95,13 +95,9 @@ class product_ul_extra(osv.osv):
         return True
     
     _columns = {
+        'product_ids': fields.one2many('product.packaging', 'ul', 'Product'),    
         'code': fields.char('Code', size=10, required=False, readonly=False),
         'linked_product_id': fields.many2one('product.product', 'Product linked', required=False, help="Used for unload package product after lavoration"),
-        #'is_active': fields.boolean('Is Active'),
-        }
-
-    _defaults = {
-        #'is_active': lambda *x: True,
         }
 
 class product_product_extra(osv.osv):
