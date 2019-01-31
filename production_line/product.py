@@ -128,27 +128,36 @@ class product_product_extra(osv.osv):
     # -------------------------------------------------------------------------
     #                               Scheduled actions
     # -------------------------------------------------------------------------
-    def schedule_etl_product_state_mssql(self, cr, uid, verbose=True, as_dict=True, file_name_package=False, context=None):
+    def schedule_etl_product_state_mssql(self, cr, uid, verbose=True, 
+            as_dict=True, file_name_package=False, context=None):
         ''' Import from MSSQL DB linked to Company AQ_QUANTITY elements
         '''
         _logger.info("Start import packages list")
+        
+        # Pool used:
+        ul_pool = self.pool.get('product.ul')
+        accounting_pool = self.pool.get('micronaet.accounting')
+        product_packaging_pool = self.pool.get('product.packaging')
+        product_pool = self.pool.get("product.product")
+        
         try:
-            cursor = self.pool.get('micronaet.accounting').get_product_package_columns(cr, uid, context=context) 
-            if not cursor or not file_name_package:
-                _logger.error("Unable to connect no importation of package list for product!")
-            else:               
-                # Import Product UL from file:
-                ul_pool = self.pool.get('product.ul')
+            cursor = accounting_pool.get_product_package_columns(
+                 cr, uid, context=context) 
+            if not cursor:
+                _logger.error('Unable to connect no package imported!')
+            
+            # -----------------------------------------------------------------
+            #                Import Product UL from file:
+            # -----------------------------------------------------------------      
+            if file_name_package:    
                 ul_pool.import_ul(cr, uid, file_name_package, context=context)
                 ul_ids = ul_pool.search(cr, uid, [], context=context)
-                
-                # Cool but doesn't work in 2.6:
-                #codepackage_2_id = {item.code: item.id for item in ul_pool.browse(cr, uid, ul_ids, context=context)}                
                 codepackage_2_id = {}
                 for item in ul_pool.browse(cr, uid, ul_ids, context=context):
                      codepackage_2_id[item.code] = item.id
 
-                # Get list of package with the ID (used in product-package populate operations)
+                # Get list of package with the ID 
+                # (used in product-package populate operations)
                 for record in cursor:
                     try:
                         code = record['COLUMN_NAME'].strip() # no "NGD_"
@@ -157,74 +166,82 @@ class product_product_extra(osv.osv):
 
                         code = code[4:]
                         pul_id = codepackage_2_id.get(code, False)
-                         
-                        #pul_id = ul_pool.search(cr, uid, [
-                        #    ('code', '=', code)], context=context)
                         if not pul_id:
-                            #    codepackage_2_id[code] = pul_id[0]
-                            #else:
                             _logger.error("UL code not found: '%s'" % (code))                                
                     except:
                         _logger.error(sys.exc_info())
                         
+                # -------------------------------------------------------------
                 # Start importation product-package:
+                # -------------------------------------------------------------
                 _logger.info("Start import packages for product")
-                product_packaging_pool = self.pool.get("product.packaging")
-                product_pool = self.pool.get("product.product")
                 
-                cursor = self.pool.get('micronaet.accounting').get_product_package(cr, uid, context=context) 
+                cursor = accounting_pool.get_product_package(
+                    cr, uid, context=context) 
                 if not cursor:
-                    _logger.error("Unable to connect no importation of package list for product!")                
+                    _logger.error(
+                        'Unable to connect no importation of package list for product!')
 
-                for product_package in cursor: # loop on all product elements with package
+                # loop on all product elements with package
+                for product_package in cursor: 
                     product_code = product_package['CKY_ART'].strip()
                     product_ids = product_pool.search(cr, uid, [
                         ('default_code','=',product_code)], context=context)
                     if not product_ids:
-                        _logger.error("Product not found, code: '%s'" % (product_code))
+                        _logger.error(
+                            "Product not found, code: '%s'" % (product_code))
                         continue # next record!
 
                     product_id = product_ids[0]
-                    for key in codepackage_2_id: # loop on all elements/columns (package NGD_* *=code of package)
+                    # loop on all elements/columns 
+                    # (package NGD_* *=code of package)
+                    for key in codepackage_2_id: 
                         try:
-                             # TODO why a False value??!?!?!?!?                    
-                             if not key:
-                                 _logger.error('Key not present!')
-                                 continue
-                             code = "NGD_" + key
-                             qty = product_package.get(code, 0.0) # Q. is the value of the fields NDG_code!
-                             if qty > 0.0:  # search if present and > 0
-                                 ul = codepackage_2_id.get(key,False)
-                                 if not ul:
-                                    _logger.error("UL: '%s' not found (used in product: '%s')"%(key, product_code,))
-                                    continue # next record (jump this)!
-
-                                 # search if package is yet present:
-                                 ul_ids = product_packaging_pool.search(cr, uid, [
-                                     ('product_id','=',product_id),
-                                     ('ul','=',ul),
-                                 ]) #('code','=',key)
-                                 if ul_ids: # modify
-                                     res = product_packaging_pool.write(
-                                         cr, uid, ul_ids, {'qty': qty},
-                                         context=context)
-                                 else:      # create    
-                                     item_id = product_packaging_pool.create(cr, uid, {
-                                         'product_id': product_id,
-                                         'ul': ul,
-                                         'qty': qty,
-                                     }, context=context)
+                            # TODO why a False value??!?!?!?!?                    
+                            if not key:
+                                _logger.error('Key not present!')
+                                continue
+                            code = "NGD_" + key
+                            # Q. is the value of the fields NDG_code!
+                            qty = product_package.get(code, 0.0) 
+                            if qty > 0.0:  # search if present and > 0
+                                ul = codepackage_2_id.get(key,False)
+                                if not ul:
+                                   _logger.error(
+                                       "UL: '%s' not found (used in product: '%s')" % (
+                                           key, product_code,))
+                                   continue # next record (jump this)!
+                                # search if package is yet present:
+                                ul_ids = product_packaging_pool.search(cr, uid, [
+                                    ('product_id','=',product_id),
+                                    ('ul','=',ul),
+                                ]) #('code','=',key)
+                                if ul_ids: # modify
+                                    res = product_packaging_pool.write(
+                                        cr, uid, ul_ids, {'qty': qty},
+                                        context=context)
+                                else:      # create    
+                                    item_id = product_packaging_pool.create(
+                                        cr, uid, {
+                                            'product_id': product_id,
+                                            'ul': ul,
+                                            'qty': qty,
+                                            }, context=context)
 
                         except:
                             _logger.error(sys.exc_info())
         except:
-            _logger.error("Error import package during status importation!")
+            _logger.error('Error import package during status importation!')
             
+        # ---------------------------------------------------------------------    
         # Start syncro product state:
-        _logger.info("Start syncro product state")
-        cursor = self.pool.get('micronaet.accounting').get_product_quantity(cr, uid, 1, 9, context=context) # current year always 9
+        # ---------------------------------------------------------------------    
+        _logger.info('Start syncro product state')
+        cursor = accounting_pool.get_product_quantity(
+            cr, uid, 1, 9, context=context) # current year always 9
         if not cursor:
-            _logger.error("Unable to connect no importation of product state quantity!")
+            _logger.error(
+                'Unable to connect no importation of product state quantity!')
         
         # Verbose variables:
         total = 0
@@ -239,29 +256,43 @@ class product_product_extra(osv.osv):
                     
                     default_code = record['CKY_ART'].strip()
                     
-                    item_id = self.search(cr, uid, [('default_code','=',default_code)], context=context)
+                    item_id = self.search(cr, uid, [
+                        ('default_code','=',default_code),
+                        ], context=context)
                     if item_id:
-                        accounting_qty = (record['NQT_INV'] or 0.0) + (record['NQT_CAR'] or 0.0) - (record['NQT_SCAR'] or 0.0)                     
-                        modify = self.write(cr, uid, item_id, {'accounting_qty': accounting_qty,}, context=context)                    
+                        accounting_qty = (record['NQT_INV'] or 0.0) + \
+                            (record['NQT_CAR'] or 0.0) - \
+                            (record['NQT_SCAR'] or 0.0)                     
+                        modify = self.write(cr, uid, item_id, {
+                            'accounting_qty': accounting_qty,
+                            }, context=context)
                         total+=1
 
-                    if verbose and (records % verbose_quantity == 0): _logger.info("%s Record product state read [updated: %s]!"%(records, total))
+                    if verbose and (records % verbose_quantity == 0): 
+                        _logger.info('%s State updated: %s]!' % (
+                            records, total))
                 except:
-                    _logger.error("ETL MSSQL: Error update product state! [%s]"%(sys.exc_info()))
-            _logger.info("Importation product state terminated! [Records: %s Imported: %s]!"%(records, total))
+                    _logger.error(
+                        'ETL MSSQL: Error update product state! [%s]' % (
+                            sys.exc_info()))
+            _logger.info(
+                'Import state terminated! %s Imported %s!' % (records, total))
         except:
             _logger.error(sys.exc_info())
             return False
-
         return True
 
     # Fields functions:
-    def _function_linked_accounting_qty(self, cr, uid, ids, field, args, context=None):
+    def _function_linked_accounting_qty(
+            self, cr, uid, ids, field, args, context=None):
         """ Calculate total of sale order line for used for accounting store
         """ 
         res = dict.fromkeys(ids, 0)
         sol_pool = self.pool.get('sale.order.line')
-        sol_ids = sol_pool.search(cr, uid, [('product_id','in',ids),('use_accounting_qty','=',True)], context=context)
+        sol_ids = sol_pool.search(cr, uid, [
+            ('product_id', 'in', ids),
+            ('use_accounting_qty', '=', True),
+            ], context=context)
         for line in sol_pool.browse(cr, uid, sol_ids, context=context):
             try: 
                 res[line.product_id.id] += line.product_uom_qty or 0.0
