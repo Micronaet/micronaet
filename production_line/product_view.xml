@@ -61,7 +61,7 @@
                 <field name="linked_product_id" />
                 <separator string="Prodotti che lo utilizzano:" colspan="4"/>
                 <field name="product_ids" nolabel="1" colspan="4">
-                    <tree string="Product packaging" editable="bottom">
+                    <tree string="Product packaging" editable="bottom" colors="grey:is_active=False">
                         <field name="is_active" />                        
                         <field name="product_id" />
                         <field name="qty" />
