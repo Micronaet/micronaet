@@ -309,16 +309,31 @@ class Parser(report_sxw.rml_parse):
             else: # default
                 return 'green'
 
-    def get_partner_offer(self, partner_id, is_order=True):
+    def get_partner_offer(self, partner_id, mode='order'):
         ''' Return browse object of open offers
         '''
-        offer_pool = self.pool.get('sale.order')
-        domain = [('partner_id', '=', partner_id)]
-        
-        # TODO andrà riveduta in base alla gestione che faremo delle offerte
-        domain.append(('accounting_order', '=', is_order)) # else if offer
+        # Docnaet offer:
+        if mode == 'docnaet':
+            docnaet_pool = self.pool.get('docnaet.document')
             
-        offer_ids = offer_pool.search(self.cr, self.uid, domain)
-        offer_proxy = offer_pool.browse(self.cr, self.uid, offer_ids)        
-        return offer_proxy
-
+            # Pending offer:
+            docnaet_ids = docnaet_pool.search(self.cr, self.uid, [
+                ('partner_id', '=', partner_id),
+                ('sale_order_amount', '>', 0),
+                ('sale_state', '=', 'pending'),
+                ])
+            return docnaet_pool.browse(self.cr, self.uid, docnaet_ids)        
+            
+        # OpenERP Order:    
+        else: 
+            domain = [('partner_id', '=', partner_id)]
+            offer_pool = self.pool.get('sale.order')
+            
+            # TODO andrà riveduta in base alla gestione che faremo delle offerte
+            if mode == 'order':
+                domain.append(('accounting_order', '=', True)) # else if offer
+            elif mode == 'quotation':
+                domain.append(('accounting_order', '=', False)) # else if offer
+                
+            offer_ids = offer_pool.search(self.cr, self.uid, domain)
+            return offer_pool.browse(self.cr, self.uid, offer_ids)
