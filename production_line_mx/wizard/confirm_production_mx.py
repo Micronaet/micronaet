@@ -392,7 +392,7 @@ class MrpProduction(osv.Model):
                 qty,
                 product.uom_id.contipaq_ref,
                 unit_cost,
-                '', #load.product_code, # Lot code
+                load.product_code, # Lot code
                 ])
         excel_pool.save_file_as(folder['load']['data'] % lavoration.id)
         

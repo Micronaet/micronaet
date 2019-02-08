@@ -242,7 +242,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 ('product_id','=',product_id),
                 ('ul','=',package_id)], context=context)
             if pack_ids:
-                pack_proxy=pack_pool.browse(
+                pack_proxy = pack_pool.browse(
                     cr, uid, pack_ids, context=context)[0]
                 q_x_pack = pack_proxy.qty or 0.0
                 res['value']['ul_qty'] = total // q_x_pack + \
