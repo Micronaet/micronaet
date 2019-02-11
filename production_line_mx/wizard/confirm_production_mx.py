@@ -319,11 +319,11 @@ class MrpProduction(osv.Model):
                 _('Load qty must be present!'))    
             
         # Add also Lavoration cost:
-        subtotal = (line_rate_cost * unload_qty) # K of Line (medium cost)
+        subtotal = (line_rate_cost * load_qty) # K of Line (medium cost)
         unload_cost += subtotal
-        calc += _(u'<br>Lavoration: [K rate] %s x [unload] %s = %s<br/>') % (
+        calc += _(u'<br>Lavoration: [K rate] %s x [load] %s = %s<br/>') % (
             line_rate_cost,
-            unload_qty,
+            load_qty,
             subtotal,
             )
         
