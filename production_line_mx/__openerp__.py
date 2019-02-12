@@ -31,7 +31,7 @@
     'author': 'Micronaet S.r.l. - Nicola Riolini',
     'website': 'http://www.micronaet.it',
     'license': 'AGPL-3',
-    'depends': [
+    'depends': [    
         'base',
         'production_line',
         'production_pedimento',
@@ -40,6 +40,7 @@
     'init_xml': [],
     'demo': [],
     'data': [
+        'security/mx_group.xml',
         #'security/ir.model.access.csv',    
         'custom_mx_view.xml',
         'wizard/parameter_view.xml',

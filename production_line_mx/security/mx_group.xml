@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+   <data>
+        <record id="group_hide_menu" model="res.groups">
+            <field name="name">MX Hide menu</field>
+        </record>
+   </data>
+</openerp>

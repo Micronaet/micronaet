@@ -147,6 +147,11 @@
                 </page>                    
             </field>
         </record>        
+        
+        <record model="ir.ui.menu" id="production_line.menu_base_production_root_production">
+            <!--<field name="active" eval="False"/>-->
+            <field name="group_ids" eval="[(6, 0, ref('group_hide_menu'))]"/>
+        </record>
     </data>
 </openerp>
 
