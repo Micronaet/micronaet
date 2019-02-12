@@ -26,7 +26,7 @@
                     <attribute name="widget">selection</attribute>
                 </field>
                 <field name="package_id" position="after">
-                    <field name="package_pedimento_id" attrs="{'required': [('state','=','product')]}"/>
+                    <field name="package_pedimento_id" /><!--attrs="{'required': [('state','=','product')]}"-->
                 </field>
                 
                 <field name="pallet_product_id" position="attributes">
