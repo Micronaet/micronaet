@@ -43,6 +43,150 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
+
+
+class MrpProduction(orm.Model):
+    """ Model name: MrpProduction
+        Check all data present
+    """
+    
+    _inherit = 'mrp.production'
+    
+    def check_function_data_present(self, cr, uid, ids, context=None):
+        ''' Check normal data in all production
+        '''
+        _logger.info('Checking MRP data')
+        mrp_proxy = self.browse(cr, uid, ids, context=context)[0]
+        error = ''
+
+        # ---------------------------------------------------------------------        
+        # Product need code:
+        # ---------------------------------------------------------------------        
+        if not mrp_proxy.product_id.default_code:
+            error += _('MRP product %s without code\n') % (
+                mrp_proxy.product_id.name
+                )
+        
+        # ---------------------------------------------------------------------        
+        # Production material data:
+        # ---------------------------------------------------------------------        
+        # Need default code, price on product, price on pedimento if present
+        for material in mrp_proxy.bom_material_ids:
+            product = material.product_id
+            pedimento = material.pedimento_id
+            default_code = product.default_code or ''
+            
+            # Raw material need code:
+            if not default_code:
+                error += _('Material %s without default code\n') % (
+                    product.name
+                    )
+                    
+            if not product.standard_price:
+                error += _('Material %s without price\n') % (
+                    default_code or product.name,
+                    )
+
+            if pedimento and not pedimento.standard_price:
+                error += _('Pedimento %s [%s] without price\n') % (
+                    pedimento.name,
+                    default_code,                    
+                    )
+        
+        # ---------------------------------------------------------------------        
+        # Lavoration material data:
+        # ---------------------------------------------------------------------        
+        # All lavoration need:
+        #    Material code, price on product, price on pedimento if present
+        for lavoration in mrp_proxy.workcenter_lines:
+            for material in mrp_proxy.bom_material_ids:
+                product = material.product_id
+                pedimento = material.pedimento_id
+                default_code = product.default_code or ''
+                
+                # Raw material need code:
+                if not default_code:
+                    error += _('[%s] Material %s without code\n') % (
+                        lavoration.name,
+                        product.name,
+                        )
+                        
+                if not product.standard_price:
+                    error += _('[%s] Material %s without price\n') % (
+                        lavoration.name,
+                        default_code or product.name,
+                        )
+
+                if pedimento and not pedimento.standard_price:
+                    error += _('[%s] Pedimento %s [%s] without price\n') % (
+                        lavoration.name,
+                        pedimento.name,
+                        default_code,                    
+                        )
+        
+        # ---------------------------------------------------------------------        
+        # Load data for unload material:
+        # ---------------------------------------------------------------------        
+        for load in mrp_proxy.load_ids:
+            # -----------------------------------------------------------------
+            # 1. Package:
+            # -----------------------------------------------------------------
+            package = load.package_id.linked_product_id
+            if not package.default_code:
+                error += _('[%s] Load package %s without code\n') % (
+                    load.sequence,
+                    package.name,
+                    )
+            if not package.standard_price:
+                error += _('[%s] Load package %s without price\n') % (
+                    load.sequence,
+                    package.default_code or package.name or '',
+                    )
+                
+            # -----------------------------------------------------------------
+            # 2. Pedimento (mandatory on package)
+            # -----------------------------------------------------------------
+            pedimento = load.package_pedimento_id # XXX name always present:
+            if not pedimento.standard_price:
+                error += _('[%s] Load pedimento [%s] %s without price\n') % (
+                    load.sequence,
+                    package.default_code or package.name,
+                    pedimento.name,
+                    )
+
+            # -----------------------------------------------------------------
+            # 3. Pallet            
+            # -----------------------------------------------------------------
+            pallet = load.pallet_product_id
+            if pallet and not pallet.default_code:
+                error += _('[%s] Load pallet %s without code\n') % (
+                    load.sequence,
+                    pallet.name,
+                    )
+            if pallet and not pallet.standard_price:
+                error += _('[%s] Load pallet %s without price\n') % (
+                    load.sequence,
+                    pallet.default_code or pallet.name or '',
+                    )
+        print error            
+        return self.write(cr, uid, ids, {
+            'check_mrp': error,
+            }, context=context)
+        
+    # Override to check product name
+    def load_materials_from_bom(self, cr, uid, ids, context=None):
+        ''' Override original action
+        '''
+        # Call normally:
+        super(MrpProduction, self).load_materials_from_bom(
+            cr, uid, ids, context=context)
+        return self.check_function_data_present(
+            cr, uid, ids, context=context)
+    
+    _columns = {
+        'check_mrp': fields.text('Check error'),
+        }
+
 class MrpProductionWorkcenterLoad(orm.Model):
     """ Model name: MrpProductionWorkcenterLoad
         Add extra fields for waste management:
@@ -65,6 +209,12 @@ class MrpProductionMaterial(orm.Model):
     _columns = {
         'pedimento_id': fields.many2one(
             'product.product.pedimento', 'Pedimento'),
+        'standard_price': fields.related(
+            'product_id', 'standard_price', 
+            type='float', string='Standard price'),    
+        'pedimento_price': fields.related(
+            'pedimento_id', 'standard_price', 
+            type='float', string='Pedimento price'),    
         }
 
 class product_product_extra(osv.osv):

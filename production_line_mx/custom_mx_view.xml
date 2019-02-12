@@ -48,7 +48,9 @@
             <field name="inherit_id" ref="production_line.default_mrp_production_workcenter_line_view" />
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='bom_material_ids']/tree/field[@name='product_id']" position="after">
+                    <field name="standard_price" />
                     <field name="pedimento_id" domain="[('product_id', '=', product_id)]" options="{'create': false, 'create_edit': false}"/>
+                    <field name="pedimento_price" />
                 </xpath>
             </field>
         </record>    
@@ -58,8 +60,15 @@
             <field name="model">mrp.production</field>
             <field name="inherit_id" ref="production_line.default_mrp_production_form_view" />
             <field name="arch" type="xml">
+                <xpath expr="//notebook" position="after">
+                    <separator string="Check MRP error:" colspan="4" attrs="{'invisible': [('check_mrp','=',False)]}"/>
+                    <field name="check_mrp" nolabel="1" colspan="4" attrs="{'invisible': [('check_mrp','=',False)]}"/>
+                </xpath>
+                
                 <xpath expr="//field[@name='bom_material_ids']/tree/field[@name='product_id']" position="after">
+                    <field name="standard_price" />
                     <field name="pedimento_id" domain="[('product_id', '=', product_id)]" options="{'create': false, 'create_edit': false}"/>
+                    <field name="pedimento_price" />
                 </xpath>
             </field>
         </record>    
@@ -71,7 +80,9 @@
             <field name="inherit_id" ref="production_line.view_mrp_production_material_tree"/>
             <field name="arch" type="xml">
                    <field name='product_id' position="after">
+                       <field name="standard_price" />
                        <field name="pedimento_id" domain="[('product_id', '=', product_id)]" options="{'create': false, 'create_edit': false}"/>
+                       <field name="pedimento_price" />
                    </field>    
             </field>
         </record>    
@@ -81,7 +92,9 @@
             <field name="inherit_id" ref="production_line.view_mrp_production_material_form" />
             <field name="arch" type="xml">
                <field name='product_id' position="after" >
-                   <field name="pedimento_id" domain="[('product_id', '=', product_id)]" options="{'create': false, 'create_edit': false}"/>
+                    <field name="standard_price" />
+                    <field name="pedimento_id" domain="[('product_id', '=', product_id)]" options="{'create': false, 'create_edit': false}"/>
+                    <field name="pedimento_price" />
                </field>    
             </field>
         </record>    
@@ -128,13 +141,12 @@
             <field name="arch" type="xml">
                 <page string="Load" position="after">
                     <page string="Load calc" attrs="{'invisible': [('product_price_calc','=',False)]}">
-                        <separator string="Calculation:" colspan="4"/>
-                        <field name="product_price_calc" widget="html" colspan="4" nolabel="1"/>
+                        <separator string="Calculation:" colspan="4" />
+                        <field name="product_price_calc" widget="html" colspan="4" nolabel="1" />
                     </page>
                 </page>                    
             </field>
-        </record>
-        
+        </record>        
     </data>
 </openerp>
 
