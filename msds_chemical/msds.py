@@ -104,9 +104,9 @@ class msds_form(orm.Model):
         res = os.path.join(folder, "%s.pdf" % ids[0])
         return res
 
-    # -------------
+    # -------------------------------------------------------------------------
     # Button event:
-    # -------------
+    # -------------------------------------------------------------------------
     def open_msds_form(self, cr, uid, ids, context=None):
         ''' Return a link element for use agent and open document from file
             system of MSDS form, ex.:
@@ -116,6 +116,15 @@ class msds_form(orm.Model):
         version_ids = version_pool.search(cr, uid, [
             ('msds_id', '=', ids[0])], context=context)
         return version_pool.open_msds_form(
+            cr, uid, version_ids, context=context)
+
+    def download_msds_form(self, cr, uid, ids, context=None):
+        ''' Download file with PDF
+        '''
+        version_pool = self.pool.get('msds.form.version')
+        version_ids = version_pool.search(cr, uid, [
+            ('msds_id', '=', ids[0])], context=context)
+        return version_pool.download_msds_form(
             cr, uid, version_ids, context=context)
 
     # -----------------
@@ -376,6 +385,27 @@ class msds_form_version(orm.Model):
             'target': 'new',
         }
 
+    def download_msds_form(self, cr, uid, ids, context=None):
+        ''' Return download file:
+        '''        
+        pdf_path = os.path.expanduser('~/ETL/panchemicals/msds/openerp')
+        
+        version_proxy = self.browse(cr, uid, ids, context=context)[0]
+
+        attachment_pool = self.pool.get('ir.attachment')
+        filename = os.path.join(pdf_path, '%s.PDF' % ids[0])
+        
+        name = 'MSDS_ID_%s' % ids[0]
+        #name = 'MSDS_%s_%slang_%s_ID_%s' % (
+        #    version_proxy.product_code or '',
+        #    ('alias_%s_' % version_proxy.alias_code) if \
+        #        version_proxy.alias_code else '',
+        #    version_proxy.language_id.code or 'XX',
+        #   os.path.basename(filename),
+        #    )
+        return attachment_pool.return_file_apache_php(
+            cr, uid, filename, name=name, context=context)
+    
     _columns = {
         'msds_id': fields.many2one('msds.form', 'MSDS', ondelete='cascade'),
         'timestamp': fields.datetime('Datetime',
@@ -400,9 +430,9 @@ class msds_form_rel(orm.Model):
     _rec_name = 'product_id'
     _order = 'product_id'
 
-    # -------------
+    # -------------------------------------------------------------------------
     # Button event:
-    # -------------
+    # -------------------------------------------------------------------------
     def open_msds_form(self, cr, uid, ids, context=None):
         ''' Open MSDS last revision form
         '''
@@ -410,6 +440,15 @@ class msds_form_rel(orm.Model):
 
         rel_proxy = self.browse(cr, uid, ids, context=context)[0]
         return form_pool.open_msds_form(
+            cr, uid, [rel_proxy.msds_id.id], context=context)
+
+    def download_msds_form(self, cr, uid, ids, context=None):
+        ''' Open MSDS last revision form
+        '''
+        form_pool = self.pool.get('msds.form')
+
+        rel_proxy = self.browse(cr, uid, ids, context=context)[0]
+        return form_pool.download_msds_form(
             cr, uid, [rel_proxy.msds_id.id], context=context)
 
     _columns = {

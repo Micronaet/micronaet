@@ -75,6 +75,7 @@
                     <field name="filename" readonly="1" />
                     <field name="language_id" />
                     <button name="open_msds_form" string="Open" type="object" class="oe_highlight" icon="gtk-file"/>
+                    <button name="download_msds_form" string="Download" type="object" class="oe_highlight" icon="gtk-save"/>
                 </tree>
             </field>
        </record>
@@ -98,6 +99,7 @@
                            <field name="version_ids" context="{'embedded_version': True}" nolabel="1" colspan="4" />
                            
                            <button name="open_msds_form" string="Open" type="object" class="oe_highlight" icon="gtk-file"/>
+                           <button name="download_msds_form" string="Download" type="object" class="oe_highlight" icon="gtk-save"/>
                         </group>
                     </sheet>
                 </form>
@@ -121,6 +123,7 @@
                     <field name="msds_id" invisible="context.get('embedded_version', False)" />
                     <field name="timestamp" />
                     <button name="open_msds_form" string="Open" type="object" class="oe_highlight" icon="gtk-file" />
+                    <button name="download_msds_form" string="Download" type="object" class="oe_highlight" icon="gtk-save"/>
                 </tree>
             </field>
        </record>
@@ -135,6 +138,7 @@
                             <field name="msds_id" />
                             <field name="timestamp" />                           
                             <button name="open_msds_form" string="Open" type="object" class="oe_highlight" icon="gtk-file"/>
+                            <button name="download_msds_form" string="Download" type="object" class="oe_highlight" icon="gtk-save"/>
                         </group>
                     </sheet>
                 </form>
@@ -154,6 +158,7 @@
                     <field name="alias_code" />
                     <field name="language_id" />
                     <button name="open_msds_form" string="Open" type="object" class="oe_highlight" icon="gtk-file" />
+                    <button name="download_msds_form" string="Download" type="object" class="oe_highlight" icon="gtk-save"/>
                 </tree>
             </field>
        </record>
@@ -169,6 +174,7 @@
                             <field name="alias_code" />
                             <field name="language_id" />
                             <button name="open_msds_form" string="Open" type="object" class="oe_highlight" icon="gtk-file" />
+                            <button name="download_msds_form" string="Download" type="object" class="oe_highlight" icon="gtk-save"/>
                             <field name="msds_id" invisible="1" />
                             <field name="product_id" invisible="1"  />
                             <field name="alias_id" invisible="1"  />

@@ -37,6 +37,7 @@
     'depends': [
         'base',
         'product',
+        'save_as',
         ],
     'init_xml': [],
     'demo': [],
