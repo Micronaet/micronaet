@@ -141,15 +141,15 @@ class stock_production_lot_accounting(orm.Model):
             'stock_available_accounting': 0.0,
             }, context=context)
         return True
-        
+    
     _columns = {
         'package_id': fields.many2one('product.ul', 'Package', 
             help='Package used for package (for this lot)'),
         # TODO remove
-        'stock_available_accounting': fields.float('Stock availability', digits=(16, 2)),    
+        'stock_available_accounting': fields.float(
+            'Stock availability', digits=(16, 2)),    
         'accounting_ref': fields.char('Accounting ref', size=12, 
             help="ID lot in account program"),
-
         'anomaly': fields.boolean('Anomaly', required=False),    
     }    
 

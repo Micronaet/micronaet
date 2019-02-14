@@ -32,6 +32,35 @@ from utility import *
 
 _logger = logging.getLogger(__name__)
 
+class StockProductionLot(osv.osv):
+    ''' Add extra function for changing state in mail.thread
+    '''
+    _inherit = 'stock.production.lot'
+
+    def name_get(self, cr, uid, ids, context=None):
+        """ Return a list of tupples contains id, name.
+            result format : {[(id, name), (id, name), ...]}
+            
+            @param cr: cursor to database
+            @param uid: id of current user
+            @param ids: list of ids for which name should be read
+            @param context: context arguments, like lang, time zone
+            
+            @return: returns a list of tupples contains id, name
+        """
+        if isinstance(ids, (list, tuple)) and not len(ids):
+            return []
+        if isinstance(ids, (long, int)):
+            ids = [ids]            
+        res = []
+        for record in self.browse(cr, uid, ids, context=context):
+            res.append((
+                record.id, 
+                _(u'%s [Q. %s]') % (
+                    record.name, record.stock_available_accounting),
+                ))
+        return res    
+
 class mail_thread(osv.osv):
     ''' Add extra function for changing state in mail.thread
     '''

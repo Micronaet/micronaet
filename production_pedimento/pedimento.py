@@ -62,8 +62,7 @@ class ProductProductPedimento(orm.Model):
             @param context: context arguments, like lang, time zone
             
             @return: returns a list of tupples contains id, name
-        """
-        
+        """        
         if isinstance(ids, (list, tuple)) and not len(ids):
             return []
         if isinstance(ids, (long, int)):
