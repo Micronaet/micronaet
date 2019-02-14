@@ -734,6 +734,8 @@ class mrp_production_material(osv.osv):
     _columns = {
         'product_id':fields.many2one('product.product', 'Product', 
             required=True),
+        'lot_id':fields.many2one('stock.production.lot', 'Lot'),
+            
         'quantity': fields.float('Quantity', digits=(16, 2)),
         'uom_id': fields.related(
             'product_id','uom_id', type='many2one', relation='product.uom', 
@@ -1128,6 +1130,7 @@ class mrp_production_workcenter_line_extra(osv.osv):
                 for element in mrp.bom_material_ids:
                     material_pool.create(cr, uid, {
                         'product_id': element.product_id.id,
+                        'lot_id': element.lot_id.id,
                         'quantity': element.quantity / mrp.product_qty * \
                             lavoration_browse.product_qty \
                             if mrp.product_qty else 0.0,

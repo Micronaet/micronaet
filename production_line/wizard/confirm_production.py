@@ -141,10 +141,11 @@ class MrpProduction(osv.osv):
                         )
                     
                 # Export SL for material used for entire production:
-                f_sl.write('%-10s%-25s%10.2f\r\n' % (
+                f_sl.write('%-10s%-25s%10.2f%-10s\r\n' % (
                     default_code,
                     lavoration_browse.name[4:],
                     unload.quantity,
+                    unload.lot_id.ref or '',
                     ))
                 
                 if force_stock:

@@ -444,6 +444,7 @@
                         <field name="bom_material_ids" nolabel="1" colspan="4"  attrs="{'readonly':[('unload_confirmed','=',True)]}">
                             <tree string="Material BOM list" editable="bottom">
                                 <field name="product_id" />
+                                <field name="lot_id" groups="production_line.group_stock_lot_enable" domain="[('product_id', '=', product_id)]"/>
                                 <field name="uom_id" readonly="1" />
                                 <field name="quantity" sum="total"/>
                                 <field name="accounting_qty" readonly="1"/>                                
@@ -844,6 +845,7 @@
                                 <field name="bom_material_ids" nolabel="1" colspan="4">
                                     <tree string="Material BOM list" editable="bottom">
                                         <field name="product_id" />
+                                        <field name="lot_id" groups="production_line.group_stock_lot_enable" domain="[('product_id', '=', product_id)]"/>
                                         <field name="uom_id" readonly="1" />
                                         <field name="quantity" sum="total"/>
                                         <field name="accounting_qty" />
