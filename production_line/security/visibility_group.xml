@@ -8,6 +8,11 @@
         <field name="description">Manage production groups.</field>
         <field name="visible" eval="1" />
     </record>
+        <record id="group_stock_lot_enable" model="res.groups">
+            <field name="name">Lot management ON</field>
+            <field name="category_id" ref="module_production_line" />
+            <field name="comment">Add extra columns for lot management for used that use it</field>
+        </record>
 
         <record id="group_stock_negative_status" model="res.groups">
             <field name="name">Negative report users</field>
