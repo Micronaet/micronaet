@@ -391,18 +391,18 @@ class msds_form_version(orm.Model):
         pdf_path = os.path.expanduser('~/ETL/panchemicals/msds/openerp')
         
         version_proxy = self.browse(cr, uid, ids, context=context)[0]
+        msds = version_proxy.msds_id
 
         attachment_pool = self.pool.get('ir.attachment')
         filename = os.path.join(pdf_path, '%s.PDF' % ids[0])
         
-        name = 'MSDS_ID_%s' % ids[0]
-        #name = 'MSDS_%s_%slang_%s_ID_%s' % (
-        #    version_proxy.product_code or '',
-        #    ('alias_%s_' % version_proxy.alias_code) if \
-        #        version_proxy.alias_code else '',
-        #    version_proxy.language_id.code or 'XX',
-        #   os.path.basename(filename),
-        #    )
+        name = 'MSDS_%s_%slang_%s_ID_%s' % (
+            msds.product_code or '',
+            ('alias_%s_' % msds.alias_code) if \
+                msds.alias_code else '',
+            msds.language_id.code or 'XX',
+            os.path.basename(filename),
+            )
         return attachment_pool.return_file_apache_php(
             cr, uid, filename, name=name, context=context)
     
