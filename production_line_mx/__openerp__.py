@@ -42,7 +42,7 @@
     'demo': [],
     'data': [
         'security/mx_group.xml',
-        'security/ir.model.access.csv',    
+        #'security/ir.model.access.csv',    
         
         'custom_mx_view.xml',
         'wizard/parameter_view.xml',
