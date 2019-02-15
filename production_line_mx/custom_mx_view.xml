@@ -46,7 +46,7 @@
                             <field name="log_error_unload" readonly="1" />
                             <field name="log_filename_unload" readonly="1" />
                             <field name="log_account_unload" readonly="1" />
-                            <field name="log_date_unload" readonly="1" />
+                            <field name="log_account_date_unload" readonly="1" />
                             <separator string="Log detail unload" colspan="4"/>
                             <field name="log_detail_unload" colspan="4" nolabel="1" readonly="1" />
                             <separator string="Log error unload" colspan="4"/>
@@ -55,7 +55,7 @@
                             <field name="log_error_load" readonly="1" />
                             <field name="log_filename_load" readonly="1" />
                             <field name="log_account_load" readonly="1" />
-                            <field name="log_date_load" readonly="1" />
+                            <field name="log_account_date_load" readonly="1" />
                             <separator string="Log detail load" colspan="4"/>
                             <field name="log_detail_load" colspan="4" nolabel="1" readonly="1"/>
                             <separator string="Log error load" colspan="4"/>
