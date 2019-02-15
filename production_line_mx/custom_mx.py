@@ -581,7 +581,7 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
         _logger.info('Update log info in database:')             
         import pdb; pdb.set_trace()
         for wc_id in wc_db:
-            self.write(cr, uid, wc_id, wc_db[wc_id], context=context)
+            self.write(cr, uid, [wc_id], wc_db[wc_id], context=context)
             
         # History file read (after modiy database):
         _logger.info('History file readed:')
