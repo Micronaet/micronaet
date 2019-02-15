@@ -539,7 +539,7 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
                 # Read file:
                 # -------------------------------------------------------------
                 fullname = os.path.join(path, f)
-                historyname = os.path.join(path, 'history', f)
+                history_name = os.path.join(path, 'history', f)
                 move_file.append(fullname, history_name)
                 
                 log_error = False
