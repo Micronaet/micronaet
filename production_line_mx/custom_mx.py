@@ -513,7 +513,6 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
         
         wc_db = {}
         move_file = []
-        import pdb; pdb.set_trace()
         for root, folders, files in os.walk(path):
             for f in files:
                 if not f.startswith('load_') and not f.startswith('unload_'):
@@ -580,7 +579,8 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
         
         # Update database with log files:
         _logger.info('Update log info in database:')             
-        for wc_id in wb_db:
+        import pdb; pdb.set_trace()
+        for wc_id in wc_db:
             self.write(cr, uid, wc_id, wc_db[wc_id], context=context)
             
         # History file read (after modiy database):
