@@ -511,16 +511,11 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
         path = os.path.expanduser(folder)
         _logger.info('Start reading log path: %s' % path)
         
-        import pdb; pdb.set_trace()
         wc_db = {}
         move_file = []
+        import pdb; pdb.set_trace()
         for root, folders, files in os.walk(path):
-            i = 0
             for f in files:
-                i += 1
-                if i == 1:
-                    continue # Jump header
-
                 if not f.startswith('load_') and not f.startswith('unload_'):
                     _logger.error('Jump file in incorrect format: %s' % f)
                     continue # no correct format
@@ -551,7 +546,12 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
                 log_error_text = ''
                 log_detail = ''
                 
+                i = 0
                 for line in open(fullname, 'r'):
+                    i += 1
+                    if i == 1:
+                        continue # Jump header
+
                     line.strip()
                     if not line:
                         continue
