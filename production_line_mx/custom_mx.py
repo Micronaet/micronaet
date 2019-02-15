@@ -532,7 +532,7 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
                 account_ref = account_part[1]
                 account_date = account_part[2]
 
-                if wc_id in wc_db:
+                if wc_id not in wc_db:
                     wc_db[wc_id] = {} # data to create after log read
                     
                 # -------------------------------------------------------------
