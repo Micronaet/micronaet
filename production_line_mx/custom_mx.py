@@ -565,6 +565,12 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
                     cost = row[6]
                     lot = row[7] # or pedimento
                     
+                    # Update data:
+                    if note != 'Inserted movement':
+                        log_error = True
+                        log_error_text += line
+                    log_detail += line    
+                    
                 wc_db[wc_id].update({
                     'log_error_%s' % mode: log_error,
                     'log_error_text_%s' % mode: log_error_text,
