@@ -533,7 +533,12 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
 
                 if wc_id not in wc_db:
                     wc_db[wc_id] = {} # data to create after log read
-                    
+                
+                # Write file name readed:
+                wc_db[wc_id].update({
+                    'log_filename_%s' % mode: f,
+                    })
+
                 # -------------------------------------------------------------
                 # Read file:
                 # -------------------------------------------------------------
