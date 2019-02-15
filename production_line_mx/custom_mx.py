@@ -537,6 +537,8 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
                 # Write file name readed:
                 wc_db[wc_id].update({
                     'log_filename_%s' % mode: f,
+                    'log_account_%s' % mode: account_ref,
+                    'log_account_date_%s' % mode: account_date,
                     })
 
                 # -------------------------------------------------------------
@@ -610,12 +612,16 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
         'log_error_unload': fields.boolean('Error state unload'),
         'log_error_text_unload': fields.text('Error text unload'),
         'log_detail_unload': fields.text('Detail unload'),
+        'log_account_unload': fields.char('Account unload ID', size=20),
+        'log_account_date_unload': fields.char('Account date load', size=20),
 
         # Load block:
         'log_filename_load': fields.char('Filename load', size=64),
         'log_error_load': fields.boolean('Error state load'),
         'log_error_text_load': fields.text('Error text load'),
         'log_detail_load': fields.text('Detail load'),
+        'log_account_load': fields.char('Account load ID', size=20),
+        'log_account_date_load': fields.char('Account date load', size=20),
 
         'log_ok': fields.boolean('OK (unload and load)'),
        }        
