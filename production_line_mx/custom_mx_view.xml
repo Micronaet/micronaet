@@ -1,6 +1,97 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+        <record model="ir.ui.view" id="view_mrp_production_workcenter_line_tree">
+            <field name="name">mrp.production.workcenter.line.tree</field>
+            <field name="model">mrp.production.workcenter.line</field>
+            <field name="priority" eval="40" />
+            <field name="arch" type="xml">
+                <tree string="Production log import" colors="red:log_ok==False and (log_error_load==True or log_error_unload==True)">
+                    <field name="production_id" />
+                    <field name="name" />
+                    <field name="date_start" />
+                    <field name="hour" />
+                    <field name="qty" />
+
+                    <field name="log_error_unload" />
+                    <field name="log_filename_unload" />
+
+                    <field name="log_error_load" />
+                    <field name="log_filename_load" />
+
+                    <field name="log_ok" invisible="1"/>
+                    <button name="mark_ok" string="OK seen!" type="object" attrs="{'invisible': [('log_ok','=',True)]}" icon="gtk-ok"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_mrp_production_workcenter_line_form">
+            <field name="name">mrp.production.workcenter.line.form</field>
+            <field name="model">mrp.production.workcenter.line</field>
+            <field name="priority" eval="40" />
+            <field name="arch" type="xml">
+                <form string="Production log import" version="7.0"> 
+                    <header>
+                        <button name="mark_ok" string="OK seen!" type="object" icon="gtk-ok" />
+                    </header>
+                    <sheet> 
+                        <group colspan="4" col="4">               
+                            <field name="production_id" readonly="1" />
+                            <field name="name" readonly="1" />
+                            <field name="date_start" readonly="1" />
+                            <field name="hour" readonly="1" />
+                            <field name="qty" readonly="1" />
+
+                            <field name="log_ok" attrs="{'invisible': [('log_ok','=',True)]}"/>
+
+                            <field name="log_error_unload" />
+                            <field name="log_filename_unload" />
+                            <separator string="Log detail unload" colspan="4"/>
+                            <field name="log_detail_unload" colspan="4" nolabel="1" />
+                            <separator string="Log error unload" colspan="4"/>
+                            <field name="log_error_text_unload" colspan="4" nolabel="1" />
+
+                            <field name="log_error_load" />
+                            <field name="log_filename_load" />
+                            <separator string="Log detail load" colspan="4"/>
+                            <field name="log_detail_load" colspan="4" nolabel="1" />
+                            <separator string="Log error load" colspan="4"/>
+                            <field name="log_error_text_load" colspan="4" nolabel="1" />
+                        </group>
+                    </sheet>    
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_mrp_production_workcenter_line_error">
+            <field name="name">MRP production log error</field>
+            <field name="res_model">mrp.production.workcenter.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_mrp_production_workcenter_line_tree"/>
+            <field name="context">{'form_view_ref': 'production_line_mx.view_mrp_production_workcenter_line_form'}</field>
+            <field name="domain">[('log_ok', '=', False), '|', ('log_error_load', '=', True), ('log_error_unload', '=', True)]</field>
+        </record>
+        <record model="ir.actions.act_window" id="action_mrp_production_workcenter_line">
+            <field name="name">MRP production log</field>
+            <field name="res_model">mrp.production.workcenter.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_mrp_production_workcenter_line_tree"/>
+            <field name="context">{'form_view_ref': 'production_line_mx.view_mrp_production_workcenter_line_form'}</field>
+            <field name="domain">[]</field>
+        </record>
+        <menuitem 
+            parent="mrp.menu_mrp_manufacturing" 
+            id="menu_mrp_production_workcenter_line_error" 
+            action="action_mrp_production_workcenter_line_error"
+            sequence="0"
+            />
+            <menuitem 
+                parent="menu_mrp_production_workcenter_line_error"
+                id="menu_mrp_production_workcenter_line"
+                action="action_mrp_production_workcenter_line"
+                sequence="10"
+                />
+        
         <!--<record model="ir.ui.view" id="view_product_material_pedimento_form">
             <field name="name">Material Pedimento</field>
             <field name="model">mrp.production.workcenter.line</field>

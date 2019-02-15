@@ -33,6 +33,7 @@
     'license': 'AGPL-3',
     'depends': [    
         'base',
+        'mrp',
         'production_line',
         'production_pedimento',
         'excel_export',
@@ -41,7 +42,8 @@
     'demo': [],
     'data': [
         'security/mx_group.xml',
-        #'security/ir.model.access.csv',    
+        'security/ir.model.access.csv',    
+        
         'custom_mx_view.xml',
         'wizard/parameter_view.xml',
         'wizard/confirm_production_mx_wizard.xml',

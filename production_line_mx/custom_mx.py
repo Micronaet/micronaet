@@ -43,8 +43,6 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
-
-
 class MrpProduction(orm.Model):
     """ Model name: MrpProduction
         Check all data present
@@ -271,8 +269,7 @@ class product_product_extra(osv.osv):
 
         # Import pedimento and stock:
         total = {}
-        for row in stock:
-            
+        for row in stock:            
             if len(row) == 6: # unit col 6
                 default_code = row[0]
                 name = row[1]
@@ -504,5 +501,112 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
             return True
         except:
             return False
+
+    # -------------------------------------------------------------------------
+    # Schedule import log:
+    # -------------------------------------------------------------------------
+    def schedule_import_log_event(self, cr, uid, folder, context=None):
+        ''' Start import from folder:
+        '''
+        path = os.path.expanduser(folder)
+        _logger.info('Start reading log path: %s' % path)
         
+        import pdb; pdb.set_trace()
+        wc_db = {}
+        move_file = []
+        for root, folders, files in os.walk(path):
+            i = 0
+            for f in files:
+                i += 1
+                if i == 1:
+                    continue # Jump header
+
+                if not f.startswith('load_') and not f.startswith('unload_'):
+                    _logger.error('Jump file in incorrect format: %s' % f)
+                    continue # no correct format
+
+                # -------------------------------------------------------------
+                # Extract data from filename:
+                # -------------------------------------------------------------
+                part = f.split('.')
+                openerp_part = part[0].split('_')
+                account_part = part[1].split('-')
+                
+                mode = openerp_part[0]
+                wc_id = int(openerp_part[1])
+                account_ref = account_part[1]
+                account_date = account_part[2]
+
+                if wc_id in wc_db:
+                    wc_db[wc_id] = {} # data to create after log read
+                    
+                # -------------------------------------------------------------
+                # Read file:
+                # -------------------------------------------------------------
+                fullname = os.path.join(path, f)
+                historyname = os.path.join(path, 'log', f)
+                move_file.append(fullname, history_name)
+                
+                log_error = False
+                log_error_text = ''
+                log_detail = ''
+                
+                for line in open(fullname, 'r'):
+                    line.strip()
+                    if not line:
+                        continue
+                    row = line.split('\t')
+                    control = row[0] 
+                    note = row[1] # 'Inserted movement' # CORRECT
+                    error = row[2]
+                    default_code = row[3]
+                    qty = row[4]
+                    uom = row[5]
+                    cost = row[6]
+                    lot = row[7] # or pedimento
+                    
+                wc_db[wc_id].update({
+                    'log_error_%s' % mode: log_error,
+                    'log_error_text_%s' % mode: log_error_text,
+                    'log_detail_%s' % mode: log_detail,
+                    })
+            break # only first folder
+        
+        # Update database with log files:
+        _logger.info('Update log info in database:')             
+        for wc_id in wb_db:
+            self.write(cr, uid, wc_id, wc_db[wc_id], context=context)
+            
+        # History file read (after modiy database):
+        _logger.info('History file readed:')
+        for from_file, to_file in move_file:
+            _logger.info('Move file: %s  >>  %s' % (from_file, to_file))
+            shutil.move(from_file, to_file)        
+        return True
+
+    # -------------------------------------------------------------------------
+    # Button event:
+    # -------------------------------------------------------------------------
+    def mark_ok(self, cr, uid, ids, context=None):
+        ''' Mark as view the log error
+        '''
+        return self.write(cr, uid, ids, {
+            'log_ok': True,
+            }, context=context)
+        
+    _columns = {
+        # Unload block:
+        'log_filename_unload': fields.char('Filename unload', size=64),
+        'log_error_unload': fields.boolean('Error state unload'),
+        'log_error_text_unload': fields.text('Error text unload'),
+        'log_detail_unload': fields.text('Detail unload'),
+
+        # Load block:
+        'log_filename_load': fields.char('Filename load', size=64),
+        'log_error_load': fields.boolean('Error state load'),
+        'log_error_text_load': fields.text('Error text load'),
+        'log_detail_load': fields.text('Detail load'),
+
+        'log_ok': fields.boolean('OK (unload and load)'),
+       }        
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
