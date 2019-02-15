@@ -13,9 +13,11 @@
                     <field name="hour" />
                     <field name="qty" />
 
+                    <field name="log_account_unload" />
                     <field name="log_error_unload" />
                     <field name="log_filename_unload" />
 
+                    <field name="log_account_load" />
                     <field name="log_error_load" />
                     <field name="log_filename_load" />
 
