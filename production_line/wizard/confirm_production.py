@@ -930,10 +930,12 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             wc_browse = wc_pool.browse(cr, uid, active_id, context=context)
             res = 'Material:\n'
             for unload in wc_browse.bom_material_ids:
-                res += '[%s %s] - %s\n' % (
+                res += '[%s %s] - %s %s\n' % (
                     unload.quantity,
                     unload.uom_id.name,
                     unload.product_id.name,
+                    ('(Lotto: %s)' % unload.lot_id.name) \
+                        if unload.lot_id else '',
                 )
 
             # TODO Manage in production load
