@@ -259,15 +259,19 @@ class product_product_extra(osv.osv):
             cr, uid, pedimento_ids, {
                 'product_qty': 0.0,
                 }, context=context)
-        
+
+        # ---------------------------------------------------------------------
         # Load pedimentos reference:        
+        # ---------------------------------------------------------------------
         pedimento_db = {}
         for pedimento in pedimento_pool.browse(cr, uid, pedimento_ids, 
                 context=context):
             key = (pedimento.name, pedimento.product_id.id)
             pedimento_db[key] = pedimento.id
 
+        # ---------------------------------------------------------------------
         # Import pedimento and stock:
+        # ---------------------------------------------------------------------
         total = {}
         for row in stock:            
             if len(row) == 6: # unit col 6
