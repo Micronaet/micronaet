@@ -738,6 +738,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             #     recycle_code = 'R%s' % default_code[1:]
             code = wiz_proxy.product_id.default_code
 
+            # TODO use complex lot format?
             ref_lot_name = '%06d#%01d' % (int(mrp.name[3:]), sequence)
             product_code = '%-8s%-2s%-10s%-10s' % (
                 code,
