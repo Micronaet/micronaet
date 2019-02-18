@@ -72,10 +72,13 @@ stock = []
 # -----------------------------------------------------------------------------
 # Pedimento stock:
 # -----------------------------------------------------------------------------
+import pdb; pdb.set_trace()
 print 'Start reading pedimento product'
 cr.execute('sp_existence_Pedimento_Product')
 for record in cr.fetchall():
     row = tuple(record)
+    if row[2] != 'MP':
+        continue
     stock.append(row)
     print row
 
@@ -86,6 +89,8 @@ print 'Start reading lot product'
 cr.execute('sp_existence_Product')
 for record in cr.fetchall():
     row = tuple(record)
+    if row[2] != 'MP':
+        continue
     stock.append(row)
     print row
 
