@@ -284,6 +284,7 @@ class product_product_extra(osv.osv):
                 product_qty = row[4]
                 cost = 0.0
                 last_cost = row[5]
+
             else: # pediment: col 9 
                 default_code = row[0]
                 name = row[1]
@@ -294,7 +295,7 @@ class product_product_extra(osv.osv):
                 product_qty = row[6]
                 cost = row[7]
                 last_cost = row[8]
-                     
+
             # -----------------------------------------------------------------
             # Mandatory fields check:
             # -----------------------------------------------------------------
@@ -327,12 +328,15 @@ class product_product_extra(osv.osv):
                 key = (pedimento, product_id) 
                 if key in pedimento_db:
                     # Update pedimento:
-                    pedimento_pool.write(cr, uid, [pedimento_db[key]], {
+                    data = {
                         'product_id': product_id, # XXX necessary?
-                        'product_qty': product_qty,
-                        'standard_price': last_cost,
-                        }, context=context)
-                else:
+                        'product_qty': product_qty,                        
+                        }
+                    if last_cost: # Update only if present:
+                        data['standard_price'] = last_cost
+                    pedimento_pool.write(cr, uid, [pedimento_db[key]], data, 
+                        context=context)
+                else:                
                     # Create pedimento:
                     pedimento_pool.create(cr, uid, {
                         'name': pedimento,
@@ -362,10 +366,13 @@ class product_product_extra(osv.osv):
             # -----------------------------------------------------------------
             # Update product data:
             # -----------------------------------------------------------------
-            self.write(cr, uid, product_id, {
-                'accounting_qty': product_qty,
-                'standard_price': last_cost,
-                }, context=context)
+            data = {
+                'accounting_qty': product_qty,                
+                }
+            if last_cost:
+                data['standard_price'] = last_cost
+  
+            self.write(cr, uid, product_id, data, context=context)
         _logger.info('End import product account status')
         return True
     

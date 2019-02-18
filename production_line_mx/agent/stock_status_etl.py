@@ -77,8 +77,8 @@ cr.execute('sp_existence_Pedimento_Product')
 for record in cr.fetchall():
     row = tuple(record)
     print row
-    if row[2] != 'MP':        
-        continue
+    #if row[2] != 'MP':        
+    #    continue
     stock.append(row)
 
 # -----------------------------------------------------------------------------
@@ -89,8 +89,8 @@ cr.execute('sp_existence_Product')
 for record in cr.fetchall():
     row = tuple(record)
     print row
-    if row[3] != 'MP':
-        continue
+    #if row[3] != 'MP':
+    #    continue
     stock.append(row)
 
 product_pool = erp.model('product.product')
