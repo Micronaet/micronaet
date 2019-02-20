@@ -369,7 +369,7 @@ class product_product_extra(osv.osv):
             data = {
                 'accounting_qty': product_qty,                
                 }
-            if last_cost:
+            if last_cost > 0.001:
                 data['standard_price'] = last_cost
   
             self.write(cr, uid, product_id, data, context=context)
