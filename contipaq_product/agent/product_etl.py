@@ -136,6 +136,5 @@ for row in cr.fetchall():
     if uom_id:
         update_uom.append((product_id, uom_id))
 print update_uom
-import pdb; pdb.set_trace()
 product_pool.update_uom(update_uom)
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
