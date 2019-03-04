@@ -48,11 +48,12 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
     _description = 'Extract Excel export'
 
     # -------------------------------------------------------------------------
-    # Report call:
+    # Wizard button event:
     # -------------------------------------------------------------------------
-    def get_report_material(self, cr, uid, wiz_proxy, context=None):
-        ''' A. Report material 
+    def action_report(self, cr, uid, ids, context=None):
+        ''' Event for button done
         '''
+        wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
         work_pool = self.pool.get('mrp.production.material')
         excel_pool = self.pool.get('excel.writer')
         
@@ -61,9 +62,9 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
         # ---------------------------------------------------------------------
         from_date = wiz_proxy.from_date
         to_date = wiz_proxy.to_date
-        product = wiz_proxy.product_id
-        material = wiz_proxy.material_id
-        report_mode = wiz_proxy.report_mode
+        filter_product = wiz_proxy.product_id
+        filter_material = wiz_proxy.material_id
+        #report_mode = wiz_proxy.report_mode
 
         # ---------------------------------------------------------------------
         # Setup domain filter:
@@ -85,17 +86,12 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
             filter_text += _(u'[Alla data %s] ') % to_date    
             
         # Many2one:
-        # Final Product
-        #if product:
-        #    domain.append(
-        #        ('workcenter_production_id.product_id', '=', product.id))
-        #    filter_text += u'[Prodotto finito %s] ' % product.default_code
-
         # Raw material:
-        if material:
+        if filter_material:
             domain.append(
-                ('product_id', '=', material.id))
-            filter_text += _(u'[Materia prima %s] ') % material.default_code
+                ('product_id', '=', filter_material.id))
+            filter_text += _(u'[Materia prima %s] '
+                ) % filter_material.default_code
 
         # ---------------------------------------------------------------------        
         #                              EXCEL:
@@ -152,22 +148,24 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
             material = line.product_id
             qty = line.quantity
 
-            # -----------------------------------------------------------------            
+            # -----------------------------------------------------------------
             # Final product data:
-            # -----------------------------------------------------------------            
-            if wc not in wc_db:
-                wc_db.append(wc)
-                for load in wc.load_ids:
-                    key = (product, load.recycle)
-                    if key in product_report:
-                        product_report[key] += load.product_qty
-                    else:    
-                        product_report[key] = load.product_qty
-                    # package_id, ul_qty
-                    # package_pedimento_id
-                    # palled_product_id, pallet_qty
-                    # accounting_cost
-                    # recycle_product
+            # -----------------------------------------------------------------                        
+            #`Check if there's some filtered product:
+            if not filter_product or product.id == filter_product.id:
+                if wc not in wc_db:
+                    wc_db.append(wc)
+                    for load in wc.load_ids:
+                        key = (product, load.recycle)
+                        if key in product_report:
+                            product_report[key] += load.product_qty
+                        else:    
+                            product_report[key] = load.product_qty
+                        # package_id, ul_qty
+                        # package_pedimento_id
+                        # palled_product_id, pallet_qty
+                        # accounting_cost
+                        # recycle_product
             
             # -----------------------------------------------------------------            
             # Raw material data:
@@ -211,7 +209,7 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
             _('Codice'), _('Nome'), _('UM'), _('Q.')
             ], default_format=f_header)
 
-        for material in material_report:
+        for material in sorted(material_report, key=lambda x: x.default_code):
             row += 1
             qty = material_report[material]
             excel_pool.write_xls_line(ws_name, row, [
@@ -222,19 +220,22 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
                 ], default_format=f_text)
 
         # ---------------------------------------------------------------------
-        # B. Material total:
+        # C. Final product:
         # ---------------------------------------------------------------------
         ws_name = _('Prodotto finito')
         excel_pool.create_worksheet(ws_name)
 
-        excel_pool.column_width(ws_name, [20, 30, 10, 15, 1])
+        excel_pool.column_width(ws_name, [20, 30, 10, 15, 5])
 
         row = 0
         excel_pool.write_xls_line(ws_name, row, [
             _('Codice'), _('Nome'), _('UM'), _('Q.'), _('Recycle')
             ], default_format=f_header)
 
-        for key in product_report:
+        for key in sorted(
+                product_report, 
+                key=lambda x: (x[0].default_code, x[1]),
+                ):
             row += 1
             product, recycle = key
             qty = product_report[key]
@@ -250,19 +251,6 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
             version='7.0', 
             #php=True,
             )
-
-    # -------------------------------------------------------------------------
-    # Wizard button event:
-    # -------------------------------------------------------------------------
-    def action_report(self, cr, uid, ids, context=None):
-        ''' Event for button done
-        '''
-        wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
-        if wiz_proxy.report_mode == 'material':
-            return self.get_report_material(
-                cr, uid, wiz_proxy, context=context)
-        #elif report_name == 'detail':
-        #    key = lambda x: x.real_date_planned
 
     _columns = {
         # Period:
