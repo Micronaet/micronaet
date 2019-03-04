@@ -215,11 +215,11 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
         ws_name = _('Materie prime')
         excel_pool.create_worksheet(ws_name)
 
-        excel_pool.column_width(ws_name, [20, 30, 10, 15])
+        excel_pool.column_width(ws_name, [20, 30, 10, 15, 15])
 
         row = 0
         excel_pool.write_xls_line(ws_name, row, [
-            _('Codice'), _('Nome'), _('UM'), _('Q.')
+            _('Codice'), _('Nome'), _('UM'), _('Q.') _('Magazzino'), 
             ], default_format=f_header)
 
         for material in sorted(material_report, key=lambda x: x.default_code):
@@ -230,6 +230,7 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
                 material.name or '',
                 material.uom_id.name,
                 (qty, f_number),
+                (material.accounting_qty, f_number),
                 ], default_format=f_text)
 
         # ---------------------------------------------------------------------
@@ -238,11 +239,12 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
         ws_name = _('Prodotto finito')
         excel_pool.create_worksheet(ws_name)
 
-        excel_pool.column_width(ws_name, [20, 30, 10, 15, 5])
+        excel_pool.column_width(ws_name, [20, 30, 10, 15, 15, 5])
 
         row = 0
         excel_pool.write_xls_line(ws_name, row, [
-            _('Codice'), _('Nome'), _('UM'), _('Q.'), _('Recycle')
+            _('Codice'), _('Nome'), _('UM'), _('Q.'), _('Magazzino'), 
+            _('Recycle')
             ], default_format=f_header)
 
         for key in sorted(
@@ -257,6 +259,7 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
                 product.name or '',
                 product.uom_id.name,
                 (qty, f_number),
+                (product.accounting_qty, f_number),
                 'X' if recycle else '',
                 ], default_format=f_text)
 
