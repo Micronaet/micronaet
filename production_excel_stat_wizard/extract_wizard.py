@@ -53,6 +53,17 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
     def action_report(self, cr, uid, ids, context=None):
         ''' Event for button done
         '''
+        def clean_tags(value):
+            ''' Clean tags element:
+            '''
+            if not value:
+                return ''
+                
+            res = value.replace('<b>', '').replace('</b>', '').replace(
+                '<br />', '\n').replace('<br/>', '\n').replace(
+                    '<br>', '\n') or ''
+            return res.replace('\n\n', '\n')                
+
         wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
         work_pool = self.pool.get('mrp.production.material')
         excel_pool = self.pool.get('excel.writer')
@@ -71,8 +82,10 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
         # ---------------------------------------------------------------------
         domain = [
             ('workcenter_production_id', '!=', False),
+            ('workcenter_production_id.state', 'not in', ('cancel', 'draft')),
             ]
-        filter_text = _('Report mode: %s') % report_mode
+        #filter_text = _('Report mode: %s') % report_mode
+        filter_text = _('Filtro applicato: ')
 
         #Period:
         if from_date:
@@ -245,6 +258,30 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
                 product.uom_id.name,
                 (qty, f_number),
                 'X' if recycle else '',
+                ], default_format=f_text)
+
+        # ---------------------------------------------------------------------
+        # D. Final product:
+        # ---------------------------------------------------------------------
+        ws_name = _('Dettaglio lavorazioni')
+        excel_pool.create_worksheet(ws_name)
+        excel_pool.column_width(ws_name, [20, 30, 10, 15, 80])
+
+        row = 0
+        excel_pool.write_xls_line(ws_name, row, [
+            _('Data'), _('Produzione'), _('Lavorazione'), _('State'), 
+            _('Dettaglio'),
+            ], default_format=f_header)
+
+        for wc in sorted(wc_db, key=lambda x: x.real_date_planned):
+            row += 1
+            excel_pool.row_height(ws_name, row, height=140)
+            excel_pool.write_xls_line(ws_name, row, [
+                wc.real_date_planned,
+                wc.production_id.name,
+                wc.name,
+                wc.state,
+                clean_tags(wc.product_price_calc),
                 ], default_format=f_text)
 
         return excel_pool.return_attachment(cr, uid, _('Production statistic'), 
