@@ -123,8 +123,14 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
         excel_pool.set_format()
         f_title = excel_pool.get_format('title')
         f_header = excel_pool.get_format('header')
+        
         f_text = excel_pool.get_format('text')
+        f_text_yellow = excel_pool.get_format('bg_yellow')
+        f_text_red = excel_pool.get_format('bg_red')
+
         f_number = excel_pool.get_format('number')
+        f_number_yellow = excel_pool.get_format('bg_yellow_number')
+        f_number_red = excel_pool.get_format('bg_red_number')
             
         excel_pool.column_width(ws_name, [
             15, 20, 20,
@@ -225,13 +231,28 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
         for material in sorted(material_report, key=lambda x: x.default_code):
             row += 1
             qty = material_report[material]
+            accounting_qty = material.accounting_qty
+
+            # -----------------------------------------------------------------
+            # Color setup:
+            # -----------------------------------------------------------------
+            if accounting_qty <= 0:
+                f_text_color = f_text_red
+                f_number_color = f_number_red
+            elif accounting_qty <= 100:
+                f_text_color = f_text_yellow
+                f_number_color = f_number_yellow
+            else:
+                f_text_color = f_text
+                f_number_color = f_number
+                
             excel_pool.write_xls_line(ws_name, row, [
                 material.default_code or '', 
                 material.name or '',
                 material.uom_id.name,
-                (qty, f_number),
-                (material.accounting_qty, f_number),
-                ], default_format=f_text)
+                (qty, f_number_color),
+                (accounting_qty, f_number_color),
+                ], default_format=f_text_color)
 
         # ---------------------------------------------------------------------
         # C. Final product:
@@ -254,14 +275,29 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
             row += 1
             product, recycle = key
             qty = product_report[key]
+            accounting_qty = product.accounting_qty
+            
+            # -----------------------------------------------------------------
+            # Color setup:
+            # -----------------------------------------------------------------
+            if accounting_qty <= 0:
+                f_text_color = f_text_red
+                f_number_color = f_number_red
+            elif accounting_qty <= 100:
+                f_text_color = f_text_yellow
+                f_number_color = f_number_yellow
+            else:
+                f_text_color = f_text
+                f_number_color = f_number
+                
             excel_pool.write_xls_line(ws_name, row, [
                 product.default_code or '', 
                 product.name or '',
                 product.uom_id.name,
-                (qty, f_number),
-                (product.accounting_qty, f_number),
+                (qty, f_number_color),
+                (accounting_qty, f_number_color),
                 'X' if recycle else '',
-                ], default_format=f_text)
+                ], default_format=f_text_color)
 
         # ---------------------------------------------------------------------
         # D. Final product:
