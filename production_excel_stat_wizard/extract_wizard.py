@@ -219,7 +219,7 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
 
         row = 0
         excel_pool.write_xls_line(ws_name, row, [
-            _('Codice'), _('Nome'), _('UM'), _('Q.') _('Magazzino'), 
+            _('Codice'), _('Nome'), _('UM'), _('Q.'), _('Magazzino'), 
             ], default_format=f_header)
 
         for material in sorted(material_report, key=lambda x: x.default_code):
