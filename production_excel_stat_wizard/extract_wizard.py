@@ -286,7 +286,7 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
 
         return excel_pool.return_attachment(cr, uid, _('Production statistic'), 
             version='7.0', 
-            php=True,
+            #php=True,
             )
 
     _columns = {
