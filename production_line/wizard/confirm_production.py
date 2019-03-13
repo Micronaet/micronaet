@@ -408,6 +408,9 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 int(mrp.name[-5:]),
                 sequence,
                 ) # Job <<< TODO use production (test, mrp is 5)
+            if recycle:
+                # Replace first 0 with R:
+                ref_lot_name = 'R' + ref_lot_name[1:]
 
             # Written in CL info:                
             real_product_code = '%-8s%-2s%-10s%-10s' % (
