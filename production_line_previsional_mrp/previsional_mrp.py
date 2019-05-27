@@ -77,23 +77,29 @@ class ProductStatusWizard(osv.osv_memory):
     _inherit = 'product.status.wizard'
 
     # -------------------------------------------------------------------------
-    # Default function:
+    # Override schedule action:
     # -------------------------------------------------------------------------
     def schedule_send_negative_report(
             self, cr, uid, wizard=None, context=None):
         ''' Send mail to group user for negative elements
         '''           
-        mark_previsional = False # XXX need here?
+        also_previsional = False # XXX need here?
+
         if context is None:
             context = {}
 
         # ---------------------------------------------------------------------
         # Add previsional order:
         # ---------------------------------------------------------------------
-        previsional_pool = self.pool.get('mrp.production.previsional')
-        previsional_ids = previsional_pool.search(cr, uid, [
-            ('state', '=', 'draft'),
-            ], context=context)
+        if also_previsional:
+            previsional_pool = self.pool.get('mrp.production.previsional')
+            previsional_ids = previsional_pool.search(cr, uid, [
+                ('state', '=', 'draft'),
+                ], context=context)
+            fake_ids = previsional_pool.browse(
+                cr, uid, previsional_ids, context=context)
+        else:
+            fake_ids = []        
         
         # Default if not parameter
         context['datas'] = {
@@ -102,8 +108,7 @@ class ProductStatusWizard(osv.osv_memory):
             'with_medium': True,
             'month_window': 3,
             'with_order_detail': True,
-            'fake_ids': previsional_pool.browse(
-                cr, uid, previsional_ids, context=context)
+            'fake_ids': fake_ids,
             }
 
         if wizard is not None:
@@ -115,7 +120,7 @@ class ProductStatusWizard(osv.osv_memory):
         # Update previsional order 
         # ---------------------------------------------------------------------
         # TODO correct here?
-        if mark_previsional:
+        if also_previsional:
             _logger.warning('Update previsional order as done!')
             previsional_pool.write(cr, uid, previsional_ids, {
                 'state': 'used',
