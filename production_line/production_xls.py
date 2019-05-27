@@ -347,6 +347,8 @@ class mrp_production_extra(osv.osv):
         # > Import +q for product in lavoration:
         # > Import OC product in line with deadline:
         # > Import OF material with deadline:
+        #global rows, cols, table, history_supplier_orders, minimum, \
+        #    error_in_print
         return True
 
     def _get_table(self, ):
