@@ -109,7 +109,6 @@ class ProductStatusWizard(osv.osv_memory):
         if wizard is not None:
             context['datas'].update(wizard)
         
-        # TODO update previsional order?    
         self.export_excel(cr, uid, False, context=context)    
         
         # ---------------------------------------------------------------------
