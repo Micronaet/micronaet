@@ -79,6 +79,53 @@ class ProductStatusWizard(osv.osv_memory):
     # -------------------------------------------------------------------------
     # Default function:
     # -------------------------------------------------------------------------
+    def schedule_send_negative_report(
+            self, cr, uid, wizard=None, context=None):
+        ''' Send mail to group user for negative elements
+        '''           
+        mark_previsional = False # XXX need here?
+        if context is None:
+            context = {}
+
+        # ---------------------------------------------------------------------
+        # Add previsional order:
+        # ---------------------------------------------------------------------
+        previsional_pool = self.pool.get('mrp.production.previsional')
+        previsional_ids = previsional_pool.search(cr, uid, [
+            ('state', '=', 'draft'),
+            ], context=context)
+        
+        # Default if not parameter
+        context['datas'] = {
+            'days': 30,
+            'row_mode': 'negative',
+            'with_medium': True,
+            'month_window': 3,
+            'with_order_detail': True,
+            'fake_ids': previsional_pool.browse(
+                cr, uid, previsional_ids, context=context)
+            }
+
+        if wizard is not None:
+            context['datas'].update(wizard)
+        
+        # TODO update previsional order?    
+        self.export_excel(cr, uid, False, context=context)    
+        
+        # ---------------------------------------------------------------------
+        # Update previsional order 
+        # ---------------------------------------------------------------------
+        # TODO correct here?
+        if mark_previsional:
+            _logger.warning('Update previsional order as done!')
+            previsional_pool.write(cr, uid, previsional_ids, {
+                'state': 'used',
+                }, context=context)
+        return True    
+
+    # -------------------------------------------------------------------------
+    # Default function:
+    # -------------------------------------------------------------------------
     def _get_default_previsional_ids(self, cr, uid, context=None):
         ''' Get previsonal list        
         '''

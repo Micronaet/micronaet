@@ -461,10 +461,11 @@ class product_status_wizard(osv.osv_memory):
             self, cr, uid, wizard=None, context=None):
         ''' Send mail to group user for negative elements
         '''                
+        # XXX Was overrided!!!
         if context is None:
             context = {}
-            
-        # Default if not parameter    
+
+        # Default if not parameter
         context['datas'] = {
             'days': 30,
             'row_mode': 'negative',
