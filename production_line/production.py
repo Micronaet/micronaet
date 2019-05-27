@@ -492,7 +492,7 @@ class sale_order_add_extra(osv.osv):
                     is_to_produce_q[product_browse.id] += quantity or 0.0
                     is_to_produce_line[product_browse.id].append(oc_line_id)
                 else:    # new element
-                    is_to_produce_q[product_browse.id] = (quantity or 0.0) + product_browse.minimum_qty # Min q. + sum(all order Q)
+                    is_to_produce_q[product_browse.id] = (quantity or 0.0) + product_browse.min_stock_level# Min q. + sum(all order Q)
                     is_to_produce_line[product_browse.id] = [oc_line_id]
             except:
                 _logger.error('Problem with oc line record: %s\n%s' % (

@@ -133,7 +133,7 @@ class mrp_production_extra(osv.osv):
         product_ids = product_pool.search(cr, uid, [], context=context)
         for product in product_pool.browse(
                 cr, uid, product_ids, context=context):
-            minimum[product.id] = product.minimum_qty or 0.0
+            minimum[product.id] = product.min_stock_level
 
         # Init parameters:      
         col_ids = {}  
@@ -238,7 +238,7 @@ class mrp_production_extra(osv.osv):
             element = (
                 'P', 
                 line.product_id.id,
-                line.product_id, # XXX used for minimum qty
+                line.product_id, # XXX used for min qty
                 0.0,
                 )
             # initialize row (today, < today, +1, +2, ... +n)                

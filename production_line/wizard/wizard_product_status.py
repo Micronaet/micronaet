@@ -341,7 +341,7 @@ class product_status_wizard(osv.osv_memory):
             body = [
                 (row[2].name, format_text),
                 (default_code, format_text),
-                (row[2].minimum_qty, format_white),
+                (row[2].min_stock_level, format_white),
                 (write_supplier_order_detail(
                     history_supplier_orders.get(default_code, '')), 
                     format_text,
