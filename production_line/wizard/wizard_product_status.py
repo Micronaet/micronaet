@@ -471,12 +471,13 @@ class product_status_wizard(osv.osv_memory):
             'with_medium': True,
             'month_window': 3,
             'with_order_detail': True,
-            'fake_ids': [],
+            'fake_ids': [], # TODO << nothing?
             }
 
         if wizard is not None:
             context['datas'].update(wizard)
-            
+        
+        # TODO update previsional order?    
         self.export_excel(cr, uid, False, context=context)    
         return True    
         

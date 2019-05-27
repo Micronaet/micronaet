@@ -70,4 +70,33 @@ class MrpProductionPrevisional(orm.Model):
     _defaults = {
         'state': lambda *x: 'draft',
         }        
+
+class ProductStatusWizard(osv.osv_memory):
+    ''' Parameter for product status per day
+    '''    
+    _inherit = 'product.status.wizard'
+
+    # -------------------------------------------------------------------------
+    # Default function:
+    # -------------------------------------------------------------------------
+    def _get_default_previsional_ids(self, cr, uid, context=None):
+        ''' Get previsonal list        
+        '''
+        previsional_pool = self.pool.get('mrp.production.previsional')
+        return [(6, 0, previsional_pool.search(cr, uid, [
+            ('state', '=', 'draft'),
+            ], context=context), )]
+    
+    _columns = {
+        # Override ex wizard sub object:
+        'fake_ids': fields.many2many(
+            'mrp.production.previsional', 'previsional_wiz_rel', 
+            'wiz_id', 'prev_id', 
+            'Previsional order'),    
+        }
+    
+    _defaults = {
+        'fake_ids': lambda s, cr, uid, ctx: 
+            s._get_default_previsional_ids(cr, uid, ctx),
+        }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
