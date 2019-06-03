@@ -10,6 +10,7 @@
                     <sheet>
                         <group col="4" colspan="4">
                             <field name="product_id" />
+                            <field name="code" readonly="1" />
                             <field name="name" />
                             <field name="product_qty" />                            
                             <field name="standard_price" />
@@ -24,6 +25,7 @@
             <field name="arch" type="xml">
                 <tree string="Pedimento" version="7.0" editable="bottom">
                     <field name="product_id" invisible="context.get('embedded', False)"/>
+                    <field name="code" readonly="1"/>
                     <field name="name" />
                     <field name="standard_price" />
                     <field name="product_qty" sum="Total"/>                            
@@ -36,6 +38,7 @@
             <field name="arch" type="xml">
                 <search string="Pedimento" version="7.0">        
                     <field name="name" />
+                    <field name="code" />
                     <field name="product_id" filter_domain="[('product_id','=',self)]"/>
                     <field name="standard_price" />
                     <group expand="0" string="Group By...">
@@ -58,8 +61,7 @@
             id="menu_product_product_pedimento" 
             action="action_product_product_pedimento"
             sequence="10"
-            />
-        
+            />        
         
         <record model="ir.ui.view" id="view_product_pedimento_form">
             <field name="name">product.product.pedimento.form</field>
