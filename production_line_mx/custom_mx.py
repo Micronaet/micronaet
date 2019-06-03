@@ -338,14 +338,12 @@ class product_product_extra(osv.osv):
             # -----------------------------------------------------------------
             # Pedimento present
             #if pedimento:
-            if default_code == 'R0660T--X':
-                import pdb; pdb.set_trace()
             key = (pedimento_code, product_id) 
             if key not in check_double:
                 check_double[key] = product_qty                
             else:
                 check_double[key] += product_qty # used to get total q.
-                if product_mode == 'pediment': # lot could be double!
+                if control == 'pediment': # lot could be double!
                     double.append((pedimento, default_code)) # for log double
 
             subtotal = check_double[key]
