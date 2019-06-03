@@ -283,11 +283,11 @@ class product_product_extra(osv.osv):
                 last_cost = row[5]
                 # -------------------------------------------------------------
 
-            else: # pediment: col 9 
+            else: # pedimento: col 9 
                 default_code = row[0]
                 name = row[1]
                 product_type = row[2] # MP
-                control = row[3] # pediment
+                control = row[3] # pedimento
                 pedimento = row[4]
                 lot = row[5]
                 product_qty = row[6]
@@ -300,6 +300,8 @@ class product_product_extra(osv.osv):
                 else:    
                     pedimento_code = pedimento.replace(' ', '') # clean
 
+            if control == 'pediment':
+                control = 'pedimento'
             # -----------------------------------------------------------------
             # Mandatory fields check:
             # -----------------------------------------------------------------
