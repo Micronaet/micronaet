@@ -340,7 +340,7 @@ class product_product_extra(osv.osv):
 
             # Search now:            
             odoo_ids = pedimento_pool.search(cr, uid, [
-                ('code', '=', pediment_code),
+                ('code', '=', pedimento_code),
                 ('product_id', '=', product_id),
                 ], context=context)
             if odoo_ids: # Update pedimento:
