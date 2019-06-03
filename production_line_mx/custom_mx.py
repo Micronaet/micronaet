@@ -252,6 +252,7 @@ class product_product_extra(osv.osv):
         # ---------------------------------------------------------------------
         #                          PEDIMENTO MANAGEMENT:
         # ---------------------------------------------------------------------
+        mail_pool = self.pool.get('mail.thread')
         pedimento_pool = self.pool.get('product.product.pedimento')
         _logger.info('Reset stock for pedimentos if present')
         pedimento_ids = pedimento_pool.search(cr, uid, [], context=context)
@@ -305,8 +306,7 @@ class product_product_extra(osv.osv):
                     pedimento_code = lot # Use lot for code
                 else:    
                     pedimento_code = pedimento.replace(' ', '') # clean
-            if default_code == 'R1270T': 
-                import pdb; pdb.set_trace()
+
             # -----------------------------------------------------------------
             # Mandatory fields check:
             # -----------------------------------------------------------------
@@ -384,9 +384,16 @@ class product_product_extra(osv.osv):
   
             self.write(cr, uid, product_id, data, context=context)
         _logger.info('End import product account status')
+
+    
         if double:
-            _logger.info('Double: %s' % (double, ))
-            
+            mail_pool.message_post(
+                cr, uid, False, 
+                body='Trovati numeri pedimento doppi in Contipaq: %s' % (
+                    double, ), 
+                subject='Trovati doppioni',
+                context=context)
+
         return True
     
     # -------------------------------------------------------------------------
