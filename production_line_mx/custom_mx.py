@@ -266,12 +266,14 @@ class product_product_extra(osv.osv):
         pedimento_db = {}
         for pedimento in pedimento_pool.browse(cr, uid, pedimento_ids, 
                 context=context):
-            key = (pedimento.name, pedimento.product_id.id)
+            key = (pedimento.code, pedimento.product_id.id)
             pedimento_db[key] = pedimento.id
 
         # ---------------------------------------------------------------------
         # Import pedimento and stock:
         # ---------------------------------------------------------------------
+        check_double = []
+        double = []
         total = {}
         for row in stock:                        
             if len(row) == 6: # unit col 6
@@ -334,6 +336,10 @@ class product_product_extra(osv.osv):
             # Pedimento present
             #if pedimento:
             key = (pedimento_code, product_id) 
+            if key not in check_double:
+                check_double.append(key)
+            else:
+                double.append((pedimento, default_code))
             if key in pedimento_db: # Update pedimento:
                 data = {
                     #'product_id': product_id, # XXX necessary?
@@ -377,6 +383,9 @@ class product_product_extra(osv.osv):
   
             self.write(cr, uid, product_id, data, context=context)
         _logger.info('End import product account status')
+        if double:
+            _logger.info('Double: %s' % (double, ))
+            
         return True
     
     # -------------------------------------------------------------------------
