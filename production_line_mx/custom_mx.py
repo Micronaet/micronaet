@@ -392,6 +392,7 @@ class product_product_extra(osv.osv):
             user_ids = self.search(cr, uid, [], context=context)
             partner_ids = [user.partner_id.id for user in user_pool.browse(
                 cr, uid, user_ids, context=context)]
+            import pdb; pdb.set_trace()    
             mail_pool.message_post(
                 cr, uid, False, 
                 type='email', 
