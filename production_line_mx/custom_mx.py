@@ -235,7 +235,7 @@ class product_product_extra(osv.osv):
             | Name                    |     1       |      1      |
             | Type: MP                |     2       |      3      |
             | Control:                |     3       |      2      |
-            |     pediment, unit      |             |             |
+            |     pediment, unit, lot |             |             |
             | Pediment                |     4       |             |
             | Lot                     |     5       |             |
             | Existence               |     6       |      4      |
@@ -273,8 +273,10 @@ class product_product_extra(osv.osv):
         # Import pedimento and stock:
         # ---------------------------------------------------------------------
         total = {}
-        for row in stock:            
+        for row in stock:                        
             if len(row) == 6: # unit col 6
+                # -------------------------------------------------------------
+                continue # XXX Not used for now:                
                 default_code = row[0]
                 name = row[1]
                 control = row[2] # unit 
@@ -284,6 +286,7 @@ class product_product_extra(osv.osv):
                 product_qty = row[4]
                 cost = 0.0
                 last_cost = row[5]
+                # -------------------------------------------------------------
 
             else: # pediment: col 9 
                 default_code = row[0]
@@ -291,10 +294,15 @@ class product_product_extra(osv.osv):
                 product_type = row[2] # MP
                 control = row[3] # pediment
                 pedimento = row[4]
-                let = row[5]
+                lot = row[5]
                 product_qty = row[6]
                 cost = row[7]
                 last_cost = row[8]
+                if lot:
+                    pedimento = lot # Use pedimento as a code
+                    pedimento_code = lot # Use lot for code
+                else:    
+                    pedimento_code = pedimento.replace(' ', '') # clean
 
             # -----------------------------------------------------------------
             # Mandatory fields check:
@@ -317,38 +325,32 @@ class product_product_extra(osv.osv):
             # Total update:
             # -----------------------------------------------------------------
             if product_id not in total:
-                total[product_id] = [0, last_cost]                        
+                total[product_id] = [0, last_cost, control]                        
             total[product_id][0] += product_qty
 
             # -----------------------------------------------------------------
-            # Pedimento:
+            # Pedimento / Lot (use same management):
             # -----------------------------------------------------------------
             # Pedimento present
-            if pedimento:
-                key = (pedimento, product_id) 
-                if key in pedimento_db:
-                    # Update pedimento:
-                    data = {
-                        'product_id': product_id, # XXX necessary?
-                        'product_qty': product_qty,                        
-                        }
-                    if last_cost: # Update only if present:
-                        data['standard_price'] = last_cost
-                    pedimento_pool.write(cr, uid, [pedimento_db[key]], data, 
-                        context=context)
-                else:                
-                    # Create pedimento:
-                    pedimento_pool.create(cr, uid, {
-                        'name': pedimento,
-                        'product_id': product_id,
-                        'product_qty': product_qty,
-                        'standard_price': last_cost,
-                        }, context=context)
-
-            # -----------------------------------------------------------------
-            # Log management
-            # -----------------------------------------------------------------
-            # TODO 
+            #if pedimento:
+            key = (pedimento_code, product_id) 
+            if key in pedimento_db: # Update pedimento:
+                data = {
+                    #'product_id': product_id, # XXX necessary?
+                    'product_qty': product_qty,                        
+                    }
+                if last_cost: # XXX Update only if present:
+                    data['standard_price'] = last_cost
+                pedimento_pool.write(cr, uid, [pedimento_db[key]], data, 
+                    context=context)
+            else: # Create pedimento:
+                pedimento_pool.create(cr, uid, {
+                    'name': pedimento,
+                    'code': pedimento_code,
+                    'product_id': product_id,
+                    'product_qty': product_qty,
+                    'standard_price': last_cost,
+                    }, context=context)
 
         # ---------------------------------------------------------------------
         # Reset accounting qty in ODOO:
@@ -362,12 +364,13 @@ class product_product_extra(osv.osv):
             }, context=context)
 
         for product_id in total:
-            product_qty, last_cost = total[product_id]
+            product_qty, last_cost, control = total[product_id]
             # -----------------------------------------------------------------
             # Update product data:
             # -----------------------------------------------------------------
             data = {
                 'accounting_qty': product_qty,                
+                'product_mode': control,
                 }
             if last_cost > 0.001:
                 data['standard_price'] = last_cost

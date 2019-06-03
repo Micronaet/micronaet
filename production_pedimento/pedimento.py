@@ -94,6 +94,7 @@ class ProductProduct(orm.Model):
         'product_mode': fields.selection([
             ('lot', 'Lot'),
             ('pediment', 'Pedimento'),
+            ('unit', 'Unit'), # not used
             ], 'Product mode', required=True),
         'pedimento_ids': fields.one2many(
             'product.product.pedimento', 'product_id', 'Pedimento', ),
