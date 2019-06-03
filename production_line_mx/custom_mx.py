@@ -341,13 +341,15 @@ class product_product_extra(osv.osv):
             key = (pedimento_code, product_id) 
             if key not in check_double:
                 check_double[key] = product_qty                
+                is_double = False
             else:
+                is_double = True
                 check_double[key] += product_qty # used to get total q.
                 if control == 'pediment': # lot could be double!
                     double.append((pedimento, default_code)) # for log double
 
             subtotal = check_double[key]
-            if key in pedimento_db: # Update pedimento:
+            if key in pedimento_db or is_double: # Update pedimento:
                 data = {
                     'product_qty': subtotal, # total for all read!
                     }
