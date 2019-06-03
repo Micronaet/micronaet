@@ -391,15 +391,15 @@ class product_product_extra(osv.osv):
             query = 'select partner_id from res_users;'
             cr.execute(query)
             partner_ids = [item[0] for item in cr.fetchall()]
+            double_text = ',\n'.join(double)
             mail_pool.message_post(
                 cr, uid, False, 
                 type='email', 
                 body='Trovati numeri pedimento doppi in Contipaq: %s' % (
-                    double, ), 
+                    double_text, ), 
                 subject='Trovati doppioni',
                 partner_ids=[(6, 0, partner_ids)],
                 context=context)
-
         return True
     
     # -------------------------------------------------------------------------
