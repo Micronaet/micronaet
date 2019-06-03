@@ -273,7 +273,8 @@ class product_product_extra(osv.osv):
         # ---------------------------------------------------------------------
         # Import pedimento and stock:
         # ---------------------------------------------------------------------
-        check_double = []
+        multi_lot_total = {}
+        check_double = {}
         double = []
         total = {}
         for row in stock:                        
@@ -338,13 +339,14 @@ class product_product_extra(osv.osv):
             #if pedimento:
             key = (pedimento_code, product_id) 
             if key not in check_double:
-                check_double.append(key)
+                check_double[key] = product_qty                
             else:
-                double.append((pedimento, default_code))
+                check_double[key] += product_qty # used to get total q.
+                double.append((pedimento, default_code)) # for log double
+
             if key in pedimento_db: # Update pedimento:
                 data = {
-                    #'product_id': product_id, # XXX necessary?
-                    'product_qty': product_qty,                        
+                    'product_qty': check_double[key],
                     }
                 if last_cost: # XXX Update only if present:
                     data['standard_price'] = last_cost
