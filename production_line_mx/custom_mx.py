@@ -393,7 +393,7 @@ class product_product_extra(osv.osv):
             partner_ids = [item[0] for item in cr.fetchall()]
             double_text = ''
             for item in double:
-                double_text += 'Codice: %s, Prodotto: %s' % item
+                double_text += 'Codice: %s, Prodotto: %s\n' % item
             mail_pool.message_post(
                 cr, uid, False, 
                 type='email', 
