@@ -305,7 +305,8 @@ class product_product_extra(osv.osv):
                     pedimento_code = lot # Use lot for code
                 else:    
                     pedimento_code = pedimento.replace(' ', '') # clean
-
+            if default_code == 'R1270T': 
+                import pdb; pdb.set_trace()
             # -----------------------------------------------------------------
             # Mandatory fields check:
             # -----------------------------------------------------------------
