@@ -391,7 +391,7 @@ class product_product_extra(osv.osv):
             query = 'select partner_id from res_users;'
             cr.execute(query)
             partner_ids = [item[0] for item in cr.fetchall()]
-            double_text = '':
+            double_text = ''
             for item in double:
                 double_text += '%s,' % item
             mail_pool.message_post(
