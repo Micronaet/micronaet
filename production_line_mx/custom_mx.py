@@ -382,16 +382,20 @@ class product_product_extra(osv.osv):
             if last_cost > 0.001:
                 data['standard_price'] = last_cost
   
-            self.write(cr, uid, product_id, data, context=context)
+            self.write(
+                cr, uid, product_id, data, context=context)
         _logger.info('End import product account status')
 
     
         if double:
+            partner_ids = [1]
             mail_pool.message_post(
                 cr, uid, False, 
+                type='email', 
                 body='Trovati numeri pedimento doppi in Contipaq: %s' % (
                     double, ), 
                 subject='Trovati doppioni',
+                partner_ids=[(6, 0, partner_ids)],
                 context=context)
 
         return True
