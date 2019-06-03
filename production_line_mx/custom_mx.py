@@ -388,7 +388,10 @@ class product_product_extra(osv.osv):
 
     
         if double:
-            partner_ids = [1]
+            user_pool = self.pool.get('res.users')
+            user_ids = self.search(cr, uid, [], context=context)
+            partner_ids = [user.partner_id.id for user in user_pool.browse(
+                cr, uid, user_ids, context=context)]
             mail_pool.message_post(
                 cr, uid, False, 
                 type='email', 
