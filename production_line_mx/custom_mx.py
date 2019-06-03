@@ -302,7 +302,8 @@ class product_product_extra(osv.osv):
                 product_qty = row[6]
                 cost = row[7]
                 last_cost = row[8]
-                if lot:
+
+                if lot: # so no pedimento!
                     pedimento = lot # Use pedimento as a code
                     pedimento_code = lot # Use lot for code
                 else:    
@@ -337,6 +338,8 @@ class product_product_extra(osv.osv):
             # -----------------------------------------------------------------
             # Pedimento present
             #if pedimento:
+            if default_code == 'R0660T--X';
+                import pdb; pdb.set_trace()
             key = (pedimento_code, product_id) 
             if key not in check_double:
                 check_double[key] = product_qty                
@@ -345,9 +348,10 @@ class product_product_extra(osv.osv):
                 if product_mode == 'pediment': # lot could be double!
                     double.append((pedimento, default_code)) # for log double
 
+            subtotal = check_double[key]
             if key in pedimento_db: # Update pedimento:
                 data = {
-                    'product_qty': check_double[key],
+                    'product_qty': subtotal, # total for all read!
                     }
                 if last_cost: # XXX Update only if present:
                     data['standard_price'] = last_cost
@@ -358,7 +362,7 @@ class product_product_extra(osv.osv):
                     'name': pedimento,
                     'code': pedimento_code,
                     'product_id': product_id,
-                    'product_qty': product_qty,
+                    'product_qty': subtotal,
                     'standard_price': last_cost,
                     }, context=context)
 
