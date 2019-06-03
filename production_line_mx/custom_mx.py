@@ -262,15 +262,6 @@ class product_product_extra(osv.osv):
                 }, context=context)
 
         # ---------------------------------------------------------------------
-        # Load pedimentos reference:        
-        # ---------------------------------------------------------------------
-        pedimento_db = {}
-        for pedimento in pedimento_pool.browse(cr, uid, pedimento_ids, 
-                context=context):
-            key = (pedimento.code, pedimento.product_id.id)
-            pedimento_db[key] = pedimento.id
-
-        # ---------------------------------------------------------------------
         # Import pedimento and stock:
         # ---------------------------------------------------------------------
         multi_lot_total = {}
@@ -341,21 +332,24 @@ class product_product_extra(osv.osv):
             key = (pedimento_code, product_id) 
             if key not in check_double:
                 check_double[key] = product_qty                
-                is_double = False
             else:
-                is_double = True
                 check_double[key] += product_qty # used to get total q.
                 if control == 'pediment': # lot could be double!
                     double.append((pedimento, default_code)) # for log double
-
             subtotal = check_double[key]
-            if key in pedimento_db or is_double: # Update pedimento:
+
+            # Search now:            
+            odoo_ids = pedimento_pool.search(cr, uid, [
+                ('code', '=', pediment_code),
+                ('product_id', '=', product_id),
+                ], context=context)
+            if odoo_ids: # Update pedimento:
                 data = {
                     'product_qty': subtotal, # total for all read!
                     }
                 if last_cost: # XXX Update only if present:
                     data['standard_price'] = last_cost
-                pedimento_pool.write(cr, uid, [pedimento_db[key]], data, 
+                pedimento_pool.write(cr, uid, [odoo_ids[0]], data, 
                     context=context)
             else: # Create pedimento:
                 pedimento_pool.create(cr, uid, {
