@@ -338,7 +338,7 @@ class product_product_extra(osv.osv):
             # -----------------------------------------------------------------
             # Pedimento present
             #if pedimento:
-            if default_code == 'R0660T--X';
+            if default_code == 'R0660T--X':
                 import pdb; pdb.set_trace()
             key = (pedimento_code, product_id) 
             if key not in check_double:
