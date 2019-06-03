@@ -394,7 +394,7 @@ class product_product_extra(osv.osv):
             import pdb; pdb.set_trace()
             query = 'select partner_id from res_users;'
             cr.execute(query)
-            partner_ids = [item[0] for imte in cr.fetchall()]
+            partner_ids = [item[0] for item in cr.fetchall()]
             #partner_ids = [user.partner_id.id for user in user_proxy]
             mail_pool.message_post(
                 cr, uid, False, 
