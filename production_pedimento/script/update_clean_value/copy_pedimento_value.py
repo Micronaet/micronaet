@@ -68,8 +68,13 @@ pedimento_pool = odoo.model('product.product.pedimento')
 import pdb; pdb.set_trace()
 pedimento_ids = pedimento_pool.search([])
 for pedimento in pedimento_pool.browse(pedimento_ids):
-    code = pedimento.name.replace(' ', '')
-    double_ids = pedimento_pool.search([('code', '=', code])
+    name = pedimento.name
+    code = name.replace(' ', '')
+    product_id = pedimento.product_id.id
+    double_ids = pedimento_pool.search([
+        ('product_id', '=', product_id),
+        ('code', '=', code),
+        ])
     if double_ids:
         print 'Not updated: %s' % code
     else:

@@ -91,8 +91,16 @@ class ProductProduct(orm.Model):
     _inherit = 'product.product'
     
     _columns = {
+        'product_mode': fields.selection([
+            ('lot', 'Lot'),
+            ('pediment', 'Pedimento'),
+            ], 'Product mode', required=True),
         'pedimento_ids': fields.one2many(
-            'product.product.pedimento', 'product_id', 'Pedimento'),
+            'product.product.pedimento', 'product_id', 'Pedimento', ),
         }
 
+    _defaults = {
+        # Default value:
+        'product_mode': lambda *x: 'pedimento',
+        }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

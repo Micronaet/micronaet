@@ -71,8 +71,10 @@
                 <xpath expr="//page[2]" position="after">
                     <page string="Pedimento">
                         <group col="4" colspan="4">
+                            <field name="product_mode" />
+                            <newline/>
                             <separator string="Pedimento:" colspan="4"/>
-                            <field name="pedimento_ids" context="{'embedded': True}" readonly="1" nolabel="1" />
+                            <field name="pedimento_ids" context="{'embedded': True}" readonly="1" nolabel="1"  colspan="4"/>
                         </group>    
                     </page>
                 </xpath>                
