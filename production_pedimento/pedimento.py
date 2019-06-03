@@ -93,7 +93,7 @@ class ProductProduct(orm.Model):
     _columns = {
         'product_mode': fields.selection([
             ('lot', 'Lot'),
-            ('pediment', 'Pedimento'),
+            ('pedimento', 'Pedimento'),
             ('unit', 'Unit'), # not used
             ], 'Product mode', required=True),
         'pedimento_ids': fields.one2many(
@@ -102,6 +102,6 @@ class ProductProduct(orm.Model):
 
     _defaults = {
         # Default value:
-        'product_mode': lambda *x: 'pedimento',
+        'product_mode': lambda *x: 'unit',
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

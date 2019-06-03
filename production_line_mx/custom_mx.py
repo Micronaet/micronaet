@@ -334,7 +334,7 @@ class product_product_extra(osv.osv):
                 check_double[key] = product_qty                
             else:
                 check_double[key] += product_qty # used to get total q.
-                if control == 'pediment': # lot could be double!
+                if control == 'pedimento': # lot could be double!
                     double.append((default_code, pedimento)) # for log double
             subtotal = check_double[key]
 
