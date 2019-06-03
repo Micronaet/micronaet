@@ -342,7 +342,8 @@ class product_product_extra(osv.osv):
                 check_double[key] = product_qty                
             else:
                 check_double[key] += product_qty # used to get total q.
-                double.append((pedimento, default_code)) # for log double
+                if product_mode == 'pediment': # lot could be double!
+                    double.append((pedimento, default_code)) # for log double
 
             if key in pedimento_db: # Update pedimento:
                 data = {
