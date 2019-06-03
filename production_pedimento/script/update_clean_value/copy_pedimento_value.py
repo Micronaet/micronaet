@@ -65,9 +65,11 @@ odoo = erppeek.Client(
 product_pool = odoo.model('product.product')	
 pedimento_pool = odoo.model('product.product.pedimento')	
 
-import pdb; pdb.set_trace()
 pedimento_ids = pedimento_pool.search([])
+i = 0
 for pedimento in pedimento_pool.browse(pedimento_ids):
+    i += 1
+    
     name = pedimento.name
     code = name.replace(' ', '')
     product_id = pedimento.product_id.id
@@ -76,10 +78,11 @@ for pedimento in pedimento_pool.browse(pedimento_ids):
         ('code', '=', code),
         ])
     if double_ids:
-        print 'Not updated: %s' % code
+        print '%s. Not updated: %s' % (i, code)
     else:
         pedimento_pool.write(pedimento.id, {
             'code': code,
             })    
+        print '%s. Updated: %s - %s' % (i, name, code)
     
     
