@@ -341,12 +341,12 @@ class product_status_wizard(osv.osv_memory):
             body = [
                 (row[2].name, format_text),
                 (default_code, format_text),
-                (row[2].min_stock_level, format_white),
+                (row[2].min_stock_level, format_white), # min level
                 (write_supplier_order_detail(
                     history_supplier_orders.get(default_code, '')), 
                     format_text,
-                    ),
-                (row[3], format_white),
+                    ), # OF detail
+                (row[3], format_white), # m(x)
                 ]
             j = 0
             for col in cols:
