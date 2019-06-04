@@ -302,6 +302,7 @@ class product_product_extra(osv.osv):
 
             if control == 'pediment':
                 control = 'pedimento'
+
             # -----------------------------------------------------------------
             # Mandatory fields check:
             # -----------------------------------------------------------------
