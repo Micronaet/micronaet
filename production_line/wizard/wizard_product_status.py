@@ -281,10 +281,10 @@ class product_status_wizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         # Column dimension:
         WS.set_column ('A:A', 35)
-        WS.set_column ('D:D', 20)
+        WS.set_column ('E:E', 20)
         WS.set_row(0, 30)
         WS_product.set_column ('A:A', 35)
-        WS_product.set_column ('D:D', 20)
+        WS_product.set_column ('E:E', 20)
         WS_product.set_row(0, 30)
             
         # Generate report for export:
@@ -303,6 +303,7 @@ class product_status_wizard(osv.osv_memory):
         header = [
             [_('Material'), format_title], # list for update after for product
             (_('Code'), format_title),
+            (_('Mx. stock'), format_title),
             (_('Min. stock'), format_title),
             (_('OF detail'), format_title),
             (_('m(x) last %s month') % data['month_window'], format_title),
@@ -341,7 +342,8 @@ class product_status_wizard(osv.osv_memory):
             body = [
                 (row[2].name, format_text),
                 (default_code, format_text),
-                (row[2].min_stock_level, format_white), # min level
+                (row[2].minimum_qty, format_white), # min level account
+                (row[2].min_stock_level, format_white), # min level calc
                 (write_supplier_order_detail(
                     history_supplier_orders.get(default_code, '')), 
                     format_text,
