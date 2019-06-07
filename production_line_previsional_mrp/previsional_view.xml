@@ -12,6 +12,8 @@
                      <field name="qty" />
                      <field name="uom_id" />
                      <field name="state" />
+                     <button name="wkf_used_2_draft" string="Restart" type="object" icon="gtk-refresh" attrs="{'invisible': [('state','=','draft')]}"/>
+                     <button name="wkf_draft_2_used" string="Used" type="object" icon="gtk-apply" attrs="{'invisible': [('state','=','used')]}"/>
                 </tree>
             </field>
         </record>

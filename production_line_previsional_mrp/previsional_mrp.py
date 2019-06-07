@@ -51,6 +51,21 @@ class MrpProductionPrevisional(orm.Model):
     _rec_name = 'product_id'
     _order = 'production_date'
     
+    def wkf_used_2_draft(self, cr, uid, ids, context=None):
+        ''' WK Button restore
+        '''
+        return self.write(cr, uid, ids, {
+            'state': 'draft',
+            }, context=context)
+
+    def wkf_draft_2_used(self, cr, uid, ids, context=None):
+        ''' WK Button done
+        '''
+        return self.write(cr, uid, ids, {
+            'state': 'used',
+            }, context=context)
+            
+            
     _columns = {
         'production_date': fields.date('Date production', required=True),
         'product_id': fields.many2one(
