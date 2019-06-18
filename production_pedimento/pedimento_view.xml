@@ -23,7 +23,7 @@
             <field name="name">product.product.pedimento.tree</field>
             <field name="model">product.product.pedimento</field>
             <field name="arch" type="xml">
-                <tree string="Pedimento" version="7.0" editable="bottom">
+                <tree string="Pedimento" version="7.0" editable="bottom" colors="red:product_qty&gt;0">
                     <field name="product_id" invisible="context.get('embedded', False)"/>
                     <field name="code" readonly="1"/>
                     <field name="name" />
