@@ -26,12 +26,15 @@
                     <attribute name="widget">selection</attribute>
                 </field>
                 <field name="package_id" position="after">
-                    <field name="package_pedimento_id" /><!--attrs="{'required': [('state','=','product')]}"-->
+                    <field name="package_pedimento_id" />
                 </field>
                 
                 <field name="pallet_product_id" position="attributes">
                     <attribute name="widget">selection</attribute>
                 </field>                
+                <field name="pallet_product_id" position="after">
+                    <field name="pallet_pedimento_id" />
+                </field>
             </field>
       </record>
       

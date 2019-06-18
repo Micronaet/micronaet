@@ -495,9 +495,9 @@ class MrpProduction(osv.Model):
                 # -------------------------------------------------------------
                 if product.product_mode == 'lot':
                     pedimento_name = ''
-                    lot_name = '' #load.package_pedimento_id.name # TODO
+                    lot_name = load.pallet_pedimento_id.name
                 else: # pedimento   
-                    pedimento_name = '' #load.package_pedimento_id.name # TODO
+                    pedimento_name = load.pallet_pedimento_id.name
                     lot_name = ''
 
                 row +=1
@@ -589,7 +589,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                 }}
         return {}
 
-    def onchange_waste(self, cr, uid, ids, product_id, recycle, context=None):
+    def onchange_waste(self, cr, uid, ids, producpackaget_id, recycle, context=None):
         ''' Change filter for
         '''
         res = {}
@@ -743,6 +743,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                 # Package:
                 'package_id': package_id,
                 'package_pedimento_id': wiz_proxy.package_pedimento_id.id,
+                'pallet_pedimento_id': wiz_proxy.pallet_pedimento_id.id,
                 'ul_qty': wiz_proxy.ul_qty,
 
                 # Pallet:
@@ -895,6 +896,8 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
         'use_mrp_package': fields.boolean('Usa solo imballi produzione',
             help='Mostra solo gli imballaggi attivi nella produzione'),
         'package_pedimento_id': fields.many2one(
+            'product.product.pedimento', 'Pedimento'),
+        'pallet_pedimento_id': fields.many2one(
             'product.product.pedimento', 'Pedimento'),
         'waste_id': fields.many2one('product.product', 'Waste product',
             help='When there\'s some waste production this product is loaded'),
