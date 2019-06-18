@@ -434,7 +434,7 @@ class MrpProduction(osv.Model):
                 _('uom'),
                 _('cost'),
                 _('pedimento'),
-                #_('Lot'),
+                _('lot'),
                 ])
 
         # ---------------------------------------------------------------------
@@ -459,13 +459,23 @@ class MrpProduction(osv.Model):
                 else:
                     standard_price = product.standard_price
 
+            # -----------------------------------------------------------------
+            # Pedimento / Lot column: 
+            # -----------------------------------------------------------------
+            if product.product_mode == 'lot':
+                pedimento_name = ''
+                lot_name = load.package_pedimento_id.name
+            else: # pedimento   
+                pedimento_name = load.package_pedimento_id.name
+                lot_name = ''
+
             excel_pool.write_xls_line(ws_name, row, [
                 product.default_code,
                 load.ul_qty,
                 product.uom_id.contipaq_ref,
                 standard_price,
-                load.package_pedimento_id.name or '', # pedimento
-                #'', # lot
+                pedimento_name, # load.package_pedimento_id.name or '',
+                lot_name, # '', # lot
                 ])
 
             # -----------------------------------------------------------------
@@ -480,14 +490,24 @@ class MrpProduction(osv.Model):
                 else:
                     standard_price = product.standard_price
 
+                # -------------------------------------------------------------
+                # Pedimento / Lot column: 
+                # -------------------------------------------------------------
+                if product.product_mode == 'lot':
+                    pedimento_name = ''
+                    lot_name = '' #load.package_pedimento_id.name # TODO
+                else: # pedimento   
+                    pedimento_name = '' #load.package_pedimento_id.name # TODO
+                    lot_name = ''
+
                 row +=1
                 excel_pool.write_xls_line(ws_name, row, [
                     product.default_code,
                     load.pallet_qty,
                     product.uom_id.contipaq_ref,
                     standard_price,
-                    '', # No pedimento
-                    #'', # No lot
+                    pedimento_name, # No pedimento
+                    lot_name, # No lot
                     ])
 
         # ---------------------------------------------------------------------
@@ -523,14 +543,25 @@ class MrpProduction(osv.Model):
                     _('Unload material error:'),
                     _('No standard price %s') % default_code)
 
+            # -----------------------------------------------------------------
+            # Pedimento / Lot column: 
+            # -----------------------------------------------------------------
+            if product.product_mode == 'lot':
+                pedimento_name = ''
+                lot_name = \
+                    unload.pedimento_id.name if unload.pedimento_id else ''
+            else: # pedimento   
+                pedimento_name = \
+                    unload.pedimento_id.name if unload.pedimento_id else ''                    
+                lot_name = ''
+
             excel_pool.write_xls_line(ws_name, row, [
                 default_code,
                 unload.quantity,
                 product.uom_id.contipaq_ref,
                 standard_price,
-                unload.pedimento_id.name if \
-                    unload.pedimento_id else '',
-                #'', # lot
+                pedimento_name,
+                lot_name,
                 ])
         excel_pool.save_file_as(folder['unload']['data'] % lavoration.id)
         return True
