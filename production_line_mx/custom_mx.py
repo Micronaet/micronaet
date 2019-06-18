@@ -373,9 +373,14 @@ class product_product_extra(osv.osv):
         # Update product type:
         # ---------------------------------------------------------------------
         for product_id, product_type in product_type_db:
-            self.write(cr, uid, product_id, {
-                'product_type': product_type,
-                }, context=context)
+            try:
+                self.write(cr, uid, [product_id], {
+                    'product_type': product_type,
+                    }, context=context)
+            except:
+                _logger.error(
+                    '%s product type not found: MP, PT' % product_type)
+                continue        
             
         # ---------------------------------------------------------------------
         # Reset accounting qty in ODOO:
