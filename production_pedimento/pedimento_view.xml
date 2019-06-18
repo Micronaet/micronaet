@@ -62,6 +62,17 @@
             action="action_product_product_pedimento"
             sequence="10"
             />        
+
+        <record model="ir.ui.view" id="view_product_pedimento_form">
+            <field name="name">product.product.pedimento.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="state" position="before">
+                    <field name="product_type" />
+                </field>
+            </field>
+        </record>
         
         <record model="ir.ui.view" id="view_product_pedimento_form">
             <field name="name">product.product.pedimento.form</field>
