@@ -57,7 +57,7 @@ class MrpProductionWorkcenterLoad(orm.Model):
 
     _columns = {
         'package_pedimento_id': fields.many2one(
-            'product.product.pedimento', 'Pedimento (pack)')
+            'product.product.pedimento', 'Pedimento (pack)'),
         'pallet_pedimento_id': fields.many2one(
             'product.product.pedimento', 'Pedimento (pallet)'),
         }
