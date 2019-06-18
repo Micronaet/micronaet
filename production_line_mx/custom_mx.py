@@ -349,6 +349,7 @@ class product_product_extra(osv.osv):
             if odoo_ids: # Update pedimento:
                 data = {
                     'product_qty': subtotal, # total for all read!
+                    'product_type': product_type,
                     }
                 if last_cost: # XXX Update only if present:
                     data['standard_price'] = last_cost
@@ -361,6 +362,7 @@ class product_product_extra(osv.osv):
                     'product_id': product_id,
                     'product_qty': subtotal,
                     'standard_price': last_cost,
+                    'product_type': product_type,
                     }, context=context)
 
         # ---------------------------------------------------------------------
@@ -442,6 +444,11 @@ class product_product_extra(osv.osv):
         return True
 
     _columns = {
+        'product_type': fields.selection([
+            ('MP', 'Raw material'),
+            ('PT', 'Final product'),
+            ], 'Product type'),
+            
         'waste_id': fields.many2one('product.product', 'Waste product',
             help='When there\'s some waste production this product is loaded'),
         'forced_price': fields.float(
