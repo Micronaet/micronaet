@@ -43,7 +43,7 @@
           <field name="model">mrp.production.workcenter.load</field>
           <field name="inherit_id" ref="production_line.default_mrp_production_workcenter_load_tree_view"/>
           <field name="arch" type="xml">
-              <!--<field name="pallet_product_id" position="after">
+              <!--TODO ? <field name="pallet_product_id" position="after">
                   <field name="pallet_pedimento_id" />
               </field>-->
               <field name="package_id" position="after">
