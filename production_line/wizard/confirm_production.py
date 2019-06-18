@@ -637,6 +637,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                     cost_detail_subtotal = 0.0
                     for l in mrp.workcenter_lines:                    
                         for load in l.load_ids:
+                            # TODO Pedimento price?
                             try:
                                 # ---------------------------------------------
                                 # Package:
