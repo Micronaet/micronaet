@@ -589,7 +589,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                 }}
         return {}
 
-    def onchange_waste(self, cr, uid, ids, producpackaget_id, recycle, context=None):
+    def onchange_waste(self, cr, uid, ids, product_id, recycle, context=None):
         ''' Change filter for
         '''
         res = {}
