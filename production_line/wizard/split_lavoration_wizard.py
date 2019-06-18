@@ -51,12 +51,11 @@ class mrp_production_split_wizard(osv.osv_memory):
         working_hour_day = lavoration_proxy.workcenter_id.hour_daily_work if lavoration_proxy.workcenter_id else 16 #(default)
         if lavoration_proxy and split_daily:        
             current_start = datetime.strptime(lavoration_proxy.real_date_planned[:10], "%Y-%m-%d")
-            import pdb; pdb.set_trace()
             daily_cycle = int(working_hour_day // lavoration_proxy.single_cycle_duration)
             if not daily_cycle:
                 raise osv.except_osv(
                     _('Error'), 
-                    _('No Working hour for line or single cycle duration!'),
+                    _('No Working hour or single cycle duration (or >)!'),
                     )
             remain = int(lavoration_proxy.cycle % daily_cycle)
             split_days = int(lavoration_proxy.cycle // daily_cycle + (1 if remain > 0 else 0))
@@ -176,12 +175,11 @@ class mrp_production_split_wizard(osv.osv_memory):
             current_date = current_start + relativedelta(days = 1) # jump first day
             
             working_hour_day = lavoration_proxy.workcenter_id.hour_daily_work if lavoration_proxy.workcenter_id else 16 #(default)
-            import pdb; pdb.set_trace()
             daily_cycle = int(working_hour_day // lavoration_proxy.single_cycle_duration)   # cycle that I can do per day
             if not daily_cycle:
                 raise osv.except_osv(
                     _('Error'), 
-                    _('No Working hour for line or single cycle duration!'),
+                    _('No Working hour or single cycle duration (or >)!'),
                     )
             remain = int(lavoration_proxy.cycle % daily_cycle) # last cycle remain (for last day)
             
