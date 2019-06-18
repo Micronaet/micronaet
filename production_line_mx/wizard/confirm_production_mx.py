@@ -57,7 +57,9 @@ class MrpProductionWorkcenterLoad(orm.Model):
 
     _columns = {
         'package_pedimento_id': fields.many2one(
-            'product.product.pedimento', 'Pedimento')
+            'product.product.pedimento', 'Pedimento (pack)')
+        'pallet_pedimento_id': fields.many2one(
+            'product.product.pedimento', 'Pedimento (pallet)'),
         }
 
 class ResCompany(orm.Model):
@@ -923,9 +925,9 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
         'use_mrp_package': fields.boolean('Usa solo imballi produzione',
             help='Mostra solo gli imballaggi attivi nella produzione'),
         'package_pedimento_id': fields.many2one(
-            'product.product.pedimento', 'Pedimento'),
+            'product.product.pedimento', 'Pedimento (pack)'),
         'pallet_pedimento_id': fields.many2one(
-            'product.product.pedimento', 'Pedimento'),
+            'product.product.pedimento', 'Pedimento (pallet)'),
         'waste_id': fields.many2one('product.product', 'Waste product',
             help='When there\'s some waste production this product is loaded'),
         'waste_qty': fields.float('Waste Qty', digits=(16, 2)),
