@@ -268,6 +268,7 @@ class product_product_extra(osv.osv):
         check_double = {}
         double = []
         total = {}
+        product_type_db = []
         for row in stock:                        
             if len(row) == 6: # unit col 6
                 # -------------------------------------------------------------
@@ -319,7 +320,12 @@ class product_product_extra(osv.osv):
                         row, default_code))
                 continue
             product_id = product_ids[0]
-
+        
+            # -----------------------------------------------------------------
+            # Product type:
+            # -----------------------------------------------------------------
+            product_type_db.append((product_id, product_type))
+            
             # -----------------------------------------------------------------
             # Total update:
             # -----------------------------------------------------------------
@@ -349,7 +355,6 @@ class product_product_extra(osv.osv):
             if odoo_ids: # Update pedimento:
                 data = {
                     'product_qty': subtotal, # total for all read!
-                    'product_type': product_type,
                     }
                 if last_cost: # XXX Update only if present:
                     data['standard_price'] = last_cost
@@ -362,9 +367,16 @@ class product_product_extra(osv.osv):
                     'product_id': product_id,
                     'product_qty': subtotal,
                     'standard_price': last_cost,
-                    'product_type': product_type,
                     }, context=context)
 
+        # ---------------------------------------------------------------------
+        # Update product type:
+        # ---------------------------------------------------------------------
+        for product_id, product_type in product_type_db:
+            product_pool.write(cr, uid, product_id, {
+                'product_type': product_type,
+                }, context=context)
+            
         # ---------------------------------------------------------------------
         # Reset accounting qty in ODOO:
         # ---------------------------------------------------------------------
@@ -391,7 +403,6 @@ class product_product_extra(osv.osv):
             self.write(
                 cr, uid, product_id, data, context=context)
         _logger.info('End import product account status')
-
     
         if double:
             query = 'select partner_id from res_users;'
