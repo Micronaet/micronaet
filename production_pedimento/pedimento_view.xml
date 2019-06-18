@@ -77,7 +77,7 @@
         <record model="ir.ui.view" id="view_product_pedimento_form">
             <field name="name">product.product.pedimento.form</field>
             <field name="model">product.product</field>
-            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//page[2]" position="after">
                     <page string="Pedimento">
