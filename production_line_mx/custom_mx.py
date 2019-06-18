@@ -373,7 +373,7 @@ class product_product_extra(osv.osv):
         # Update product type:
         # ---------------------------------------------------------------------
         for product_id, product_type in product_type_db:
-            product_pool.write(cr, uid, product_id, {
+            self.write(cr, uid, product_id, {
                 'product_type': product_type,
                 }, context=context)
             
