@@ -120,6 +120,7 @@
                     <field name="standard_price" readonly="1" />
                     <field name="forced_price" />
                     <field name="waste_id" />
+                    <field name="product_type" />
                     <!--<button name="get_waste_product" string="Auto" type="object" attrs="{'invisible': [('waste_id','!=',False)]}" />-->
                 </tree>
             </field>
