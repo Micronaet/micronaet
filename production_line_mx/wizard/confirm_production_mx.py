@@ -887,6 +887,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             return res
 
         # Update domain depend on pallet:
+        import pdb; pdb.set_trace()
         ul_pool = self.pool.get('product.ul')
         ul_proxy = ul_pool.browse(cr, uid, pallet_product_id, context=context)
         product_id = ul_proxy.linked_product_id.id
