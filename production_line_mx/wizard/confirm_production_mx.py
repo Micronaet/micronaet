@@ -437,6 +437,7 @@ class MrpProduction(osv.Model):
                 _('cost'),
                 _('pedimento'),
                 _('lot'),
+                _('stock'),
                 ])
 
         # ---------------------------------------------------------------------
@@ -447,6 +448,8 @@ class MrpProduction(osv.Model):
             # A. Unload package (from load):
             # -----------------------------------------------------------------
             product = load.package_id.linked_product_id
+            stock_number = '1' if product.product_type == 'MP' else '2'
+
             forced_price = product.forced_price
             row +=1
 
@@ -478,6 +481,7 @@ class MrpProduction(osv.Model):
                 standard_price,
                 pedimento_name, # load.package_pedimento_id.name or '',
                 lot_name, # '', # lot
+                stock_number,
                 ])
 
             # -----------------------------------------------------------------
@@ -485,7 +489,7 @@ class MrpProduction(osv.Model):
             # -----------------------------------------------------------------
             if load.pallet_product_id:
                 product = load.pallet_product_id
-
+                stock_number = '1' if product.product_type == 'MP' else '2'
                 forced_price = product.forced_price
                 if forced_price:
                     standard_price = forced_price
@@ -510,6 +514,7 @@ class MrpProduction(osv.Model):
                     standard_price,
                     pedimento_name, # No pedimento
                     lot_name, # No lot
+                    stock_number,
                     ])
 
         # ---------------------------------------------------------------------
@@ -523,6 +528,8 @@ class MrpProduction(osv.Model):
             # -----------------------------------------------------------------
             default_code = unload.product_id.default_code
             product = unload.product_id
+            stock_number = '1' if product.product_type == 'MP' else '2'
+
             if not default_code:
                 raise osv.except_osv(
                     _('Unload material error:'),
@@ -564,6 +571,7 @@ class MrpProduction(osv.Model):
                 standard_price,
                 pedimento_name,
                 lot_name,
+                stock_number,
                 ])
         excel_pool.save_file_as(folder['unload']['data'] % lavoration.id)
         return True
