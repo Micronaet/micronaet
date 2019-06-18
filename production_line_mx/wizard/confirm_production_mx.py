@@ -887,25 +887,20 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             return res
 
         # Update domain depend on pallet:
-        import pdb; pdb.set_trace()
-        ul_pool = self.pool.get('product.ul')
-        ul_proxy = ul_pool.browse(cr, uid, pallet_product_id, context=context)
-        product_id = ul_proxy.linked_product_id.id
+        product_pool = self.pool.get('product.product')
+        product_proxy = ul_pool.browse(
+            cr, uid, pallet_product_id, context=context)
 
-        if len(ul_proxy.linked_product_id.pedimento_ids) == 1:
+        if len(product_proxy.pedimento_ids) == 1:
             pallet_pedimento_id = \
-                ul_proxy.linked_product_id.pedimento_ids[0].id
+                product_proxy.pedimento_ids[0].id
         else:
             pallet_pedimento_id = False
 
         if 'value' not in res:
             res['value'] = {}
-        if 'domain' not in res:
-            res['domain'] = {}
 
         res['value']['pallet_pedimento_id'] = pallet_pedimento_id
-        res['domain']['pallet_pedimento_id'] = [
-            ('product_id', '=', product_id)]
         return res
 
     # -------------------------------------------------------------------------

@@ -33,7 +33,7 @@
                     <attribute name="widget">selection</attribute>
                 </field>                
                 <field name="pallet_product_id" position="after">
-                    <field name="pallet_pedimento_id" />
+                    <field name="pallet_pedimento_id" domain="[('product_id', '=', pallet_product_id)]"/>
                 </field>
             </field>
       </record>
