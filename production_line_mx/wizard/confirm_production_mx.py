@@ -876,6 +876,37 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             ('product_id', '=', product_id)]
         return res
 
+    def onchange_pallet_id(self, cr, uid, ids, pallet_product_id, 
+            real_product_qty, pallet_max_weight, context=None):
+        ''' Integration on onchange for package (inser domain filter)
+        '''
+        res = super(ConfirmMrpProductionWizard, self).onchange_pallet_id(
+            cr, uid, ids, pallet_product_id, real_product_qty, 
+            pallet_max_weight, context=context)
+        if not pallet_product_id:
+            return res
+
+        # Update domain depend on pallet:
+        ul_pool = self.pool.get('product.ul')
+        ul_proxy = ul_pool.browse(cr, uid, pallet_product_id, context=context)
+        product_id = ul_proxy.linked_product_id.id
+
+        if len(ul_proxy.linked_product_id.pedimento_ids) == 1:
+            pallet_pedimento_id = \
+                ul_proxy.linked_product_id.pedimento_ids[0].id
+        else:
+            pallet_pedimento_id = False
+
+        if 'value' not in res:
+            res['value'] = {}
+        if 'domain' not in res:
+            res['domain'] = {}
+
+        res['value']['pallet_pedimento_id'] = pallet_pedimento_id
+        res['domain']['pallet_pedimento_id'] = [
+            ('product_id', '=', product_id)]
+        return res
+
     # -------------------------------------------------------------------------
     # Default function:
     # -------------------------------------------------------------------------
