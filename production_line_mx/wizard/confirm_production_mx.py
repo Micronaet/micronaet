@@ -888,7 +888,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
 
         # Update domain depend on pallet:
         product_pool = self.pool.get('product.product')
-        product_proxy = ul_pool.browse(
+        product_proxy = product_pool.browse(
             cr, uid, pallet_product_id, context=context)
 
         if len(product_proxy.pedimento_ids) == 1:
