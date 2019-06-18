@@ -392,7 +392,8 @@ class MrpProduction(osv.Model):
                 qty,
                 product.uom_id.contipaq_ref,
                 unit_cost,
-                load.product_code, # Lot code
+                #load.product_code, # XXX Lot code (complex not used)
+                mrp.name, # Use production name
                 ])
         excel_pool.save_file_as(folder['load']['data'] % lavoration.id)
 
@@ -738,7 +739,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             #     recycle_code = 'R%s' % default_code[1:]
             code = wiz_proxy.product_id.default_code
 
-            # TODO use complex lot format?
+            # XXX Not used (just remain saved in load document)
             ref_lot_name = '%06d#%01d' % (int(mrp.name[3:]), sequence)
             product_code = '%-8s%-2s%-10s%-10s' % (
                 code,
