@@ -91,6 +91,11 @@ class ProductProduct(orm.Model):
     _inherit = 'product.product'
     
     _columns = {
+        'product_type': fields.selection([
+            ('MP', 'Raw material'),
+            ('PT', 'Final product'),
+            ], 'Product type'),
+            
         'product_mode': fields.selection([
             ('lot', 'Lot'),
             ('pedimento', 'Pedimento'),

@@ -460,11 +460,6 @@ class product_product_extra(osv.osv):
         return True
 
     _columns = {
-        'product_type': fields.selection([
-            ('MP', 'Raw material'),
-            ('PT', 'Final product'),
-            ], 'Product type'),
-            
         'waste_id': fields.many2one('product.product', 'Waste product',
             help='When there\'s some waste production this product is loaded'),
         'forced_price': fields.float(
