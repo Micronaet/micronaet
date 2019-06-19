@@ -644,6 +644,7 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
                     lot = row[7] # or pedimento
                     
                     # Update data:
+                    import pdb; pdb.set_trace()
                     if note != 'Inserted movement':
                         log_error = True
                         log_error_text += clean(line)
