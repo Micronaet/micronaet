@@ -597,9 +597,9 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
                 
                 # Write file name readed:
                 wc_db[wc_id].update({
-                    u'log_filename_%s' % mode: f,
-                    u'log_account_%s' % mode: account_ref,
-                    u'log_account_date_%s' % mode: account_date,
+                    'log_filename_%s' % mode: f,
+                    'log_account_%s' % mode: account_ref,
+                    'log_account_date_%s' % mode: account_date,
                     })
 
                 # -------------------------------------------------------------
@@ -610,8 +610,8 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
                 move_file.append((fullname, history_name))
                 
                 log_error = False
-                log_error_text = u''
-                log_detail = u''
+                log_error_text = ''
+                log_detail = ''
                 
                 i = 0
                 for line in open(fullname, 'r'):
@@ -639,9 +639,9 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
                     log_detail += line    
                     
                 wc_db[wc_id].update({
-                    u'log_error_%s' % mode: log_error,
-                    u'log_error_text_%s' % mode: log_error_text,
-                    u'log_detail_%s' % mode: log_detail,
+                    'log_error_%s' % mode: log_error,
+                    'log_error_text_%s' % mode: log_error_text,
+                    'log_detail_%s' % mode: log_detail,
                     })
             break # only first folder
         
