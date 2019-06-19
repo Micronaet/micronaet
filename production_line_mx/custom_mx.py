@@ -634,14 +634,14 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
                     if not line:
                         continue
                     row = line.split('\t')
-                    control = row[0] 
-                    note = row[1] # 'Inserted movement' # CORRECT
-                    error = row[2]
-                    default_code = row[3]
-                    qty = row[4]
-                    uom = row[5]
-                    cost = row[6]
-                    lot = row[7] # or pedimento
+                    control = row[0].strip()
+                    note = row[1].strip() # 'Inserted movement' # CORRECT
+                    error = row[2].strip()
+                    default_code = row[3].strip()
+                    qty = row[4].strip()
+                    uom = row[5].strip()
+                    cost = row[6].strip()
+                    lot = row[7].strip() # or pedimento
                     
                     # Update data:
                     import pdb; pdb.set_trace()
