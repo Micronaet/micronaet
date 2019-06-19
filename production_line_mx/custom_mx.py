@@ -633,7 +633,7 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
                     lot = row[7] # or pedimento
                     
                     # Update data:
-                    if note != u'Inserted movement':
+                    if note != 'Inserted movement':
                         log_error = True
                         log_error_text += '{}'.format(line)
                     log_detail += line    
