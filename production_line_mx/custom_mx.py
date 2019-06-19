@@ -635,6 +635,7 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
                     # Update data:
                     if note != u'Inserted movement':
                         log_error = True
+                        import pdb; pdb.set_trace()
                         log_error_text += u'{}'.format(line)
                     log_detail += line    
                     
