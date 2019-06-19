@@ -569,6 +569,17 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
     def schedule_import_log_event(self, cr, uid, folder, context=None):
         ''' Start import from folder:
         '''
+        def clean(value):
+            ''' Clean as ascii
+            '''
+            res = ''
+            for c in (value or ''):
+                if ord(c) < 127:
+                    res += c
+                else:
+                    res += '*'
+            return res        
+                
         path = os.path.expanduser(folder)
         _logger.info('Start reading log path: %s' % path)
         
@@ -635,8 +646,8 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
                     # Update data:
                     if note != 'Inserted movement':
                         log_error = True
-                        log_error_text += '{}'.format(line)
-                    log_detail += '{}'.format(line)
+                        log_error_text += clean(line)
+                    log_detail += clean(line)
                     
                 wc_db[wc_id].update({
                     'log_error_%s' % mode: log_error,
