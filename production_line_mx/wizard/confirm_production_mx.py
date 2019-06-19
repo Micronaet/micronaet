@@ -448,7 +448,7 @@ class MrpProduction(osv.Model):
             # A. Unload package (from load):
             # -----------------------------------------------------------------
             product = load.package_id.linked_product_id
-            stock_number = '1' if product.product_type == 'MP' else '2'
+            stock_number = '2' if product.product_type == 'MP' else '1'
 
             forced_price = product.forced_price
             row +=1
@@ -489,7 +489,7 @@ class MrpProduction(osv.Model):
             # -----------------------------------------------------------------
             if load.pallet_product_id:
                 product = load.pallet_product_id
-                stock_number = '1' if product.product_type == 'MP' else '2'
+                stock_number = '2' if product.product_type == 'MP' else '1'
                 forced_price = product.forced_price
                 if forced_price:
                     standard_price = forced_price
@@ -528,7 +528,7 @@ class MrpProduction(osv.Model):
             # -----------------------------------------------------------------
             default_code = unload.product_id.default_code
             product = unload.product_id
-            stock_number = '1' if product.product_type == 'MP' else '2'
+            stock_number = '2' if product.product_type == 'MP' else '1'
 
             if not default_code:
                 raise osv.except_osv(
