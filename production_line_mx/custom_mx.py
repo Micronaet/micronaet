@@ -598,9 +598,9 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
                 
                 # Write file name readed:
                 wc_db[wc_id].update({
-                    'log_filename_%s' % mode: f,
-                    'log_account_%s' % mode: account_ref,
-                    'log_account_date_%s' % mode: account_date,
+                    u'log_filename_%s' % mode: f,
+                    u'log_account_%s' % mode: account_ref,
+                    u'log_account_date_%s' % mode: account_date,
                     })
 
                 # -------------------------------------------------------------
@@ -611,8 +611,8 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
                 move_file.append((fullname, history_name))
                 
                 log_error = False
-                log_error_text = ''
-                log_detail = ''
+                log_error_text = u''
+                log_detail = u''
                 
                 i = 0
                 for line in open(fullname, 'r'):
@@ -634,15 +634,15 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
                     lot = row[7] # or pedimento
                     
                     # Update data:
-                    if note != 'Inserted movement':
+                    if note != u'Inserted movement':
                         log_error = True
                         log_error_text += line
                     log_detail += line    
                     
                 wc_db[wc_id].update({
-                    'log_error_%s' % mode: log_error,
-                    'log_error_text_%s' % mode: log_error_text,
-                    'log_detail_%s' % mode: log_detail,
+                    u'log_error_%s' % mode: log_error,
+                    u'log_error_text_%s' % mode: log_error_text,
+                    u'log_detail_%s' % mode: log_detail,
                     })
             break # only first folder
         
@@ -650,12 +650,13 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
         _logger.info('Update log info in database:')             
         for wc_id in wc_db:
             try:
+                import pdb; pdb.set_trace()
                 self.write(cr, uid, [wc_id], wc_db[wc_id], context=context)
             except:
                 _logger.info('Workcenter ID %s no more present!' % wc_id)
-                    
             
-        # History file read (after modiy database):
+        # TODO remove only if upadte database!    
+        # History file read (after modify database):
         _logger.info('History file readed:')
         for from_file, to_file in move_file:
             _logger.info('Move file: %s  >>  %s' % (from_file, to_file))
