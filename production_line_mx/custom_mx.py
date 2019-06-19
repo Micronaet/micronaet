@@ -659,14 +659,12 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
         # Update database with log files:
         _logger.info('Update log info in database:')             
         for wc_id in wc_db:
-            #try:
-            #    import pdb; pdb.set_trace()
-            self.write(cr, uid, [wc_id], wc_db[wc_id], context=context)
-            import pdb; pdb.set_trace()
-            #except:
-            #    _logger.info('Workcenter ID %s no more present!' % wc_id)
+            try:
+                self.write(cr, uid, [wc_id], wc_db[wc_id], context=context)
+            except:
+                _logger.info('Workcenter ID %s no more present!' % wc_id)
             
-        # TODO remove only if upadte database!    
+        # TODO remove only if update database!
         # History file read (after modify database):
         _logger.info('History file readed:')
         for from_file, to_file in move_file:
