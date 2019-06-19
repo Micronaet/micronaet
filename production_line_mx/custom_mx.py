@@ -635,7 +635,7 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
                     # Update data:
                     if note != u'Inserted movement':
                         log_error = True
-                        log_error_text += line
+                        log_error_text += u'{}'.format(line)
                     log_detail += line    
                     
                 wc_db[wc_id].update({
