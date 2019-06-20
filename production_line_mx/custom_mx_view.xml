@@ -168,6 +168,17 @@
                     <field name="pedimento_id" domain="[('product_id', '=', product_id)]" options="{'create': false, 'create_edit': false}"/>
                     <field name="pedimento_price" />
                 </xpath>
+
+                <xpath expr="//field[@name='bom_material_ids']/tree/field[@name='accounting_qty']" position="after">
+                    <field name="pedimento_covered" invisible="1"/>
+                    <button name="manage_pedimento_error" string="Pedimento not covered" icon="STOCK_DIALOG_WARNING" type="object" 
+                        confirm="Do you want to duplicate line and create a new line for remain qty?" 
+                        attrs="{'invisible': [('pedimento_covered','=',True)]}"/>
+                </xpath>
+
+                <xpath expr="//field[@name='bom_material_ids']/tree" position="attributes">
+                    <attribute name="colors">red:pedimento_id==False or pedimento_covered==False</attribute>
+                </xpath>
             </field>
         </record>    
 

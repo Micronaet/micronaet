@@ -204,6 +204,44 @@ class MrpProductionMaterial(orm.Model):
     
     _inherit = 'mrp.production.material'
     
+    def manage_pedimento_error(self, cr, uid, ids, context=None):
+        ''' Duplicate line for use remain qty with another pedimento
+        '''
+        material = self.browse(cr, uid, ids, context=context)[0]
+
+        qty = material.quantity
+        pedimento_qty = material.pedimento_id.product_qty
+        
+        if qty <= pedimento_qty:
+            raise osv.except_osv(
+                _('Error'), 
+                _('Split not necessary, request %s, pedimento %s') % (
+                    qty, pedimento_qty),
+                )
+
+        # Add line with splitted q:
+        self.create(cr, uid, {
+            'production_id': material.production_id.id,
+            'quantity': qty - pedimento_qty,
+            'product_id': material.product_id.id,
+            'standard_price': material.standard_price,
+            'pedimento_id': False, # Let choose to the user!            
+            }, context=context)
+        return True
+
+    def _get_pedimento_covered(self, cr, uid, ids, fields, args, context=None):
+        ''' Fields function for calculate 
+        '''
+        res = {}
+        for material in self.browse(cr, uid, ids, context=context):
+            qty = material.quantity
+            if material.pedimento_id:
+                pedimento_qty = material.pedimento_id.product_qty           
+                res[material.id] = (qty <= pedimento_qty)
+            else:    
+                res[material.id] = True # till selection
+        return res
+    
     _columns = {
         'pedimento_id': fields.many2one(
             'product.product.pedimento', 'Pedimento'),
@@ -213,6 +251,9 @@ class MrpProductionMaterial(orm.Model):
         'pedimento_price': fields.related(
             'pedimento_id', 'standard_price', 
             type='float', string='Pedimento price'),    
+        'pedimento_covered': fields.function(
+            _get_pedimento_covered, method=True, 
+            type='boolean', string='Pedimento covered'), 
         }
 
 class product_product_extra(osv.osv):
