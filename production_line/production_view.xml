@@ -817,7 +817,7 @@
                 </header>       
             </xpath>            
             <field name="product_qty" position="attributes">
-                <attribute name="on_change">on_change_qty_alert()</attribute>
+                <attribute name="on_change">on_change_qty_alert(product_qty)</attribute>
             </field>
             <field name="product_id" position="after">
                 <field name="accounting_qty" readonly="1" help="Used for evaluate if production has correct quantity"/>

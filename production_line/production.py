@@ -1495,14 +1495,16 @@ class mrp_production_extra(osv.osv):
     # ----------
     # On change:
     # ----------
-    def on_change_qty_alert(self, cr, uid, ids, context=None):
+    def on_change_qty_alert(self, cr, uid, ids, product_qty, context=None):
         ''' Return alert message
         '''
-        return {'warning': {
-            'title': _('Alert'),
-            'message': _(
-                'Remember to regenerate BOM elements with botton '
-                '"Load from BOM" after change quantity!')}}
+        if product_qty > 1:
+            return {'warning': {
+                'title': _('Alert'),
+                'message': _(
+                    'Remember to regenerate BOM elements with botton '
+                    '"Load from BOM" after change quantity!')}}
+        return {}            
 
     # -------------
     # Event button:
