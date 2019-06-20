@@ -26,6 +26,18 @@
                 </tree>
             </field>
         </record>
+        
+        <record model="ir.ui.view" id="view_workcenter_save_button_form">
+            <field name="name">mrp.production.workcenter.line.form</field>
+            <field name="model">mrp.production.workcenter.line</field>
+            <field name="inherit_id" ref="mrp_operations.mrp_production_workcenter_form_view_inherit"/>
+            <field name="arch" type="xml">
+                <button name="button_start_working" position="before" >
+                     <button name="dummy_button" string="Save" type="object" class="oe_highlight" invisible="context.get('popup_mode', False)"/>
+                </button>
+            </field>
+        </record>
+        
         <record model="ir.ui.view" id="view_mrp_production_workcenter_line_form">
             <field name="name">mrp.production.workcenter.line.form</field>
             <field name="model">mrp.production.workcenter.line</field>
@@ -177,7 +189,7 @@
                         attrs="{'invisible': [('pedimento_covered','=',True)]}"/>
 
                     <field name="accounting_covered" invisible="1" />
-                    <button name="dummy_button" string="Waste not covered change qrt!" icon="gtk-stop" type="object" 
+                    <button name="dummy_button" string="Waste not covered change qty!" icon="gtk-stop" type="object" 
                         attrs="{'invisible': [('accounting_covered','=',True)]}"/>
                 </xpath>
                 <xpath expr="//field[@name='bom_material_ids']/tree" position="attributes">
@@ -187,7 +199,7 @@
                 <!--Waste check:-->
                 <xpath expr="//field[@name='bom_waste_ids']/tree/field[@name='accounting_qty']" position="after">
                     <field name="accounting_covered" invisible="1" />
-                    <button name="dummy_button" string="Waste not covered change qrt!" icon="gtk-stop" type="object" 
+                    <button name="dummy_button" string="Waste not covered change qty!" icon="gtk-stop" type="object" 
                         attrs="{'invisible': [('accounting_covered','=',True)]}"/>
                 </xpath>
                 <xpath expr="//field[@name='bom_waste_ids']/tree" position="attributes">
@@ -195,9 +207,9 @@
                 </xpath>
                 
                 <!--Fast lavoration button:-->
-                <xpath expr="//notebook" position="before">
-                    <button name="add_new_lavoration" string="Add lavoration" type="object" icon="gtk-save"/>
-                </xpath> 
+                <!--<xpath expr="//notebook" position="before">
+                    <button name="add_new_lavoration" string="Add lavoration" type="object" icon="gtk-add"/>
+                </xpath>-->
                 
             </field>
         </record>    

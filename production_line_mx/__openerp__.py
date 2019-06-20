@@ -37,6 +37,7 @@
         'production_line',
         'production_pedimento',
         'excel_export',
+        'mrp_operations',
         ],
     'init_xml': [],
     'demo': [],
