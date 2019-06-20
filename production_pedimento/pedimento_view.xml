@@ -73,6 +73,17 @@
                 </field>
             </field>
         </record>
+        <record model="ir.ui.view" id="product_normal_product_type_tree">
+            <field name="name">Product accounting</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view" />
+            <field name="arch" type="xml">
+                <field name="qty_available" position="after">
+                    <field name="product_mode" />
+                </field>
+                
+            </field>
+        </record>
         
         <record model="ir.ui.view" id="view_product_pedimento_form">
             <field name="name">product.product.pedimento.form</field>
