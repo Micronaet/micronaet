@@ -115,7 +115,7 @@
         </field>
     </record>  
      
-    <record model="ir.ui.view" id="product_normal_tree_view_extra">
+    <!--<record model="ir.ui.view" id="product_normal_tree_view_extra">
         <field name="name">Product accounting</field>
         <field name="model">product.product</field>
         <field name="inherit_id" ref="product.product_product_tree_view" />
@@ -128,7 +128,7 @@
             <field name="qty_available" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
-        </field>
+        </field>-->
     </record>    
    </data>
 </openerp>   
