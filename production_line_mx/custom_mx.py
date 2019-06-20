@@ -215,7 +215,7 @@ class MrpProductionWorkcenterLoad(orm.Model):
     """
     
     _inherit = 'mrp.production.workcenter.load'
-    
+
     _columns = {
         'waste_id': fields.many2one('product.product', 'Waste product',
             help='When there\'s some waste production this product is loaded'),
@@ -564,6 +564,11 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
     ''' Update some _defaults value
     '''
     _inherit = 'mrp.production.workcenter.line'
+
+    def dummy_button(self, cr, uid, ids, context=None):
+        ''' Dummy button
+        '''
+        return True
 
     # Override for manage pedimento
     # >>> ORM Function:
