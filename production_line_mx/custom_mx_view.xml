@@ -193,6 +193,12 @@
                 <xpath expr="//field[@name='bom_waste_ids']/tree" position="attributes">
                     <attribute name="colors">red:accounting_covered==False</attribute>
                 </xpath>
+                
+                <!--Fast lavoration button:-->
+                <xpath expr="//notebook" position="before">
+                    <button name="add_new_lavoration" string="Add lavoration" type="object" icon="gtk-save"/>
+                </xpath> 
+                
             </field>
         </record>    
 
