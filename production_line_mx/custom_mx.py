@@ -49,6 +49,7 @@ class MrpProduction(orm.Model):
     """
     
     _inherit = 'mrp.production'
+    _order = 'name desc'
     
     def add_new_lavoration(self, cr, uid, ids, context=None):
         ''' Create new lavoration:
