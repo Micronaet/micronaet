@@ -107,7 +107,7 @@
            </form>
         </field>
     </record>    
-    <record model="ir.ui.view" id="view_mrp_workcenter_history_search_view">
+    <!--<record model="ir.ui.view" id="view_mrp_workcenter_history_search_view">
         <field name="name">Search workcenter history</field>
         <field name="model">mrp.workcenter.history</field>
         <field name="arch" type="xml">
@@ -121,7 +121,7 @@
                     </group>                    
             </search>
         </field>
-    </record>    
+    </record> -->
     <record model="ir.actions.act_window" id="action_view_mrp_workcenter_history_form">
         <field name="name">Workcenter history</field>
         <field name="res_model">mrp.workcenter.history</field>        
