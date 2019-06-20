@@ -203,6 +203,11 @@ class MrpProductionMaterial(orm.Model):
     """
     
     _inherit = 'mrp.production.material'
+
+    def dummy_button(self, cr, uid, ids, context=None):
+        ''' Dummy button
+        '''
+        return True
     
     def manage_pedimento_error(self, cr, uid, ids, context=None):
         ''' Duplicate line for use remain qty with another pedimento
@@ -251,6 +256,16 @@ class MrpProductionMaterial(orm.Model):
             else:    
                 res[material.id] = True # till selection
         return res
+
+    def _get_accounting_covered(self, cr, uid, ids, fields, args, context=None):
+        ''' Fields function for calculate waste
+        '''
+        res = {}
+        for material in self.browse(cr, uid, ids, context=context):
+            qty = material.quantity
+            accounting_qty = material.accounting_qty           
+            res[material.id] = (qty <= accounting_qty)
+        return res
     
     _columns = {
         'pedimento_id': fields.many2one(
@@ -263,6 +278,9 @@ class MrpProductionMaterial(orm.Model):
             type='float', string='Pedimento price'),    
         'pedimento_covered': fields.function(
             _get_pedimento_covered, method=True, 
+            type='boolean', string='Pedimento covered'), 
+        'accounting_covered': fields.function(
+            _get_accounting_covered, method=True, 
             type='boolean', string='Pedimento covered'), 
         }
 
