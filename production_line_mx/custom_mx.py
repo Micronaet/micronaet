@@ -55,11 +55,7 @@ class MrpProduction(orm.Model):
         '''
         if context is None:
             context = {}
-        #model_pool = self.pool.get('ir.model.data')
-        view_id = False
-        #model_pool.get_object_reference('module_name', 'view_name')[1]
     
-        context['default_mrp_production_id'] = ids[0]
         context['default_production_id'] = ids[0]
         context['popup_mode'] = True
 
@@ -70,7 +66,7 @@ class MrpProduction(orm.Model):
             'view_mode': 'form',
             #'res_id': 1,
             'res_model': 'mrp.production.workcenter.line',
-            'view_id': view_id,
+            'view_id': False,
             'views': [(False, 'form')],
             'domain': [],
             'context': context,

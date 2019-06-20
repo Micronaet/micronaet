@@ -33,7 +33,7 @@
             <field name="inherit_id" ref="mrp_operations.mrp_production_workcenter_form_view_inherit"/>
             <field name="arch" type="xml">
                 <button name="button_start_working" position="before" >
-                     <button name="dummy_button" string="Save" type="object" class="oe_highlight" invisible="context.get('popup_mode', False)"/>
+                     <button name="dummy_button" string="Save" type="object" class="oe_highlight" /><!--invisible="not context.get('popup_mode', False)"-->
                 </button>
             </field>
         </record>
@@ -207,9 +207,9 @@
                 </xpath>
                 
                 <!--Fast lavoration button:-->
-                <!--<xpath expr="//notebook" position="before">
+                <xpath expr="//notebook" position="before">
                     <button name="add_new_lavoration" string="Add lavoration" type="object" icon="gtk-add"/>
-                </xpath>-->
+                </xpath>
                 
             </field>
         </record>    
