@@ -219,15 +219,25 @@ class MrpProductionMaterial(orm.Model):
                     qty, pedimento_qty),
                 )
 
-        # Add line with splitted q:
+        # Use pedimento qty for this line
+        self.write(cr, uid, ids, {
+            'quantity': pedimento_qty,
+            }, context=context)
+            
+        # Create remain line:
         self.create(cr, uid, {
-            'production_id': material.production_id.id,
+            'mrp_production_id': material.mrp_production_id.id,
             'quantity': qty - pedimento_qty,
             'product_id': material.product_id.id,
             'standard_price': material.standard_price,
             'pedimento_id': False, # Let choose to the user!            
             }, context=context)
-        return True
+
+        # Refresh view:    
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+            }
 
     def _get_pedimento_covered(self, cr, uid, ids, fields, args, context=None):
         ''' Fields function for calculate 
