@@ -58,7 +58,7 @@ class MrpProduction(orm.Model):
         current = self.browse(cr, uid, ids, context=context)[0]
 
         for lavoration in current.workcenter_lines:
-            if lavoration.state not in ('done', 'cancel'):
+            if lavoration.state in ('done', 'cancel'):
                 _logger.error('Lavoration not refreshable, done or cancel!')
                 continue
             lavoration_pool.load_materials_from_production(
