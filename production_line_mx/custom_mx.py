@@ -51,6 +51,20 @@ class MrpProduction(orm.Model):
     _inherit = 'mrp.production'
     _order = 'name desc'
     
+    def refresh_lavoration_material(self, cr, uid, ids, context=None):
+        ''' Refresh lavoration if present and not sync
+        '''
+        lavoration_pool = self.pool.get('mrp.production.workcenter.line')
+        current = self.browse(cr, uid, ids, context=context)[0]
+
+        for lavoration in current.workcenter_lines:
+            if lavoration.state not in ('done', 'cancel'):
+                _logger.error('Lavoration not refreshable, done or cancel!')
+                continue
+            lavoration_pool.load_materials_from_production(
+                cr, uid, [lavoration.id], context=context)
+        return True
+
     def add_new_lavoration(self, cr, uid, ids, context=None):
         ''' Create new lavoration:
         '''

@@ -208,7 +208,8 @@
                 
                 <!--Fast lavoration button:-->
                 <xpath expr="//notebook" position="before">
-                    <button name="add_new_lavoration" string="Add lavoration" type="object" icon="gtk-add"/>
+                    <button name="add_new_lavoration" string="Add lavoration" type="object" icon="gtk-add" colspan="1"/>
+                    <button name="refresh_lavoration_material" string="Refresh lavoration" type="object" icon="gtk-refresh" colspan="1"/>
                 </xpath>
                 
             </field>
