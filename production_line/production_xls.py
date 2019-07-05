@@ -311,7 +311,8 @@ class mrp_production_extra(osv.osv):
                     # Medium block:
                     with_medium, material_mx, month_window,
                     # Period:
-                    start_date, range_date, real_date_planned,
+                    start_date, range_date, 
+                    real_date_planned,
                     # OF data:                    
                     col_ids, supplier_orders,
                     )                
