@@ -480,7 +480,6 @@ class product_status_wizard(osv.osv_memory):
             self, cr, uid, wizard=None, save_mode=False, context=None):
         ''' Send mail to group user for negative elements
         '''                
-        import pdb; pdb.set_trace()
         # XXX Was overrided!!!
         if context is None:
             context = {}
@@ -494,7 +493,6 @@ class product_status_wizard(osv.osv_memory):
             'with_order_detail': True,
             'fake_ids': [], # TODO << nothing?
             }
-        context['save_mode'] = save_mode    
 
         if wizard is not None:
             context['datas'].update(wizard)
