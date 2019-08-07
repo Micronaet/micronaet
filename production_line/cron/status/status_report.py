@@ -149,7 +149,7 @@ else:
     #server_smtp.start() # TODO Check
 
 smtp_server.login(odoo_mailer.smtp_user, odoo_mailer.smtp_pass)
-for to in smtp['to']:
+for to in smtp['to'].replace(' ', '').split(','):
     import pdb; pdb.set_trace()
     msg = MIMEMultipart()
     msg['Subject'] = smtp['subject']
