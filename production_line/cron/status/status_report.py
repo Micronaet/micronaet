@@ -55,22 +55,30 @@ odoo = {
 smtp = {
     'to': config.get('smtp', 'to'),
     'text': '''
-        <p>Spett.li responsabili acquisti,</p>
-        <p>Questa &egrave; una mail automatica giornaliera inviata da 
-            <b>OpenERP</b> con lo stato materia prime in funzione del
-            mgazzino attuale e delle produzioni schedulate, data: <b>%s</b></p>
+        <p>Spett.li responsabili acquisto,</p>
+
+        <p>questa &egrave; una mail automatica giornaliera inviata da 
+            <b>OpenERP</b> con lo stato materie prime in funzione del
+            magazzino attuale e delle produzioni schedulate, data: <b>%s</b>
+        </p>
 
         <p>
-        La stampa presenta una finestra di 30 giorni nella quale vedere lo
-        stato giornaliero in funzione delle uscite di produzione ed anche delle
-        consegne di materiale (solo le materie prime sotto il livello di 
+        La stampa presenta una finestra di 30 giorni nella quale viene indicato
+        lo stato giornaliero del magazzino, nella valorizzazione intervengono: 
+        <br/>
+        - lo stato attuale da programma di contabilit&agrave;
+        - le uscite di produzione pianificate (segno negativo)<br/>
+        - le consegne di materiale da fornitore (segno positivo)<br/>
+        </p>
+
+        <p>
+        Le materie prime visibili sono solo quelle sotto il livello di 
         riordino. 
-        Nella stampa viene indicata la media delle produzioni con una finestra
-        di 3 mesi (precedenti per il calcolo) ed il dettaglio ordini a 
-        fornitore non ancora consegnati.
+        Nella stampa viene indicata la media delle produzione con una finestra
+        di 3 mesi antecedenti.
         </p>
         
-        <p><i>In giallo vengono indicate le celle deii prodotti sotto il 
+        <p><i>In giallo vengono indicate le celle dei prodotti sotto il 
             livello minimo di riordino, in rosso le celle negative.</i></p>
 
         <b>Micronaet S.r.l.</b>
