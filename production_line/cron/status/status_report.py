@@ -40,6 +40,8 @@ now = ('%s' %datetime.now())[:19]
 config = ConfigParser.ConfigParser()
 config.read([cfg_file])
 
+filename = '/tmp/production_status.xlsx' # From wizard parameter!
+
 # ERP Connection:
 odoo = {
     'database': config.get('dbaccess', 'dbname'),
@@ -110,8 +112,7 @@ odoo.context = context
 wizard = odoo.model('product.status.wizard')
 
 # Launch extract procedure:
-filename = wizard.schedule_send_negative_report_mailer()
-import pdb; pdb.set_trace()
+wizard.schedule_send_negative_report_mailer()
 
 # -----------------------------------------------------------------------------
 # SMTP Sent:
