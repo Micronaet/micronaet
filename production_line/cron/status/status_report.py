@@ -106,6 +106,7 @@ odoo = erppeek.Client(
 mailer = odoo.model('ir.mail_server')
 
 # Setup context for order:
+import pdb; pdb.set_trace()
 odoo.context = context
 wizard = odoo.model('product.status.wizard')
 
