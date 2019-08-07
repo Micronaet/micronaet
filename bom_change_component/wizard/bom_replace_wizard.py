@@ -99,9 +99,7 @@ class MrpBomReplaceWizard(orm.TransientModel):
             
             # Column setup:
             excel_pool.column_width(ws_name, [
-                4, 15, 40, 30, #10, 
-                30, 
-                #10,
+                4, 15, 40, 30, 10, 30, #10,
                 ])
             
             # Write header:    
@@ -122,7 +120,7 @@ class MrpBomReplaceWizard(orm.TransientModel):
                 'DB Codice',
                 'DB Nome',
                 'Vecchio Componente', 
-                #'Vecchia Q.', 
+                'Q.', 
                 'Nuovo componente', 
                 #'Nuova Q.' if qty else '',     
                 ], default_format=f_header)
@@ -136,7 +134,7 @@ class MrpBomReplaceWizard(orm.TransientModel):
                     line.bom_id.product_id.default_code,
                     line.bom_id.product_id.name,
                     line.product_id.default_code, 
-                    #line.product_qty, 
+                    line.product_qty, 
                     to_code, 
                     #(qty or '/', f_number),
                     ], default_format=f_text)
