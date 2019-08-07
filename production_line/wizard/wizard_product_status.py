@@ -478,7 +478,7 @@ class product_status_wizard(osv.osv_memory):
                 }       
 
     def schedule_send_negative_report(
-            self, cr, uid, wizard=None, context=None):
+            self, cr, uid, wizard=None, save_mode=False, context=None):
         ''' Send mail to group user for negative elements
         '''                
         # XXX Was overrided!!!
@@ -494,6 +494,7 @@ class product_status_wizard(osv.osv_memory):
             'with_order_detail': True,
             'fake_ids': [], # TODO << nothing?
             }
+        context['save_mode'] = save_mode    
 
         if wizard is not None:
             context['datas'].update(wizard)

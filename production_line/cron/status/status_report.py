@@ -64,7 +64,8 @@ smtp = {
         consegne di materiale (solo le materie prime sotto il livello di 
         riordino. 
         Nella stampa viene indicata la media delle produzioni con una finestra
-        di 6 mesi (precedenti per il calcolo).
+        di 3 mesi (precedenti per il calcolo) ed il dettaglio ordini a 
+        fornitore non ancora consegnati.
         </p>
         
         <p><i>In giallo vengono indicate le celle deii prodotti sotto il 
@@ -83,10 +84,13 @@ filename = os.path.expanduser(
 
 context = {
     'save_mode': filename,
-    'days': 30,
-    'row_mode': 'negative',
-    'with_medium': True,
-    'month_window': 6,    
+    # Currenctly overrided from wizard!!!
+    #'days': 30,
+    #'row_mode': 'negative',
+    #'with_medium': True,
+    #'month_window': 3,
+    #'with_order_detail': True,
+    #'fake_ids': [], # TODO << nothing?
     }
 
 # -----------------------------------------------------------------------------
