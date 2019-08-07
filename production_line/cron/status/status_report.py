@@ -66,7 +66,7 @@ smtp = {
         La stampa presenta una finestra di 30 giorni nella quale viene indicato
         lo stato giornaliero del magazzino, nella valorizzazione intervengono: 
         <br/>
-        - lo stato attuale da programma di contabilit&agrave;
+        - lo stato attuale da programma di contabilit&agrave;<br/>
         - le uscite di produzione pianificate (segno negativo)<br/>
         - le consegne di materiale da fornitore (segno positivo)<br/>
         </p>
