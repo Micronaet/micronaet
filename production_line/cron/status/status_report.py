@@ -84,13 +84,14 @@ filename = os.path.expanduser(
 
 context = {
     'save_mode': filename,
-    # Currenctly overrided from wizard!!!
-    #'days': 30,
-    #'row_mode': 'negative',
-    #'with_medium': True,
-    #'month_window': 3,
-    #'with_order_detail': True,
-    #'fake_ids': [], # TODO << nothing?
+
+    # Wizard setup:
+    'days': 30,
+    'row_mode': 'negative',
+    'with_medium': True,
+    'month_window': 3,
+    'with_order_detail': True,
+    'fake_ids': [], # TODO << nothing?
     }
 
 # -----------------------------------------------------------------------------

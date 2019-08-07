@@ -117,16 +117,15 @@ class ProductStatusWizard(osv.osv_memory):
             fake_ids = []        
         
         # Default if not parameter
-        context['datas'] = {
-            'days': 30,
-            'row_mode': 'negative',
-            'with_medium': True,
-            'month_window': 3,
-            'with_order_detail': True,
-            'fake_ids': fake_ids,
-            }
-        import pdb; pdb.set_trace()
-        context['save_mode'] = save_mode    
+        if 'datas' not in context:
+            context['datas'] = {
+                'days': 30,
+                'row_mode': 'negative',
+                'with_medium': True,
+                'month_window': 3,
+                'with_order_detail': True,
+                'fake_ids': fake_ids,
+                }
 
         if wizard is not None:
             context['datas'].update(wizard)

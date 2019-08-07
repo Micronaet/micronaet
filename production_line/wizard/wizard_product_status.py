@@ -477,7 +477,7 @@ class product_status_wizard(osv.osv_memory):
                 }       
 
     def schedule_send_negative_report(
-            self, cr, uid, wizard=None, save_mode=False, context=None):
+            self, cr, uid, wizard=None, context=None):
         ''' Send mail to group user for negative elements
         '''                
         # XXX Was overrided!!!
