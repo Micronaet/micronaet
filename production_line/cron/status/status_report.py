@@ -165,6 +165,6 @@ for to in smtp['to'].replace(' ', '').split(','):
     msg.attach(part)
 
     # Send mail:
-    smtp_server.sendmail(odoo_mailer.smtp_user, to, msg.as_string())#smtp['to'].split(',')
+    smtp_server.sendmail(odoo_mailer.smtp_user, to, msg.as_string())
 
 smtp_server.quit()
