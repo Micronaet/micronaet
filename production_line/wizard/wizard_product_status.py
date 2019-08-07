@@ -427,7 +427,6 @@ class product_status_wizard(osv.osv_memory):
             # -----------------------------------------------------------------
             # Save mode:                
             # -----------------------------------------------------------------
-            import pdb; pdb.set_trace()
             if save_mode: # Save as a file:
                 _logger.warning('Save mode: %s' % save_mode)
                 return excel_pool.save_file_as(save_mode)            
@@ -481,6 +480,7 @@ class product_status_wizard(osv.osv_memory):
             self, cr, uid, wizard=None, save_mode=False, context=None):
         ''' Send mail to group user for negative elements
         '''                
+        import pdb; pdb.set_trace()
         # XXX Was overrided!!!
         if context is None:
             context = {}
