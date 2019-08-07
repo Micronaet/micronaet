@@ -91,6 +91,12 @@ class ProductStatusWizard(osv.osv_memory):
     '''    
     _inherit = 'product.status.wizard'
 
+    def schedule_send_negative_report_mailer(self, cr, uid, context=None):
+        ''' Action from external mailer:
+        '''    
+        return self.schedule_send_negative_report(
+            self, cr, uid, context=context)
+
     # -------------------------------------------------------------------------
     # Override schedule action:
     # -------------------------------------------------------------------------

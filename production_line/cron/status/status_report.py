@@ -114,7 +114,7 @@ odoo.context = context
 wizard = odoo.model('product.status.wizard')
 
 # Launch extract procedure:
-wizard.schedule_send_negative_report()
+wizard.schedule_send_negative_report_mailer()
 
 # -----------------------------------------------------------------------------
 # SMTP Sent:
