@@ -154,8 +154,9 @@ class MrpBomReplaceWizard(orm.TransientModel):
             #if qty:
             #    data['product_qty'] = qty 
             if data:
-                bom_line_pool.write(
-                    cr, uid, bom_line_ids, data, context=context)
+                for item_id in bom_line_ids:                
+                    bom_line_pool.write(
+                        cr, uid, [item_id], data, context=context)
 
         # ---------------------------------------------------------------------
         # Both select of update   
