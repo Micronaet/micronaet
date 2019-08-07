@@ -79,11 +79,8 @@ smtp = {
     'folder': config.get('smtp', 'folder'),
     }
 
-filename = os.path.expanduser(
-    os.path.join(smtp['folder'], 'stato_materie_prime.xlsx'))
-
 context = {
-    'save_mode': filename,
+    'save_mode': True,
 
     # Wizard setup:
     'datas': {
@@ -109,12 +106,12 @@ mailer = odoo.model('ir.mail_server')
 
 # Setup context for order:
 print context
-import pdb; pdb.set_trace()
 odoo.context = context
 wizard = odoo.model('product.status.wizard')
 
 # Launch extract procedure:
-wizard.schedule_send_negative_report_mailer()
+filename = wizard.schedule_send_negative_report_mailer()
+import pdb; pdb.set_trace()
 
 # -----------------------------------------------------------------------------
 # SMTP Sent:

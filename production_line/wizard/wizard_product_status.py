@@ -429,7 +429,7 @@ class product_status_wizard(osv.osv_memory):
             # -----------------------------------------------------------------
             if save_mode: # Save as a file:
                 _logger.warning('Save mode: %s' % save_mode)
-                return excel_pool.save_file_as(save_mode)            
+                return filename
 
             # -----------------------------------------------------------------
             # Mail mode:

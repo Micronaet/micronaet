@@ -94,8 +94,7 @@ class ProductStatusWizard(osv.osv_memory):
     def schedule_send_negative_report_mailer(self, cr, uid, context=None):
         ''' Action from external mailer:
         '''    
-        return self.schedule_send_negative_report(
-            cr, uid, context=context)
+        return self.schedule_send_negative_report(cr, uid, context=context)
 
     # -------------------------------------------------------------------------
     # Override schedule action:
@@ -105,7 +104,6 @@ class ProductStatusWizard(osv.osv_memory):
         ''' Send mail to group user for negative elements
         '''           
         also_previsional = False # XXX need here?
-        import pdb; pdb.set_trace()
         if context is None:
             context = {}
 
