@@ -1,0 +1,64 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* bom_change_component
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-08-07 15:20+0000\n"
+"PO-Revision-Date: 2019-08-07 17:21+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: bom_change_component
+#: view:mrp.bom.replace.wizard:0
+msgid "See BOM list"
+msgstr "Vedi DB"
+
+#. module: bom_change_component
+#: field:mrp.bom.replace.wizard,select_id:0
+msgid "Search"
+msgstr "Cerca"
+
+#. module: bom_change_component
+#: model:ir.model,name:bom_change_component.model_mrp_bom_replace_wizard
+msgid "mrp.bom.replace.wizard"
+msgstr "mrp.bom.replace.wizard"
+
+#. module: bom_change_component
+#: view:mrp.bom.replace.wizard:0
+msgid "Wizard"
+msgstr "Wizard"
+
+#. module: bom_change_component
+#: view:mrp.bom.replace.wizard:0
+msgid "Excel"
+msgstr "Excel"
+
+#. module: bom_change_component
+#: view:mrp.bom.replace.wizard:0 field:mrp.bom.replace.wizard,update_id:0
+msgid "Update"
+msgstr "Aggiorna"
+
+#. module: bom_change_component
+#: model:ir.actions.act_window,name:bom_change_component.action_mrp_bom_replace_wizard_view
+#: model:ir.ui.menu,name:bom_change_component.menu_mrp_bom_replace_wizard_view
+msgid "Update product BOM"
+msgstr "Cambia componenti DB"
+
+#. module: bom_change_component
+#: view:mrp.bom.replace.wizard:0
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: bom_change_component
+#: field:mrp.bom.replace.wizard,qty:0
+msgid "New Q."
+msgstr "Nuova q."
