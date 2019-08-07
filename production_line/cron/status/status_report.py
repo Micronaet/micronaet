@@ -148,22 +148,23 @@ else:
     sys.exit()
     #server_smtp.start() # TODO Check
 
-msg = MIMEMultipart()
-msg['Subject'] = smtp['subject']
-msg['From'] = odoo_mailer.smtp_user
-msg['To'] = smtp['to'] #', '.join(self.EMAIL_TO)
-msg.attach(MIMEText(smtp['text'], 'html'))
-
-
-part = MIMEBase('application', 'octet-stream')
-part.set_payload(open(filename, 'rb').read())
-Encoders.encode_base64(part)
-part.add_header(
-    'Content-Disposition', 'attachment; filename="Stato materie prime.xlsx"')
-
-msg.attach(part)
-
-# Send mail:
 smtp_server.login(odoo_mailer.smtp_user, odoo_mailer.smtp_pass)
-smtp_server.sendmail(odoo_mailer.smtp_user, smtp['to'], msg.as_string())
+for to in smtp['to']:
+    import pdb; pdb.set_trace()
+    msg = MIMEMultipart()
+    msg['Subject'] = smtp['subject']
+    msg['From'] = odoo_mailer.smtp_user
+    msg['To'] = to #smtp['to'] #', '.join(self.EMAIL_TO)
+    msg.attach(MIMEText(smtp['text'], 'html'))
+
+    part = MIMEBase('application', 'octet-stream')
+    part.set_payload(open(filename, 'rb').read())
+    Encoders.encode_base64(part)
+    part.add_header(
+        'Content-Disposition', 'attachment; filename="Stato materie prime.xlsx"')
+    msg.attach(part)
+
+    # Send mail:
+    smtp_server.sendmail(odoo_mailer.smtp_user, smtp['to'].split(','), msg.as_string())
+
 smtp_server.quit()
