@@ -86,12 +86,14 @@ context = {
     'save_mode': filename,
 
     # Wizard setup:
-    'days': 30,
-    'row_mode': 'negative',
-    'with_medium': True,
-    'month_window': 3,
-    'with_order_detail': True,
-    'fake_ids': [], # TODO << nothing?
+    'datas': {
+        'days': 30,
+        'row_mode': 'negative',
+        'with_medium': True,
+        'month_window': 3,
+        'with_order_detail': True,
+        'fake_ids': [], # TODO << nothing?
+        },
     }
 
 # -----------------------------------------------------------------------------
@@ -106,6 +108,7 @@ odoo = erppeek.Client(
 mailer = odoo.model('ir.mail_server')
 
 # Setup context for order:
+print context
 import pdb; pdb.set_trace()
 odoo.context = context
 wizard = odoo.model('product.status.wizard')
