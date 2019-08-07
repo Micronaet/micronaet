@@ -138,6 +138,12 @@ class product_status_wizard(osv.osv_memory):
             Procedure used also for sent mail (used context parameter 
             sendmail for activate with datas passed)
         '''
+        if context is None:
+            context = {}
+        
+        save_mode = context.get('save_mode')            
+        _logger.info('Start extract save mode: %s' % save_mode)
+
         # ---------------------------------------------------------------------
         # Utility:
         # ---------------------------------------------------------------------
@@ -416,7 +422,18 @@ class product_status_wizard(osv.osv_memory):
                 server_proxy.smtp_host,
                 server_proxy.smtp_port, 
                 server_proxy.smtp_user, 
-                ))    
+                ))
+
+            # -----------------------------------------------------------------
+            # Save mode:                
+            # -----------------------------------------------------------------
+            if save_mode: # Save as a file:
+                _logger.warning('Save mode: %s' % save_mode)
+                return excel_pool.save_file_as(save_mode)            
+
+            # -----------------------------------------------------------------
+            # Mail mode:
+            # -----------------------------------------------------------------
             for email in partner_email:
                 _logger.warning('... sending mail: %s' % email)
                 self.send_mail(
