@@ -99,7 +99,7 @@ class ProductStatusWizard(osv.osv_memory):
         ''' Send mail to group user for negative elements
         '''           
         also_previsional = False # XXX need here?
-
+        import pdb; pdb.set_trace()
         if context is None:
             context = {}
 
