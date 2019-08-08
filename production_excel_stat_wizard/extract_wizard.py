@@ -153,6 +153,7 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
         wc_db = []
         product_report = {}
         material_report = {}
+        job_report = {}
 
         for line in sorted(
                 work_proxy, 
@@ -173,11 +174,13 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
             if not filter_product or product.id == filter_product.id:
                 if wc not in wc_db:
                     wc_db.append(wc)
-                    for load in wc.load_ids:
+                    for load in wc.load_ids: # Normally one!
                         key = product # (product, load.recycle)
                         net_qty = load.product_qty - load.waste_qty
                         hour = wc.hour
-                        if key in product_report:                        
+                        
+                        # Product page:
+                        if key in product_report:             
                             product_report[key][0] += net_qty
                             product_report[key][1] += load.waste_qty
                             product_report[key][2] += hour
@@ -187,6 +190,11 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
                                 load.waste_qty,
                                 hour
                                 ]
+                        
+                        # Job page:
+                        if product not in job_report:
+                            job_report[product] = []
+                        job_report[product].append(load)
                                 
                         # package_id, ul_qty
                         # package_pedimento_id
@@ -263,7 +271,56 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
                 ], default_format=f_text_color)
 
         # ---------------------------------------------------------------------
-        # C. Final product:
+        # C1. Material total:
+        # ---------------------------------------------------------------------
+        ws_name = _('Cicli lavorazioni')
+        excel_pool.create_worksheet(ws_name)
+
+        excel_pool.column_width(ws_name, [
+            20, 20, 15, 15, 
+            10, 10, 10, 
+            15, 15, 15, 15])
+
+        row = 0
+        excel_pool.write_xls_line(ws_name, row, [
+            _('Produzione'), _('Lavorazione'), _('Data'), _('Prodotto'), 
+            _('Cicli'), _('Q. ciclo'), _('H. ciclo'),  
+            _('H. totale'), _('Q. totale'), _('Q. produzione'), 
+            _('Q. carico'), _('Q. recupero'), _('Prod. rec.'),
+            ], default_format=f_header)
+        import pdb; pdb.set_trace()
+        for product in sorted(job_report, key=lambda x: x.default_code):
+            row += 1
+            load = job_report[product]
+            # TODO Check:
+            wc = load.wc_id
+            production = wc.mrp_id
+            
+            # -----------------------------------------------------------------
+            # Color setup:
+            # -----------------------------------------------------------------
+            excel_pool.write_xls_line(ws_name, row, [
+                production.name,
+                wc.name, 
+                load.real_date_planned,
+                product.default_code,
+                
+                (product.cycle, f_number)
+                (product.single_cycle_qty, f_number)
+                (product.single_cycle_duration, f_number)
+                
+                (product.hour, f_number)
+                (product.qty, f_number)
+                (production.product_qty, f_number)
+                
+                (load.qty, f_number)
+                (load.waste_qty, f_number)
+                load.waste_id.default_code or ''
+                ], default_format=f_text_color)
+
+
+        # ---------------------------------------------------------------------
+        # C2. Final product:
         # ---------------------------------------------------------------------
         ws_name = _('Prodotto finito')
         excel_pool.create_worksheet(ws_name)
