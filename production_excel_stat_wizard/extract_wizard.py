@@ -38,7 +38,6 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
     DATETIME_FORMATS_MAP, 
     float_compare)
 
-
 _logger = logging.getLogger(__name__)
 
 class MrpProductionExtractStatWizard(orm.TransientModel):
@@ -176,10 +175,16 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
                     wc_db.append(wc)
                     for load in wc.load_ids:
                         key = (product, load.recycle)
-                        if key in product_report:
-                            product_report[key] += load.product_qty
+                        net_qty = load.product_qty - load.waste_qty
+                        if key in product_report:                        
+                            product_report[key][0] += net_qty
+                            product_report[key][1] += load.waste_qty
                         else:    
-                            product_report[key] = load.product_qty
+                            product_report[key] = [
+                                net_qty, 
+                                load.waste_qty,
+                                ]
+                                
                         # package_id, ul_qty
                         # package_pedimento_id
                         # palled_product_id, pallet_qty
@@ -260,12 +265,12 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
         ws_name = _('Prodotto finito')
         excel_pool.create_worksheet(ws_name)
 
-        excel_pool.column_width(ws_name, [20, 30, 10, 15, 15, 5])
+        excel_pool.column_width(ws_name, [20, 30, 10, 15, 15, 15, 5])
 
         row = 0
         excel_pool.write_xls_line(ws_name, row, [
-            _('Codice'), _('Nome'), _('UM'), _('Q.'), _('Magazzino'), 
-            _('Recycle')
+            _('Codice'), _('Nome'), _('UM'), _('Q.'), _('Q. Ric.'), 
+            _('Magazzino'), _('Reciclo'),
             ], default_format=f_header)
 
         for key in sorted(
@@ -274,7 +279,7 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
                 ):
             row += 1
             product, recycle = key
-            qty = product_report[key]
+            qty, waste_qty = product_report[key]
             accounting_qty = product.accounting_qty
             
             # -----------------------------------------------------------------
@@ -295,6 +300,7 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
                 product.name or '',
                 product.uom_id.name,
                 (qty, f_number_color),
+                (waste_qty, f_number_color),
                 (accounting_qty, f_number_color),
                 'X' if recycle else '',
                 ], default_format=f_text_color)
