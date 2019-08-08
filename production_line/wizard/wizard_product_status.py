@@ -196,6 +196,15 @@ class product_status_wizard(osv.osv_memory):
                     if partial < 0:
                         return True
                 return False
+            # Only under minimum level
+            elif row_mode == 'level':
+                partial = 0
+                
+                for q in row:
+                    partial += q
+                    if partial < 0:
+                        return True
+                return False
             else:
                 return True
 
@@ -523,6 +532,7 @@ class product_status_wizard(osv.osv_memory):
             ('all', 'All data'),
             ('active', 'With data'),
             ('negative', 'With negative'),
+            ('level', 'Under minimum level'),
             ], 'Row mode', required=True),            
                 
         'month_window':fields.integer('Statistic production window ', 
