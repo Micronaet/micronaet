@@ -37,6 +37,14 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
     DATETIME_FORMATS_MAP, 
     float_compare)
 
+# Mail lib:
+import smtplib
+import ssl
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email.mime.text import MIMEText
+from email.utils import formatdate
+from email import encoders
 
 _logger = logging.getLogger(__name__)
 
@@ -54,14 +62,6 @@ class product_status_wizard(osv.osv_memory):
             port, username='', password='', isTls=False):
         ''' Send mail procedure:
         '''    
-        import smtplib
-        import ssl
-        from email.mime.multipart import MIMEMultipart
-        from email.mime.base import MIMEBase
-        from email.mime.text import MIMEText
-        from email.utils import formatdate
-        from email import encoders
-
         msg = MIMEMultipart()
         msg['From'] = send_from
         msg['To'] = send_to
@@ -173,36 +173,38 @@ class product_status_wizard(osv.osv_memory):
                 col += 1
             return True
         
-        def use_row(row, data=None):
+        def use_row(row, data=None, product=False):
             ''' Check if row must be used depend on row_mode
             '''
             if data is None:
                 data = {}            
             row_mode = data.get('row_mode', 'active')
-            
+
+            # -----------------------------------------------------------------            
             # All record, All value
+            # -----------------------------------------------------------------            
             if row_mode == 'all':
                return True # no filter is required
          
+            # -----------------------------------------------------------------            
             # Record with data but no elements:   
+            # -----------------------------------------------------------------            
             elif row_mode == 'active' and not any(row):
                 return False
             
-            # Only negative but no any negative:
-            elif row_mode == 'negative':
+            # -----------------------------------------------------------------            
+            # Negative or under level:
+            # -----------------------------------------------------------------            
+            elif row_mode in ('negative', 'level'):
+                if row_mode == 'negative' or not product:
+                    level = 0.0
+                else:
+                    level = product.min_stock_level
+    
                 partial = 0
                 for q in row:
                     partial += q
-                    if partial < 0:
-                        return True
-                return False
-            # Only under minimum level
-            elif row_mode == 'level':
-                partial = 0
-                
-                for q in row:
-                    partial += q
-                    if partial < 0:
+                    if partial < level:
                         return True
                 return False
             else:
