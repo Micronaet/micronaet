@@ -174,15 +174,18 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
                 if wc not in wc_db:
                     wc_db.append(wc)
                     for load in wc.load_ids:
-                        key = (product, load.recycle)
+                        key = product # (product, load.recycle)
                         net_qty = load.product_qty - load.waste_qty
+                        hour = wc.hour
                         if key in product_report:                        
                             product_report[key][0] += net_qty
                             product_report[key][1] += load.waste_qty
+                            product_report[key][2] += hour
                         else:    
                             product_report[key] = [
                                 net_qty, 
                                 load.waste_qty,
+                                hour
                                 ]
                                 
                         # package_id, ul_qty
@@ -265,21 +268,18 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
         ws_name = _('Prodotto finito')
         excel_pool.create_worksheet(ws_name)
 
-        excel_pool.column_width(ws_name, [20, 30, 10, 15, 15, 15, 5])
+        excel_pool.column_width(ws_name, [20, 30, 10, 5, 15, 15, 15])
 
         row = 0
         excel_pool.write_xls_line(ws_name, row, [
-            _('Codice'), _('Nome'), _('UM'), _('Q.'), _('Q. Ric.'), 
-            _('Magazzino'), _('Reciclo'),
+            _('Codice'), _('Nome'), _('UM'), _('H'), _('Q.'), _('Riciclo'), 
+            _('Magazzino'),
             ], default_format=f_header)
 
-        for key in sorted(
-                product_report, 
-                key=lambda x: (x[0].default_code, x[1]),
-                ):
+        for product in sorted(
+                product_report, key=lambda x: x.default_code):
             row += 1
-            product, recycle = key
-            qty, waste_qty = product_report[key]
+            qty, waste_qty, hour = product_report[product]
             accounting_qty = product.accounting_qty
             
             # -----------------------------------------------------------------
@@ -299,10 +299,11 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
                 product.default_code or '', 
                 product.name or '',
                 product.uom_id.name,
+                (hour, f_number_color),
                 (qty, f_number_color),
                 (waste_qty, f_number_color),
                 (accounting_qty, f_number_color),
-                'X' if recycle else '',
+                #'X' if recycle else '',
                 ], default_format=f_text_color)
 
         # ---------------------------------------------------------------------
