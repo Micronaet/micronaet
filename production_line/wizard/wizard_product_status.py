@@ -338,6 +338,7 @@ class product_status_wizard(osv.osv_memory):
 
         table = mrp_pool._get_table() # For check row state
         
+        import pdb; pdb.set_trace()
         for row in rows:
             # Check mode: only active
             if not use_row(table[row[1]], data):
