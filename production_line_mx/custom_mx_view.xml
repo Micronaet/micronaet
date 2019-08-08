@@ -1,6 +1,29 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+        <record model="ir.ui.view" id="waste_mrp_production_workcenter_load_tree_view">
+            <field name="name">Lavoration waste</field>
+            <field name="model">mrp.production.workcenter.load</field>
+            <field name="inherit_id" ref="production_line.default_mrp_production_workcenter_load_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="recycle" position="after">
+                    <field name="waste_qty" />
+                    <field name="waste_id" />
+                </field>
+                <field name="recycle" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>                
+                
+                <field name="accounting_cl_code" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>                
+                <field name="partial" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>                
+            </field>
+        </record>
+    
+
         <record model="ir.ui.view" id="view_mrp_production_workcenter_line_tree">
             <field name="name">mrp.production.workcenter.line.tree</field>
             <field name="model">mrp.production.workcenter.line</field>

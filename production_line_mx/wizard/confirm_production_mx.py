@@ -649,7 +649,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
         if not os.path.isfile(folder['whoami']):
             raise osv.except_osv(
                 _('Mount error'),
-                _('Windows server not mounted!'),
+                _('Windows server not mounted (%s)!' % folder['whoami']),
                 )
 
         lavoration_proxy = lavoration_pool.browse(

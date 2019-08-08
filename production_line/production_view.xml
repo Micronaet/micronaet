@@ -586,7 +586,6 @@
                 <field name="product_qty" sum="total" />
                 <field name="wrong" invisible="1"/>
                 <field name="recycle" />
-                <!--<field name="recycle_product_id" />-->
                 <field name="wrong_comment" />
                 <field name="partial" />
                 <field name="package_id" />
