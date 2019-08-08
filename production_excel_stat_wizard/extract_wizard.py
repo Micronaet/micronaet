@@ -277,13 +277,13 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
         excel_pool.create_worksheet(ws_name)
 
         excel_pool.column_width(ws_name, [
-            0, 0, 0, 10, 10, 16, 13, 
+            10, 10, 16, 13, 
             8, 10, 10, 
             10, 15, 15, 15, 15, 20])
 
         row = 0
         excel_pool.write_xls_line(ws_name, row, [
-            '', '', '', _('Produzione'), _('Lavorazione'), _('Data'), _('Prodotto'), 
+            _('Produzione'), _('Lavorazione'), _('Data'), _('Prodotto'), 
             _('Cicli'), _('Q. ciclo'), _('H. ciclo'),  
             _('H. totale'), _('Q. totale'), _('Q. produzione'), 
             _('Q. carico'), _('Q. rec.'), _('Prod. rec.'),
@@ -303,9 +303,9 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
                 # -----------------------------------------------------------------
                 excel_pool.write_xls_line(ws_name, row, [
                     # TODO remove:
-                    production.id,
-                    wc.id,
-                    load.id,
+                    #production.id,
+                    #wc.id,
+                    #load.id,
                     
                     production.name,
                     wc.name, 
