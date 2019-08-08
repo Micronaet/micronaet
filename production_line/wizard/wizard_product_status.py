@@ -196,6 +196,7 @@ class product_status_wizard(osv.osv_memory):
             # Negative or under level:
             # -----------------------------------------------------------------            
             elif row_mode in ('negative', 'level'):
+                import pdb; pdb.set_trace()
                 if row_mode == 'negative' or not product:
                     level = 0.0
                 else:
