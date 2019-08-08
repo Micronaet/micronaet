@@ -277,47 +277,48 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
         excel_pool.create_worksheet(ws_name)
 
         excel_pool.column_width(ws_name, [
-            20, 20, 15, 15, 
-            10, 10, 10, 
-            15, 15, 15, 15])
+            10, 10, 16, 13, 
+            8, 10, 10, 
+            10, 15, 15, 15, 15, 20])
 
         row = 0
         excel_pool.write_xls_line(ws_name, row, [
             _('Produzione'), _('Lavorazione'), _('Data'), _('Prodotto'), 
             _('Cicli'), _('Q. ciclo'), _('H. ciclo'),  
             _('H. totale'), _('Q. totale'), _('Q. produzione'), 
-            _('Q. carico'), _('Q. recupero'), _('Prod. rec.'),
+            _('Q. carico'), _('Q. rec.'), _('Prod. rec.'),
             ], default_format=f_header)
-        import pdb; pdb.set_trace()
-        for product in sorted(job_report, key=lambda x: x.default_code):
-            row += 1
-            load = job_report[product]
-            # TODO Check:
-            wc = load.wc_id
-            production = wc.mrp_id
-            
-            # -----------------------------------------------------------------
-            # Color setup:
-            # -----------------------------------------------------------------
-            excel_pool.write_xls_line(ws_name, row, [
-                production.name,
-                wc.name, 
-                load.real_date_planned,
-                product.default_code,
-                
-                (product.cycle, f_number)
-                (product.single_cycle_qty, f_number)
-                (product.single_cycle_duration, f_number)
-                
-                (product.hour, f_number)
-                (product.qty, f_number)
-                (production.product_qty, f_number)
-                
-                (load.qty, f_number)
-                (load.waste_qty, f_number)
-                load.waste_id.default_code or ''
-                ], default_format=f_text_color)
 
+        for product in sorted(job_report, key=lambda x: x.default_code):
+            for load in sorted(job_report[product], 
+                    key=lambda x: x.line_id.real_date_planned):
+                row += 1
+
+                # TODO Check:
+                wc = load.line_id
+                production = wc.production_id
+                
+                # -----------------------------------------------------------------
+                # Color setup:
+                # -----------------------------------------------------------------
+                excel_pool.write_xls_line(ws_name, row, [
+                    production.name,
+                    wc.name, 
+                    wc.real_date_planned,
+                    product.default_code,
+                    
+                    (wc.cycle, f_number),
+                    (wc.single_cycle_qty, f_number),
+                    (wc.single_cycle_duration, f_number),
+                    
+                    (wc.hour, f_number),
+                    (wc.qty, f_number),
+                    (production.product_qty, f_number),
+                    
+                    (load.product_qty, f_number),
+                    (load.waste_qty, f_number),
+                    load.waste_id.default_code or ''
+                    ], default_format=f_text_color)
 
         # ---------------------------------------------------------------------
         # C2. Final product:
