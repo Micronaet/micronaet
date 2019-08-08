@@ -95,7 +95,7 @@ context = {
     # Wizard setup:
     'datas': {
         'days': 30,
-        'row_mode': 'negative',
+        'row_mode': 'level',
         'with_medium': True,
         'month_window': 3,
         'with_order_detail': True,
