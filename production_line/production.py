@@ -328,6 +328,7 @@ class sale_order_add_extra(osv.osv):
                             partner_id = self.pool.get(
                                 'res.partner').create(cr, uid, {
                                     'name': 'Partner %s' % (oc['CKY_CNT_CLFR']),
+                                    'sql_customer_code': oc['CKY_CNT_CLFR'],
                                     'active': True,
                                     'property_account_position': 1, # TODO parametrizzare
                                     'is_company': True,
