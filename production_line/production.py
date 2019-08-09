@@ -268,7 +268,9 @@ class sale_order_add_extra(osv.osv):
         # Open CSV passed file (see arguments) mode: read/binary, delimition char
         _logger.info('Start import OC header')
         
+        # ---------------------------------------------------------------------
         # Load DB for currency:
+        # ---------------------------------------------------------------------        
         currency_convert = {}
         currency_default = 1 # EUR (TODO parameter)
         currency_ids = currency_pool.search(cr, uid, [], context=None)
@@ -278,6 +280,7 @@ class sale_order_add_extra(osv.osv):
             if not account_ref:
                 continue
             currency_convert[account_ref] = currency.id
+        import pdb; pdb.set_trace()
 
         # ---------------------------------------------------------------------
         #                               IMPORT HEADER
