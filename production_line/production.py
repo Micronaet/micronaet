@@ -1900,4 +1900,14 @@ class sale_order_line_extra(osv.osv):
         'previous_product_qty': lambda *x: False,
         'previous_product_id': lambda *x: False,
         }
+
+class res_currency(osv.osv):
+    ''' Add extra field for manage extra fields
+    '''
+    _inherit = 'res.currency'
+
+    _columns = {
+        'account_ref': fields.char('Account ref', size=5),
+        }
+        
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
