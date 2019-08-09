@@ -280,7 +280,6 @@ class sale_order_add_extra(osv.osv):
             if not account_ref:
                 continue
             currency_convert[account_ref] = currency.id
-        import pdb; pdb.set_trace()
 
         # ---------------------------------------------------------------------
         #                               IMPORT HEADER
