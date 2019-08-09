@@ -270,9 +270,11 @@ class sale_order_add_extra(osv.osv):
         #                               IMPORT HEADER
         # ---------------------------------------------------------------------
         # TODO rimuovere questo problema alcuni ordini hanno state empty!
-        cr.execute('update sale_order set state=\'draft\' where state is null;')
+        cr.execute(
+            'update sale_order set state=\'draft\' where state is null;')
         all_order_ids = self.search(cr, uid, [
-            ('accounting_order', '=', True)]) # for delete extra elements (on update order id is deleted from here)
+            ('accounting_order', '=', True),
+            ]) # for delete extra elements (on update order id is deleted from here)
         all_order_updated_ids = [] # list of all modified orders header (for load lines to test deletion)
 
         cursor_oc = self.pool.get(
@@ -607,13 +609,19 @@ class sale_order_add_extra(osv.osv):
         return
 
     _columns = {
+        'currency_id': fields.many2one('res.currency', 'Currency'),
         'date_deadline': fields.date('Deadline'),
-        'date_previous_deadline': fields.date('Previous deadline', help='If during sync deadline is modified this field contain old value before update'),
+        'date_previous_deadline': fields.date(
+            'Previous deadline', help='If during sync deadline is modified this field contain old value before update'),
 
         #'mandatory_delivery': fields.boolean('Delivery mandatory', help='If true moving of order is not possible'),
-        'date_delivery': fields.date('Delivery', help='Contain delivery date, when present production plan work with this instead of deadline value, if forced production cannot be moved'),
+        'date_delivery': fields.date(
+            'Delivery', 
+            help='Contain delivery date, when present production plan work with this instead of deadline value, if forced production cannot be moved'),
 
-        'accounting_order': fields.boolean('Accounting order', help='It true the order is generated from accounting program, so it is temporarly present in OpenERP only for production and delivery operations'),
+        'accounting_order': fields.boolean(
+            'Accounting order', 
+            help='It true the order is generated from accounting program, so it is temporarly present in OpenERP only for production and delivery operations'),
         'accounting_state': fields.selection([
             ('not', 'Not Confirmed'), # Not confirmed (first step during importation)
             ('new', 'New'),           # Confirmed
@@ -621,7 +629,7 @@ class sale_order_add_extra(osv.osv):
             ('planned', 'Planned for delivery'),
             ('deleted', 'Deleted'),   # Not used (order vanished when delete order)
             ('close', 'Close'),       # Not used (order vanished when delete order)
-        ],'Accounting state', select=True, readonly=True), }
+        ], 'Accounting state', select=True, readonly=True), }
 
     _defaults = {
         'date_previous_deadline': lambda *x: False,
