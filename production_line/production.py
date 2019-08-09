@@ -245,6 +245,8 @@ class sale_order_add_extra(osv.osv):
     def schedule_etl_sale_order(self, cr, uid, context=None):
         ''' Import OC and create sale.order
         '''
+        currency_pool = self.pool.get('res.currency')
+        
         empty_date = self.pool.get('micronaet.accounting').get_empty_date()
         log_info = ''
 
@@ -265,6 +267,17 @@ class sale_order_add_extra(osv.osv):
 
         # Open CSV passed file (see arguments) mode: read/binary, delimition char
         _logger.info('Start import OC header')
+        
+        # Load DB for currency:
+        currency_convert = {}
+        currency_default = 1 # EUR (TODO parameter)
+        currency_ids = currency_pool.search(cr, uid, [], context=None)
+        for currency in currency_pool.browse(
+                cr, uid, currency_ids, context=context):
+            account_ref = currency.account_ref
+            if not account_ref:
+                continue
+            currency_convert[account_ref] = currency.id
 
         # ---------------------------------------------------------------------
         #                               IMPORT HEADER
@@ -329,7 +342,8 @@ class sale_order_add_extra(osv.osv):
                         try:
                             partner_id = self.pool.get(
                                 'res.partner').create(cr, uid, {
-                                    'name': 'Partner %s' % (oc['CKY_CNT_CLFR']),
+                                    'name': 'Partner %s' % (
+                                        oc['CKY_CNT_CLFR']),
                                     'sql_customer_code': oc['CKY_CNT_CLFR'],
                                     'active': True,
                                     'property_account_position': 1, # TODO parametrizzare
@@ -362,6 +376,8 @@ class sale_order_add_extra(osv.osv):
                         'pricelist_id': partner_proxy.property_product_pricelist.id if partner_proxy else 1,  # product.pricelist   # TODO put default!!!
                         'partner_invoice_id': partner_id,
                         'partner_shipping_id': partner_id,
+                        'currency_id': currency_convert.get(
+                            oc['NKY_VLT'], currency_default),
                         # accounting_state default = new             #order_line
                         # payment_term account.payment.term  'currency_id' # function   incoterm  # stock.incoterms # project_id # account.analytic.account
                         # partner_shipping_id #shipped #date_confirm #section_id # crm.case.section create_date: False, #invoice_ids #invoice_exists shop_id #client_order_ref   Customer Reference
@@ -1907,7 +1923,7 @@ class res_currency(osv.osv):
     _inherit = 'res.currency'
 
     _columns = {
-        'account_ref': fields.char('Account ref', size=5),
+        'account_ref': fields.integer('Account ref'),
         }
         
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
