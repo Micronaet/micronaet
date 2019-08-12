@@ -116,6 +116,10 @@ class MrpProductionWasteWizard(osv.osv_memory):
         total = 0.0
         for lot in from_product.pedimento_ids:                
             qty = lot.product_qty
+            if not qty:
+                # Jump not present
+                continue
+
             total += qty
             material_pool.create(cr, uid, {
                 'production_id': mrp_id, # TODO Check!
@@ -126,6 +130,11 @@ class MrpProductionWasteWizard(osv.osv_memory):
                 'quantity': qty,
                 }, context=context)
 
+        if not total:
+            raise osv.except_osv(
+                _('Error'), 
+                _('The "from product" contains nothing to waste!'),
+                )
         # ---------------------------------------------------------------------
         # D. Create job:
         # ---------------------------------------------------------------------
