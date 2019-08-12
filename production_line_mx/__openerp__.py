@@ -48,6 +48,7 @@
         'custom_mx_view.xml',
         'wizard/parameter_view.xml',
         'wizard/confirm_production_mx_wizard.xml',
+        'wizard/waste_product_view.xml',
         'scheduler.xml',        
         ],
     'active': False,
