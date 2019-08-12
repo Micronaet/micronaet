@@ -22,7 +22,7 @@
                             <newline/>
                             
                             <separator string="Product status detail:" colspan="4"/>
-                            <field name="remain_detail" colspan="4" readonly="1" nolabel="1"/>
+                            <field name="remain_detail" colspan="4" readonly="1" nolabel="1" widget="html"/>
                             
                         </group>
                     </sheet>        
