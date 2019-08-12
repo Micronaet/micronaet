@@ -89,12 +89,13 @@ class MrpProductionWasteWizard(osv.osv_memory):
                 subtotal = lot.standard_price * lot.product_qty
                 qty += lot.product_qty
                 total += subtotal
-                detail += _('<font %s>Code: %s Q. %s [Price %s]<br/>') % (
-                    '' if subtotal else 'color="red"'  ,
-                    lot.code,
-                    lot.product_qty,
-                    lot.standard_price,
-                    )
+                detail += \
+                    _('<font%s>Code: %s Q. %s [Price %s]</font><br/>') % (
+                        '' if subtotal else ' color="red"',
+                        lot.code,
+                        lot.product_qty,
+                        lot.standard_price,
+                        )
             return {'value': {
                 'remain_detail': detail,
                 'remain_qty': qty,
