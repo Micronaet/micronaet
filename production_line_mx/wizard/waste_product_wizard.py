@@ -56,23 +56,121 @@ class MrpProductionWasteWizard(osv.osv_memory):
             context = {}
 
         # Pool used:
-        company_pool = self.pool.get('res.company')
+        bom_pool = self.pool.get('mrp.bom')
         mrp_pool = self.pool.get('mrp.production')
+        material_pool = self.pool.get('mrp.production.material')
         lavoration_pool = self.pool.get('mrp.production.workcenter.line')
-        product_pool = self.pool.get('product.product')
         load_pool = self.pool.get('mrp.production.workcenter.load')
 
         current = self.browse(cr, uid, ids, context=context)[0]
+        from_product = current.from_id.id
+        to_product = current.to_id.id
+        qty = current.qty
+        force_price = current.force_price
+        # TODO Check if passed price and qty!!!
         
-        # Create DB if not present
+        now = datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
         
-        # Create production
+        # ---------------------------------------------------------------------
+        # A. Create DB if not present
+        # ---------------------------------------------------------------------
+        bom_ids = self.search(cr, uid, [
+            ('product_id', '=', to_product.id),
+            ], context=context)
+        if bom_ids:
+            bom_id = bom_ids[0]    
+        else:
+            # Create minimal BOM:
+            bom_id = bom_pool.create(cr, uid, {
+                'product_id': to_product.id,
+                'type': 'normal',
+                'name': _('WASTE %s') % to_product.name,
+                'product_uom': to_product.uom_id.id,
+                'product_qty': 1.0,
+                }, context=context)    
+            
+            # Create line:
+            bom_pool.create(cr, uid, {
+                'bom_id': bom_id,
+                'product_id': from_product.id,
+                #'type': 'normal',
+                'name': from_product.name,
+                'product_uom': from_product.uom_id.id,
+                'product_qty': 1.0,
+                }, context=context)
         
-        # Create job
+        # ---------------------------------------------------------------------
+        # B. Create production
+        # ---------------------------------------------------------------------
+        mrp_id = mrp_pool.create(cr, uid, {
+            'product_id': to_product.id,
+            'bom_id': bom_id,
+            'product_qty': qty,
+            'date_planned': now,
+            'user_id': uid,            
+            }, context=context)
+
+        # ---------------------------------------------------------------------
+        # C. Create production material
+        # ---------------------------------------------------------------------
+        total = 0.0
+        for lot in from_product.pedimento_ids:                
+            qty = lot.product_qty
+            total += qty
+            material_pool.create(cr, uid, {
+                'production_id': mrp_id, # TODO Check!
+                'product_id': lot.product_id.id,
+                'standard_price': lot.product_id.standard_price,
+                'pedimento_id': lot.id,
+                'pedimento_price': lot.product_id.standard_price,
+                'quantity': qty,
+                }, context=context)
+
+        # ---------------------------------------------------------------------
+        # D. Create job:
+        # ---------------------------------------------------------------------
+        mrp_pool.add_new_lavoration(cr, uid, [mrp_id], context=context)
         
+        # Add cycle detail:
+        lavoration_ids = lavoration_pool.search(cr, uid, [
+            ('production_id': mrp_id),  # TODO check
+            ], context=context)
+        if not lavoration_ids:
+            raise osv.except_osv(
+                _('Error'), 
+                _('Cannot create production job'),
+                )
+        
+        # Update cycle information:        
+        lavoration_pool.write(cr, uid, lavoration_ids, {
+            'cycle': 1,
+            'single_cycle_duration': 0,
+            'single_cycle_qty': total,
+            'qty': total,
+            'product_qty': total,
+            #'workcenter_id': 1 # TODO
+            }, context=context)
+            
+        # Update component (unload materials)    
+        lavoration_pool.load_material_from_production(
+            cr, uid, lavoration_ids, context=context)    
+            
+        
+        # ---------------------------------------------------------------------
         # Confirm unload
+        # ---------------------------------------------------------------------
+        # Create fake wizard element
         
+        # Raise workflow:
+        
+        # ---------------------------------------------------------------------
         # Confirm load
+        # ---------------------------------------------------------------------
+        # Create fake wizard element
+        
+        # Raise Workflow action:
+        
+        # TODO mark production as waste generator!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         
         return True
 
