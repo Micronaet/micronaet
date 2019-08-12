@@ -76,56 +76,52 @@ class MrpProductionWasteWizard(osv.osv_memory):
         
         return True
 
-    def _get_remain_information(self, cr, uid, ids, fields, args, 
-            context=None):
-        ''' Fields function for calculate 
-        '''    
-        res = {}
-        for item in self.browse(cr, uid, ids, context=context):
-            res[item.id] = {
-                'remain_detail': '',
-                'remain_qty': 0.0,                
-                'remain_price': 0.0,                
-                }
-            from_id = item.product_id
-            if not from_id:
-                continue
- 
-            qty = total = 0.0
+
+    def _get_product_info(self, from_id):
+        ''' Return product status
+            qty, medium price, detail
+        '''
+        detail = ''
+        qty = total = 0.0
+        if from_id:                
             for lot in from_id.pedimento_ids:                
                 subtotal = lot.standard_price * lot.product_qty
                 qty += lot.product_qty
                 total += subtotal
-                res[item.id][
-                    'remain_detail'] += _('Code: %s Q. %s [Price %s]%s\n') % (
-                        lot.code,
-                        lot.product_qty,
-                        lot.standard_price,
-                        '' if subtotal else _(' * ERROR!'),
-                        )
-            res[item.id]['remain_qty'] = qty
-            res[item.id]['remain_price'] = total / qty if qty else 0.0
+                detail += _('Code: %s Q. %s [Price %s]%s\n') % (
+                    lot.code,
+                    lot.product_qty,
+                    lot.standard_price,
+                    '' if subtotal else _(' * ERROR!'),
+                    )
+        return qty, total / qty if qty else 0.0, detail 
+    
+    def onchange_product_id(self, cr, uid, ids, from_id, context=None):
+        ''' Onchange product id update product stock status
+        '''
+        qty, price, detail = self._get_product_info(item.from_id)
+        res = {'value': {
+            'remain_detail': detail,
+            'remain_qty': qty,
+            'remain_price': price,
+            }}
         return res
-            
+        
     _columns = {
         'from_id': fields.many2one('product.product', 'Waste product',
             help='Current product to be moved in waste',
             required=True),
         'to_id': fields.many2one('product.product', 'Waste product',
             help='Product considered waste', required=True),
-        'remain_detail': fields.function(
-            _get_remain_information, method=True, readonly=True,
-            type='text', string='Remain detail', 
-            help='Detail of all lot / pedimentos present'), 
-        'remain_qty': fields.function(
-            _get_remain_information, method=True, readonly=True,
-            type='float', string='Remain qty', 
-            help='Remain q. present in stock'),
-        'remain_price': fields.function(
-            _get_remain_information, method=True, readonly=True,
-            type='float', string='Remain price', 
-            help='Medium price of lot present'),
         'force_price': fields.float('Force price', digits=(16, 2)),
+
+        # Stock detail:
+        'remain_detail': fields.text('Remain detail', readonly=True, 
+            help='Detail of all lot / pedimentos present'), 
+        'remain_qty': fields.float('Remain qty', readonly=True,
+            digits=(16, 2), help='Remain q. present in stock'),
+        'remain_price': fields.float('Remain price', readonly=True,
+            digits=(16, 2), help='Medium price of lot present'),
         }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
