@@ -79,13 +79,11 @@ class MrpProductionWasteWizard(osv.osv_memory):
     def onchange_product_id(self, cr, uid, ids, from_id, context=None):
         ''' Onchange product id update product stock status
         '''
-
-        qty, price, detail = self._get_product_info(from_id)
+        product_pool = self.pool.get('product.product')
 
         detail = ''
         qty = total = 0.0
         if from_id:                
-            product_pool = self.pool.get('product.product')
             product = product_pool.browse(cr, uid, from_id, context=context)
             for lot in product.pedimento_ids:                
                 subtotal = lot.standard_price * lot.product_qty
