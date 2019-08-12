@@ -62,6 +62,8 @@ class MrpProductionWasteWizard(osv.osv_memory):
         product_pool = self.pool.get('product.product')
         load_pool = self.pool.get('mrp.production.workcenter.load')
 
+        current = self.browse(cr, uid, ids, context=context)[0]
+        
         # Create DB if not present
         
         # Create production
@@ -74,7 +76,8 @@ class MrpProductionWasteWizard(osv.osv_memory):
         
         return True
 
-    def _get_remain_information(self, cr, uid, ids, fields, args, context=None):
+    def _get_remain_information(self, cr, uid, ids, fields, args, 
+            context=None):
         ''' Fields function for calculate 
         '''    
         res = {}
@@ -94,7 +97,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
                 qty += lot.product_qty
                 total += subtotal
                 res[item.id][
-                    'remain_detail'] += _('Code: %s Q. %s [Price %s]%s\n')  % (
+                    'remain_detail'] += _('Code: %s Q. %s [Price %s]%s\n') % (
                         lot.code,
                         lot.product_qty,
                         lot.standard_price,
@@ -106,20 +109,20 @@ class MrpProductionWasteWizard(osv.osv_memory):
             
     _columns = {
         'from_id': fields.many2one('product.product', 'Waste product',
-            help='Current product to be moved in waste'
+            help='Current product to be moved in waste',
             required=True),
         'to_id': fields.many2one('product.product', 'Waste product',
-            help='Product considered waste'),
+            help='Product considered waste', required=True),
         'remain_detail': fields.function(
-            _get_remain_information, method=True, 
+            _get_remain_information, method=True, readonly=True,
             type='text', string='Remain detail', 
             help='Detail of all lot / pedimentos present'), 
         'remain_qty': fields.function(
-            _get_remain_information, method=True, 
+            _get_remain_information, method=True, readonly=True,
             type='float', string='Remain qty', 
             help='Remain q. present in stock'),
         'remain_price': fields.function(
-            _get_remain_information, method=True, 
+            _get_remain_information, method=True, readonly=True,
             type='float', string='Remain price', 
             help='Medium price of lot present'),
         'force_price': fields.float('Force price', digits=(16, 2)),

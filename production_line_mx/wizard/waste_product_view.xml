@@ -29,5 +29,22 @@
                 </form>                
             </field>
       </record>
+      <record model="ir.actions.act_window" id="action_new_mrp_production_waste_wizard">
+          <field name="name">Product in waste</field>
+          <field name="res_model">mrp.production.waste.wizard</field>
+          <field name="view_type">form</field>
+          <field name="view_mode">form</field>
+          <field name="view_id" ref="mrp_production_waste_wizard_view"/>
+          <field name="context">{}</field>
+          <field name="domain">[]</field>
+          <field name="target">new</field>
+      </record>
+      
+      <menuitem 
+          parent="mrp.menu_mrp_manufacturing" 
+          id="menu_mrp_production_waste_wizard" 
+          action="action_new_mrp_production_waste_wizard"
+          sequence="80"/>      
+      
    </data>
 </openerp>
