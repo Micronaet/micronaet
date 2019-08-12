@@ -76,11 +76,12 @@ class MrpProductionWasteWizard(osv.osv_memory):
         
         return True
 
-
-    def _get_product_info(self, from_id):
-        ''' Return product status
-            qty, medium price, detail
+    def onchange_product_id(self, cr, uid, ids, from_id, context=None):
+        ''' Onchange product id update product stock status
         '''
+
+        qty, price, detail = self._get_product_info(from_id)
+
         detail = ''
         qty = total = 0.0
         if from_id:                
@@ -96,18 +97,17 @@ class MrpProductionWasteWizard(osv.osv_memory):
                     lot.standard_price,
                     '' if subtotal else _(' * ERROR!'),
                     )
-        return qty, total / qty if qty else 0.0, detail 
-    
-    def onchange_product_id(self, cr, uid, ids, from_id, context=None):
-        ''' Onchange product id update product stock status
-        '''
-        qty, price, detail = self._get_product_info(from_id)
-        res = {'value': {
-            'remain_detail': detail,
-            'remain_qty': qty,
-            'remain_price': price,
-            }}
-        return res
+            return {'value': {
+                'remain_detail': detail,
+                'remain_qty': qty,
+                'remain_price': total / qty if qty else 0.0,
+                }}
+        else:        
+            return {'value': {
+                'remain_detail': ''
+                'remain_qty': 0.0,
+                'remain_price': 0.0,
+                }}
         
     _columns = {
         'from_id': fields.many2one('product.product', 'Waste product',
