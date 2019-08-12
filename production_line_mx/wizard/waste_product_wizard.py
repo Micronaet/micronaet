@@ -104,7 +104,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
                 }}
         else:        
             return {'value': {
-                'remain_detail': ''
+                'remain_detail': '',
                 'remain_qty': 0.0,
                 'remain_price': 0.0,
                 }}
