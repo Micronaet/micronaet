@@ -22,5 +22,6 @@
 ###############################################################################
 
 from . import confirm_production_mx
+from . import waste_product_wizard
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

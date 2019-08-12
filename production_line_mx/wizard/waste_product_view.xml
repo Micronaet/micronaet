@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>    
+       <!-- mrp.production.confirm.wizard -->
+       <record id="mrp_production_confirm_wizard_mx_update_view" model="ir.ui.view">
+            <field name="name">Lavoration final confirmation</field>
+            <field name="model">mrp.production.confirm.wizard</field>
+            <field name="inherit_id" ref="production_line.mrp_production_confirm_wizard_view"/>
+            <field name="arch" type="xml">
+                <field name="partial" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="recycle" position="attributes">
+                    <attribute name="on_change">onchange_waste(product_id,recycle)</attribute>
+                </field>
+                <field name="recycle" position="after">
+                    <field name="waste_id" attrs="{'required': [('recycle','=',True)], 'invisible': [('recycle','=',False)]}" widget="selection" domain="[('default_code', '=ilike', 'R%%')]"/>
+                    <field name="waste_qty" attrs="{'required': [('recycle','=',True)], 'invisible': [('recycle','=',False)]}" on_change="onchange_waste_qty(real_product_qty, waste_qty)"/>
+                </field>
+                   
+                <field name="use_mrp_package" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                                
+                <field name="package_id" position="attributes">
+                    <attribute name="widget">selection</attribute>
+                </field>
+                <field name="package_id" position="after">
+                    <field name="package_pedimento_id" />
+                </field>
+                
+                <field name="pallet_product_id" position="attributes">
+                    <attribute name="widget">selection</attribute>
+                </field>                
+                <field name="pallet_product_id" position="after">
+                    <field name="pallet_pedimento_id" domain="[('product_id', '=', pallet_product_id)]"/>
+                </field>
+            </field>
+      </record>
+      
+      <record model="ir.ui.view" id="view_default_mrp_production_workcenter_load_pedimento_tree">
+          <field name="name">mrp.production.workcenter.load.tree.pedimento</field>
+          <field name="model">mrp.production.workcenter.load</field>
+          <field name="inherit_id" ref="production_line.default_mrp_production_workcenter_load_tree_view"/>
+          <field name="arch" type="xml">
+              <!--TODO ? <field name="pallet_product_id" position="after">
+                  <field name="pallet_pedimento_id" />
+              </field>-->
+              <field name="package_id" position="after">
+                  <field name="package_pedimento_id" />
+              </field>
+          </field>
+      </record>
+      <record model="ir.ui.view" id="view_default_mrp_production_workcenter_load_pedimento_list_form">
+          <field name="name">mrp.production.workcenter.load.tree2.pedimento</field>
+          <field name="model">mrp.production.workcenter.load</field>
+          <field name="inherit_id" ref="production_line.default_mrp_production_workcenter_load_tree_readonly_view"/>
+          <field name="arch" type="xml">
+              <field name="package_id" position="after">
+                  <field name="package_pedimento_id" />
+                  <field name="pallet_pedimento_id" />
+              </field>
+          </field>
+      </record>
+      
+      <record model="ir.ui.view" id="view_default_mrp_production_workcenter_load_form_pedimento_view">
+          <field name="name">mrp.production.workcenter.load.from.pedimento</field>
+          <field name="model">mrp.production.workcenter.load</field>
+          <field name="inherit_id" ref="production_line.default_mrp_production_workcenter_load_form_view"/>
+          <field name="arch" type="xml">
+              <field name="pallet_product_id" position="after">
+                  <field name="pallet_pedimento_id" />
+              </field>
+              <field name="pallet_qty" position="after">
+                  <newline/>
+              </field>
+
+              <field name="package_id" position="after">
+                  <field name="package_pedimento_id" />
+              </field>
+              <field name="ul_qty" position="after">
+                  <newline/>
+              </field>
+          </field>
+      </record>
+   </data>
+</openerp>
