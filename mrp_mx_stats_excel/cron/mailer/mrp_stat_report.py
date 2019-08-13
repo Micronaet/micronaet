@@ -135,18 +135,25 @@ print '[INFO] Sending using "%s" connection [%s:%s]' % (
     odoo_mailer.smtp_port,
     )
 
+#if odoo_mailer.smtp_encryption in ('ssl', 'starttls'):
+#    smtp_server = smtplib.SMTP_SSL(
+#        odoo_mailer.smtp_host, odoo_mailer.smtp_port)
+#else:
+#    print '[ERR] Connect only SMTP SSL server!'
+#    sys.exit()
+#    #server_smtp.start() # TODO Check
+    
 if odoo_mailer.smtp_encryption in ('ssl', 'starttls'):
-    smtp_server = smtplib.SMTP_SSL(
-        odoo_mailer.smtp_host, odoo_mailer.smtp_port)
+    smtp_server = smtplib.SMTP('smtp.gmail.com', 587)
 else:
     print '[ERR] Connect only SMTP SSL server!'
     sys.exit()
-    #server_smtp.start() # TODO Check
-import pdb; pdb.set_trace()
-smtp_server.ehlo()
-smtp_server.starttls()
 
+smtp_server.ehlo() #open the connection
+smtp_server.starttls()
 smtp_server.login(odoo_mailer.smtp_user, odoo_mailer.smtp_pass)
+
+
 for to in smtp['to'].replace(' ', '').split(','):
     print 'Senting mail to: %s ...' % to
     msg = MIMEMultipart()
