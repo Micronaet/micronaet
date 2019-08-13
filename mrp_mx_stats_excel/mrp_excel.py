@@ -121,7 +121,6 @@ class MrpProduction(orm.Model):
         for product in sorted(
                 product_proxy, key=lambda x: (x.default_code, x.name)):
             for lot in product.pedimento_ids:
-                row += 1
                 qty = lot.product_qty
                 if not qty:
                     continue
@@ -149,6 +148,7 @@ class MrpProduction(orm.Model):
                     total['product'][product][2] = False # Not OK
 
                 # Write data:                    
+                row += 1
                 excel_pool.write_xls_line(                    
                     ws_name, row, [
                         product.default_code or '',
