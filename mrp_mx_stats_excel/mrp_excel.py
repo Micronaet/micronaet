@@ -117,7 +117,7 @@ class MrpProduction(orm.Model):
             for lot in product.pedimento_ids:
                 row += 1
                 qty = lot.product_qty
-                price = lot.price
+                price = lot.standard_price
                 subtotal = qty * price
                 partial += subtotal
                 
