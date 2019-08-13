@@ -137,10 +137,6 @@ class MrpProductionWasteWizard(osv.osv_memory):
             'state': 'done',
             }, context=context)
         
-        # Load materials in lavoration:    
-        lavoration_pool.load_materials_from_production(
-            cr, uid, [lavoration_id], context=context)
-
         # Read production created:            
         mrp = mrp_pool.browse(cr, uid, mrp_id, context=context)
 
@@ -257,9 +253,22 @@ class MrpProductionWasteWizard(osv.osv_memory):
                 _('The "from product" contains nothing to waste!'),
                 )
 
+        # Load materials in lavoration:    
+        #lavoration_pool.load_materials_from_production(
+        #    cr, uid, [lavoration_id], context=context)
+
         excel_pool.save_file_as(folder['unload']['data'] % lavoration_id)
         #model_pool = self.pool.get('ir.model.data')
         #view_id = model_pool.get_object_reference('module_name', 'view_name')[1]
+
+        # Close MRP
+        lavoration_pool.write(cr, uid, [lavoration_id]{
+            'state': 'done',
+            }, context=context)
+
+        mrp_pool.write(cr, uid, [mrp_id], {
+            'accounting_state': 'close',
+            }, context=context)
         
         return {
             'type': 'ir.actions.act_window',
