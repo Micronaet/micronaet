@@ -250,7 +250,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
         if not total:
             raise osv.except_osv(
                 _('Error'), 
-                _('The "from product" contains nothing to waste!'),
+                _('The "from product" contains nothing to recovered!'),
                 )
 
         # Load materials in lavoration: XXX Not used?
@@ -321,10 +321,10 @@ class MrpProductionWasteWizard(osv.osv_memory):
         
     _columns = {
         'from_id': fields.many2one('product.product', 'From product',
-            help='Current product to be moved in waste',
+            help='Current product to be moved in recovered',
             required=True),
-        'to_id': fields.many2one('product.product', 'To waste',
-            help='Product considered waste', required=True),
+        'to_id': fields.many2one('product.product', 'To recovered product',
+            help='Product considered recovered', required=True),
         'force_price': fields.float('Force price', digits=(16, 2)),
 
         # Stock detail:
