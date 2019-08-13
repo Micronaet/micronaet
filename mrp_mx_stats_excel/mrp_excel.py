@@ -105,7 +105,7 @@ class MrpProduction(orm.Model):
 
         # Data:        
         product_ids = product_pool.search(cr, uid, [], context=context)
-        product_proxy = sale_pool.browse(
+        product_proxy = product_pool.browse(
             cr, uid, product_ids, context=context)
             
         partial = 0.0 # Stock value
