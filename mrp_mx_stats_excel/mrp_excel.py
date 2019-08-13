@@ -142,10 +142,10 @@ class MrpProduction(orm.Model):
                 # -------------------------------------------------------------
                 # PAGE: Prodotti
                 if product not in total['product']:
-                    total['product'][product] = [0.0, 0.0, 0.0, True]
+                    # Quantity, Subtotal, Check OK
+                    total['product'][product] = [0.0, 0.0, True]
                 total['product'][product][0] += qty
-                total['product'][product][1] += price
-                total['product'][product][2] += subtotal
+                total['product'][product][1] += subtotal
 
                 # Color setup:
                 if subtotal:
@@ -154,7 +154,7 @@ class MrpProduction(orm.Model):
                 else:
                     f_text_current = f_text_red
                     f_number_current = f_number_red
-                    total['product'][product][3] = False # Not OK
+                    total['product'][product][2] = False # Not OK
 
                 # Write data:                    
                 row += 1
@@ -204,12 +204,12 @@ class MrpProduction(orm.Model):
         # Column:
         width = [
             12, 30, 5,
-            10, 10, 15, 
+            10, 15, 
             5,
             ]
         header = [
             'Codice', 'Prodotto', 'UM',
-            'Q.', 'Prezzo', 'Subtotale', 
+            'Q.', 'Subtotale', 
             'Errore',
             ]
         
@@ -226,7 +226,7 @@ class MrpProduction(orm.Model):
 
         for product in sorted(total['product'], 
                 key=lambda x: (x.default_code, x.name)):
-            qty, price, subtotal, ok = total['product'][product]
+            qty, subtotal, ok = total['product'][product]
                 
             # Color setup:
             if ok:
@@ -244,7 +244,6 @@ class MrpProduction(orm.Model):
                     product.name,
                     product.uom_id.name,
                     (qty, f_number_current),                    
-                    (price, f_number_current),                    
                     (subtotal, f_number_current),                    
                     '' if ok else 'X',
                     ], default_format=f_text_current)
@@ -263,7 +262,6 @@ class MrpProduction(orm.Model):
                     'Parziali',
                     uom.name,
                     qty,
-                    '',
                     subtotal,
                     ], default_format=f_number_bg_blue_bold, col=1)
             
@@ -273,7 +271,7 @@ class MrpProduction(orm.Model):
             ws_name, row, [
                 'Totale:',
                 master_total,
-                ], default_format=f_number_bg_green_bold, col=4)
+                ], default_format=f_number_bg_green_bold, col=3)
                 
         # ---------------------------------------------------------------------
         # MRP status:
