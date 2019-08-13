@@ -134,6 +134,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
             'product': to_product.id,
             'uom': to_product.uom_id.id,
             'product_price_calc': calc,
+            'state': 'done',
             }, context=context)
         
         # Load materials in lavoration:    
@@ -257,7 +258,23 @@ class MrpProductionWasteWizard(osv.osv_memory):
                 )
 
         excel_pool.save_file_as(folder['unload']['data'] % lavoration_id)
-        return True
+        #model_pool = self.pool.get('ir.model.data')
+        #view_id = model_pool.get_object_reference('module_name', 'view_name')[1]
+        
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('MRP'),
+            'view_type': 'form',
+            'view_mode': 'form,tree',
+            'res_id': mrp_id,
+            'res_model': 'mrp.production',
+            'view_id': False,
+            'views': [(False, 'form'), (False, 'tree')],
+            'domain': [],
+            'context': context,
+            'target': 'current', # 'new'
+            'nodestroy': False,
+            }
 
     def onchange_product_id(self, cr, uid, ids, from_id, context=None):
         ''' Onchange product id update product stock status
