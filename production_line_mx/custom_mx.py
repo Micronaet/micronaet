@@ -222,7 +222,15 @@ class MrpProduction(orm.Model):
     
     _columns = {
         'check_mrp': fields.text('Check error'),
+        'mode': fields.selection([
+            ('production', 'Real Production'),
+            ('waste', 'Waste product'),
+            ], 'Mode'),
         }
+
+    _defaults = {
+        'mode': lambda *x: 'production',
+        }    
 
 class MrpProductionWorkcenterLoad(orm.Model):
     """ Model name: MrpProductionWorkcenterLoad
