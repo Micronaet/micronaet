@@ -181,11 +181,10 @@ class MrpProduction(orm.Model):
                 ws_name, row, [
                     'Parziali',
                     uom.name,
-                    (qty, f_number_bg_blue_bold),                    
+                    qty,
                     '',
-                    (subtotal, f_number_bg_blue_bold),                    
+                    subtotal,
                     ], default_format=f_number_bg_blue_bold, col=2)
-        #f_text_bg_blue                    
             
         # Write data:                    
         row += 1
@@ -249,6 +248,31 @@ class MrpProduction(orm.Model):
                     '' if ok else 'X',
                     ], default_format=f_text_current)
 
+        # ---------------------------------------------------------------------
+        # Write total:
+        # ---------------------------------------------------------------------
+        master_total = 0.0
+        for uom in sorted(page_total, key=lambda x: x.name):
+            qty, subtotal = page_total[uom]
+            master_total += subtotal
+            # Write data:                    
+            row += 1
+            excel_pool.write_xls_line(                    
+                ws_name, row, [
+                    'Parziali',
+                    uom.name,
+                    qty,
+                    '',
+                    subtotal,
+                    ], default_format=f_number_bg_blue_bold, col=1)
+            
+        # Write data:                    
+        row += 1
+        excel_pool.write_xls_line(                    
+            ws_name, row, [
+                'Totale:',
+                master_total,
+                ], default_format=f_number_bg_green_bold, col=4)
                 
         # ---------------------------------------------------------------------
         # MRP status:
