@@ -133,6 +133,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
             'product_qty': qty,
             'product': to_product.id,
             'uom': to_product.uom_id.id,
+            'product_price_calc': calc,
             }, context=context)
         
         # Load materials in lavoration:    
@@ -147,7 +148,6 @@ class MrpProductionWasteWizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         folder = company_pool.get_contipaq_folder_parameters(
             cr, uid, context=context)
-        import pdb; pdb.set_trace()
 
         # ---------------------------------------------------------------------
         # Check mount test file:
@@ -232,11 +232,9 @@ class MrpProductionWasteWizard(osv.osv_memory):
             # Pedimento / Lot column: 
             if from_product.product_mode == 'lot':
                 pedimento_name = ''
-                lot_name = \
-                    lot.pedimento_id.name if unload.pedimento_id else ''
+                lot_name = lot.code or ''
             else: # pedimento   
-                pedimento_name = \
-                    lot.pedimento_id.name if unload.pedimento_id else ''
+                pedimento_name = lot.code or ''
                 lot_name = ''
             standard_price = \
                 lot.standard_price or lot.product_id.standard_price 
@@ -259,12 +257,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
                 )
 
         excel_pool.save_file_as(folder['unload']['data'] % lavoration_id)
-
-        # Update with calc:
-        return lavoration_pool.write(cr, uid, [lavoration_id], {
-            'state': 'done',
-            'product_price_calc': calc,
-            }, context=context)
+        return True
 
     def onchange_product_id(self, cr, uid, ids, from_id, context=None):
         ''' Onchange product id update product stock status
