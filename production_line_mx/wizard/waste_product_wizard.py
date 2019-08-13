@@ -262,7 +262,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
         #view_id = model_pool.get_object_reference('module_name', 'view_name')[1]
 
         # Close MRP
-        lavoration_pool.write(cr, uid, [lavoration_id]{
+        lavoration_pool.write(cr, uid, [lavoration_id], {
             'state': 'done',
             }, context=context)
 
