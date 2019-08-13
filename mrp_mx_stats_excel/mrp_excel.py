@@ -94,8 +94,14 @@ class MrpProduction(orm.Model):
         f_number_bg_green_bold = excel_pool.get_format('bg_green_number_bold')
         
         # Column:
-        width = [30, 15, 10, 10, 10, 15]
-        header = ['Prodotto', 'Codice', 'Lotto', 'Q.', 'Prezzo', 'Subtotale']
+        width = [
+            12, 30, 15, 
+            10, 10, 15,
+            ]
+        header = [
+            'Codice', 'Descrizione', 'Lotto', 
+            'Q.', 'Prezzo', 'Subtotale',
+            ]
         
         # Header:
         row = 0
@@ -137,7 +143,7 @@ class MrpProduction(orm.Model):
                 else:
                     f_text_current = f_text_red
                     f_number_current = f_number_red
-                    total['product'][product][1] = False # Not OK
+                    total['product'][product][2] = False # Not OK
 
                 # Write data:                    
                 excel_pool.write_xls_line(                    
@@ -157,8 +163,16 @@ class MrpProduction(orm.Model):
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
-        width = [30, 15, 10, 10, 15, 5]
-        header = ['Prodotto', 'Codice', 'Q.', 'Prezzo', 'Subtotale', 'Errore']
+        width = [
+            12, 30, 
+            10, 10, 15, 
+            5,
+            ]
+        header = [
+            'Codice', 'Prodotto', 
+            'Q.', 'Prezzo', 'Subtotale', 
+            'Errore',
+            ]
         
         # Header:
         row = 0
