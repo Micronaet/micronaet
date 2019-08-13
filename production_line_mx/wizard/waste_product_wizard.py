@@ -110,10 +110,36 @@ class MrpProductionWasteWizard(osv.osv_memory):
             'mode': 'waste',
             'accounting_state': 'close', # yet close
             }, context=context)
+        
+        # ---------------------------------------------------------------------
+        # C. Create lavoration
+        # ---------------------------------------------------------------------
         import pdb; pdb.set_trace()
-        mrp_pool.add_new_lavoration(cr, uid, [mrp_id], context=context)
+        lavoration_id = lavoration_pool.create(cr, uid, {
+            'production_id': mrp_id,
+            'real_date_planned': now,
+            'real_date_planned_end': now,
+            'date_start': now,
+            'date_finished': now,
+            'delay': 0.0,
+            'workcenter_id': 1, # TODO 
+            'production_state': 'done',
+            'cycle': 1,
+            'single_cycle_duration': 0.0,
+            'single_cycle_quantity': qty,
+            'hour': 0.0,
+            'qty': qty,
+            'product': to_product.id,
+            'uom': to_product.uom_id.id,
+            }, context=context)
+        
+        # Load materials in lavoration:    
+        lavoration_pool.load_materials_from_production(
+            cr, uid, [lavoration_id], context=context)
+
+        # Read production created:            
         mrp = mrp_pool.browse(cr, uid, mrp_id, context=context)
-        lavoration_id = mrp.workcenter_lines[0].id
+
         # ---------------------------------------------------------------------
         #                           Excel transit files:
         # ---------------------------------------------------------------------
