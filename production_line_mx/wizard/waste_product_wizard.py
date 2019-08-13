@@ -81,10 +81,11 @@ class MrpProductionWasteWizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         # A. Create DB if not present
         # ---------------------------------------------------------------------
-        import pdb; pdb.set_trace()
         bom_ids = bom_pool.search(cr, uid, [
+            ('bom_id', '=', False), # Master bom
             ('product_id', '=', to_product.id),
             ], context=context)
+        import pdb; pdb.set_trace()
         if bom_ids:
             bom_id = bom_ids[0]    
         else:
