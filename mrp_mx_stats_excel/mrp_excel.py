@@ -114,10 +114,10 @@ class MrpProduction(orm.Model):
         product_proxy = product_pool.browse(
             cr, uid, product_ids, context=context)
             
-        partial = 0.0 # Stock value
         excel_pool.write_xls_line(                    
             ws_name, row, header, default_format=f_header)
 
+        page_total = {}
         for product in sorted(
                 product_proxy, key=lambda x: (x.default_code, x.name)):
             for lot in product.pedimento_ids:
@@ -125,9 +125,17 @@ class MrpProduction(orm.Model):
                 if not qty:
                     continue
 
+                uom = product.uom_id
                 price = lot.standard_price
                 subtotal = qty * price
-                partial += subtotal
+
+                # -------------------------------------------------------------
+                # Total block:
+                # -------------------------------------------------------------
+                if uom not in page_total:
+                    page_total[uom] = [0.0, 0.0]
+                page_total[uom][0] += qty
+                page_total[uom][1] += subtotal
                 
                 # -------------------------------------------------------------
                 # COLLECT DATA:
@@ -154,11 +162,27 @@ class MrpProduction(orm.Model):
                         product.default_code or '',
                         product.name,
                         lot.code or '',
-                        product.uom_id.name,
+                        uom.name,
                         (qty, f_number_current),                    
                         (price, f_number_current),                    
                         (subtotal, f_number_current),                    
                         ], default_format=f_text_current)
+
+        # ---------------------------------------------------------------------
+        # Write total:
+        # ---------------------------------------------------------------------
+        for uom in sorted(page_total, key=lambda x: x.name):
+            qty, subtotal = page_total[uom]
+            # Write data:                    
+            row += 1
+            excel_pool.write_xls_line(                    
+                ws_name, row, [
+                    uom.name,
+                    (qty, f_number_bg_blue_bold),                    
+                    '',
+                    (subtotal, f_number_bg_blue_bold),                    
+                    ], default_format=f_text_bg_blue, col=3)
+            
 
         # ---------------------------------------------------------------------
         # Product status:
@@ -173,7 +197,7 @@ class MrpProduction(orm.Model):
             5,
             ]
         header = [
-            'Codice', 'Prodotto', 'UM'
+            'Codice', 'Prodotto', 'UM',
             'Q.', 'Prezzo', 'Subtotale', 
             'Errore',
             ]
