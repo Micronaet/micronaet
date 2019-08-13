@@ -195,16 +195,6 @@ class MrpProduction(orm.Model):
                     '' if ok else 'X',
                     ], default_format=f_text_current)
 
-            # -------------------------------------------------------------
-            # COLLECT DATA:
-            # -------------------------------------------------------------
-            # PAGE: Prodotti
-            if product not in total['product']:
-                total['product'] = [0.0, 0.0]
-            total['product'][0] += qty
-            total['product'][1] += price
-            
-
                 
         # ---------------------------------------------------------------------
         # MRP status:
