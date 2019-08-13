@@ -116,7 +116,7 @@ class MrpProduction(orm.Model):
                 product_proxy, key=lambda x: (x.default_code, x.name)):
             for lot in product.pedimento_ids:
                 row += 1
-                qty = lot.qty
+                qty = lot.product_qty
                 price = lot.price
                 subtotal = qty * price
                 partial += subtotal
