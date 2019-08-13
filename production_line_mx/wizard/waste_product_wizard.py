@@ -50,7 +50,12 @@ class MrpProductionWasteWizard(osv.osv_memory):
     #                        Wizard button events:
     # -------------------------------------------------------------------------
     def action_confirm_move(self, cr, uid, ids, context=None):
-        ''' Write confirmed weight (load or unload documents)
+        ''' Create unload from product and load to product
+            1. Create BOM empty lines
+            2. Create production
+            3. Create material list from from_product
+            4. Create empty mrp job
+            5. Extract unload and load in Excel for Account program
         '''
         if context is None:
             context = {}
@@ -63,8 +68,9 @@ class MrpProductionWasteWizard(osv.osv_memory):
         excel_pool = self.pool.get('excel.writer')
 
         current = self.browse(cr, uid, ids, context=context)[0]
-        from_product = current.from_id.id
-        to_product = current.to_id.id
+        from_product = current.from_id
+        to_product = current.to_id
+        import pdb; pdb.set_trace()
         qty = current.qty
         price = current.price
         force_price = current.force_price
@@ -233,50 +239,6 @@ class MrpProductionWasteWizard(osv.osv_memory):
                 )
 
         excel_pool.save_file_as(folder['unload']['data'] % lavoration_id)
-
-        # ---------------------------------------------------------------------
-        # D. Create job:
-        # ---------------------------------------------------------------------        
-        """
-        # Add cycle detail:
-        lavoration_ids = lavoration_pool.search(cr, uid, [
-            ('production_id': mrp_id),  # TODO check
-            ], context=context)
-        if not lavoration_ids:
-            raise osv.except_osv(
-                _('Error'), 
-                _('Cannot create production job'),
-                )
-        
-        # Update cycle information:        
-        lavoration_pool.write(cr, uid, lavoration_ids, {
-            'cycle': 1,
-            'single_cycle_duration': 0,
-            'single_cycle_qty': total,
-            'qty': total,
-            'product_qty': total,
-            #'workcenter_id': 1 # TODO
-            }, context=context)
-            
-        # Update component (unload materials)    
-        lavoration_pool.load_material_from_production(
-            cr, uid, lavoration_ids, context=context)    
-        """
-            
-        # ---------------------------------------------------------------------
-        # Confirm unload
-        # ---------------------------------------------------------------------
-        # Create fake wizard element
-        
-        # Raise workflow:
-        
-        # ---------------------------------------------------------------------
-        # Confirm load
-        # ---------------------------------------------------------------------
-        # Create fake wizard element
-        
-        # Raise Workflow action:
-        
         return True
 
     def onchange_product_id(self, cr, uid, ids, from_id, context=None):
@@ -299,10 +261,14 @@ class MrpProductionWasteWizard(osv.osv_memory):
                         lot.product_qty,
                         lot.standard_price,
                         )
+
+            medium_price = total / qty if qty else 0.0
+            detail += _('<b>Remain q. %s (medium price %s)</b>') % (
+                qty, medium_price)
             return {'value': {
                 'remain_detail': detail,
                 'remain_qty': qty,
-                'remain_price': total / qty if qty else 0.0,
+                'remain_price': medium_price,
                 }}
         else:        
             return {'value': {
