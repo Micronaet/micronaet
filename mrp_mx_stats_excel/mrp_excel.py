@@ -53,8 +53,8 @@ class MrpProduction(orm.Model):
         '''
         if context is None:
             context = {}
+        save_mode = context.get('save_mode')
         
-        _logger.info('Start extract MRP statistic')
         
         # Pool used:
         excel_pool = self.pool.get('excel.writer')
@@ -68,9 +68,11 @@ class MrpProduction(orm.Model):
             'material': {},     
             } 
         #month_column = []
+        _logger.info('%s. Start extract MRP statistic: %s' % 
+            (now, save_mode))
 
         # ---------------------------------------------------------------------
-        # Stock status:
+        # Lot status:
         # ---------------------------------------------------------------------               
         ws_name = 'Lotti'
         excel_pool.create_worksheet(name=ws_name)
@@ -92,8 +94,8 @@ class MrpProduction(orm.Model):
         f_number_bg_green_bold = excel_pool.get_format('bg_green_number_bold')
         
         # Column:
-        width = [30, 15, 10, 10, 15]
-        header = ['Prodotto', 'Codice', 'Q.', 'Prezzo', 'Subtotale']
+        width = [30, 15, 10, 10, 10, 15]
+        header = ['Prodotto', 'Codice', 'Lotto', 'Q.', 'Prezzo', 'Subtotale']
         
         # Header:
         row = 0
@@ -119,23 +121,79 @@ class MrpProduction(orm.Model):
                 subtotal = qty * price
                 partial += subtotal
                 
+                # -------------------------------------------------------------
+                # COLLECT DATA:
+                # -------------------------------------------------------------
+                # PAGE: Prodotti
+                if product not in total['product']:
+                    total['product'] = [0.0, 0.0, True]
+                total['product'][0] += qty
+                total['product'][1] += price
+
                 # Color setup:
-                if not subtotal:
-                    f_text_current = f_text_red
-                    f_number_current = f_number_red
-                else:
+                if subtotal:
                     f_text_current = f_text
                     f_number_current = f_number
+                else:
+                    f_text_current = f_text_red
+                    f_number_current = f_number_red
+                    total['product'][1] = False # Not OK
 
                 # Write data:                    
                 excel_pool.write_xls_line(                    
                     ws_name, row, [
                         product.name,
                         product.default_code or '',
+                        lot.code or '',
                         (qty, f_number_current),                    
                         (price, f_number_current),                    
                         (subtotal, f_number_current),                    
                         ], default_format=f_text_current)
+
+        # ---------------------------------------------------------------------
+        # Product status:
+        # ---------------------------------------------------------------------               
+        ws_name = 'Prodotti'
+        excel_pool.create_worksheet(name=ws_name)
+
+        # Column:
+        width = [30, 15, 10, 10, 15, 5]
+        header = ['Prodotto', 'Codice', 'Q.', 'Prezzo', 'Subtotale', 'Errore']
+        
+        # Header:
+        row = 0
+        excel_pool.column_width(ws_name, width)
+        excel_pool.write_xls_line(
+            ws_name, row, header, default_format=f_header)
+
+        # Data:        
+        partial = 0.0 # Stock value
+        excel_pool.write_xls_line(                    
+            ws_name, row, header, default_format=f_header)
+
+        for product in sorted(total['product'], 
+                key=lambda x: x.default_code, x.name):
+            qty, price, ok = total['product'][product]
+                
+            # Color setup:
+            if ok:
+                f_text_current = f_text
+                f_number_current = f_number
+            else:
+                f_text_current = f_text_red
+                f_number_current = f_number_red
+
+            # Write data:      
+            row += 1              
+            excel_pool.write_xls_line(                    
+                ws_name, row, [
+                    product.name,
+                    product.default_code or '',
+                    (qty, f_number_current),                    
+                    (price, f_number_current),                    
+                    (subtotal, f_number_current),                    
+                    '' if ok else 'X',
+                    ], default_format=f_text_current)
 
                 # -------------------------------------------------------------
                 # COLLECT DATA:
@@ -147,283 +205,23 @@ class MrpProduction(orm.Model):
                 total['product'][1] += price
                 
 
-
-        month_column = sorted(month_column)
-        try:
-            index_today = month_column.index(now)
-        except:
-            index_today = False
-            
-        # Total page order: 
-        for currency in sorted(total, key=lambda x: x.symbol):
-            excel_pool.write_xls_line(
-                ws_name, row, [
-                    'Totale',
-                    currency.symbol, # Order
-                    (total[currency][0], f_number_bg_blue_bold),    
-                    currency.symbol, # Payment
-                    (total[currency][1], f_number_bg_blue_bold),    
-                    (total[currency][2], f_number_bg_red_bold),    
-                    ], default_format=f_text_bg_blue, col=4)
-            row += 1        
-            
-        # ---------------------------------------------------------------------
-        # Docnaet Quotation (pending and lost):
-        # ---------------------------------------------------------------------   
-        # Setup:
-        ws_setup = [
-            ('Offerte', [
-                ('sale_state', '=', 'pending'),
-                ('sale_order_amount', '>', 0.0),
-                ]),
-            ('Perse', [
-                ('sale_state', '=', 'lost'),
-                ('sale_order_amount', '>', 0.0),
-                ]),
-            ]
-
-        width = [
-            38, 18, 10, 10, 50,
-            3, 12,
-            3, 12, 12, 12, 40
-            ]
-        header = [
-            'Partner', 'Commerciale', 'Data', 'Scadenza', 'Oggetto', 
-            'Val.', 'Totale', 
-            'Val.', 'Pag. aperti', 'Di cui scaduti', 'FIDO', 'Note',
-            ]
-            
-        for ws_name, document_filter in ws_setup:
-            docnaet_ids = docnaet_document.search(
-                cr, uid, document_filter, context=context)
-            if not docnaet_ids:    
-                continue # Not written
-
-            excel_pool.create_worksheet(name=ws_name)
-            row = 0
-                    
-            # Column:
-            excel_pool.column_width(ws_name, width)
-            
-            # Header:
-            excel_pool.write_xls_line(
-                ws_name, row, header, default_format=f_header)
-            row += 1   
-
-            document_proxy = docnaet_document.browse(
-                cr, uid, docnaet_ids, context=context)
-
-            total = {}
-            for document in sorted(
-                    document_proxy, 
-                    key=lambda x: x.date,
-                    reverse=True):
-                partner = document.partner_id
-                currency = document.sale_currency_id
-                currency_payment = partner.duelist_currency_id or currency
-
-                if partner not in partner_total:
-                    partner_total[partner] = {}
-                if currency not in partner_total[partner]:
-                    partner_total[partner][currency] = [
-                        0.0, # Order
-                        0.0, # Quotation
-                        0.0, # Lost
-                        ]    
-                if ws_name == 'Offerte':        
-                    partner_total[partner][currency][1] += order.amount_untaxed
-                else:    
-                    partner_total[partner][currency][2] += order.amount_untaxed
                 
-                # -------------------------------------------------------------
-                # Update total in currency mode:
-                # -------------------------------------------------------------
-                if currency not in total:
-                    # order, exposition, deadlined
-                    total[currency] = [0.0, 0.0, 0.0]
-
-                if currency_payment not in total:
-                    # order, exposition, deadlined
-                    total[currency_payment] = [0.0, 0.0, 0.0]
-                    
-                total[currency][0] += document.sale_order_amount
-                total[currency_payment][1] += partner.duelist_exposition_amount
-                total[currency_payment][2] += partner.duelist_uncovered_amount
-
-                # Setup color:
-                if partner.duelist_uncovered or partner.duelist_over_fido:
-                    f_text_current = f_text_red
-                    f_number_current = f_number_red
-                else:
-                    f_text_current = f_text
-                    f_number_current = f_number
-                    
-                excel_pool.write_xls_line(
-                    ws_name, row, [
-                        partner.name,
-                        document.user_id.name,
-                        document.date,
-                        document.deadline,
-                        '%s %s' % (
-                            document.name or '',
-                            document.description or '',
-                            ),
-                        currency.symbol,
-                        (document.sale_order_amount, f_number_current),
-                        
-                        currency_payment.symbol,
-                        (partner.duelist_exposition_amount or '', 
-                            f_number_current),             
-                        (partner.duelist_uncovered_amount or '', 
-                            f_number_current),
-                        (partner.duelist_fido or '', f_number_current),             
-                        get_partner_note(partner),
-                        ], default_format=f_text_current)
-                row += 1
-
-            # -----------------------------------------------------------------
-            # Total page order:
-            # -----------------------------------------------------------------
-            for currency in sorted(total, key=lambda x: x.symbol):
-                excel_pool.write_xls_line(
-                    ws_name, row, [
-                        'Totale',
-                        currency.symbol,
-                        (total[currency][0], f_number_bg_blue_bold),    
-                        currency.symbol,
-                        (total[currency][1], f_number_bg_blue_bold),    
-                        (total[currency][2], f_number_bg_red_bold),
-                        ], default_format=f_text_bg_blue, col=4)
-                row += 1        
-
         # ---------------------------------------------------------------------
-        # Docnaet Customer total:
+        # MRP status:
         # ---------------------------------------------------------------------               
-        ws_name = 'Clienti'
-        excel_pool.create_worksheet(name=ws_name)
-        width = [
-            40, 
-            3, 12, 12, 12, 
-            3, 12, 12, 
-            12, 40,
-            ]
-        header = [
-            'Partner', 
-            'Val.', 'Ordini', 'Offerte', 'Off. perse', 
-            'Val.', 'Pag. aperti', 'Di cui scaduti', 
-            'FIDO', 'Note',
-            ]
-        row = 0
-                
-        # Column:
-        excel_pool.column_width(ws_name, width)
-        
-        # Header:
-        excel_pool.write_xls_line(
-            ws_name, row, header, default_format=f_header)
-        row += 1   
-        
-        total = {}
-        for partner in sorted(partner_total, key=lambda x: x.name):
-            currency_payment = partner.duelist_currency_id or currency
-
-            first = True
-            for currency in partner_total[partner]:
-                order, quotation, lost = partner_total[partner][currency]
-                # -------------------------------------------------------------
-                # Update total in currency mode:
-                # -------------------------------------------------------------                
-                if currency not in total:
-                    # order, exposition, deadlined
-                    total[currency] = [
-                        0.0, 0.0, 0.0, 
-                        0.0, 0.0, 0.0,
-                        ]
-
-                if currency_payment not in total:
-                    # order, exposition, deadlined
-                    total[currency_payment] = [
-                        0.0, 0.0, 0.0, 
-                        0.0, 0.0, 0.0,
-                        ]
-
-                total[currency][0] += order
-                total[currency][1] += quotation # TODO problem if different currency
-                total[currency][2] += lost # TODO problem if different currency
-                
-                # Payment:
-                total[currency_payment][3] += partner.duelist_exposition_amount
-                total[currency_payment][4] += partner.duelist_uncovered_amount
-
-                # -----------------------------------------------------------------
-                # Setup color:
-                # -----------------------------------------------------------------
-                if partner.duelist_uncovered or partner.duelist_over_fido:
-                    f_text_current = f_text_red
-                    f_number_current = f_number_red
-                else:
-                    f_text_current = f_text
-                    f_number_current = f_number
-                if first:
-                    first = False
-                    excel_pool.write_xls_line(
-                        ws_name, row, [
-                            partner.name,
-                            
-                            currency.symbol,
-                            (order or '', f_number),                    
-                            (quotation or '', f_number),       
-                            (lost or '', f_number_red),                    
-
-                            currency_payment.symbol,
-                            (partner.duelist_exposition_amount or '', 
-                                f_number_current),             
-                            (partner.duelist_uncovered_amount or '', 
-                                f_number_current),
-                            (partner.duelist_fido or '', f_number_current),             
-                            get_partner_note(partner),
-                            ], default_format=f_text_current)
-                else:            
-                    excel_pool.write_xls_line(
-                        ws_name, row, [
-                            #partner.name,
-                            
-                            currency.symbol,
-                            (order or '', f_number),                    
-                            (quotation or '', f_number),       
-                            (lost or '', f_number_red),                    
-
-                            #currency_payment.symbol,
-                            #(partner.duelist_exposition_amount or '', 
-                            #    f_number_current),             
-                            #(partner.duelist_uncovered_amount or '', 
-                            #    f_number_current),
-                            #(partner.duelist_fido or '', f_number_current),             
-                            #get_partner_note(partner),
-                            ], default_format=f_text_current, col=1)
-                row += 1
-
-        # ---------------------------------------------------------------------
-        # Total page order:
-        # ---------------------------------------------------------------------
-        for currency in sorted(total, key=lambda x: x.symbol):
-            excel_pool.write_xls_line(
-                ws_name, row, [
-                    'Totale',
-                    currency.symbol,
-                    (total[currency][0], f_number_bg_blue_bold),    
-                    (total[currency][1], f_number_bg_blue_bold),    
-                    (total[currency][2], f_number_bg_red_bold),    
-                    currency.symbol,
-                    (total[currency][3], f_number_bg_blue_bold),    
-                    (total[currency][4], f_number_bg_red_bold),
-                    ], default_format=f_text_bg_blue)
-            row += 1        
+        #month_column = sorted(month_column)
+        #try:
+        #    index_today = month_column.index(now)
+        #except:
+        #    index_today = False
+            
 
         # ---------------------------------------------------------------------
         # Docnaet Product total:
         # ---------------------------------------------------------------------               
+        """
         ws_name = 'Prodotti'
+        
         excel_pool.create_worksheet(name=ws_name)
         
         width = [12, 30, 2, 10]
@@ -513,33 +311,7 @@ class MrpProduction(orm.Model):
                     default_format=f_number_bg_green_bold, 
                     col=start)
             row += 1
-            
-        #excel_pool.row_height(ws_name, [row, ], height=50)
-        #text_total_row = []
-        #for record in total_row:
-        #    res = ''
-        #    for uom_code in record:
-        #        res += '%s.00 %s\n' % (
-        #        record[uom_code],
-        #        uom_code,
-        #        )
-        #    text_total_row.append(res)
-    
-        #excel_pool.write_xls_line(
-        #    ws_name, row, text_total_row, 
-        #        default_format=f_number_bg_green_bold, 
-        #        col=start)
-            
-        if save_mode: # Save as a file:
-            _logger.info('Save mode: %s' % save_mode)
-            return excel_pool.save_file_as(save_mode)            
-        else: # Send mail:
-            _logger.info('Send mail mode!')
-            return excel_pool.send_mail_to_group(cr, uid, 
-                'docnaet_sale_excel.group_sale_statistic_mail', 
-                'Statistiche vendite', 
-                'Statistiche giornaliere vendite', 
-                'sale_statistic.xlsx',
-                context=context)
+        """ 
+        return excel_pool.save_file_as(save_mode)            
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

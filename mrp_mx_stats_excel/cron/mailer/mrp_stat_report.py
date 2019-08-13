@@ -33,7 +33,6 @@ from email import Encoders
 # -----------------------------------------------------------------------------
 # Read configuration parameter:
 # -----------------------------------------------------------------------------
-#cfg_file = os.path.expanduser('../local.cfg')
 cfg_file = os.path.expanduser('../openerp.cfg')
 now = ('%s' %datetime.now())[:19]
 
@@ -55,10 +54,9 @@ smtp = {
     #'subject': config.get('smtp', 'subject'),
     #'text': config.get('smtp', 'text'),
     'text': '''
-        <p>Spett.li responsabili vendite,</p>
+        <p>Spett.li responsabili production PCA,</p>
         <p>Questa &egrave; una mail automatica giornaliera inviata da 
-            <b>OpenERP</b> con lo stato ordini in contabilit&agrave; e 
-            le offerte aperte o perse in <b>Docnaet</b>.
+            <b>OpenERP</b> con lo stato produzioni e magazzino contabile.
         </p>
 
         <p>Situazione aggiornata alla data di riferimento: <b>%s</b></p>
@@ -92,10 +90,10 @@ smtp = {
     
     'folder': config.get('smtp', 'folder'),
     }
-#group_name = 'docnaet_sale_excel.group_sale_statistic_mail'
+
 
 filename = os.path.expanduser(
-    os.path.join(smtp['folder'], 'stato_ordini.xlsx'))
+    os.path.join(smtp['folder'], 'statistiche_produzione.xlsx'))
 context = {
     'save_mode': filename,
     }
@@ -110,27 +108,14 @@ odoo = erppeek.Client(
     password=odoo['password'],
     )
 mailer = odoo.model('ir.mail_server')
-group = odoo.model('res.groups')
 model = odoo.model('ir.model.data')
 
-# Setup context for order:
+# Setup context for MRP:
 odoo.context = context
-order = odoo.model('sale.order')
+mrp = odoo.model('mrp.production')
 
 # Launch extract procedure:
-order.extract_sale_excel_report()
-
-# -----------------------------------------------------------------------------
-# Extract mail list from group:
-# -----------------------------------------------------------------------------
-#group_name = group_name.split('.')
-#group_id = model.get_object_reference(
-#    group_name[0], 
-#    group_name[1],
-#    )[1]
-#partner_name = []
-#for user in group_pool.browse(group_id).users:
-#    partner_ids.append(user.partner_id.email)
+mrp.extract_mrp_stats_excel_report()
 
 # -----------------------------------------------------------------------------
 # SMTP Sent:
