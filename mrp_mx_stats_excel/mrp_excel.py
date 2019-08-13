@@ -95,11 +95,11 @@ class MrpProduction(orm.Model):
         
         # Column:
         width = [
-            12, 30, 15, 
+            12, 30, 20, 5,
             10, 10, 15,
             ]
         header = [
-            'Codice', 'Descrizione', 'Lotto', 
+            'Codice', 'Descrizione', 'Lotto', 'UM',
             'Q.', 'Prezzo', 'Subtotale',
             ]
         
@@ -154,6 +154,7 @@ class MrpProduction(orm.Model):
                         product.default_code or '',
                         product.name,
                         lot.code or '',
+                        product.uom_id.name,
                         (qty, f_number_current),                    
                         (price, f_number_current),                    
                         (subtotal, f_number_current),                    
@@ -167,12 +168,12 @@ class MrpProduction(orm.Model):
 
         # Column:
         width = [
-            12, 30, 
+            12, 30, 5,
             10, 10, 15, 
             5,
             ]
         header = [
-            'Codice', 'Prodotto', 
+            'Codice', 'Prodotto', 'UM'
             'Q.', 'Prezzo', 'Subtotale', 
             'Errore',
             ]
@@ -206,6 +207,7 @@ class MrpProduction(orm.Model):
                 ws_name, row, [
                     product.default_code or '',
                     product.name,
+                    product.uom_id.name,
                     (qty, f_number_current),                    
                     (price, f_number_current),                    
                     (subtotal, f_number_current),                    
