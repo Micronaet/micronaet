@@ -129,6 +129,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
             'single_cycle_quantity': qty,
             'hour': 0.0,
             'qty': qty,
+            'real_product_qty': qty,
             'product_qty': qty,
             'product': to_product.id,
             'uom': to_product.uom_id.id,
