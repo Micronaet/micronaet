@@ -171,18 +171,28 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------
         # Write total:
         # ---------------------------------------------------------------------
+        master_total = 0.0
         for uom in sorted(page_total, key=lambda x: x.name):
             qty, subtotal = page_total[uom]
+            master_total += subtotal
             # Write data:                    
             row += 1
             excel_pool.write_xls_line(                    
                 ws_name, row, [
+                    'Parziali',
                     uom.name,
                     (qty, f_number_bg_blue_bold),                    
                     '',
                     (subtotal, f_number_bg_blue_bold),                    
-                    ], default_format=f_text_bg_blue, col=3)
+                    ], default_format=f_text_bg_blue, col=2)
             
+            # Write data:                    
+            row += 1
+            excel_pool.write_xls_line(                    
+                ws_name, row, [
+                    'Totale:',
+                    (master_total, f_number_bg_blue_bold),                    
+                    ], default_format=f_text_bg_blue, col=5)
 
         # ---------------------------------------------------------------------
         # Product status:
