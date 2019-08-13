@@ -126,9 +126,9 @@ class MrpProduction(orm.Model):
                 # -------------------------------------------------------------
                 # PAGE: Prodotti
                 if product not in total['product']:
-                    total['product'] = [0.0, 0.0, True]
-                total['product'][0] += qty
-                total['product'][1] += price
+                    total['product'][product] = [0.0, 0.0, True]
+                total['product'][product][0] += qty
+                total['product'][product][1] += price
 
                 # Color setup:
                 if subtotal:
@@ -137,7 +137,7 @@ class MrpProduction(orm.Model):
                 else:
                     f_text_current = f_text_red
                     f_number_current = f_number_red
-                    total['product'][1] = False # Not OK
+                    total['product'][product][1] = False # Not OK
 
                 # Write data:                    
                 excel_pool.write_xls_line(                    
