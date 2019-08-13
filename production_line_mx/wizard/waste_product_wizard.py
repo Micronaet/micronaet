@@ -73,7 +73,6 @@ class MrpProductionWasteWizard(osv.osv_memory):
         current = self.browse(cr, uid, ids, context=context)[0]
         from_product = current.from_id
         to_product = current.to_id
-        import pdb; pdb.set_trace()
         qty = current.remain_qty
         price = current.force_price or current.remain_price
         calc = current.remain_detail # TODO
@@ -82,7 +81,8 @@ class MrpProductionWasteWizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         # A. Create DB if not present
         # ---------------------------------------------------------------------
-        bom_ids = self.search(cr, uid, [
+        import pdb; pdb.set_trace()
+        bom_ids = bom_pool.search(cr, uid, [
             ('product_id', '=', to_product.id),
             ], context=context)
         if bom_ids:
@@ -97,18 +97,6 @@ class MrpProductionWasteWizard(osv.osv_memory):
                 'product_qty': 1.0,
                 }, context=context)    
             
-            """
-            # Create line:
-            bom_pool.create(cr, uid, {
-                'bom_id': bom_id,
-                'product_id': from_product.id,
-                #'type': 'normal',
-                'name': from_product.name,
-                'product_uom': from_product.uom_id.id,
-                'product_qty': 1.0,
-                }, context=context)
-            """
-        
         # ---------------------------------------------------------------------
         # B. Create production
         # ---------------------------------------------------------------------
