@@ -218,7 +218,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
 
             total += qty
             material_pool.create(cr, uid, {
-                'production_id': mrp_id, # TODO Check!
+                'mrp_production_id': mrp_id,
                 'product_id': lot.product_id.id,
                 'standard_price': lot.product_id.standard_price,
                 'pedimento_id': lot.id,
@@ -296,10 +296,10 @@ class MrpProductionWasteWizard(osv.osv_memory):
                 }}
         
     _columns = {
-        'from_id': fields.many2one('product.product', 'Waste product',
+        'from_id': fields.many2one('product.product', 'From product',
             help='Current product to be moved in waste',
             required=True),
-        'to_id': fields.many2one('product.product', 'Waste product',
+        'to_id': fields.many2one('product.product', 'To waste',
             help='Product considered waste', required=True),
         'force_price': fields.float('Force price', digits=(16, 2)),
 
