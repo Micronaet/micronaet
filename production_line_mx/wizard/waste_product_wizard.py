@@ -294,9 +294,9 @@ class MrpProductionWasteWizard(osv.osv_memory):
         # Stock detail:
         'remain_detail': fields.text('Remain detail', readonly=True, 
             help='Detail of all lot / pedimentos present'), 
-        'remain_qty': fields.float('Remain qty', readonly=True,
+        'remain_qty': fields.float('Remain qty',
             digits=(16, 2), help='Remain q. present in stock'),
-        'remain_price': fields.float('Remain price', readonly=True,
+        'remain_price': fields.float('Remain price',
             digits=(16, 2), help='Medium price of lot present'),
         }
 
