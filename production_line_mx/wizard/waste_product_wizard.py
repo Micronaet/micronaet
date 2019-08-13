@@ -61,7 +61,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
             context = {}
 
         # Pool used:
-        company_pool = self.pool.get('rec.company')
+        company_pool = self.pool.get('res.company')
         bom_pool = self.pool.get('mrp.bom')
         mrp_pool = self.pool.get('mrp.production')
         material_pool = self.pool.get('mrp.production.material')
