@@ -115,7 +115,6 @@ class MrpProductionWasteWizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         # C. Create lavoration
         # ---------------------------------------------------------------------
-        import pdb; pdb.set_trace()
         lavoration_id = lavoration_pool.create(cr, uid, {
             'production_id': mrp_id,
             'real_date_planned': now,
@@ -130,10 +129,12 @@ class MrpProductionWasteWizard(osv.osv_memory):
             'single_cycle_quantity': qty,
             'hour': 0.0,
             'qty': qty,
+            'product_qty': qty,
             'product': to_product.id,
             'uom': to_product.uom_id.id,
             }, context=context)
         
+        import pdb; pdb.set_trace()
         # Load materials in lavoration:    
         lavoration_pool.load_materials_from_production(
             cr, uid, [lavoration_id], context=context)
