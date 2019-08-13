@@ -64,8 +64,9 @@ class MrpProduction(orm.Model):
         now = ('%s' % datetime.now())[:7]
         total = {
             'product': {},
-            'production': {},
-            'material': {},     
+            
+            'load': {},
+            'unload': {},     
             } 
         #month_column = []
         _logger.info('%s. Start extract MRP statistic: %s' % 
@@ -272,113 +273,121 @@ class MrpProduction(orm.Model):
                 'Totale:',
                 master_total,
                 ], default_format=f_number_bg_green_bold, col=3)
+
+
+
                 
         # ---------------------------------------------------------------------
-        # MRP status:
+        #                   Collect data for Production:
         # ---------------------------------------------------------------------               
-        #month_column = sorted(month_column)
-        #try:
-        #    index_today = month_column.index(now)
-        #except:
-        #    index_today = False
-            
+        # Data:        
+        job_ids = job_pool.search(cr, uid, [
+            ('production_id.mode', '=', 'production'),
+            ('state', '=', 'done'),
+            ], context=context)
+        job_proxy = job_pool.browse(
+            cr, uid, job_ids, context=context)
+
+        page_total = {}
+        for job in sorted(
+                job_proxy, key=lambda x: (
+                    x.product.defaul_code, x.product.name)):
+
+            # -----------------------------------------------------------------
+            # Unload data:        
+            # -----------------------------------------------------------------
+            for load in job.bom_material_ids:                
+                # Product:
+                loop = (
+                    (load.wc_id.product, 
+                        load.product_qty, load.accounting_cost), 
+                    (load.package_id, 
+                        load.ul_quantity, 
+                        load.package_pedimento_id.standard_price or \
+                            load.package_id.standard_price),
+                    (load.pallet_product_id, 
+                        pallet_qty, 
+                        load.pallet_pedimento_id.standard_price or \
+                            load.pallet_id.standard_price),
+                        )
+                    )
+
+                # TODO recycle
+                for product, qty, price in loop:
+                    # TODO check
+                    if not product:
+                        continue
+                    if product not in total['load']
+                        total['load'][product] = []     
+                    total['load'][product] = [
+                        job.real_date_planned, # TODO date?!?!
+                        qty,
+                        price,
+                        ] 
+                
+                
+            # -----------------------------------------------------------------
+            # Load data:        
+            # -----------------------------------------------------------------
+            for load in job.load_ids:
+                pass
+                
+
+
 
         # ---------------------------------------------------------------------
-        # Docnaet Product total:
+        # Production loaded product:
         # ---------------------------------------------------------------------               
-        """
-        ws_name = 'Prodotti'
-        
+        ws_name = 'Produzioni'
         excel_pool.create_worksheet(name=ws_name)
-        
-        width = [12, 30, 2, 10]
-        cols = len(month_column)
-        width.extend([9 for item in range(0, cols)])
-        empty = ['' for item in range(0, cols)]
-        if index_today != False:
-            empty[index_today] = ('', f_number_bg_blue)
 
-        header = ['Codice', 'Prodotto', 'UM', 'Totale']
-        start = len(header)
-        header.extend(month_column)
-                
         # Column:
-        row = 0
-        excel_pool.column_width(ws_name, width)
+        width = [
+            10, 15, 15, 30, 10,
+            10, 10, 
+            15, 15,
+            ]
+        header = [
+            'Data', 'Riferimento', 'Prodotto', 'Descrizione', 'Linea',
+            'Q.', 'Q. errata', 
+            'Prezzo carico', 'Subtotale',
+            ]
         
         # Header:
+        row = 0
+        excel_pool.column_width(ws_name, width)
         excel_pool.write_xls_line(
-            ws_name, row, header, default_format=f_header)        
-            
-        uom_total = {}
-        for product in sorted(product_total, key=lambda x: x.default_code):
-            uom_code = product.uom_id.account_ref or product.uom_id.name
-            
-            row += 1
-            data = [
-                product.default_code, 
-                product.name, 
-                uom_code,
-                '',
-                ]
-            data.extend(empty)
-            excel_pool.write_xls_line(
-                ws_name, row, data, 
-                default_format=f_text)
-            total = 0.0
+            ws_name, row, header, default_format=f_header)
 
-            for deadline in product_total[product]:
-                if deadline == now:
-                    f_number_color = f_number_bg_blue
-                else:
-                    f_number_color = f_number
-                        
-                subtotal = int(product_total[product][deadline])
-                total += subtotal
 
-                # -------------------------------------------------------------
-                # Total setup:
-                # -------------------------------------------------------------
-                # TODO remove:
-                #index = month_column.index(deadline)
-                #if uom_code in total_row[index]:
-                #    total_row[index][uom_code] += subtotal
-                #else:    
-                #    total_row[index][uom_code] = subtotal
-                if uom_code not in uom_total:
-                    uom_total[uom_code] = [0.0 for item in range(0, cols)]
-                index = month_column.index(deadline)
-                uom_total[uom_code][index] += subtotal
-                
-                excel_pool.write_xls_line(
-                    ws_name, row, [
-                        subtotal, 
-                        ],
-                        default_format=f_number_color, 
-                        col=start + index)
 
-            excel_pool.write_xls_line(
-                ws_name, row, [
-                    total, 
-                    ], 
-                    default_format=f_number_bg_green_bold, 
-                    col=start-1)
 
-        # Total Row:
-        row += 1
+
+        # ---------------------------------------------------------------------
+        # Production unloaded materials:
+        # ---------------------------------------------------------------------               
+        ws_name = 'Produzioni'
+        excel_pool.create_worksheet(name=ws_name)
+
+        # Column:
+        width = [
+            10, 15, 15, 30, 10,
+            10, 10, 
+            15, 15,
+            ]
+        header = [
+            'Data', 'Riferimento', 'Prodotto', 'Descrizione', 'Linea',
+            'Q.', 'Q. errata', 
+            'Prezzo carico', 'Subtotale',
+            ]
         
-        for uom_code in uom_total:
-            excel_pool.write_xls_line(
-                ws_name, row, [uom_code, 'Totale:'], 
-                    default_format=f_text, 
-                    col=start - 2)
-                                    
-            excel_pool.write_xls_line(
-                ws_name, row, uom_total[uom_code], 
-                    default_format=f_number_bg_green_bold, 
-                    col=start)
-            row += 1
-        """ 
+        # Header:
+        row = 0
+        excel_pool.column_width(ws_name, width)
+        excel_pool.write_xls_line(
+            ws_name, row, header, default_format=f_header)
+
+                
         return excel_pool.save_file_as(save_mode)            
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
