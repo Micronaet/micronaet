@@ -67,15 +67,16 @@ class MrpProductionWasteWizard(osv.osv_memory):
         material_pool = self.pool.get('mrp.production.material')
         excel_pool = self.pool.get('excel.writer')
 
+        # ---------------------------------------------------------------------
+        # Get wizard parameters:
+        # ---------------------------------------------------------------------
         current = self.browse(cr, uid, ids, context=context)[0]
         from_product = current.from_id
         to_product = current.to_id
-        import pdb; pdb.set_trace()
         qty = current.qty
-        price = current.price
-        force_price = current.force_price
-        # TODO Check if passed price and qty!!!
-        
+        price = current.force_price or current.price
+        import pdb; pdb.set_trace()
+        calc = current.remain_detail # TODO
         now = datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
         
         # ---------------------------------------------------------------------
@@ -158,7 +159,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
             to_product.default_code,
             qty,
             to_product.uom_id.contipaq_ref,
-            force_price or price,
+            price,
             mrp.name, # Use production name
             ])
         excel_pool.save_file_as(folder['load']['data'] % \
@@ -239,7 +240,12 @@ class MrpProductionWasteWizard(osv.osv_memory):
                 )
 
         excel_pool.save_file_as(folder['unload']['data'] % lavoration_id)
-        return True
+
+        # Update with calc:
+        return lavoration_pool.write(cr, uid, [lavoration_id], {
+            'state': 'done',
+            'product_price_calc': calc,
+            }, context=context)
 
     def onchange_product_id(self, cr, uid, ids, from_id, context=None):
         ''' Onchange product id update product stock status
