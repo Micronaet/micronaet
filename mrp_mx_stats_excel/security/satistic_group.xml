@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
    <data>
-        <record id="group_sale_statistic_mail" model="res.groups">
+        <record id="group_mrp_statistic_mail" model="res.groups">
             <field name="name">Excel MRP Statistic mail</field>
         </record>
    </data>

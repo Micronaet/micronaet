@@ -43,7 +43,7 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 _logger = logging.getLogger(__name__)
 
 class MrpProduction(orm.Model):
-    """ Model name: SaleOrder
+    """ Model name: MrpProduction
     """
     
     _inherit = 'mrp.production'
@@ -113,7 +113,7 @@ class MrpProduction(orm.Model):
             ws_name, row, header, default_format=f_header)
 
         for product in sorted(
-                product_proxy, key=lambda x: x.default_code, x.name):
+                product_proxy, key=lambda x: (x.default_code, x.name)):
             for lot in product.pedimento_ids:
                 row += 1
                 qty = lot.qty
@@ -172,7 +172,7 @@ class MrpProduction(orm.Model):
             ws_name, row, header, default_format=f_header)
 
         for product in sorted(total['product'], 
-                key=lambda x: x.default_code, x.name):
+                key=lambda x: (x.default_code, x.name)):
             qty, price, ok = total['product'][product]
                 
             # Color setup:
@@ -195,15 +195,15 @@ class MrpProduction(orm.Model):
                     '' if ok else 'X',
                     ], default_format=f_text_current)
 
-                # -------------------------------------------------------------
-                # COLLECT DATA:
-                # -------------------------------------------------------------
-                # PAGE: Prodotti
-                if product not in total['product']:
-                    total['product'] = [0.0, 0.0]
-                total['product'][0] += qty
-                total['product'][1] += price
-                
+            # -------------------------------------------------------------
+            # COLLECT DATA:
+            # -------------------------------------------------------------
+            # PAGE: Prodotti
+            if product not in total['product']:
+                total['product'] = [0.0, 0.0]
+            total['product'][0] += qty
+            total['product'][1] += price
+            
 
                 
         # ---------------------------------------------------------------------
