@@ -135,7 +135,6 @@ class MrpProductionWasteWizard(osv.osv_memory):
             'uom': to_product.uom_id.id,
             }, context=context)
         
-        import pdb; pdb.set_trace()
         # Load materials in lavoration:    
         lavoration_pool.load_materials_from_production(
             cr, uid, [lavoration_id], context=context)
@@ -148,6 +147,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         folder = company_pool.get_contipaq_folder_parameters(
             cr, uid, context=context)
+        import pdb; pdb.set_trace()
 
         # ---------------------------------------------------------------------
         # Check mount test file:
