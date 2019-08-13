@@ -51,10 +51,8 @@ odoo = {
 # Mail:
 smtp = {
     'to': config.get('smtp', 'to'),
-    #'subject': config.get('smtp', 'subject'),
-    #'text': config.get('smtp', 'text'),
     'text': '''
-        <p>Spett.li responsabili production PCA,</p>
+        <p>Spett.li responsabili produzione PCA,</p>
         <p>Questa &egrave; una mail automatica giornaliera inviata da 
             <b>OpenERP</b> con lo stato produzioni e magazzino contabile.
         </p>
@@ -62,35 +60,21 @@ smtp = {
         <p>Situazione aggiornata alla data di riferimento: <b>%s</b></p>
 
         <p>
-        1. <b>Ordini</b>: Elenco ordini da consegnare, fonte Mexal
-           (aggiunte informazioni solvibili&agrave;).
-           Ordinamento per data decrescente.<br/>
-        2. <b>Offerte</b>: Documenti Docnaet valorizzati dagli agenti ancora 
-           da vincere o perdere<br/>
-        3. <b>Perse</b>: Offerte marcate come perse in Docnaet.<br/>
-        4. <b>Clienti</b>: Elenco ordini, offerte attive, offerte perse 
-           e dettaglio solvibilit&agrave; cliente. Ordinamento alfabetico.<br/>
-        5. <b>Prodotti</b>: Elenco ordini per prodotto suddivisi per mese di 
-           scadenza / consegna (colonna No = senza scadenza). Totalizzato in 
-           fondo per unit&agrave di misura (in azzurro il mese attuale).<br/>
+        1. <b>Lotti</b>: Elenco lotti con esistenza e valorizzazione;
+            dati che arrivano da ContipaQ. Totali per UM.<br/>
+        2. <b>Prodotti</b>: Elenco prodotti con esistenza e valorizzazione;
+            dati che arrivano da ContipaQ. Totali per UM.<br/>
         </p>
 
         <p>
-            <i>Nota: In rosso le righe dei clienti con pagamenti scaduti.</i>
+            <i>Nota: In rosso le righe con prodotti che non hanno prezzo.</i>
         </p>
-        <p>
-            <i>Nota: Potrebbe capitare che ci siano differenti valute, il 
-               totale indicato in fondo verr&agrave; quindi spezzato in tutte
-               quelle rilevate.</i>
-        </p>
-        
         <b>Micronaet S.r.l.</b>
         ''' % now,
-    'subject': 'Dettaglio offerte e ordini aperti: %s' % now,    
+    'subject': 'Dettaglio produzione PCA e stato magazzino: %s' % now,    
     
     'folder': config.get('smtp', 'folder'),
     }
-
 
 filename = os.path.expanduser(
     os.path.join(smtp['folder'], 'statistiche_produzione.xlsx'))
