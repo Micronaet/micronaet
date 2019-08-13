@@ -65,6 +65,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
         bom_pool = self.pool.get('mrp.bom')
         mrp_pool = self.pool.get('mrp.production')
         material_pool = self.pool.get('mrp.production.material')
+        lavoration_pool = self.pool.get('mrp.production.workcenter.line')
         excel_pool = self.pool.get('excel.writer')
 
         # ---------------------------------------------------------------------
