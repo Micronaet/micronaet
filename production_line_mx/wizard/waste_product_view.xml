@@ -14,7 +14,7 @@
                     <sheet>
                         <group col="4" colspan="4">
                             <field name="from_id" on_change="onchange_product_id(from_id)"/>
-                            <field name="to_id" />
+                            <field name="to_id" domain="[('id', '!=', from_id)]"/>
                             
                             <field name="force_price" />
                             <field name="remain_price" invisible="1" />

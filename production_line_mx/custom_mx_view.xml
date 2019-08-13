@@ -193,6 +193,9 @@
             <field name="model">mrp.production</field>
             <field name="inherit_id" ref="production_line.default_mrp_production_form_view" />
             <field name="arch" type="xml">
+                <field name="user_id" position="after">
+                   <field name="mode" readonly="1" />
+                </field>
                 <xpath expr="//notebook" position="after">
                     <separator string="Check MRP error:" colspan="4" attrs="{'invisible': [('check_mrp','=',False)]}"/>
                     <field name="check_mrp" nolabel="1" colspan="4" attrs="{'invisible': [('check_mrp','=',False)]}"/>
