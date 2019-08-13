@@ -85,7 +85,6 @@ class MrpProductionWasteWizard(osv.osv_memory):
             ('bom_id', '=', False), # Master bom
             ('product_id', '=', to_product.id),
             ], context=context)
-        import pdb; pdb.set_trace()
         if bom_ids:
             bom_id = bom_ids[0]    
         else:
@@ -108,8 +107,9 @@ class MrpProductionWasteWizard(osv.osv_memory):
             'date_planned': now,
             'user_id': uid,
             'mode': 'waste',
-            'state': 'close', # yet close
+            'accounting_state': 'close', # yet close
             }, context=context)
+        import pdb; pdb.set_trace()
         mrp_pool.add_new_lavoration(cr, uid, [mrp_id], context=context)
         mrp = mrp_pool.browse(cr, uid, mrp_id, context=context)
         lavoration_id = mrp.workcenter_lines[0].id
