@@ -184,15 +184,16 @@ class MrpProduction(orm.Model):
                     (qty, f_number_bg_blue_bold),                    
                     '',
                     (subtotal, f_number_bg_blue_bold),                    
-                    ], default_format=f_text_bg_blue, col=2)
+                    ], default_format=f_number_bg_blue_bold, col=2)
+        #f_text_bg_blue                    
             
-            # Write data:                    
-            row += 1
-            excel_pool.write_xls_line(                    
-                ws_name, row, [
-                    'Totale:',
-                    (master_total, f_number_bg_blue_bold),                    
-                    ], default_format=f_text_bg_blue, col=5)
+        # Write data:                    
+        row += 1
+        excel_pool.write_xls_line(                    
+            ws_name, row, [
+                'Totale:',
+                master_total,
+                ], default_format=f_number_bg_green_bold, col=5)
 
         # ---------------------------------------------------------------------
         # Product status:
