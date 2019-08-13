@@ -83,11 +83,11 @@ class MrpProduction(orm.Model):
         f_header = excel_pool.get_format('header')
 
         f_text = excel_pool.get_format('text')
-        f_text_red = excel_pool.get_format('text_red')
+        f_text_red = excel_pool.get_format('bg_red')
         f_text_bg_blue = excel_pool.get_format('bg_blue')
         
         f_number = excel_pool.get_format('number')
-        f_number_red = excel_pool.get_format('number_red')
+        f_number_red = excel_pool.get_format('bg_red_number')
         f_number_bg_blue = excel_pool.get_format('bg_blue_number')
         f_number_bg_blue_bold = excel_pool.get_format('bg_blue_number_bold')
         f_number_bg_red_bold = excel_pool.get_format('bg_red_number_bold')
@@ -148,8 +148,8 @@ class MrpProduction(orm.Model):
                 # Write data:                    
                 excel_pool.write_xls_line(                    
                     ws_name, row, [
-                        product.name,
                         product.default_code or '',
+                        product.name,
                         lot.code or '',
                         (qty, f_number_current),                    
                         (price, f_number_current),                    
@@ -201,8 +201,8 @@ class MrpProduction(orm.Model):
             row += 1              
             excel_pool.write_xls_line(                    
                 ws_name, row, [
-                    product.name,
                     product.default_code or '',
+                    product.name,
                     (qty, f_number_current),                    
                     (price, f_number_current),                    
                     (subtotal, f_number_current),                    
