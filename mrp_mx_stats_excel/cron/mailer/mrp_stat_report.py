@@ -144,7 +144,7 @@ else:
     #server_smtp.start() # TODO Check
 import pdb; pdb.set_trace()
 smtp_server.ehlo()
-#smtp_server.starttls()
+smtp_server.starttls()
 
 smtp_server.login(odoo_mailer.smtp_user, odoo_mailer.smtp_pass)
 for to in smtp['to'].replace(' ', '').split(','):
