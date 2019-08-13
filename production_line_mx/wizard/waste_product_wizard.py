@@ -104,6 +104,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
             'product_id': to_product.id,
             'bom_id': bom_id,
             'product_qty': qty,
+            'product_uom': to_product.uom_id.id,
             'date_planned': now,
             'user_id': uid,
             'mode': 'waste',
