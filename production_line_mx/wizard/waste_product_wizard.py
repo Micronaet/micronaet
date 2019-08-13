@@ -73,9 +73,9 @@ class MrpProductionWasteWizard(osv.osv_memory):
         current = self.browse(cr, uid, ids, context=context)[0]
         from_product = current.from_id
         to_product = current.to_id
-        qty = current.qty
-        price = current.force_price or current.price
         import pdb; pdb.set_trace()
+        qty = current.remain_qty
+        price = current.force_price or current.remain_price
         calc = current.remain_detail # TODO
         now = datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
         
