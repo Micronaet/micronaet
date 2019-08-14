@@ -451,6 +451,7 @@ class MrpProduction(orm.Model):
         # Column:
         width = [10, 15, 10]
         header = ['Prodotto', 'Descrizione', 'Tot.']
+        import pdb; pdb.set_trace()
         for col in sorted(load_col.values()):
             width.append(8)
             header.append(load_col[col])
