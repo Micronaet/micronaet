@@ -72,7 +72,7 @@ smtp = {
         <p>
            <b>Dettagli di produzione:</b><br/>
         3. <b>Carichi produzione:</b> Dettaglio carichi di ogni lavorazione,
-              vengono indicati anche i carichi da recuperare.
+              vengono indicati anche i carichi da recuperare (in azzurro).
               La valorizzazione viene calcolata con il totale dei costi
               delle materie prime, degli imballi, dei bancali e del 
               coefficente K di lavorazione per la linea in questione.<br/>
