@@ -294,25 +294,27 @@ class MrpProduction(orm.Model):
             # -----------------------------------------------------------------
             for load in job.load_ids:
                 # (Product, Qty, Price, Recycle)
-                loop = [
+                loop = [(
                     # Product:
-                    (job.product, 
-                        load.product_qty - load.waste_qty, 
-                        load.accounting_cost, 
-                        False),
+                    job.product, 
+                    load.product_qty - load.waste_qty, 
+                    load.accounting_cost, 
+                    False), (
+
                     # Package:    
-                    (load.package_id.linked_product_id, 
-                        load.ul_qty, 
-                        load.package_pedimento_id.standard_price or \
-                            load.package_id.linked_product_id.standard_price, 
-                        False),
+                    load.package_id.linked_product_id, 
+                    load.ul_qty, 
+                    load.package_pedimento_id.standard_price or \
+                        load.package_id.linked_product_id.standard_price, 
+                    False), (
+
                     # Pallet:        
-                    (load.pallet_product_id, 
-                        load.pallet_qty, 
-                        load.pallet_pedimento_id.standard_price or \
-                            load.pallet_product_id.standard_price, 
-                        False),
-                        ]
+                    load.pallet_product_id, 
+                    load.pallet_qty, 
+                    load.pallet_pedimento_id.standard_price or \
+                        load.pallet_product_id.standard_price, 
+                    False),
+                    ]
 
                 if load.recycle:
                     loop.append((
@@ -328,7 +330,7 @@ class MrpProduction(orm.Model):
                         continue
                     if product not in total['load']:
                         total['load'][product] = []     
-                    total['load'][product].append([load, qty, price, recycle])
+                    total['load'][product].append((load, qty, price, recycle))
                 
             # -----------------------------------------------------------------
             # Unload data:        
@@ -365,34 +367,35 @@ class MrpProduction(orm.Model):
         
         for product in sorted(total['load'], 
                 key=lambda x: (x.default_code, x.name)):
-                
+
+            # TODO total!                
             # Readability:    
-            load, qty, price, recycle = total['load'][product]
-            date = load.date # TODO job.real_date_planned (for bad load)
-            job = load.line_id
-            recycle_qty = 0.0
-            subtotal = price * qty
+            for load, qty, price, recycle in total['load'][product]:
+                date = load.date # TODO job.real_date_planned (for bad load)
+                job = load.line_id
+                recycle_qty = 0.0
+                subtotal = price * qty
 
-            if recycle:
-                recycle_qty = qty
-                qty = 0.0
+                if recycle:
+                    recycle_qty = qty
+                    qty = 0.0
 
-            # Write data:
-            row += 1
-            excel_pool.write_xls_line(
-                ws_name, row, [
-                    date,
-                    job.name,
-                    product.default_code or '',
-                    product.name,
-                    job.workcenter_id.name,
-                    
-                    qty,
-                    recycle_qty,
-                    
-                    price,
-                    subtotal,                    
-                    ], default_format=f_text)
+                # Write data:
+                row += 1
+                excel_pool.write_xls_line(
+                    ws_name, row, [
+                        date,
+                        job.name,
+                        product.default_code or '',
+                        product.name,
+                        job.workcenter_id.name,
+                        
+                        qty,
+                        recycle_qty,
+                        
+                        price,
+                        subtotal,                    
+                        ], default_format=f_text)
 
 
         # ---------------------------------------------------------------------
