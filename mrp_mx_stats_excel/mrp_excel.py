@@ -292,7 +292,7 @@ class MrpProduction(orm.Model):
             # -----------------------------------------------------------------
             # Load data:        
             # -----------------------------------------------------------------
-            for load in jo.load_ids:
+            for load in job.load_ids:
                 # (Product, Qty, Price, Recycle)
                 loop = [
                     # Product:
