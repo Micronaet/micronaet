@@ -497,10 +497,12 @@ class MrpProduction(orm.Model):
         row += 1
         # Write fixed col data:
         excel_pool.write_xls_line(
-            ws_name, row, ['Totale', ], default_format=f_text)
+            ws_name, row, ['Totale', ], default_format=f_number_bg_green_bold,
+            col= fixed_col - 1)
         # Write variable col data:
         excel_pool.write_xls_line(
-            ws_name, row, col_total, default_format=f_number, col=fixed_col)
+            ws_name, row, col_total, default_format=f_number_bg_green_bold, 
+            col=fixed_col)
     
 
         # ---------------------------------------------------------------------
