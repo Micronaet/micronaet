@@ -449,8 +449,8 @@ class MrpProduction(orm.Model):
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
-        width = [10, 30, 10]
-        header = ['Prodotto', 'Descrizione', 'Totale']
+        width = [10, 30, 4, 10]
+        header = ['Prodotto', 'Descrizione', 'UM', 'Totale']
 
         fixed_col = len(header)
         col_total = []
@@ -486,6 +486,7 @@ class MrpProduction(orm.Model):
                 ws_name, row, [
                     product.default_code or '',
                     product.name,
+                    product.uom_id.name,
                     (row_total, f_number_bg_green_bold),
                     ], default_format=f_text)
 
