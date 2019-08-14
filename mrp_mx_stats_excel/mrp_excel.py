@@ -51,7 +51,20 @@ class MrpProduction(orm.Model):
     def extract_mrp_stats_excel_report(self, cr, uid, context=None):
         ''' Extract report statistic and save in Excel file:
         '''
+        # ---------------------------------------------------------------------
         # Utility:
+        # ---------------------------------------------------------------------
+        def _get_load_date(load):
+            ''' Problem: much load was done in the same day in initial phase
+            '''
+            date = load.date
+            if date >= '2019-08-01':
+                # Use correct load date:
+                return date
+            else:
+                # Use production date:
+                return load.line_id.production_id.date_planned
+                
         def _get_period_date_dict(range_date):
             ''' Generate period dict:
             '''
@@ -401,7 +414,7 @@ class MrpProduction(orm.Model):
             # Readability:    
             for load, qty, price, recycle in sorted(total['load'][product], 
                     key=lambda y: y[0].date):
-                date = load.date[:10] # TODO job.real_date_planned (bad load)
+                date = _get_load_date(load)[:10]
                 
                 # Setup range data for load:
                 period = date[:7]
@@ -472,7 +485,7 @@ class MrpProduction(orm.Model):
             row_total = 0.0            
             data = empty[:]
             for load, qty, price, recycle in total['load'][product]:
-                period = load.date[:7]
+                period = _get_load_date(load)[:7]
                 col = load_col.get(period)
 
                 # Totals:
