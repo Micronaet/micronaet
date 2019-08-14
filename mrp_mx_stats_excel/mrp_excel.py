@@ -450,7 +450,7 @@ class MrpProduction(orm.Model):
 
         # Column:
         width = [10, 30, 10]
-        header = ['Prodotto', 'Descrizione', 'Tot.']
+        header = ['Prodotto', 'Descrizione', 'Totale']
 
         fixed_col = len(header)
         col_total = []
@@ -486,7 +486,7 @@ class MrpProduction(orm.Model):
                 ws_name, row, [
                     product.default_code or '',
                     product.name,
-                    (row_total, f_number),
+                    (row_total, f_number_bg_green_bold),
                     ], default_format=f_text)
 
             # Write variable col data:
