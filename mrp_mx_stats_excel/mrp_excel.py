@@ -64,10 +64,14 @@ class MrpProduction(orm.Model):
         # Collect data:
         now = ('%s' % datetime.now())[:7]
         total = {
-            'product': {},
+            # Stock status:
+            'product': {}, # Product stock status
             
-            'load': {},
-            'unload': {},     
+            # MRP:
+            'load': {}, # Product load
+            'unload': {}, # Raw material unload
+
+            'production': {}, # Total production for product
             } 
         #month_column = []
         _logger.info('%s. Start extract MRP statistic: %s' % 
@@ -278,6 +282,8 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------
         #                   Collect data for Production:
         # ---------------------------------------------------------------------               
+        range_date = [False, False]
+
         # Data:        
         job_ids = job_pool.search(cr, uid, [
             ('production_id.mode', '=', 'production'),
@@ -317,7 +323,6 @@ class MrpProduction(orm.Model):
                         load.pallet_product_id.standard_price, 
                     False),
                     ]
-
                 if load.waste_qty: #load.recycle:
                     loop.append((
                         # Recycle:    
@@ -371,11 +376,18 @@ class MrpProduction(orm.Model):
         for product in sorted(total['load'], 
                 key=lambda x: (x.default_code, x.name)):
 
-            # TODO total!                
             # Readability:    
             for load, qty, price, recycle in sorted(total['load'][product], 
                     key=lambda y: y[0].date):
-                date = load.date[:10] # TODO job.real_date_planned (for bad load)
+                date = load.date[:10] # TODO job.real_date_planned (bad load)
+                
+                # Setup range data for load:
+                period = date[:7]
+                if not range_date[0] or period < range_date[0]:
+                    range_date[0] = period
+                if not range_date[1] or period > range_date[1]:
+                    range_date[1] = period
+                    
                 job = load.line_id
                 subtotal = price * qty
 
@@ -406,6 +418,24 @@ class MrpProduction(orm.Model):
                         (subtotal, f_number_color),                    
                         ], default_format=f_text_color)
 
+        date_col = {}
+        ref_date = range_date[0]
+        col = 0
+        import pdb; pdb.set_trace()
+        while ref_date <= range_date[1]:
+            date_col[ref_date] = col
+
+            # Update ref_date:
+            if ref_date[5:7] == '12':
+                ref_date = '%s-01' % (int(ref_date[:4]) + 1)
+            else:    
+                ref_date = '%s-%02d' % (
+                    ref_date[:4],
+                    int(ref_date[5:7]) + 1,
+                    )
+            col += 1
+            
+        
 
         # ---------------------------------------------------------------------
         # Production unloaded materials:
