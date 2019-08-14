@@ -319,6 +319,7 @@ class MrpProduction(orm.Model):
                     ]
 
                 if load.waste_qty: #load.recycle:
+                    import pdb; pdb.set_trace()
                     loop.append((
                         # Recycle:    
                         'load',
