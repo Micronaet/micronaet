@@ -528,7 +528,7 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------               
         # Production in period:
         # ---------------------------------------------------------------------               
-        ws_name = 'Produzioni'
+        ws_name = 'Produzioni periodo'
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
@@ -592,7 +592,7 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------
         # Production unloaded materials:
         # ---------------------------------------------------------------------               
-        ws_name = 'Scarichi produzione'
+        ws_name = 'Scarichi periodo'
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
