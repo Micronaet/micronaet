@@ -301,7 +301,7 @@ class MrpProduction(orm.Model):
                         load.accounting_cost, False),
                     # Package:    
                     (load.package_id, 
-                        load.ul_quantity, 
+                        load.ul_qty, 
                         load.package_pedimento_id.standard_price or \
                             load.package_id.standard_price, False),
                     # Pallet:        
