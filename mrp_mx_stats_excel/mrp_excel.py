@@ -51,6 +51,28 @@ class MrpProduction(orm.Model):
     def extract_mrp_stats_excel_report(self, cr, uid, context=None):
         ''' Extract report statistic and save in Excel file:
         '''
+        # Utility:
+        def _get_period_date_dict(range_date):
+            ''' Generate period dict:
+            '''
+            res = {}
+            ref_date = range_date[0]
+            col = 0
+            import pdb; pdb.set_trace()
+            while ref_date <= range_date[1]:
+                res[ref_date] = col
+
+                # Update ref_date:
+                if ref_date[5:7] == '12':
+                    ref_date = '%s-01' % (int(ref_date[:4]) + 1)
+                else:    
+                    ref_date = '%s-%02d' % (
+                        ref_date[:4],
+                        int(ref_date[5:7]) + 1,
+                        )
+                col += 1
+            
+        
         if context is None:
             context = {}
         save_mode = context.get('save_mode')
@@ -418,23 +440,7 @@ class MrpProduction(orm.Model):
                         (subtotal, f_number_color),                    
                         ], default_format=f_text_color)
 
-        date_col = {}
-        ref_date = range_date[0]
-        col = 0
-        import pdb; pdb.set_trace()
-        while ref_date <= range_date[1]:
-            date_col[ref_date] = col
-
-            # Update ref_date:
-            if ref_date[5:7] == '12':
-                ref_date = '%s-01' % (int(ref_date[:4]) + 1)
-            else:    
-                ref_date = '%s-%02d' % (
-                    ref_date[:4],
-                    int(ref_date[5:7]) + 1,
-                    )
-            col += 1
-            
+        production_col = _get_period_date_dict(range_date)
         
 
         # ---------------------------------------------------------------------
