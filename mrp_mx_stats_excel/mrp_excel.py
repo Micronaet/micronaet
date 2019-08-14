@@ -392,7 +392,7 @@ class MrpProduction(orm.Model):
                     date,
                     job, # Workcenter line
                     unload.quantity, 
-                    unload.pedimento_price or unload.standard_price
+                    unload.pedimento_price or unload.standard_price,
                     0.0, # Never present
                     ))
 
