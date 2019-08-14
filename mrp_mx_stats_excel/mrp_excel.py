@@ -275,9 +275,6 @@ class MrpProduction(orm.Model):
                 master_total,
                 ], default_format=f_number_bg_green_bold, col=3)
 
-
-
-                
         # ---------------------------------------------------------------------
         #                   Collect data for Production:
         # ---------------------------------------------------------------------               
@@ -294,12 +291,14 @@ class MrpProduction(orm.Model):
             # -----------------------------------------------------------------
             for load in job.load_ids:
                 # (Mode, Product, Qty, Price, Recycle)
+                production_price = (load.accounting_cost / load.product_qty)\
+                    if load.product_qty else 0.0
                 loop = [(
                     # Product:
                     'load',
                     job.product, 
                     load.product_qty - load.waste_qty, 
-                    load.accounting_cost, 
+                    production_price, 
                     False), (
 
                     # Package:    
@@ -325,7 +324,7 @@ class MrpProduction(orm.Model):
                         'load',
                         load.recycle_product_id, 
                         load.waste_qty, 
-                        load.accounting_cost, # Same as good product
+                        production_price, # Same as real production
                         True,
                         ))
 
