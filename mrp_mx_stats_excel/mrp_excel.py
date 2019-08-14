@@ -387,7 +387,7 @@ class MrpProduction(orm.Model):
                 else:    
                     recycle_qty = 0.0
                     f_text_color = f_text
-                    t_number_color = f_number
+                    f_number_color = f_number
 
                 # Write data:
                 row += 1
