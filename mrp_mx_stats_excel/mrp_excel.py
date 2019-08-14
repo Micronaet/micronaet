@@ -458,7 +458,7 @@ class MrpProduction(orm.Model):
         for col in sorted(load_col):
             width.append(8)
             header.append(col)
-            col_total.(0.0) # always KG
+            col_total.append(0.0) # always KG
         empty = col_total[:]
         
         # Header:
@@ -474,7 +474,11 @@ class MrpProduction(orm.Model):
             for load, qty, price, recycle in total['load'][product]:
                 period = load.date[:7]
                 col = load_col.get(period)
+
+                # Totals:
                 data[col] += qty
+                row_total += qty
+                col_total[col] += qty
 
             row += 1
             # Write fixed col data:
