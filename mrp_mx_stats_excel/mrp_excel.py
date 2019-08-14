@@ -58,7 +58,7 @@ class MrpProduction(orm.Model):
             res = {}
             ref_date = range_date[0]
             col = 0
-            import pdb; pdb.set_trace()
+
             while ref_date <= range_date[1]:
                 res[ref_date] = col
 
@@ -440,8 +440,74 @@ class MrpProduction(orm.Model):
                         (subtotal, f_number_color),                    
                         ], default_format=f_text_color)
 
-        production_col = _get_period_date_dict(range_date)
+        load_col = _get_period_date_dict(range_date)
+
+        # ---------------------------------------------------------------------               
+        # Production in period:
+        # ---------------------------------------------------------------------               
+        ws_name = 'Produzioni'
+        excel_pool.create_worksheet(name=ws_name)
+
+        # Column:
+        width = [10, 15, 10]
+        header = ['Prodotto', 'Descrizione', 'Tot.']
+        for col in sorted(load_col.values()):
+            width.append(8)
+            header.append(load_col[col])
         
+        # Header:
+        row = 0
+        excel_pool.column_width(ws_name, width)
+        excel_pool.write_xls_line(
+            ws_name, row, header, default_format=f_header)
+        
+        """for product in sorted(total['load'], 
+                key=lambda x: (x.default_code, x.name)):
+
+            # Readability:    
+            for load, qty, price, recycle in sorted(total['load'][product], 
+                    key=lambda y: y[0].date):
+                date = load.date[:10] # TODO job.real_date_planned (bad load)
+                
+                # Setup range data for load:
+                period = date[:7]
+                if not range_date[0] or period < range_date[0]:
+                    range_date[0] = period
+                if not range_date[1] or period > range_date[1]:
+                    range_date[1] = period
+                    
+                job = load.line_id
+                subtotal = price * qty
+
+                if recycle:
+                    recycle_qty = qty
+                    qty = 0.0
+                    f_text_color = f_text_bg_blue
+                    f_number_color = f_number_bg_blue
+                else:    
+                    recycle_qty = 0.0
+                    f_text_color = f_text
+                    f_number_color = f_number
+
+                # Write data:
+                row += 1
+                excel_pool.write_xls_line(
+                    ws_name, row, [
+                        date,
+                        job.name,
+                        product.default_code or '',
+                        product.name,
+                        job.workcenter_id.name,
+                        
+                        (qty, f_number_color),
+                        (recycle_qty, f_number_color),
+                        
+                        (price, f_number_color),
+                        (subtotal, f_number_color),                    
+                        ], default_format=f_text_color)"""
+
+
+
 
         # ---------------------------------------------------------------------
         # Production unloaded materials:
