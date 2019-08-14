@@ -59,6 +59,7 @@ class MrpProduction(orm.Model):
         # Pool used:
         excel_pool = self.pool.get('excel.writer')
         product_pool = self.pool.get('product.product')
+        job_pool = self.pool.get('mrp.production.workcenter.line')
         
         # Collect data:
         now = ('%s' % datetime.now())[:7]
