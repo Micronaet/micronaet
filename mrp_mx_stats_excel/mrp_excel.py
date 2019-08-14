@@ -588,31 +588,68 @@ class MrpProduction(orm.Model):
             ws_name, row, col_total, default_format=f_number_bg_green_bold, 
             col=fixed_col)
     
-
-        # ---------------------------------------------------------------------
-        # Production unloaded materials:
+        # ---------------------------------------------------------------------               
+        # Material in period:
         # ---------------------------------------------------------------------               
         ws_name = 'Scarichi periodo'
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
-        width = [
-            10, 15, 15, 30, 10,
-            10, 10, 
-            15, 15,
-            ]
-        header = [
-            'Data', 'Riferimento', 'Prodotto', 'Descrizione', 'Linea',
-            'Q.', 'Q. errata', 
-            'Prezzo carico', 'Subtotale',
-            ]
+        width = [10, 30, 4, 10]
+        header = ['Materia', 'Descrizione', 'UM', 'Totale']
+
+        fixed_col = len(header)
+        col_total = []
+
+        for col in sorted(load_col):
+            width.append(8)
+            header.append(col)
+            col_total.append(0.0) # always KG
+        empty = col_total[:]
         
         # Header:
         row = 0
         excel_pool.column_width(ws_name, width)
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=f_header)
+        
+        for product in sorted(total['unload'], 
+                key=lambda x: (x.default_code, x.name)):
+            row_total = 0.0            
+            data = empty[:]
+            for date, job, qty, price, recycle in total['unload'][product]:
+                period = date[:7]
+                col = unload_col.get(period)
 
+                # Totals:
+                data[col] += qty
+                row_total += qty
+                col_total[col] += qty
+
+            row += 1
+            # Write fixed col data:
+            excel_pool.write_xls_line(
+                ws_name, row, [
+                    product.default_code or '',
+                    product.name,
+                    product.uom_id.name,
+                    (row_total, f_number_bg_green_bold),
+                    ], default_format=f_text)
+
+            # Write variable col data:
+            excel_pool.write_xls_line(
+                ws_name, row, data, default_format=f_number, col=fixed_col)
+
+        # Write total:
+        row += 1
+        # Write fixed col data:
+        excel_pool.write_xls_line(
+            ws_name, row, ['Totale', ], default_format=f_header,
+            col= fixed_col - 1)
+        # Write variable col data:
+        excel_pool.write_xls_line(
+            ws_name, row, col_total, default_format=f_number_bg_green_bold, 
+            col=fixed_col)
                 
         return excel_pool.save_file_as(save_mode)            
     
