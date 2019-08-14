@@ -298,17 +298,20 @@ class MrpProduction(orm.Model):
                     # Product:
                     (job.product, 
                         load.product_qty - load.waste_qty, 
-                        load.accounting_cost, False),
+                        load.accounting_cost, 
+                        False),
                     # Package:    
                     (load.package_id, 
                         load.ul_qty, 
                         load.package_pedimento_id.standard_price or \
-                            load.package_id.standard_price, False),
+                            load.package_id.linked_product_id.standard_price, 
+                        False),
                     # Pallet:        
                     (load.pallet_product_id, 
                         load.pallet_qty, 
                         load.pallet_pedimento_id.standard_price or \
-                            load.pallet_product_id.standard_price, False),
+                            load.pallet_product_id.standard_price, 
+                        False),
                         ]
 
                 if load.recycle:
