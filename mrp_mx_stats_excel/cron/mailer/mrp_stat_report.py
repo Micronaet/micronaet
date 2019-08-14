@@ -54,7 +54,9 @@ smtp = {
     'text': '''
         <p>Spett.li responsabili produzione PCA,</p>
         <p>Questa &egrave; una mail automatica giornaliera inviata da 
-            <b>OpenERP</b> con lo stato produzioni e magazzino contabile.
+            <b>OpenERP</b> con lo stato produzioni e magazzino contabile.<br/>
+            Dove sono presenti valorizzazioni di prezzo va considerata la 
+            valuta attualmente impostata in ContipaQ.            
         </p>
 
         <p>Situazione aggiornata alla data di riferimento: <b>%s</b></p>
