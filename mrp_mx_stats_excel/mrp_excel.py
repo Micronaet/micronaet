@@ -319,11 +319,10 @@ class MrpProduction(orm.Model):
                     ]
 
                 if load.waste_qty: #load.recycle:
-                    import pdb; pdb.set_trace()
                     loop.append((
                         # Recycle:    
                         'load',
-                        load.recycle_product_id, 
+                        load.rwaste_id, 
                         load.waste_qty, 
                         production_price, # Same as real production
                         True,
@@ -378,12 +377,17 @@ class MrpProduction(orm.Model):
                     key=lambda y: y[0].date):
                 date = load.date[:10] # TODO job.real_date_planned (for bad load)
                 job = load.line_id
-                recycle_qty = 0.0
                 subtotal = price * qty
 
                 if recycle:
                     recycle_qty = qty
                     qty = 0.0
+                    f_text_color = f_text_bg_blue
+                    t_number_color = f_number_bg_blue
+                else:    
+                    recycle_qty = 0.0
+                    f_text_color = f_text
+                    t_number_color = f_number
 
                 # Write data:
                 row += 1
@@ -395,12 +399,12 @@ class MrpProduction(orm.Model):
                         product.name,
                         job.workcenter_id.name,
                         
-                        (qty, f_number),
-                        (recycle_qty, f_number),
+                        (qty, f_number_color),
+                        (recycle_qty, f_number_color),
                         
-                        (price, f_number),
-                        (subtotal, f_number),                    
-                        ], default_format=f_text)
+                        (price, f_number_color),
+                        (subtotal, f_number_color),                    
+                        ], default_format=f_text_color)
 
 
         # ---------------------------------------------------------------------
