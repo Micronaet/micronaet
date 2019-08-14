@@ -374,7 +374,8 @@ class MrpProduction(orm.Model):
 
             # TODO total!                
             # Readability:    
-            for load, qty, price, recycle in total['load'][product]:
+            for load, qty, price, recycle in sorted(total['load'][product], 
+                    key=lambda y: y[0].date):
                 date = load.date[:10] # TODO job.real_date_planned (for bad load)
                 job = load.line_id
                 recycle_qty = 0.0
