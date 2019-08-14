@@ -317,8 +317,6 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------
         #                   Collect data for Production:
         # ---------------------------------------------------------------------               
-        range_date = [False, False]
-
         # Data:        
         job_ids = job_pool.search(cr, uid, [
             ('production_id.mode', '=', 'production'),
@@ -385,13 +383,18 @@ class MrpProduction(orm.Model):
             # Unload data:        
             # -----------------------------------------------------------------
             for unload in job.bom_material_ids:
-                #total[mode][product].append((load, qty, price, recycle))
-                #unload.quantity
-                #unloadproduct_id
-                #unload.pedimento_price or unload.standard_price
-                pass
-
-
+                product = unload.product_id
+                date = job.production_id.date_planned # Directly MRP Date!
+                
+                if product not in total['unload']:
+                    total['unload'][product] = []
+                total['unload'][product].append((
+                    date,
+                    job, # Workcenter line
+                    unload.quantity, 
+                    unload.pedimento_price or unload.standard_price
+                    0.0, # Never present
+                    ))
 
         # ---------------------------------------------------------------------
         # Production loaded product:
@@ -417,6 +420,7 @@ class MrpProduction(orm.Model):
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=f_header)
         
+        range_date = [False, False]
         for product in sorted(total['load'], 
                 key=lambda x: (x.default_code, x.name)):
 
@@ -461,6 +465,65 @@ class MrpProduction(orm.Model):
                         ], default_format=f_text_color)
 
         load_col = _get_period_date_dict(range_date)
+
+        # ---------------------------------------------------------------------
+        # Production unloaded product:
+        # ---------------------------------------------------------------------               
+        ws_name = 'Scarichi produzione'
+        excel_pool.create_worksheet(name=ws_name)
+
+        # Column:
+        width = [
+            10, 15, 15, 30, 10,
+            10,
+            15, 15,
+            ]
+        header = [
+            'Data', 'Riferimento', 'Materia prima', 'Descrizione', 'Linea',
+            'Q.',
+            'Prezzo scarico', 'Subtotale',
+            ]
+        
+        # Header:
+        row = 0
+        excel_pool.column_width(ws_name, width)
+        excel_pool.write_xls_line(
+            ws_name, row, header, default_format=f_header)
+        
+        range_date = [False, False] # reset previous assigned
+        for product in sorted(total['unload'], 
+                key=lambda x: (x.default_code, x.name)):
+
+            # Readability:    
+            for date, job, qty, price, recycle in sorted(
+                    total['unload'][product]):
+
+                # Setup range data for load:
+                period = date[:7]
+                if not range_date[0] or period < range_date[0]:
+                    range_date[0] = period
+                if not range_date[1] or period > range_date[1]:
+                    range_date[1] = period
+                    
+                subtotal = price * qty
+
+                # Write data:
+                row += 1
+                excel_pool.write_xls_line(
+                    ws_name, row, [
+                        date,
+                        job.name,
+                        product.default_code or '',
+                        product.name,
+                        job.workcenter_id.name,
+                        
+                        (qty, f_number),
+                        
+                        (price, f_number),
+                        (subtotal, f_number),
+                        ], default_format=f_text)
+
+        unload_col = _get_period_date_dict(range_date)
 
         # ---------------------------------------------------------------------               
         # Production in period:
