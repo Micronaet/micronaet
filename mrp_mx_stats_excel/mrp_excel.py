@@ -51,9 +51,9 @@ class MrpProduction(orm.Model):
     def extract_mrp_stats_excel_report(self, cr, uid, context=None):
         ''' Extract report statistic and save in Excel file:
         '''
-        # ---------------------------------------------------------------------
-        # Utility:
-        # ---------------------------------------------------------------------
+        # =====================================================================
+        #                             UTILITY:
+        # =====================================================================
         def _get_load_date(load):
             ''' Problem: much load was done in the same day in initial phase
             '''
@@ -86,10 +86,12 @@ class MrpProduction(orm.Model):
                 col += 1
             return res
         
+        # =====================================================================
+        #                         INITIAL SETUP:
+        # =====================================================================
         if context is None:
             context = {}
         save_mode = context.get('save_mode')
-        
         
         # Pool used:
         excel_pool = self.pool.get('excel.writer')
@@ -111,6 +113,10 @@ class MrpProduction(orm.Model):
         #month_column = []
         _logger.info('%s. Start extract MRP statistic: %s' % 
             (now, save_mode))
+
+        # =====================================================================
+        #                     STOCK PRODUCT DATA:
+        # =====================================================================
 
         # ---------------------------------------------------------------------
         # Lot status:
@@ -314,9 +320,9 @@ class MrpProduction(orm.Model):
                 master_total,
                 ], default_format=f_number_bg_green_bold, col=3)
 
-        # ---------------------------------------------------------------------
+        # =====================================================================
         #                   Collect data for Production:
-        # ---------------------------------------------------------------------               
+        # =====================================================================
         # Data:        
         job_ids = job_pool.search(cr, uid, [
             ('production_id.mode', '=', 'production'),
@@ -384,7 +390,7 @@ class MrpProduction(orm.Model):
             # -----------------------------------------------------------------
             for unload in job.bom_material_ids:
                 product = unload.product_id
-                date = job.production_id.date_planned # Directly MRP Date!
+                date = job.production_id.date_planned[:10] # Directly MRP Date!
                 
                 if product not in total['unload']:
                     total['unload'][product] = []
@@ -395,6 +401,10 @@ class MrpProduction(orm.Model):
                     unload.pedimento_price or unload.standard_price,
                     0.0, # Never present
                     ))
+
+        # =====================================================================
+        #                        PRODUCTION DETAIL:
+        # =====================================================================
 
         # ---------------------------------------------------------------------
         # Production loaded product:
@@ -524,6 +534,10 @@ class MrpProduction(orm.Model):
                         ], default_format=f_text)
 
         unload_col = _get_period_date_dict(range_date)
+
+        # =====================================================================
+        #                           REPORT x PERIOD
+        # =====================================================================
 
         # ---------------------------------------------------------------------               
         # Production in period:
