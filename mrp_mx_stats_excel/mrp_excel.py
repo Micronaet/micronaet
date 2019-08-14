@@ -317,7 +317,7 @@ class MrpProduction(orm.Model):
                         load.waste_qty, 
                         load.accounting_cost, # Same as good product
                         True,
-                        ) 
+                        ))
 
                 for product, qty, price, recycle in loop:
                     if not product:
