@@ -285,51 +285,51 @@ class MrpProduction(orm.Model):
             ('production_id.mode', '=', 'production'),
             ('state', '=', 'done'),
             ], context=context)
-        job_proxy = job_pool.browse(
-            cr, uid, job_ids, context=context)
 
         page_total = {}
-        for job in sorted(
-                job_proxy, key=lambda x: (
-                    x.product.defaul_code, x.product.name)):
-
-            # -----------------------------------------------------------------
-            # Unload data:        
-            # -----------------------------------------------------------------
-            for load in job.bom_material_ids:                
-                # Product:
-                loop = (
-                    (load.wc_id.product, 
-                        load.product_qty, load.accounting_cost), 
-                    (load.package_id, 
-                        load.ul_quantity, 
-                        load.package_pedimento_id.standard_price or \
-                            load.package_id.standard_price),
-                    (load.pallet_product_id, 
-                        pallet_qty, 
-                        load.pallet_pedimento_id.standard_price or \
-                            load.pallet_id.standard_price),
-                        )
-                    )
-
-                # TODO recycle
-                for product, qty, price in loop:
-                    # TODO check
-                    if not product:
-                        continue
-                    if product not in total['load']
-                        total['load'][product] = []     
-                    total['load'][product] = [
-                        job.real_date_planned, # TODO date?!?!
-                        qty,
-                        price,
-                        ] 
-                
-                
+        for job in job_pool.browse(cr, uid, job_ids, context=context):
             # -----------------------------------------------------------------
             # Load data:        
             # -----------------------------------------------------------------
-            for load in job.load_ids:
+            for load in jo.load_ids:
+                # (Product, Qty, Price, Recycle)
+                loop = [
+                    # Product:
+                    (job.product, 
+                        load.product_qty - load.waste_qty, 
+                        load.accounting_cost, False),
+                    # Package:    
+                    (load.package_id, 
+                        load.ul_quantity, 
+                        load.package_pedimento_id.standard_price or \
+                            load.package_id.standard_price, False),
+                    # Pallet:        
+                    (load.pallet_product_id, 
+                        load.pallet_qty, 
+                        load.pallet_pedimento_id.standard_price or \
+                            load.pallet_product_id.standard_price, False),
+                        ]
+
+                if load.recycle:
+                    loop.append((
+                        # Recycle:    
+                        load.recycle_product_id, 
+                        load.waste_qty, 
+                        load.accounting_cost, # Same as good product
+                        True,
+                        ) 
+
+                for product, qty, price, recycle in loop:
+                    if not product:
+                        continue
+                    if product not in total['load']:
+                        total['load'][product] = []     
+                    total['load'][product].append([load, qty, price, recycle])
+                
+            # -----------------------------------------------------------------
+            # Unload data:        
+            # -----------------------------------------------------------------
+            for load in job.bom_material_ids:
                 pass
                 
 
@@ -338,7 +338,7 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------
         # Production loaded product:
         # ---------------------------------------------------------------------               
-        ws_name = 'Produzioni'
+        ws_name = 'Carichi produzione'
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
@@ -358,7 +358,38 @@ class MrpProduction(orm.Model):
         excel_pool.column_width(ws_name, width)
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=f_header)
+        
+        for product in sorted(total['load'], 
+                key=lambda x: (x.default_code, x.name)):
+                
+            # Readability:    
+            load, qty, price, recycle = total['load'][product]
+            date = load.date # TODO job.real_date_planned (for bad load)
+            job = load.line_id
+            recycle_qty = 0.0
+            subtotal = price * qty
 
+            if recycle:
+                recycle_qty = qty
+                qty = 0.0
+
+            # Write data:
+            row += 1
+            excel_pool.write_xls_line(
+                ws_name, row, [
+                    date,
+                    job.name,
+                    product.default_code or '',
+                    product.name,
+                    job.workcenter_id.name,
+                    
+                    qty,
+                    recycle_qty,
+                    
+                    price,
+                    subtotal,                    
+                    ], default_format=f_text)
+            
 
 
 
@@ -366,7 +397,7 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------
         # Production unloaded materials:
         # ---------------------------------------------------------------------               
-        ws_name = 'Produzioni'
+        ws_name = 'Scarichi produzione'
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
