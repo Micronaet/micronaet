@@ -322,7 +322,7 @@ class MrpProduction(orm.Model):
                     loop.append((
                         # Recycle:    
                         'load',
-                        load.rwaste_id, 
+                        load.waste_id, 
                         load.waste_qty, 
                         production_price, # Same as real production
                         True,
