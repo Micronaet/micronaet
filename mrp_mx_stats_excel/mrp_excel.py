@@ -373,14 +373,23 @@ class MrpProduction(orm.Model):
                         continue
                     if product not in total[mode]:
                         total[mode][product] = []     
-                    total[mode][product].append((load, qty, price, recycle))
+                    total[mode][product].append((
+                        _get_load_date(load)[:10], # Date operation (sort key!)
+                        load.line_id, # Workcenter line
+                        qty, 
+                        price, 
+                        recycle,
+                        ))
                 
             # -----------------------------------------------------------------
             # Unload data:        
             # -----------------------------------------------------------------
-            for load in job.bom_material_ids:
+            for unload in job.bom_material_ids:
+                #total[mode][product].append((load, qty, price, recycle))
+                #unload.quantity
+                #unloadproduct_id
+                #unload.pedimento_price or unload.standard_price
                 pass
-                
 
 
 
@@ -412,10 +421,9 @@ class MrpProduction(orm.Model):
                 key=lambda x: (x.default_code, x.name)):
 
             # Readability:    
-            for load, qty, price, recycle in sorted(total['load'][product], 
-                    key=lambda y: y[0].date):
-                date = _get_load_date(load)[:10]
-                
+            for date, job, qty, price, recycle in sorted(
+                    total['load'][product]):
+
                 # Setup range data for load:
                 period = date[:7]
                 if not range_date[0] or period < range_date[0]:
@@ -423,7 +431,6 @@ class MrpProduction(orm.Model):
                 if not range_date[1] or period > range_date[1]:
                     range_date[1] = period
                     
-                job = load.line_id
                 subtotal = price * qty
 
                 if recycle:
@@ -484,8 +491,8 @@ class MrpProduction(orm.Model):
                 key=lambda x: (x.default_code, x.name)):
             row_total = 0.0            
             data = empty[:]
-            for load, qty, price, recycle in total['load'][product]:
-                period = _get_load_date(load)[:7]
+            for date, job, qty, price, recycle in total['load'][product]:
+                period = date[:7]
                 col = load_col.get(period)
 
                 # Totals:
