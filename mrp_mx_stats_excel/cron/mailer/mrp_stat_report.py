@@ -60,14 +60,56 @@ smtp = {
         <p>Situazione aggiornata alla data di riferimento: <b>%s</b></p>
 
         <p>
+           <b>Dati di magazzino</b><br/>
         1. <b>Lotti</b>: Elenco lotti con esistenza e valorizzazione;
-            dati che arrivano da ContipaQ. Totali per UM.<br/>
+            dati che arrivano da ContipaQ. Totali suddivisi per UM.<br/>
         2. <b>Prodotti</b>: Elenco prodotti con esistenza e valorizzazione;
-            dati che arrivano da ContipaQ. Totali per UM.<br/>
+            dati che arrivano da ContipaQ. Totali suddivisi per UM.<br/>
         </p>
 
         <p>
-            <i>Nota: In rosso le righe con prodotti che non hanno prezzo.</i>
+           <b>Dettagli di produzione</b><br/>
+        3. <b>Carichi produzione</b>: Dettaglio carichi di ogni lavorazione,
+              vengono indicati anche i carichi da recuperare.
+              La valorizzazione viene calcolata con il totale dei costi
+              delle materie prime, degli imballi, dei bancali e del 
+              coefficente K di lavorazione per la linea in questione.<br/>
+        4. <b>Sarichi produzione</b>: Dettaglio scarichi di ogni lavorazione,
+              sono presenti anche i recuperi, gli imballi e i bancali 
+              utilizzati nel processo produttivo. La valorizzazione è il prezzo
+              del pedimento, se presente, o della materia prima generica.<br/>
+        </p>
+
+        <p>
+           <b>Riepilogo di produzione</b><br/>
+        5. <b>Produzioni periodo</b>: Riepilogo dove si estrapola il carico di 
+              produzione mensile e il totale produzione di ogni prodotto.<br/> 
+              Nelle colonne è anche possibile avere il dettaglio produzione:
+              prodotto per mese. Questa stampa viene ricavata dai dati 
+              indicato nel foglio 3.
+              <br/>
+        6. <b>Scarichi periodo</b>: Riepilogo dove si estrapola lo scarico di 
+              materiali mensile e il totale scarico materia prima totale.<br/>
+              Nelle colonne è anche possibile avere il dettaglio scarico:
+              materia prima per mese. Questa stampa viene ricavata dai dati 
+              indicato nel foglio 4.
+              <br/>
+        </p>
+
+        <p>
+            <i>Nota magazzino: Nello stato di magazzino (Lotti e Prodotti) sono 
+               evidenziati in rosso le righe con prodotti che non hanno prezzo.
+               I lotti senza esistenza sono stati eliminati dalla stampa.
+               </i>
+            <i>Nota produzioni: Nei fogli di produzione la data indicata viene
+               ricavata da quella della produzione, questo &egrave; dovuto
+               al fatto che sono state inserite le produzioni a blocchi per
+               coprire il periodo in cui non &egrave; stato utilizzato il 
+               programma. Da agosto invece si prende la corretta data di 
+               carico e scarico indicata.
+               Non escludo una correzione nel database per regolarizzare i dati
+               con la collaborazione di Edna.               
+               </i>
         </p>
         <b>Micronaet S.r.l.</b>
         ''' % now,
