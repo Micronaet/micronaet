@@ -449,12 +449,17 @@ class MrpProduction(orm.Model):
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
-        width = [10, 15, 10]
+        width = [10, 30, 10]
         header = ['Prodotto', 'Descrizione', 'Tot.']
+
+        fixed_col = len(header)
+        col_total = []
 
         for col in sorted(load_col):
             width.append(8)
             header.append(col)
+            col_total.(0.0) # always KG
+        empty = col_total[:]
         
         # Header:
         row = 0
@@ -462,52 +467,27 @@ class MrpProduction(orm.Model):
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=f_header)
         
-        """for product in sorted(total['load'], 
+        for product in sorted(total['load'], 
                 key=lambda x: (x.default_code, x.name)):
+            row_total = 0.0            
+            data = empty[:]
+            for load, qty, price, recycle in total['load'][product]:
+                period = load.date[:7]
+                col = load_col.get(period)
+                data[col] += qty
 
-            # Readability:    
-            for load, qty, price, recycle in sorted(total['load'][product], 
-                    key=lambda y: y[0].date):
-                date = load.date[:10] # TODO job.real_date_planned (bad load)
-                
-                # Setup range data for load:
-                period = date[:7]
-                if not range_date[0] or period < range_date[0]:
-                    range_date[0] = period
-                if not range_date[1] or period > range_date[1]:
-                    range_date[1] = period
-                    
-                job = load.line_id
-                subtotal = price * qty
+            row += 1
+            # Write fixed col data:
+            excel_pool.write_xls_line(
+                ws_name, row, [
+                    product.default_code or '',
+                    product.name,
+                    (row_total, f_number),
+                    ], default_format=f_text)
 
-                if recycle:
-                    recycle_qty = qty
-                    qty = 0.0
-                    f_text_color = f_text_bg_blue
-                    f_number_color = f_number_bg_blue
-                else:    
-                    recycle_qty = 0.0
-                    f_text_color = f_text
-                    f_number_color = f_number
-
-                # Write data:
-                row += 1
-                excel_pool.write_xls_line(
-                    ws_name, row, [
-                        date,
-                        job.name,
-                        product.default_code or '',
-                        product.name,
-                        job.workcenter_id.name,
-                        
-                        (qty, f_number_color),
-                        (recycle_qty, f_number_color),
-                        
-                        (price, f_number_color),
-                        (subtotal, f_number_color),                    
-                        ], default_format=f_text_color)"""
-
-
+            # Write variable col data:
+            excel_pool.write_xls_line(
+                ws_name, row, empty, default_format=f_number, col=fixed_col)
 
 
         # ---------------------------------------------------------------------
