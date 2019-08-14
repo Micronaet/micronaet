@@ -293,15 +293,17 @@ class MrpProduction(orm.Model):
             # Load data:        
             # -----------------------------------------------------------------
             for load in job.load_ids:
-                # (Product, Qty, Price, Recycle)
+                # (Mode, Product, Qty, Price, Recycle)
                 loop = [(
                     # Product:
+                    'load',
                     job.product, 
                     load.product_qty - load.waste_qty, 
                     load.accounting_cost, 
                     False), (
 
                     # Package:    
+                    'unload',
                     load.package_id.linked_product_id, 
                     load.ul_qty, 
                     load.package_pedimento_id.standard_price or \
@@ -309,6 +311,7 @@ class MrpProduction(orm.Model):
                     False), (
 
                     # Pallet:        
+                    'unload',
                     load.pallet_product_id, 
                     load.pallet_qty, 
                     load.pallet_pedimento_id.standard_price or \
@@ -316,21 +319,22 @@ class MrpProduction(orm.Model):
                     False),
                     ]
 
-                if load.recycle:
+                if load.waste_qty: #load.recycle:
                     loop.append((
                         # Recycle:    
+                        'load',
                         load.recycle_product_id, 
                         load.waste_qty, 
                         load.accounting_cost, # Same as good product
                         True,
                         ))
 
-                for product, qty, price, recycle in loop:
+                for mode, product, qty, price, recycle in loop:
                     if not product:
                         continue
-                    if product not in total['load']:
-                        total['load'][product] = []     
-                    total['load'][product].append((load, qty, price, recycle))
+                    if product not in total[mode]:
+                        total[mode][product] = []     
+                    total[mode][product].append((load, qty, price, recycle))
                 
             # -----------------------------------------------------------------
             # Unload data:        
@@ -371,7 +375,7 @@ class MrpProduction(orm.Model):
             # TODO total!                
             # Readability:    
             for load, qty, price, recycle in total['load'][product]:
-                date = load.date # TODO job.real_date_planned (for bad load)
+                date = load.date[:10] # TODO job.real_date_planned (for bad load)
                 job = load.line_id
                 recycle_qty = 0.0
                 subtotal = price * qty
@@ -390,11 +394,11 @@ class MrpProduction(orm.Model):
                         product.name,
                         job.workcenter_id.name,
                         
-                        qty,
-                        recycle_qty,
+                        (qty, f_number),
+                        (recycle_qty, f_number),
                         
-                        price,
-                        subtotal,                    
+                        (price, f_number),
+                        (subtotal, f_number),                    
                         ], default_format=f_text)
 
 
