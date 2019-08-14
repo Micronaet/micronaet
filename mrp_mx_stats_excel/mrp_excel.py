@@ -389,9 +389,6 @@ class MrpProduction(orm.Model):
                     price,
                     subtotal,                    
                     ], default_format=f_text)
-            
-
-
 
 
         # ---------------------------------------------------------------------
