@@ -383,7 +383,7 @@ class MrpProduction(orm.Model):
                     recycle_qty = qty
                     qty = 0.0
                     f_text_color = f_text_bg_blue
-                    t_number_color = f_number_bg_blue
+                    f_number_color = f_number_bg_blue
                 else:    
                     recycle_qty = 0.0
                     f_text_color = f_text
