@@ -71,7 +71,7 @@ class MrpProduction(orm.Model):
                         int(ref_date[5:7]) + 1,
                         )
                 col += 1
-            
+            return res
         
         if context is None:
             context = {}
