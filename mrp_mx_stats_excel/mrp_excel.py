@@ -491,8 +491,17 @@ class MrpProduction(orm.Model):
 
             # Write variable col data:
             excel_pool.write_xls_line(
-                ws_name, row, empty, default_format=f_number, col=fixed_col)
+                ws_name, row, data, default_format=f_number, col=fixed_col)
 
+        # Write total:
+        row += 1
+        # Write fixed col data:
+        excel_pool.write_xls_line(
+            ws_name, row, ['Totale', ], default_format=f_text)
+        # Write variable col data:
+        excel_pool.write_xls_line(
+            ws_name, row, col_total, default_format=f_number, col=fixed_col)
+    
 
         # ---------------------------------------------------------------------
         # Production unloaded materials:
