@@ -128,7 +128,7 @@ smtp = {
     }
 
 now = now.replace('/', '_').replace('-', '_').replace(':', '_')
-filename = 'PCA_statistiche_produzione_%s.xlsx' % now
+filename = 'PCA Statistiche di produzione %s.xlsx' % now
 fullname = os.path.expanduser(
     os.path.join(smtp['folder'], filename))
 context = {
