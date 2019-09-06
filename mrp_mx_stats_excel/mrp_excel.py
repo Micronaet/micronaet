@@ -716,13 +716,15 @@ class MrpProduction(orm.Model):
         header = ['Materia', 'Descrizione', 'UM', 'Totale']
 
         fixed_col = len(header)
-        col_total = []
+        col_total = {}
 
+        empty = []
         for col in sorted(load_col):
             width.append(8)
             header.append(col)
-            col_total.append(0.0) # always KG
-        empty = col_total[:]
+            #col_total.append(0.0) # always KG
+            empty.append(0.0)
+        #empty = col_total[:]
         
         # Header:
         row = 0
@@ -732,6 +734,12 @@ class MrpProduction(orm.Model):
         
         for product in sorted(total['unload'], 
                 key=lambda x: (x.default_code, x.name)):
+            uom = product.uom_id
+            if uom not in col_total:
+                col_total[uom] = []
+                for col in sorted(load_col):
+                    col_total[uom].append(0.0)
+                    
             row_total = 0.0            
             data = empty[:]
             for date, job, qty, price, recycle in total['unload'][product]:
@@ -741,7 +749,7 @@ class MrpProduction(orm.Model):
                 # Totals:
                 data[col] += qty
                 row_total += qty
-                col_total[col] += qty
+                col_total[uom][col] += qty
 
             row += 1
             # Write fixed col data:
@@ -758,16 +766,20 @@ class MrpProduction(orm.Model):
                 ws_name, row, data, default_format=f_number, col=fixed_col)
 
         # Write total:
-        row += 1
-        # Write fixed col data:
-        excel_pool.write_xls_line(
-            ws_name, row, ['Totale', ], default_format=f_header,
-            col= fixed_col - 1)
-        # Write variable col data:
-        excel_pool.write_xls_line(
-            ws_name, row, col_total, default_format=f_number_bg_green_bold, 
-            col=fixed_col)
-                
+        for uom in col_total:
+            total = col_total[uom]
+            row += 1
+
+            # Write fixed col data:
+            excel_pool.write_xls_line(
+                ws_name, row, ['Totale %s' % uom.name], 
+                default_format=f_header, col= fixed_col - 1)
+
+            # Write variable col data:
+            excel_pool.write_xls_line(
+                ws_name, row, total, default_format=f_number_bg_green_bold, 
+                col=fixed_col)
+                    
         return excel_pool.save_file_as(save_mode)            
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
