@@ -232,9 +232,9 @@ class MrpProduction(orm.Model):
                     '',
                     subtotal,
                     ], default_format=f_number_bg_blue_bold)
+            row += 1
             
         # Write end total:                    
-        row += 1
         excel_pool.write_xls_line(                    
             ws_name, row, [
                 'Totale:',
@@ -245,7 +245,7 @@ class MrpProduction(orm.Model):
         # Write all data:
         # ---------------------------------------------------------------------
         # Header:
-        row += 2
+        row += 2 # extra space
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=f_header)
     
