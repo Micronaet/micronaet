@@ -310,14 +310,15 @@ class MrpProduction(orm.Model):
             qty, subtotal = page_total[uom]
             master_total += subtotal
             # Write data:                    
-            row += 1
             excel_pool.write_xls_line(                    
                 ws_name, row, [
+                    '',
                     'Parziali',
                     uom.name,
                     qty,
                     subtotal,
-                    ], default_format=f_number_bg_blue_bold, col=1)
+                    ], default_format=f_number_bg_blue_bold)
+            row += 1
             
         # Write data:                    
         excel_pool.write_xls_line(                    
@@ -325,7 +326,6 @@ class MrpProduction(orm.Model):
                 'Totale:',
                 master_total,
                 ], default_format=f_number_bg_green_bold, col=3)
-        row += 1
 
         # ---------------------------------------------------------------------
         # Write data:
