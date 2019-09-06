@@ -105,6 +105,7 @@ class MrpProduction(orm.Model):
         # =====================================================================
         #                         INITIAL SETUP:
         # =====================================================================
+        currency = 'MXP'
         if context is None:
             context = {}
         save_mode = context.get('save_mode')
@@ -164,11 +165,11 @@ class MrpProduction(orm.Model):
         # Column:
         width = [
             5, 12, 30, 20, 5,
-            10, 10, 15,
+            10, 10, 15, 5
             ]
         header = [
             'Tipo', 'Codice', 'Descrizione', 'Lotto', 'UM',
-            'Q.', 'Prezzo', 'Subtotale',
+            'Q.', 'Prezzo', 'Subtotale', 'Valuta'
             ]
 
         row = 0
@@ -229,6 +230,7 @@ class MrpProduction(orm.Model):
                     (qty, f_number_current),                    
                     (price, f_number_current),                    
                     (subtotal, f_number_current),                    
+                    currency,
                     ], f_text_current))
 
         # ---------------------------------------------------------------------
@@ -248,6 +250,7 @@ class MrpProduction(orm.Model):
                     qty,
                     '',
                     subtotal,
+                    currency
                     ], default_format=f_number_bg_blue_bold)
             row += 1
             
@@ -256,6 +259,7 @@ class MrpProduction(orm.Model):
             ws_name, row, [
                 'Totale:',
                 master_total,
+                currency
                 ], default_format=f_number_bg_green_bold, col=6)
 
         # ---------------------------------------------------------------------
@@ -285,12 +289,12 @@ class MrpProduction(orm.Model):
         width = [
             5, 12, 30, 5,
             10, 15, 
-            5,
+            5, 5, 
             ]
         header = [
             'Tipo', 'Codice', 'Prodotto', 'UM',
             'Q.', 'Subtotale', 
-            'Errore',
+            'Valuta', 'Errore',
             ]
 
         row = 0
@@ -320,6 +324,7 @@ class MrpProduction(orm.Model):
                 product.uom_id.name,
                 (qty, f_number_current),                    
                 (subtotal, f_number_current),                    
+                currency,
                 '' if ok else 'X',
                 ], f_text_current))
 
@@ -338,6 +343,7 @@ class MrpProduction(orm.Model):
                     uom.name,
                     qty,
                     subtotal,
+                    currency,
                     ], default_format=f_number_bg_blue_bold)
             row += 1
             
@@ -346,6 +352,7 @@ class MrpProduction(orm.Model):
             ws_name, row, [
                 'Totale:',
                 master_total,
+                currency,
                 ], default_format=f_number_bg_green_bold, col=4)
 
         # ---------------------------------------------------------------------
