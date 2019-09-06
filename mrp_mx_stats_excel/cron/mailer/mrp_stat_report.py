@@ -82,7 +82,10 @@ smtp = {
               datta al prezzo del pedimento, se presente, o al prezzo materia 
               prima.<br/>
         5. <b>Controllo produzione:</b> Verifica scarico e carico con
-              segnalazione oltre 10%%.<br/>
+              segnalazione oltre 10%%. Colori:<br/> 
+                 Blue = nessuna pertita<br/>
+                 Rosso = prodotto maggiore delle materie prime<br/>
+                 Giallo = perdita oltre il 10%%.<br/>
         </p>
 
         <p>
