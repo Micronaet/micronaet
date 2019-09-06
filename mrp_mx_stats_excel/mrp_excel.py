@@ -265,6 +265,9 @@ class MrpProduction(orm.Model):
         row += 2 # extra space
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=f_header)
+ 
+        # Autofilter:
+        excel_pool.autofilter(ws_name, row, 0, row, len(header) - 1)
     
         # Data:
         for record, f_text_current in temp_list:
