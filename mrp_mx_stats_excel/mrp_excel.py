@@ -677,12 +677,10 @@ class MrpProduction(orm.Model):
             col_total.append(0.0) # always KG
         empty = col_total[:]
         
-        # Header:
         row = 0
         excel_pool.column_width(ws_name, width)
-        excel_pool.write_xls_line(
-            ws_name, row, header, default_format=f_header)
         
+        temp_list = []
         for product in sorted(total['load'], 
                 key=lambda x: (x.default_code, x.name)):
             row_total = 0.0            
@@ -696,31 +694,44 @@ class MrpProduction(orm.Model):
                 row_total += qty
                 col_total[col] += qty
 
-            row += 1
-            # Write fixed col data:
-            excel_pool.write_xls_line(
-                ws_name, row, [
-                    product.default_code or '',
-                    product.name,
-                    product.uom_id.name,
-                    (row_total, f_number_bg_green_bold),
-                    ], default_format=f_text)
+            temp_list.append(([
+                product.default_code or '',
+                product.name,
+                product.uom_id.name,
+                (row_total, f_number_bg_green_bold),
+                ], data))
 
-            # Write variable col data:
-            excel_pool.write_xls_line(
-                ws_name, row, data, default_format=f_number, col=fixed_col)
-
+        # ---------------------------------------------------------------------               
         # Write total:
-        row += 1
+        # ---------------------------------------------------------------------               
         # Write fixed col data:
         excel_pool.write_xls_line(
             ws_name, row, ['Totale', ], default_format=f_header,
             col= fixed_col - 1)
+
         # Write variable col data:
         excel_pool.write_xls_line(
             ws_name, row, col_total, default_format=f_number_bg_green_bold, 
             col=fixed_col)
-    
+
+        # ---------------------------------------------------------------------               
+        # Write data:
+        # ---------------------------------------------------------------------               
+        # Header:
+        row += 2
+        excel_pool.write_xls_line(
+            ws_name, row, header, default_format=f_header)
+            
+        for fized, data in temp_list:
+            row += 1
+            # Write fixed col data:
+            excel_pool.write_xls_line(
+                ws_name, row, fixed, default_format=f_text)
+
+            # Write variable col data:
+            excel_pool.write_xls_line(
+                ws_name, row, data, default_format=f_number, col=fixed_col)
+            
         # ---------------------------------------------------------------------               
         # Material in period:
         # ---------------------------------------------------------------------               
