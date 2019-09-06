@@ -127,8 +127,9 @@ smtp = {
     'folder': config.get('smtp', 'folder'),
     }
 
+now = now.replace('/', '_').replace('-', '_').replace(':', '_')
 filename = os.path.expanduser(
-    os.path.join(smtp['folder'], 'statistiche_produzione.xlsx'))
+    os.path.join(smtp['folder'], 'PCA_statistiche_produzione_%s.xlsx' % now))
 context = {
     'save_mode': filename,
     }
