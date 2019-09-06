@@ -128,10 +128,11 @@ smtp = {
     }
 
 now = now.replace('/', '_').replace('-', '_').replace(':', '_')
-filename = os.path.expanduser(
-    os.path.join(smtp['folder'], 'PCA_statistiche_produzione_%s.xlsx' % now))
+filename = 'PCA_statistiche_produzione_%s.xlsx' % now
+fullname = os.path.expanduser(
+    os.path.join(smtp['folder'], filename))
 context = {
-    'save_mode': filename,
+    'save_mode': fullname,
     }
 
 # -----------------------------------------------------------------------------
@@ -192,10 +193,10 @@ for to in smtp['to'].replace(' ', '').split(','):
 
 
     part = MIMEBase('application', 'octet-stream')
-    part.set_payload(open(filename, 'rb').read())
+    part.set_payload(open(fullname, 'rb').read())
     Encoders.encode_base64(part)
     part.add_header(
-        'Content-Disposition', 'attachment; filename="Stato vendite.xlsx"')
+        'Content-Disposition', 'attachment; filename="%s"' % filename)
 
     msg.attach(part)
 
