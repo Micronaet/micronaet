@@ -586,19 +586,26 @@ class MrpProduction(orm.Model):
             else:    
                 rate_total = 0.0
                 rate = 0.0
+            
+            # Setup color:
             if lost >= 0.0 and lost <= 10.0:
-                pass
+                f_text_color = f_text
+                f_number_color = f_number
+            else:
+                f_text_color = f_text_red
+                f_number_color = f_number_red
                 
             row += 1
             # Write fixed col data:
             excel_pool.write_xls_line(
                 ws_name, row, [
-                    '%s del %s' % (mrp.name, mrp.date_planned[:10]),
+                    ('%s del %s' % (mrp.name, mrp.date_planned[:10]), 
+                        f_text_color),
                     round(material, 2),
                     round(product, 2),
                     round(rate_total, 2),
                     round(rate, 2),
-                    ], default_format=f_text)
+                    ], default_format=f_number_color)
 
         # Write total:
         #row += 1

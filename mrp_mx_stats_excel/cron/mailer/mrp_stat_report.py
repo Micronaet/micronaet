@@ -81,7 +81,7 @@ smtp = {
               utilizzati nel processo produttivo. La valorizzazione &egrave; 
               datta al prezzo del pedimento, se presente, o al prezzo materia 
               prima.<br/>
-        5. <b>Controllo produzione:<b> Verifica scarico e carico con
+        5. <b>Controllo produzione:</b> Verifica scarico e carico con
               segnalazione oltre 10%%.<br/>
         </p>
 
