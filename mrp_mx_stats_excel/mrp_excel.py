@@ -589,13 +589,11 @@ class MrpProduction(orm.Model):
             'Calo %',
             ]
 
-        # Header:
         row = 0
         excel_pool.column_width(ws_name, width)
-        excel_pool.write_xls_line(
-            ws_name, row, header, default_format=f_header)
         
         page_total = [0.0, 0.0]
+        temp_list
         for mrp in sorted(total['check'], key=lambda x: (x.name)):
             material, product = total['check'][mrp]
             
@@ -623,25 +621,24 @@ class MrpProduction(orm.Model):
                 f_text_color = f_text
                 f_number_color = f_number
                 
-            row += 1
             # Write fixed col data:
-            excel_pool.write_xls_line(
-                ws_name, row, [
-                    ('%s del %s' % (mrp.name, mrp.date_planned[:10]), 
-                        f_text_color),
-                    ('[%s] %s' % (
-                        mrp.product_id.default_code or '-', 
-                        mrp.product_id.name or '', 
-                        ), f_text_color),
-                        
-                    '%10.2f' % round(material, 2),
-                    '%10.2f' % round(product, 2),
-                    '%10.2f' % round(lost, 2),
-                    '%10.2f' % round(rate, 2),
-                    ], default_format=f_number_color)
+            temp_list.append(([
+                ('%s del %s' % (mrp.name, mrp.date_planned[:10]), 
+                    f_text_color),
+                ('[%s] %s' % (
+                    mrp.product_id.default_code or '-', 
+                    mrp.product_id.name or '', 
+                    ), f_text_color),
+                    
+                '%10.2f' % round(material, 2),
+                '%10.2f' % round(product, 2),
+                '%10.2f' % round(lost, 2),
+                '%10.2f' % round(rate, 2),
+                ], f_number_color))
 
+        # ---------------------------------------------------------------------               
         # Write total:
-        row += 1
+        # ---------------------------------------------------------------------               
         total_material, total_product = page_total
         lost = total_material - total_product
         
@@ -653,7 +650,20 @@ class MrpProduction(orm.Model):
                 '%10.2f' % round(lost, 2),
                 '%10.2f' % round(100.0 * lost / total_material, 2),
                 ], default_format=f_number_bg_green_bold, col=1)
-        
+
+        # ---------------------------------------------------------------------               
+        # Write data:
+        # ---------------------------------------------------------------------               
+        # Header:
+        row += 1
+        excel_pool.write_xls_line(
+            ws_name, row, header, default_format=f_header)
+            
+        for record, f_number_color in temp_list:
+            row += 1
+            excel_pool.write_xls_line(
+                ws_name, row, record, default_format=f_number_color)
+
         # =====================================================================
         #                           REPORT x PERIOD
         # =====================================================================
