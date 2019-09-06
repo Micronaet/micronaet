@@ -587,10 +587,8 @@ class MrpProduction(orm.Model):
             
             lost = material - product
             if product:
-                rate_total = lost / material
-                rate = rate_total * 100.0
+                rate = lost / material * 100.0
             else:    
-                rate_total = 0.0
                 rate = 0.0
             
             # Setup color:
@@ -617,18 +615,22 @@ class MrpProduction(orm.Model):
                         
                     '%10.2f' % round(material, 2),
                     '%10.2f' % round(product, 2),
-                    '%10.2f' % round(rate_total, 2),
+                    '%10.2f' % round(lost, 2),
                     '%10.2f' % round(rate, 2),
                     ], default_format=f_number_color)
 
         # Write total:
         row += 1
-        # Write fixed col data:
+        total_material, total_product = page_total
+        lost = total_material - total_product
+        
         excel_pool.write_xls_line(
             ws_name, row, [
                 ('Totale', f_title), 
-                page_total[0], 
-                page_total[1],
+                total_material, 
+                total_product,
+                '%10.2f' % round(lost),
+                '%10.2f' % round(100.0 * lost / material),
                 ], default_format=f_number_bg_green_bold, col=1)
         
         # =====================================================================
