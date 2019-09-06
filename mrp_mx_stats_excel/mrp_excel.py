@@ -170,6 +170,7 @@ class MrpProduction(orm.Model):
             ws_name, row, header, default_format=f_header)
 
         page_total = {}
+        temp_list = []
         for product in sorted(
                 product_proxy, key=lambda x: (x.default_code, x.name)):
             for lot in product.pedimento_ids:
@@ -209,9 +210,7 @@ class MrpProduction(orm.Model):
                     total['product'][product][2] = False # Not OK
 
                 # Write data:                    
-                row += 1
-                excel_pool.write_xls_line(                    
-                    ws_name, row, [
+                temp_list.append([
                         product.default_code or '',
                         product.name,
                         lot.code or '',
@@ -219,11 +218,23 @@ class MrpProduction(orm.Model):
                         (qty, f_number_current),                    
                         (price, f_number_current),                    
                         (subtotal, f_number_current),                    
-                        ], default_format=f_text_current)
+                        ])
+                #row += 1
+                #excel_pool.write_xls_line(                    
+                #    ws_name, row, [
+                #        product.default_code or '',
+                #        product.name,
+                #        lot.code or '',
+                #        uom.name,
+                #        (qty, f_number_current),                    
+                #        (price, f_number_current),                    
+                #        (subtotal, f_number_current),                    
+                #        ], default_format=f_text_current)
 
         # ---------------------------------------------------------------------
         # Write total:
         # ---------------------------------------------------------------------
+        # Write subtotal:
         master_total = 0.0
         for uom in sorted(page_total, key=lambda x: x.name):
             qty, subtotal = page_total[uom]
@@ -239,13 +250,21 @@ class MrpProduction(orm.Model):
                     subtotal,
                     ], default_format=f_number_bg_blue_bold, col=2)
             
-        # Write data:                    
+        # Write end total:                    
         row += 1
         excel_pool.write_xls_line(                    
             ws_name, row, [
                 'Totale:',
                 master_total,
                 ], default_format=f_number_bg_green_bold, col=5)
+
+        # ---------------------------------------------------------------------
+        # Write all data:
+        # ---------------------------------------------------------------------
+        for record in temp_list:
+            row += 1
+            excel_pool.write_xls_line(                    
+                ws_name, row, record, default_format=f_text_current)
 
         # ---------------------------------------------------------------------
         # Product status:
