@@ -135,10 +135,12 @@ class MrpProduction(orm.Model):
         f_text = excel_pool.get_format('text')
         f_text_red = excel_pool.get_format('bg_red')
         f_text_bg_blue = excel_pool.get_format('bg_blue')
+        f_text_bg_yellow = excel_pool.get_format('bg_yellow')
         
         f_number = excel_pool.get_format('number')
         f_number_red = excel_pool.get_format('bg_red_number')
         f_number_bg_blue = excel_pool.get_format('bg_blue_number')
+        f_number_bg_yellow = excel_pool.get_format('bg_yellow_number')
         f_number_bg_blue_bold = excel_pool.get_format('bg_blue_number_bold')
         f_number_bg_red_bold = excel_pool.get_format('bg_red_number_bold')
         f_number_bg_green_bold = excel_pool.get_format('bg_green_number_bold')
@@ -565,7 +567,7 @@ class MrpProduction(orm.Model):
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
-        width = [25, 20, 15, 15, 15, 15]
+        width = [22, 25, 12, 12, 10, 10]
         header = [
             'Produzione', 'Prodotto', 'Materie prime', 'Prodotti finito', 'Calo', 
             'Calo %',
@@ -595,7 +597,10 @@ class MrpProduction(orm.Model):
             if not rate:
                 f_text_color = f_text_bg_blue
                 f_number_color = f_number_bg_blue
-            elif rate > 10.0 or rate < 0.0:
+            elif rate > 10.0:                
+                f_text_color = f_text_bg_yellow
+                f_number_color = f_number_yellow
+            elif rate < 0.0:
                 f_text_color = f_text_red
                 f_number_color = f_number_red
             else:
@@ -608,7 +613,7 @@ class MrpProduction(orm.Model):
                 ws_name, row, [
                     ('%s del %s' % (mrp.name, mrp.date_planned[:10]), 
                         f_text_color),
-                    ('%s: %s' % (
+                    (['%s] %s' % (
                         mrp.product_id.default_code or '-', 
                         mrp.product_id.name or '', 
                         ), f_text_color),
