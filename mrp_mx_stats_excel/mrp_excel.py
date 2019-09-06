@@ -61,10 +61,14 @@ class MrpProduction(orm.Model):
             default_code = (product.default_code or '').upper()
             if not product_type or not default_code:
                 return 'ERR'
-            elif not default_code.endswith('X'):
-                return product_type
+            
+            if product_type == 'PT': 
+                if default_code.endswith('X'):
+                    return 'PF'
+                else:
+                    return 'IT' # Comes from Italy                
             else:
-                return 'IT'
+                return 'MP'
 
         def _get_load_date(load):
             ''' Problem: much load was done in the same day in initial phase
