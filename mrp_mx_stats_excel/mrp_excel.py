@@ -582,7 +582,7 @@ class MrpProduction(orm.Model):
             lost = material - product
             if product:
                 rate_total = lost / material
-                rate = rate_total / 100.0
+                rate = rate_total * 100.0
             else:    
                 rate_total = 0.0
                 rate = 0.0
@@ -593,11 +593,11 @@ class MrpProduction(orm.Model):
             # Write fixed col data:
             excel_pool.write_xls_line(
                 ws_name, row, [
-                    mrp.name or '',
-                    material,
-                    product,
-                    rate_total,
-                    rate,
+                    '%s del %s' % (mrp.name, mrp.date_planned),
+                    round(material, 2),
+                    round(product, 2),
+                    round(rate_total, 2),
+                    round(rate, 2),
                     ], default_format=f_text)
 
         # Write total:
@@ -606,6 +606,9 @@ class MrpProduction(orm.Model):
         #excel_pool.write_xls_line(
         #    ws_name, row, ['Totale', ], default_format=f_header,
         #    col= fixed_col - 1)
+        
+        
+        
         
         # =====================================================================
         #                           REPORT x PERIOD
