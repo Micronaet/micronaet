@@ -62,7 +62,9 @@ smtp = {
         <p>Situazione aggiornata alla data di riferimento: <b>%s</b></p>
 
         <p>
-           <b>Dati di magazzino:</b><br/>
+           <b>Dati di magazzino: </b>
+              (MP=Materia prima, PF=Prodotti finito, 
+              IT=Prodotto finito italiano)<br/>
         1. <b>Lotti:</b> Elenco lotti con esistenza e valorizzazione;
             dati che arrivano da ContipaQ. Totali suddivisi per UM.<br/>
         2. <b>Prodotti:</b> Elenco prodotti con esistenza e valorizzazione;
@@ -84,7 +86,8 @@ smtp = {
         5. <b>Controllo produzione:</b> Verifica scarico e carico con
               segnalazione oltre 10%%. Colori:<br/> 
                  &nbsp;&nbsp;&nbsp;Blu = nessuna perdita<br/>
-                 &nbsp;&nbsp;&nbsp;Rosso = prodotto maggiore delle materie prime<br/>
+                 &nbsp;&nbsp;&nbsp;Rosso = prodotto maggiore delle materie 
+                 prime<br/>
                  &nbsp;&nbsp;&nbsp;Giallo = perdita oltre il 10%%.<br/>
         </p>
 
