@@ -702,7 +702,7 @@ class MrpProduction(orm.Model):
                 ], data))
 
         # ---------------------------------------------------------------------               
-        # Write total:
+        # Write total (row 0):
         # ---------------------------------------------------------------------               
         # Write fixed col data:
         excel_pool.write_xls_line(
@@ -722,7 +722,7 @@ class MrpProduction(orm.Model):
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=f_header)
             
-        for fized, data in temp_list:
+        for fixed, data in temp_list:
             row += 1
             # Write fixed col data:
             excel_pool.write_xls_line(
