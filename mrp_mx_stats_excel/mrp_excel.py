@@ -596,7 +596,7 @@ class MrpProduction(orm.Model):
                 ws_name, row, [
                     mrp.name or '',
                     material,
-                    product
+                    product,
                     rate_total,
                     rate,
                     ], default_format=f_text)
