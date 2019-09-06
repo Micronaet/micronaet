@@ -599,7 +599,7 @@ class MrpProduction(orm.Model):
                 f_number_color = f_number_bg_blue
             elif rate > 10.0:                
                 f_text_color = f_text_bg_yellow
-                f_number_color = f_number_yellow
+                f_number_color = f_number_bg_yellow
             elif rate < 0.0:
                 f_text_color = f_text_red
                 f_number_color = f_number_red
