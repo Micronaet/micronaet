@@ -613,7 +613,7 @@ class MrpProduction(orm.Model):
                 ws_name, row, [
                     ('%s del %s' % (mrp.name, mrp.date_planned[:10]), 
                         f_text_color),
-                    (['%s] %s' % (
+                    ('[%s] %s' % (
                         mrp.product_id.default_code or '-', 
                         mrp.product_id.name or '', 
                         ), f_text_color),
