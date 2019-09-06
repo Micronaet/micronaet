@@ -484,12 +484,12 @@ class MrpProduction(orm.Model):
         width = [
             10, 15, 15, 30, 10,
             5, 10, 10, 
-            15, 15,
+            15, 15, 5,
             ]
         header = [
             'Data', 'Riferimento', 'Prodotto', 'Descrizione', 'Linea',
             'UM', 'Q.', 'Q. errata', 
-            'Prezzo carico', 'Subtotale',
+            'Prezzo carico', 'Subtotale', 'Valuta',
             ]
         
         # Header:
@@ -541,6 +541,7 @@ class MrpProduction(orm.Model):
                         
                         (price, f_number_color),
                         (subtotal, f_number_color),                    
+                        currency,
                         ], default_format=f_text_color)
 
         load_col = _get_period_date_dict(range_date)
@@ -555,12 +556,12 @@ class MrpProduction(orm.Model):
         width = [
             10, 15, 15, 30, 10,
             5, 10,
-            15, 15,
+            15, 15, 5,
             ]
         header = [
             'Data', 'Riferimento', 'Materia prima', 'Descrizione', 'Linea',
             'UM', 'Q.',
-            'Prezzo scarico', 'Subtotale',
+            'Prezzo scarico', 'Subtotale', 'Valuta',
             ]
         
         # Header:
@@ -601,6 +602,7 @@ class MrpProduction(orm.Model):
                         
                         (price, f_number),
                         (subtotal, f_number),
+                        currency,
                         ], default_format=f_text)
 
         unload_col = _get_period_date_dict(range_date)
@@ -616,9 +618,14 @@ class MrpProduction(orm.Model):
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
-        width = [22, 25, 12, 12, 10, 10]
+        width = [
+            22, 25, 
+            5, 12, 12, 
+            10, 10,
+            ]
         header = [
-            'Produzione', 'Prodotto', 'Materie prime', 'Prodotti finito', 
+            'Produzione', 'Prodotto', 
+            'UM', 'Materie prime', 'Prodotti finito', 
             'Calo', 'Calo %',
             ]
 
@@ -629,7 +636,7 @@ class MrpProduction(orm.Model):
         temp_list = []
         for mrp in sorted(total['check'], key=lambda x: (x.name)):
             material, product = total['check'][mrp]
-            
+            mrp_product = mrp.product_id
             # Page total:
             page_total[0] += material
             page_total[1] += product
@@ -659,9 +666,10 @@ class MrpProduction(orm.Model):
                 ('%s del %s' % (mrp.name, mrp.date_planned[:10]), 
                     f_text_color),
                 ('[%s] %s' % (
-                    mrp.product_id.default_code or '-', 
-                    mrp.product_id.name or '', 
+                    mrp_product.default_code or '-', 
+                    mrp_product.name or '', 
                     ), f_text_color),
+                (mrp_product.uom_id.name, f_text_color),
                     
                 '%10.2f' % round(material, 2),
                 '%10.2f' % round(product, 2),
