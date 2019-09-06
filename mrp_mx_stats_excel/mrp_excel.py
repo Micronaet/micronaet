@@ -565,9 +565,9 @@ class MrpProduction(orm.Model):
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
-        width = [25, 15, 15, 15, 15]
+        width = [25, 20, 15, 15, 15, 15]
         header = [
-            'Produzione', 'Materie prime', 'Prodotti finito', 'Calo', 
+            'Produzione', 'Prodotto', 'Materie prime', 'Prodotti finito', 'Calo', 
             'Calo %',
             ]
 
@@ -577,8 +577,14 @@ class MrpProduction(orm.Model):
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=f_header)
         
+        page_total = [0.0, 0.0]
         for mrp in sorted(total['check'], key=lambda x: (x.name)):
             material, product = total['check'][mrp]
+            
+            # Page total:
+            page_total[0] += material
+            page_total[1] += product
+            
             lost = material - product
             if product:
                 rate_total = lost / material
@@ -604,21 +610,23 @@ class MrpProduction(orm.Model):
                 ws_name, row, [
                     ('%s del %s' % (mrp.name, mrp.date_planned[:10]), 
                         f_text_color),
-                    round(material, 2),
-                    round(product, 2),
-                    round(rate_total, 2),
-                    round(rate, 2),
+                    ('%s: %s' % (
+                        mrp.product_id.default_code or '-', 
+                        mrp.product_id.name or '', 
+                        ), f_text_color),
+                        
+                    '%10.2f' % round(material, 2),
+                    '%10.2f' % round(product, 2),
+                    '%10.2f' % round(rate_total, 2),
+                    '%10.2f' % round(rate, 2),
                     ], default_format=f_number_color)
 
         # Write total:
-        #row += 1
+        row += 1
         # Write fixed col data:
-        #excel_pool.write_xls_line(
-        #    ws_name, row, ['Totale', ], default_format=f_header,
-        #    col= fixed_col - 1)
-        
-        
-        
+        excel_pool.write_xls_line(
+            ws_name, row, ['Totale', page_total[0], page_total[1]]], 
+            default_format=f_header, col=1)
         
         # =====================================================================
         #                           REPORT x PERIOD
