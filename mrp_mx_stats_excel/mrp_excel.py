@@ -565,7 +565,7 @@ class MrpProduction(orm.Model):
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
-        width = [15, 15, 15, 15, 15]
+        width = [25, 15, 15, 15, 15]
         header = [
             'Produzione', 'Materie prime', 'Prodotti finito', 'Calo', 
             'Calo %',
@@ -593,7 +593,7 @@ class MrpProduction(orm.Model):
             # Write fixed col data:
             excel_pool.write_xls_line(
                 ws_name, row, [
-                    '%s del %s' % (mrp.name, mrp.date_planned),
+                    '%s del %s' % (mrp.name, mrp.date_planned[:10]),
                     round(material, 2),
                     round(product, 2),
                     round(rate_total, 2),
