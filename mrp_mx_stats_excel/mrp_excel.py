@@ -109,7 +109,10 @@ class MrpProduction(orm.Model):
             'unload': {}, # Raw material unload
 
             'production': {}, # Total production for product
-            } 
+            
+            'check': {}, # Check production totals (in and out)
+            }
+
         #month_column = []
         _logger.info('%s. Start extract MRP statistic: %s' % 
             (now, save_mode))
@@ -332,12 +335,22 @@ class MrpProduction(orm.Model):
         page_total = {}
         for job in job_pool.browse(cr, uid, job_ids, context=context):
             # -----------------------------------------------------------------
+            # Check data page:
+            # -----------------------------------------------------------------
+            mrp = job.production_id
+            if mrp not in total['check']:
+                total['check'][mrp] = [0.0, 0.0] # raw material, final product
+            total['check'][mrp][1] += load.product_qty # Final product
+            
+         
+            # -----------------------------------------------------------------
             # Load data:        
             # -----------------------------------------------------------------
             for load in job.load_ids:
                 # (Mode, Product, Qty, Price, Recycle)
-                production_price = (load.accounting_cost / load.product_qty)\
+                production_price = (load.accounting_cost / load.product_qty) \
                     if load.product_qty else 0.0
+
                 loop = [(
                     # Product:
                     'load',
@@ -362,6 +375,7 @@ class MrpProduction(orm.Model):
                         load.pallet_product_id.standard_price, 
                     False),
                     ]
+
                 if load.waste_qty: #load.recycle:
                     loop.append((
                         # Recycle:    
@@ -375,6 +389,7 @@ class MrpProduction(orm.Model):
                 for mode, product, qty, price, recycle in loop:
                     if not product:
                         continue
+
                     if product not in total[mode]:
                         total[mode][product] = []     
                     total[mode][product].append((
@@ -401,6 +416,11 @@ class MrpProduction(orm.Model):
                     unload.pedimento_price or unload.standard_price,
                     0.0, # Never present
                     ))
+
+                # -------------------------------------------------------------
+                # Check data page:
+                # -------------------------------------------------------------
+                total['check'][mrp][0] += unload.quantity # Raw material
 
         # =====================================================================
         #                        PRODUCTION DETAIL:
@@ -535,6 +555,59 @@ class MrpProduction(orm.Model):
 
         unload_col = _get_period_date_dict(range_date)
 
+
+        # =====================================================================
+        #                           REPORT FOR CHECK
+        # =====================================================================
+        # ---------------------------------------------------------------------               
+        # Production in / out data:
+        # ---------------------------------------------------------------------               
+        ws_name = 'Controllo produzioni'
+        excel_pool.create_worksheet(name=ws_name)
+
+        # Column:
+        width = [15, 15, 15, 15, 15]
+        header = [
+            'Produzione', 'Materie prime', 'Prodotti finito', 'Calo', 
+            'Calo %',
+            ]
+
+        # Header:
+        row = 0
+        excel_pool.column_width(ws_name, width)
+        excel_pool.write_xls_line(
+            ws_name, row, header, default_format=f_header)
+        
+        for mrp in sorted(total['check'], key=lambda x: (x.name)):
+            material, product = total['check'][mrp]
+            lost = material - product
+            if product:
+                rate_total = lost / material
+                rate = rate_total / 100.0
+            else:    
+                rate_total = 0.0
+                rate = 0.0
+            if lost >= 0.0 and lost <= 10.0:
+                pass
+                
+            row += 1
+            # Write fixed col data:
+            excel_pool.write_xls_line(
+                ws_name, row, [
+                    mrp.name or '',
+                    material,
+                    product
+                    rate_total,
+                    rate,
+                    ], default_format=f_text)
+
+        # Write total:
+        #row += 1
+        # Write fixed col data:
+        #excel_pool.write_xls_line(
+        #    ws_name, row, ['Totale', ], default_format=f_header,
+        #    col= fixed_col - 1)
+        
         # =====================================================================
         #                           REPORT x PERIOD
         # =====================================================================
