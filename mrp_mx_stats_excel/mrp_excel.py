@@ -625,8 +625,11 @@ class MrpProduction(orm.Model):
         row += 1
         # Write fixed col data:
         excel_pool.write_xls_line(
-            ws_name, row, ['Totale', page_total[0], page_total[1]], 
-            default_format=f_header, col=1)
+            ws_name, row, [
+                ('Totale', f_title), 
+                page_total[0], 
+                page_total[1],
+                ], default_format=f_number_bg_green_bold, col=1)
         
         # =====================================================================
         #                           REPORT x PERIOD
