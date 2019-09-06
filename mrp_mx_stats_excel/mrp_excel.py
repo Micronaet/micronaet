@@ -713,12 +713,12 @@ class MrpProduction(orm.Model):
         excel_pool.write_xls_line(
             ws_name, row, col_total, default_format=f_number_bg_green_bold, 
             col=fixed_col)
+        row += 1
 
         # ---------------------------------------------------------------------               
         # Write data:
         # ---------------------------------------------------------------------               
         # Header:
-        row += 2
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=f_header)
             
