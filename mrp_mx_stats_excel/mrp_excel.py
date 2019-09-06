@@ -340,13 +340,14 @@ class MrpProduction(orm.Model):
             mrp = job.production_id
             if mrp not in total['check']:
                 total['check'][mrp] = [0.0, 0.0] # raw material, final product
-            total['check'][mrp][1] += load.product_qty # Final product
-            
-         
+                     
             # -----------------------------------------------------------------
             # Load data:        
             # -----------------------------------------------------------------
             for load in job.load_ids:
+                # Check data page:
+                total['check'][mrp][1] += load.product_qty # Final product
+
                 # (Mode, Product, Qty, Price, Recycle)
                 production_price = (load.accounting_cost / load.product_qty) \
                     if load.product_qty else 0.0
@@ -417,9 +418,7 @@ class MrpProduction(orm.Model):
                     0.0, # Never present
                     ))
 
-                # -------------------------------------------------------------
                 # Check data page:
-                # -------------------------------------------------------------
                 total['check'][mrp][0] += unload.quantity # Raw material
 
         # =====================================================================
