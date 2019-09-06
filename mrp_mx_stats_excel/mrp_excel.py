@@ -280,12 +280,12 @@ class MrpProduction(orm.Model):
 
         # Column:
         width = [
-            12, 30, 5,
+            5, 12, 30, 5,
             10, 15, 
             5,
             ]
         header = [
-            'Codice', 'Prodotto', 'UM',
+            'Tipo', 'Codice', 'Prodotto', 'UM',
             'Q.', 'Subtotale', 
             'Errore',
             ]
@@ -311,13 +311,14 @@ class MrpProduction(orm.Model):
 
             # Write data:      
             temp_list.append(([
-                    product.default_code or '',
-                    product.name,
-                    product.uom_id.name,
-                    (qty, f_number_current),                    
-                    (subtotal, f_number_current),                    
-                    '' if ok else 'X',
-                    ], f_text_current))
+                _get_product_mode(product),
+                product.default_code or '',
+                product.name,
+                product.uom_id.name,
+                (qty, f_number_current),                    
+                (subtotal, f_number_current),                    
+                '' if ok else 'X',
+                ], f_text_current))
 
         # ---------------------------------------------------------------------
         # Write total:
@@ -329,7 +330,7 @@ class MrpProduction(orm.Model):
             # Write data:                    
             excel_pool.write_xls_line(                    
                 ws_name, row, [
-                    '',
+                    '', '',
                     'Parziali',
                     uom.name,
                     qty,
@@ -342,7 +343,7 @@ class MrpProduction(orm.Model):
             ws_name, row, [
                 'Totale:',
                 master_total,
-                ], default_format=f_number_bg_green_bold, col=3)
+                ], default_format=f_number_bg_green_bold, col=4)
 
         # ---------------------------------------------------------------------
         # Write data:
