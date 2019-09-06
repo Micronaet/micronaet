@@ -223,7 +223,6 @@ class MrpProduction(orm.Model):
             qty, subtotal = page_total[uom]
             master_total += subtotal
             # Write data:                    
-            row += 1
             excel_pool.write_xls_line(                    
                 ws_name, row, [
                     '', '',
