@@ -629,8 +629,8 @@ class MrpProduction(orm.Model):
                 ('Totale', f_title), 
                 total_material, 
                 total_product,
-                '%10.2f' % round(lost),
-                '%10.2f' % round(100.0 * lost / material),
+                '%10.2f' % round(lost, 2),
+                '%10.2f' % round(100.0 * lost / material, 2),
                 ], default_format=f_number_bg_green_bold, col=1)
         
         # =====================================================================
