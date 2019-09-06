@@ -83,7 +83,7 @@ smtp = {
               prima.<br/>
         5. <b>Controllo produzione:</b> Verifica scarico e carico con
               segnalazione oltre 10%%. Colori:<br/> 
-                 Blue = nessuna pertita<br/>
+                 Blu = nessuna pertita<br/>
                  Rosso = prodotto maggiore delle materie prime<br/>
                  Giallo = perdita oltre il 10%%.<br/>
         </p>
