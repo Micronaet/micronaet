@@ -81,16 +81,18 @@ smtp = {
               utilizzati nel processo produttivo. La valorizzazione &egrave; 
               datta al prezzo del pedimento, se presente, o al prezzo materia 
               prima.<br/>
+        5. <b>Controllo produzione, verifica scarico e carico consegnalazione
+              oltre 10%.<br/>
         </p>
 
         <p>
            <b>Riepilogo di produzione:</b><br/>
-        5. <b>Produzioni periodo:</b> Riepilogo dove si estrapola il carico di 
+        6. <b>Produzioni periodo:</b> Riepilogo dove si estrapola il carico di 
               produzione mensile e il totale produzione di ogni prodotto.<br/> 
               Nelle colonne &egrave; anche possibile avere il dettaglio 
               produzione: prodotto per mese.<br/> 
               Questa stampa viene ricavata dai dati indicato nel foglio 3.<br/>
-        6. <b>Scarichi periodo:</b> Riepilogo dove si estrapola lo scarico di 
+        7. <b>Scarichi periodo:</b> Riepilogo dove si estrapola lo scarico di 
               materiali mensile e il totale scarico materia prima totale.<br/>
               Nelle colonne &egrave; anche possibile avere il dettaglio 
               scarico: materia prima per mese.<br/>
