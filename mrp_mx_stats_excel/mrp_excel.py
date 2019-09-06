@@ -352,10 +352,15 @@ class MrpProduction(orm.Model):
         row += 2
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=f_header)
+
+        # Autofilter:
+        excel_pool.autofilter(ws_name, row, 0, row, len(header) - 1)
+
         for record, f_text_current in temp_list:
             row += 1              
             excel_pool.write_xls_line(                    
-                ws_name, row, record, default_format=f_text_current)
+                ws_name, row, record, default_format=f_text_current)        
+        
 
         # =====================================================================
         #                   Collect data for Production:
