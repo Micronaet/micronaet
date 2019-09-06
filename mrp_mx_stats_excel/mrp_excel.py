@@ -686,6 +686,7 @@ class MrpProduction(orm.Model):
         excel_pool.write_xls_line(
             ws_name, row, [
                 ('Totali', f_header), 
+                ('KG', f_header), 
                 total_material, 
                 total_product,
                 '%10.2f' % round(lost, 2),
