@@ -54,6 +54,18 @@ class MrpProduction(orm.Model):
         # =====================================================================
         #                             UTILITY:
         # =====================================================================
+        def _get_product_mode(product):
+            ''' Extract final product, raw material, italian product
+            '''
+            product_type = product.product_type
+            default_code = (product.default_code or '').upper()
+            if not product_type or not default_code:
+                return 'ERR'
+            elif not default_code.endswith('X'):
+                return product_type
+            else:
+                return 'IT'
+
         def _get_load_date(load):
             ''' Problem: much load was done in the same day in initial phase
             '''
@@ -147,11 +159,11 @@ class MrpProduction(orm.Model):
         
         # Column:
         width = [
-            12, 30, 20, 5,
+            5, 12, 30, 20, 5,
             10, 10, 15,
             ]
         header = [
-            'Codice', 'Descrizione', 'Lotto', 'UM',
+            'Tipo', 'Codice', 'Descrizione', 'Lotto', 'UM',
             'Q.', 'Prezzo', 'Subtotale',
             ]
 
@@ -205,14 +217,15 @@ class MrpProduction(orm.Model):
 
                 # Write data:                    
                 temp_list.append(([
-                        product.default_code or '',
-                        product.name,
-                        lot.code or '',
-                        uom.name,
-                        (qty, f_number_current),                    
-                        (price, f_number_current),                    
-                        (subtotal, f_number_current),                    
-                        ], f_text_current))
+                    _get_product_mode(product),
+                    product.default_code or '',
+                    product.name,
+                    lot.code or '',
+                    uom.name,
+                    (qty, f_number_current),                    
+                    (price, f_number_current),                    
+                    (subtotal, f_number_current),                    
+                    ], f_text_current))
 
         # ---------------------------------------------------------------------
         # Write total:
@@ -225,7 +238,7 @@ class MrpProduction(orm.Model):
             # Write data:                    
             excel_pool.write_xls_line(                    
                 ws_name, row, [
-                    '', '',
+                    '', '', '',
                     'Parziali',
                     uom.name,
                     qty,
@@ -239,7 +252,7 @@ class MrpProduction(orm.Model):
             ws_name, row, [
                 'Totale:',
                 master_total,
-                ], default_format=f_number_bg_green_bold, col=5)
+                ], default_format=f_number_bg_green_bold, col=6)
 
         # ---------------------------------------------------------------------
         # Write all data:
