@@ -436,12 +436,12 @@ class MrpProduction(orm.Model):
         # Column:
         width = [
             10, 15, 15, 30, 10,
-            10, 10, 
+            5, 10, 10, 
             15, 15,
             ]
         header = [
             'Data', 'Riferimento', 'Prodotto', 'Descrizione', 'Linea',
-            'Q.', 'Q. errata', 
+            'UM', 'Q.', 'Q. errata', 
             'Prezzo carico', 'Subtotale',
             ]
         
@@ -488,6 +488,7 @@ class MrpProduction(orm.Model):
                         product.name,
                         job.workcenter_id.name,
                         
+                        product.uom_id.name or '',
                         (qty, f_number_color),
                         (recycle_qty, f_number_color),
                         
@@ -506,12 +507,12 @@ class MrpProduction(orm.Model):
         # Column:
         width = [
             10, 15, 15, 30, 10,
-            10,
+            5, 10,
             15, 15,
             ]
         header = [
             'Data', 'Riferimento', 'Materia prima', 'Descrizione', 'Linea',
-            'Q.',
+            'UM', 'Q.',
             'Prezzo scarico', 'Subtotale',
             ]
         
@@ -548,6 +549,7 @@ class MrpProduction(orm.Model):
                         product.name,
                         job.workcenter_id.name,
                         
+                        product.uom_id.name or '',
                         (qty, f_number),
                         
                         (price, f_number),
