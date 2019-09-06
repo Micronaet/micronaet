@@ -82,7 +82,7 @@ smtp = {
               datta al prezzo del pedimento, se presente, o al prezzo materia 
               prima.<br/>
         5. <b>Controllo produzione, verifica scarico e carico consegnalazione
-              oltre 10%.<br/>
+              oltre 10%%.<br/>
         </p>
 
         <p>
