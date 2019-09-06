@@ -272,18 +272,14 @@ class MrpProduction(orm.Model):
             'Q.', 'Subtotale', 
             'Errore',
             ]
-        
-        # Header:
+
         row = 0
         excel_pool.column_width(ws_name, width)
-        excel_pool.write_xls_line(
-            ws_name, row, header, default_format=f_header)
-
+        
         # Data:        
         partial = 0.0 # Stock value
-        excel_pool.write_xls_line(                    
-            ws_name, row, header, default_format=f_header)
 
+        temp_list = []
         for product in sorted(total['product'], 
                 key=lambda x: (x.default_code, x.name)):
             qty, subtotal, ok = total['product'][product]
@@ -297,16 +293,14 @@ class MrpProduction(orm.Model):
                 f_number_current = f_number_red
 
             # Write data:      
-            row += 1              
-            excel_pool.write_xls_line(                    
-                ws_name, row, [
+            temp_list.append(([
                     product.default_code or '',
                     product.name,
                     product.uom_id.name,
                     (qty, f_number_current),                    
                     (subtotal, f_number_current),                    
                     '' if ok else 'X',
-                    ], default_format=f_text_current)
+                    ], f_text_current))
 
         # ---------------------------------------------------------------------
         # Write total:
@@ -326,12 +320,24 @@ class MrpProduction(orm.Model):
                     ], default_format=f_number_bg_blue_bold, col=1)
             
         # Write data:                    
-        row += 1
         excel_pool.write_xls_line(                    
             ws_name, row, [
                 'Totale:',
                 master_total,
                 ], default_format=f_number_bg_green_bold, col=3)
+        row += 1
+
+        # ---------------------------------------------------------------------
+        # Write data:
+        # ---------------------------------------------------------------------
+        # Header:
+        row += 2
+        excel_pool.write_xls_line(
+            ws_name, row, header, default_format=f_header)
+        for record, f_text_current in temp_list:
+            row += 1              
+            excel_pool.write_xls_line(                    
+                ws_name, row, record, default_format=f_text_current)
 
         # =====================================================================
         #                   Collect data for Production:
