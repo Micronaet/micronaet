@@ -154,21 +154,15 @@ class MrpProduction(orm.Model):
             'Codice', 'Descrizione', 'Lotto', 'UM',
             'Q.', 'Prezzo', 'Subtotale',
             ]
-        
-        # Header:
+
         row = 0
         excel_pool.column_width(ws_name, width)
-        excel_pool.write_xls_line(
-            ws_name, row, header, default_format=f_header)
-
+        
         # Data:        
         product_ids = product_pool.search(cr, uid, [], context=context)
         product_proxy = product_pool.browse(
             cr, uid, product_ids, context=context)
             
-        excel_pool.write_xls_line(                    
-            ws_name, row, header, default_format=f_header)
-
         page_total = {}
         temp_list = []
         for product in sorted(
@@ -210,7 +204,7 @@ class MrpProduction(orm.Model):
                     total['product'][product][2] = False # Not OK
 
                 # Write data:                    
-                temp_list.append([
+                temp_list.append(([
                         product.default_code or '',
                         product.name,
                         lot.code or '',
@@ -218,18 +212,7 @@ class MrpProduction(orm.Model):
                         (qty, f_number_current),                    
                         (price, f_number_current),                    
                         (subtotal, f_number_current),                    
-                        ])
-                #row += 1
-                #excel_pool.write_xls_line(                    
-                #    ws_name, row, [
-                #        product.default_code or '',
-                #        product.name,
-                #        lot.code or '',
-                #        uom.name,
-                #        (qty, f_number_current),                    
-                #        (price, f_number_current),                    
-                #        (subtotal, f_number_current),                    
-                #        ], default_format=f_text_current)
+                        ], f_text_current))
 
         # ---------------------------------------------------------------------
         # Write total:
@@ -243,12 +226,13 @@ class MrpProduction(orm.Model):
             row += 1
             excel_pool.write_xls_line(                    
                 ws_name, row, [
+                    '', '',
                     'Parziali',
                     uom.name,
                     qty,
                     '',
                     subtotal,
-                    ], default_format=f_number_bg_blue_bold, col=2)
+                    ], default_format=f_number_bg_blue_bold)
             
         # Write end total:                    
         row += 1
@@ -261,7 +245,13 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------
         # Write all data:
         # ---------------------------------------------------------------------
-        for record in temp_list:
+        # Header:
+        row += 2
+        excel_pool.write_xls_line(
+            ws_name, row, header, default_format=f_header)
+    
+        # Data:
+        for record, f_text_current in temp_list:
             row += 1
             excel_pool.write_xls_line(                    
                 ws_name, row, record, default_format=f_text_current)
