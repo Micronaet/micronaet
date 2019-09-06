@@ -585,15 +585,15 @@ class MrpProduction(orm.Model):
         # Column:
         width = [22, 25, 12, 12, 10, 10]
         header = [
-            'Produzione', 'Prodotto', 'Materie prime', 'Prodotti finito', 'Calo', 
-            'Calo %',
+            'Produzione', 'Prodotto', 'Materie prime', 'Prodotti finito', 
+            'Calo', 'Calo %',
             ]
 
         row = 0
         excel_pool.column_width(ws_name, width)
         
         page_total = [0.0, 0.0]
-        temp_list
+        temp_list = []
         for mrp in sorted(total['check'], key=lambda x: (x.name)):
             material, product = total['check'][mrp]
             
