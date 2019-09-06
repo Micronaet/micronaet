@@ -758,7 +758,7 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------               
         # Write fixed col data:
         excel_pool.write_xls_line(
-            ws_name, row, ['Totali', ], default_format=f_header,
+            ws_name, row, ['Totali KG', ], default_format=f_header,
             col= fixed_col - 1)
 
         # Write variable col data:
