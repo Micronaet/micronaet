@@ -246,6 +246,7 @@ class sale_order_add_extra(osv.osv):
         ''' Import OC and create sale.order
         '''
         currency_pool = self.pool.get('res.currency')
+        partner_pool = self.pool.get('res.partner')
         
         empty_date = self.pool.get('micronaet.accounting').get_empty_date()
         log_info = ''
@@ -310,8 +311,23 @@ class sale_order_add_extra(osv.osv):
                 )
                 oc_id = self.search(cr, uid, [
                     ('name', '=', name)], context=context)
-                partner_proxy = browse_partner_ref(
-                    self, cr, uid, oc['CKY_CNT_CLFR'], context=context)
+                
+                # -------------------------------------------------------------
+                # Get partner:
+                # -------------------------------------------------------------
+                partner_ids = partner_pool.search(cr, uid, [
+                    '|', '|',
+                    ('sql_customer_code', '=', oc['CKY_CNT_CLFR']),
+                    ('sql_supplier_code', '=', oc['CKY_CNT_CLFR']),
+                    ('sql_destination_code', '=', oc['CKY_CNT_CLFR']),
+                    ], context=context)
+                if partner_ids:
+                    partner_id = partner_ids[0]    
+                else:
+                    partner_id = False    
+
+                #partner_proxy = browse_partner_ref(
+                #    self, cr, uid, oc['CKY_CNT_CLFR'], context=context)
                 if oc_id: # update      # TODO test for deadline update
                     oc_id = oc_id[0]
                     
@@ -328,8 +344,8 @@ class sale_order_add_extra(osv.osv):
                         'currency_id': currency_convert.get(
                             oc['NKY_VLT'], currency_default),
                         }
-                    if partner_proxy:
-                        header['partner_id'] = partner_proxy.id
+                    if partner_id:
+                        header['partner_id'] = partner_id
 
                     if header: # not working for now, decide if is necessary
                         self.write(
@@ -344,9 +360,7 @@ class sale_order_add_extra(osv.osv):
                     # nelle bolle di produzione
 
                 else: # new:
-                    #partner_proxy = browse_partner_ref(
-                    #    self, cr, uid, oc['CKY_CNT_CLFR'], context=context)
-                    if not partner_proxy or not partner_proxy.id: # TODO better!
+                    if not partner_id:
                         _logger.error(
                             'No partner found (created minimal): %s' % (
                                 oc['CKY_CNT_CLFR']))
@@ -369,8 +383,6 @@ class sale_order_add_extra(osv.osv):
                                      oc['CKY_CNT_CLFR'],
                                      sys.exc_info()))
                              continue # jump this OC
-                    else:
-                        partner_id = partner_proxy.id #if partner_proxy else False
 
                     oc_id = self.create(cr, uid, {
                         'name': name,                    # max 64
