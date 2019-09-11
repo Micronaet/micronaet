@@ -35,7 +35,8 @@ from email import Encoders
 # -----------------------------------------------------------------------------
 #cfg_file = os.path.expanduser('../local.cfg')
 cfg_file = os.path.expanduser('./openerp.cfg')
-now = ('%s' %datetime.now())[:19]
+now = ('%s' % datetime.now())[:19]
+now_text = now.replace('/', '_').replace('-', '_').replace(':', '_')
 
 config = ConfigParser.ConfigParser()
 config.read([cfg_file])
@@ -85,7 +86,7 @@ smtp = {
 
 
         ''' % now,
-    'subject': 'Stato materie prime con produzioni schedulate: %s' % now,    
+    'subject': 'PAN Stato materie prime con produzioni schedulate: %s' % now,    
     'folder': config.get('smtp', 'folder'),
     }
 
@@ -161,7 +162,8 @@ for to in smtp['to'].replace(' ', '').split(','):
     part.set_payload(open(filename, 'rb').read())
     Encoders.encode_base64(part)
     part.add_header(
-        'Content-Disposition', 'attachment; filename="Stato materie prime.xlsx"')
+        'Content-Disposition', 
+        'attachment; filename="PAN Stato_materie_prime %s.xlsx"' % now_text)
     msg.attach(part)
 
     # Send mail:
