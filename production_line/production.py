@@ -310,8 +310,11 @@ class sale_order_add_extra(osv.osv):
                 )
                 oc_id = self.search(cr, uid, [
                     ('name', '=', name)], context=context)
+                partner_proxy = browse_partner_ref(
+                    self, cr, uid, oc['CKY_CNT_CLFR'], context=context)
                 if oc_id: # update      # TODO test for deadline update
                     oc_id = oc_id[0]
+                    
                     if oc_id not in all_order_updated_ids:
                         all_order_updated_ids.append(oc_id)
 
@@ -321,9 +324,15 @@ class sale_order_add_extra(osv.osv):
                     #   1. partner not the same,
                     #   2. deadline changed (see in the line for value),
                     #   3. record deleted (after)
-                    header = {}
+                    header = {
+                        'currency_id': currency_convert.get(
+                            oc['NKY_VLT'], currency_default),
+                        }
+                    if partner_proxy:
+                        header['partner_id'] = partner_proxy.id
+
                     if header: # not working for now, decide if is necessary
-                        update = self.write(
+                        self.write(
                             cr, uid, oc_id, header, context=context)
 
                     try: # Remove from delete list of orders
@@ -335,8 +344,8 @@ class sale_order_add_extra(osv.osv):
                     # nelle bolle di produzione
 
                 else: # new:
-                    partner_proxy = browse_partner_ref(
-                        self, cr, uid, oc['CKY_CNT_CLFR'], context=context)
+                    #partner_proxy = browse_partner_ref(
+                    #    self, cr, uid, oc['CKY_CNT_CLFR'], context=context)
                     if not partner_proxy or not partner_proxy.id: # TODO better!
                         _logger.error(
                             'No partner found (created minimal): %s' % (
