@@ -91,8 +91,15 @@ def browse_partner_id(self, cr, uid, item_id, context=None):
 def browse_partner_ref(self, cr, uid, ref, context=None):
     ''' Get OpenERP ID for res.partner with passed accounting reference
     '''
-    partner_id = self.pool.get("res.partner").search(cr, uid, ["|","|",('mexal_c','=',ref),('mexal_d','=',ref),('mexal_s','=',ref)], context=context)
-    return self.pool.get('res.partner').browse(cr, uid, partner_id[0], context=context) if partner_id else False
+    partner_id = self.pool.get("res.partner").search(cr, uid, [
+        "|", "|",
+        ('mexal_c', '=', ref),
+        ('mexal_d', '=', ref),
+        ('mexal_s', '=', ref),
+        ], context=context)
+
+    return self.pool.get('res.partner').browse(
+        cr, uid, partner_id[0], context=context) if partner_id else False
  
 def get_product_id(self, cr, uid, ref, context=None):
     ''' Get OpenERP ID for product.product with passed accounting reference
