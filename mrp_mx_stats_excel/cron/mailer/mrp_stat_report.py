@@ -138,7 +138,7 @@ smtp = {
         la colaboración de Edna.<br/>
         </p>
         ''' % now,
-    'subject': u'PCA Detalles de producción / ContipaQ : %s' % now,    
+    'subject': u'PCA Detalles de produccion / ContipaQ : %s' % now,    
     
     'folder': config.get('smtp', 'folder'),
     }
