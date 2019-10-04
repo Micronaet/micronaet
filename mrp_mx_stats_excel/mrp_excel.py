@@ -141,7 +141,7 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------
         # Lot status:
         # ---------------------------------------------------------------------               
-        ws_name = 'Lotti'
+        ws_name = u'Lotes'
         excel_pool.create_worksheet(name=ws_name)
 
         # Format:
@@ -168,8 +168,8 @@ class MrpProduction(orm.Model):
             10, 10, 15, 5
             ]
         header = [
-            'Tipo', 'Codice', 'Descrizione', 'Lotto', 'UM',
-            'Q.', 'Prezzo', 'Subtotale', 'Valuta'
+            u'Tipo', u'Codice', u'Descrizione', u'Lotto', u'UM',
+            u'Q.', u'Prezzo', u'Subtotale', u'Valuta'
             ]
 
         row = 0
@@ -245,7 +245,7 @@ class MrpProduction(orm.Model):
             excel_pool.write_xls_line(                    
                 ws_name, row, [
                     '', '', '',
-                    'Parziali',
+                    u'Parziali',
                     uom.name,
                     qty,
                     '',
@@ -257,7 +257,7 @@ class MrpProduction(orm.Model):
         # Write end total:                    
         excel_pool.write_xls_line(                    
             ws_name, row, [
-                'Totale:',
+                u'Totale:',
                 master_total,
                 currency
                 ], default_format=f_number_bg_green_bold, col=6)
@@ -282,7 +282,7 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------
         # Product status:
         # ---------------------------------------------------------------------               
-        ws_name = 'Prodotti'
+        ws_name = u'Productos'
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
@@ -292,9 +292,9 @@ class MrpProduction(orm.Model):
             5, 5, 
             ]
         header = [
-            'Tipo', 'Codice', 'Prodotto', 'UM',
-            'Q.', 'Subtotale', 
-            'Valuta', 'Errore',
+            u'Tipo', u'Codice', u'Productos', u'UM',
+            u'Q.', u'Subtotale', 
+            u'Valuta', u'Errore',
             ]
 
         row = 0
@@ -339,7 +339,7 @@ class MrpProduction(orm.Model):
             excel_pool.write_xls_line(                    
                 ws_name, row, [
                     '', '',
-                    'Parziali',
+                    u'Parziali',
                     uom.name,
                     qty,
                     subtotal,
@@ -350,7 +350,7 @@ class MrpProduction(orm.Model):
         # Write data:                    
         excel_pool.write_xls_line(                    
             ws_name, row, [
-                'Totale:',
+                u'Totale:',
                 master_total,
                 currency,
                 ], default_format=f_number_bg_green_bold, col=4)
@@ -477,7 +477,7 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------
         # Production loaded product:
         # ---------------------------------------------------------------------               
-        ws_name = 'Carichi produzione'
+        ws_name = u'Cargas de producción'
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
@@ -487,9 +487,9 @@ class MrpProduction(orm.Model):
             15, 15, 5,
             ]
         header = [
-            'Data', 'Riferimento', 'Prodotto', 'Descrizione', 'Linea',
-            'UM', 'Q.', 'Q. errata', 
-            'Prezzo carico', 'Subtotale', 'Valuta',
+            u'Fecha', u'Riferimento', u'Productos', u'Descrizione', u'Linea',
+            u'UM', u'Q.', u'Q. errata', 
+            u'Prezzo carico', u'Subtotale', u'Valuta',
             ]
         
         # Header:
@@ -549,7 +549,7 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------
         # Production unloaded product:
         # ---------------------------------------------------------------------               
-        ws_name = 'Scarichi produzione'
+        ws_name = u'Descargas de producción'
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
@@ -559,9 +559,9 @@ class MrpProduction(orm.Model):
             15, 15, 5,
             ]
         header = [
-            'Data', 'Riferimento', 'Materia prima', 'Descrizione', 'Linea',
-            'UM', 'Q.',
-            'Prezzo scarico', 'Subtotale', 'Valuta',
+            u'Fecha', u'Riferimento', u'Materia prima', u'Descrizione', u'Líneas',
+            u'UM', u'Q.',
+            u'Prezzo scarico', u'Subtotale', u'Valuta',
             ]
         
         # Header:
@@ -614,7 +614,7 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------               
         # Production in / out data:
         # ---------------------------------------------------------------------               
-        ws_name = 'Controllo produzioni'
+        ws_name = u'Control de producción'
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
@@ -624,9 +624,9 @@ class MrpProduction(orm.Model):
             10, 10,
             ]
         header = [
-            'Produzione', 'Prodotto', 
-            'UM', 'Materie prime', 'Prodotti finito', 
-            'Calo', 'Calo %',
+            u'Producción', u'Productos', 
+            u'UM', u'Materie prime', u'Producto terminado', 
+            u'Calo', u'Calo %',
             ]
 
         row = 0
@@ -685,12 +685,12 @@ class MrpProduction(orm.Model):
         
         excel_pool.write_xls_line(
             ws_name, row, [
-                ('Totali', f_header), 
-                ('KG', f_header), 
+                (u'Totali', f_header), 
+                (u'KG', f_header), 
                 total_material, 
                 total_product,
-                '%10.2f' % round(lost, 2),
-                '%10.2f' % round(100.0 * lost / total_material, 2),
+                u'%10.2f' % round(lost, 2),
+                u'%10.2f' % round(100.0 * lost / total_material, 2),
                 ], default_format=f_number_bg_green_bold, col=1)
 
         # ---------------------------------------------------------------------               
@@ -713,12 +713,12 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------               
         # Production in period:
         # ---------------------------------------------------------------------               
-        ws_name = 'Produzioni periodo'
+        ws_name = u'Producción en el periodo'
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
         width = [10, 30, 4, 10]
-        header = ['Prodotto', 'Descrizione', 'UM', 'Totale']
+        header = [u'Productos', u'Descrizione', u'UM', u'Totale']
 
         fixed_col = len(header)
         col_total = []
@@ -758,7 +758,7 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------               
         # Write fixed col data:
         excel_pool.write_xls_line(
-            ws_name, row, ['Totali KG', ], default_format=f_header,
+            ws_name, row, [u'Totali KG', ], default_format=f_header,
             col= fixed_col - 1)
 
         # Write variable col data:
@@ -787,12 +787,12 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------               
         # Material in period:
         # ---------------------------------------------------------------------               
-        ws_name = 'Scarichi periodo'
+        ws_name = u'Descargas en el periodo'
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
         width = [10, 30, 4, 10]
-        header = ['Materia', 'Descrizione', 'UM', 'Totale']
+        header = [u'Materia', u'Descrizione', u'UM', u'Total']
 
         fixed_col = len(header)
         col_total = {}
@@ -842,7 +842,7 @@ class MrpProduction(orm.Model):
 
             # Write fixed col data:
             excel_pool.write_xls_line(
-                ws_name, row, ['Totali %s' % uom.name], 
+                ws_name, row, [u'Totali %s' % uom.name], 
                 default_format=f_header, col= fixed_col - 1)
 
             # Write variable col data:

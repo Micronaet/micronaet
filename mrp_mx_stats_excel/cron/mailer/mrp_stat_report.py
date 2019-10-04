@@ -51,87 +51,100 @@ odoo = {
 # Mail:
 smtp = {
     'to': config.get('smtp', 'to'),
-    'text': '''
-        <p>Spett.li responsabili produzione PCA,</p>
-        <p>Questa &egrave; una mail automatica giornaliera inviata da 
-            <b>OpenERP</b> con lo stato produzioni e magazzino contabile.<br/>
-            Dove sono presenti valorizzazioni di prezzo va considerata la 
-            valuta attualmente impostata in ContipaQ.            
-        </p>
-
-        <p>Situazione aggiornata alla data di riferimento: <b>%s</b></p>
+    'text': u'''
+        <p>A los Gerentes de producción de PCA,</p> 
 
         <p>
-           <b>Dati di magazzino: </b>
-              (MP=Materia prima, PF=Prodotti finito, 
-              IT=Prodotto finito italiano)<br/>
-        1. <b>Lotti:</b> Elenco lotti con esistenza e valorizzazione;
-            dati che arrivano da ContipaQ. Totali suddivisi per UM.<br/>
-        2. <b>Prodotti:</b> Elenco prodotti con esistenza e valorizzazione;
-            dati che arrivano da ContipaQ. Totali suddivisi per UM.<br/>
+        Este es un correo diario automático enviado por <b>OpenERP</b> con 
+        el estado del almacén de producción y contabilidad.<br/>
+        Cuando los valores de precios están presentes, debe considerarse la 
+        moneda establecida actualmente en ContipaQ.
         </p>
 
         <p>
-           <b>Dettagli di produzione:</b><br/>
-        3. <b>Carichi produzione:</b> Dettaglio carichi di ogni lavorazione,
-              vengono indicati anche i carichi da recuperare (in azzurro).
-              La valorizzazione viene calcolata con il totale dei costi
-              delle materie prime, degli imballi, dei bancali e del 
-              coefficente K di lavorazione per la linea in questione.<br/>
-        4. <b>Sarichi produzione:</b> Dettaglio scarichi di ogni lavorazione,
-              sono presenti anche i recuperi, gli imballi e i bancali 
-              utilizzati nel processo produttivo. La valorizzazione &egrave; 
-              datta al prezzo del pedimento, se presente, o al prezzo materia 
-              prima.<br/>
-        5. <b>Controllo produzione:</b> Verifica scarico e carico con
-              segnalazione oltre 10%%. Colori:<br/> 
-                 &nbsp;&nbsp;&nbsp;Blu = nessuna perdita<br/>
-                 &nbsp;&nbsp;&nbsp;Rosso = prodotto maggiore delle materie 
-                 prime<br/>
-                 &nbsp;&nbsp;&nbsp;Giallo = perdita oltre il 10%%.<br/>
+        Situación actualizada a la fecha de referencia: <b>%s</b>
         </p>
 
         <p>
-           <b>Riepilogo di produzione:</b><br/>
-        6. <b>Produzioni periodo:</b> Riepilogo dove si estrapola il carico di 
-              produzione mensile e il totale produzione di ogni prodotto.<br/> 
-              Nelle colonne &egrave; anche possibile avere il dettaglio 
-              produzione: prodotto per mese.<br/> 
-              Questa stampa viene ricavata dai dati indicato nel foglio 3.<br/>
-        7. <b>Scarichi periodo:</b> Riepilogo dove si estrapola lo scarico di 
-              materiali mensile e il totale scarico materia prima totale.<br/>
-              Nelle colonne &egrave; anche possibile avere il dettaglio 
-              scarico: materia prima per mese.<br/>
-              Questa stampa viene ricavata dai dati indicato nel foglio 4.<br/>
+        <b>Datos de inventario</b>: 
+            (MP = Materia prima, PF = Productos terminados, 
+            IT = Producto terminado italiano)<br/>
+
+        1. <b>Lotes:</b> Lista de lotes con existencia y valor; 
+            datos provenientes de ContipaQ. 
+            Totales subdivididos por UM (unidad de medida).<br/>
+
+        2. <b>Productos:</b> Lista de productos con existencia y mejora; 
+            datos provenientes de ContipaQ. Totales subdivididos por UM 
+            (unidad de medida).<br/>
         </p>
 
         <p>
-            <i>Nota magazzino: Nello stato di magazzino (Lotti e Prodotti) sono 
-               evidenziati in rosso le righe con prodotti che non hanno prezzo.
-               <br/>
-               I lotti senza esistenza sono stati eliminati dalla stampa.
-               </i>
+        <b>Detalles de producción:</b><br/>
+        3. <b>Cargas de producción:</b> Se indican los detalles de las 
+            cargas de cada procesamiento, y también las cargas a recuperar 
+            (en azul). El valor se calcula con los costes totales de las 
+            materias primas, envases, tarimas y el coeficiente de trabajo K 
+            para la línea en cuestión.<br/>
+
+        4. <b>Descargas de producción:</b> Detalle de las descargas de cada 
+            procesamiento, también hay recuperaciones, empaques y tarimas 
+            utilizadas en el proceso de producción. El valor se basa en el 
+            precio del pedimento, si está presente, o en el precio de la 
+            materia prima.<br/>
+
+        5. <b>Control de producción:</b> Verificación de descargas y cargas 
+            con señalación superiores al 10%%. colores:<br/>
+            &nbsp;&nbsp;&nbsp;Azul = sin pérdida<br/>
+            &nbsp;&nbsp;&nbsp;Rojo = mayor producto que las materias 
+                primas!<br/>
+            &nbsp;&nbsp;&nbsp;Amarillo = pérdida superior al 10%%.<br/>
         </p>
+
         <p>
-            <i>Nota produzione: Nei fogli di produzione la data indicata viene
-               ricavata da quella della produzione, questo &egrave; dovuto
-               al fatto che sono state inserite le produzioni a blocchi per
-               coprire il periodo in cui non &egrave; stato utilizzato il 
-               programma. Da agosto invece si prende la corretta data di 
-               carico e scarico indicata.<br/>
-               Non escludo una correzione nel database per regolarizzare i dati
-               con la collaborazione di Edna.               
-               </i>
+        <b>Resumen de producción:</b><br/>
+        6. <b>Producción en el periodo:</b> resumen donde se extrapola la carga 
+            de producción mensual y la producción total de cada producto.
+            En las columnas es también posible tener el detalle de producción: 
+            producto por mes.<br/>
+            Esta impresión se toma desde los datos indicados en la hoja 3.<br/>
+        7. <b>Descargas en el periodo:</b> Resumen donde se extrapola la 
+            descarga mensual de material y la descarga total de la materia 
+            prima total.</br>
+            
+            En las columnas también es posible descargar el detalle:</br>
+            materia prima por mes.<br/>
+            Esta impresión se toma desde los datos indicados en la hoja 4.<br/>
+        </p>
+
+        <p>
+        <i>
+        Nota de existencias: en el almacén (lotes y productos) las líneas 
+        con productos que no tienen precio se resaltan en rojo.
+        <br/>
+        Los lotes sin existencia han sido eliminados de la prensa.</i>
         </p>
         <b>Micronaet S.r.l.</b>
+
+        <i>
+        Nota de producción: en las hojas de producción, la fecha indicada se 
+        toma desde la fecha de producción, esto se debe porque las 
+        producciones en bloque se insertaron para cubrir el período en 
+        el que no se utilizó el programa. A partir de agosto 2019, se toma 
+        la fecha correcta de carga y descarga indicada.<br/></i>
+
+        <p>
+        No excluyo una corrección en el database para regularizar los datos con
+        la colaboración de Edna.<br/>
+        </p>
         ''' % now,
-    'subject': 'Dettaglio produzione PCA e stato magazzino: %s' % now,    
+    'subject': u'PCA Detalles de producción / ContipaQ : %s' % now,    
     
     'folder': config.get('smtp', 'folder'),
     }
 
 now = now.replace('/', '_').replace('-', '_').replace(':', '_')
-filename = 'PCA Statistiche di produzione %s.xlsx' % now
+filename = 'PCA OpenERP Contipaq %s.xlsx' % now
 fullname = os.path.expanduser(
     os.path.join(smtp['folder'], filename))
 context = {
