@@ -168,8 +168,8 @@ class MrpProduction(orm.Model):
             10, 10, 15, 5
             ]
         header = [
-            u'Tipo', u'Codice', u'Descrizione', u'Lotto', u'UM',
-            u'Q.', u'Prezzo', u'Subtotale', u'Valuta'
+            u'Tipo', u'Codigo', u'Descripción', u'Lote', u'UM',
+            u'C.', u'Precio', u'Subtotal', u'Moneda'
             ]
 
         row = 0
@@ -245,7 +245,7 @@ class MrpProduction(orm.Model):
             excel_pool.write_xls_line(                    
                 ws_name, row, [
                     '', '', '',
-                    u'Parziali',
+                    u'Parcial',
                     uom.name,
                     qty,
                     '',
@@ -257,7 +257,7 @@ class MrpProduction(orm.Model):
         # Write end total:                    
         excel_pool.write_xls_line(                    
             ws_name, row, [
-                u'Totale:',
+                u'Total:',
                 master_total,
                 currency
                 ], default_format=f_number_bg_green_bold, col=6)
@@ -292,9 +292,9 @@ class MrpProduction(orm.Model):
             5, 5, 
             ]
         header = [
-            u'Tipo', u'Codice', u'Productos', u'UM',
-            u'Q.', u'Subtotale', 
-            u'Valuta', u'Errore',
+            u'Tipo', u'Codigo', u'Productos', u'UM',
+            u'C.', u'Subtotal', 
+            u'Moneda', u'Error',
             ]
 
         row = 0
@@ -339,7 +339,7 @@ class MrpProduction(orm.Model):
             excel_pool.write_xls_line(                    
                 ws_name, row, [
                     '', '',
-                    u'Parziali',
+                    u'Parcial',
                     uom.name,
                     qty,
                     subtotal,
@@ -350,7 +350,7 @@ class MrpProduction(orm.Model):
         # Write data:                    
         excel_pool.write_xls_line(                    
             ws_name, row, [
-                u'Totale:',
+                u'Total:',
                 master_total,
                 currency,
                 ], default_format=f_number_bg_green_bold, col=4)
@@ -487,9 +487,9 @@ class MrpProduction(orm.Model):
             15, 15, 5,
             ]
         header = [
-            u'Fecha', u'Riferimento', u'Productos', u'Descrizione', u'Linea',
-            u'UM', u'Q.', u'Q. errata', 
-            u'Prezzo carico', u'Subtotale', u'Valuta',
+            u'Fecha', u'Referencia', u'Producto', u'Descripción', u'Linea',
+            u'UM', u'C.', u'C. incorrecta', 
+            u'Precio carga', u'Subtotal', u'Moneda',
             ]
         
         # Header:
@@ -559,9 +559,9 @@ class MrpProduction(orm.Model):
             15, 15, 5,
             ]
         header = [
-            u'Fecha', u'Riferimento', u'Materia prima', u'Descrizione', u'Líneas',
-            u'UM', u'Q.',
-            u'Prezzo scarico', u'Subtotale', u'Valuta',
+            u'Fecha', u'Referencia', u'Materia prima', u'Descripción', 
+            u'Líneas', u'UM', u'C.',
+            u'Precio descarga', u'Subtotal', u'Moneda',
             ]
         
         # Header:
@@ -625,8 +625,8 @@ class MrpProduction(orm.Model):
             ]
         header = [
             u'Producción', u'Productos', 
-            u'UM', u'Materie prime', u'Producto terminado', 
-            u'Calo', u'Calo %',
+            u'UM', u'Materies primas', u'P. terminado', 
+            u'Reducción', u'R. %',
             ]
 
         row = 0
@@ -685,7 +685,7 @@ class MrpProduction(orm.Model):
         
         excel_pool.write_xls_line(
             ws_name, row, [
-                (u'Totali', f_header), 
+                (u'Totales', f_header), 
                 (u'KG', f_header), 
                 total_material, 
                 total_product,
@@ -718,7 +718,7 @@ class MrpProduction(orm.Model):
 
         # Column:
         width = [10, 30, 4, 10]
-        header = [u'Productos', u'Descrizione', u'UM', u'Totale']
+        header = [u'Productos', u'Descripción', u'UM', u'Total']
 
         fixed_col = len(header)
         col_total = []
@@ -758,7 +758,7 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------               
         # Write fixed col data:
         excel_pool.write_xls_line(
-            ws_name, row, [u'Totali KG', ], default_format=f_header,
+            ws_name, row, [u'Totales KG', ], default_format=f_header,
             col= fixed_col - 1)
 
         # Write variable col data:
@@ -792,7 +792,7 @@ class MrpProduction(orm.Model):
 
         # Column:
         width = [10, 30, 4, 10]
-        header = [u'Materia', u'Descrizione', u'UM', u'Total']
+        header = [u'Materia', u'Descripción', u'UM', u'Total']
 
         fixed_col = len(header)
         col_total = {}
@@ -842,7 +842,7 @@ class MrpProduction(orm.Model):
 
             # Write fixed col data:
             excel_pool.write_xls_line(
-                ws_name, row, [u'Totali %s' % uom.name], 
+                ws_name, row, [u'Totales %s' % uom.name], 
                 default_format=f_header, col= fixed_col - 1)
 
             # Write variable col data:
