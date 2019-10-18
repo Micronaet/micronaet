@@ -326,8 +326,8 @@ class sale_order_add_extra(osv.osv):
                 else:
                     partner_id = False    
 
-                #partner_proxy = browse_partner_ref(
-                #    self, cr, uid, oc['CKY_CNT_CLFR'], context=context)
+                partner_proxy = browse_partner_ref(
+                    self, cr, uid, oc['CKY_CNT_CLFR'], context=context)
                 if oc_id: # update      # TODO test for deadline update
                     oc_id = oc_id[0]
                     
