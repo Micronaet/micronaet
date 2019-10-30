@@ -39,7 +39,7 @@ translate_name = {}
 totals = {}
 
 class report_webkit_html(report_sxw.rml_parse):
-    zero = '0.00000'
+    zero = '0.0000000'
     
     def prepare_for_print(self,value):
         ''' Format quantity value
