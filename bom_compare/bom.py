@@ -215,7 +215,7 @@ class etl_bom_line(osv.osv):
             required=True),
         'component_code': fields.char('Component code', size=8, 
             required=True),
-        'quantity': fields.float('Q.', digits=(16, 6)),
+        'quantity': fields.float('Q.', digits=(16, 7)),
         }
         
     _defaults = {

@@ -44,7 +44,7 @@ class report_webkit_html(report_sxw.rml_parse):
     def prepare_for_print(self,value):
         ''' Format quantity value
         '''
-        return '%5.5f' % value
+        return '%5.7f' % value
 
     def __init__(self, cr, uid, name, context):
         super(report_webkit_html, self).__init__(cr, uid, name, 
