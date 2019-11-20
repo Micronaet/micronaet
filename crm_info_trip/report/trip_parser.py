@@ -31,6 +31,86 @@ from openerp.report.report_sxw import rml_parse
 
 _logger = logging.getLogger(__name__)
 
+class micronaet_accounting(osv.osv):
+    ''' Object for keep function with the query
+        Record are only table with last date of access
+    '''
+    _inherit = "micronaet.accounting"
+    
+    # Override function:
+    def get_mm_situation(self, cr, uid, document, partner_code, year=False, 
+        originator=False, context=None):
+        ''' Return quantity product usually buyed with total and delivery
+            where_document: list, tuple, string of document searched (ex. BS)
+            where_partner: list, tuple, string for partner code searched            
+            Table: MM_RIGHE            
+            document: filter for this reference, ex.: BC, FT
+            partner_code: filter for this partner code, ex.: 201.00001
+            year: query on database (multi year mode) selected
+            originator: query on origin document not current 
+                (so CSG_DOC_ORI instead of CSG_DOC)
+        '''        
+        query = "Not loaded"
+        table_header = "mm_testate"
+        table_line = "mm_righe"
+        
+        if self.pool.get('res.company').table_capital_name(
+                cr, uid, context=context):
+            table_header = table_header.upper()
+            table_line = table_line.upper()
+
+        cursor = self.connect(cr, uid, year=year, context=context)
+
+        # -------------------
+        # Manage where clause
+        # -------------------
+        # Filter document type:
+        #TODO change query linked to header if there's originator
+        if originator:
+            query = """
+                SELECT 
+                    l.CKY_CNT_CLFR as CKY_CNT_CLFR, l.CKY_ART as CKY_ART,
+                    l.CDS_VARIAB_ART as CDS_VARIAB_ART, 
+                    SUM(l.NQT_RIGA_ART_PLOR * 
+                        (IF(l.NCF_CONV=0, 1, 1/l.NCF_CONV))) as TOTALE, 
+                    SUM(l.NPZ_UNIT * l.NQT_RIGA_ART_PLOR) as IMPONIBILE, 
+                    count(*) as CONSEGNE 
+                FROM %s h JOIN %s l 
+                    ON (h.CSG_DOC = l.CSG_DOC AND h.NGB_SR_DOC = l.NGB_SR_DOC 
+                    AND
+                        h.NGL_DOC = l.NGL_DOC AND h.NPR_DOC = l.NPR_DOC) 
+                GROUP BY
+                    h.CSG_DOC_ORI, l.CKY_CNT_CLFR, l.CKY_ART, l.CDS_VARIAB_ART 
+                HAVING 
+                    h.CSG_DOC_ORI = '%s' AND l.CKY_CNT_CLFR = '%s';""" % (
+                    table_header,
+                    table_line, 
+                    document,
+                    partner_code,
+                    )            
+        else: 
+            query = """
+                SELECT 
+                    CKY_CNT_CLFR, CKY_ART, CDS_VARIAB_ART, 
+                    SUM(NQT_RIGA_ART_PLOR * (IF(NCF_CONV=0, 1, 1/NCF_CONV))) 
+                        as TOTALE, 
+                    count(*) as CONSEGNE 
+                FROM 
+                    %s 
+                GROUP BY
+                    CSG_DOC, CKY_CNT_CLFR, CKY_ART, CDS_VARIAB_ART 
+                HAVING 
+                    CSG_DOC = '%s' AND CKY_CNT_CLFR = '%s';
+                """ % (table_line, document, partner_code)            
+
+        try:             
+            cursor.execute(query)
+            return cursor # with the query setted up                  
+        except: 
+            _logger.error("Problem launch query: %s [%s]" % (
+                query, sys.exc_info()))
+            return False
+
 
 class Parser(report_sxw.rml_parse):
     def __init__(self, cr, uid, name, context):
@@ -217,6 +297,7 @@ class Parser(report_sxw.rml_parse):
                     # get_mm_situation base_mssql_accounting
                     uom_name, moltiplicator = self.products_uom.get(
                         default_code, ('KG', 1000.0))
+                    moltiplicator = 1.0 # Always for subtotal!    
 
                     imponibile = record['IMPONIBILE'] / moltiplicator       
 
