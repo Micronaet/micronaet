@@ -181,7 +181,7 @@ class product_product_extra_fields(osv.osv):
                     line['CDS_AGGIUN_ART'].strip())
                 ).title().replace(r"/", r"-")
                 ref = line['CKY_ART'].strip()
-                cost = line['NMP_COSTD'] or line['NMP_UCA'] or 0.0
+                cost = line['NMP_UCA'] or line['NMP_COSTD'] or 0.0
                 uom = line['CSG_UNIMIS_PRI'].strip()
                 if line['IFL_ART_DBP'].strip().upper() == "S":
                     supply_method = 'produce'
