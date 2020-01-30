@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <!--safety.symbol-->
+        <record model="ir.ui.view" id="view_safety_symbol_tree">
+            <field name="name">safety.symbol.tree</field>
+            <field name="model">safety.symbol</field>
+            <field name="arch" type="xml">
+                <tree string="Symbol">
+                    <field name="name" />
+                    <field name="note" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_safety_symbol_form">
+            <field name="name">safety.symbol.form</field>
+            <field name="model">safety.symbol</field>
+            <field name="arch" type="xml">
+                <form string="Symbol" version="7.0">
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <field name="image" widget="image" nolabel="1"/>
+                            <field name="name" />
+                            <newline/>
+                            <separator string="note" colspan="4"/>
+                            <field name="note" nolabel="1" colspan="4"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_safety_symbol">
+            <field name="name">Safety symbol</field>
+            <field name="res_model">safety.symbol</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_safety_symbol_tree"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
+
+        <!--safety.symbol.template-->
+        <record model="ir.ui.view" id="view_safety_symbol_template_tree">
+            <field name="name">safety.symbol.template.tree</field>
+            <field name="model">safety.symbol.template</field>
+            <field name="arch" type="xml">
+                <tree string="Template">
+                    <field name="name" />
+                    <field name="note" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_safety_symbol_template_form">
+            <field name="name">safety.symbol.template.form</field>
+            <field name="model">safety.symbol.template</field>
+            <field name="arch" type="xml">
+                <form string="Template" version="7.0">
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <field name="name" />
+                            <newline/>
+                            <field name="symbol_ids" widget="many2many_tags" colspan="4" />
+                            <separator string="Note" colspan="4"/>
+                            <field name="note" nolabel="1" colspan="4"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_safety_symbol_template">
+            <field name="name">Safety symbol template</field>
+            <field name="res_model">safety.symbol.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_safety_symbol_template_tree"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
+        
+        <menuitem 
+            parent="mrp.menu_mrp_configuration" 
+            id="menu_safety_root" 
+            name="Safety"
+            sequence="10"
+            />
+            <menuitem 
+                parent="menu_safety_root" 
+                id="menu_menu_safety_symbol" 
+                action="action_safety_symbol"
+                sequence="10"/>
+
+            <menuitem 
+                parent="menu_safety_root" 
+                id="menu_menu_safety_symbol_template" 
+                action="action_safety_symbol_template"
+                sequence="20"/>
+            
+    </data>
+</openerp>
+
