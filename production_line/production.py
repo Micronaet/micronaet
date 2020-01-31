@@ -977,10 +977,19 @@ class mrp_workcenter(osv.osv):
     _inherit = 'mrp.workcenter'
 
     _columns = {
-        'history_lavoration_ids': fields.one2many('mrp.workcenter.history', 'workcenter_id', 'Lavoration history'),
-        'hour_daily_work': fields.float('Daily work hours', digits=(8,2), help='Usual working hour per day for this line'),
-        'cost_product_id': fields.many2one('product.product', 'Product linked', help='Product linked to the line for cost computation'),
-        'parent_workcenter_id': fields.many2one('mrp.workcenter', 'Parent workcenter', help='Parent workcenter line, used for put history elements (not for lavoration cost that are linked to line)'),
+        'security_template_id': fields.many2one(
+            'safety.symbol.template', 'Modello sicurezza'),
+        'history_lavoration_ids': fields.one2many(
+            'mrp.workcenter.history', 'workcenter_id', 'Lavoration history'),
+        'hour_daily_work': fields.float(
+            'Daily work hours', digits=(8,2), 
+            help='Usual working hour per day for this line'),
+        'cost_product_id': fields.many2one(
+            'product.product', 'Product linked', 
+            help='Product linked to the line for cost computation'),
+        'parent_workcenter_id': fields.many2one('mrp.workcenter', 
+            'Parent workcenter', 
+            help='Parent workcenter line, used for put history elements (not for lavoration cost that are linked to line)'),
         }
     _defaults = {
         'hour_daily_work': lambda *x: 16, # default working hour

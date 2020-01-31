@@ -43,6 +43,7 @@
         'base_mssql_accounting',
         'partner_addresses',
         'base_log_scheduler',        
+        'mrp_safety_symbol', # Safety symbol
         #'web_m2o_enhanced',
         #'product_adr', # field: adr
         #'sql_product', # field: statistic category
