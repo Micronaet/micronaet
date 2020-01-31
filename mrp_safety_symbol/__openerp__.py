@@ -34,6 +34,7 @@
     'depends': [
         'base',
         'mrp',
+        'product',
         ],
     'init_xml': [],
     'demo': [],

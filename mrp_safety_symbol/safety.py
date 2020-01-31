@@ -74,5 +74,16 @@ class SafetySymbolTemplate(orm.Model):
             'Symbol'),
         'note': fields.text('Note'),
         }
-        
+
+class ProductProduct(orm.Model):
+    """ Model name: ProductProduct
+    """
+    
+    _inherit = 'product.product'
+
+    _columns = {
+        'security_template_id': fields.many2one(
+            'safety.symbol.template', 'Modello sicurezza'),
+        }
+    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
