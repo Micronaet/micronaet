@@ -174,7 +174,7 @@ class MrpProductionDailyReport(orm.Model):
                     '[REC.]' if load.recycle else '',
                     ),
                 load.product_qty,
-                'Imballo: %s x %s,  Pallet: %s x %s = %s' % (
+                'Imballo: %s x %s,  Pallet: %s x %s' % (
                     '0' if not load.ul_qty else load.ul_qty,
                     '/' if not load.package_id else load.package_id.code,
                     '0' if not load.pallet_qty else load.pallet_qty,
