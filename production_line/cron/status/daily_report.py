@@ -33,7 +33,7 @@ from email import Encoders
 # -----------------------------------------------------------------------------
 # Read configuration parameter:
 # -----------------------------------------------------------------------------
-cfg_file = os.path.expanduser('../openerp.cfg')
+cfg_file = os.path.expanduser('./openerp.cfg')
 now = ('%s' % datetime.now())[:19]
 now_text = now.replace('/', '_').replace('-', '_').replace(':', '_')
 
