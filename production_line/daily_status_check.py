@@ -193,6 +193,6 @@ class MrpProductionDailyReport(orm.Model):
                     product.accounting_qty,
                     ], default_format=excel_format['text'])
 
-        import pdb; pdb.set_trace()
-        return excel_pool.save_file_as(True)#save_mode)                                            
+        #import pdb; pdb.set_trace()
+        return excel_pool.save_file_as(save_mode)                                            
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
