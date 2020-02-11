@@ -134,12 +134,13 @@ class MrpProductionDailyReport(orm.Model):
         for unload in unload_document:
             # Excel log:
             row += 1 
+            '''
             excel_pool.write_xls_line(ws_name, row, [
                 unload.name,
                 'Prodotto: %s' % unload.product.default_code,
                 unload.workcenter_id.name,
                 unload.accounting_sl_code,
-                ], default_format=excel_format['text'])
+                ], default_format=excel_format['text'])'''
 
             # Product collect:
             for material in unload.bom_material_ids:
@@ -165,11 +166,11 @@ class MrpProductionDailyReport(orm.Model):
             # Excel log:
             row += 1 
             product = load.product_id
-
+            '''
             excel_pool.write_xls_line(ws_name, row, [
                 load.accounting_cl_code,
                 'Prodotto: %s' % product.default_code,
-                ], default_format=excel_format['text'])
+                ], default_format=excel_format['text'])'''
 
             # Product collect:
             # product_qty
@@ -187,12 +188,13 @@ class MrpProductionDailyReport(orm.Model):
         
             for product in sorted(
                     product_moved[mode], key=lambda x: x.default_code):
+                '''
                 excel_pool.write_xls_line(ws_name, row, [
                     product.default_code,
                     product.name,
                     product.accounting_qty,
-                    ], default_format=excel_format['text'])
+                    ], default_format=excel_format['text'])'''
 
-        #import pdb; pdb.set_trace()
-        return excel_pool.save_file_as(save_mode)                                            
+        return excel_pool.save_file_as(save_mode)         
+                                   
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
