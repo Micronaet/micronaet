@@ -93,22 +93,26 @@ class MrpProductionDailyReport(orm.Model):
         excel_format = {
             'title': excel_pool.get_format('title'),
             'header': excel_pool.get_format('header'),
-            'text': {
-                '': excel_pool.get_format('text'),
-                'red': excel_pool.get_format('bg_red'),
-                'yellow': excel_pool.get_format('bg_yellow'),
-                'blue': excel_pool.get_format('bg_blue'),
+            '': {
+                'text': excel_pool.get_format('text'),
+                'number': excel_pool.get_format('number'),
                 },
-            'number': {
-                '': excel_pool.get_format('number'),
-                'red': excel_pool.get_format('bg_red_number'),
-                'yellow': excel_pool.get_format('bg_yellow_number'),
-                'blue': excel_pool.get_format('bg_blue_number'),
+            'red': {
+                'text': excel_pool.get_format('bg_red'),
+                'number': excel_pool.get_format('bg_red_number'),
+                },
+            'blue': {
+                'text': excel_pool.get_format('bg_blue'),
+                'number': excel_pool.get_format('bg_blue_number'),
+                },
+            'yellow': {
+                'text': excel_pool.get_format('bg_yellow'),
+                'number': excel_pool.get_format('bg_yellow_number'),
                 },
             }
         
         # Column:
-        width = [15, 40, 10, 8]
+        width = [15, 40, 20, 20]
         excel_pool.column_width(ws_name, width)
 
         # ---------------------------------------------------------------------         
@@ -133,6 +137,11 @@ class MrpProductionDailyReport(orm.Model):
         unload_document = unload_pool.browse(
                 cr, uid, unload_ids, context=context)
         for unload in unload_document:
+            if unload.accounting_sl_code:
+                color_format = excel_format['']
+            else:    
+                color_format = excel_format['red']
+                
             # Excel log:
             row += 1             
             excel_pool.write_xls_line(ws_name, row, [
@@ -140,7 +149,7 @@ class MrpProductionDailyReport(orm.Model):
                 'Prodotto: %s' % unload.product.default_code,
                 unload.workcenter_id.name,
                 unload.accounting_sl_code,
-                ], default_format=excel_format['text'][''])
+                ], default_format=color_format['text'])
 
             # Product collect:
             for material in unload.bom_material_ids:
@@ -163,6 +172,11 @@ class MrpProductionDailyReport(orm.Model):
             ], context=context)
 
         for load in load_pool.browse(cr, uid, load_ids, context=context):
+            if load.accounting_cl_code:
+                color_format = excel_format['']
+            else:    
+                color_format = excel_format['red']
+
             # Excel log:
             row += 1 
             product = load.product_id
@@ -173,7 +187,7 @@ class MrpProductionDailyReport(orm.Model):
                     product.default_code or '',
                     '[REC.]' if load.recycle else '',
                     ),
-                load.product_qty,
+                (load.product_qty, color_format['number']),
                 'Imballo: %s x %s,  Pallet: %s x %s' % (
                     '0' if not load.ul_qty else load.ul_qty,
                     '/' if not load.package_id else load.package_id.code,
@@ -181,7 +195,7 @@ class MrpProductionDailyReport(orm.Model):
                     '/' if not load.pallet_product_id else \
                         load.pallet_product_id.code,            
                     )
-                ], default_format=excel_format['text'][''])
+                ], default_format=color_format['text'])
 
             # Product collect:
             # product_qty
@@ -199,12 +213,17 @@ class MrpProductionDailyReport(orm.Model):
         
             for product in sorted(
                     product_moved[mode], key=lambda x: x.default_code):
-                row += 1                 
+                if product.accounting_qty < 0.0:
+                    color_format = excel_format['red']
+                else:    
+                    color_format = excel_format['']
+
+                row += 1           
                 excel_pool.write_xls_line(ws_name, row, [
                     product.default_code,
                     product.name,
-                    product.accounting_qty,
-                    ], default_format=excel_format['text'][''])
+                    (product.accounting_qty, color_format['number']),
+                    ], default_format=color_format['text'])
 
         return excel_pool.save_file_as(save_mode)         
                                    
