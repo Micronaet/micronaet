@@ -43,6 +43,10 @@ config.read([cfg_file])
 filename = '/tmp/production_daily_status.xlsx' # From wizard parameter!
 
 # ERP Connection:
+context = {
+    'save_mode': filename,
+    }
+    
 odoo = {
     'database': config.get('dbaccess', 'dbname'),
     'user': config.get('dbaccess', 'user'),
@@ -79,9 +83,9 @@ odoo = erppeek.Client(
     user=odoo['user'],
     password=odoo['password'],
     )
-mailer = odoo.model('ir.mail_server')
+odoo.context = context
 
-# Setup context for order:
+mailer = odoo.model('ir.mail_server')
 mrp = odoo.model('mrp.production')
 
 # Launch extract procedure:

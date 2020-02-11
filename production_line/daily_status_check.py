@@ -56,6 +56,9 @@ class MrpProductionDailyReport(orm.Model):
         ''' Jobs: unload and load material last production day
         '''
         import pdb; pdb.set_trace()
+        if context is None:
+            context = {}
+        save_mode = context.get('save_mode')
 
         # Pool used:
         load_pool = self.pool.get('mrp.production.workcenter.line') # Job / SL
@@ -190,5 +193,6 @@ class MrpProductionDailyReport(orm.Model):
                     product.name,
                     product.accounting_qty,
                     ], default_format=excel_format['text'])
-                                
+
+        return excel_pool.save_file_as(save_mode)                                            
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
