@@ -169,7 +169,10 @@ class MrpProductionDailyReport(orm.Model):
                         
             excel_pool.write_xls_line(ws_name, row, [
                 load.accounting_cl_code or '',
-                u'Prodotto: %s' % (product.default_code or ''),
+                u'Prodotto: %s %s' % (
+                    product.default_code or '',
+                    '[REC.]' if load.recycle,
+                    ),
                 load.product_qty,
                 'Imballo: %s x %s,  Pallet: %s x %s = %s' % (
                     '0' if not load.ul_qty else load.ul_qty,
