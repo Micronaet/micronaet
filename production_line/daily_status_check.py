@@ -115,8 +115,8 @@ class MrpProductionDailyReport(orm.Model):
         # Unload documents (over last date):
         # ---------------------------------------------------------------------         
         product_moved = {
-            'Materie prime': {},
-            'Prodotto finito': {},
+            'Materie prime': [],
+            'Prodotto finito': [],
             }
         header = [u'Codice', u'Descrizione', u'Linea', u'# SL']
 
