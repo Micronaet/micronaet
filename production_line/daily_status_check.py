@@ -55,14 +55,13 @@ class MrpProductionDailyReport(orm.Model):
     def extract_daily_mrp_stats_excel_report(self, cr, uid, context=None):
         ''' Jobs: unload and load material last production day
         '''
-        import pdb; pdb.set_trace()
         if context is None:
             context = {}
         save_mode = context.get('save_mode')
 
         # Pool used:
-        load_pool = self.pool.get('mrp.production.workcenter.line') # Job / SL
-        unload_pool = self.pool.get('mrp.production.workcenter.load') # CL
+        unload_pool = self.pool.get('mrp.production.workcenter.line') # Job/SL
+        load_pool = self.pool.get('mrp.production.workcenter.load') # CL
         excel_pool = self.pool.get('excel.writer')
         
         today = datetime.now()
@@ -86,7 +85,8 @@ class MrpProductionDailyReport(orm.Model):
         # ---------------------------------------------------------------------
         # Excel start:
         # ---------------------------------------------------------------------               
-        ws_name = u'Lotes'
+        import pdb; pdb.set_trace()
+        ws_name = u'Produzioni di ieri'
         excel_pool.create_worksheet(name=ws_name)
 
         # Format:
