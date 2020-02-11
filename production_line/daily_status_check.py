@@ -133,14 +133,13 @@ class MrpProductionDailyReport(orm.Model):
                 cr, uid, unload_ids, context=context)
         for unload in unload_document:
             # Excel log:
-            row += 1 
-            '''
+            row += 1             
             excel_pool.write_xls_line(ws_name, row, [
                 unload.name,
                 'Prodotto: %s' % unload.product.default_code,
                 unload.workcenter_id.name,
                 unload.accounting_sl_code,
-                ], default_format=excel_format['text'])'''
+                ], default_format=excel_format['text'][''])
 
             # Product collect:
             for material in unload.bom_material_ids:
@@ -166,12 +165,11 @@ class MrpProductionDailyReport(orm.Model):
             # Excel log:
             row += 1 
             product = load.product_id
-            
-            '''
+                        
             excel_pool.write_xls_line(ws_name, row, [
                 load.accounting_cl_code or '',
                 u'Prodotto: %s' % (product.default_code or ''),
-                ], default_format=excel_format['text'])'''
+                ], default_format=excel_format['text'][''])
 
             # Product collect:
             # product_qty
@@ -194,7 +192,7 @@ class MrpProductionDailyReport(orm.Model):
                     product.default_code,
                     #product.name,
                     product.accounting_qty,
-                    ], default_format=excel_format['text'])
+                    ], default_format=excel_format['text'][''])
 
         return excel_pool.save_file_as(save_mode)         
                                    
