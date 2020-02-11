@@ -171,7 +171,7 @@ class MrpProductionDailyReport(orm.Model):
                 load.accounting_cl_code or '',
                 u'Prodotto: %s %s' % (
                     product.default_code or '',
-                    '[REC.]' if load.recycle,
+                    '[REC.]' if load.recycle else '',
                     ),
                 load.product_qty,
                 'Imballo: %s x %s,  Pallet: %s x %s = %s' % (
