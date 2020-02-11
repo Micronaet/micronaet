@@ -61,10 +61,11 @@ smtp = {
             <b>OpenERP</b> con lo stato materie prime e prodotti finiti
             movimentati il precedente giorno in produzione, verificare 
             la correttezza delle quantit&agrave; in magazzino indicata.
-            <b>Data di riferimento: %s</b>
+        </p>
+        <p>
+            Data elaborazione: <b>%s</b>
         </p>
         <b>Micronaet S.r.l.</b>
-
         ''' % now,
     'subject': 'Controllo %s: Movimenti produzioni di ieri' % now,
     'folder': config.get('smtp', 'folder'),
@@ -82,8 +83,6 @@ odoo = erppeek.Client(
 odoo.context = {
     'save_mode': filename,
     }
-    
-
 
 mailer = odoo.model('ir.mail_server')
 mrp = odoo.model('mrp.production')
@@ -137,5 +136,4 @@ for to in smtp['to'].replace(' ', '').split(','):
 
     # Send mail:
     smtp_server.sendmail(odoo_mailer.smtp_user, to, msg.as_string())
-
 smtp_server.quit()

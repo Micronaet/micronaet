@@ -124,7 +124,8 @@ class MrpProductionDailyReport(orm.Model):
         excel_pool.write_xls_line(                    
             ws_name, row, header, default_format=excel_format['header'])
 
-        unload_ids = unload_pool.search(cr, uid, [        
+        unload_ids = unload_pool.search(cr, uid, [      
+            ('state', 'not in', ('cancel', )),  
             ('real_date_planned', '<=', to_last),
             ('real_date_planned_end', '>=', from_last),
             ], context=context)
@@ -150,7 +151,7 @@ class MrpProductionDailyReport(orm.Model):
         # ---------------------------------------------------------------------         
         # Load documents (in last date):
         # ---------------------------------------------------------------------         
-        header = [u'# CL', u'Descrizione']
+        header = [u'# CL', u'Descrizione', 'Q.', 'Stato']
 
         row += 2
         excel_pool.write_xls_line(                    
@@ -169,6 +170,14 @@ class MrpProductionDailyReport(orm.Model):
             excel_pool.write_xls_line(ws_name, row, [
                 load.accounting_cl_code or '',
                 u'Prodotto: %s' % (product.default_code or ''),
+                load.product_qty,
+                'Imballo: %s x %s,  Pallet: %s x %s = %s' % (
+                    '0' if not load.ul_qty else load.ul_qty,
+                    '/' if not load.package_id else load.package_id.code,
+                    '0' if not load.pallet_qty else load.pallet_qty,
+                    '/' if not load.pallet_product_id else \
+                        load.pallet_product_id.code,            
+                    )
                 ], default_format=excel_format['text'][''])
 
             # Product collect:
@@ -190,7 +199,7 @@ class MrpProductionDailyReport(orm.Model):
                 row += 1                 
                 excel_pool.write_xls_line(ws_name, row, [
                     product.default_code,
-                    #product.name,
+                    product.name,
                     product.accounting_qty,
                     ], default_format=excel_format['text'][''])
 
