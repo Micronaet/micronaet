@@ -29,4 +29,6 @@ import sale # NOTE: only for state bug in sale.order
 
 import wizard
 import report
+
+import daily_status_check
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

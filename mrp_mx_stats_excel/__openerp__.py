@@ -27,6 +27,7 @@
     'category': 'Report',
     'description': ''' 
         Extract statistic data from stock and MRP production
+        Extract moved raw materials and stock product
         ''',
     'author': 'Micronaet S.r.l. - Nicola Riolini',
     'website': 'http://www.micronaet.it',
