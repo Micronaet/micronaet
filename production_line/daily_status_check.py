@@ -167,10 +167,11 @@ class MrpProductionDailyReport(orm.Model):
             row += 1 
             product = load.product_id
             
+            '''
             excel_pool.write_xls_line(ws_name, row, [
                 load.accounting_cl_code or '',
                 u'Prodotto: %s' % (product.default_code or ''),
-                ], default_format=excel_format['text'])
+                ], default_format=excel_format['text'])'''
 
             # Product collect:
             # product_qty
@@ -188,13 +189,12 @@ class MrpProductionDailyReport(orm.Model):
         
             for product in sorted(
                     product_moved[mode], key=lambda x: x.default_code):
-                row += 1 
-                '''
+                row += 1                 
                 excel_pool.write_xls_line(ws_name, row, [
                     product.default_code,
-                    product.name,
+                    #product.name,
                     product.accounting_qty,
-                    ], default_format=excel_format['text'])'''
+                    ], default_format=excel_format['text'])
 
         return excel_pool.save_file_as(save_mode)         
                                    
