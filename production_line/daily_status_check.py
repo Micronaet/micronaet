@@ -112,7 +112,7 @@ class MrpProductionDailyReport(orm.Model):
             }
         
         # Column:
-        width = [15, 40, 20, 20]
+        width = [15, 40, 20, 40]
         excel_pool.column_width(ws_name, width)
 
         # ---------------------------------------------------------------------         
@@ -213,6 +213,9 @@ class MrpProductionDailyReport(orm.Model):
         
             for product in sorted(
                     product_moved[mode], key=lambda x: x.default_code):
+                default_code = product.default_code or ''
+                if default_code.startswith('VV'): 
+                    continue # Not use water!
                 if product.accounting_qty < 0.0:
                     color_format = excel_format['red']
                 else:    
@@ -220,7 +223,7 @@ class MrpProductionDailyReport(orm.Model):
 
                 row += 1           
                 excel_pool.write_xls_line(ws_name, row, [
-                    product.default_code,
+                    default_code,
                     product.name,
                     (product.accounting_qty, color_format['number']),
                     ], default_format=color_format['text'])
