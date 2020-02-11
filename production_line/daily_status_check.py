@@ -112,7 +112,7 @@ class MrpProductionDailyReport(orm.Model):
             }
         
         # Column:
-        width = [15, 40, 20, 40]
+        width = [13, 35, 18, 38]
         excel_pool.column_width(ws_name, width)
 
         # ---------------------------------------------------------------------         
@@ -122,7 +122,7 @@ class MrpProductionDailyReport(orm.Model):
             'Materie prime': [],
             'Prodotto finito': [],
             }
-        header = [u'Codice', u'Descrizione', u'Linea', u'# SL']
+        header = [u'Lavorazione', u'Descrizione', u'Linea', u'# SL']
 
         row = 0
         excel_pool.write_xls_line(                    
