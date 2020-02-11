@@ -166,11 +166,11 @@ class MrpProductionDailyReport(orm.Model):
             # Excel log:
             row += 1 
             product = load.product_id
-            '''
+            
             excel_pool.write_xls_line(ws_name, row, [
-                load.accounting_cl_code,
-                'Prodotto: %s' % product.default_code,
-                ], default_format=excel_format['text'])'''
+                load.accounting_cl_code or '',
+                u'Prodotto: %s' % (product.default_code or ''),
+                ], default_format=excel_format['text'])
 
             # Product collect:
             # product_qty
