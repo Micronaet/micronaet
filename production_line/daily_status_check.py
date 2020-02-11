@@ -150,7 +150,7 @@ class MrpProductionDailyReport(orm.Model):
         # ---------------------------------------------------------------------         
         # Load documents (in last date):
         # ---------------------------------------------------------------------         
-        header = [u'Codice', u'Descrizione', u'# CL']
+        header = [u'# CL', u'Descrizione']
 
         row += 2
         excel_pool.write_xls_line(                    
@@ -165,9 +165,8 @@ class MrpProductionDailyReport(orm.Model):
             # Excel log:
             row += 1 
             excel_pool.write_xls_line(ws_name, row, [
-                load.name,
-                'Prodotto: %s' % load.product.default_code,
                 load.accounting_cl_code,
+                'Prodotto: %s' % load.product.default_code,
                 ], default_format=excel_format['text'])
 
             # Product collect:
