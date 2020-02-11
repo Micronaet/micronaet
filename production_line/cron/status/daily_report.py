@@ -61,11 +61,12 @@ smtp = {
             <b>OpenERP</b> con lo stato materie prime e prodotti finiti
             movimentati il precedente giorno in produzione, verificare 
             la correttezza delle quantit&agrave; in magazzino indicata.
+            <b>Data di riferimento: %s</b>
         </p>
         <b>Micronaet S.r.l.</b>
 
         ''' % now,
-    'subject': 'PAN Materiali movimentati produzioni di ieri: %s' % now,    
+    'subject': 'Controllo %s: Movimenti produzioni di ieri' % now,
     'folder': config.get('smtp', 'folder'),
     }
 
