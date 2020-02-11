@@ -164,13 +164,14 @@ class MrpProductionDailyReport(orm.Model):
         for load in load_pool.browse(cr, uid, load_ids, context=context):
             # Excel log:
             row += 1 
+            product = load.product_id
+
             excel_pool.write_xls_line(ws_name, row, [
                 load.accounting_cl_code,
-                'Prodotto: %s' % load.product.default_code,
+                'Prodotto: %s' % product.default_code,
                 ], default_format=excel_format['text'])
 
             # Product collect:
-            product = load.product_id
             # product_qty
             if product not in product_moved['Prodotto finito']:
                 product_moved['Prodotto finito'].append(product)
