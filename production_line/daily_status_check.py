@@ -134,12 +134,13 @@ class MrpProductionDailyReport(orm.Model):
         for unload in unload_document:
             # Excel log:
             row += 1 
+            '''
             excel_pool.write_xls_line(ws_name, row, [
-                unicode(unload.name),
-                unicode('Prodotto: %s' % unload.product.default_code),
+                unload.name,
+                'Prodotto: %s' % unload.product.default_code,
                 unload.workcenter_id.name,
                 unload.accounting_sl_code,
-                ], default_format=excel_format['text'])
+                ], default_format=excel_format['text'])'''
 
             # Product collect:
             for material in unload.bom_material_ids:
