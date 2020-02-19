@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+       <record id="mrp_production_confirm_wizard_view" model="ir.ui.view">
+            <field name="name">Lavoration final confirmation</field>
+            <field name="model">mrp.production.confirm.wizard</field>
+            <field name="inherit_id" ref="production_line.mrp_production_confirm_wizard_view"/>
+            <field name="arch" type="xml">
+                 <field name="real_product_qty" position="replace">
+                      <field name="real_product_qty" on_change="onchange_package_partial_id(package_id,product_id,real_product_qty,partial, context)"/>
+                 </field>
+                 
+                 <field name="partial" position="replace">
+                      <field name="partial" on_change="onchange_package_partial_id(package_id,product_id,real_product_qty,partial, context)"/>
+                 </field>
+
+                 <group string="Production comment:" position="after">
+                     <group colspan="4" col="4" string="Dettaglio rendimento:" attrs="{'invisible':[('yield_comment','=',False)]}">
+                          <field name="yield_comment" colspan="4" nolabel="1" widget="html" readonly="1"/>
+                          <field name="yield_comment_hide" colspan="4" nolabel="1" widget="html" invisible="1"/>
+                     </group>
+                 </group>
+
+            </field>
+       </record>
+    </data>
+</openerp>
+
