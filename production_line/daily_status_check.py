@@ -55,7 +55,7 @@ class MrpProductionDailyReport(orm.Model):
         sql_pool = self.pool.get('micronaet.accounting')
         
         excluded = (
-            'SCONTO',
+            'SCONTO', 'VV',
             )    
 
         # Find last worked date:
