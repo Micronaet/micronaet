@@ -49,6 +49,76 @@ class MrpProductionDailyReport(orm.Model):
     
     _inherit = 'mrp.production'
     
+    def get_oc_status_yesterday(self, cr, uid, context=None):
+        """ SQL get previous day order
+        """
+        yestarday = (datetime.now - timedelta(days=1)).strftime(
+            DEFAULT_SERVER_DATE_FORMAT)
+        excluded = (
+            'SCONTO',
+            
+            )    
+        if self.pool.get('res.company').table_capital_name(
+                cr, uid, context=context):
+            table_header = "MM_TESTATE" 
+            table_line = "MM_RIGHE" 
+        else:
+            table_header = "oc_testate" 
+            table_line = "oc_righe" 
+
+        cursor = self.connect(cr, uid, year=year, context=context)
+
+        cursor.execute("""
+            SELECT 
+                h.CSG_DOC, h.NGB_SR_DOC, h.NGL_DOC, h.DTT_DOC, h.CKY_CNT_CLFR, 
+                l.
+            FROM %s h JOIN %s l ON (
+                h.CSG_DOC = l.CSG_DOC AND 
+                h.NGB_SR_DOC = l.NGB_SR_DOC AND
+                hNGL_DOC = lNGL_DOC)
+            WHERE
+                h.DTT_DOC = '%s 00:00:00' AND 
+                CSG_DOC = ('BC', 'SL', 'CL') AND
+                CDS_NOTE != 'OPENERP';
+            """ % (
+               table_header, 
+               table_line,
+               yestarday,
+               )
+        res = []
+        for line in cursor.fetchall():
+            # Field used:
+            default_code = line['CKY_ART']
+            document = line['CSG_DOC']
+            number = '%s: %s/%s' % (
+                document, line['NGB_SR_DOC'], line['NGL_DOC'])
+            qty = line['NQT_RIGA_ART_PLOR']
+            conversion = line['NCF_CONV']
+            if default_code[:1] in 'AB':
+                product_type = 'Materie prime'
+            elif default_code[:1] in 'M':
+                product_type = 'Macchinari'
+            else:   
+                product_type = 'Prodotti finiti'
+
+            if document in ('BC', 'SL'):
+                sign = -1
+            else:  # CL
+                sign = +1    
+                
+            
+            if conversion:
+                qty *= sign * 1.0 / conversion
+            res.append((                
+                document, 
+                number,
+                product_type,
+                '%s: %s' % (product_type, default_code),
+                qty,
+                '', # Comment
+                ))
+        return res
+        
     # -------------------------------------------------------------------------
     # Scheduled action:
     # -------------------------------------------------------------------------
@@ -115,14 +185,56 @@ class MrpProductionDailyReport(orm.Model):
         width = [13, 35, 18, 38]
         excel_pool.column_width(ws_name, width)
 
+        product_moved = {
+            'Materie prime': [],
+            'Prodotti finiti': [],
+            'Macchinari': [],
+            }
+
+        # ---------------------------------------------------------------------         
+        # Account movement (over last date):
+        # ---------------------------------------------------------------------
+        header = [u'Doc. contabile', u'Descrizione', u'Q.', u'Commento']
+        row = 0
+        excel_pool.write_xls_line(                    
+            ws_name, row, header, default_format=excel_format['header'])
+
+        for record in self.get_oc_status_yesterday(cr, uid, context=context):
+            document, number, product_type, description, qty, comment = record
+        
+            if qty >= 0:
+                color_format = excel_format['']
+            else:    
+                color_format = excel_format['red']
+                
+            # Excel log:
+            row += 1             
+            excel_pool.write_xls_line(ws_name, row, [
+                number,
+                description,
+                qty,
+                comment,
+                ], default_format=color_format['text'])
+                             
+            this_type = product_moved[product_type]
+            product_pool = self.pool.get('product.product')
+            product_ids = product_pool.search(cr, uid, [
+                ('default_code', '=', default_code),
+                ], context=context)
+            if not product_ids:
+                print 'Code not found: %s'
+            
+            product = product_pool.browse(
+                cr, uid, product_ids, context=context)[0]
+                
+            
+            if default_ not in product_moved['Materie prime']:
+                product_moved['Materie prime'].append(product)
+
         # ---------------------------------------------------------------------         
         # Unload documents (over last date):
         # ---------------------------------------------------------------------         
-        product_moved = {
-            'Materie prime': [],
-            'Prodotto finito': [],
-            }
-        header = [u'Lavorazione', u'Descrizione', u'Linea', u'# SL']
+        header = [u'# SL', u'Descrizione', u'Linea', u'Lavorazione']
 
         row = 0
         excel_pool.write_xls_line(                    
@@ -145,10 +257,10 @@ class MrpProductionDailyReport(orm.Model):
             # Excel log:
             row += 1             
             excel_pool.write_xls_line(ws_name, row, [
-                unload.name,
+                unload.accounting_sl_code,
                 'Prodotto: %s' % unload.product.default_code,
                 unload.workcenter_id.name,
-                unload.accounting_sl_code,
+                unload.name,
                 ], default_format=color_format['text'])
 
             # Product collect:
@@ -199,8 +311,8 @@ class MrpProductionDailyReport(orm.Model):
 
             # Product collect:
             # product_qty
-            if product not in product_moved['Prodotto finito']:
-                product_moved['Prodotto finito'].append(product)
+            if product not in product_moved['Prodotti finiti']:
+                product_moved['Prodotti finiti'].append(product)
 
         # ---------------------------------------------------------------------         
         # Product / Material status:        
