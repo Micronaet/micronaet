@@ -82,7 +82,7 @@ class MrpProductionDailyReport(orm.Model):
                 h.NGL_DOC = l.NGL_DOC)
             WHERE
                 h.DTT_DOC = '%s 00:00:00' AND 
-                h.CSG_DOC = ('BC', 'SL', 'CL') AND
+                h.CSG_DOC in ('BC', 'SL', 'CL') AND
                 h.CDS_NOTE != 'OPENERP';
             """ % (
                table_header, 
