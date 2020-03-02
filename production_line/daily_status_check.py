@@ -84,7 +84,7 @@ class MrpProductionDailyReport(orm.Model):
                table_header, 
                table_line,
                yestarday,
-               )
+               ))
         res = []
         for line in cursor.fetchall():
             # Field used:
