@@ -70,9 +70,9 @@ class MrpProductionDailyReport(orm.Model):
             table_header = 'mm_testate'
             table_line = 'mm_righe'
 
-        year = False
+        cursor = sql_pool.connect(cr, uid, year=False, context=context)
+        print cursor
         import pdb; pdb.set_trace()
-        cursor = sql_pool.connect(cr, uid, year=year, context=context)
 
         cursor.execute("""
             SELECT 
