@@ -66,8 +66,9 @@ class MrpProductionDailyReport(orm.Model):
             if check_date_dt.weekday() in (5, 6):
                 continue # No week end date
                 
-            check_date = check_date.strftime(DEFAULT_SERVER_DATE_FORMAT)
+            check_date = check_date_dt.strftime(DEFAULT_SERVER_DATE_FORMAT)
             break
+                
         _logger.info('Check account movement, data: %s [Excluded: %s]' % (
             check_date, excluded))
         
