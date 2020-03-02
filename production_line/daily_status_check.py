@@ -246,7 +246,7 @@ class MrpProductionDailyReport(orm.Model):
             product = product_pool.browse(
                 cr, uid, product_ids, context=context)[0]
             
-            if default_code not in product_moved[product_type]:
+            if product not in product_moved[product_type]:
                 product_moved[product_type].append(product)
 
         # ---------------------------------------------------------------------         
