@@ -71,10 +71,8 @@ class MrpProductionDailyReport(orm.Model):
             table_line = 'mm_righe'
 
         cursor = sql_pool.connect(cr, uid, year=False, context=context)
-        print cursor
-        import pdb; pdb.set_trace()
 
-        cursor.execute("""
+        query = """
             SELECT 
                 h.CSG_DOC, h.NGB_SR_DOC, h.NGL_DOC, h.DTT_DOC, h.CKY_CNT_CLFR, 
                 l.
@@ -90,7 +88,11 @@ class MrpProductionDailyReport(orm.Model):
                table_header, 
                table_line,
                yesterday,
-               ))
+               )
+        print query
+        import pdb; pdb.set_trace()
+
+        cursor.execute(query)
 
         res = []
         for line in cursor.fetchall():
