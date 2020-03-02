@@ -63,8 +63,8 @@ class MrpProductionDailyReport(orm.Model):
             table_header = "MM_TESTATE" 
             table_line = "MM_RIGHE" 
         else:
-            table_header = "oc_testate" 
-            table_line = "oc_righe" 
+            table_header = "mm_testate" 
+            table_line = "mm_righe" 
 
         cursor = self.connect(cr, uid, year=year, context=context)
 
