@@ -75,7 +75,7 @@ class MrpProductionDailyReport(orm.Model):
         query = """
             SELECT 
                 h.CSG_DOC, h.NGB_SR_DOC, h.NGL_DOC, h.DTT_DOC, h.CKY_CNT_CLFR, 
-                l.
+                l.CKY_ART, l.NPZ_UNIT, l.NQT_RIGA_ART_PLOR, l.NCF_CONV
             FROM %s h JOIN %s l ON (
                 h.CSG_DOC = l.CSG_DOC AND 
                 h.NGB_SR_DOC = l.NGB_SR_DOC AND
