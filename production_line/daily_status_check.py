@@ -232,7 +232,7 @@ class MrpProductionDailyReport(orm.Model):
             excel_pool.write_xls_line(ws_name, row, [
                 number,
                 description,
-                qty,
+                (qty, color_format['number']),
                 comment,
                 ], default_format=color_format['text'])
                              
