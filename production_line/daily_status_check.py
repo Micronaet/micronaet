@@ -222,10 +222,10 @@ class MrpProductionDailyReport(orm.Model):
             (document, number, product_type, default_code, description, 
                 qty, comment) = record
         
-            if qty >= 0:
-                color_format = excel_format['']
-            else:    
-                color_format = excel_format['red']
+            #if qty >= 0:
+            color_format = excel_format['']
+            #else:    
+            #    color_format = excel_format['red']
                 
             # Excel log:
             row += 1             
