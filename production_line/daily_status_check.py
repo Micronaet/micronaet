@@ -55,9 +55,11 @@ class MrpProductionDailyReport(orm.Model):
         yestarday = (datetime.now - timedelta(days=1)).strftime(
             DEFAULT_SERVER_DATE_FORMAT)
         excluded = (
-            'SCONTO',
-            
+            'SCONTO',            
             )    
+        _logger.info('Check account movement, data: %s [Excluded: %s]' % (
+            yesterday, excluded))
+        
         if self.pool.get('res.company').table_capital_name(
                 cr, uid, context=context):
             table_header = "MM_TESTATE" 
@@ -89,6 +91,9 @@ class MrpProductionDailyReport(orm.Model):
         for line in cursor.fetchall():
             # Field used:
             default_code = line['CKY_ART']
+            if default_code not in excluded:
+                _logger.warning('Excluded code: %s' % default_code)
+                continue
             document = line['CSG_DOC']
             number = '%s: %s/%s' % (
                 document, line['NGB_SR_DOC'], line['NGL_DOC'])
