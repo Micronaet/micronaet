@@ -54,13 +54,22 @@ class MrpProductionDailyReport(orm.Model):
         """
         sql_pool = self.pool.get('micronaet.accounting')
         
-        yesterday = (datetime.now() + relativedelta(days=-1)).strftime(
-            DEFAULT_SERVER_DATE_FORMAT)
         excluded = (
-            'SCONTO',            
+            'SCONTO',
             )    
+
+        # Find last worked date:
+        days = 0
+        while True:
+            days -= 1
+            check_date_dt = datetime.now() + relativedelta(days=days)
+            if check_date_dt.weekday() in (5, 6):
+                continue # No week end date
+                
+            check_date = check_date.strftime(DEFAULT_SERVER_DATE_FORMAT)
+            break
         _logger.info('Check account movement, data: %s [Excluded: %s]' % (
-            yesterday, excluded))
+            check_date, excluded))
         
         if self.pool.get('res.company').table_capital_name(
                 cr, uid, context=context):
@@ -87,7 +96,7 @@ class MrpProductionDailyReport(orm.Model):
             """ % (
                table_header, 
                table_line,
-               yesterday,
+               check_date,
                )
         print query
         import pdb; pdb.set_trace()
