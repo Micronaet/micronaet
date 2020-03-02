@@ -108,7 +108,7 @@ class MrpProductionDailyReport(orm.Model):
         for line in cursor.fetchall():
             # Field used:
             default_code = line['CKY_ART']
-            if default_code not in excluded:
+            if default_code in excluded:
                 _logger.warning('Excluded code: %s' % default_code)
                 continue
             document = line['CSG_DOC']
