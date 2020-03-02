@@ -52,7 +52,8 @@ class MrpProductionDailyReport(orm.Model):
     def get_oc_status_yesterday(self, cr, uid, context=None):
         """ SQL get previous day order
         """
-        import pdb; pdb.set_trace()
+        sql_pool = self.pool.get('micronaet.accounting')
+        
         yesterday = (datetime.now() + relativedelta(days=-1)).strftime(
             DEFAULT_SERVER_DATE_FORMAT)
         excluded = (
@@ -63,13 +64,14 @@ class MrpProductionDailyReport(orm.Model):
         
         if self.pool.get('res.company').table_capital_name(
                 cr, uid, context=context):
-            table_header = "MM_TESTATE" 
-            table_line = "MM_RIGHE" 
+            table_header = 'MM_TESTATE'
+            table_line = 'MM_RIGHE'
         else:
-            table_header = "mm_testate" 
-            table_line = "mm_righe" 
+            table_header = 'mm_testate'
+            table_line = 'mm_righe'
 
-        cursor = self.connect(cr, uid, year=year, context=context)
+        cursor = sql_pool.connect(cr, uid, year=year, context=context)
+        import pdb; pdb.set_trace()
 
         cursor.execute("""
             SELECT 
@@ -88,6 +90,7 @@ class MrpProductionDailyReport(orm.Model):
                table_line,
                yesterday,
                ))
+
         res = []
         for line in cursor.fetchall():
             # Field used:
