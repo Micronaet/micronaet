@@ -52,7 +52,7 @@ class MrpProductionDailyReport(orm.Model):
     def get_oc_status_yesterday(self, cr, uid, context=None):
         """ SQL get previous day order
         """
-        yestarday = (datetime.now() + relativedelta(days=-1)).strftime(
+        yesterday = (datetime.now() + relativedelta(days=-1)).strftime(
             DEFAULT_SERVER_DATE_FORMAT)
         excluded = (
             'SCONTO',            
@@ -85,7 +85,7 @@ class MrpProductionDailyReport(orm.Model):
             """ % (
                table_header, 
                table_line,
-               yestarday,
+               yesterday,
                ))
         res = []
         for line in cursor.fetchall():
