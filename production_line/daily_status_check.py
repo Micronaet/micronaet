@@ -135,6 +135,7 @@ class MrpProductionDailyReport(orm.Model):
                 document, 
                 number,
                 product_type,
+                default_code,
                 '%s: %s' % (product_type, default_code),
                 qty,
                 '', # Comment
@@ -222,7 +223,8 @@ class MrpProductionDailyReport(orm.Model):
             ws_name, row, header, default_format=excel_format['header'])
 
         for record in self.get_oc_status_yesterday(cr, uid, context=context):
-            document, number, product_type, description, qty, comment = record
+            (document, number, product_type, default_code, description, 
+                qty, comment) = record
         
             if qty >= 0:
                 color_format = excel_format['']
