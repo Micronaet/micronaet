@@ -79,11 +79,11 @@ class MrpProductionDailyReport(orm.Model):
             FROM %s h JOIN %s l ON (
                 h.CSG_DOC = l.CSG_DOC AND 
                 h.NGB_SR_DOC = l.NGB_SR_DOC AND
-                hNGL_DOC = lNGL_DOC)
+                h.NGL_DOC = l.NGL_DOC)
             WHERE
                 h.DTT_DOC = '%s 00:00:00' AND 
-                CSG_DOC = ('BC', 'SL', 'CL') AND
-                CDS_NOTE != 'OPENERP';
+                h.CSG_DOC = ('BC', 'SL', 'CL') AND
+                h.CDS_NOTE != 'OPENERP';
             """ % (
                table_header, 
                table_line,
