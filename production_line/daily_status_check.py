@@ -71,8 +71,8 @@ class MrpProductionDailyReport(orm.Model):
             table_line = 'mm_righe'
 
         year = yesterday[:4]
-        cursor = sql_pool.connect(cr, uid, year=year, context=context)
         import pdb; pdb.set_trace()
+        cursor = sql_pool.connect(cr, uid, year=year, context=context)
 
         cursor.execute("""
             SELECT 
