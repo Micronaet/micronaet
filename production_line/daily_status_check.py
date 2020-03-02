@@ -52,6 +52,7 @@ class MrpProductionDailyReport(orm.Model):
     def get_oc_status_yesterday(self, cr, uid, context=None):
         """ SQL get previous day order
         """
+        import pdb; pdb.set_trace()
         yesterday = (datetime.now() + relativedelta(days=-1)).strftime(
             DEFAULT_SERVER_DATE_FORMAT)
         excluded = (
