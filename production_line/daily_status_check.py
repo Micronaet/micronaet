@@ -99,9 +99,6 @@ class MrpProductionDailyReport(orm.Model):
                table_line,
                check_date,
                )
-        print query
-        import pdb; pdb.set_trace()
-
         cursor.execute(query)
 
         res = []
@@ -240,7 +237,6 @@ class MrpProductionDailyReport(orm.Model):
                 comment,
                 ], default_format=color_format['text'])
                              
-            this_type = product_moved[product_type]
             product_pool = self.pool.get('product.product')
             product_ids = product_pool.search(cr, uid, [
                 ('default_code', '=', default_code),
@@ -250,10 +246,9 @@ class MrpProductionDailyReport(orm.Model):
             
             product = product_pool.browse(
                 cr, uid, product_ids, context=context)[0]
-                
             
-            if default_ not in product_moved['Materie prime']:
-                product_moved['Materie prime'].append(product)
+            if default_code not in product_moved[product_type]:
+                product_moved[product_type].append(product)
 
         # ---------------------------------------------------------------------         
         # Unload documents (over last date):
