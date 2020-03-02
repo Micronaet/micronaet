@@ -124,7 +124,6 @@ class MrpProductionDailyReport(orm.Model):
                 sign = -1
             else:  # CL
                 sign = +1    
-                
             
             if conversion:
                 qty *= sign * 1.0 / conversion
@@ -255,7 +254,7 @@ class MrpProductionDailyReport(orm.Model):
         # ---------------------------------------------------------------------         
         header = [u'# SL', u'Descrizione', u'Linea', u'Lavorazione']
 
-        row = 0
+        row += 2
         excel_pool.write_xls_line(                    
             ws_name, row, header, default_format=excel_format['header'])
 
