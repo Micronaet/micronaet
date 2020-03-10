@@ -459,7 +459,7 @@ class MrpProductionDailyReport(orm.Model):
                     comment,
                     ], default_format=color_format['text'])
                 if comment:
-                    toltip = ''.join(
+                    tooltip = ''.join(
                         sorted(
                             comment_detail.get(default_code, [])
                             ))
