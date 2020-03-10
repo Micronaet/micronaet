@@ -416,7 +416,14 @@ class MrpProductionDailyReport(orm.Model):
         # ---------------------------------------------------------------------         
         # Collect comment
         oc_detail = self.get_oc_detail_x_product(cr, uid, context=context)
-
+        comment_parameters = {
+                #author, visible, x_scale, 
+                width: 100, 
+                #y_scale, height, color
+                #font_name, font_size, start_cell, start_row, start_col
+                #x_offset, y_offset
+                }
+    
         # XXX Return to check page:
         ws_name = 'Controlli da fare'
         row = -2
@@ -445,7 +452,8 @@ class MrpProductionDailyReport(orm.Model):
                     comment.replace('\n', ' '),
                     ], default_format=color_format['text'])
                 if comment:   
-                    excel_pool.write_comment(ws_name, row, 2, comment)
+                    excel_pool.write_comment(
+                        ws_name, row, 2, comment, comment_parameters)
 
         if save_mode:
             return excel_pool.save_file_as(save_mode)         
