@@ -112,10 +112,10 @@ class MrpProductionDailyReport(orm.Model):
             if default_code not in res:
                 res[default_code] = ''
             
-            res[default_code] += '%s > %s [Sc. %s]\n' % (
-                ref, 
+            res[default_code] += '[Q. %s > Rif. %s Scad. %s]' % (
                 qty,
-                deadline,
+                ref,
+                deadline, # TODO
                 )
         return res
     
@@ -437,14 +437,15 @@ class MrpProductionDailyReport(orm.Model):
                     color_format = excel_format['']
 
                 row += 1           
+                comment = oc_detail.get(default_code)
                 excel_pool.write_xls_line(ws_name, row, [
                     default_code,
                     product.name,
                     (product.accounting_qty, color_format['number']),
+                    comment,
                     ], default_format=color_format['text'])
-                comment = oc_detail.get(default_code)
-                if comment:   
-                    excel_pool.write_comment(ws_name, row, 2, comment)
+                #if comment:   
+                #    excel_pool.write_comment(ws_name, row, 2, comment)
 
         if save_mode:
             return excel_pool.save_file_as(save_mode)         
