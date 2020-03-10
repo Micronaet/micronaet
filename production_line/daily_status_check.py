@@ -96,7 +96,7 @@ class MrpProductionDailyReport(orm.Model):
         cursor.execute(query)
 
         res = {}
-        rec_comment = {}
+        res_comment = {}
         for line in cursor.fetchall():
             # Field used:
             default_code = line['Article']
