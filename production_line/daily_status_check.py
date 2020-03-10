@@ -97,6 +97,7 @@ class MrpProductionDailyReport(orm.Model):
 
         res = {}
         res_comment = {}
+        res_total = {}
         for line in cursor.fetchall():
             # Field used:
             default_code = line['Article']
@@ -112,16 +113,19 @@ class MrpProductionDailyReport(orm.Model):
                 qty /= conversion
             if default_code not in res:
                 res[default_code] = ''
-                res_comment[default_code] = ''
+                res_comment[default_code] = []
+                res_total[default_code] = 0.0
             
             res[default_code] += ('[Q. %s > Rif. %s Scad. %s]' % (
                 qty, ref, deadline)).replace(' 00:00:00', '')
-            res_comment[default_code] += ('[%s] %s: %s\n' % (
+            res_comment[default_code].append(('[%s] %s: %s\n' % (
                 deadline, # TODO
                 qty,
                 ref,
                 )).replace(' 00:00:00', '')
-        return res, res_comment
+            res_total[default_code] += qty
+
+        return res, res_comment, res_total
     
     def get_oc_status_yesterday(self, cr, uid, context=None):
         """ SQL get previous day order
@@ -253,7 +257,7 @@ class MrpProductionDailyReport(orm.Model):
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
-        width = [13, 35, 18, 38]
+        width = [13, 35, 18, 18, 80]
         excel_pool.column_width(ws_name, width)
         
         # Page Detail:
@@ -419,13 +423,10 @@ class MrpProductionDailyReport(orm.Model):
         # Product / Material status:        
         # ---------------------------------------------------------------------         
         # Collect comment
-        oc_detail, comment_detail = self.get_oc_detail_x_product(cr, uid, context=context)
+        comment_line, comment_detail, comment_total = \
+            self.get_oc_detail_x_product(cr, uid, context=context)
         comment_parameters = {
-            #author, visible, x_scale, 
             'width': 450, 
-            #y_scale, height, color
-            #font_name, font_size, start_cell, start_row, start_col
-            #x_offset, y_offset
             }
     
         # XXX Return to check page:
@@ -433,7 +434,7 @@ class MrpProductionDailyReport(orm.Model):
         row = -2
         for mode in product_moved:
             row += 2
-            header = [mode, u'Nome', u'Magaz.']
+            header = [mode, u'Nome', 'Tot. OC', u'Magaz.', 'Commento']
             excel_pool.write_xls_line(                    
                 ws_name, row, header, default_format=excel_format['header'])
         
@@ -448,17 +449,23 @@ class MrpProductionDailyReport(orm.Model):
                     color_format = excel_format['']
 
                 row += 1           
-                comment = oc_detail.get(default_code) or ''                
+                comment = comment_line.get(default_code) or ''
+                oc_total = comment_total.get(default_code) or ''
                 excel_pool.write_xls_line(ws_name, row, [
                     default_code,
                     product.name,
+                    (oc_total, color_format['number']),
                     (product.accounting_qty, color_format['number']),
                     comment,
                     ], default_format=color_format['text'])
                 if comment:
+                    toltip = ''.join(
+                        sorted(
+                            comment_detail.get(default_code, [])
+                            ))
                     excel_pool.write_comment(
                         ws_name, row, 2, 
-                        comment_detail.get(default_code), 
+                        tooltip, 
                         comment_parameters)
 
         if save_mode:
