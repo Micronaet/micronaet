@@ -118,7 +118,7 @@ class MrpProductionDailyReport(orm.Model):
             
             res[default_code] += ('[Q. %s > Rif. %s Scad. %s]' % (
                 qty, ref, deadline)).replace(' 00:00:00', '')
-            res_comment[default_code].append(('[%s] %s: %s\n' % (
+            res_comment[default_code].append(('[%s] %10.0f: %s\n' % (
                 deadline, # TODO
                 qty,
                 ref,
@@ -464,7 +464,7 @@ class MrpProductionDailyReport(orm.Model):
                             comment_detail.get(default_code, [])
                             ))
                     excel_pool.write_comment(
-                        ws_name, row, 2, 
+                        ws_name, row, 3, 
                         tooltip, 
                         comment_parameters)
 
