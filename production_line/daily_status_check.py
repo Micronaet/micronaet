@@ -77,8 +77,8 @@ class MrpProductionDailyReport(orm.Model):
                     h.NGB_SR_DOC, "/", 
                     h.NGL_DOC, ": ", r.CDS_CNT) as Ref, 
                 l.DTT_SCAD as Deadline, 
-                l.NQT_RIGA_ART_PLOR as Qty,  
-                l.NCF_CONV as Convert               
+                l.NQT_RIGA_ART_PLOR as Qty,
+                l.NCF_CONV as Conv
             FROM 
                 %s h JOIN %s l 
                 ON (
@@ -106,7 +106,7 @@ class MrpProductionDailyReport(orm.Model):
             ref = line['Ref']
             qty = line['Qty']
             deadline = line['Deadline']
-            #conversion = line['Convert']
+            #conversion = line['Conv']
             #if conversion:
             #    qty /= conversion
             if default_code not in res:
