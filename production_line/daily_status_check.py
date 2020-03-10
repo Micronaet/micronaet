@@ -96,6 +96,7 @@ class MrpProductionDailyReport(orm.Model):
         cursor.execute(query)
 
         res = {}
+        rec_comment = {}
         for line in cursor.fetchall():
             # Field used:
             default_code = line['Article']
@@ -111,13 +112,16 @@ class MrpProductionDailyReport(orm.Model):
                 qty /= conversion
             if default_code not in res:
                 res[default_code] = ''
+                res_comment[default_code] = ''
             
-            res[default_code] += ('[Q. %s > Rif. %s Scad. %s]\n' % (
+            res[default_code] += ('[Q. %s > Rif. %s Scad. %s]' % (
+                qty, ref, deadline)).replace(' 00:00:00', '')
+            res_comment[default_code] += ('[%s] %s: %s\n' % (
+                deadline, # TODO
                 qty,
                 ref,
-                deadline, # TODO
                 )).replace(' 00:00:00', '')
-        return res
+        return res, res_comment
     
     def get_oc_status_yesterday(self, cr, uid, context=None):
         """ SQL get previous day order
@@ -415,10 +419,10 @@ class MrpProductionDailyReport(orm.Model):
         # Product / Material status:        
         # ---------------------------------------------------------------------         
         # Collect comment
-        oc_detail = self.get_oc_detail_x_product(cr, uid, context=context)
+        oc_detail, comment_detail = self.get_oc_detail_x_product(cr, uid, context=context)
         comment_parameters = {
             #author, visible, x_scale, 
-            'width': 400, 
+            'width': 450, 
             #y_scale, height, color
             #font_name, font_size, start_cell, start_row, start_col
             #x_offset, y_offset
@@ -444,16 +448,18 @@ class MrpProductionDailyReport(orm.Model):
                     color_format = excel_format['']
 
                 row += 1           
-                comment = oc_detail.get(default_code) or ''
+                comment = oc_detail.get(default_code) or ''                
                 excel_pool.write_xls_line(ws_name, row, [
                     default_code,
                     product.name,
                     (product.accounting_qty, color_format['number']),
-                    comment.replace('\n', ' '),
+                    comment,
                     ], default_format=color_format['text'])
-                if comment:   
+                if comment:
                     excel_pool.write_comment(
-                        ws_name, row, 2, comment, comment_parameters)
+                        ws_name, row, 2, 
+                        comment_detail.get(default_code), 
+                        comment_parameters)
 
         if save_mode:
             return excel_pool.save_file_as(save_mode)         
