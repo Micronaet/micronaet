@@ -427,6 +427,7 @@ class MrpProductionDailyReport(orm.Model):
             self.get_oc_detail_x_product(cr, uid, context=context)
         comment_parameters = {
             'width': 450, 
+            'font_name': 'Courier New',
             }
     
         # XXX Return to check page:
