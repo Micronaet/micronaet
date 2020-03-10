@@ -418,7 +418,7 @@ class MrpProductionDailyReport(orm.Model):
         oc_detail = self.get_oc_detail_x_product(cr, uid, context=context)
         comment_parameters = {
             #author, visible, x_scale, 
-            'width': 200, 
+            'width': 400, 
             #y_scale, height, color
             #font_name, font_size, start_cell, start_row, start_col
             #x_offset, y_offset
