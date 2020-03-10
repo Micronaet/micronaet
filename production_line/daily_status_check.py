@@ -48,6 +48,76 @@ class MrpProductionDailyReport(orm.Model):
     """
     
     _inherit = 'mrp.production'
+
+    def get_oc_detail_x_product(self, cr, uid, context=None):
+        """ Get detail x product
+        """
+        sql_pool = self.pool.get('micronaet.accounting')
+        
+        excluded = (
+            'SCONTO', 'VV',
+            )    
+            
+        table_header = 'OC_TESTATE'
+        table_line = 'OC_RIGHE'
+        table_partner = 'PA_RUBR_PDC_CLFR'
+        if self.pool.get('res.company').table_capital_name(
+                cr, uid, context=context):
+            table_header = table_header.lower()
+            table_line = table_line.lower()
+            table_partner = table_partner.lower()
+            
+        # Query:    
+        cursor = sql_pool.connect(cr, uid, year=False, context=context)
+        query = """
+            SELECT 
+                l.CKY_ART as Article,
+                CONCAT (
+                    h.CSG_DOC, "/", 
+                    h.NGB_SR_DOC, "/", 
+                    h.NGL_DOC, ": ", r.CDS_CNT) as Ref, 
+                l.DTT_SCAD as Deadline, 
+                l.NQT_RIGA_ART_PLOR as Qty,  
+                l.NCF_CONV as Convert               
+            FROM 
+                %s h JOIN %s l 
+                ON (
+                    h.CSG_DOC = l.CSG_DOC AND 
+                    h.NGB_SR_DOC = l.NGB_SR_DOC AND
+                    h.NGL_DOC = l.NGL_DOC)
+                JOIN %s r
+                ON (h.CKY_CNT_CLFR = r.CKY_CNT);
+            """ % (
+               table_header, 
+               table_line,
+               table_partner,
+               # TODO excluded
+               )
+        cursor.execute(query)
+
+        res = []
+        for line in cursor.fetchall():
+            # Field used:
+            default_code = line['Article']
+            if default_code in excluded:
+                _logger.warning('Excluded code: %s' % default_code)
+                continue
+                
+            ref = line['Ref']
+            qty = line['Qty']
+            deadline = line['Deadline']
+            #conversion = line['Convert']
+            #if conversion:
+            #    qty /= conversion
+            if default_code not in res:
+                res[default_code] = ''
+            
+            res[default_code] += '%s > %s [Sc. %s]\n' % (
+                ref, 
+                qty,
+                deadline,
+                )
+        return res
     
     def get_oc_status_yesterday(self, cr, uid, context=None):
         """ SQL get previous day order
@@ -344,6 +414,9 @@ class MrpProductionDailyReport(orm.Model):
         # ---------------------------------------------------------------------         
         # Product / Material status:        
         # ---------------------------------------------------------------------         
+        # Collect comment
+        oc_detail = self.get_oc_detail_x_product(cr, uid, context=context)
+
         # XXX Return to check page:
         ws_name = 'Controlli da fare'
         row = -2
@@ -369,6 +442,9 @@ class MrpProductionDailyReport(orm.Model):
                     product.name,
                     (product.accounting_qty, color_format['number']),
                     ], default_format=color_format['text'])
+                comment = oc_detail.get(default_code)
+                if comment:   
+                    excel_pool.write_comment(ws_name, row, 2, comment)
 
         if save_mode:
             return excel_pool.save_file_as(save_mode)         
