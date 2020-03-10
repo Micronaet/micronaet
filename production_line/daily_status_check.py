@@ -106,9 +106,9 @@ class MrpProductionDailyReport(orm.Model):
             ref = line['Ref']
             qty = line['Qty']
             deadline = line['Deadline']
-            #conversion = line['Conv']
-            #if conversion:
-            #    qty /= conversion
+            conversion = line['Conv']
+            if conversion:
+                qty /= conversion
             if default_code not in res:
                 res[default_code] = ''
             
