@@ -426,7 +426,7 @@ class MrpProductionDailyReport(orm.Model):
         comment_line, comment_detail, comment_total = \
             self.get_oc_detail_x_product(cr, uid, context=context)
         comment_parameters = {
-            'width': 450, 
+            'width': 500, 
             'font_name': 'Courier New',
             }
     
