@@ -77,7 +77,7 @@ class MrpProductionDailyReport(orm.Model):
                     h.NGB_SR_DOC, "/", 
                     h.NGL_DOC, ": ", r.CDS_CNT) as Ref, 
                 l.DTT_SCAD as Deadline, 
-                l.NQT_RIGA_ART_PLOR as Qty,
+                l.NQT_RIGA_O_PLOR as Qty,
                 l.NCF_CONV as Conv
             FROM 
                 %s h JOIN %s l 
