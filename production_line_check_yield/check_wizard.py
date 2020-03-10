@@ -94,7 +94,9 @@ class confirm_mrp_production_update_wizard(osv.osv_memory):
             else:
                 rate = 0.0
 
-            mrp_medium_yield = mrp.product_id.mrp_medium_yield        
+            mrp_medium_yield = mrp.product_id.mrp_medium_yield    
+            if mrp.product_id.mrp_medium_yield > 100.0:
+                mrp.product_id.mrp_medium_yield = 100.0
 
             # Color setup:
             if not mrp_medium_yield:

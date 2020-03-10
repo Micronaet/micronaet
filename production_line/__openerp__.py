@@ -67,6 +67,7 @@
         'production_view.xml',
         'partner_view.xml',
         'analysis.xml',
+        'daily_status_view.xml', # Server action for report
 
         'scheduler.xml',
         'wizard/view_production_wizard.xml',

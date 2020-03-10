@@ -146,7 +146,7 @@ class MrpProductionDailyReport(orm.Model):
         '''
         if context is None:
             context = {}
-        save_mode = context.get('save_mode')
+        save_mode = context.get('save_mode', False)
 
         # Pool used:
         unload_pool = self.pool.get('mrp.production.workcenter.line') # Job/SL
@@ -173,8 +173,17 @@ class MrpProductionDailyReport(orm.Model):
 
         # ---------------------------------------------------------------------
         # Excel start:
-        # ---------------------------------------------------------------------               
-        ws_name = u'Produzioni di ieri'
+        # ---------------------------------------------------------------------
+        # Page Check:
+        ws_name = 'Controlli da fare'
+        excel_pool.create_worksheet(name=ws_name)
+
+        # Column:
+        width = [13, 35, 18, 38]
+        excel_pool.column_width(ws_name, width)
+        
+        # Page Detail:
+        ws_name = u'Dettaglio movimentazioni'
         excel_pool.create_worksheet(name=ws_name)
 
         # Format:
@@ -335,6 +344,9 @@ class MrpProductionDailyReport(orm.Model):
         # ---------------------------------------------------------------------         
         # Product / Material status:        
         # ---------------------------------------------------------------------         
+        # XXX Return to check page:
+        ws_name = 'Controlli da fare'
+        row = -2
         for mode in product_moved:
             row += 2
             header = [mode, u'Nome', u'Magaz.']
@@ -358,6 +370,11 @@ class MrpProductionDailyReport(orm.Model):
                     (product.accounting_qty, color_format['number']),
                     ], default_format=color_format['text'])
 
-        return excel_pool.save_file_as(save_mode)         
+        if save_mode:
+            return excel_pool.save_file_as(save_mode)         
+        else:
+            return excel_pool.return_attachment(cr, uid, 'Movimenti di ieri', 
+                name_of_file=False, version='7.0', php=True,
+                context=context)
                                    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
