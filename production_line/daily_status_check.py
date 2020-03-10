@@ -417,12 +417,12 @@ class MrpProductionDailyReport(orm.Model):
         # Collect comment
         oc_detail = self.get_oc_detail_x_product(cr, uid, context=context)
         comment_parameters = {
-                #author, visible, x_scale, 
-                width: 100, 
-                #y_scale, height, color
-                #font_name, font_size, start_cell, start_row, start_col
-                #x_offset, y_offset
-                }
+            #author, visible, x_scale, 
+            'width': 100, 
+            #y_scale, height, color
+            #font_name, font_size, start_cell, start_row, start_col
+            #x_offset, y_offset
+            }
     
         # XXX Return to check page:
         ws_name = 'Controlli da fare'
