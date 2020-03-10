@@ -95,7 +95,7 @@ class MrpProductionDailyReport(orm.Model):
                )
         cursor.execute(query)
 
-        res = []
+        res = {}
         for line in cursor.fetchall():
             # Field used:
             default_code = line['Article']
