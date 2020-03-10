@@ -118,11 +118,11 @@ class MrpProductionDailyReport(orm.Model):
             
             res[default_code] += ('[Q. %s > Rif. %s Scad. %s]' % (
                 qty, ref, deadline)).replace(' 00:00:00', '')
-            res_comment[default_code].append('[%s] %s: %s\n' % (
+            res_comment[default_code].append(('[%s] %s: %s\n' % (
                 deadline, # TODO
                 qty,
                 ref,
-                ).replace(' 00:00:00', ''))
+                )).replace(' 00:00:00', ''))
             res_total[default_code] += qty
 
         return res, res_comment, res_total
