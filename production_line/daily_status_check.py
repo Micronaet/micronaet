@@ -112,11 +112,11 @@ class MrpProductionDailyReport(orm.Model):
             if default_code not in res:
                 res[default_code] = ''
             
-            res[default_code] += '[Q. %s > Rif. %s Scad. %s]\n' % (
+            res[default_code] += ('[Q. %s > Rif. %s Scad. %s]\n' % (
                 qty,
                 ref,
                 deadline, # TODO
-                )
+                )).replace(' 00:00:00', '')
         return res
     
     def get_oc_status_yesterday(self, cr, uid, context=None):
