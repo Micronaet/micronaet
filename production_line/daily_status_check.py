@@ -61,7 +61,7 @@ class MrpProductionDailyReport(orm.Model):
         table_header = 'OC_TESTATE'
         table_line = 'OC_RIGHE'
         table_partner = 'PA_RUBR_PDC_CLFR'
-        if self.pool.get('res.company').table_capital_name(
+        if not self.pool.get('res.company').table_capital_name(
                 cr, uid, context=context):
             table_header = table_header.lower()
             table_line = table_line.lower()
