@@ -437,7 +437,7 @@ class MrpProductionDailyReport(orm.Model):
                     color_format = excel_format['']
 
                 row += 1           
-                comment = oc_detail.get(default_code)
+                comment = oc_detail.get(default_code) or ''
                 excel_pool.write_xls_line(ws_name, row, [
                     default_code,
                     product.name,
