@@ -44,9 +44,9 @@ class mrp_production_extra(osv.osv):
     # Utility for procedure:
     # -------------------------------------------------------------------------
     def add_element_material_composition(
-            self, product, quantity, table, rows, with_medium, material_mx,
-            month_window, start_date, range_date, real_date_planned, 
-            col_ids, supplier_orders,
+            self, product, quantity, table, table_comment, rows, with_medium, 
+            material_mx, month_window, start_date, range_date, 
+            real_date_planned, col_ids, supplier_orders,
             ):
         ''' Block used for unload materials and for simulation
         '''            
@@ -73,15 +73,24 @@ class mrp_production_extra(osv.osv):
         if element not in rows:
             rows.append(element)
             # prepare data structure:
-            table[element[1]] = [0.0 for item in range(0,range_date)] 
+            table[element[1]] = [0.0 for item in range(0,range_date)]
+            table_comment[element[1]] = ['' for item in range(0,range_date)]
+
             # prepare data structure:
             table[element[1]][0] = product.accounting_qty or 0.0 
+            table_comment[element[1]] += 'Gest.: %s\n' % product.accounting_qty
 
         if real_date_planned in col_ids:
-            table[element[1]][col_ids[real_date_planned]] -= \
-                quantity or 0.0 
-        else:    # < today
-            table[element[1]][1] -= quantity or 0.0 
+            position = col_ids[real_date_planned]
+        else: # < today
+            position = 1
+
+        # Write data:                
+        table[element[1]][position] -= quantity
+        table_comment[element[1]][position] += 'Q. %s [%s]\n' % (
+            quantity,
+            real_date_planned,
+            )
 
         # -------------------------------------------------------------
         # OF order:
@@ -119,14 +128,16 @@ class mrp_production_extra(osv.osv):
         order_line_pool = self.pool.get('sale.order.line')
         
         # Global parameters:    
-        global rows, cols, table, history_supplier_orders, minimum, \
-            error_in_print
+        global rows, cols, table, table_comment, history_supplier_orders, \
+            minimum, error_in_print
         
         # initialize globals:
         rows = []
         cols = []
         minimum = {}
         table = {}
+        table_comment = {}
+
         error_in_print = '' # TODO manage for set in printer
         
         # TODO optimize:
@@ -307,6 +318,7 @@ class mrp_production_extra(osv.osv):
                     material.product_id, 
                     material.quantity,                    
                     table, 
+                    table_comment,
                     rows,
                     # Medium block:
                     with_medium, material_mx, month_window,
@@ -328,6 +340,7 @@ class mrp_production_extra(osv.osv):
                     material.product_id, 
                     qty * material.product_qty,
                     table, 
+                    table_comment,
                     rows,
                     # Medium block:
                     with_medium, material_mx, month_window,
