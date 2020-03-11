@@ -260,10 +260,9 @@ class product_product_extra(osv.osv):
                         ('default_code','=',default_code),
                         ], context=context)
                     if item_id:
-                        accounting_qty = (record['NQT_INV'] or 0.0) + \
-                            (record['NQT_CAR'] or 0.0) - \
-                            (record['NQT_SCAR'] or 0.0)                     
-                        modify = self.write(cr, uid, item_id, {
+                        accounting_qty = record['NQT_INV'] + \
+                            record['NQT_CAR'] - record['NQT_SCAR']                     
+                        self.write(cr, uid, item_id, {
                             'accounting_qty': accounting_qty,
                             }, context=context)
                         total+=1
