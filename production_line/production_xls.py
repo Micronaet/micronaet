@@ -318,15 +318,15 @@ class mrp_production_extra(osv.osv):
             # Product production:
             if real_date_planned in col_ids: 
                 table[element[1]][col_ids[real_date_planned]] += \
-                    lavoration.product_qty or 0.0
+                    lavoration.product_qty
             else: # < today  (element 1 - the second)
-                table[element[1]][1] += lavoration.product_qty or 0.0
+                table[element[1]][1] += lavoration.product_qty
 
             # -----------------------------------------------------------------
             # Material in BOM:
             # -----------------------------------------------------------------            
             extra_comment = '%s (Lav. %s)' % (
-                lavoration.quantity.default_code, lavoration.name)
+                lavoration.product.default_code, lavoration.name)
             for material in lavoration.bom_material_ids:        
                 
                 self.add_element_material_composition(
