@@ -260,6 +260,8 @@ class product_product_extra(osv.osv):
                         ('default_code','=',default_code),
                         ], context=context)
                     if item_id:
+                        if default_code == 'A0004':
+                            import pdb; pdb.set_trace()
                         accounting_qty = record['NQT_INV'] + \
                             record['NQT_CAR'] - record['NQT_SCAR']                     
                         self.write(cr, uid, item_id, {
