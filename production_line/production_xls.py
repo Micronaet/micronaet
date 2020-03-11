@@ -117,7 +117,7 @@ class mrp_production_extra(osv.osv):
                 table[element[1]][position] += of_qty
                 # delete OF value (no other additions):        
                 del(supplier_orders[default_code][of_deadline])
-                table_comment[element[1]][position] += 'OF. %s [%s]\n' % (
+                table_comment[element[1]][position] += 'OF: Q. %s [%s]\n' % (
                     of_qty,
                     real_date_planned,
                     )
