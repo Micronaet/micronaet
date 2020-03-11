@@ -99,8 +99,29 @@ class mrp_production_extra(osv.osv):
         # -------------------------------------------------------------
         if default_code in supplier_orders: # all OF orders
             for of_deadline in supplier_orders[default_code].keys():
+                
                 # deadline is present in the window of cols
-                if of_deadline in col_ids:                            
+                position = col_ids.get(of_deadline, 1)
+                if position = 1 and of_deadline >< start_date.strftime('%Y-%m-%d')
+                
+                table[element[1]][position] += \
+                    supplier_orders[default_code][of_deadline]
+                # delete OF value (no other additions):
+                del(supplier_orders[default_code][of_deadline])
+                    
+                elif of_deadline < start_date.strftime('%Y-%m-%d'):
+                    # deadline < today:   
+                    table[element[1]][1] += supplier_orders[
+                        default_code][of_deadline] or 0.0
+                    # delete OF value (no other additions):
+                    del(supplier_orders[default_code][of_deadline]) 
+                                    
+                
+                if of_deadline in col_ids:
+                    position = col_ids[of_deadline]
+                else:
+                    position =     
+                    
                     table[element[1]][col_ids[of_deadline]] += \
                         supplier_orders[default_code][of_deadline] or 0.0
                     # delete OF value (no other additions):        
@@ -315,7 +336,8 @@ class mrp_production_extra(osv.osv):
             # -----------------------------------------------------------------
             # Material in BOM:
             # -----------------------------------------------------------------            
-            extra_comment = 'Lav. %s' % lavoration.name
+            extra_comment = '%s (Lav. %s)' % (
+                lavoration.product.default_code, lavoration.name)
             for material in lavoration.bom_material_ids:        
                 
                 self.add_element_material_composition(
