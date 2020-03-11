@@ -79,7 +79,7 @@ class mrp_production_extra(osv.osv):
             # prepare data structure:
             table[element[1]][0] = product.accounting_qty
             table_comment[element[1]][0] += \
-                'Gest.: %s\n' % product.accounting_qty
+                'Gest.: Q. %s\n' % product.accounting_qty
 
         if real_date_planned in col_ids:
             position = col_ids[real_date_planned]            
