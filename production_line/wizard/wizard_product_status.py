@@ -395,7 +395,9 @@ class product_status_wizard(osv.osv_memory):
                 else: # ("=", "<"): # not present!!!
                     body.append((status_line, format_white))
             write_xls_mrp_line(WS, i, body)
-            write_xls_mrp_line_comment(WS, i, table_comment[row[1]])
+            comment_line = table_comment.get(row[1])
+            if comment_line:
+                write_xls_mrp_line_comment(WS, i, comment_line)
             
             i += 1                
         _logger.info('End export status on %s' % filename)        
