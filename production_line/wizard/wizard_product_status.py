@@ -176,10 +176,13 @@ class product_status_wizard(osv.osv_memory):
         def write_xls_mrp_line_comment(WS, row, line, gap_column=0):
             ''' Write comment cell in excel file
             '''
+            parameters = {
+                'width': 300,
+                }
             col = gap_columns
             for comment in line:
                 if comment:
-                    WS.write_comment(row, col, comment)
+                    WS.write_comment(row, col, comment, parameters)
                 col += 1
             return True
         
