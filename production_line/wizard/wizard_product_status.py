@@ -172,6 +172,16 @@ class product_status_wizard(osv.osv_memory):
                 WS.write(row, col, item, format_cell)
                 col += 1
             return True
+
+        def write_xls_mrp_line_comment(WS, row, line):
+            ''' Write comment cell in excel file
+            '''
+            col = 0
+            for comment in line:
+                if comment:
+                    WS.write_comment(row, col, comment)
+                col += 1
+            return True
         
         def use_row(row, data=None, product=False):
             ''' Check if row must be used depend on row_mode
@@ -338,7 +348,7 @@ class product_status_wizard(osv.osv_memory):
         i = 1 # row position (before 0)
         rows = mrp_pool._get_rows()
 
-        table = mrp_pool._get_table() # For check row state
+        table, table_comment = mrp_pool._get_table() # For check row state
         
         for row in rows:
             # Check mode: only active
@@ -385,6 +395,8 @@ class product_status_wizard(osv.osv_memory):
                 else: # ("=", "<"): # not present!!!
                     body.append((status_line, format_white))
             write_xls_mrp_line(WS, i, body)
+            write_xls_mrp_line_comment(WS, i, table_comment[row[1]])
+            
             i += 1                
         _logger.info('End export status on %s' % filename)        
         WB.close()
