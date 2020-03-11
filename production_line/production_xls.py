@@ -44,8 +44,8 @@ class mrp_production_extra(osv.osv):
     # Utility for procedure:
     # -------------------------------------------------------------------------
     def add_element_material_composition(
-            self, product, quantity, table, table_comment, rows, with_medium, 
-            material_mx, month_window, start_date, range_date, 
+            self, product, quantity, table, table_comment, extra_comment,rows, 
+            with_medium, material_mx, month_window, start_date, range_date, 
             real_date_planned, col_ids, supplier_orders,
             ):
         ''' Block used for unload materials and for simulation
@@ -88,9 +88,10 @@ class mrp_production_extra(osv.osv):
 
         # Write data:                
         table[element[1]][position] -= quantity
-        table_comment[element[1]][position] += 'Q. %s [%s]\n' % (
+        table_comment[element[1]][position] += 'Q. %s [%s]: %s\n' % (
             quantity,
             real_date_planned,
+            extra_comment,
             )
 
         # -------------------------------------------------------------
@@ -313,13 +314,16 @@ class mrp_production_extra(osv.osv):
 
             # -----------------------------------------------------------------
             # Material in BOM:
-            # -----------------------------------------------------------------
-            for material in lavoration.bom_material_ids:     
+            # -----------------------------------------------------------------            
+            extra_comment = 'Lav. %s' % lavoration.name
+            for material in lavoration.bom_material_ids:        
+                
                 self.add_element_material_composition(
                     material.product_id, 
                     material.quantity,                    
                     table, 
                     table_comment,
+                    extra_comment,
                     rows,
                     # Medium block:
                     with_medium, material_mx, month_window,
@@ -336,12 +340,14 @@ class mrp_production_extra(osv.osv):
         for fake in data['fake_ids']:
             qty = fake.qty     
             # Read BOM materials:
+            extra_comment = 'Simulaz. produz.'
             for material in fake.bom_id.bom_lines:
                 self.add_element_material_composition(
                     material.product_id, 
                     qty * material.product_qty,
                     table, 
                     table_comment,
+                    extra_comment,
                     rows,
                     # Medium block:
                     with_medium, material_mx, month_window,
