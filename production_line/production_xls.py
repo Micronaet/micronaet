@@ -92,10 +92,11 @@ class mrp_production_extra(osv.osv):
            comment_mode = 'CL prod.'
         else:   
            comment_mode = 'SL prod.'
-        table_comment[element[1]][position] += '%s: Q. %s [%s]\n' % (
+        table_comment[element[1]][position] += '%s: Q. %s [%s] %s\n' % (
             comment_mode,
             quantity,
             real_date_planned,
+            extra_comment,
             )
 
         # -------------------------------------------------------------
@@ -324,7 +325,8 @@ class mrp_production_extra(osv.osv):
             # -----------------------------------------------------------------
             # Material in BOM:
             # -----------------------------------------------------------------            
-            extra_comment = 'Lav. %s' % lavoration.name
+            extra_comment = '%s (Lav. %s)' % (
+                lavoration.quantity.default_code, lavoration.name)
             for material in lavoration.bom_material_ids:        
                 
                 self.add_element_material_composition(
