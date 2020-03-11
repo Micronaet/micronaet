@@ -173,10 +173,10 @@ class product_status_wizard(osv.osv_memory):
                 col += 1
             return True
 
-        def write_xls_mrp_line_comment(WS, row, line):
+        def write_xls_mrp_line_comment(WS, row, line, gap_column=0):
             ''' Write comment cell in excel file
             '''
-            col = 0
+            col = gap_columns
             for comment in line:
                 if comment:
                     WS.write_comment(row, col, comment)
@@ -377,6 +377,8 @@ class product_status_wizard(osv.osv_memory):
                     ), # OF detail
                 (row[3], format_white), # m(x)
                 ]
+            gap_columns = len(body)    
+                
             j = 0
             for col in cols:
                 (q, minimum) = mrp_pool._get_cel(j, row[1])
@@ -397,7 +399,7 @@ class product_status_wizard(osv.osv_memory):
             write_xls_mrp_line(WS, i, body)
             comment_line = table_comment.get(row[1])
             if comment_line:
-                write_xls_mrp_line_comment(WS, i, comment_line)
+                write_xls_mrp_line_comment(WS, i, comment_line, gap_columns)
             
             i += 1                
         _logger.info('End export status on %s' % filename)        
