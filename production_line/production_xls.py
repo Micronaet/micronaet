@@ -44,7 +44,7 @@ class mrp_production_extra(osv.osv):
     # Utility for procedure:
     # -------------------------------------------------------------------------
     def add_element_material_composition(
-            self, product, quantity, table, table_comment, extra_comment,rows, 
+            self, product, quantity, table, table_comment, extra_comment, rows, 
             with_medium, material_mx, month_window, start_date, range_date, 
             real_date_planned, col_ids, supplier_orders,
             ):
@@ -82,16 +82,15 @@ class mrp_production_extra(osv.osv):
                 'Gest.: %s\n' % product.accounting_qty
 
         if real_date_planned in col_ids:
-            position = col_ids[real_date_planned]
-        else: # < today
+            position = col_ids[real_date_planned]            
+        else: # XXX TODO manage over date!?! < today 
             position = 1
 
         # Write data:                
         table[element[1]][position] -= quantity
-        table_comment[element[1]][position] += 'Q. %s [%s]: %s\n' % (
+        table_comment[element[1]][position] += 'Q. %s [%s]\n' % (
             quantity,
             real_date_planned,
-            extra_comment,
             )
 
         # -------------------------------------------------------------
@@ -99,40 +98,24 @@ class mrp_production_extra(osv.osv):
         # -------------------------------------------------------------
         if default_code in supplier_orders: # all OF orders
             for of_deadline in supplier_orders[default_code].keys():
-                
                 # deadline is present in the window of cols
-                position = col_ids.get(of_deadline, 1)
-                if position = 1 and of_deadline >< start_date.strftime('%Y-%m-%d')
                 
-                table[element[1]][position] += \
-                    supplier_orders[default_code][of_deadline]
-                # delete OF value (no other additions):
-                del(supplier_orders[default_code][of_deadline])
-                    
-                elif of_deadline < start_date.strftime('%Y-%m-%d'):
-                    # deadline < today:   
-                    table[element[1]][1] += supplier_orders[
-                        default_code][of_deadline] or 0.0
-                    # delete OF value (no other additions):
-                    del(supplier_orders[default_code][of_deadline]) 
-                                    
-                
-                if of_deadline in col_ids:
+                if of_deadline in col_ids:   
                     position = col_ids[of_deadline]
-                else:
-                    position =     
-                    
-                    table[element[1]][col_ids[of_deadline]] += \
-                        supplier_orders[default_code][of_deadline] or 0.0
-                    # delete OF value (no other additions):        
-                    del(supplier_orders[default_code][of_deadline])
-                    
                 elif of_deadline < start_date.strftime('%Y-%m-%d'):
                     # deadline < today:   
-                    table[element[1]][1] += supplier_orders[
-                        default_code][of_deadline] or 0.0
-                    # delete OF value (no other additions):
-                    del(supplier_orders[default_code][of_deadline]) 
+                    position = 1
+                else:
+                    continue
+                        
+                table[element[1]][position] += \
+                    supplier_orders[default_code][of_deadline] or 0.0
+                # delete OF value (no other additions):        
+                del(supplier_orders[default_code][of_deadline])
+                table_comment[element[1]][position] += 'OF. %s [%s]\n' % (
+                    quantity,
+                    real_date_planned,
+                    )
         return
 
     # -------------------------------------------------------------------------
@@ -336,8 +319,7 @@ class mrp_production_extra(osv.osv):
             # -----------------------------------------------------------------
             # Material in BOM:
             # -----------------------------------------------------------------            
-            extra_comment = '%s (Lav. %s)' % (
-                lavoration.product.default_code, lavoration.name)
+            extra_comment = 'Lav. %s' % lavoration.name
             for material in lavoration.bom_material_ids:        
                 
                 self.add_element_material_composition(
