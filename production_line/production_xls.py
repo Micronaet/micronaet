@@ -88,12 +88,8 @@ class mrp_production_extra(osv.osv):
 
         # Write data:                
         table[element[1]][position] -= quantity
-        if quantity > 0:
-           comment_mode = 'CL prod.'
-        else:   
-           comment_mode = 'SL prod.'
         table_comment[element[1]][position] += '%s: Q. %s [%s] %s\n' % (
-            comment_mode,
+            'CL prod.' if quantity > 0 else 'SL prod.',
             quantity,
             real_date_planned,
             extra_comment,

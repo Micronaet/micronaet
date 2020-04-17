@@ -368,11 +368,11 @@ class MrpProductionDailyReport(orm.Model):
                 unload.name,
                 ], default_format=color_format['text'])
 
-            # Product collect:
-            for material in unload.bom_material_ids:
-                product = material.product_id
-                if product not in product_moved['Materie prime']:
-                    product_moved['Materie prime'].append(product)
+            # Product collect: # 17 apr 2020 remove from material list
+            #for material in unload.bom_material_ids:
+            #    product = material.product_id
+            #    if product not in product_moved['Materie prime']:
+            #        product_moved['Materie prime'].append(product)
         
         # ---------------------------------------------------------------------         
         # Load documents (in last date):
@@ -414,10 +414,10 @@ class MrpProductionDailyReport(orm.Model):
                     )
                 ], default_format=color_format['text'])
 
-            # Product collect:
+            # Product collect: # 17 apr 2020 remove from product list
             # product_qty
-            if product not in product_moved['Prodotti finiti']:
-                product_moved['Prodotti finiti'].append(product)
+            #if product not in product_moved['Prodotti finiti']:
+            #    product_moved['Prodotti finiti'].append(product)
 
         # ---------------------------------------------------------------------         
         # Product / Material status:        
