@@ -643,7 +643,10 @@ class MrpProduction(orm.Model):
             
             lost = material - product
             if product:
-                rate = lost / material * 100.0
+                if material:
+                    rate = lost / material * 100.0
+                else:
+                    rate = 0.0    
             else:    
                 rate = 0.0
             
