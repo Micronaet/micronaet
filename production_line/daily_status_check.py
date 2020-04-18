@@ -346,8 +346,7 @@ class MrpProductionDailyReport(orm.Model):
             if product not in product_moved[product_type]:
                 product_moved[product_type].append(product)
                 document_move[product] = ''
-            document_move[product] += '%s/%s q. %s [%s]\n' % (
-                document,
+            document_move[product] += '%s q. %s [%s]\n' % (
                 number,
                 qty,
                 date_document,
