@@ -186,6 +186,7 @@ class MrpProductionDailyReport(orm.Model):
                 _logger.warning('Excluded code: %s' % default_code)
                 continue
             document = line['CSG_DOC']
+            date_document = line['DTT_DOC']
             number = '%s: %s/%s' % (
                 document, line['NGB_SR_DOC'], line['NGL_DOC'])
             qty = line['NQT_RIGA_ART_PLOR']
@@ -197,7 +198,7 @@ class MrpProductionDailyReport(orm.Model):
             else:   
                 product_type = 'Prodotti finiti'
 
-            if document in ('BC', 'SL'):
+            if document in ('BC', 'SL', 'BD', 'RC', 'BS'):
                 sign = -1
             else:  # CL
                 sign = +1    
@@ -212,6 +213,7 @@ class MrpProductionDailyReport(orm.Model):
                 '%s: %s' % (product_type, default_code),
                 qty,
                 '', # Comment
+                date_document
                 ))
         return res
         
@@ -287,7 +289,7 @@ class MrpProductionDailyReport(orm.Model):
             }
         
         # Column:
-        width = [13, 35, 18, 38]
+        width = [13, 35, 18, 38, 15]
         excel_pool.column_width(ws_name, width)
 
         product_moved = {
@@ -299,14 +301,15 @@ class MrpProductionDailyReport(orm.Model):
         # ---------------------------------------------------------------------         
         # Account movement (over last date):
         # ---------------------------------------------------------------------
-        header = [u'Doc. contabile', u'Descrizione', u'Q.', u'Commento']
+        header = [u'Doc. contabile', u'Descrizione', u'Q.', u'Commento', 
+            u'Date']
         row = 0
         excel_pool.write_xls_line(                    
             ws_name, row, header, default_format=excel_format['header'])
 
         for record in self.get_oc_status_yesterday(cr, uid, context=context):
             (document, number, product_type, default_code, description, 
-                qty, comment) = record
+                qty, comment, date_document) = record
         
             #if qty >= 0:
             color_format = excel_format['']
@@ -320,6 +323,7 @@ class MrpProductionDailyReport(orm.Model):
                 description,
                 (qty, color_format['number']),
                 comment,
+                date_document,
                 ], default_format=color_format['text'])
                              
             product_pool = self.pool.get('product.product')
