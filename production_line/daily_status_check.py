@@ -168,7 +168,7 @@ class MrpProductionDailyReport(orm.Model):
                 h.CSG_DOC = l.CSG_DOC AND 
                 h.NGB_SR_DOC = l.NGB_SR_DOC AND
                 h.NGL_DOC = l.NGL_DOC AND
-                h.NPR_DOC = l.NPR_DOC AND
+                h.NPR_DOC = l.NPR_DOC
                 )
             WHERE
                 h.DTT_DOC >= '%s 00:00:00' AND 
