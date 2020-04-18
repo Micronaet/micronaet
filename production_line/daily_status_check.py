@@ -187,6 +187,7 @@ class MrpProductionDailyReport(orm.Model):
                 continue
             document = line['CSG_DOC']
             date_document = line['DTT_DOC']
+            import pdb; pdb.set_trace()
             number = '%s: %s/%s' % (
                 document, line['NGB_SR_DOC'], line['NGL_DOC'])
             qty = line['NQT_RIGA_ART_PLOR']
