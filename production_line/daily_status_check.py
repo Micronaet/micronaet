@@ -313,6 +313,7 @@ class MrpProductionDailyReport(orm.Model):
         excel_pool.write_xls_line(                    
             ws_name, row, header, default_format=excel_format['header'])
 
+        document_move = {}
         for record in self.get_oc_status_yesterday(cr, uid, context=context):
             (document, number, product_type, default_code, description, 
                 qty, comment, date_document) = record
@@ -344,6 +345,13 @@ class MrpProductionDailyReport(orm.Model):
             
             if product not in product_moved[product_type]:
                 product_moved[product_type].append(product)
+                document_move[product] = ''
+            document_move[product] += '%s/%s q. %s [%s]\n' % (
+                document,
+                number,
+                quantity,
+                date_document,
+                )
 
         # ---------------------------------------------------------------------         
         # Unload documents (over last date):
@@ -468,6 +476,13 @@ class MrpProductionDailyReport(orm.Model):
                     (product.accounting_qty, color_format['number']),
                     comment,
                     ], default_format=color_format['text'])
+                
+                movements = document_move.get(product, '')
+                excel_pool.write_comment(
+                    ws_name, row, 0, 
+                    movements, 
+                    comment_parameters)
+                
                 if comment:
                     tooltip = ''.join(
                         sorted(
