@@ -188,7 +188,7 @@ class MrpProductionDailyReport(orm.Model):
             document = line['CSG_DOC']
             try:
                 date_document = line['DTT_DOC'].strftime(
-                    DEFAULT_SERVER_DATETIME_FORMAT)
+                    DEFAULT_SERVER_DATE_FORMAT)
             except:
                 date_document = ''    
             number = '%s: %s/%s' % (
