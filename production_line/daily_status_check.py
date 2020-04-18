@@ -349,7 +349,7 @@ class MrpProductionDailyReport(orm.Model):
             document_move[product] += '%s/%s q. %s [%s]\n' % (
                 document,
                 number,
-                quantity,
+                qty,
                 date_document,
                 )
 
