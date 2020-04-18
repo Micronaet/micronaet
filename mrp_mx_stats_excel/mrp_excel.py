@@ -41,6 +41,7 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 
 _logger = logging.getLogger(__name__)
+import pdb; pdb.set_trace()
 
 class MrpProduction(orm.Model):
     """ Model name: MrpProduction

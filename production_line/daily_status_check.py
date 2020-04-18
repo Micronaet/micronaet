@@ -169,14 +169,13 @@ class MrpProductionDailyReport(orm.Model):
                 h.NGB_SR_DOC = l.NGB_SR_DOC AND
                 h.NGL_DOC = l.NGL_DOC)
             WHERE
-                h.DTT_DOC = '%s 00:00:00' AND 
-                h.CSG_DOC in ('BC', 'SL', 'CL') AND
-                h.CDS_NOTE != 'OPENERP';
+                h.DTT_DOC >= '%s 00:00:00' AND 
+                h.CSG_DOC in ('BC', 'SL', 'CL', 'BF', 'BD', 'RC', 'BS');
             """ % (
                table_header, 
                table_line,
                check_date,
-               )
+               )  #  AND h.CDS_NOTE != 'OPENERP'
         cursor.execute(query)
 
         res = []
