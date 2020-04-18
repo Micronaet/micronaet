@@ -186,8 +186,11 @@ class MrpProductionDailyReport(orm.Model):
                 _logger.warning('Excluded code: %s' % default_code)
                 continue
             document = line['CSG_DOC']
-            date_document = line['DTT_DOC']
-            import pdb; pdb.set_trace()
+            try:
+                date_document = line['DTT_DOC'].strftime(
+                    DEFAULT_SERVER_DATETIME_FORMAT)
+            except:
+                date_document = ''    
             number = '%s: %s/%s' % (
                 document, line['NGB_SR_DOC'], line['NGL_DOC'])
             qty = line['NQT_RIGA_ART_PLOR']
