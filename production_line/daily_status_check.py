@@ -218,7 +218,7 @@ class MrpProductionDailyReport(orm.Model):
                 default_code,
                 '%s: %s' % (product_type, default_code),
                 qty,
-                '', # Comment
+                line['CDS_NOTE'], # Comment
                 date_document
                 ))
         return res
