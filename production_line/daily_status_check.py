@@ -147,6 +147,39 @@ class MrpProductionDailyReport(orm.Model):
             check_date = check_date_dt.strftime(DEFAULT_SERVER_DATE_FORMAT)
             break
                 
+        # ---------------------------------------------------------------------        
+        # Stock negative:
+        # ---------------------------------------------------------------------        
+        cursor = sql_pool.connect(cr, uid, year=False, context=context)
+
+        if self.pool.get('res.company').table_capital_name(cr, uid, 
+                context=context):
+            table = "AQ_QUANTITA" 
+        else:
+            table = "aq_quantita"
+        
+        cursor = self.connect(cr, uid, year=year, context=context)
+        store = 1
+        year_ref = 9
+        cursor.execute("""
+            SELECT CKY_ART, NQT_INV + NQT_CAR - NQT_SCAR as qty,
+            FROM %s
+            WHERE 
+                NKY_DEP=%s and NDT_ANNO=%s and qty <= 0;
+            """ % (table, store, year_ref))
+
+        cursor.execute(query)
+
+        stock_negative = {}
+        for line in cursor.fetchall():
+            # Field used:
+            default_code = line['CKY_ART']
+            qty = line['qty']
+            stock_negative[default_code] = qty
+
+        # ---------------------------------------------------------------------        
+        # ACCOUNT MOVEMENT:        
+        # ---------------------------------------------------------------------        
         _logger.info('Check account movement, data: %s [Excluded: %s]' % (
             check_date, excluded))
         
@@ -157,8 +190,6 @@ class MrpProductionDailyReport(orm.Model):
         else:
             table_header = 'mm_testate'
             table_line = 'mm_righe'
-
-        cursor = sql_pool.connect(cr, uid, year=False, context=context)
 
         query = """
             SELECT 
