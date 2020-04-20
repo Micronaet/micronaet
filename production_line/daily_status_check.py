@@ -172,13 +172,12 @@ class MrpProductionDailyReport(orm.Model):
                 )
             WHERE
                 h.DTT_DOC >= '%s 00:00:00' AND 
-                h.CSG_DOC in ('BC', 'SL', 'CL', 'BF', 'RC', 'BS');
+                h.CSG_DOC in ('BC', 'SL', 'CL', 'BF', 'BD', 'RC', 'BS');
             """ % (
                table_header, 
                table_line,
                check_date,
-               )  #  AND h.CDS_NOTE != 'OPENERP' 
-            # 'BD', 
+               )  #  AND h.CDS_NOTE != 'OPENERP'
         cursor.execute(query)
 
         res = []
@@ -339,7 +338,7 @@ class MrpProductionDailyReport(orm.Model):
                 ('default_code', '=', default_code),
                 ], context=context)
             if not product_ids:
-                print 'Code not found: %s'
+                print 'Code not found: %s' % (product_ids, )
             
             product = product_pool.browse(
                 cr, uid, product_ids, context=context)[0]
