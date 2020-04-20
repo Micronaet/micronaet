@@ -338,7 +338,8 @@ class MrpProductionDailyReport(orm.Model):
                 ('default_code', '=', default_code),
                 ], context=context)
             if not product_ids:
-                print 'Code not found: %s' % (product_ids, )
+                print 'Code not found: %s' % default_code
+                continue
             
             product = product_pool.browse(
                 cr, uid, product_ids, context=context)[0]
