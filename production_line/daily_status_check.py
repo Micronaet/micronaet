@@ -172,12 +172,13 @@ class MrpProductionDailyReport(orm.Model):
                 )
             WHERE
                 h.DTT_DOC >= '%s 00:00:00' AND 
-                h.CSG_DOC in ('BC', 'SL', 'CL', 'BF', 'BD', 'RC', 'BS');
+                h.CSG_DOC in ('BC', 'SL', 'CL', 'BF', 'RC', 'BS');
             """ % (
                table_header, 
                table_line,
                check_date,
-               )  #  AND h.CDS_NOTE != 'OPENERP'
+               )  #  AND h.CDS_NOTE != 'OPENERP' 
+            # 'BD', 
         cursor.execute(query)
 
         res = []
