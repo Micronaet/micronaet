@@ -295,7 +295,7 @@ class MrpProductionDailyReport(orm.Model):
             }
         
         # Column:
-        width = [13, 35, 18, 38, 15]
+        width = [13, 45, 18, 38, 15]
         excel_pool.column_width(ws_name, width)
 
         product_moved = {
@@ -317,17 +317,30 @@ class MrpProductionDailyReport(orm.Model):
         for record in self.get_oc_status_yesterday(cr, uid, context=context):
             (document, number, product_type, default_code, description, 
                 qty, comment, date_document) = record
-        
+                
             #if qty >= 0:
             color_format = excel_format['']
             #else:    
             #    color_format = excel_format['red']
+            
+            product_ids = object_pool.search(cr, uid, [
+                ('default_code', '=', default_code),
+                ], context=context)
+            if product_ids:
+                product = product_pool.browse(
+                    cr, uid, product_ids, context=context)[0]
+                product_name = product.name
+            else:
+                product_name = '/'    
                 
             # Excel log:
             row += 1             
             excel_pool.write_xls_line(ws_name, row, [
                 number,
-                description,
+                '%s (%s)' % (
+                    description, 
+                    product_name,
+                    ),
                 (qty, color_format['number']),
                 comment,
                 date_document,
@@ -338,8 +351,12 @@ class MrpProductionDailyReport(orm.Model):
                 ('default_code', '=', default_code),
                 ], context=context)
             if not product_ids:
-                print 'Code not found: %s' % default_code
-                continue
+                print 'Code not found, create minimal: %s' % default_code
+                product_id = product_pool.create(cr, uid, {
+                    'default_code': default_code,
+                    'name': default_code,
+                    }, context=context)
+                product_ids = [product_id]    
             
             product = product_pool.browse(
                 cr, uid, product_ids, context=context)[0]
