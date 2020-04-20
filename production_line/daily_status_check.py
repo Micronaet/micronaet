@@ -323,7 +323,7 @@ class MrpProductionDailyReport(orm.Model):
             #else:    
             #    color_format = excel_format['red']
             
-            product_ids = object_pool.search(cr, uid, [
+            product_ids = product_pool.search(cr, uid, [
                 ('default_code', '=', default_code),
                 ], context=context)
             if product_ids:
