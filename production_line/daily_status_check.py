@@ -237,6 +237,7 @@ class MrpProductionDailyReport(orm.Model):
         unload_pool = self.pool.get('mrp.production.workcenter.line') # Job/SL
         load_pool = self.pool.get('mrp.production.workcenter.load') # CL
         excel_pool = self.pool.get('excel.writer')
+        product_pool = self.pool.get('product.product')
         
         today = datetime.now()
         last = False
