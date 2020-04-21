@@ -169,7 +169,6 @@ class MrpProductionDailyReport(orm.Model):
                 NDT_ANNO=%s and 
                 (NQT_INV + NQT_CAR - NQT_SCAR) <= 0;
             """ % (table, store, year_ref)
-        print query    
         cursor.execute(query)
 
         stock_negative = {}
@@ -555,21 +554,34 @@ class MrpProductionDailyReport(orm.Model):
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
-        width = [20, 15]
+        width = [20, 35, 15]
         excel_pool.column_width(ws_name, width)
         
-        header = [u'Codice', u'Quantità']
+        header = [u'Codice', u'Nome', u'Quantità']
         row = 0
         excel_pool.write_xls_line(                    
             ws_name, row, header, default_format=excel_format['header'])
 
         for default_code in stock_negative:
+            if default_code in excluded:
+                continue
             row += 1 
+
+            product_ids = product_pool.search(cr, uid, [
+                ('default_code', '=', default_code),
+                ], context=context)
+            if product_ids:
+                product = product_pool.browse(
+                    cr, uid, product_ids, context=context)[0]
+                product_name = product.name
+            else:
+                product_name = '/'    
+
             excel_pool.write_xls_line(ws_name, row, [
                 default_code,
+                product_name,
                 stock_negative[default_code],
                 ], default_format=color_format['text'])
-
 
         if save_mode:
             return excel_pool.save_file_as(save_mode)         
