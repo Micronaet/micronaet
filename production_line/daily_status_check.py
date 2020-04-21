@@ -583,7 +583,7 @@ class MrpProductionDailyReport(orm.Model):
             excel_pool.write_xls_line(ws_name, row, [
                 default_code,
                 product_name,
-                stock_negative[default_code],
+                (stock_negative[default_code], excel_format['']['number']),
                 ], default_format=color_format['text'])
 
         if save_mode:
