@@ -162,7 +162,7 @@ class MrpProductionDailyReport(orm.Model):
         store = 1
         year_ref = 9        
         query = """
-            SELECT CKY_ART, NQT_INV + NQT_CAR - NQT_SCAR as qty,
+            SELECT CKY_ART, NQT_INV + NQT_CAR - NQT_SCAR as qty
             FROM %s
             WHERE 
                 NKY_DEP=%s and 
