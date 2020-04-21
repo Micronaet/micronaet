@@ -168,7 +168,7 @@ class MrpProductionDailyReport(orm.Model):
                 NKY_DEP=%s and 
                 NDT_ANNO=%s and 
                 (NQT_INV + NQT_CAR - NQT_SCAR) <= 0;
-            """ % (table, store, year_ref))
+            """ % (table, store, year_ref)
         print query    
         cursor.execute(query)
 
