@@ -164,7 +164,10 @@ class MrpProductionDailyReport(orm.Model):
         cursor.execute("""
             SELECT CKY_ART, NQT_INV + NQT_CAR - NQT_SCAR as qty,
             FROM %s
-            WHERE NKY_DEP=%s and NDT_ANNO=%s and qty <= 0;
+            WHERE 
+                NKY_DEP=%s and 
+                NDT_ANNO=%s and 
+                (NQT_INV + NQT_CAR - NQT_SCAR) <= 0;
             """ % (table, store, year_ref))
         cursor.execute(query)
 
