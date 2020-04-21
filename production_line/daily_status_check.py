@@ -555,6 +555,12 @@ class MrpProductionDailyReport(orm.Model):
         header = [u'Codice', u'Nome', u'Quantità']
         row = 0
         excel_pool.write_xls_line(                    
+            ws_name, row, [
+                'Solo materie prime e prodotti negativi (tolti '\
+                'codici che iniziano per Z, M, L e C'
+                ], default_format=excel_format['title'])
+        row += 2
+        excel_pool.write_xls_line(                    
             ws_name, row, header, default_format=excel_format['header'])
 
         for default_code in sorted(stock_negative):
