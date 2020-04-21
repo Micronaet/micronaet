@@ -162,7 +162,7 @@ class MrpProductionDailyReport(orm.Model):
             WHERE 
                 NKY_DEP=%s and 
                 NDT_ANNO=%s and 
-                (NQT_INV + NQT_CAR - NQT_SCAR) <= 0;
+                (NQT_INV + NQT_CAR - NQT_SCAR) < 0;
             """ % (table, store, year_ref)
         cursor.execute(query)
 
@@ -557,7 +557,7 @@ class MrpProductionDailyReport(orm.Model):
         excel_pool.write_xls_line(                    
             ws_name, row, header, default_format=excel_format['header'])
 
-        for default_code in stock_negative:
+        for default_code in sorted(stock_negative):
             if default_code in excluded:
                 continue
             row += 1 
