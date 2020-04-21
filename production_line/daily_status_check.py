@@ -566,7 +566,7 @@ class MrpProductionDailyReport(orm.Model):
         for default_code in sorted(stock_negative):
             if default_code in excluded:
                 continue
-            if default_code[:1] not in 'ZzMmLlCc':
+            if default_code[:1] in 'ZzMmLlCc':
                 continue
             row += 1 
 
