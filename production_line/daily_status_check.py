@@ -131,6 +131,7 @@ class MrpProductionDailyReport(orm.Model):
         """ SQL get previous day order
         """
         sql_pool = self.pool.get('micronaet.accounting')
+        company_pool = self.pool.get('res.company')
         
         excluded = (
             'SCONTO', 'VV',
@@ -152,7 +153,7 @@ class MrpProductionDailyReport(orm.Model):
         # ---------------------------------------------------------------------        
         cursor = sql_pool.connect(cr, uid, year=False, context=context)
 
-        if self.pool.get('res.company').table_capital_name(cr, uid, 
+        if company_pool.table_capital_name(cr, uid, 
                 context=context):
             table = "AQ_QUANTITA" 
         else:
@@ -164,10 +165,8 @@ class MrpProductionDailyReport(orm.Model):
         cursor.execute("""
             SELECT CKY_ART, NQT_INV + NQT_CAR - NQT_SCAR as qty,
             FROM %s
-            WHERE 
-                NKY_DEP=%s and NDT_ANNO=%s and qty <= 0;
+            WHERE NKY_DEP=%s and NDT_ANNO=%s and qty <= 0;
             """ % (table, store, year_ref))
-
         cursor.execute(query)
 
         stock_negative = {}
@@ -183,7 +182,7 @@ class MrpProductionDailyReport(orm.Model):
         _logger.info('Check account movement, data: %s [Excluded: %s]' % (
             check_date, excluded))
         
-        if self.pool.get('res.company').table_capital_name(
+        if company_pool.table_capital_name(
                 cr, uid, context=context):
             table_header = 'MM_TESTATE'
             table_line = 'MM_RIGHE'
@@ -212,7 +211,7 @@ class MrpProductionDailyReport(orm.Model):
                )  #  AND h.CDS_NOTE != 'OPENERP'
         cursor.execute(query)
 
-        res = []
+        stock_movement = []
         for line in cursor.fetchall():
             # Field used:
             default_code = line['CKY_ART']
@@ -243,7 +242,7 @@ class MrpProductionDailyReport(orm.Model):
             
             if conversion:
                 qty *= sign * 1.0 / conversion
-            res.append((                
+            stock_movement.append((                
                 document, 
                 number,
                 product_type,
@@ -253,7 +252,7 @@ class MrpProductionDailyReport(orm.Model):
                 line['CDS_NOTE'], # Comment
                 date_document
                 ))
-        return res
+        return stock_movement, stock_negative
         
     # -------------------------------------------------------------------------
     # Scheduled action:
@@ -347,7 +346,10 @@ class MrpProductionDailyReport(orm.Model):
             ws_name, row, header, default_format=excel_format['header'])
 
         document_move = {}
-        for record in self.get_oc_status_yesterday(cr, uid, context=context):
+        stock_movement, stock_negative = self.get_oc_status_yesterday(
+            cr, uid, context=context)
+        
+        for record in stock_movement:
             (document, number, product_type, default_code, description, 
                 qty, comment, date_document) = record
                 
@@ -542,6 +544,29 @@ class MrpProductionDailyReport(orm.Model):
                         ws_name, row, 3, 
                         tooltip, 
                         comment_parameters)
+
+        # ---------------------------------------------------------------------         
+        # Negative product 
+        # ---------------------------------------------------------------------
+        ws_name = 'Negativi'
+        excel_pool.create_worksheet(name=ws_name)
+
+        # Column:
+        width = [20, 15]
+        excel_pool.column_width(ws_name, width)
+        
+        header = [u'Codice', u'Quantità']
+        row = 0
+        excel_pool.write_xls_line(                    
+            ws_name, row, header, default_format=excel_format['header'])
+
+        for default_code in stock_negative:
+            row += 1 
+            excel_pool.write_xls_line(ws_name, row, [
+                default_code,
+                stock_negative[default_code],
+                ], default_format=color_format['text'])
+
 
         if save_mode:
             return excel_pool.save_file_as(save_mode)         
