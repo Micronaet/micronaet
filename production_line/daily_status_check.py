@@ -42,6 +42,9 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
+excluded = (
+    'SCONTO', 'VV',
+    )    
 
 class MrpProductionDailyReport(orm.Model):
     """ Model name: Mrp Production for daily report
@@ -54,10 +57,6 @@ class MrpProductionDailyReport(orm.Model):
         """
         sql_pool = self.pool.get('micronaet.accounting')
         
-        excluded = (
-            'SCONTO', 'VV',
-            )    
-            
         table_header = 'OC_TESTATE'
         table_line = 'OC_RIGHE'
         table_partner = 'PA_RUBR_PDC_CLFR'
@@ -133,10 +132,6 @@ class MrpProductionDailyReport(orm.Model):
         sql_pool = self.pool.get('micronaet.accounting')
         company_pool = self.pool.get('res.company')
         
-        excluded = (
-            'SCONTO', 'VV',
-            )    
-
         # Find last worked date:
         days = 0
         while True:
