@@ -159,7 +159,6 @@ class MrpProductionDailyReport(orm.Model):
         else:
             table = "aq_quantita"
         
-        cursor = self.connect(cr, uid, year=year, context=context)
         store = 1
         year_ref = 9
         cursor.execute("""
