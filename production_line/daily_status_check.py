@@ -440,7 +440,7 @@ class MrpProductionDailyReport(orm.Model):
         excel_pool.column_width(ws_name, width)
         excel_pool.write_xls_line(                    
             ws_name, row, header, default_format=excel_format['header'])
-        excel_pool.autofilter(ws_name, row, 0, row, line_gap)    
+        excel_pool.autofilter(ws_name, row, 0, row, line_gap - 3)    
 
         excel_pool.freeze_panes(ws_name, 3, 7)
         
