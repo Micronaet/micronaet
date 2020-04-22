@@ -364,7 +364,7 @@ class MrpProductionDailyReport(orm.Model):
         width = [
             10, 9, 12, 30, 15,
             9, 7, 24, 
-            8, 22,
+            7, 22,
             17, 10, 10]
         
         # Format:
@@ -498,7 +498,7 @@ class MrpProductionDailyReport(orm.Model):
                 if line.mrp_production_id:
                     mrp_name = line.mrp_production_id.name
                     mrp_state = line.mrp_production_id.state_info.replace(
-                        '  ', ' ').replace('\n', '')
+                        '  ', ' ').replace('\n', '').replace('Tutto p', 'P')
                 else:
                     mrp_name = ''
                     mrp_state = ''
