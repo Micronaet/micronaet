@@ -337,6 +337,18 @@ class MrpProductionDailyReport(orm.Model):
         line_cols = 2
         total_line = []
         row = 0
+        
+        # Header for total block
+        excel_pool.write_xls_line(                    
+            ws_name, row, ['Totali', ''], 
+            default_format=excel_format['header'],
+            col=line_gap + i - 2)
+        # TODO Unificare
+        excel_pool.merge_cell(
+            ws_name, 
+            [row, line_gap + i - 2, row, line_gap + i - 1])
+        
+        # Write extra line data:
         for workcenter in wc_lines:
             line_name = workcenter.name
             wc_db[workcenter.id] = line_gap + i
