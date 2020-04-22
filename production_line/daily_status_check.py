@@ -453,7 +453,7 @@ class MrpProductionDailyReport(orm.Model):
         excluded_product = []    
         production_history = {}  # Rememer for speed
         comment_parameters = {
-            'width': 400, 
+            'width': 200, 
             'font_name': 'Courier New',
             }
         
