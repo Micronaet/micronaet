@@ -293,6 +293,7 @@ class MrpProductionDailyReport(orm.Model):
 
         order_pool = self.pool.get('sale.order')
         excel_pool = self.pool.get('excel.writer')
+        workcenter_pool = self.pool.get('mrp.workcenter')
         
         exclude_product = ('VV', 'SCONTO', 'VV1', )
 
@@ -304,27 +305,45 @@ class MrpProductionDailyReport(orm.Model):
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
-        width = [13, 35, 18, 18, 80]
-        excel_pool.column_width(ws_name, width)
+        width = [10, 10, 13, 30, 18, 10, 10, 25, 10, 15, 15]
         
         # Format:
         excel_format = self.get_excel_format(excel_pool)
         
         # ---------------------------------------------------------------------         
-        # Sale order line movement
+        # Sale order data:
         # ---------------------------------------------------------------------
         header = [
             'Rif.', 'Data', 'Incoterms', 'Cliente', 'Nazione', 
             ]
-        gap = len(header)  # Header columns    
+        gap = len(header)  # Detail gap for write data
         header.extend([     
             'Scadenza', 'Prodotto', 'Descrizione', 
             'Linea', 'Q. ord.', 'Q. pronta',
             #'Linea Carico', 'Linea pronti',
             ])
+        line_gap = len(header)  # Line gap for variable columns
         # TODO Line headers    
+
+        # Extend with Line columns data:
+        wc_db = {}  # Column start for write
+        workcenter_ids = workcenter_pool.search(cr, uid, [], context=None)
+        wc_lines = sorted(
+            workcenter_pool.browse(cr, uid, workcenter_ids, context=context), 
+            key=lambda x: x.name,
+            )
+            
+        i = 0
+        line_cols = 3
+        for workcenter in wc_lines:
+            line_name = workcenter.name
+            wc_db[workcenter.id] = line_gap + i
+            i += line_cols
+            header.extend([line_name, 'In Carico', 'Completati'])
+            width.extend([18, 10, 10])
             
         row = 0
+        excel_pool.column_width(ws_name, width)
         excel_pool.write_xls_line(                    
             ws_name, row, header, default_format=excel_format['header'])
 
@@ -349,6 +368,7 @@ class MrpProductionDailyReport(orm.Model):
                     continue
 
                 # Header:
+                row += 1
                 excel_pool.write_xls_line(
                     ws_name, row, order_header, 
                     default_format=excel_format['']['text'])
@@ -356,7 +376,6 @@ class MrpProductionDailyReport(orm.Model):
                 # Detail:
                 line_code = '' # TODO
                 done_qty = 0.0 # TODO 
-                row += 1
                 line_detail = [
                     line.date_deadline,
                     product.default_code,
