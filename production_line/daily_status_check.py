@@ -310,9 +310,9 @@ class MrpProductionDailyReport(orm.Model):
             cr.execute(query)
             _logger.warning('Uploading statistic for choose line')
             for record in cr.fetchall():
-                product_id = record['product_id']
-                wc_id = record['workcenter_id']
-                total = record['sum']
+                product_id = record[0]
+                wc_id = record[1]
+                total = record[2]
                 
                 if product_id not in production_history:
                     wc_line = wc_db.get(wc_id)
