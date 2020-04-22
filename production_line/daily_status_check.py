@@ -339,7 +339,6 @@ class MrpProductionDailyReport(orm.Model):
         for workcenter in wc_lines:
             line_name = workcenter.name
             wc_db[workcenter.id] = line_gap + i
-            i += line_cols
             
             # Title:
             excel_pool.write_xls_line(                    
@@ -347,6 +346,8 @@ class MrpProductionDailyReport(orm.Model):
                 default_format=excel_format['header'],
                 col=line_gap + i)
             # TODO Unificare
+
+            i += line_cols
 
             # Total:
             total_line.extend([0.0, 0.0])
@@ -360,6 +361,8 @@ class MrpProductionDailyReport(orm.Model):
         excel_pool.write_xls_line(                    
             ws_name, row, header, default_format=excel_format['header'])
 
+        excel_pool.freeze_panes(ws_name, 7, 3)
+        
         order_ids = order_pool.search(cr, uid, [
             ('state', 'in', ('draft', 'sent',)),
             ], context=context)
