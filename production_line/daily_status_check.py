@@ -446,7 +446,7 @@ class MrpProductionDailyReport(orm.Model):
             ('state', 'in', ('draft', 'sent',)),
             ], context=context)
         
-        excluded_product = {}    
+        excluded_product = []    
         production_history = {}  # Rememer for speed
         comment_parameters = {
             'width': 400, 
