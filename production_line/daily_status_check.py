@@ -362,8 +362,9 @@ class MrpProductionDailyReport(orm.Model):
 
         # Column:
         width = [
-            10, 9, 12, 30, 15, 
+            10, 9, 12, 30, 15,
             9, 7, 24, 
+            15, 18,
             17, 10, 10]
         
         # Format:
@@ -378,6 +379,7 @@ class MrpProductionDailyReport(orm.Model):
         gap = len(header)  # Detail gap for write data
         header.extend([     
             'Scadenza', 'Prodotto', 'Descrizione', 
+            'Produzione', 'Stato',
             'Linea', 'Q. ord.', 'Q. pronta',
             #'Linea Carico', 'Linea pronti',
             ])
@@ -496,6 +498,9 @@ class MrpProductionDailyReport(orm.Model):
                     line.date_deadline,
                     product.default_code,
                     product.name,
+                    mrp_production_id.name if line.mrp_production_id else '',
+                    mrp_production_id.state_info if line.mrp_production_id \
+                        else '',
                     wc_line.name if wc_line else 'Non trovata',
                     (oc_qty, color_format['number']),
                     (done_qty, color_format['number']),
