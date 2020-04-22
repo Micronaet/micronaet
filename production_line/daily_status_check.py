@@ -279,7 +279,6 @@ class MrpProductionDailyReport(orm.Model):
                 date_document
                 ))
         return stock_movement, stock_negative
-        
 
     def get_used_line(
             self, cr, uid, product_id, production_history, context=None):
@@ -495,10 +494,16 @@ class MrpProductionDailyReport(orm.Model):
                 oc_qty = line.product_uom_qty
                 done_qty = 0.0 # TODO 
                 
-                if line.mrp_production_id:
+                if line.mrp_production_id:                
                     mrp_name = line.mrp_production_id.name
                     mrp_state = line.mrp_production_id.state_info.replace(
-                        '  ', ' ').replace('\n', '').replace('Tutto p', 'P')
+                        '  ', ' ').replace('\n', '').replace(
+                            'Tutto pianificato:', 'Tot.:')
+                    if mrp_state.startswith('Tot.:'):
+                        color_format = excel_format['blue']                        
+                    else:
+                        color_format = excel_format['yellow']
+                        mrp_state = 'Parz.:
                 else:
                     mrp_name = ''
                     mrp_state = ''
