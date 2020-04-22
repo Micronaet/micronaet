@@ -501,7 +501,7 @@ class MrpProductionDailyReport(orm.Model):
         excel_pool.write_xls_line(                    
             ws_name, row, total_line, 
             default_format=excel_format['']['number'],
-            col=gap
+            col=line_gap,
             )
             
         if save_mode:
