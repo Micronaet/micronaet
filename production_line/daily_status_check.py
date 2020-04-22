@@ -354,14 +354,14 @@ class MrpProductionDailyReport(orm.Model):
                     default_format=excel_format['']['text'])
 
                 # Detail:
-                line = '' # TODO
+                line_code = '' # TODO
                 done_qty = 0.0 # TODO 
                 row += 1
                 line_detail = [
                     line.date_deadline,
                     product.default_code,
                     product.name,
-                    line,
+                    line_code,
                     (line.product_uom_qty, excel_format['']['number']),
                     (done_qty, excel_format['']['number']),
                     ]
