@@ -336,13 +336,14 @@ class MrpProductionDailyReport(orm.Model):
         i = 0
         line_cols = 2
         total_line = []
+        row = 0
         for workcenter in wc_lines:
             line_name = workcenter.name
             wc_db[workcenter.id] = line_gap + i
             
             # Title:
             excel_pool.write_xls_line(                    
-                ws_name, 0, [line_name, ''], 
+                ws_name, row, [line_name, ''], 
                 default_format=excel_format['header'],
                 col=line_gap + i)
             # TODO Unificare
