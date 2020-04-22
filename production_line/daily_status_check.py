@@ -334,11 +334,11 @@ class MrpProductionDailyReport(orm.Model):
         wc_ids = wc_pool.search(cr, uid, [
             ('product', '=', product_id),
             ], context=context)
-        return wc.id, wd.name   
+        return wc.id, wd.name
+           
     # -------------------------------------------------------------------------
     # Scheduled action:
-    # -------------------------------------------------------------------------
-    
+    # -------------------------------------------------------------------------    
     def extract_oc_status_x_line_excel_report(self, cr, uid, context=None):
         """ Get detail for ordered product in line
         """
@@ -440,6 +440,7 @@ class MrpProductionDailyReport(orm.Model):
         excel_pool.column_width(ws_name, width)
         excel_pool.write_xls_line(                    
             ws_name, row, header, default_format=excel_format['header'])
+        excel_pool.autofilter(ws_name, row, 0, row, gap)    
 
         excel_pool.freeze_panes(ws_name, 3, 7)
         
