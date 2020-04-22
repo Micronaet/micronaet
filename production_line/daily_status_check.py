@@ -395,6 +395,7 @@ class MrpProductionDailyReport(orm.Model):
         i = 0
         line_cols = 2
         total_line = []
+        master_total = [0.0, 0.0]
         
         # Header for total block
         row = 0
@@ -520,6 +521,12 @@ class MrpProductionDailyReport(orm.Model):
 
         # Write total
         row = 1
+        excel_pool.write_xls_line(                    
+            ws_name, row, master_total, 
+            default_format=excel_format['']['number'],
+            col=line_gap -2,
+            )
+        
         excel_pool.write_xls_line(                    
             ws_name, row, total_line, 
             default_format=excel_format['']['number'],
