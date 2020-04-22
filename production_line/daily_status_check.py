@@ -507,7 +507,7 @@ class MrpProductionDailyReport(orm.Model):
                     #TODO manage 
                     continue
                     
-                col = line_cols * wc_db[product.id] # TODO set default position
+                col = line_cols * wc_db[wc_line.id] # TODO set default position
                 current_data[col] = qty
                 # TODO produced qty!
 
