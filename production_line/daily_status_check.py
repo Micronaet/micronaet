@@ -349,7 +349,7 @@ class MrpProductionDailyReport(orm.Model):
             # TODO Unificare
             excel_pool.merge_cell(
                 ws_name, 
-                [row, row, line_gap + i, line_gap + i + 1])
+                [row, line_gap + i, row, line_gap + i + 1])
             
             i += line_cols
 
