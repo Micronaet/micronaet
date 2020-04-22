@@ -498,8 +498,7 @@ class MrpProductionDailyReport(orm.Model):
                     mrp_name = line.mrp_production_id.name
                     mrp_state = line.mrp_production_id.state_info.replace(
                         'Tutto pianificato:', 'Tot.:').replace(
-                            ' ', '').replace('\n', '').replace(
-                                ' / ', '/')
+                            ' ', '').replace('\n', '')
                     if mrp_state.startswith('Tot.:'):
                         color_format = excel_format['blue']                        
                     else:
