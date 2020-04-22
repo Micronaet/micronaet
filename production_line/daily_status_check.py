@@ -351,7 +351,7 @@ class MrpProductionDailyReport(orm.Model):
         workcenter_pool = self.pool.get('mrp.workcenter')
         
         exclude_product = ('VV', 'SCONTO', 'VV1', )
-        exclude_start = 'M'
+        exclude_start = 'ABCM'
 
         # ---------------------------------------------------------------------
         # Excel start:
@@ -364,7 +364,7 @@ class MrpProductionDailyReport(orm.Model):
         width = [
             10, 9, 12, 30, 15, 
             9, 9, 27, 
-            15, 10, 10]
+            17, 10, 10]
         
         # Format:
         excel_format = self.get_excel_format(excel_pool)
@@ -445,7 +445,8 @@ class MrpProductionDailyReport(orm.Model):
         order_ids = order_pool.search(cr, uid, [
             ('state', 'in', ('draft', 'sent',)),
             ], context=context)
-            
+        
+        excluded_product = {}    
         production_history = {}  # Rememer for speed
         comment_parameters = {
             'width': 400, 
@@ -468,6 +469,8 @@ class MrpProductionDailyReport(orm.Model):
                 if default_code in exclude_product or \
                         default_code[:1] in exclude_start:
                     _logger.warning('Code not used %s' % default_code)
+                    if product not in excluded_product:
+                        excluded_product.append(product)
                     continue
 
                 wc_line, wc_comment = self.get_used_line(
@@ -512,8 +515,6 @@ class MrpProductionDailyReport(orm.Model):
                 excel_pool.write_xls_line(
                     ws_name, row, current_data, 
                     default_format=excel_format['']['number'], col=line_gap)
-                
-                
 
         # Write total
         row = 1
