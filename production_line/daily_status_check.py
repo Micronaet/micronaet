@@ -498,10 +498,9 @@ class MrpProductionDailyReport(orm.Model):
 
         # Write total
         row = 1
-        excel_pool.column_width(ws_name, width)
         excel_pool.write_xls_line(                    
             ws_name, row, total_line, 
-            default_format=excel_format['header'],
+            default_format=excel_format['']['number'],
             col=gap
             )
             
