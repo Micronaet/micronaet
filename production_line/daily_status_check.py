@@ -281,9 +281,64 @@ class MrpProductionDailyReport(orm.Model):
         return stock_movement, stock_negative
         
 
+    def get_used_line(
+            self, cr, uid, product_id, production_history, context=None):
+        """ Load statistic on production and use for get line
+        """ 
+        if not production_history:
+            wc_pool = self.pool.get('mrp.workcenter')
+            wc_db = {}
+            wc_ids = wc_pool.search([])
+            for wc in wc_pool.browse(wc_ids):
+                wc_db[wc.id] = wc
+
+            query = '''
+                SELECT 
+                    p.product_id, l.workcenter_id, sum(l.qty) 
+                FROM 
+                    mrp_production_workcenter_line l join 
+                    mrp_production p 
+                    ON (l.production_id = p.id) 
+                WHERE 
+                    l.state = 'done' 
+                GROUP BY 
+                    p.product_id, 
+                    l.workcenter_id 
+                ORDER BY 
+                    p.product_id, sum(l.qty) DESC;
+                '''
+            cr.execute(query)
+            _logger.warning('Uploading statistic for choose line')
+            for record in cr.fetchall():
+                product_id = record['product_id']
+                wc_id = record['workcenter_id']
+                total = record['sum']
+                
+                if product_id not in production_history:
+                    wc_line = wc_db.get(wc_id)
+                    # Save reference line and comment for production stats
+                    production_history[product_id] = (wc_line, '')
+                
+                # Update comment:    
+                production_history[product_id][1] += '%s: q. %s\n' % (
+                    wc_line.name,
+                    total,
+                    )
+        return production_history.get(product_id, (False, False))
+                
+                    
+        if product_id in production_history:
+            return production_history[product_id]
+        
+        wc_pool = self.pool.get('mrp.production.workcenter.line')    
+        wc_ids = wc_pool.search(cr, uid, [
+            ('product', '=', product_id),
+            ], context=context)
+        return wc.id, wd.name   
     # -------------------------------------------------------------------------
     # Scheduled action:
     # -------------------------------------------------------------------------
+    
     def extract_oc_status_x_line_excel_report(self, cr, uid, context=None):
         """ Get detail for ordered product in line
         """
@@ -382,6 +437,13 @@ class MrpProductionDailyReport(orm.Model):
         order_ids = order_pool.search(cr, uid, [
             ('state', 'in', ('draft', 'sent',)),
             ], context=context)
+            
+        production_history = {}  # Rememer for speed
+        comment_parameters = {
+            'width': 400, 
+            'font_name': 'Courier New',
+            }
+        
         for order in order_pool.browse(cr, uid, order_ids, context=context):
             partner = order.partner_id
             order_header = [
@@ -393,6 +455,8 @@ class MrpProductionDailyReport(orm.Model):
                 ]
                 
             for line in order.order_line:
+                wc_line, wc_comment = self.get_used_line(
+                    cr, uid, product_id, production_history, context=context)
                 product = line.product_id
                 default_code = product.default_code
                 if default_code in exclude_product:
@@ -406,22 +470,27 @@ class MrpProductionDailyReport(orm.Model):
                     default_format=excel_format['']['text'])
 
                 # Detail:
-                line_code = ' ' # TODO
                 done_qty = 0.0 # TODO 
                 line_detail = [
                     line.date_deadline,
                     product.default_code,
                     product.name,
-                    line_code,
+                    wc_line.name if wc_line else 'Non trovata',
                     (line.product_uom_qty, excel_format['']['number']),
                     (done_qty, excel_format['']['number']),
                     ]
+                    
+                # Add wc comment:
+                excel_pool.write_comment(
+                    ws_name, row, gap + 4, 
+                    wc_comment, parameters=params)                    
 
                 excel_pool.write_xls_line(
                     ws_name, row, line_detail, 
                     default_format=excel_format['']['text'], col=gap)
                 
                 # TODO explode line record:
+                # Manage not found columns
             
         if save_mode:
             return excel_pool.save_file_as(save_mode)         
