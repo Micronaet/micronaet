@@ -317,7 +317,7 @@ class MrpProductionDailyReport(orm.Model):
             'Rif.', 'Data', 'Incoterms', 'Cliente', 'Nazione', 
             ]
         gap = len(header)  # Header columns    
-        header.extend = ([     
+        header.extend([     
             'Scadenza', 'Prodotto', 'Descrizione', 
             'Linea', 'Q. ord.', 'Q. pronta',
             #'Linea Carico', 'Linea pronti',
