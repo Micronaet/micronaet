@@ -351,7 +351,7 @@ class MrpProductionDailyReport(orm.Model):
                 # Header:
                 excel_pool.write_xls_line(
                     ws_name, row, order_header, 
-                    excel_format=color_format['']['text'])
+                    excel_format=excel_format['']['text'])
 
                 # Detail:
                 line = '' # TODO
@@ -362,13 +362,13 @@ class MrpProductionDailyReport(orm.Model):
                     product.default_code,
                     product.name,
                     line,
-                    (line.product_uom_qty, color_format['']['number']),
-                    (done_qty, color_format['']['number']),
+                    (line.product_uom_qty, excel_format['']['number']),
+                    (done_qty, excel_format['']['number']),
                     ]
 
                 excel_pool.write_xls_line(
                     ws_name, row, line_detail, 
-                    excel_format=color_format['']['text'], col=gap)
+                    excel_format=excel_format['']['text'], col=gap)
                 
                 # TODO explode line record:
             
