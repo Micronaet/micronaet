@@ -497,14 +497,15 @@ class MrpProductionDailyReport(orm.Model):
                 if line.mrp_production_id:                
                     mrp_name = line.mrp_production_id.name
                     mrp_state = line.mrp_production_id.state_info.replace(
+                        'Tutto pianificato:', 'Tot.:').replace(
                         ' ', '').replace('\n', '').replace(
-                            'Tutto pianificato:', 'Tot.: ').replace(
+                            
                                 ' / ', '/')
-                    if mrp_state.startswith('Tot.: '):
+                    if mrp_state.startswith('Tot.:'):
                         color_format = excel_format['blue']                        
                     else:
                         color_format = excel_format['yellow']
-                        mrp_state = 'Parz.: %s' % mrp_state
+                        mrp_state = 'Parz.:%s' % mrp_state
                         
                 else:
                     mrp_name = ''
