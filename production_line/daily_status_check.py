@@ -288,8 +288,8 @@ class MrpProductionDailyReport(orm.Model):
         if not production_history:
             wc_pool = self.pool.get('mrp.workcenter')
             wc_db = {}
-            wc_ids = wc_pool.search([])
-            for wc in wc_pool.browse(wc_ids):
+            wc_ids = wc_pool.search(cr, uid, [], context=context)
+            for wc in wc_pool.browse(cr, uid, wc_ids, context=context):
                 wc_db[wc.id] = wc
 
             query = '''
