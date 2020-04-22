@@ -479,9 +479,9 @@ class MrpProductionDailyReport(orm.Model):
                     cr, uid, product.id, production_history, context=context)
 
                 if wc_line:
-                    color_format = excel_format['red']
-                else:    
                     color_format = excel_format['']
+                else:    
+                    color_format = excel_format['red']
                     
                 # Header:
                 row += 1
