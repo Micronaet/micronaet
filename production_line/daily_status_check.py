@@ -52,8 +52,37 @@ class MrpProductionDailyReport(orm.Model):
     
     _inherit = 'mrp.production'
 
+        
+    # -------------------------------------------------------------------------    
+    # Utility:
+    # -------------------------------------------------------------------------    
+    def get_excel_format(self, excel_pool):
+        """ Return dict for all excel format used
+        """
+        excel_pool.set_format()
+        return {
+            'title': excel_pool.get_format('title'),
+            'header': excel_pool.get_format('header'),
+            '': {
+                'text': excel_pool.get_format('text'),
+                'number': excel_pool.get_format('number'),
+                },
+            'red': {
+                'text': excel_pool.get_format('bg_red'),
+                'number': excel_pool.get_format('bg_red_number'),
+                },
+            'blue': {
+                'text': excel_pool.get_format('bg_blue'),
+                'number': excel_pool.get_format('bg_blue_number'),
+                },
+            'yellow': {
+                'text': excel_pool.get_format('bg_yellow'),
+                'number': excel_pool.get_format('bg_yellow_number'),
+                },
+            }
+
     def get_oc_detail_x_product(self, cr, uid, context=None):
-        """ Get detail x product
+        """ Check yesterday movement for correct negative stock
         """
         sql_pool = self.pool.get('micronaet.accounting')
         
@@ -251,9 +280,107 @@ class MrpProductionDailyReport(orm.Model):
                 ))
         return stock_movement, stock_negative
         
+
     # -------------------------------------------------------------------------
     # Scheduled action:
     # -------------------------------------------------------------------------
+    def extract_oc_status_x_line_excel_report(self, cr, uid, context=None):
+        """ Get detail for ordered product in line
+        """
+        if context is None:
+            context = {}
+        save_mode = context.get('save_mode', False)
+
+        order_pool = self.pool.get('sale.order')
+        excel_pool = self.pool.get('excel.writer')
+        
+        exclude_product = ('VV', 'SCONTO', 'VV1', )
+
+        # ---------------------------------------------------------------------
+        # Excel start:
+        # ---------------------------------------------------------------------
+        # Page Check:
+        ws_name = 'Carico delle linee'
+        excel_pool.create_worksheet(name=ws_name)
+
+        # Column:
+        width = [13, 35, 18, 18, 80]
+        excel_pool.column_width(ws_name, width)
+        
+        # Format:
+        excel_format = self.get_excel_format(excel_pool)
+        
+        # ---------------------------------------------------------------------         
+        # Sale order line movement
+        # ---------------------------------------------------------------------
+        header = [
+            'Rif.', 'Data', 'Incoterms', 'Cliente', 'Nazione', 
+            ]
+        gap = len(header)  # Header columns    
+        header.extend = ([     
+            'Scadenza', 'Prodotto', 'Descrizione', 
+            'Linea', 'Q. ord.', 'Q. pronta',
+            #'Linea Carico', 'Linea pronti',
+            ])
+        # TODO Line headers    
+            
+        row = 0
+        excel_pool.write_xls_line(                    
+            ws_name, row, header, default_format=excel_format['header'])
+
+        order_ids = order_pool.search([
+            ('state', 'in', ('draft', 'sent',)),
+            ])
+        for order in order_pool.browse(cr, uid, order_ids, context=context):
+            partner = order.partner_id
+            order_header = [
+                order.name,
+                order.date_order,
+                '', # Incoterms
+                partner.name,
+                partner.country_id.name,                
+                ]
+                
+            for line in order_line:
+                product = line.product_id
+                default_code = product.default_code
+                if default_code in exclude_product:
+                    _logger.warning('Code not used %s' % default_code)
+                    continue
+
+                # Header:
+                excel_pool.write_xls_line(
+                    ws_name, row, order_header, 
+                    excel_format=color_format['']['text'])
+
+                # Detail:
+                line = '' # TODO
+                done_qty = 0.0 # TODO 
+                row += 1
+                line_detail = [
+                    line.date_deadline,
+                    product.default_code,
+                    product.name,
+                    line,
+                    (line.product_uom_qty, color_format['']['number']),
+                    (done_qty, color_format['']['number']),
+                    ]
+
+                excel_pool.write_xls_line(
+                    ws_name, row, line_detail, 
+                    excel_format=color_format['']['text'], col=gap)
+                
+                # TODO explode line record:
+            
+        if save_mode:
+            return excel_pool.save_file_as(save_mode)         
+        else:
+            return excel_pool.return_attachment(
+                cr, uid, 'Carico linee su ordinato', 
+                name_of_file=False, version='7.0', php=True,
+                context=context)
+
+
     def extract_daily_mrp_stats_excel_report(self, cr, uid, context=None):
         ''' Jobs: unload and load material last production day
         '''
@@ -301,27 +428,7 @@ class MrpProductionDailyReport(orm.Model):
         excel_pool.create_worksheet(name=ws_name)
 
         # Format:
-        excel_pool.set_format()
-        excel_format = {
-            'title': excel_pool.get_format('title'),
-            'header': excel_pool.get_format('header'),
-            '': {
-                'text': excel_pool.get_format('text'),
-                'number': excel_pool.get_format('number'),
-                },
-            'red': {
-                'text': excel_pool.get_format('bg_red'),
-                'number': excel_pool.get_format('bg_red_number'),
-                },
-            'blue': {
-                'text': excel_pool.get_format('bg_blue'),
-                'number': excel_pool.get_format('bg_blue_number'),
-                },
-            'yellow': {
-                'text': excel_pool.get_format('bg_yellow'),
-                'number': excel_pool.get_format('bg_yellow_number'),
-                },
-            }
+        excel_format = self.get_excel_format(excel_pool)
         
         # Column:
         width = [13, 45, 18, 38, 15]
