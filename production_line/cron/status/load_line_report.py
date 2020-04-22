@@ -86,7 +86,7 @@ mailer = odoo.model('ir.mail_server')
 mrp = odoo.model('mrp.production')
 
 # Launch extract procedure:
-mrp.extract_daily_mrp_stats_excel_report()
+mrp.extract_oc_status_x_line_excel_report()
 
 # -----------------------------------------------------------------------------
 # SMTP Sent:
