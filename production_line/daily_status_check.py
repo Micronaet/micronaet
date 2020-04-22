@@ -317,7 +317,7 @@ class MrpProductionDailyReport(orm.Model):
                 if product_id not in production_history:
                     wc_line = wc_db.get(wc_id)
                     # Save reference line and comment for production stats
-                    production_history[product_id] = (wc_line, '')
+                    production_history[product_id] = [wc_line, '']
                 
                 # Update comment:    
                 production_history[product_id][1] += '%s: q. %s\n' % (
