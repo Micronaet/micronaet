@@ -512,6 +512,7 @@ class MrpProductionDailyReport(orm.Model):
                 current_data[col] = qty
                 # TODO produced qty!
 
+                import pdb; pdb.set_trace()
                 excel_pool.write_xls_line(
                     ws_name, row, current_data, 
                     default_format=excel_format['']['number'], col=line_gap)
