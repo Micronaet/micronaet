@@ -503,16 +503,14 @@ class MrpProductionDailyReport(orm.Model):
                     default_format=excel_format['']['text'], col=gap)
                 
                 current_data = product_data[:]
-                if product.id not in wc_db:
+                if not wc_line or wc_line.id not in wc_db:
                     #TODO manage 
-                    pass
                     continue
                     
                 col = line_cols * wc_db[product.id] # TODO set default position
                 current_data[col] = qty
                 # TODO produced qty!
 
-                import pdb; pdb.set_trace()
                 excel_pool.write_xls_line(
                     ws_name, row, current_data, 
                     default_format=excel_format['']['number'], col=line_gap)
