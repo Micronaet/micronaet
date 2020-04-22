@@ -478,11 +478,16 @@ class MrpProductionDailyReport(orm.Model):
                 wc_line, wc_comment = self.get_used_line(
                     cr, uid, product.id, production_history, context=context)
 
+                if wc_line:
+                    color_format = excel_format['red']
+                else:    
+                    color_format = excel_format['']
+                    
                 # Header:
                 row += 1
                 excel_pool.write_xls_line(
                     ws_name, row, order_header, 
-                    default_format=excel_format['']['text'])
+                    default_format=color_format['text'])
 
                 # Detail:
                 oc_qty = line.product_uom_qty
@@ -492,8 +497,8 @@ class MrpProductionDailyReport(orm.Model):
                     product.default_code,
                     product.name,
                     wc_line.name if wc_line else 'Non trovata',
-                    (oc_qty, excel_format['']['number']),
-                    (done_qty, excel_format['']['number']),
+                    (oc_qty, color_format['number']),
+                    (done_qty, color_format['number']),
                     ]
                     
                 # Add wc comment:
@@ -503,7 +508,7 @@ class MrpProductionDailyReport(orm.Model):
 
                 excel_pool.write_xls_line(
                     ws_name, row, line_detail, 
-                    default_format=excel_format['']['text'], col=gap)
+                    default_format=color_format['text'], col=gap)
                 
                 current_data = product_data[:]
                 if not wc_line or wc_line.id not in wc_db:
@@ -519,7 +524,7 @@ class MrpProductionDailyReport(orm.Model):
 
                 excel_pool.write_xls_line(
                     ws_name, row, current_data, 
-                    default_format=excel_format['']['number'], col=line_gap)
+                    default_format=color_format['number'], col=line_gap)
 
         # Write total
         row = 1
