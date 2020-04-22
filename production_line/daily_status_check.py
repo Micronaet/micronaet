@@ -484,7 +484,7 @@ class MrpProductionDailyReport(orm.Model):
                 # Add wc comment:
                 excel_pool.write_comment(
                     ws_name, row, gap + 4, 
-                    wc_comment, parameters=params)                    
+                    wc_comment, parameters=comment_parameters)                    
 
                 excel_pool.write_xls_line(
                     ws_name, row, line_detail, 
