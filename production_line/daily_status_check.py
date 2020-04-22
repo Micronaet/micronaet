@@ -503,7 +503,7 @@ class MrpProductionDailyReport(orm.Model):
                         color_format = excel_format['blue']                        
                     else:
                         color_format = excel_format['yellow']
-                        mrp_state = 'Parz.:'
+                        mrp_state = 'Parz.: %s' % mrp_state
                 else:
                     mrp_name = ''
                     mrp_state = ''
