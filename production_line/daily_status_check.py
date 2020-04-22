@@ -300,7 +300,7 @@ class MrpProductionDailyReport(orm.Model):
                     mrp_production p 
                     ON (l.production_id = p.id) 
                 WHERE 
-                    l.state = 'done' 
+                    l.state != 'cancel' 
                 GROUP BY 
                     p.product_id, 
                     l.workcenter_id 
