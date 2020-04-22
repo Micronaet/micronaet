@@ -61,10 +61,11 @@ smtp = {
             <b>OpenERP</b> con lo stato degli ordini distribuiti per linea.
             <br/>
             Colori utilizzati: <br/>
-            Rosso: Non trovate produzioni quindi manca la linea da usare<br/>
-            Giallo: Agganciato a produzione per&ograve; non totalmente 
+            <b>Rosso</b>: Non trovate produzioni quindi manca la linea da usare
+               <br/>
+            <b>Giallo</b>: Agganciato a produzione per&ograve; non totalmente 
                 pianificata<br/>
-            Blue: Agganciato a produzione totalmente pianificata<br/>            
+            <b>Blue</b>: Agganciato a produzione totalmente pianificata<br/>            
         </p>
         <p>
             Data elaborazione: <b>%s</b>
