@@ -364,7 +364,7 @@ class MrpProductionDailyReport(orm.Model):
         width = [
             10, 9, 12, 30, 15,
             9, 7, 24, 
-            15, 18,
+            8, 22,
             17, 10, 10]
         
         # Format:
@@ -494,14 +494,21 @@ class MrpProductionDailyReport(orm.Model):
                 # Detail:
                 oc_qty = line.product_uom_qty
                 done_qty = 0.0 # TODO 
+                
+                if line.mrp_production_id:
+                    mrp_name = line.mrp_production_id.name
+                    mrp_state = line.mrp_production_id.state_info.replace(
+                        '  ', ' ').replace('\n', '')
+                else:
+                    mrp_name = ''
+                    mrp_state = ''
+                        
                 line_detail = [
                     line.date_deadline,
                     product.default_code,
                     product.name,
-                    line.mrp_production_id.name \
-                        if line.mrp_production_id else '',
-                    line.mrp_production_id.state_info \
-                        if line.mrp_production_id else '',
+                    mrp_name,
+                    mrp_state,
                     wc_line.name if wc_line else 'Non trovata',
                     (oc_qty, color_format['number']),
                     (done_qty, color_format['number']),
@@ -509,7 +516,7 @@ class MrpProductionDailyReport(orm.Model):
                     
                 # Add wc comment:
                 excel_pool.write_comment(
-                    ws_name, row, gap + 3, 
+                    ws_name, row, line_gap - 3, 
                     wc_comment, parameters=comment_parameters)                    
 
                 excel_pool.write_xls_line(
