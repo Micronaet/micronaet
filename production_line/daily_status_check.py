@@ -351,6 +351,7 @@ class MrpProductionDailyReport(orm.Model):
         workcenter_pool = self.pool.get('mrp.workcenter')
         
         exclude_product = ('VV', 'SCONTO', 'VV1', )
+        exclude_start = 'M'
 
         # ---------------------------------------------------------------------
         # Excel start:
@@ -460,7 +461,8 @@ class MrpProductionDailyReport(orm.Model):
             for line in order.order_line:
                 product = line.product_id
                 default_code = product.default_code
-                if default_code in exclude_product:
+                if default_code in exclude_product or \
+                        default_code[:1] in exclude_start:
                     _logger.warning('Code not used %s' % default_code)
                     continue
 
