@@ -479,21 +479,21 @@ class MrpProductionDailyReport(orm.Model):
                 wc_line, wc_comment = self.get_used_line(
                     cr, uid, product.id, production_history, context=context)
 
-                if wc_line:
-                    color_format = excel_format['']
-                else:    
-                    color_format = excel_format['red']
-                    
                 # Header:
                 row += 1
                 excel_pool.write_xls_line(
                     ws_name, row, order_header, 
-                    default_format=color_format['text'])
+                    default_format=excel_format['']['text'])
 
                 # Detail:
                 oc_qty = line.product_uom_qty
                 done_qty = 0.0 # TODO 
                 
+                if wc_line:
+                    color_format = excel_format['']
+                else:    
+                    color_format = excel_format['red']
+                    
                 if line.mrp_production_id:                
                     mrp_name = line.mrp_production_id.name
                     mrp_state = line.mrp_production_id.state_info.replace(
@@ -504,6 +504,7 @@ class MrpProductionDailyReport(orm.Model):
                     else:
                         color_format = excel_format['yellow']
                         mrp_state = 'Parz.: %s' % mrp_state
+                        
                 else:
                     mrp_name = ''
                     mrp_state = ''
