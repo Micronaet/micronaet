@@ -305,7 +305,7 @@ class MrpProductionDailyReport(orm.Model):
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
-        width = [10, 10, 13, 30, 18, 10, 10, 25, 10, 15, 15]
+        width = [10, 9, 12, 30, 15, 9, 9, 27, 11, 10, 10]
         
         # Format:
         excel_format = self.get_excel_format(excel_pool)
@@ -340,7 +340,7 @@ class MrpProductionDailyReport(orm.Model):
             wc_db[workcenter.id] = line_gap + i
             i += line_cols
             header.extend([line_name, 'In Carico', 'Completati'])
-            width.extend([18, 10, 10])
+            width.extend([15, 8, 8])
             
         row = 0
         excel_pool.column_width(ws_name, width)
@@ -374,7 +374,7 @@ class MrpProductionDailyReport(orm.Model):
                     default_format=excel_format['']['text'])
 
                 # Detail:
-                line_code = '' # TODO
+                line_code = ' ' # TODO
                 done_qty = 0.0 # TODO 
                 line_detail = [
                     line.date_deadline,
