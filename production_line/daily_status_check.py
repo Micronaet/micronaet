@@ -360,7 +360,10 @@ class MrpProductionDailyReport(orm.Model):
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
-        width = [10, 9, 12, 30, 15, 9, 9, 27, 11, 10, 10]
+        width = [
+            10, 9, 12, 30, 15, 
+            9, 9, 27, 
+            15, 10, 10]
         
         # Format:
         excel_format = self.get_excel_format(excel_pool)
@@ -492,6 +495,15 @@ class MrpProductionDailyReport(orm.Model):
                 
                 # TODO explode line record:
                 # Manage not found columns
+
+        # Write total
+        row = 1
+        excel_pool.column_width(ws_name, width)
+        excel_pool.write_xls_line(                    
+            ws_name, row, total_line, 
+            default_format=excel_format['header'],
+            col=gap
+            )
             
         if save_mode:
             return excel_pool.save_file_as(save_mode)         
