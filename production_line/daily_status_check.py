@@ -346,7 +346,10 @@ class MrpProductionDailyReport(orm.Model):
                 default_format=excel_format['header'],
                 col=line_gap + i)
             # TODO Unificare
-
+            excel_pool.erge_cell(
+                ws_name, 
+                [row, row, line_gap + i, line_gap + i + 1])
+            
             i += line_cols
 
             # Total:
@@ -361,7 +364,7 @@ class MrpProductionDailyReport(orm.Model):
         excel_pool.write_xls_line(                    
             ws_name, row, header, default_format=excel_format['header'])
 
-        excel_pool.freeze_panes(ws_name, 7, 3)
+        excel_pool.freeze_panes(ws_name, 3, 7)
         
         order_ids = order_pool.search(cr, uid, [
             ('state', 'in', ('draft', 'sent',)),
