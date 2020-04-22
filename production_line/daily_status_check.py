@@ -351,7 +351,7 @@ class MrpProductionDailyReport(orm.Model):
                 # Header:
                 excel_pool.write_xls_line(
                     ws_name, row, order_header, 
-                    excel_format=excel_format['']['text'])
+                    default_format=excel_format['']['text'])
 
                 # Detail:
                 line = '' # TODO
@@ -368,7 +368,7 @@ class MrpProductionDailyReport(orm.Model):
 
                 excel_pool.write_xls_line(
                     ws_name, row, line_detail, 
-                    excel_format=excel_format['']['text'], col=gap)
+                    default_format=excel_format['']['text'], col=gap)
                 
                 # TODO explode line record:
             
