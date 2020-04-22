@@ -395,9 +395,9 @@ class MrpProductionDailyReport(orm.Model):
         i = 0
         line_cols = 2
         total_line = []
-        row = 0
         
         # Header for total block
+        row = 0
         excel_pool.write_xls_line(                    
             ws_name, row, ['Totali', ''], 
             default_format=excel_format['header'],
@@ -408,9 +408,12 @@ class MrpProductionDailyReport(orm.Model):
             [row, line_gap + i - 2, row, line_gap + i - 1])
         
         # Write extra line data:
-        for workcenter in wc_lines:
+        product_data = []
+        col = 0
+        for workcenter in wc_lines:        
             line_name = workcenter.name
-            wc_db[workcenter.id] = line_gap + i
+            wc_db[workcenter.id] = col # line_gap + i
+            col += 1
             
             # Title:
             excel_pool.write_xls_line(                    
@@ -426,6 +429,7 @@ class MrpProductionDailyReport(orm.Model):
 
             # Total:
             total_line.extend([0.0, 0.0])
+            product_date.extend([0.0, 0.0])
             
             # Header:
             header.extend(['Da fare', 'Fatti'])
@@ -495,8 +499,21 @@ class MrpProductionDailyReport(orm.Model):
                     ws_name, row, line_detail, 
                     default_format=excel_format['']['text'], col=gap)
                 
-                # TODO explode line record:
-                # Manage not found columns
+                current_data = product_data[:]
+                if product.id not in wc_db:
+                    #TODO manage 
+                    pass
+                    continue
+                    
+                col = line_cols * wc_db[product.id] # TODO set default position
+                current_data[col] = qty
+                # TODO produced qty!
+
+                excel_pool.write_xls_line(
+                    ws_name, row, current_data, 
+                    default_format=excel_format['']['number'], col=line_gap)
+                
+                
 
         # Write total
         row = 1
