@@ -455,13 +455,14 @@ class MrpProductionDailyReport(orm.Model):
                 ]
                 
             for line in order.order_line:
-                wc_line, wc_comment = self.get_used_line(
-                    cr, uid, product_id, production_history, context=context)
                 product = line.product_id
                 default_code = product.default_code
                 if default_code in exclude_product:
                     _logger.warning('Code not used %s' % default_code)
                     continue
+
+                wc_line, wc_comment = self.get_used_line(
+                    cr, uid, product.id, production_history, context=context)
 
                 # Header:
                 row += 1
