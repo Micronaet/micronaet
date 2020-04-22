@@ -346,7 +346,7 @@ class MrpProductionDailyReport(orm.Model):
                 default_format=excel_format['header'],
                 col=line_gap + i)
             # TODO Unificare
-            excel_pool.erge_cell(
+            excel_pool.merge_cell(
                 ws_name, 
                 [row, row, line_gap + i, line_gap + i + 1])
             
