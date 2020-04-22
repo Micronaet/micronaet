@@ -429,7 +429,7 @@ class MrpProductionDailyReport(orm.Model):
 
             # Total:
             total_line.extend([0.0, 0.0])
-            product_date.extend([0.0, 0.0])
+            product_data.extend([0.0, 0.0])
             
             # Header:
             header.extend(['Da fare', 'Fatti'])
