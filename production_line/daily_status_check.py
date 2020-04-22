@@ -341,7 +341,7 @@ class MrpProductionDailyReport(orm.Model):
                 partner.country_id.name,                
                 ]
                 
-            for line in order_line:
+            for line in order.order_line:
                 product = line.product_id
                 default_code = product.default_code
                 if default_code in exclude_product:
