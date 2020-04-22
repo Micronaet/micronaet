@@ -483,13 +483,14 @@ class MrpProductionDailyReport(orm.Model):
                     default_format=excel_format['']['text'])
 
                 # Detail:
+                oc_qty = line.product_uom_qty
                 done_qty = 0.0 # TODO 
                 line_detail = [
                     line.date_deadline,
                     product.default_code,
                     product.name,
                     wc_line.name if wc_line else 'Non trovata',
-                    (line.product_uom_qty, excel_format['']['number']),
+                    (oc_qty, excel_format['']['number']),
                     (done_qty, excel_format['']['number']),
                     ]
                     
@@ -508,7 +509,7 @@ class MrpProductionDailyReport(orm.Model):
                     continue
                     
                 col = line_cols * wc_db[wc_line.id] # TODO set default position
-                current_data[col] = qty
+                current_data[col] = oc_qty
                 # TODO produced qty!
 
                 excel_pool.write_xls_line(
