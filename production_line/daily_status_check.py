@@ -363,7 +363,7 @@ class MrpProductionDailyReport(orm.Model):
         width = [
             10, 9, 12, 30, 15,
             9, 7, 20, 
-            7, 25,
+            8, 25,
             17, 10, 10]
         
         # Format:
