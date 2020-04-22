@@ -328,9 +328,9 @@ class MrpProductionDailyReport(orm.Model):
         excel_pool.write_xls_line(                    
             ws_name, row, header, default_format=excel_format['header'])
 
-        order_ids = order_pool.search([
+        order_ids = order_pool.search(cr, uid, [
             ('state', 'in', ('draft', 'sent',)),
-            ])
+            ], context=context)
         for order in order_pool.browse(cr, uid, order_ids, context=context):
             partner = order.partner_id
             order_header = [
