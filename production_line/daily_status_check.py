@@ -498,9 +498,10 @@ class MrpProductionDailyReport(orm.Model):
                     line.date_deadline,
                     product.default_code,
                     product.name,
-                    mrp_production_id.name if line.mrp_production_id else '',
-                    mrp_production_id.state_info if line.mrp_production_id \
-                        else '',
+                    line.mrp_production_id.name \
+                        if line.mrp_production_id else '',
+                    line.mrp_production_id.state_info \
+                        if line.mrp_production_id else '',
                     wc_line.name if wc_line else 'Non trovata',
                     (oc_qty, color_format['number']),
                     (done_qty, color_format['number']),
