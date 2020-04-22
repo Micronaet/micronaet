@@ -334,15 +334,28 @@ class MrpProductionDailyReport(orm.Model):
             )
             
         i = 0
-        line_cols = 3
+        line_cols = 2
+        total_line = []
         for workcenter in wc_lines:
             line_name = workcenter.name
             wc_db[workcenter.id] = line_gap + i
             i += line_cols
-            header.extend([line_name, 'In Carico', 'Completati'])
-            width.extend([15, 8, 8])
             
-        row = 0
+            # Title:
+            excel_pool.write_xls_line(                    
+                ws_name, 0, [line_name, ''], 
+                default_format=excel_format['header'],
+                col=line_gap + i)
+            # TODO Unificare
+
+            # Total:
+            total_line.extend([0.0, 0.0])
+            
+            # Header:
+            header.extend(['Da fare', 'Fatti'])
+            width.extend([8, 8])
+            
+        row = 2
         excel_pool.column_width(ws_name, width)
         excel_pool.write_xls_line(                    
             ws_name, row, header, default_format=excel_format['header'])
