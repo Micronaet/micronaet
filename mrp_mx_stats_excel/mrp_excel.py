@@ -749,22 +749,26 @@ class MrpProduction(orm.Model):
         temp_list = []
         for product in sorted(total['load'], 
                 key=lambda x: (x.default_code, x.name)):
-            row_total = 0.0            
+            row_total = {}            
             data = empty[:]
             for date, job, qty, price, recycle in total['load'][product]:
                 period = date[:7]
+                if period[:4] in row_total:
+                    row_total[period[:4]] += qty
+                else:
+                    row_total[period[:4]] = qty
+                    
                 col = load_col.get(period)
 
                 # Totals:
                 data[col] += qty
-                row_total += qty
                 col_total[col] += qty
 
             temp_list.append(([
                 product.default_code or '',
                 product.name,
                 product.uom_id.name,
-                (row_total, f_number_bg_green_bold),
+                row_total,
                 ], data))
 
         # =====================================================================
@@ -802,6 +806,12 @@ class MrpProduction(orm.Model):
                 ws_name, row, header, default_format=f_header)
                 
             for fixed, data in temp_list:
+                print fixed
+                fixed[-1] = (
+                    fixed[-1].get(year_block),
+                    f_number_bg_green_bold,
+                    )
+                    
                 row += 1
                 # Write fixed col data:
                 excel_pool.write_xls_line(
@@ -904,13 +914,12 @@ class MrpProduction(orm.Model):
                 ws_name, row, header, default_format=f_header)
 
             for fixed, data in temp_list:
-                try:
-                    fixed[-1] = (
-                        fixed[-1].get(year_block, 0.0), 
-                        f_number_bg_green_bold,
-                        )
-                except:     
-                    import pdb; pdb.set_trace()
+                print fixed
+                fixed[-1] = (
+                    fixed[-1].get(year_block, 0.0), 
+                    f_number_bg_green_bold,
+                    )
+
                 row += 1        
                 # Write fixed col data:
                 excel_pool.write_xls_line(
