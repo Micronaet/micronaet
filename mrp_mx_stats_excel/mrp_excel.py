@@ -811,13 +811,11 @@ class MrpProduction(orm.Model):
                 excel_pool.write_xls_line(
                     ws_name, row, data, default_format=f_number, col=fixed_col)
 
-            # excel_pool.column_hidden      
+        # excel_pool.column_hidden      
             
-        # ---------------------------------------------------------------------               
-        # Material in period:
-        # ---------------------------------------------------------------------               
-        ws_name = u'Descargas en el periodo'
-        excel_pool.create_worksheet(name=ws_name)
+        # =====================================================================
+        #                       UNLOAD PER YEARS:
+        # =====================================================================
 
         # Column:
         width = [10, 30, 4, 10]
@@ -832,9 +830,6 @@ class MrpProduction(orm.Model):
             header.append(col)
             empty.append(0.0)
         
-        row = 0
-        excel_pool.column_width(ws_name, width)
-
         temp_list = []        
         for product in sorted(total['unload'], 
                 key=lambda x: (x.default_code, x.name)):
@@ -863,40 +858,51 @@ class MrpProduction(orm.Model):
                 ], data))
 
 
-        # ---------------------------------------------------------------------
-        # Write total:
-        # ---------------------------------------------------------------------
-        for uom in col_total:
-            total = col_total[uom]
+        for year_block in sorted(year_cols['unload']):
+            # ---------------------------------------------------------------------               
+            # Material in period:
+            # ---------------------------------------------------------------------               
+            ws_name = u'Descargas en el periodo %s' % year_block 
+            excel_pool.create_worksheet(name=ws_name)
 
-            # Write fixed col data:
+            row = 0
+            excel_pool.column_width(ws_name, width)
+
+            # ---------------------------------------------------------------------
+            # Write total:
+            # ---------------------------------------------------------------------
+            for uom in col_total:
+                total = col_total[uom]
+
+                # Write fixed col data:
+                excel_pool.write_xls_line(
+                    ws_name, row, [u'Totales %s' % uom.name], 
+                    default_format=f_header, col= fixed_col - 1)
+
+                # Write variable col data:
+                excel_pool.write_xls_line(
+                    ws_name, row, total, default_format=f_number_bg_green_bold, 
+                    col=fixed_col)
+                row += 1
+
+            # ---------------------------------------------------------------------
+            # Write data:
+            # ---------------------------------------------------------------------
+            # Header:
             excel_pool.write_xls_line(
-                ws_name, row, [u'Totales %s' % uom.name], 
-                default_format=f_header, col= fixed_col - 1)
+                ws_name, row, header, default_format=f_header)
 
-            # Write variable col data:
-            excel_pool.write_xls_line(
-                ws_name, row, total, default_format=f_number_bg_green_bold, 
-                col=fixed_col)
-            row += 1
+            for fixed, data in temp_list:
+                row += 1        
+                # Write fixed col data:
+                excel_pool.write_xls_line(
+                    ws_name, row, fixed, default_format=f_text)
 
-        # ---------------------------------------------------------------------
-        # Write data:
-        # ---------------------------------------------------------------------
-        # Header:
-        excel_pool.write_xls_line(
-            ws_name, row, header, default_format=f_header)
-
-        for fixed, data in temp_list:
-            row += 1        
-            # Write fixed col data:
-            excel_pool.write_xls_line(
-                ws_name, row, fixed, default_format=f_text)
-
-            # Write variable col data:
-            excel_pool.write_xls_line(
-                ws_name, row, data, default_format=f_number, col=fixed_col)
-                    
+                # Write variable col data:
+                excel_pool.write_xls_line(
+                    ws_name, row, data, default_format=f_number, col=fixed_col)
+        # excel_pool.column_hidden      
+                        
         return excel_pool.save_file_as(save_mode)            
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
