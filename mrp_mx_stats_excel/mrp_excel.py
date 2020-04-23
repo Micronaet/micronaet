@@ -906,11 +906,13 @@ class MrpProduction(orm.Model):
                 ws_name, row, header, default_format=f_header)
 
             for fixed, data in temp_list:
-                import pdb; pdb.set_trace()
+                try:
                 fixed[-1] = (
                     fixed[-1].get(year_block, 0.0), 
                     f_number_bg_green_bold,
                     )
+                except:     
+                    import pdb; pdb.set_trace()
                 row += 1        
                 # Write fixed col data:
                 excel_pool.write_xls_line(
