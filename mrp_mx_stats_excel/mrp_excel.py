@@ -812,7 +812,7 @@ class MrpProduction(orm.Model):
                     ws_name, row, data, default_format=f_number, col=fixed_col)
             
             # Hide unused colums:
-            hide_this_col =    # Start variable columns:
+            hide_this_col = fixed_col   # Start variable columns:
             for year in sorted(year_cols['load']):
                 if year == year_block:  # Leave show
                     hide_this_col += year_cols['load'][year]
