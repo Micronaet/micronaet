@@ -732,7 +732,6 @@ class MrpProduction(orm.Model):
         # =====================================================================
         #                           REPORT x PERIOD
         # =====================================================================
-
         # Column:
         width = [10, 30, 4, 10]
         header = [u'Productos', u'Descripción', u'UM', u'Total']
@@ -807,13 +806,13 @@ class MrpProduction(orm.Model):
                 ws_name, row, header, default_format=f_header)
             
             for fixed, data in temp_list:
+                row += 1
                 new_fixed = fixed[:]
                 new_fixed[-1] = (
                     new_fixed[-1].get(year_block),
                     f_number_bg_green_bold,
                     )
-                    
-                row += 1
+
                 # Write fixed col data:
                 excel_pool.write_xls_line(
                     ws_name, row, new_fixed, default_format=f_text)
@@ -821,6 +820,10 @@ class MrpProduction(orm.Model):
                 # Write variable col data:
                 excel_pool.write_xls_line(
                     ws_name, row, data, default_format=f_number, col=fixed_col)
+
+                if not new_fixed[-1][0]:
+                    # Hide row
+                    excel_pool.row_hidden(ws_name, [row])
             
             # Hide unused colums:
             hide_this_col = fixed_col   # Start variable columns:
@@ -915,13 +918,13 @@ class MrpProduction(orm.Model):
                 ws_name, row, header, default_format=f_header)
 
             for fixed, data in temp_list:
+                row += 1        
                 new_fixed = fixed[:]
                 new_fixed[-1] = (
                     new_fixed[-1].get(year_block),
                     f_number_bg_green_bold,
                     )
 
-                row += 1        
                 # Write fixed col data:
                 excel_pool.write_xls_line(
                     ws_name, row, new_fixed, default_format=f_text)
@@ -929,6 +932,10 @@ class MrpProduction(orm.Model):
                 # Write variable col data:
                 excel_pool.write_xls_line(
                     ws_name, row, data, default_format=f_number, col=fixed_col)
+
+                if not new_fixed[-1][0]:
+                    # Hide row
+                    excel_pool.row_hidden(ws_name, [row])
 
             # Hide unused colums:
             hide_this_col = fixed_col   # Start variable columns:
