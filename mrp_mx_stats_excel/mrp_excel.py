@@ -138,18 +138,14 @@ class MrpProduction(orm.Model):
         # =====================================================================
         #                     STOCK PRODUCT DATA:
         # =====================================================================
-        hide_sheet = (
-            u'Lotes', 
-            u'Cargas de producción', 
-            u'Descargas de producción',
-            )
 
         # ---------------------------------------------------------------------
         # Lot status:
         # ---------------------------------------------------------------------               
         ws_name = u'Lotes'
         excel_pool.create_worksheet(name=ws_name)
-        excel_pool.hide(ws_name)
+        if report_mode == 'minimal':
+            excel_pool.hide(ws_name)
 
         # Format:
         excel_pool.set_format()
@@ -486,6 +482,8 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------               
         ws_name = u'Cargas de producción'
         excel_pool.create_worksheet(name=ws_name)
+        if report_mode == 'minimal':
+            excel_pool.hide(ws_name)
 
         # Column:
         width = [
@@ -558,6 +556,8 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------               
         ws_name = u'Descargas de producción'
         excel_pool.create_worksheet(name=ws_name)
+        if report_mode == 'minimal':
+            excel_pool.hide(ws_name)
 
         # Column:
         width = [
@@ -878,11 +878,6 @@ class MrpProduction(orm.Model):
             excel_pool.write_xls_line(
                 ws_name, row, data, default_format=f_number, col=fixed_col)
                     
-        # Mode setup:
-        if report_mode == 'minimal':
-            for ws_name in hide_sheet:
-                excel_pool.hide(ws_name)
-                _logger.info('Hide: %s' % ws_name)                    
         return excel_pool.save_file_as(save_mode)            
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
