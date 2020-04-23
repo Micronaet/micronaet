@@ -312,9 +312,6 @@ smtp_server.starttls()
 smtp_server.login(odoo_mailer.smtp_user, odoo_mailer.smtp_pass)
 
 
-# Setup context for MRP:
-odoo.context = context
-mrp = odoo.model('mrp.production')
 
 # Extract 2 files
 import pdb; pdb.set_trace()
@@ -329,6 +326,10 @@ for mode in smtp['mode']:
     context = {
         'save_mode': fullname,
         }
+
+    # Setup context for MRP:
+    odoo.context = context
+    mrp = odoo.model('mrp.production')
 
     # Launch extract procedure for this mode:
     mrp.extract_mrp_stats_excel_report(mode)
