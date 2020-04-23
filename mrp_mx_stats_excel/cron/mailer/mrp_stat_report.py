@@ -337,7 +337,7 @@ for mode in smtp['report_mode']:
         msg = MIMEMultipart()
         msg['Subject'] = smtp['subject']
         msg['From'] = odoo_mailer.smtp_user
-        msg['To'] = smtp[mode] # See all delivery!
+        msg['To'] = ','.join(smtp['report_mode'][mode]) # XXX See all delivery!
         msg.attach(MIMEText(smtp['text'][mode], 'html'))
 
 
