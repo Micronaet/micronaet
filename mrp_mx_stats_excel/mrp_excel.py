@@ -854,13 +854,11 @@ class MrpProduction(orm.Model):
                 if period[:4] in row_total:
                     row_total[period[:4]] += qty
                 else:    
-                    row_total[period[:4]] = qty
-                    
+                    row_total[period[:4]] = qty                    
                 col = unload_col.get(period)
 
                 # Totals:
                 data[col] += qty
-                #row_total += qty
                 col_total[uom][col] += qty
 
             temp_list.append(([
