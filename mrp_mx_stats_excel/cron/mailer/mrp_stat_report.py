@@ -317,7 +317,10 @@ mrp = odoo.model('mrp.production')
 
 # Extract 2 files
 for mode in smtp['mode']:
-    if not smtp['mode'][mode]
+    if not smtp['mode'][mode]:
+        print('No recipients for mode: %s' % mode)
+        continue
+
     filename = u'PCA OpenERP Contipaq %s.%s.xlsx' % (now, mode)
     fullname = os.path.expanduser(
         os.path.join(smtp['folder'], filename))
