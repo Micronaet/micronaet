@@ -749,6 +749,7 @@ class MrpProduction(orm.Model):
         temp_list = []
         for product in sorted(total['load'], 
                 key=lambda x: (x.default_code, x.name)):
+
             row_total = {}            
             data = empty[:]
             for date, job, qty, price, recycle in total['load'][product]:
@@ -804,7 +805,8 @@ class MrpProduction(orm.Model):
             # Header:
             excel_pool.write_xls_line(
                 ws_name, row, header, default_format=f_header)
-                
+            
+            import pdb; pdb.set_trace()    
             for fixed, data in temp_list:
                 print fixed
                 fixed[-1] = (
