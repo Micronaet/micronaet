@@ -907,10 +907,10 @@ class MrpProduction(orm.Model):
 
             for fixed, data in temp_list:
                 try:
-                fixed[-1] = (
-                    fixed[-1].get(year_block, 0.0), 
-                    f_number_bg_green_bold,
-                    )
+                    fixed[-1] = (
+                        fixed[-1].get(year_block, 0.0), 
+                        f_number_bg_green_bold,
+                        )
                 except:     
                     import pdb; pdb.set_trace()
                 row += 1        
