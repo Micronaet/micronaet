@@ -85,6 +85,7 @@ class MrpProduction(orm.Model):
         def _get_period_date_dict(range_date):
             ''' Generate period dict:
             '''
+            year_cols = {}  # Used for hide columns in report page
             res = {}
             ref_date = range_date[0]
             col = 0
@@ -93,19 +94,32 @@ class MrpProduction(orm.Model):
                 res[ref_date] = col
 
                 # Update ref_date:
+                year = ref_date[:4]
+                
+                # Total month per years (for hide after)
+                if year not in year_cols:
+                    year_cols[year] = 0
+                year_cols[year] += 1    
+                
                 if ref_date[5:7] == '12':
                     ref_date = '%s-01' % (int(ref_date[:4]) + 1)
                 else:    
                     ref_date = '%s-%02d' % (
-                        ref_date[:4],
+                        year,
                         int(ref_date[5:7]) + 1,
                         )
                 col += 1
-            return res
+            _logger.error('%s' % (year_cols)) 
+            return res, year_cols 
         
         # =====================================================================
         #                         INITIAL SETUP:
         # =====================================================================
+        year_cols = {
+            'unload': {},
+            'load': {},
+            }
+        
         currency = 'MXP'
         if context is None:
             context = {}
@@ -142,7 +156,7 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------
         # Lot status:
         # ---------------------------------------------------------------------               
-        ws_name = 'Lotti'
+        ws_name = 'Lotes'
         excel_pool.create_worksheet(name=ws_name)
         if report_mode == 'minimal':
             excel_pool.hide(ws_name)
@@ -549,7 +563,7 @@ class MrpProduction(orm.Model):
                         currency,
                         ], default_format=f_text_color)
 
-        load_col = _get_period_date_dict(range_date)
+        load_col, year_cols['load'] = _get_period_date_dict(range_date)
 
         # ---------------------------------------------------------------------
         # Production unloaded product:
@@ -612,7 +626,7 @@ class MrpProduction(orm.Model):
                         currency,
                         ], default_format=f_text)
 
-        unload_col = _get_period_date_dict(range_date)
+        unload_col, year_cols['unload'] = _get_period_date_dict(range_date)
 
 
         # =====================================================================
