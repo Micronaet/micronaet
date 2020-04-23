@@ -818,7 +818,7 @@ class MrpProduction(orm.Model):
                     hide_this_col += year_cols['load'][year]
                 else:  # Hide
                     excel_pool.column_hidden(ws_name, [
-                        hite_this_col + item for item in range(
+                        hide_this_col + item for item in range(
                             year_cols['load'][year])])
             
         # =====================================================================
