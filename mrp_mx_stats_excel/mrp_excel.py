@@ -806,18 +806,17 @@ class MrpProduction(orm.Model):
             excel_pool.write_xls_line(
                 ws_name, row, header, default_format=f_header)
             
-            import pdb; pdb.set_trace()    
             for fixed, data in temp_list:
-                print fixed
-                fixed[-1] = (
-                    fixed[-1].get(year_block),
+                new_fixed = fixed[:]
+                new_fixed[-1] = (
+                    new_fixed[-1].get(year_block),
                     f_number_bg_green_bold,
                     )
                     
                 row += 1
                 # Write fixed col data:
                 excel_pool.write_xls_line(
-                    ws_name, row, fixed, default_format=f_text)
+                    ws_name, row, new_fixed, default_format=f_text)
 
                 # Write variable col data:
                 excel_pool.write_xls_line(
@@ -916,16 +915,16 @@ class MrpProduction(orm.Model):
                 ws_name, row, header, default_format=f_header)
 
             for fixed, data in temp_list:
-                print fixed
-                fixed[-1] = (
-                    fixed[-1].get(year_block, 0.0), 
+                new_fixed = fixed[:]
+                new_fixed[-1] = (
+                    new_fixed[-1].get(year_block),
                     f_number_bg_green_bold,
                     )
 
                 row += 1        
                 # Write fixed col data:
                 excel_pool.write_xls_line(
-                    ws_name, row, fixed, default_format=f_text)
+                    ws_name, row, new_fixed, default_format=f_text)
 
                 # Write variable col data:
                 excel_pool.write_xls_line(
