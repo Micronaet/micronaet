@@ -847,38 +847,43 @@ class MrpProduction(orm.Model):
                 for col in sorted(load_col):
                     col_total[uom].append(0.0)
                     
-            row_total = 0.0            
+            row_total = {}            
             data = empty[:]
             for date, job, qty, price, recycle in total['unload'][product]:
                 period = date[:7]
+                if period[:4] in row_total:
+                    row_total[period[:4]] += qty
+                else:    
+                    row_total[period[:4]] = qty
+                    
                 col = unload_col.get(period)
 
                 # Totals:
                 data[col] += qty
-                row_total += qty
+                #row_total += qty
                 col_total[uom][col] += qty
 
             temp_list.append(([
                 product.default_code or '',
                 product.name,
                 product.uom_id.name,
-                (row_total, f_number_bg_green_bold),
+                row_total,
                 ], data))
 
 
         for year_block in sorted(year_cols['unload']):
-            # ---------------------------------------------------------------------               
+            # -----------------------------------------------------------------
             # Material in period:
-            # ---------------------------------------------------------------------               
+            # -----------------------------------------------------------------
             ws_name = u'Descargas en el periodo %s' % year_block 
             excel_pool.create_worksheet(name=ws_name)
 
             row = 0
             excel_pool.column_width(ws_name, width)
 
-            # ---------------------------------------------------------------------
+            # -----------------------------------------------------------------
             # Write total:
-            # ---------------------------------------------------------------------
+            # -----------------------------------------------------------------
             for uom in col_total:
                 total = col_total[uom]
 
@@ -893,14 +898,18 @@ class MrpProduction(orm.Model):
                     col=fixed_col)
                 row += 1
 
-            # ---------------------------------------------------------------------
+            # -----------------------------------------------------------------
             # Write data:
-            # ---------------------------------------------------------------------
+            # -----------------------------------------------------------------
             # Header:
             excel_pool.write_xls_line(
                 ws_name, row, header, default_format=f_header)
 
             for fixed, data in temp_list:
+                fixed[-1] = (
+                    fixed[-1].get(year_block, 0.0), 
+                    f_number_bg_green_bold,
+                    )
                 row += 1        
                 # Write fixed col data:
                 excel_pool.write_xls_line(
