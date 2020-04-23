@@ -49,7 +49,8 @@ class MrpProduction(orm.Model):
     
     _inherit = 'mrp.production'
     
-    def extract_mrp_stats_excel_report(self, cr, uid, context=None):
+    def extract_mrp_stats_excel_report(
+            self, cr, uid, report_mode='all', context=None):
         ''' Extract report statistic and save in Excel file:
         '''
         # =====================================================================
@@ -283,7 +284,7 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------
         # Product status:
         # ---------------------------------------------------------------------               
-        ws_name = u'Productos'
+        ws_name = u'Inventario'
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
