@@ -272,6 +272,18 @@ smtp = {
 now = now.replace('/', '_').replace('-', '_').replace(':', '_')
 
 # -----------------------------------------------------------------------------
+# Connect to ODOO:
+# -----------------------------------------------------------------------------
+odoo = erppeek.Client(
+    'http://%s:%s' % (odoo['server'], odoo['port']), 
+    db=odoo['database'],
+    user=odoo['user'],
+    password=odoo['password'],
+    )
+mailer = odoo.model('ir.mail_server')
+model = odoo.model('ir.model.data')
+
+# -----------------------------------------------------------------------------
 # SMTP Sent:
 # -----------------------------------------------------------------------------
 # Get mailserver option:
@@ -299,17 +311,6 @@ smtp_server.ehlo() #open the connection
 smtp_server.starttls()
 smtp_server.login(odoo_mailer.smtp_user, odoo_mailer.smtp_pass)
 
-# -----------------------------------------------------------------------------
-# Connect to ODOO:
-# -----------------------------------------------------------------------------
-odoo = erppeek.Client(
-    'http://%s:%s' % (odoo['server'], odoo['port']), 
-    db=odoo['database'],
-    user=odoo['user'],
-    password=odoo['password'],
-    )
-mailer = odoo.model('ir.mail_server')
-model = odoo.model('ir.model.data')
 
 # Setup context for MRP:
 odoo.context = context
