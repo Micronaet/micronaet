@@ -810,8 +810,16 @@ class MrpProduction(orm.Model):
                 # Write variable col data:
                 excel_pool.write_xls_line(
                     ws_name, row, data, default_format=f_number, col=fixed_col)
-
-        # excel_pool.column_hidden      
+            
+            # Hide unused colums:
+            hide_this_col = fixed_col  # Start variable columns:
+            for year in sorted(year_cols['load']):
+                if year == year_block:  # Leave show
+                    hide_this_col += year_cols['load'][year]
+                else:  # Hide
+                    excel_pool.column_hidden(ws_name, [
+                        hite_this_col + item for item in range(
+                            year_cols['load'][year])]
             
         # =====================================================================
         #                       UNLOAD PER YEARS:
