@@ -142,7 +142,7 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------
         # Lot status:
         # ---------------------------------------------------------------------               
-        ws_name = u'Lotes'
+        ws_name = 'Lotti'
         excel_pool.create_worksheet(name=ws_name)
         if report_mode == 'minimal':
             excel_pool.hide(ws_name)
