@@ -316,6 +316,7 @@ odoo.context = context
 mrp = odoo.model('mrp.production')
 
 # Extract 2 files
+import pdb; pdb.set_trace()
 for mode in smtp['mode']:
     if not smtp['mode'][mode]:
         print('No recipients for mode: %s' % mode)
