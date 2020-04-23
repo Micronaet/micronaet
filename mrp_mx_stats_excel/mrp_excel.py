@@ -138,6 +138,11 @@ class MrpProduction(orm.Model):
         # =====================================================================
         #                     STOCK PRODUCT DATA:
         # =====================================================================
+        hide_sheet = (
+            u'Lotes', 
+            u'Cargas de producción', 
+            u'Descargas de producción',
+            )
 
         # ---------------------------------------------------------------------
         # Lot status:
@@ -872,6 +877,9 @@ class MrpProduction(orm.Model):
             excel_pool.write_xls_line(
                 ws_name, row, data, default_format=f_number, col=fixed_col)
                     
+        # Mode setup:
+        for ws_name in hide_sheet:
+            excel_pool.hide(ws_name)                    
         return excel_pool.save_file_as(save_mode)            
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
