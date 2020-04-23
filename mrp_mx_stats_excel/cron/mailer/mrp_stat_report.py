@@ -50,7 +50,7 @@ odoo = {
 
 # Mail:
 smtp = {
-    'mode': eval(config.get('smtp', 'mode')),
+    'report_mode': eval(config.get('smtp', 'mode')),
     'text': {
         'all': '''
             <p>A los Gerentes de producci&oacute;n de PCA,</p> 
@@ -315,7 +315,7 @@ smtp_server.login(odoo_mailer.smtp_user, odoo_mailer.smtp_pass)
 
 # Extract 2 files
 import pdb; pdb.set_trace()
-for mode in smtp['mode']:
+for mode in smtp['report_mode']:
     if not smtp['mode'][mode]:
         print('No recipients for mode: %s' % mode)
         continue
@@ -334,7 +334,7 @@ for mode in smtp['mode']:
     # Launch extract procedure for this mode:
     mrp.extract_mrp_stats_excel_report(mode)
 
-    for to in smtp[mode]:
+    for to in smtp['report_mode'][mode]:
         to = to.replace(' ', '')
         print 'Senting mail %s to: %s ...' % (mode, to)
         msg = MIMEMultipart()
