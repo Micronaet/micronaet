@@ -149,6 +149,7 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------               
         ws_name = u'Lotes'
         excel_pool.create_worksheet(name=ws_name)
+        excel_pool.hide(ws_name)
 
         # Format:
         excel_pool.set_format()
