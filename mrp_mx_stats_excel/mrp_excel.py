@@ -109,7 +109,6 @@ class MrpProduction(orm.Model):
                         int(ref_date[5:7]) + 1,
                         )
                 col += 1
-            _logger.error('%s' % (year_cols)) 
             return res, year_cols 
         
         # =====================================================================
@@ -734,12 +733,6 @@ class MrpProduction(orm.Model):
         #                           REPORT x PERIOD
         # =====================================================================
 
-        # ---------------------------------------------------------------------               
-        # Production in period:
-        # ---------------------------------------------------------------------               
-        ws_name = u'Producción en el periodo'
-        excel_pool.create_worksheet(name=ws_name)
-
         # Column:
         width = [10, 30, 4, 10]
         header = [u'Productos', u'Descripción', u'UM', u'Total']
@@ -752,9 +745,6 @@ class MrpProduction(orm.Model):
             header.append(col)
             col_total.append(0.0) # always KG
         empty = col_total[:]
-        
-        row = 0
-        excel_pool.column_width(ws_name, width)
         
         temp_list = []
         for product in sorted(total['load'], 
@@ -777,36 +767,51 @@ class MrpProduction(orm.Model):
                 (row_total, f_number_bg_green_bold),
                 ], data))
 
-        # ---------------------------------------------------------------------               
-        # Write total (row 0):
-        # ---------------------------------------------------------------------               
-        # Write fixed col data:
-        excel_pool.write_xls_line(
-            ws_name, row, [u'Totales KG', ], default_format=f_header,
-            col= fixed_col - 1)
+        # =====================================================================
+        #                    PRODUCTION PER YEARS:
+        # =====================================================================
+        for year_block in sorted(year_cols['load']):
+            # ---------------------------------------------------------------------               
+            # Production in period:
+            # ---------------------------------------------------------------------               
+            ws_name = u'Producción en el periodo %s' % year_block
+            excel_pool.create_worksheet(name=ws_name)
 
-        # Write variable col data:
-        excel_pool.write_xls_line(
-            ws_name, row, col_total, default_format=f_number_bg_green_bold, 
-            col=fixed_col)
-        row += 1
+            # ---------------------------------------------------------------------               
+            # Write total (row 0):
+            # ---------------------------------------------------------------------               
+            row = 0
 
-        # ---------------------------------------------------------------------               
-        # Write data:
-        # ---------------------------------------------------------------------               
-        # Header:
-        excel_pool.write_xls_line(
-            ws_name, row, header, default_format=f_header)
-            
-        for fixed, data in temp_list:
-            row += 1
+            excel_pool.column_width(ws_name, width)
             # Write fixed col data:
             excel_pool.write_xls_line(
-                ws_name, row, fixed, default_format=f_text)
+                ws_name, row, [u'Totales KG', ], default_format=f_header,
+                col= fixed_col - 1)
 
             # Write variable col data:
             excel_pool.write_xls_line(
-                ws_name, row, data, default_format=f_number, col=fixed_col)
+                ws_name, row, col_total, default_format=f_number_bg_green_bold, 
+                col=fixed_col)
+            row += 1
+
+            # ---------------------------------------------------------------------               
+            # Write data:
+            # ---------------------------------------------------------------------               
+            # Header:
+            excel_pool.write_xls_line(
+                ws_name, row, header, default_format=f_header)
+                
+            for fixed, data in temp_list:
+                row += 1
+                # Write fixed col data:
+                excel_pool.write_xls_line(
+                    ws_name, row, fixed, default_format=f_text)
+
+                # Write variable col data:
+                excel_pool.write_xls_line(
+                    ws_name, row, data, default_format=f_number, col=fixed_col)
+
+            # excel_pool.column_hidden      
             
         # ---------------------------------------------------------------------               
         # Material in period:
