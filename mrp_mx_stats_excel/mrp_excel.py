@@ -820,8 +820,6 @@ class MrpProduction(orm.Model):
                     hide_this_cols = [
                         hide_this_col + item for item in range(
                             year_cols['load'][year])]
-                    print hide_this_cols
-                    import pdb; pdb.set_trace()        
                     excel_pool.column_hidden(ws_name, hide_this_cols)
             
         # =====================================================================
@@ -911,7 +909,17 @@ class MrpProduction(orm.Model):
                 # Write variable col data:
                 excel_pool.write_xls_line(
                     ws_name, row, data, default_format=f_number, col=fixed_col)
-        # excel_pool.column_hidden      
+
+            # Hide unused colums:
+            hide_this_col = fixed_col   # Start variable columns:
+            for year in sorted(year_cols['unload']):
+                if year == year_block:  # Leave show
+                    hide_this_col += year_cols['unload'][year]
+                else:  # Hide
+                    hide_this_cols = [
+                        hide_this_col + item for item in range(
+                            year_cols['unload'][year])]
+                    excel_pool.column_hidden(ws_name, hide_this_cols)
                         
         return excel_pool.save_file_as(save_mode)            
     
