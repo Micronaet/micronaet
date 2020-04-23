@@ -878,8 +878,10 @@ class MrpProduction(orm.Model):
                 ws_name, row, data, default_format=f_number, col=fixed_col)
                     
         # Mode setup:
-        for ws_name in hide_sheet:
-            excel_pool.hide(ws_name)                    
+        if mode == 'minimal':
+            for ws_name in hide_sheet:
+                excel_pool.hide(ws_name)
+                _logger.info('Hide: %s' % ws_name)                    
         return excel_pool.save_file_as(save_mode)            
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
