@@ -878,7 +878,7 @@ class MrpProduction(orm.Model):
                 ws_name, row, data, default_format=f_number, col=fixed_col)
                     
         # Mode setup:
-        if mode == 'minimal':
+        if report_mode == 'minimal':
             for ws_name in hide_sheet:
                 excel_pool.hide(ws_name)
                 _logger.info('Hide: %s' % ws_name)                    
