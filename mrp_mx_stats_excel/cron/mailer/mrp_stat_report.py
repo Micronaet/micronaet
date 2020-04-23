@@ -316,7 +316,7 @@ smtp_server.login(odoo_mailer.smtp_user, odoo_mailer.smtp_pass)
 # Extract 2 files
 import pdb; pdb.set_trace()
 for mode in smtp['report_mode']:
-    if not smtp['mode'][mode]:
+    if not smtp['report_mode'][mode]:
         print('No recipients for mode: %s' % mode)
         continue
 
