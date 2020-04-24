@@ -155,7 +155,7 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------
         # Lot status:
         # ---------------------------------------------------------------------               
-        ws_name = u'Inventario'
+        ws_name = u'Inventario'  # Create before (Lotes didn't hide as first)
         excel_pool.create_worksheet(name=ws_name)
 
         ws_name = 'Lotes'

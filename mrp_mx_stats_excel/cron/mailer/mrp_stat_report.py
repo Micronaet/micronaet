@@ -73,15 +73,16 @@ smtp = {
                 IT = Producto terminado italiano)
                 <br/>
 
-            1. <b>Lotes:</b> Lista de lotes con existencia y valor; 
+            1. <b>Inventario:</b> Lista de productos con existencia y mejora; 
+                datos provenientes de ContipaQ. Totales subdivididos por UM 
+                (unidad de medida).
+                <br/>
+                
+            2. <b>Lotes:</b> Lista de lotes con existencia y valor; 
                 datos provenientes de ContipaQ. 
                 Totales subdivididos por UM (unidad de medida).
                 <br/>
 
-            2. <b>Inventario:</b> Lista de productos con existencia y mejora; 
-                datos provenientes de ContipaQ. Totales subdivididos por UM 
-                (unidad de medida).
-                <br/>
             </p>
 
             <p>
