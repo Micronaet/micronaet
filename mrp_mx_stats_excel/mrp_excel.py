@@ -155,8 +155,13 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------
         # Lot status:
         # ---------------------------------------------------------------------               
+        ws_name = u'Inventario'
+        excel_pool.create_worksheet(name=ws_name)
+
         ws_name = 'Lotes'
         excel_pool.create_worksheet(name=ws_name)
+        #excel_pool.freeze_panes(ws_name, row, col)        
+        
         if report_mode == 'minimal':
             excel_pool.hide(ws_name)
 
@@ -299,7 +304,6 @@ class MrpProduction(orm.Model):
         # Product status:
         # ---------------------------------------------------------------------               
         ws_name = u'Inventario'
-        excel_pool.create_worksheet(name=ws_name)
 
         # Column:
         width = [
