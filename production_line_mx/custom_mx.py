@@ -409,7 +409,7 @@ class product_product_extra(osv.osv):
                 lot = row[5]
                 product_qty = row[6]
                 cost = row[7]
-                last_cost = row[8]
+                last_cost = row[8] or cost
 
                 if lot: # so no pedimento!
                     pedimento = lot # Use pedimento as a code
