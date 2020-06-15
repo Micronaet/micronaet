@@ -90,7 +90,9 @@ class Parser(report_sxw.rml_parse):
                 u'N. bancale': 'N. Tarima',
                 u'Peso bancale': 'Peso',
                 u'Campione n.': 'N. Muestra',
-                u'Q.C.P.': 'Notas',                
+                u'Q.C.P.': 'Notas',          
+                u'Verifica bonifica': 'Verifica bonifica',
+                u'Silos stoccaggio': 'Silos stoccaggio',      
                 },                
             }
         if lang == 'it_IT' or lang not in languages:

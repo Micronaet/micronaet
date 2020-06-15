@@ -1366,6 +1366,8 @@ class mrp_production_workcenter_line_extra(osv.osv):
             help='This value will be create in accounting as a CL of product'), # TODO trasferire totale nella produzione
         'lavoration_note': fields.text('Lavoration note'),
         'anomalie_note': fields.text('Anomalies'),
+        'silos_note': fields.text('Silos stoccaggio'),
+        'bonific_note': fields.text('Verifica bonifica'),
         #'lavoration_number': fields.char('Lavoration ID', size=16, help='ID for traceability of the lavoration'),
         'accounting_sl_code': fields.char('Accounting SL code', size=8, 
             help='Code of SL assigned during importation in accounting program (material and package)'),

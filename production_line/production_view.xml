@@ -452,6 +452,8 @@
                                 <field name="accounting_qty" readonly="1"/>                                
                             </tree>                                
                         </field>
+                        <field name="silos_note" />
+                        <field name="bonific_note" />
                         <group colspan="2" col="2">
                             <separator string="Lavoration note:" colspan="2" />
                             <field name="lavoration_note" colspan="2" nolabel="1" />
