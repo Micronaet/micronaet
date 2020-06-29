@@ -32,7 +32,7 @@ from openerp.report.report_sxw import rml_parse
 _logger = logging.getLogger(__name__)
 
 
-class micronaet_accounting(osv.osv):
+class MicronaetAccounting(osv.osv):
     """ Object for keep function with the query
         Record are only table with last date of access
     """
@@ -42,7 +42,7 @@ class micronaet_accounting(osv.osv):
     def get_mm_situation(
             self, cr, uid, document, partner_code, year=False,
             originator=False, context=None):
-        """ Return quantity product usually buyed with total and delivery
+        """ Return quantity product usually bought with total and delivery
             where_document: list, tuple, string of document searched (ex. BS)
             where_partner: list, tuple, string for partner code searched
             Table: MM_RIGHE
@@ -277,7 +277,7 @@ class Parser(report_sxw.rml_parse):
             # -----------------------------------------------------------------
             #                    Totals (delivery and amount)
             # -----------------------------------------------------------------
-            mysql_data = {} # this is a dict not list
+            mysql_data = {}  # this is a dict not list
 
             for year in years:
                 self.total_invoiced[year] = 0.0
