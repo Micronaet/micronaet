@@ -170,7 +170,7 @@ class Parser(report_sxw.rml_parse):
         product_ids = product_pool.search(cr, uid, [], context=context)
         for product in product_pool.browse(
                 cr, uid, product_ids, context=context):
-            if not  product.default_code:
+            if not product.default_code:
                 _logger.error('Product without code: %s' % product.name)
                 continue
             self.products_uom[product.default_code] = (
@@ -235,7 +235,7 @@ class Parser(report_sxw.rml_parse):
             if current_year > from_year:
                 # Generate list of year (for DB search)
                 years.extend(range(from_year, current_year))
-        years.append(current_year) # Last year (order crescent for year)
+        years.append(current_year)  # Last year (order crescent for year)
         # years.sort(reverse=True)
         # reverse year list # XXX reverse ok but purchase not!
 
@@ -265,7 +265,7 @@ class Parser(report_sxw.rml_parse):
             for year in years:
                 mysql_cursor = query.get_mm_header_line(
                     self.cr, self.uid,
-                    where_document= ("BC", "BS"),
+                    where_document=("BC", "BS"),
                     where_partner=partner_code,
                     originator=True,
                     year=year,
@@ -348,7 +348,8 @@ class Parser(report_sxw.rml_parse):
                 # sorted DTT_DOC_ORI (for change price):
                 for invoice in sorted(year, key=lambda y: y['DTT_DOC_ORI']):
                     price = round(invoice['NPZ_UNIT'] / (
-                        1.0 / invoice['NCF_CONV'] if invoice['NCF_CONV'] else 1.0
+                        1.0 / invoice['NCF_CONV'] if
+                        invoice['NCF_CONV'] else 1.0
                         ), 4)
                     date = self.format_date(invoice['DTT_DOC_ORI'])
                     # date_doc = self.format_date(invoice['DTT_DOC'])
@@ -394,7 +395,7 @@ class Parser(report_sxw.rml_parse):
                 return 'red'
             elif date < self.status['yellow']:
                 return 'yellow'
-            else: # default
+            else:  # default
                 return 'green'
 
     def get_partner_offer(self, partner_id, mode='order'):
