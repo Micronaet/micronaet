@@ -25,20 +25,19 @@ from openerp import SUPERUSER_ID
 from openerp.osv import osv, orm, fields
 from datetime import datetime, timedelta
 from openerp.tools import (
-    DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, 
+    DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT,
     DATETIME_FORMATS_MAP, float_compare)
 import openerp.addons.decimal_precision as dp
 from openerp.tools.translate import _
 
-
-
 _logger = logging.getLogger(__name__)
+
 
 class ProductUom(orm.Model):
     """ Model name: ProductUom
-    """    
+    """
     _inherit = 'product.uom'
-    
+
     _columns = {
         'moltiplicator': fields.integer('Moltiplicator'),
         }
@@ -47,41 +46,41 @@ class ProductUom(orm.Model):
        'moltiplicator': lambda *a: 1,
         }
 
+
 class crm_trip(osv.osv):
-    ''' CRM Trip object
-    '''
+    """ CRM Trip object
+    """
     _name = 'crm.trip'
     _description = 'CRM Trip'
     _order = 'from_date desc, name'
-    
+
     # -------------
     # Button event:
     # -------------
     def open_crm_partner_report(self, cr, uid, ids, context=None):
-       ''' Open report for partner
-       '''       
-       return { # action report
+        """ Open report for partner
+        """
+        return {  # action report
            'type': 'ir.actions.report.xml',
            'report_name': 'crm_trip_info_report',
-           #'datas': datas,
-           }            
-       
+           # 'datas': datas,
+           }
+
     def reload_country(self, cr, uid, ids, context=None):
-        ''' Load nation but before delete all elements
-        '''
+        """ Load nation but before delete all elements
+        """
         crm_partner_pool = self.pool.get('crm.trip.partner')
         crm_partner_ids = crm_partner_pool.search(cr, uid, [
             ('trip_id', '=', ids[0])], context=context)
-        crm_partner_pool.unlink(cr, uid, crm_partner_ids, context=context)        
+        crm_partner_pool.unlink(cr, uid, crm_partner_ids, context=context)
         return self.load_country(cr, uid, ids, context=context)
-        
+
     def load_country(self, cr, uid, ids, context=None):
-        ''' Load all customer with selected nation
-        '''
+        """ Load all customer with selected nation
+        """
         crm_partner_pool = self.pool.get('crm.trip.partner')
         partner_pool = self.pool.get('res.partner')
-        
-        
+
         trip_proxy = self.browse(cr, uid, ids, context=context)[0]
         crm_partner_ids = [item.id for item in trip_proxy.partner_ids]
 
@@ -99,49 +98,55 @@ class crm_trip(osv.osv):
                     'sequence': i,
                     'trip_id': ids[0],
                     'partner_id': item.id,
-                    }, context=context)            
+                    }, context=context)
         return True
-            
+
     # ----------
     # Functions:
     # ----------
     def _get_analysis_year(self, cr, uid, context=None):
-        ''' Return a list of elements from actual year (as top) to 
+        """ Return a list of elements from actual year (as top) to
             year setted up in Company setup for SQL databases exported
-        '''
+        """
         current = datetime.now().year
         company_pool = self.pool.get("res.company")
-        company_id = company_pool.search(cr, uid, [], context=context)[0] # TODO
+        # TODO
+        company_id = company_pool.search(cr, uid, [], context=context)[0]
         company_proxy = company_pool.browse(
             cr, uid, company_id, context=context)
-        
-        # For multicompany create a list from bottom to current year    
+
+        # For multicompany create a list from bottom to current year
         if company_proxy.multi_year and company_proxy.bottom_year < current:
-            res = [(str(y), str(y)) for y in range(company_proxy.bottom_year, current)]
+            res = [(str(y), str(y)) for y in
+                   range(company_proxy.bottom_year, current)]
         else:
-            res = []        
-        res.append((str(current), str(current)))   
+            res = []
+        res.append((str(current), str(current)))
         return res
-        
+
     _columns = {
-        'partner':fields.boolean('Partner trip',
+        'partner': fields.boolean(
+            'Partner trip',
             help='Partner trip for get status without trip generation'),
-        'name': fields.char('Name', required=True, size=40, 
+        'name': fields.char(
+            'Name', required=True, size=40,
             help='Trip short name'),
         'user_id': fields.many2one('res.users', 'Sales man', required=True),
         'from_date': fields.date('From date', required=True),
         'to_date': fields.date('To date'),
-        'product_from_date': fields.date('Product buy date',
+        'product_from_date': fields.date(
+            'Product buy date',
             help='''Evaluation date for product, filter product last buy date
                 after this date (also for sample product)'''),
-        'analysis_year': fields.selection(_get_analysis_year, "Analysis year",
+        'analysis_year': fields.selection(
+            _get_analysis_year, "Analysis year",
             help="Choose from what year start analysis (depend on export "
             "mirror in databases selected on SQL DBMS"),
         'note': fields.text('Note', help='Extra information about trip'),
-        'country_id': fields.many2one('res.country', 'Country', 
-            required=False, 
-            ondelete='set null'),
-        
+        'country_id': fields.many2one(
+            'res.country', 'Country',
+            required=False, ondelete='set null'),
+
         # Report parameters:
         'with_anagraphic': fields.boolean('Print anagraphic'),
         'with_note': fields.boolean('Print note'),
@@ -155,12 +160,12 @@ class crm_trip(osv.osv):
         'with_sample': fields.boolean('Print sample'),
         'with_followup': fields.boolean('Print followup'),
         }
-        
+
     _defaults = {
         'user_id': lambda s, cr, uid, ctx: uid,
         'from_date': lambda *x: datetime.now().strftime(
             DEFAULT_SERVER_DATE_FORMAT),
-        
+
         # Report parameters:
         'with_anagraphic': lambda *x: True,
         'with_note': lambda *x: True,
@@ -175,14 +180,15 @@ class crm_trip(osv.osv):
         'with_followup': lambda *x: True,
         }
 
+
 class crm_trip_partner(osv.osv):
-    ''' CRM Trip partner visited object
-    '''
+    """ CRM Trip partner visited object
+    """
     _name = 'crm.trip.partner'
-    _description = 'CRM Trip partner' 
+    _description = 'CRM Trip partner'
     _order = 'sequence, date desc'
     _rec_name = 'partner_id'
-    
+
     _columns = {
         'sequence': fields.integer('Sequence'),
         'partner_id': fields.many2one('res.partner', 'Customer', required=True,
@@ -194,16 +200,17 @@ class crm_trip_partner(osv.osv):
         'trip_id': fields.many2one('crm.trip', 'Visit'),
         # TODO needed?
         'partner': fields.related(
-            'trip_id', 'partner', type='boolean', string='Partner trip'), 
+            'trip_id', 'partner', type='boolean', string='Partner trip'),
         }
-        
-    _default = {    
+
+    _default = {
         'sequence': lambda *x: 0,
         }
 
+
 class crm_trip(osv.osv):
-    ''' CRM Trip object
-    '''
+    """ CRM Trip object
+    """
     _inherit = 'crm.trip'
 
     _columns = {
@@ -211,23 +218,24 @@ class crm_trip(osv.osv):
             'crm.trip.partner', 'trip_id', 'Customers'),
         }
 
+
 class res_partner(osv.osv):
-    ''' Extra relation in partner
-    '''
+    """ Extra relation in partner
+    """
     _inherit = 'res.partner'
 
     def create_open_analysis_document(self, cr, uid, ids, context=None):
-        ''' Create a fake visit for partner statistic analysis
-        '''
+        """ Create a fake visit for partner statistic analysis
+        """
         partner_proxy = self.browse(cr, uid, ids, context=context)[0]
         crm_trip_id = partner_proxy.crm_trip_id.id
-        
+
         if not crm_trip_id: # else update evaluation period?
             # ----------------------
             # Generate (first time):
             # ----------------------
-            current_year = datetime.now().year       
-            # Header                        
+            current_year = datetime.now().year
+            # Header
             crm_trip_id = self.pool.get('crm.trip').create(cr, uid, {
                 'partner': True,
                 'name': partner_proxy.name,
@@ -238,21 +246,21 @@ class res_partner(osv.osv):
                 'from_date': datetime.now().strftime(
                     DEFAULT_SERVER_DATE_FORMAT),
                 'to_date': datetime.now().strftime(
-                    DEFAULT_SERVER_DATE_FORMAT),                    
-                'note': _('Automatic generation from partner, used for setup'),    
+                    DEFAULT_SERVER_DATE_FORMAT),
+                'note': _('Automatic generation from partner, used for setup'),
                 }, context=context)
-            
+
             # Lines
             self.pool.get('crm.trip.partner').create(cr, uid, {
                 'sequence': 1,
-                'partner_id': ids[0],                   
+                'partner_id': ids[0],
                 'trip_id': crm_trip_id,
                 }, context=context)
-            
-            # Update partner for future ref    
+
+            # Update partner for future ref
             self.write(cr, uid, ids, {
-                'crm_trip_id': crm_trip_id}, context=context)    
-        
+                'crm_trip_id': crm_trip_id}, context=context)
+
         return {
             'type': 'ir.actions.act_window',
             'name': _('Analysis parameters'),
@@ -260,19 +268,18 @@ class res_partner(osv.osv):
             'view_mode': 'form',
             'res_id': crm_trip_id,
             'res_model': 'crm.trip',
-            #'view_id': view_id, # False
+            # 'view_id': view_id, # False
             'views': [(False, 'form')],
             'domain': [('id', '=', crm_trip_id)],
             'context': context,
             'target': 'current', # 'new'
             'nodestroy': False,
             }
-    
+
     _columns = {
         'trip_ids': fields.one2many(
             'crm.trip.partner', 'partner_id', 'Visit', domain=[
                 ('partner', '=', False)]),
         'crm_trip_id': fields.many2one(
             'crm.trip', 'Analysis parameters'),
-        }        
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+        }
