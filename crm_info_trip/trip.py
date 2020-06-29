@@ -208,7 +208,7 @@ class crm_trip_partner(osv.osv):
         }
 
 
-class crm_trip(osv.osv):
+class crm_trip_relation(osv.osv):
     """ CRM Trip object
     """
     _inherit = 'crm.trip'
@@ -219,7 +219,7 @@ class crm_trip(osv.osv):
         }
 
 
-class res_partner(osv.osv):
+class res_partner_relation(osv.osv):
     """ Extra relation in partner
     """
     _inherit = 'res.partner'
@@ -272,7 +272,7 @@ class res_partner(osv.osv):
             'views': [(False, 'form')],
             'domain': [('id', '=', crm_trip_id)],
             'context': context,
-            'target': 'current', # 'new'
+            'target': 'current',  # 'new'
             'nodestroy': False,
             }
 
