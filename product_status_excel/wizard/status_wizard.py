@@ -20,7 +20,6 @@
 #
 ###############################################################################
 
-
 import os
 import sys
 import logging
@@ -124,12 +123,14 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             ], format_title)
 
         row += 2
-        excel_pool.column_width(ws_name, [10, 40, 20, 10, 10])
+        excel_pool.column_width(ws_name, [10, 40, 20, 10, 12, 30, 10])
         excel_pool.write_xls_line(ws_name, row, [
             u'Codice',
             u'Nome',
             u'Categoria',
             u'Cat. stat.',
+            u'Cod. doganale',
+            u'Primo fornitore',
             u'Q.',
             ], format_header)
 
@@ -147,6 +148,8 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 product.name,
                 product.categ_id.name,
                 product.statistic_category,
+                product.duty_id.name or '/',
+                product.first_supplier_id.name or '/',
                 (product.accounting_qty, format_number),
                 ], format_text)
 
