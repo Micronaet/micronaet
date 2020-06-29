@@ -60,6 +60,10 @@ class MicronaetAccounting(osv.osv):
         # -------------------
         # Manage where clause
         # -------------------
+        where = 'WHERE h.CSG_DOC IN (\'%s\')' % ', '.join(document)
+        if partner_code:
+            where += ' AND l.CKY_CNT_CLFR = \'%s\';' % partner_code
+
         # Filter document type:
         # TODO change query linked to header if there's originator
         query = """
@@ -79,14 +83,8 @@ class MicronaetAccounting(osv.osv):
                     h.CSG_DOC = l.CSG_DOC AND 
                     h.NGB_SR_DOC = l.NGB_SR_DOC AND
                     h.NGL_DOC = l.NGL_DOC AND h.NPR_DOC = l.NPR_DOC) 
-            WHERE 
-                h.CSG_DOC IN ('%s') AND l.CKY_CNT_CLFR = '%s';
-            """ % (
-                table_header,
-                table_line,
-                document,
-                partner_code,
-                )
+            %s
+            """ % (table_header, table_line, where)
 
         try:
             cursor.execute(query)
@@ -106,7 +104,7 @@ class MicronaetAccounting(osv.osv):
         # Parameters:
         # ---------------------------------------------------------------------
         # Fixed:
-        level = 3  # Max 2 year with current
+        level = 1  # 3  # Max year with current
         document = ('BC', 'RC')
 
         # Calculated:
@@ -122,7 +120,8 @@ class MicronaetAccounting(osv.osv):
                 cr, uid,
                 document=document,
                 partner_code=partner_code,
-                year=year)
+                year=year,
+                context=context)
 
             # Explode record:
             for record in mysql_cursor.fetchall():
@@ -153,3 +152,21 @@ class MicronaetAccounting(osv.osv):
                 # Update data:
                 mysql_data[key][0] += record['quantity']
                 mysql_data[key][1] += record['total']
+
+
+class CrmTrip(osv.osv):
+    """ Update partner for launch report
+    """
+    _inherit = 'crm.trip'
+
+    def compare_invoiced_for_partner(self, cr, uid, ids, context=None):
+        """ Return report for compare
+        """
+        account_pool = self.pool.get('micronaet.accounting')
+
+        current = self.browse(cr, uid, ids, context=context)[0]
+        partner_code = current.partner_id.sql_customer_code
+
+        return account_pool.get_report_data(
+            cr, uid, partner_code=partner_code, context=context)
+
