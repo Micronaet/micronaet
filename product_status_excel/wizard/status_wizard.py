@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# ODOO (ex OpenERP) 
+# ODOO (ex OpenERP)
 # Open Source Management Solution
 # Copyright (C) 2001-2015 Micronaet S.r.l. (<http://www.micronaet.it>)
 # Developer: Nicola Riolini @thebrush (<https://it.linkedin.com/in/thebrush>)
@@ -12,7 +12,7 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU Affero General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
@@ -32,37 +32,36 @@ from dateutil.relativedelta import relativedelta
 from openerp import SUPERUSER_ID
 from openerp import tools
 from openerp.tools.translate import _
-from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT, 
-    DEFAULT_SERVER_DATETIME_FORMAT, 
-    DATETIME_FORMATS_MAP, 
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
+    DEFAULT_SERVER_DATETIME_FORMAT,
+    DATETIME_FORMATS_MAP,
     float_compare)
-
 
 _logger = logging.getLogger(__name__)
 
 
 class ProductExtractProductXlsWizard(orm.TransientModel):
-    ''' Wizard for extract XLS report
-    '''
+    """ Wizard for extract XLS report
+    """
     _name = 'product.product.extract.xls.wizard'
 
     # --------------------
     # Wizard button event:
     # --------------------
     def action_done(self, cr, uid, ids, context=None):
-        ''' Event for button done
-        '''
+        """ Event for button done
+        """
         # Pool used:
         product_pool = self.pool.get('product.product')
         excel_pool = self.pool.get('excel.writer')
-        
-        wiz_browse = self.browse(cr, uid, ids, context=context)[0]        
-        
+
+        wiz_browse = self.browse(cr, uid, ids, context=context)[0]
+
         # ---------------------------------------------------------------------
         # Create dynamic domain
         # ---------------------------------------------------------------------
         domain = []
-        
+
         # Search block:
         filter_used = ''
         if wiz_browse.mode == 'negative':
@@ -74,7 +73,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         elif wiz_browse.mode == 'zero':
             domain.append(('accounting_qty', '=', 0.0))
             filter_used += 'Solo prodotti zero (=0)'
-        else:    
+        else:
             filter_used += 'Tutti i prodotti'
 
         if wiz_browse.from_code:
@@ -83,16 +82,16 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         if wiz_browse.to_code:
             domain.append(('default_code', '<=', wiz_browse.to_code))
             filter_used += ', Codice <= %s' % wiz_browse.to_code
-            
+
         if wiz_browse.statistic_category:
             domain.append(
                 ('statistic_category', '=', wiz_browse.statistic_category))
             filter_used += ', Cat. stat. = %s' % wiz_browse.statistic_category
-                
+
         if wiz_browse.categ_id:
             domain.append(('categ_id', '=', wiz_browse.categ_id.id))
             filter_used += ', Categoria = %s' % wiz_browse.categ_id.name
-        
+
         # Sort function:
         if wiz_browse.sort == 'default_code':
             sort_key = lambda x: x.default_code
@@ -102,28 +101,28 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             sort_key = lambda x: (x.categ_id.name, x.default_code)
         elif wiz_browse.sort == 'statistic_category':
             sort_key = lambda x: (x.statistic_category, x.default_code)
-            
+
         product_ids = product_pool.search(cr, uid, domain, context=context)
 
         # Excel generation
         ws_name = 'Prodotti'
         ws = excel_pool.create_worksheet(ws_name)
-        
+
         # Format used:
-        #excel_pool.set_format()
+        # excel_pool.set_format()
         format_title = excel_pool.get_format('title')
         format_header = excel_pool.get_format('header')
         format_text = excel_pool.get_format('text')
 
         format_number_white = excel_pool.get_format('bg_white_number')
         format_number_red = excel_pool.get_format('bg_red_number')
-        
+
         row = 0
         excel_pool.write_xls_line(ws_name, row, [
             'Filtro: ',
             filter_used,
             ], format_title)
-        
+
         row += 2
         excel_pool.column_width(ws_name, [10, 40, 20, 10, 10])
         excel_pool.write_xls_line(ws_name, row, [
@@ -133,16 +132,16 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             u'Cat. stat.',
             u'Q.',
             ], format_header)
-            
+
         for product in sorted(product_pool.browse(
-                cr, uid, product_ids, context=context), 
+                cr, uid, product_ids, context=context),
                 key=sort_key):
-            row += 1    
+            row += 1
             if product.accounting_qty >= 0:
                 format_number = format_number_white
             else:
                 format_number = format_number_red
-                    
+
             excel_pool.write_xls_line(ws_name, row, [
                 product.default_code,
                 product.name,
@@ -150,8 +149,8 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 product.statistic_category,
                 (product.accounting_qty, format_number),
                 ], format_text)
-                
-        return excel_pool.return_attachment(cr, uid, 'Prodotti', 
+
+        return excel_pool.return_attachment(cr, uid, 'Prodotti',
             name_of_file=False, version='7.0', php=True,
             context=context)
 
@@ -174,9 +173,8 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             ('statistic_category', 'Statistic category'),
             ], 'Sort mode', required=True),
         }
-        
+
     _defaults = {
         'mode': lambda *x: 'all',
         'sort': lambda *x: 'default_code',
-        }    
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+        }
