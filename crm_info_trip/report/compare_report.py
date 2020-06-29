@@ -100,13 +100,27 @@ class MicronaetAccounting(osv.osv):
             self, cr, uid, partner_code=False, context=None):
         """ Loop for report
         """
+        partner_pool = self.pool.get('res.partner')
+
+        # ---------------------------------------------------------------------
+        # Parameters:
+        # ---------------------------------------------------------------------
+        # Fixed:
+        level = 3  # Max 2 year with current
+        document = ('BC', 'RC')
+
+        # Calculated:
         current_year = datetime.now().year
-        years = []
+        years = range(current_year + 1 - level, current_year + 1)
+
+        # Data dict:
         mysql_data = {}
+        partner_db = {}
         for year in years:
+            # Load this year:
             mysql_cursor = self.get_mm_compare_status(
                 cr, uid,
-                document=('BC', 'RC'),
+                document=document,
                 partner_code=partner_code,
                 year=year)
 
@@ -114,20 +128,28 @@ class MicronaetAccounting(osv.osv):
             for record in mysql_cursor.fetchall():
                 default_code = record['product_code']
                 partner_code = record['partner_code']
-                data = record['data']
+                date = record['data']
+                if date:
+                    date_month = '%s-%s' % date[:4], date[5:7]
+                else:
+                    date_month = '0000-00'  # Not found
+                if partner_code not in partner_db:
+                    partner_ids = partner_pool.search(cr, uid, [
+                        ('sql_customer_code', '=', partner_code),
+                    ], context=context)
+                    if partner_ids:
+                        partner_db[partner_code] = partner_pool.browse(
+                            cr, uid, partner_ids, context=context)[0]
+                    else:
+                        _logger.error('Partner not found: %s' % partner_code)
+                partner = partner_db.get[partner_code]
 
-                partner = False
-                data_month = False
-                key = (parter, data_month)
+                key = (partner, date_month)  # product, category mode?
                 if key not in mysql_data:
                     mysql_data[key] = [
                         0.0,  # quantity
                         0.0,  # total
                     ]
-
-                if default_code not in mysql_data:
-                    # Create default element:
-                    mysql_data[default_code] = [
-                        record['description'],  # description
-                        {},  # delivery per year
-                    ]
+                # Update data:
+                mysql_data[key][0] += record['quantity']
+                mysql_data[key][1] += record['total']
