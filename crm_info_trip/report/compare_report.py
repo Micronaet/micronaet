@@ -67,7 +67,7 @@ class MicronaetAccounting(osv.osv):
             SELECT
                 r.CKY_CNT_CLFR as partner_code, 
                 h.DTT_DOC as date,
-                l.CSG_DOC as sigla,
+                r.CSG_DOC as sigla,
 
                 r.CKY_ART as product_code,
                 r.CDS_VARIAB_ART as description, 
