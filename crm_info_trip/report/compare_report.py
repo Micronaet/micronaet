@@ -20,15 +20,11 @@
 import pdb
 import os
 import sys
-import openerp.netsvc
 import logging
 from openerp.osv import osv, orm, fields
 from datetime import datetime, timedelta
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, DATETIME_FORMATS_MAP, float_compare
-import openerp.addons.decimal_precision as dp
 from openerp.tools.translate import _
-from openerp.report import report_sxw
-from openerp.report.report_sxw import rml_parse
 
 _logger = logging.getLogger(__name__)
 
