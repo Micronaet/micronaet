@@ -212,8 +212,9 @@ class MicronaetAccounting(osv.osv):
         excel_pool.freeze_panes(ws_name, 3, 2)
         row += 1
 
+        report_year = years[1:].reverse()
         for partner in sorted(partner_db.values(), key=lambda p: p.name):
-            for year in years[1:]:  # Not used first year
+            for year in report_year:  # Not used first year
                 record = [partner.name, partner.sql_customer_code, year]
                 excel_pool.write_xls_line(
                     ws_name, row, record,
