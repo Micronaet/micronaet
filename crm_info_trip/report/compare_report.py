@@ -56,6 +56,7 @@ class MicronaetAccounting(osv.osv):
             table_header = table_header.upper()
             table_line = table_line.upper()
 
+        pdb.set_trace()
         cursor = self.connect(cr, uid, year=year, context=context)
 
         # -------------------
