@@ -96,7 +96,7 @@ class MicronaetAccounting(osv.osv):
                 query.replace('\n', ' '), sys.exc_info()))
             return False
 
-    def get_report_data(
+    def get_report_with_compare_data(
             self, cr, uid, partner_code=False, context=None):
         """ Loop for report
         """
@@ -113,6 +113,9 @@ class MicronaetAccounting(osv.osv):
         current_year = datetime.now().year
         years = range(current_year + 1 - level, current_year + 1)
 
+        # ---------------------------------------------------------------------
+        # Collect data:
+        # ---------------------------------------------------------------------
         # Data dict:
         mysql_data = {}
         partner_db = {}
@@ -127,12 +130,13 @@ class MicronaetAccounting(osv.osv):
 
             # Explode record:
             for record in mysql_cursor.fetchall():
-                default_code = record['product_code']
+                # default_code = record['product_code']  # TODO not used now
                 partner_code = record['partner_code']
                 date = record['data']
                 if date:
                     date_month = '%s-%s' % date[:4], date[5:7]
                 else:
+                    _logger.warning('Date not found: %s' % (record, ))
                     date_month = '0000-00'  # Not found
                 if partner_code not in partner_db:
                     partner_ids = partner_pool.search(cr, uid, [
@@ -154,6 +158,10 @@ class MicronaetAccounting(osv.osv):
                 # Update data:
                 mysql_data[key][0] += record['quantity']
                 mysql_data[key][1] += record['total']
+
+        # ---------------------------------------------------------------------
+        # Excel generation:
+        # ---------------------------------------------------------------------
         return True
 
 
@@ -170,5 +178,5 @@ class CrmTrip(osv.osv):
         current = self.browse(cr, uid, ids, context=context)[0]
         partner_code = current.partner_ids[0].partner_id.sql_customer_code
 
-        return account_pool.get_report_data(
+        return account_pool.get_report_with_compare_data(
             cr, uid, partner_code=partner_code, context=context)
