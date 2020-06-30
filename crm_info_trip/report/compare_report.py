@@ -94,7 +94,7 @@ class MicronaetAccounting(osv.osv):
             return cursor  # with the query set up
         except:
             _logger.error("Problem launch query: %s [%s]" % (
-                query, sys.exc_info()))
+                query.replace('\n', ' '), sys.exc_info()))
             return False
 
     def get_report_data(
