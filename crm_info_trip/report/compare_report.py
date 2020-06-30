@@ -101,6 +101,7 @@ class MicronaetAccounting(osv.osv):
         """ Loop for report
         """
         partner_pool = self.pool.get('res.partner')
+        excel_pool = self.pool.get('excel.writer')
 
         # ---------------------------------------------------------------------
         # Parameters:
@@ -147,7 +148,7 @@ class MicronaetAccounting(osv.osv):
                             cr, uid, partner_ids, context=context)[0]
                     else:
                         _logger.error('Partner not found: %s' % partner_code)
-                partner = partner_db.get[partner_code]
+                partner = partner_db[partner_code]
 
                 key = (partner, date_month)  # product, category mode?
                 if key not in mysql_data:
@@ -162,7 +163,106 @@ class MicronaetAccounting(osv.osv):
         # ---------------------------------------------------------------------
         # Excel generation:
         # ---------------------------------------------------------------------
-        return True
+        ws_name = 'Confronto annuale'
+        excel_pool.create_worksheet(name=ws_name)
+        header = [
+            'Cliente', 'Codice', 'Responsabile',
+            'Gen.', 'Feb.', 'Mar.', 'Apr.', 'Mag.', 'Giu.',
+            'Lug.', 'Ago.', 'Set.', 'Ott', 'Nov.', 'Dic.',
+            ]
+        width = [
+            45, 15, 10,
+            6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+            ]
+        excel_pool.column_width(ws_name, width)
+
+        # Format list:
+        excel_pool.set_format()
+        format_list = {
+            'title': excel_pool.get_format('title'),
+            'header': excel_pool.get_format('header'),
+
+            'white': {
+                'text': excel_pool.get_format('text'),
+                'number': excel_pool.get_format('number'),
+                },
+            'red': {
+                'text': excel_pool.get_format('text_red'),
+                'number_red': excel_pool.get_format('number_red'),
+                },
+            'blue': {
+                'text': excel_pool.get_format('bg_blue'),
+                'number': excel_pool.get_format('bg_blue_number'),
+                },
+            'green': {},
+            }
+
+        row = 0
+        excel_pool.write_xls_line(
+            ws_name, row, ['Differenze di fatturato rispetto anno precedente'],
+            default_format=format_list['title'])
+        row += 2
+
+        excel_pool.write_xls_line(
+            ws_name, row, header,
+            default_format=format_list['header'])
+        excel_pool.autofilter(ws_name, row, 0, row, 1)
+        excel_pool.freeze_panes(ws_name, 3, 2)
+        row += 1
+
+        for partner in sorted(partner_db.values(), key=lambda p: p.name):
+            for year in years[1:]:  # Not used first year
+                record = [partner.name, partner.sql_customer_code, year]
+                excel_pool.write_xls_line(
+                    ws_name, row, record,
+                    default_format=format_list['white']['text'])
+
+                # month mode:
+                month_record = ['' for item in range(0, 12)]
+                has_negative = False
+                for month in range(1, 13):
+                    this_month = '%s-%s' % (year, month)
+                    key = (partner, this_month)
+                    current_data = mysql_data.get(key)
+                    if current_data:
+                        current_quantity, current_total = current_data
+                    else:
+                        current_quantity = current_total = 0.0
+
+                    previous_month = '%s-%s' % (year - 1, month)
+                    key = (partner, this_month)
+                    previous_data = mysql_data.get(key)
+                    if previous_data:  # check difference:
+                        previous_quantity, previous_total = current_data
+                    else:
+                        previous_quantity = previous_total = 0.0
+
+                    delta_total = (current_total - previous_total)
+                    delta_rate_total = 0.0
+                    if previous_total:
+                        delta_rate_total = (
+                            100.0 * delta_total / previous_total)
+
+                    # TODO format color
+                    if delta_total < 0.0 and not has_negative:
+                        has_negative = True
+
+                    month_record[month - 1] = '%s %% (%s)' % (
+                        delta_rate_total,
+                        delta_total,
+                    )
+                    # TODO Write comment:
+                    # write_comment(self, ws_name, row, col, comment,
+                    #               parameters=None)
+                # B. Data part:
+                excel_pool.write_xls_line(
+                    ws_name, row, month_record,
+                    default_format=format_list['white']['text'],
+                    col=len(record))
+                row += 1
+        return excel_pool.return_attachment(
+            cr, uid, 'Compare invoiced', name_of_file='compare_invoiced.xlsx',
+            version='7.0', php=True, context=context)
 
 
 class CrmTrip(osv.osv):
