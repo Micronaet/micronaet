@@ -136,6 +136,10 @@ class MicronaetAccounting(osv.osv):
                 # default_code = record['product_code']  # TODO not used now
                 partner_code = record['partner_code']
                 date = '%s' % record['date']
+                if record['CSG_DOC'] in ('RC', ):
+                    sign = -1
+                else:
+                    sign = +1
                 if date:
                     date_month = '%s-%s' % (date[:4], date[5:7])
                 else:
@@ -159,8 +163,8 @@ class MicronaetAccounting(osv.osv):
                         0.0,  # total
                     ]
                 # Update data:
-                mysql_data[key][0] += record['quantity']
-                mysql_data[key][1] += record['total']
+                mysql_data[key][0] += record['quantity'] *  sign
+                mysql_data[key][1] += record['total'] * sign
 
         # ---------------------------------------------------------------------
         # Excel generation:
