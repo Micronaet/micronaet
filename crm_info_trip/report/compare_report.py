@@ -177,7 +177,7 @@ class MicronaetAccounting(osv.osv):
                     ws_name, row, [
                         partner.name,
                         partner_code,
-                        date
+                        date,
                         date_month,
                         mysql_data[key][0],
                         mysql_data[key][1],
