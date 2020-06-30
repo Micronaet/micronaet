@@ -67,6 +67,7 @@ class MicronaetAccounting(osv.osv):
             SELECT
                 r.CKY_CNT_CLFR as partner_code, 
                 h.DTT_DOC as date,
+                l.CSG_DOC as sigla,
 
                 r.CKY_ART as product_code,
                 r.CDS_VARIAB_ART as description, 
@@ -136,7 +137,7 @@ class MicronaetAccounting(osv.osv):
                 # default_code = record['product_code']  # TODO not used now
                 partner_code = record['partner_code']
                 date = '%s' % record['date']
-                if record['CSG_DOC'] in ('RC', ):
+                if record['sigla'] in ('RC', ):
                     sign = -1
                 else:
                     sign = +1
