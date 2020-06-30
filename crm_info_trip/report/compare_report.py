@@ -37,11 +37,11 @@ class MicronaetAccounting(osv.osv):
 
     # Override function:
     def get_mm_compare_status(
-            self, cr, uid, document, partner_code, year=False, context=None):
+            self, cr, uid, document, account_code, year=False, context=None):
         """ Return data list generated from:
             Table: MM_TESTATE, MM_RIGHE
             document: filter for this reference, ex.: BC, FT
-            partner_code: filter for this partner code, ex.: 201.00001
+            account_code: filter for this partner code, ex.: 201.00001
             year: query on database (multi year mode) selected
         """
         table_header = "mm_testate"
@@ -58,8 +58,8 @@ class MicronaetAccounting(osv.osv):
         # Manage where clause
         # -------------------
         where = 'WHERE h.CSG_DOC IN %s' % (document, )
-        if partner_code:
-            where += ' AND r.CKY_CNT_CLFR = \'%s\';' % partner_code
+        if account_code:
+            where += ' AND r.CKY_CNT_CLFR = \'%s\';' % account_code
 
         # Filter document type:
         # TODO change query linked to header if there's originator
