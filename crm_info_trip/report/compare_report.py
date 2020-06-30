@@ -56,7 +56,6 @@ class MicronaetAccounting(osv.osv):
             table_header = table_header.upper()
             table_line = table_line.upper()
 
-        pdb.set_trace()
         cursor = self.connect(cr, uid, year=year, context=context)
 
         # -------------------
@@ -107,7 +106,7 @@ class MicronaetAccounting(osv.osv):
         # Parameters:
         # ---------------------------------------------------------------------
         # Fixed:
-        level = 1  # 3  # Max year with current
+        level = 3  # Max year with current
         document = ('BC', 'RC')
 
         # Calculated:
