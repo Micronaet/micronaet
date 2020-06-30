@@ -230,6 +230,13 @@ class MicronaetAccounting(osv.osv):
             'white': {
                 'text': excel_pool.get_format('text'),
                 'number': excel_pool.get_format('number'),
+
+                # NO Heat map:
+                0: excel_pool.get_format('number'),
+                1: excel_pool.get_format('number'),
+                2: excel_pool.get_format('number'),
+                3: excel_pool.get_format('number'),
+                4: excel_pool.get_format('number'),
                 },
             'red': {
                 'text': excel_pool.get_format('bg_red'),
