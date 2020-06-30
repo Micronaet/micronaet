@@ -104,7 +104,11 @@ class MicronaetAccounting(osv.osv):
             """
             if delta_total < 0:
                 return 0
-            heat = int(math.log10(abs(value)))
+            try:
+                heat = int(math.log10(abs(value)))
+            except:
+                _logger.error('Log error: %s value')
+                return 0
             if heat > 4:
                 return 4
             elif heat < 0:
