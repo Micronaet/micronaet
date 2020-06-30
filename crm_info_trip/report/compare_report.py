@@ -113,6 +113,7 @@ class MicronaetAccounting(osv.osv):
                 return 4
             elif heat < 0:
                 return 0
+            return heat
 
         partner_pool = self.pool.get('res.partner')
         excel_pool = self.pool.get('excel.writer')
