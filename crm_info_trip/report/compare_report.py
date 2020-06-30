@@ -140,9 +140,9 @@ class MicronaetAccounting(osv.osv):
                 partner_code = record['partner_code']
                 date = '%s' % record['date']
                 if date:
-                    date_month = '%s-%s' % date[:4], date[5:7]
+                    date_month = '%s-%s' % (date[:4], date[5:7])
                 else:
-                    _logger.warning('Date not found: %s' % (record, ))
+                    _logger.error('Date not found: %s' % (record, ))
                     date_month = '0000-00'  # Not found
                 if partner_code not in partner_db:
                     partner_ids = partner_pool.search(cr, uid, [
