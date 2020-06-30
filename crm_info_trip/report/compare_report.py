@@ -215,7 +215,7 @@ class MicronaetAccounting(osv.osv):
                 },
             'red': {
                 'text': excel_pool.get_format('bg_red'),
-                'number_red': excel_pool.get_format('text_right_red'),
+                'number': excel_pool.get_format('text_right_red'),
                 },
             'blue': {
                 'text': excel_pool.get_format('bg_blue'),
@@ -223,7 +223,7 @@ class MicronaetAccounting(osv.osv):
                 },
             'green': {
                 'text': excel_pool.get_format('bg_green'),
-                'number_red': excel_pool.get_format('text_right_green'),
+                'number': excel_pool.get_format('text_right_green'),
                 },
             }
 
