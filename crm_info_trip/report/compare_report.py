@@ -166,8 +166,7 @@ class CrmTrip(osv.osv):
         account_pool = self.pool.get('micronaet.accounting')
 
         current = self.browse(cr, uid, ids, context=context)[0]
-        pdb.set_trace()
-        partner_code = current.partner_ids[0].sql_customer_code
+        partner_code = current.partner_ids[0].partner_id.sql_customer_code
 
         return account_pool.get_report_data(
             cr, uid, partner_code=partner_code, context=context)
