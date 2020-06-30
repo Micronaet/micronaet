@@ -307,4 +307,6 @@ class CrmTrip(osv.osv):
         # current.partner_ids[0].partner_id.sql_customer_code
 
         return account_pool.get_report_with_compare_data(
-            cr, uid, partner_code=partner_code, context=context)
+            cr, uid,
+            # partner_code=partner_code,
+            context=context)
