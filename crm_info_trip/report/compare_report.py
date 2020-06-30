@@ -164,6 +164,7 @@ class MicronaetAccounting(osv.osv):
         # ---------------------------------------------------------------------
         # Excel generation:
         # ---------------------------------------------------------------------
+        parameters = {}
         ws_name = 'Confronto annuale'
         excel_pool.create_worksheet(name=ws_name)
         header = [
@@ -255,7 +256,7 @@ class MicronaetAccounting(osv.osv):
                     # ---------------------------------------------------------
 
                     # Format color
-                    if delta_total < 0.0 and not has_negative:
+                    if delta_total < 0.0:
                         has_negative = True
                         color = format_list['red']
                     elif this_month < current_month:
@@ -264,22 +265,25 @@ class MicronaetAccounting(osv.osv):
                         color = format_list['white']
 
                     month_record[month - 1] = (
-                        '%s %% (%s)' % (
-                            delta_rate_total,
-                            delta_total,
-                            ),
-                        color['text'],
+                        '%s %%' % delta_rate_total, color['text'])
+                    comment = '%s - %s = %s' % (
+                        current_total,
+                        previous_total,
+                        delta_total,
                     )
-
                     # TODO Write comment:
-                    # write_comment(self, ws_name, row, col, comment,
-                    #               parameters=None)
+                    comment_col = len(record) + month - 1
+                    excel_pool.write_comment(
+                        ws_name, row, comment_col, comment,
+                        parameters=parameters)
+
                 # B. Data part:
                 excel_pool.write_xls_line(
                     ws_name, row, month_record,
                     default_format=format_list['white']['text'],
                     col=len(record))
                 row += 1
+
         return excel_pool.return_attachment(
             cr, uid, 'Compare invoiced', name_of_file='compare_invoiced.xlsx',
             version='7.0', php=True, context=context)
@@ -296,7 +300,8 @@ class CrmTrip(osv.osv):
         account_pool = self.pool.get('micronaet.accounting')
 
         current = self.browse(cr, uid, ids, context=context)[0]
-        partner_code = current.partner_ids[0].partner_id.sql_customer_code
+        partner_code = False  # TODO All
+        # current.partner_ids[0].partner_id.sql_customer_code
 
         return account_pool.get_report_with_compare_data(
             cr, uid, partner_code=partner_code, context=context)
