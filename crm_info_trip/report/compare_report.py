@@ -94,7 +94,7 @@ class MicronaetAccounting(osv.osv):
             return False
 
     def get_report_with_compare_data(
-            self, cr, uid, partner_code=False, context=None):
+            self, cr, uid, account_code=False, context=None):
         """ Loop for report
         """
         partner_pool = self.pool.get('res.partner')
@@ -125,7 +125,7 @@ class MicronaetAccounting(osv.osv):
             mysql_cursor = self.get_mm_compare_status(
                 cr, uid,
                 document=document,
-                partner_code=partner_code,
+                account_code=account_code,
                 year=year,
                 context=context)
 
@@ -179,7 +179,7 @@ class MicronaetAccounting(osv.osv):
             ]
         width = [
             45, 15, 10,
-            6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+            9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
             ]
         excel_pool.column_width(ws_name, width)
 
@@ -307,10 +307,10 @@ class CrmTrip(osv.osv):
         account_pool = self.pool.get('micronaet.accounting')
 
         current = self.browse(cr, uid, ids, context=context)[0]
-        partner_code = False  # TODO All
+        account_code = False  # TODO All
         # current.partner_ids[0].partner_id.sql_customer_code
 
         return account_pool.get_report_with_compare_data(
             cr, uid,
-            # partner_code=partner_code,
+            # account_code=account_code,
             context=context)
