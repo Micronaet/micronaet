@@ -86,6 +86,7 @@ class MicronaetAccounting(osv.osv):
 
         try:
             cursor.execute(query)
+            _logger.warning(query.replace('\n', ' '))
             return cursor  # with the query set up
         except:
             _logger.error("Problem launch query: %s [%s]" % (
