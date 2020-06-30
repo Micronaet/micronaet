@@ -113,7 +113,7 @@ class MicronaetAccounting(osv.osv):
         # Calculated:
         this_year = datetime.now().year
         this_month = '%s-%02d' % (
-            current_year, datetime.now().month,
+            this_year, datetime.now().month,
         )
         years = range(this_year + 1 - level, this_year + 1)
 
