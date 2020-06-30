@@ -343,9 +343,9 @@ class MicronaetAccounting(osv.osv):
 
                 if any((total_year_current, total_year_previous)):
                     comment = '%s-%s = %s' % (
-                        round(current_total, 0),
-                        round(previous_total, 0),
-                        round(delta_total, 0),
+                        round(total_year_current, 0),
+                        round(total_year_previous, 0),
+                        round(total_year_delta, 0),
                     )
                     comment_col = len(record) + 12 - 1
                     excel_pool.write_comment(
