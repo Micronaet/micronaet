@@ -269,16 +269,16 @@ class MicronaetAccounting(osv.osv):
 
                     month_record[month - 1] = (
                         '%s %%' % delta_rate_total, color['text'])
-                    comment = '%s - %s = %s' % (
-                        current_total,
-                        previous_total,
-                        delta_total,
-                    )
-                    # TODO Write comment:
-                    comment_col = len(record) + month - 1
-                    excel_pool.write_comment(
-                        ws_name, row, comment_col, comment,
-                        parameters=parameters)
+                    if any((current_total, previous_total)):
+                        comment = '%s - %s = %s' % (
+                            current_total,
+                            previous_total,
+                            delta_total,
+                        )
+                        comment_col = len(record) + month - 1
+                        excel_pool.write_comment(
+                            ws_name, row, comment_col, comment,
+                            parameters=parameters)
 
                 # B. Data part:
                 excel_pool.write_xls_line(
