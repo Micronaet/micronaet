@@ -259,6 +259,7 @@ class MicronaetAccounting(osv.osv):
                 for month in range(1, 13):
                     # ---------------------------------------------------------
                     # Current:
+                    # ---------------------------------------------------------
                     current_month = '%s-%02d' % (year, month)
                     key = (partner, current_month)
                     current_data = mysql_data.get(key)
@@ -267,7 +268,9 @@ class MicronaetAccounting(osv.osv):
                     else:
                         current_quantity = current_total = 0.0
 
+                    # ---------------------------------------------------------
                     # Previous
+                    # ---------------------------------------------------------
                     previous_month = '%s-%02d' % (year - 1, month)
                     key = (partner, previous_month)
                     previous_data = mysql_data.get(key)
@@ -279,6 +282,7 @@ class MicronaetAccounting(osv.osv):
 
                     # ---------------------------------------------------------
                     # A. Total invoiced calc:
+                    # ---------------------------------------------------------
                     delta_total = (current_total - previous_total)
                     if previous_total:
                         delta_rate_total = (
@@ -288,9 +292,10 @@ class MicronaetAccounting(osv.osv):
                     else:
                         delta_rate_total = 0.0
 
-                    # B. Total quantity calc:
-                    # TODO not for now
                     # ---------------------------------------------------------
+                    # B. Total quantity calc:
+                    # ---------------------------------------------------------
+                    # TODO not for now
 
                     # Format color
                     if current_month > this_month:  # No last part this year
@@ -331,13 +336,18 @@ class MicronaetAccounting(osv.osv):
                             ws_name, row, comment_col, comment,
                             parameters=parameters)
 
+                # -------------------------------------------------------------
                 # B. Data part:
+                # -------------------------------------------------------------
                 excel_pool.write_xls_line(
                     ws_name, row, month_record,
                     default_format=format_list['white']['text'],
                     col=len(record))
 
+                # -------------------------------------------------------------
                 # C. Total part
+                # -------------------------------------------------------------
+                # Calc part:
                 total_year_current, total_year_previous = total[year]
                 total_year_delta = (
                             total_year_current - total_year_previous
@@ -348,6 +358,7 @@ class MicronaetAccounting(osv.osv):
                 else:
                     total_year_rate = 100.0
 
+                # Comment part:
                 if any((total_year_current, total_year_previous)):
                     comment = '%s-%s = %s' % (
                         round(total_year_current, 0),
@@ -359,6 +370,15 @@ class MicronaetAccounting(osv.osv):
                         ws_name, row, comment_col, comment,
                         parameters=parameters)
 
+                # Format color
+                if total_year_rate < 0.0:
+                    color = format_list['red']
+                elif total_year_rate > 0.0:
+                    color = format_list['green']
+                else:
+                    color = format_list['white']
+
+                # Total perc:
                 excel_pool.write_xls_line(
                     ws_name, row, [
                         ('%s %%' % round(total_year_rate, 0), color['number']),
