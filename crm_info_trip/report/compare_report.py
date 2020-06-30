@@ -276,10 +276,11 @@ class MicronaetAccounting(osv.osv):
                     # ---------------------------------------------------------
                     # A. Total invoiced calc:
                     delta_total = (current_total - previous_total)
-                    delta_rate_total = 0.0
                     if previous_total:
                         delta_rate_total = (
                             100.0 * delta_total / previous_total)
+                    else:
+                        delta_rate_total = 100.0
 
                     # B. Total quantity calc:
                     # TODO not for now
