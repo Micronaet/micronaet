@@ -196,10 +196,12 @@ class MicronaetAccounting(osv.osv):
             'Cliente', 'Codice', 'Anno',
             'Gen.', 'Feb.', 'Mar.', 'Apr.', 'Mag.', 'Giu.',
             'Lug.', 'Ago.', 'Set.', 'Ott', 'Nov.', 'Dic.',
+            'Totale',
             ]
         width = [
             45, 15, 10,
             9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+            12,
             ]
         excel_pool.column_width(ws_name, width)
 
@@ -243,7 +245,9 @@ class MicronaetAccounting(osv.osv):
         report_year = years[1:]
         report_year.reverse()
         for partner in sorted(partner_db.values(), key=lambda p: p.name):
+            total = {}
             for year in report_year:  # Not used first year
+                total[year] = [0.0, 0.0]  # Current, Previous
                 record = [partner.name, partner.sql_customer_code, year]
                 excel_pool.write_xls_line(
                     ws_name, row, record,
@@ -273,32 +277,42 @@ class MicronaetAccounting(osv.osv):
                         previous_quantity = previous_total = 0.0
                     # ---------------------------------------------------------
 
+                    # Total compare:
+                    if current_month <= this_month:  # No last part this year
+                        total[year][0] += current_total
+                        total[year][1] += previous_total
+
                     # ---------------------------------------------------------
                     # A. Total invoiced calc:
                     delta_total = (current_total - previous_total)
                     if previous_total:
                         delta_rate_total = (
                             100.0 * delta_total / previous_total)
-                    else:
+                    elif delta_total and not previous_total:
                         delta_rate_total = 100.0
+                    else:
+                        delta_rate_total = 0.0
 
                     # B. Total quantity calc:
                     # TODO not for now
                     # ---------------------------------------------------------
 
                     # Format color
-                    if delta_total < 0.0:
+                    if delta_rate_total < 0.0:
                         has_negative = True
                         color = format_list['red']
-                    if delta_total > 0.0:
+                    if delta_rate_total > 0.0:
                         color = format_list['green']
                     # elif this_month < current_month:
                     #    color = format_list['blue']
                     else:
                         color = format_list['white']
 
+                    # Write data:
                     month_record[month - 1] = (
-                        '%9.2f %%' % delta_rate_total, color['text'])
+                        '%9.2f %%' % delta_rate_total, color['number'])
+
+                    # Write comment:
                     if any((current_total, previous_total)):
                         comment = '%s-%s = %s' % (
                             round(current_total, 0),
@@ -315,6 +329,35 @@ class MicronaetAccounting(osv.osv):
                     ws_name, row, month_record,
                     default_format=format_list['white']['text'],
                     col=len(record))
+
+                # C. Total part
+                total_year_current, total_year_previous = total[year]
+                total_year_delta = (
+                            total_year_current - total_year_previous
+                    )
+                if total_year_previous:
+                    total_year_rate = (100.0 * total_year_delta /
+                                       total_year_previous)
+                else:
+                    total_year_rate = 100.0
+
+                if any((total_year_current, total_year_previous)):
+                    comment = '%s-%s = %s' % (
+                        round(current_total, 0),
+                        round(previous_total, 0),
+                        round(delta_total, 0),
+                    )
+                    comment_col = len(record) + 12 - 1
+                    excel_pool.write_comment(
+                        ws_name, row, comment_col, comment,
+                        parameters=parameters)
+
+                excel_pool.write_xls_line(
+                    ws_name, row, [
+                        round(total_year_rate, 0)
+                    ],
+                    default_format=format_list['white']['text'],
+                    col=len(record) + 12)
                 row += 1
 
         return excel_pool.return_attachment(
