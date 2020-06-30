@@ -305,24 +305,22 @@ class MicronaetAccounting(osv.osv):
                         color = format_list['red']
                     elif delta_rate_total > 0.0:
                         color = format_list['green']
-                    # elif this_month < current_month:
-                    #    color = format_list['blue']
                     else:
                         color = format_list['white']
 
                     # ---------------------------------------------------------
                     # Total compare:
                     # ---------------------------------------------------------
+                    # Write data:
+                    month_record[month - 1] = (
+                        '%9.2f %%' % delta_rate_total, color['number'])
+
                     if current_month <= this_month:  # No last part this year
                         total[year][0] += current_total
                         total[year][1] += previous_total
-
-                        # Write data:
-                        month_record[month - 1] = (
-                            '%9.2f %%' % delta_rate_total, color['number'])
                     else:
-                        # No written data
-                        month_record[month - 1] = ('', color['number'])
+                        if not delta_rate_total:  # No written data
+                            month_record[month - 1] = ('', color['number'])
 
                     # Write comment:
                     if any((current_total, previous_total)):
@@ -355,8 +353,10 @@ class MicronaetAccounting(osv.osv):
                 if total_year_previous:
                     total_year_rate = (100.0 * total_year_delta /
                                        total_year_previous)
-                else:
+                elif total_year_current and not total_year_previous:
                     total_year_rate = 100.0
+                else:
+                    total_year_rate = 0.0
 
                 # Comment part:
                 if any((total_year_current, total_year_previous)):
