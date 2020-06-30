@@ -64,7 +64,7 @@ class MicronaetAccounting(osv.osv):
         # -------------------
         where = 'WHERE h.CSG_DOC IN %s' % (document, )
         if partner_code:
-            where += ' AND l.CKY_CNT_CLFR = \'%s\';' % partner_code
+            where += ' AND r.CKY_CNT_CLFR = \'%s\';' % partner_code
 
         # Filter document type:
         # TODO change query linked to header if there's originator
