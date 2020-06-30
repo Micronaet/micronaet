@@ -314,7 +314,7 @@ class MicronaetAccounting(osv.osv):
                     else:
                         delta_rate_total = 0.0
 
-                    heat = int(math.log10(delta_total))
+                    heat = int(math.log10(abs(delta_total)))
                     if heat > 4:
                         heat = 4
 
@@ -403,7 +403,7 @@ class MicronaetAccounting(osv.osv):
                     color = format_list['green']
                 else:
                     color = format_list['white']
-                heat = int(math.log10(total_year_delta))
+                heat = int(math.log10(abs(total_year_delta)))
 
                 # Total perc:
                 excel_pool.write_xls_line(
