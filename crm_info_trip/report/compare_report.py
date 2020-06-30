@@ -138,7 +138,7 @@ class MicronaetAccounting(osv.osv):
             for record in records:
                 # default_code = record['product_code']  # TODO not used now
                 partner_code = record['partner_code']
-                date = record['date']
+                date = '%s' % record['date']
                 if date:
                     date_month = '%s-%s' % date[:4], date[5:7]
                 else:
