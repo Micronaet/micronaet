@@ -277,11 +277,6 @@ class MicronaetAccounting(osv.osv):
                         previous_quantity = previous_total = 0.0
                     # ---------------------------------------------------------
 
-                    # Total compare:
-                    if current_month <= this_month:  # No last part this year
-                        total[year][0] += current_total
-                        total[year][1] += previous_total
-
                     # ---------------------------------------------------------
                     # A. Total invoiced calc:
                     delta_total = (current_total - previous_total)
@@ -298,7 +293,9 @@ class MicronaetAccounting(osv.osv):
                     # ---------------------------------------------------------
 
                     # Format color
-                    if delta_rate_total < 0.0:
+                    if current_month <= this_month:  # No last part this year
+                        color = format_list['blue']
+                    elif delta_rate_total < 0.0:
                         has_negative = True
                         color = format_list['red']
                     elif delta_rate_total > 0.0:
@@ -308,9 +305,19 @@ class MicronaetAccounting(osv.osv):
                     else:
                         color = format_list['white']
 
-                    # Write data:
-                    month_record[month - 1] = (
-                        '%9.2f %%' % delta_rate_total, color['number'])
+                    # ---------------------------------------------------------
+                    # Total compare:
+                    # ---------------------------------------------------------
+                    if current_month <= this_month:  # No last part this year
+                        total[year][0] += current_total
+                        total[year][1] += previous_total
+
+                        # Write data:
+                        month_record[month - 1] = (
+                            '%9.2f %%' % delta_rate_total, color['number'])
+                    else:
+                        # No written data
+                        month_record[month - 1] = ('', color['number'])
 
                     # Write comment:
                     if any((current_total, previous_total)):
