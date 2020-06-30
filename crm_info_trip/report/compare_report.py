@@ -107,6 +107,7 @@ class MicronaetAccounting(osv.osv):
         # Fixed:
         level = 3  # Max year with current
         document = ('BC', 'RC')
+        detail_page = False
 
         # Calculated:
         this_year = datetime.now().year
@@ -120,9 +121,10 @@ class MicronaetAccounting(osv.osv):
         # ---------------------------------------------------------------------
         # ---------------------------------------------------------------------
         # Log for check:
-        ws_name = 'Dettaglio'
-        excel_pool.create_worksheet(name=ws_name)
-        row = 0
+        if detail_page:
+            ws_name = 'Dettaglio'
+            excel_pool.create_worksheet(name=ws_name)
+            row = 0
 
         # Data dict:
         mysql_data = {}
@@ -172,18 +174,17 @@ class MicronaetAccounting(osv.osv):
                 # Update data:
                 mysql_data[key][0] += record['quantity'] * sign
                 mysql_data[key][1] += record['total'] * sign
-
-                excel_pool.write_xls_line(
-                    ws_name, row, [
-                        partner.name,
-                        partner_code,
-                        date,
-                        date_month,
-                        mysql_data[key][0],
-                        mysql_data[key][1],
-
-                    ])
-                row += 1
+                if detail_page:
+                    excel_pool.write_xls_line(
+                        ws_name, row, [
+                            partner.name,
+                            partner_code,
+                            date,
+                            date_month,
+                            mysql_data[key][0],
+                            mysql_data[key][1],
+                        ])
+                    row += 1
 
         # ---------------------------------------------------------------------
         # Excel generation:
@@ -251,7 +252,7 @@ class MicronaetAccounting(osv.osv):
                 for month in range(1, 13):
                     # ---------------------------------------------------------
                     # Current:
-                    current_month = '%s-%s' % (year, month)
+                    current_month = '%s-%02d' % (year, month)
                     key = (partner, current_month)
                     current_data = mysql_data.get(key)
                     if current_data:
@@ -260,7 +261,7 @@ class MicronaetAccounting(osv.osv):
                         current_quantity = current_total = 0.0
 
                     # Previous
-                    previous_month = '%s-%s' % (year - 1, month)
+                    previous_month = '%s-%02d' % (year - 1, month)
                     key = (partner, previous_month)
                     previous_data = mysql_data.get(key)
                     if previous_data:  # check difference:
