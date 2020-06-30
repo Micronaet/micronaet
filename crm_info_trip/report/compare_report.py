@@ -301,6 +301,7 @@ class MicronaetAccounting(osv.osv):
                     if delta_rate_total < 0.0:
                         has_negative = True
                         color = format_list['red']
+                        pdb.set_trace()
                     if delta_rate_total > 0.0:
                         color = format_list['green']
                     # elif this_month < current_month:
@@ -354,7 +355,7 @@ class MicronaetAccounting(osv.osv):
 
                 excel_pool.write_xls_line(
                     ws_name, row, [
-                        round(total_year_rate, 0)
+                        ('%s %%' % round(total_year_rate, 0), color['number']),
                     ],
                     default_format=format_list['white']['text'],
                     col=len(record) + 12)
