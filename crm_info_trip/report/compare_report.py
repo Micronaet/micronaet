@@ -240,14 +240,17 @@ class MicronaetAccounting(osv.osv):
                     else:
                         previous_quantity = previous_total = 0.0
 
-                    # TODO quantity not for now
+                    # A. Total invoiced calc:
                     delta_total = (current_total - previous_total)
                     delta_rate_total = 0.0
                     if previous_total:
                         delta_rate_total = (
                             100.0 * delta_total / previous_total)
 
-                    # TODO format color
+                    # B. Total quantity calc:
+                    # TODO not for now
+
+                    # Format color
                     if delta_total < 0.0 and not has_negative:
                         has_negative = True
                         color = format_list['red']
@@ -256,10 +259,14 @@ class MicronaetAccounting(osv.osv):
                     else:
                         color = format_list['white']
 
-                    month_record[month - 1] = '%s %% (%s)' % (
-                        delta_rate_total,
-                        delta_total,
+                    month_record[month - 1] = (
+                        '%s %% (%s)' % (
+                            delta_rate_total,
+                            delta_total,
+                            ),
+                        color['text'],
                     )
+
                     # TODO Write comment:
                     # write_comment(self, ws_name, row, col, comment,
                     #               parameters=None)
