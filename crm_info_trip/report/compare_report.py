@@ -133,7 +133,9 @@ class MicronaetAccounting(osv.osv):
                 context=context)
 
             # Explode record:
-            for record in mysql_cursor.fetchall():
+            records = mysql_cursor.fetchall()
+            _logger.warning('Read year %s [# %s]' % (year, len(records)))
+            for record in records:
                 # default_code = record['product_code']  # TODO not used now
                 partner_code = record['partner_code']
                 date = record['data']
