@@ -301,7 +301,6 @@ class MicronaetAccounting(osv.osv):
                     if delta_rate_total < 0.0:
                         has_negative = True
                         color = format_list['red']
-                        pdb.set_trace()
                     elif delta_rate_total > 0.0:
                         color = format_list['green']
                     # elif this_month < current_month:
