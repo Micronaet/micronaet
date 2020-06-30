@@ -270,7 +270,7 @@ class MicronaetAccounting(osv.osv):
                     month_record[month - 1] = (
                         '%9.2f %%' % delta_rate_total, color['text'])
                     if any((current_total, previous_total)):
-                        comment = '%s - %s = %s' % (
+                        comment = '%10.0f - %10.0f = %10.0f' % (
                             current_total,
                             previous_total,
                             delta_total,
