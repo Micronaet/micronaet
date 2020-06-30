@@ -19,6 +19,7 @@
 ###############################################################################
 import pdb
 import os
+import math
 import sys
 import logging
 from openerp.osv import osv, orm, fields
@@ -218,14 +219,35 @@ class MicronaetAccounting(osv.osv):
             'red': {
                 'text': excel_pool.get_format('bg_red'),
                 'number': excel_pool.get_format('bg_red_number'),
+
+                # Heat map:
+                0: excel_pool.get_format('bg_red_number_0'),
+                1: excel_pool.get_format('bg_red_number_1'),
+                2: excel_pool.get_format('bg_red_number_2'),
+                3: excel_pool.get_format('bg_red_number_3'),
+                4: excel_pool.get_format('bg_red_number_4'),
                 },
             'blue': {
                 'text': excel_pool.get_format('bg_blue'),
                 'number': excel_pool.get_format('bg_blue_number'),
+
+                # NO Heat map:
+                0: excel_pool.get_format('bg_green_number'),
+                1: excel_pool.get_format('bg_green_number'),
+                2: excel_pool.get_format('bg_green_number'),
+                3: excel_pool.get_format('bg_green_number'),
+                4: excel_pool.get_format('bg_green_number'),
                 },
             'green': {
                 'text': excel_pool.get_format('bg_green'),
                 'number': excel_pool.get_format('bg_green_number'),
+
+                # Heat map:
+                0: excel_pool.get_format('bg_green_number_0'),
+                1: excel_pool.get_format('bg_green_number_1'),
+                2: excel_pool.get_format('bg_green_number_2'),
+                3: excel_pool.get_format('bg_green_number_3'),
+                4: excel_pool.get_format('bg_green_number_4'),
                 },
             }
 
@@ -292,6 +314,10 @@ class MicronaetAccounting(osv.osv):
                     else:
                         delta_rate_total = 0.0
 
+                    heat = int(math.log10(delta_total))
+                    if heat > 4:
+                        heat = 4
+
                     # ---------------------------------------------------------
                     # B. Total quantity calc:
                     # ---------------------------------------------------------
@@ -313,14 +339,14 @@ class MicronaetAccounting(osv.osv):
                     # ---------------------------------------------------------
                     # Write data:
                     month_record[month - 1] = (
-                        '%9.2f %%' % delta_rate_total, color['number'])
+                        '%9.2f %%' % delta_rate_total, color[heat])
 
                     if current_month <= this_month:  # No last part this year
                         total[year][0] += current_total
                         total[year][1] += previous_total
                     else:
                         if not delta_rate_total:  # No written data
-                            month_record[month - 1] = ('', color['number'])
+                            month_record[month - 1] = ('', color[heat])
 
                     # Write comment:
                     if any((current_total, previous_total)):
@@ -377,11 +403,12 @@ class MicronaetAccounting(osv.osv):
                     color = format_list['green']
                 else:
                     color = format_list['white']
+                heat = int(math.log10(total_year_delta))
 
                 # Total perc:
                 excel_pool.write_xls_line(
                     ws_name, row, [
-                        ('%s %%' % round(total_year_rate, 0), color['number']),
+                        ('%s %%' % round(total_year_rate, 0), color[heat]),
                     ],
                     default_format=format_list['white']['text'],
                     col=len(record) + 12)
