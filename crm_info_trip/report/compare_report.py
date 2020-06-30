@@ -155,7 +155,7 @@ class MicronaetAccounting(osv.osv):
                 # Update data:
                 mysql_data[key][0] += record['quantity']
                 mysql_data[key][1] += record['total']
-
+        return True
 
 class CrmTrip(osv.osv):
     """ Update partner for launch report
