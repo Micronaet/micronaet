@@ -118,6 +118,12 @@ class MicronaetAccounting(osv.osv):
         # ---------------------------------------------------------------------
         # Collect data:
         # ---------------------------------------------------------------------
+        # ---------------------------------------------------------------------
+        # Log for check:
+        ws_name = 'Dettaglio'
+        excel_pool.create_worksheet(name=ws_name)
+        row = 0
+
         # Data dict:
         mysql_data = {}
         partner_db = {}
@@ -164,8 +170,20 @@ class MicronaetAccounting(osv.osv):
                         0.0,  # total
                     ]
                 # Update data:
-                mysql_data[key][0] += record['quantity'] *  sign
+                mysql_data[key][0] += record['quantity'] * sign
                 mysql_data[key][1] += record['total'] * sign
+
+                excel_pool.write_xls_line(
+                    ws_name, row, [
+                        partner.name,
+                        partner_code,
+                        date
+                        date_month,
+                        mysql_data[key][0],
+                        mysql_data[key][1],
+
+                    ])
+                row += 1
 
         # ---------------------------------------------------------------------
         # Excel generation:
@@ -214,8 +232,8 @@ class MicronaetAccounting(osv.osv):
         excel_pool.write_xls_line(
             ws_name, row, header,
             default_format=format_list['header'])
-        excel_pool.autofilter(ws_name, row, 0, row, 1)
-        excel_pool.freeze_panes(ws_name, 3, 2)
+        excel_pool.autofilter(ws_name, row, 0, row, 2)
+        excel_pool.freeze_panes(ws_name, 3, 3)
         row += 1
 
         report_year = years[1:]
@@ -267,18 +285,18 @@ class MicronaetAccounting(osv.osv):
                     if delta_total < 0.0:
                         has_negative = True
                         color = format_list['red']
-                    elif this_month < current_month:
-                        color = format_list['blue']
+                    # elif this_month < current_month:
+                    #    color = format_list['blue']
                     else:
                         color = format_list['white']
 
                     month_record[month - 1] = (
                         '%9.2f %%' % delta_rate_total, color['text'])
                     if any((current_total, previous_total)):
-                        comment = '%10.0f - %10.0f = %10.0f' % (
-                            current_total,
-                            previous_total,
-                            delta_total,
+                        comment = '%s-%s = %s' % (
+                            round(current_total, 0),
+                            round(previous_total, 0),
+                            round(delta_total, 0),
                         )
                         comment_col = len(record) + month - 1
                         excel_pool.write_comment(
