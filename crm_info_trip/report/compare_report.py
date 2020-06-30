@@ -293,7 +293,7 @@ class MicronaetAccounting(osv.osv):
                     # ---------------------------------------------------------
 
                     # Format color
-                    if current_month <= this_month:  # No last part this year
+                    if current_month > this_month:  # No last part this year
                         color = format_list['blue']
                     elif delta_rate_total < 0.0:
                         has_negative = True
