@@ -214,14 +214,17 @@ class MicronaetAccounting(osv.osv):
                 'number': excel_pool.get_format('number'),
                 },
             'red': {
-                'text': excel_pool.get_format('text_red'),
-                'number_red': excel_pool.get_format('number_red'),
+                'text': excel_pool.get_format('bg_red'),
+                'number_red': excel_pool.get_format('text_right_red'),
                 },
             'blue': {
                 'text': excel_pool.get_format('bg_blue'),
                 'number': excel_pool.get_format('bg_blue_number'),
                 },
-            'green': {},
+            'green': {
+                'text': excel_pool.get_format('bg_green'),
+                'number_red': excel_pool.get_format('text_right_green'),
+                },
             }
 
         row = 0
@@ -286,6 +289,8 @@ class MicronaetAccounting(osv.osv):
                     if delta_total < 0.0:
                         has_negative = True
                         color = format_list['red']
+                    if delta_total > 0.0:
+                        color = format_list['green']
                     # elif this_month < current_month:
                     #    color = format_list['blue']
                     else:
