@@ -78,14 +78,14 @@ class MicronaetAccounting(osv.osv):
 
                 (r.NQT_RIGA_ART_PLOR * 
                     (IF(r.NCF_CONV=0, 1, 1 / r.NCF_CONV))) as quantity, 
-                (r.NPZ_UNIT * r.NQT_RIGA_ART_PLOR) as total, 
+                (r.NPZ_UNIT * r.NQT_RIGA_ART_PLOR) as total 
 
             FROM %s h JOIN %s r 
                 ON (
                     h.CSG_DOC = r.CSG_DOC AND 
                     h.NGB_SR_DOC = r.NGB_SR_DOC AND
                     h.NGL_DOC = r.NGL_DOC AND 
-                    h.NPR_DOC = l.NPR_DOC) 
+                    h.NPR_DOC = r.NPR_DOC) 
             %s
             """ % (table_header, table_line, where)
 
