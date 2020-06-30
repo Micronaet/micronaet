@@ -222,6 +222,8 @@ class MicronaetAccounting(osv.osv):
                 month_record = ['' for item in range(0, 12)]
                 has_negative = False
                 for month in range(1, 13):
+                    # ---------------------------------------------------------
+                    # Current:
                     current_month = '%s-%s' % (year, month)
                     key = (partner, current_month)
                     current_data = mysql_data.get(key)
@@ -230,14 +232,17 @@ class MicronaetAccounting(osv.osv):
                     else:
                         current_quantity = current_total = 0.0
 
+                    # Previous
                     previous_month = '%s-%s' % (year - 1, month)
                     key = (partner, previous_month)
                     previous_data = mysql_data.get(key)
                     if previous_data:  # check difference:
-                        previous_quantity, previous_total = current_data
+                        previous_quantity, previous_total = previous_data
                     else:
                         previous_quantity = previous_total = 0.0
+                    # ---------------------------------------------------------
 
+                    # ---------------------------------------------------------
                     # A. Total invoiced calc:
                     delta_total = (current_total - previous_total)
                     delta_rate_total = 0.0
@@ -247,6 +252,7 @@ class MicronaetAccounting(osv.osv):
 
                     # B. Total quantity calc:
                     # TODO not for now
+                    # ---------------------------------------------------------
 
                     # Format color
                     if delta_total < 0.0 and not has_negative:
