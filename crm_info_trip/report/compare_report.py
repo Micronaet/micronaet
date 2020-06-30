@@ -70,21 +70,22 @@ class MicronaetAccounting(osv.osv):
         # TODO change query linked to header if there's originator
         query = """
             SELECT
-                l.CKY_CNT_CLFR as partner_code, 
+                r.CKY_CNT_CLFR as partner_code, 
                 h.DTT_DOC as date,
 
-                l.CKY_ART as product_code,
-                l.CDS_VARIAB_ART as description, 
+                r.CKY_ART as product_code,
+                r.CDS_VARIAB_ART as description, 
 
-                (l.NQT_RIGA_ART_PLOR * 
-                    (IF(l.NCF_CONV=0, 1, 1/l.NCF_CONV))) as quantity, 
-                (l.NPZ_UNIT * l.NQT_RIGA_ART_PLOR) as total, 
+                (r.NQT_RIGA_ART_PLOR * 
+                    (IF(r.NCF_CONV=0, 1, 1 / r.NCF_CONV))) as quantity, 
+                (r.NPZ_UNIT * r.NQT_RIGA_ART_PLOR) as total, 
 
-            FROM %s h JOIN %s l 
+            FROM %s h JOIN %s r 
                 ON (
-                    h.CSG_DOC = l.CSG_DOC AND 
-                    h.NGB_SR_DOC = l.NGB_SR_DOC AND
-                    h.NGL_DOC = l.NGL_DOC AND h.NPR_DOC = l.NPR_DOC) 
+                    h.CSG_DOC = r.CSG_DOC AND 
+                    h.NGB_SR_DOC = r.NGB_SR_DOC AND
+                    h.NGL_DOC = r.NGL_DOC AND 
+                    h.NPR_DOC = l.NPR_DOC) 
             %s
             """ % (table_header, table_line, where)
 
