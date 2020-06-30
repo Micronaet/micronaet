@@ -99,6 +99,17 @@ class MicronaetAccounting(osv.osv):
             self, cr, uid, account_code=False, context=None):
         """ Loop for report
         """
+        def get_heat(value):
+            """ Return heat index
+            """
+            if delta_total < 0:
+                return 0
+            heat = int(math.log10(abs(value)))
+            if heat > 4:
+                return 4
+            elif heat < 0:
+                return 0
+
         partner_pool = self.pool.get('res.partner')
         excel_pool = self.pool.get('excel.writer')
 
@@ -313,10 +324,7 @@ class MicronaetAccounting(osv.osv):
                         delta_rate_total = 100.0
                     else:
                         delta_rate_total = 0.0
-
-                    heat = int(math.log10(abs(delta_total)))
-                    if heat > 4:
-                        heat = 4
+                    heat = get_heat(delta_total)
 
                     # ---------------------------------------------------------
                     # B. Total quantity calc:
@@ -403,7 +411,7 @@ class MicronaetAccounting(osv.osv):
                     color = format_list['green']
                 else:
                     color = format_list['white']
-                heat = int(math.log10(abs(total_year_delta)))
+                heat = get_heat(total_year_delta)
 
                 # Total perc:
                 excel_pool.write_xls_line(
