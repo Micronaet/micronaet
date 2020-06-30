@@ -111,8 +111,11 @@ class MicronaetAccounting(osv.osv):
         document = ('BC', 'RC')
 
         # Calculated:
-        current_year = datetime.now().year
-        years = range(current_year + 1 - level, current_year + 1)
+        this_year = datetime.now().year
+        this_month = '%s-%02d' % (
+            current_year, datetime.now().month,
+        )
+        years = range(this_year + 1 - level, this_year + 1)
 
         # ---------------------------------------------------------------------
         # Collect data:
@@ -166,7 +169,7 @@ class MicronaetAccounting(osv.osv):
         ws_name = 'Confronto annuale'
         excel_pool.create_worksheet(name=ws_name)
         header = [
-            'Cliente', 'Codice', 'Responsabile',
+            'Cliente', 'Codice', 'Anno',
             'Gen.', 'Feb.', 'Mar.', 'Apr.', 'Mag.', 'Giu.',
             'Lug.', 'Ago.', 'Set.', 'Ott', 'Nov.', 'Dic.',
             ]
@@ -221,8 +224,8 @@ class MicronaetAccounting(osv.osv):
                 month_record = ['' for item in range(0, 12)]
                 has_negative = False
                 for month in range(1, 13):
-                    this_month = '%s-%s' % (year, month)
-                    key = (partner, this_month)
+                    current_month = '%s-%s' % (year, month)
+                    key = (partner, current_month)
                     current_data = mysql_data.get(key)
                     if current_data:
                         current_quantity, current_total = current_data
@@ -230,13 +233,14 @@ class MicronaetAccounting(osv.osv):
                         current_quantity = current_total = 0.0
 
                     previous_month = '%s-%s' % (year - 1, month)
-                    key = (partner, this_month)
+                    key = (partner, previous_month)
                     previous_data = mysql_data.get(key)
                     if previous_data:  # check difference:
                         previous_quantity, previous_total = current_data
                     else:
                         previous_quantity = previous_total = 0.0
 
+                    # TODO quantity not for now
                     delta_total = (current_total - previous_total)
                     delta_rate_total = 0.0
                     if previous_total:
@@ -246,6 +250,11 @@ class MicronaetAccounting(osv.osv):
                     # TODO format color
                     if delta_total < 0.0 and not has_negative:
                         has_negative = True
+                        color = format_list['red']
+                    elif this_month < current_month:
+                        color = format_list['blue']
+                    else:
+                        color = format_list['white']
 
                     month_record[month - 1] = '%s %% (%s)' % (
                         delta_rate_total,
