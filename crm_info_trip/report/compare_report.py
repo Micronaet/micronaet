@@ -62,7 +62,7 @@ class MicronaetAccounting(osv.osv):
         # -------------------
         # Manage where clause
         # -------------------
-        where = 'WHERE h.CSG_DOC IN (\'%s\')' % ', '.join(document)
+        where = 'WHERE h.CSG_DOC IN %s' % (document, )
         if partner_code:
             where += ' AND l.CKY_CNT_CLFR = \'%s\';' % partner_code
 
