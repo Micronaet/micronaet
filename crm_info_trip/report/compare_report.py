@@ -157,6 +157,7 @@ class MicronaetAccounting(osv.osv):
                 mysql_data[key][1] += record['total']
         return True
 
+
 class CrmTrip(osv.osv):
     """ Update partner for launch report
     """
