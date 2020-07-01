@@ -21,6 +21,7 @@ import os
 import sys
 import logging
 import shutil
+import pdb
 from openerp.osv import osv, orm, fields
 from datetime import datetime, timedelta
 from openerp.tools import (
@@ -413,6 +414,7 @@ class MsdsForm(orm.Model):
                     )
 
                 except:
+                    pdb.set_trace()
                     error = '%s' % (sys.exc_info(), )
                     log_message += error
                     _logger.error(error)
