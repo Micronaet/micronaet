@@ -104,10 +104,10 @@ class MsdsForm(orm.Model):
         """ Find file name for document stored
             product_id: integer single element
         """
-        product_proxy = self.browse(cr, uid, ids, context=context)
+        product_proxy = self.browse(cr, uid, product_id, context=context)
         folder = os.path.expanduser(
             product_proxy.product_id.company_id.msds_folder_store)
-        res = os.path.join(folder, "%s.pdf" % ids[0])
+        res = os.path.join(folder, "%s.pdf" % product_id)
         return res
 
     # -------------------------------------------------------------------------
@@ -180,7 +180,6 @@ class MsdsForm(orm.Model):
         for item in language_proxy:
             languages[item.code] = item.id
 
-        product_pool = self.pool.get('product.product')
         version_pool = self.pool.get('msds.form.version')
         rel_pool = self.pool.get('msds.form.rel')
 
@@ -194,7 +193,7 @@ class MsdsForm(orm.Model):
                     # Check if is a PDF file:
                     # -----------------------
                     if filename[-1] != "PDF":
-                        continue # Jump
+                        continue  # Jump
 
                     # -------------------------------
                     # Read timestamp for modify time:
@@ -289,7 +288,7 @@ class MsdsForm(orm.Model):
                                 SELECT id FROM product_product
                                 WHERE default_code ilike %s;""", (
                                     product_code.replace("#", "_"), ))
-                    else: # Master version
+                    else:  # Master version
                         cr.execute("""
                             SELECT id FROM product_product
                             WHERE default_code = %s;
@@ -301,7 +300,7 @@ class MsdsForm(orm.Model):
                             ('product_id', '=', product_id),
                             ('alias_id', '=', False),
                             ], context=context)
-                        if not rel_ids: # Create
+                        if not rel_ids:  # Create
                             rel_pool.create(cr, uid, {
                                 'msds_id': msds_id,
                                 'product_id': product_id,
@@ -327,7 +326,7 @@ class MsdsForm(orm.Model):
                                 ('product_id', '=', False),
                                 ('alias_id', '=', alias_id),
                                 ], context=context)
-                            if not rel_ids: # Create
+                            if not rel_ids:  # Create
                                 rel_pool.create(cr, uid, {
                                     'msds_id': msds_id,
                                     'product_id': False,
@@ -413,7 +412,7 @@ class MsdsFormVersion(orm.Model):
         name = 'MSDS_%s_%slang_%s_ID_%s' % (
             msds.product_code or '',
             ('alias_%s_' % msds.alias_code) if
-                msds.alias_code else '',
+            msds.alias_code else '',
             msds.language_id.code or 'XX',
             os.path.basename(filename),
             )
