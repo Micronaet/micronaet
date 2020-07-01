@@ -19,30 +19,33 @@
 ###############################################################################
 import os
 import sys
-import openerp.netsvc
 import logging
-import shutil # file operations
+import shutil
 from openerp.osv import osv, orm, fields
 from datetime import datetime, timedelta
-from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, DATETIME_FORMATS_MAP, float_compare
-import openerp.addons.decimal_precision as dp
+from openerp.tools import (
+    DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT,
+    DATETIME_FORMATS_MAP, float_compare)
 from openerp.tools.translate import _
-
 
 _logger = logging.getLogger(__name__)
 
-class res_company(osv.osv):
-    ''' Extra fields for res.company object
-    '''
+
+class ResCompany(osv.osv):
+    """ Extra fields for res.company object
+    """
     _inherit = 'res.company'
 
     _columns = {
-        'msds_folder_in': fields.char('MSDS folder in', size=128,
+        'msds_folder_in': fields.char(
+            'MSDS folder in', size=128,
             help="Folder where PDF are exported from EpyPlus (ex.: ~/msds"),
-        'msds_folder_store': fields.char('MSDS folder store', size=128,
+        'msds_folder_store': fields.char(
+            'MSDS folder store', size=128,
             help="Folder for store imported PDF, default 'store' in addons "
             "root module path"),
-        'msds_log_id': fields.many2one('res.users', 'Log user',
+        'msds_log_id': fields.many2one(
+            'res.users', 'Log user',
             help="User that receive all logs during importation schedule"),
         }
 
@@ -51,9 +54,10 @@ class res_company(osv.osv):
         'msds_folder_store': lambda *a: False,
         }
 
-class msds_form_language(orm.Model):
-    ''' MSDS language for Form documents
-    '''
+
+class MsdsFormLanguage(orm.Model):
+    """ MSDS language for Form documents
+    """
     _name = 'msds.form.language'
     _description = 'MSDS Form language'
 
@@ -63,9 +67,10 @@ class msds_form_language(orm.Model):
         'note': fields.text('Note'),
         }
 
-class msds_form(orm.Model):
-    ''' MSDS Form, all elements are form for product (present in more version)
-    '''
+
+class MsdsForm(orm.Model):
+    """ MSDS Form, all elements are form for product (present in more version)
+    """
     _name = 'msds.form'
     _description = 'MSDS Form'
     _rec_name = 'product_code'
@@ -74,17 +79,18 @@ class msds_form(orm.Model):
     # -----------------
     # Utility function:
     # -----------------
-    def send_log(self, cr, uid, subject='', body='', partner_ids=[], context=None):
-        ''' Write log in wall
-        '''
-        #TODO Mettere meglio (anche con l'invio della mail)
+    def send_log(
+            self, cr, uid, subject='', body='', partner_ids=[], context=None):
+        """ Write log in wall
+        """
+        # TODO Mettere meglio (anche con l'invio della mail)
 
         # Default part of message:
         message = {
             'subject': subject,
             'body': body,
-            'type': 'comment', #'comment', #'notification', 'email',
-            'subtype': False,  #parent_id, #attachments,
+            'type': 'comment',  # 'comment', #'notification', 'email',
+            'subtype': False,   # parent_id, #attachments,
             'content_subtype': 'html',
             'partner_ids': partner_ids,
             'email_from': 'openerp@micronaet.it',
@@ -95,9 +101,9 @@ class msds_form(orm.Model):
         return
 
     def _get_file_name(self, cr, uid, product_id, context=None):
-        ''' Find file name for document stored
+        """ Find file name for document stored
             product_id: integer single element
-        '''
+        """
         product_proxy = self.browse(cr, uid, ids, context=context)
         folder = os.path.expanduser(
             product_proxy.product_id.company_id.msds_folder_store)
@@ -108,10 +114,10 @@ class msds_form(orm.Model):
     # Button event:
     # -------------------------------------------------------------------------
     def open_msds_form(self, cr, uid, ids, context=None):
-        ''' Return a link element for use agent and open document from file
+        """ Return a link element for use agent and open document from file
             system of MSDS form, ex.:
             openerp://msds/id.pdf
-        '''
+        """
         version_pool = self.pool.get('msds.form.version')
         version_ids = version_pool.search(cr, uid, [
             ('msds_id', '=', ids[0])], context=context)
@@ -119,8 +125,8 @@ class msds_form(orm.Model):
             cr, uid, version_ids, context=context)
 
     def download_msds_form(self, cr, uid, ids, context=None):
-        ''' Download file with PDF
-        '''
+        """ Download file with PDF
+        """
         version_pool = self.pool.get('msds.form.version')
         version_ids = version_pool.search(cr, uid, [
             ('msds_id', '=', ids[0])], context=context)
@@ -131,8 +137,8 @@ class msds_form(orm.Model):
     # Scheduled action:
     # -----------------
     def import_msds_form(self, cr, uid, context=None):
-        ''' Scheduled import for MSDS form
-        '''
+        """ Scheduled import for MSDS form
+        """
         _logger.info(_('Start import PDF MSDS forms'))
         log_message = ''
         log_imported = ''
@@ -142,14 +148,14 @@ class msds_form(orm.Model):
         # ---------------
         try:
             company_proxy = self.pool.get('res.company').browse(
-                cr, uid, 1, context=context) # TODO
+                cr, uid, 1, context=context)  # TODO
 
             msds_folder_in = os.path.expanduser(company_proxy.msds_folder_in)
             msds_folder_store = os.path.expanduser(
                 company_proxy.msds_folder_store)
         except:
             log_message = _('Error reading start up path (in / store), check '
-                'Company form and correct!')
+                            'Company form and correct!')
             _logger.error(log_message)
             return False
 
@@ -193,7 +199,7 @@ class msds_form(orm.Model):
                     # -------------------------------
                     # Read timestamp for modify time:
                     # -------------------------------
-                    origin = os.path.join(root, f) # for copy operation
+                    origin = os.path.join(root, f)  # for copy operation
 
                     # Read timestamp:
                     timestamp = datetime.fromtimestamp(
@@ -223,7 +229,7 @@ class msds_form(orm.Model):
                         product_code = filename[1]
                         alias_code = False
                     elif format_type == 3: # EN_ALIAS_(CODE).PDF
-                        product_code = filename[2][1: -1] # remove "(code)"
+                        product_code = filename[2][1: -1]  # remove "(code)"
                         alias_code = filename[1]
 
                     # ----------
@@ -271,7 +277,7 @@ class msds_form(orm.Model):
                     # -------------------
                     # Search product (with granulometry)
                     if "#" in product_code:  # Version code
-                        if product_code[-1] == "#": # last char test also no #
+                        if product_code[-1] == "#":  # last char test also no #
                             cr.execute("""
                                 SELECT id FROM product_product
                                 WHERE default_code = %s 
@@ -337,15 +343,18 @@ class msds_form(orm.Model):
                     continue
 
         if log_message:
-            self.send_log(cr, uid, 'Error import MSDS', body=log_message,
+            self.send_log(
+                cr, uid, 'Error import MSDS', body=log_message,
                 partner_ids=[company_proxy.msds_log_id.partner_id.id],
                 context=context)
         if log_imported:
-            self.send_log(cr, uid, 'Import MSDS', body=log_imported,
+            self.send_log(
+                cr, uid, 'Import MSDS', body=log_imported,
                 partner_ids=[company_proxy.msds_log_id.partner_id.id],
                 context=context)
         if not (log_message and log_imported):
-            self.send_log(cr, uid, 'Import MSDS', body='No new MSDS',
+            self.send_log(
+                cr, uid, 'Import MSDS', body='No new MSDS',
                 partner_ids=[company_proxy.msds_log_id.partner_id.id],
                 context=context)
 
@@ -353,19 +362,24 @@ class msds_form(orm.Model):
         return True
 
     _columns = {
-        'product_code': fields.char('Product code', size=35,
+        'product_code': fields.char(
+            'Product code', size=35,
             help="Code for this product"),
-        'alias_code': fields.char('Alias code', size=35,
+        'alias_code': fields.char(
+            'Alias code', size=35,
             help="Code for alias product"),
-        'filename': fields.char('Filename', size=35,
+        'filename': fields.char(
+            'Filename', size=35,
             help="Original filename during importation"),
-        'language_id': fields.many2one('msds.form.language', 'Language',
+        'language_id': fields.many2one(
+            'msds.form.language', 'Language',
             required=True, help="Language for form document"),
         }
 
-class msds_form_version(orm.Model):
-    ''' Version for MSDS form
-    '''
+
+class MsdsFormVersion(orm.Model):
+    """ Version for MSDS form
+    """
     _name = 'msds.form.version'
     _description = 'MSDS Form version'
     _rec_name = 'msds_id'
@@ -375,10 +389,10 @@ class msds_form_version(orm.Model):
     # Button event:
     # -------------
     def open_msds_form(self, cr, uid, ids, context=None):
-        ''' Return a link element for use agent and open document from file
+        """ Return a link element for use agent and open document from file
             system of MSDS form, ex.:
             openerp://msds/id.pdf
-        '''
+        """
         return {
             'type': 'ir.actions.act_url',
             'url': 'openerp://msds/%s.pdf' % ids[0],
@@ -386,45 +400,48 @@ class msds_form_version(orm.Model):
         }
 
     def download_msds_form(self, cr, uid, ids, context=None):
-        ''' Return download file:
-        '''        
+        """ Return download file:
+        """
         pdf_path = os.path.expanduser('~/ETL/panchemicals/msds/openerp')
-        
+
         version_proxy = self.browse(cr, uid, ids, context=context)[0]
         msds = version_proxy.msds_id
 
         attachment_pool = self.pool.get('ir.attachment')
         filename = os.path.join(pdf_path, '%s.PDF' % ids[0])
-        
+
         name = 'MSDS_%s_%slang_%s_ID_%s' % (
             msds.product_code or '',
-            ('alias_%s_' % msds.alias_code) if \
+            ('alias_%s_' % msds.alias_code) if
                 msds.alias_code else '',
             msds.language_id.code or 'XX',
             os.path.basename(filename),
             )
         return attachment_pool.return_file_apache_php(
             cr, uid, filename, name=name, context=context)
-    
+
     _columns = {
         'msds_id': fields.many2one('msds.form', 'MSDS', ondelete='cascade'),
         'timestamp': fields.datetime('Datetime',
             help="Time stamp for file version"),
         }
 
-class msds_form(orm.Model):
-    ''' Inherit for relations
-    '''
+
+class MsdsForm(orm.Model):
+    """ Inherit for relations
+    """
     _inherit = 'msds.form'
 
     _columns = {
-        'version_ids': fields.one2many('msds.form.version', 'msds_id',
+        'version_ids': fields.one2many(
+            'msds.form.version', 'msds_id',
             'Version'),
         }
 
-class msds_form_rel(orm.Model):
-    ''' Relation from product and MSDS form
-    '''
+
+class MsdsFormRel(orm.Model):
+    """ Relation from product and MSDS form
+    """
     _name = 'msds.form.rel'
     _description = 'MSDS Form rel'
     _rec_name = 'product_id'
@@ -434,8 +451,8 @@ class msds_form_rel(orm.Model):
     # Button event:
     # -------------------------------------------------------------------------
     def open_msds_form(self, cr, uid, ids, context=None):
-        ''' Open MSDS last revision form
-        '''
+        """ Open MSDS last revision form
+        """
         form_pool = self.pool.get('msds.form')
 
         rel_proxy = self.browse(cr, uid, ids, context=context)[0]
@@ -443,8 +460,8 @@ class msds_form_rel(orm.Model):
             cr, uid, [rel_proxy.msds_id.id], context=context)
 
     def download_msds_form(self, cr, uid, ids, context=None):
-        ''' Open MSDS last revision form
-        '''
+        """ Open MSDS last revision form
+        """
         form_pool = self.pool.get('msds.form')
 
         rel_proxy = self.browse(cr, uid, ids, context=context)[0]
@@ -452,22 +469,29 @@ class msds_form_rel(orm.Model):
             cr, uid, [rel_proxy.msds_id.id], context=context)
 
     _columns = {
-        'msds_id': fields.many2one('msds.form', 'MSDS',
+        'msds_id': fields.many2one(
+            'msds.form', 'MSDS',
             ondelete='cascade'),
-        'product_id': fields.many2one('product.product', 'Product',
+        'product_id': fields.many2one(
+            'product.product', 'Product',
             ondelete='cascade'),
-        'alias_id': fields.many2one('product.product', 'Alias product',
+        'alias_id': fields.many2one(
+            'product.product', 'Alias product',
             ondelete='cascade', help="Alias product"),
-        'language_id': fields.related('msds_id', 'language_id',
+        'language_id': fields.related(
+            'msds_id', 'language_id',
             type='many2one', relation='msds.form.language',
             string='Language', store=False),
-        'product_code': fields.related('msds_id', 'product_code',
+        'product_code': fields.related(
+            'msds_id', 'product_code',
             type='char', size=35, string='Product code', store=False),
-        'alias_code': fields.related('msds_id', 'alias_code',
+        'alias_code': fields.related(
+            'msds_id', 'alias_code',
             type='char', size=35, string='Alias code', store=False),
         }
 
-class product_product(orm.Model):
+
+class ProductProduct(orm.Model):
     """ Add extra info in product
     """
     _inherit = 'product.product'
@@ -477,4 +501,3 @@ class product_product(orm.Model):
         'msds_alias_ids': fields.one2many(
             'msds.form.rel', 'alias_id', 'Alias MDSD'),
         }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
