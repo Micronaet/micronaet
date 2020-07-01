@@ -232,8 +232,7 @@ class MsdsForm(orm.Model):
                         _logger.error(error)
                         log(
                             log_f,
-                            '%s Formato errato, troppi _ (corretto '
-                            ' deve essere tra 2 e 3)' % f,
+                            '%s Formato errato, "_" devono essere 1 o 2' % f,
                             'error',
                         )
                         continue
