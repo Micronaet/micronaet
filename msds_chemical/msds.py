@@ -289,10 +289,10 @@ class MsdsForm(orm.Model):
                         ], context=context)
                     if msds_ids:
                         msds_id = msds_ids[0]
-                        log(
-                            log_f,
-                            '%s Caricato precedentemente' % f,
-                        )
+                        # log(
+                        #    log_f,
+                        #    '%s Caricato precedentemente' % f,
+                        # )
                     else:  # create
                         msds_id = self.create(cr, uid, {
                             'product_code': product_code,
@@ -300,10 +300,10 @@ class MsdsForm(orm.Model):
                             'filename': f,
                             'language_id': language_id,
                             }, context=context)
-                        log(
-                            log_f,
-                            '%s Nuovo caricamento' % f,
-                        )
+                        # log(
+                        #    log_f,
+                        #    '%s Nuovo caricamento' % f,
+                        # )
 
                     # -------------
                     # Version part:
