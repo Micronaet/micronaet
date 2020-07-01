@@ -256,19 +256,19 @@ class MsdsForm(orm.Model):
                         product_code = filename[1]
                         alias_code = False
                     elif format_type == 3:  # EN_ALIAS_(CODE).PDF
-                        if filename[2][:1] != '(' or filename[2][-1:] != ')':
-                            log(
-                                log_f,
-                                '%s Le parentesi non sono posizionate '
-                                'correttamente' % f,
-                                'error',
-                            )
-                            continue
                         if not filename[2]:
                             log(
                                 log_f,
                                 '%s Non viene indicato il codice del '
                                 'prodotto DARE' % f,
+                                'error',
+                            )
+                            continue
+                        if filename[2][:1] != '(' or filename[2][-1:] != ')':
+                            log(
+                                log_f,
+                                '%s Le parentesi non sono posizionate '
+                                'correttamente' % f,
                                 'error',
                             )
                             continue
