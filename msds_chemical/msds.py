@@ -89,8 +89,8 @@ class MsdsForm(orm.Model):
         message = {
             'subject': subject,
             'body': body,
-            'type': 'comment',  # 'comment', #'notification', 'email',
-            'subtype': False,   # parent_id, #attachments,
+            'type': 'comment',  # 'comment', 'notification', 'email',
+            'subtype': False,   # parent_id, attachments,
             'content_subtype': 'html',
             'partner_ids': partner_ids,
             'email_from': 'openerp@micronaet.it',
