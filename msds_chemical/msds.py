@@ -203,6 +203,8 @@ class MsdsForm(orm.Model):
                     # -----------------------
                     # Check if is a PDF file:
                     # -----------------------
+                    if f == 'esito.txt':
+                        continue
                     if filename[-1] != "PDF":
                         log(
                             log_f,
