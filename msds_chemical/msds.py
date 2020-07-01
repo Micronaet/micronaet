@@ -291,7 +291,7 @@ class MsdsForm(orm.Model):
                         msds_id = msds_ids[0]
                         log(
                             log_f,
-                            '%s Caricato precedentemente: %s' % f,
+                            '%s Caricato precedentemente' % f,
                         )
                     else:  # create
                         msds_id = self.create(cr, uid, {
@@ -302,7 +302,7 @@ class MsdsForm(orm.Model):
                             }, context=context)
                         log(
                             log_f,
-                            '%s Nuovo caricamento: %s' % f,
+                            '%s Nuovo caricamento' % f,
                         )
 
                     # -------------
