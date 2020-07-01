@@ -353,6 +353,7 @@ class MsdsForm(orm.Model):
                         log(
                             log_f,
                             '%s Non trovato nessun prodotto da abbinare' % f,
+                            'error',
                         )
                         continue
 
@@ -388,6 +389,7 @@ class MsdsForm(orm.Model):
                             log(
                                 log_f,
                                 '%s Non trovato nessun alias da abbinare' % f,
+                                'error',
                             )
                             continue
 
@@ -405,6 +407,12 @@ class MsdsForm(orm.Model):
                                     'alias_id': alias_id,
                                     }, context=context)
                     log_imported += "%s [%s]<br/>\n" % (f, timestamp)
+                    log(
+                        log_f,
+                        '%s Importato prodotto %s con alias %s' % (
+                            f, product_code, alias_code or '/'),
+                        'error',
+                    )
 
                 except:
                     error = "%s" % (sys.exc_info(), )
