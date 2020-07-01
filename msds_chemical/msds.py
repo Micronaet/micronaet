@@ -224,10 +224,10 @@ class MsdsForm(orm.Model):
                         continue
 
                     language_id = languages.get(filename[0], False)
-                    if format_type == 2: # EN_CODE.PDF
+                    if format_type == 2:  # EN_CODE.PDF
                         product_code = filename[1]
                         alias_code = False
-                    elif format_type == 3: # EN_ALIAS_(CODE).PDF
+                    elif format_type == 3:  # EN_ALIAS_(CODE).PDF
                         product_code = filename[2][1: -1]  # remove "(code)"
                         alias_code = filename[1]
 
