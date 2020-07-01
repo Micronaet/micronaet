@@ -139,6 +139,14 @@ class MsdsForm(orm.Model):
     def import_msds_form(self, cr, uid, context=None):
         """ Scheduled import for MSDS form
         """
+        def log(log_file, message, mode='INFO', newline='\r\n'):
+            log_file.write('%s. [%s] %s%s' % (
+                datetime.now(),
+                mode.upper(),
+                message,
+                newline,
+            ))
+
         _logger.info(_('Start import PDF MSDS forms'))
         log_message = ''
         log_imported = ''
@@ -184,6 +192,8 @@ class MsdsForm(orm.Model):
         rel_pool = self.pool.get('msds.form.rel')
 
         # Read IN folder
+        log_f = open(os.path.join(msds_folder_in, 'esito.txt'), 'w')
+        log(log_f, 'Inizio importazione giornaliera')
         for root, dirs, files in os.walk(msds_folder_in):
             for f in files:
                 try:
@@ -193,6 +203,14 @@ class MsdsForm(orm.Model):
                     # Check if is a PDF file:
                     # -----------------------
                     if filename[-1] != "PDF":
+                        log(
+                            log_f,
+                            '%s Non ha estensione pdf ma: %s' % (
+                                f,
+                                filename[-1],
+                            ),
+                            'error',
+                        )
                         continue  # Jump
 
                     # -------------------------------
@@ -212,6 +230,12 @@ class MsdsForm(orm.Model):
                         error = _('Wrong format: %s') % f
                         log_message += error
                         _logger.error(error)
+                        log(
+                            log_f,
+                            '%s Formato errato, troppi _ (corretto '
+                            ' deve essere tra 2 e 3)' % f,
+                            'error',
+                        )
                         continue
 
                     # ------------------------
@@ -221,6 +245,11 @@ class MsdsForm(orm.Model):
                         error = _('Language not found: %s') % filename[0]
                         log_message += error
                         _logger.error(error)
+                        log(
+                            log_f,
+                            '%s Lingua non trovata: %s' % (f, filename[0]),
+                            'error',
+                        )
                         continue
 
                     language_id = languages.get(filename[0], False)
@@ -228,6 +257,23 @@ class MsdsForm(orm.Model):
                         product_code = filename[1]
                         alias_code = False
                     elif format_type == 3:  # EN_ALIAS_(CODE).PDF
+                        if filename[2][:1] != '(' or filename[2][-1:] != ')':
+                            log(
+                                log_f,
+                                '%s Le parentesi non sono posizionate '
+                                'correttamente' % f,
+                                'error',
+                            )
+                            continue
+                        if not filename[2]:
+                            log(
+                                log_f,
+                                '%s Non viene indicato il codice del '
+                                'prodotto DARE' % f,
+                                'error',
+                            )
+                            continue
+
                         product_code = filename[2][1: -1]  # remove "(code)"
                         alias_code = filename[1]
 
@@ -241,6 +287,10 @@ class MsdsForm(orm.Model):
                         ], context=context)
                     if msds_ids:
                         msds_id = msds_ids[0]
+                        log(
+                            log_f,
+                            '%s Caricato precedentemente: %s' % f,
+                        )
                     else:  # create
                         msds_id = self.create(cr, uid, {
                             'product_code': product_code,
@@ -248,6 +298,10 @@ class MsdsForm(orm.Model):
                             'filename': f,
                             'language_id': language_id,
                             }, context=context)
+                        log(
+                            log_f,
+                            '%s Nuovo caricamento: %s' % f,
+                        )
 
                     # -------------
                     # Version part:
@@ -293,7 +347,16 @@ class MsdsForm(orm.Model):
                             SELECT id FROM product_product
                             WHERE default_code = %s;
                             """, (product_code, ))
-                    for record in cr.fetchall():
+
+                    records = cr.fetchall()
+                    if not records:
+                        log(
+                            log_f,
+                            '%s Non trovato nessun prodotto da abbinare' % f,
+                        )
+                        continue
+
+                    for record in records:
                         product_id = record[0]
                         rel_ids = rel_pool.search(cr, uid, [
                             ('msds_id', '=', msds_id),
@@ -312,14 +375,23 @@ class MsdsForm(orm.Model):
                         if " " in alias_code:  # Version code
                             cr.execute("""
                                 SELECT id FROM product_product
-                                WHERE default_code ilike %s;""", (
-                                    alias_code.replace("#", "_"), ))
-                        else: # Master version
+                                WHERE default_code ilike %s;
+                                """, (alias_code.replace("#", "_")))
+                        else:  # Master version
                             cr.execute("""
                                 SELECT id FROM product_product
                                 WHERE default_code = %s;
                                 """, (alias_code, ))
-                        for record in cr.fetchall():
+
+                        records = cr.fetchall()
+                        if not records:
+                            log(
+                                log_f,
+                                '%s Non trovato nessun alias da abbinare' % f,
+                            )
+                            continue
+
+                        for record in records:
                             alias_id = record[0]
                             rel_ids = rel_pool.search(cr, uid, [
                                 ('msds_id', '=', msds_id),
@@ -332,7 +404,6 @@ class MsdsForm(orm.Model):
                                     'product_id': False,
                                     'alias_id': alias_id,
                                     }, context=context)
-
                     log_imported += "%s [%s]<br/>\n" % (f, timestamp)
 
                 except:
@@ -340,6 +411,7 @@ class MsdsForm(orm.Model):
                     log_message += error
                     _logger.error(error)
                     continue
+                log(log_f, 'Fine caricamento')
 
         if log_message:
             self.send_log(
