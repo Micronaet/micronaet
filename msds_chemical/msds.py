@@ -420,7 +420,9 @@ class MsdsForm(orm.Model):
                     log_message += error
                     _logger.error(error)
                     continue
-                log(log_f, 'Fine caricamento')
+
+            log(log_f, 'Fine caricamento')
+            break
 
         if log_message:
             self.send_log(
