@@ -197,8 +197,6 @@ class MsdsForm(orm.Model):
         log(log_f, 'Inizio importazione giornaliera')
         for root, dirs, files in os.walk(msds_folder_in):
             for f in files:
-                if f.startswith('DE_S0105'):
-                    pdb.set_trace()
                 try:
                     filename = f.upper().split(".")
 
