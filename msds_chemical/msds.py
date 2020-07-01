@@ -413,7 +413,7 @@ class MsdsForm(orm.Model):
                     )
 
                 except:
-                    error = "%s" % (sys.exc_info(), )
+                    error = '%s' % (sys.exc_info(), )
                     log_message += error
                     _logger.error(error)
                     continue
