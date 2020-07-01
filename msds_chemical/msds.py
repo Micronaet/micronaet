@@ -411,7 +411,6 @@ class MsdsForm(orm.Model):
                         log_f,
                         '%s Importato prodotto %s con alias %s' % (
                             f, product_code, alias_code or '/'),
-                        'error',
                     )
 
                 except:
