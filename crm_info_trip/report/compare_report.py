@@ -293,7 +293,14 @@ class MicronaetAccounting(osv.osv):
             total = {}
             for year in report_year:  # Not used first year
                 total[year] = [0.0, 0.0]  # Current, Previous
-                record = [partner.name, partner.sql_customer_code, year]
+                record = [
+                    partner.name,
+                    partner.account_reference1_name or '',
+                    partner.account_reference2_name or '',
+                    partner.country_id.name or '',
+                    partner.sql_customer_code,
+                    year,
+                ]
                 excel_pool.write_xls_line(
                     ws_name, row, record,
                     default_format=format_list['white']['text'])
@@ -357,9 +364,18 @@ class MicronaetAccounting(osv.osv):
                     # ---------------------------------------------------------
                     # Total compare:
                     # ---------------------------------------------------------
+                    text_rate = '%9.2f %%' % delta_rate_total
+                    text_delta = '%s-%s = %s' % (
+                        round(current_total, 0),
+                        round(previous_total, 0),
+                        round(delta_total, 0),
+                    )
+
                     # Write data:
                     month_record[month - 1] = (
-                        '%9.2f %%' % delta_rate_total, color[heat])
+                        text_delta,
+                        color[heat],
+                    )
 
                     if current_month <= this_month:  # No last part this year
                         total[year][0] += current_total
@@ -370,14 +386,9 @@ class MicronaetAccounting(osv.osv):
 
                     # Write comment:
                     if any((current_total, previous_total)):
-                        comment = '%s-%s = %s' % (
-                            round(current_total, 0),
-                            round(previous_total, 0),
-                            round(delta_total, 0),
-                        )
                         comment_col = len(record) + month - 1
                         excel_pool.write_comment(
-                            ws_name, row, comment_col, comment,
+                            ws_name, row, comment_col, text_rate,
                             parameters=parameters)
 
                 # -------------------------------------------------------------
