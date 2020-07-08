@@ -370,12 +370,13 @@ class MicronaetAccounting(osv.osv):
                     # ---------------------------------------------------------
                     # Total compare:
                     # ---------------------------------------------------------
-                    text_rate = '%9.2f %%' % delta_rate_total
-                    text_delta = '%s-%s = %s' % (
+                    text_rate = '(%s - %s = %s) >> %9.2f %%' % (
                         round(current_total, 0),
                         round(previous_total, 0),
                         round(delta_total, 0),
+                        delta_rate_total,
                     )
+                    text_delta = '%s' % round(delta_total, 0)
 
                     # Write data:
                     month_record[month - 1] = (
