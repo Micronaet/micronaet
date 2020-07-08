@@ -291,7 +291,7 @@ class MicronaetAccounting(osv.osv):
             ws_name, row, header,
             default_format=format_list['header'])
         excel_pool.autofilter(ws_name, row, 0, row, 5)
-        excel_pool.freeze_panes(ws_name, 3, 1)
+        excel_pool.freeze_panes(ws_name, 3, 2)
         row += 1
 
         report_year = years[1:]
