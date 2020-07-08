@@ -210,14 +210,20 @@ class MicronaetAccounting(osv.osv):
         ws_name = 'Confronto annuale'
         excel_pool.create_worksheet(name=ws_name)
         header = [
-            'Cliente', 'Codice', 'Anno',
+            'Cliente', 'Responsabile', 'Commerciale', 'Nazione',
+            'Codice', 'Anno',
+
             'Gen.', 'Feb.', 'Mar.', 'Apr.', 'Mag.', 'Giu.',
             'Lug.', 'Ago.', 'Set.', 'Ott', 'Nov.', 'Dic.',
+
             'Totale',
             ]
         width = [
-            45, 15, 10,
+            45, 20, 20, 18,
+            15, 10,
+
             9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+
             12,
             ]
         excel_pool.column_width(ws_name, width)
