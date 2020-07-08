@@ -302,6 +302,7 @@ class MicronaetAccounting(osv.osv):
                 total[year] = [0.0, 0.0]  # Current, Previous
                 record = [
                     partner.name,
+                    '',  # Overrided
                     partner.account_reference1_name or '',
                     partner.account_reference2_name or '',
                     partner.country_id.name or '',
