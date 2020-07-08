@@ -378,7 +378,7 @@ class MicronaetAccounting(osv.osv):
                         round(delta_total, 0),
                         delta_rate_total,
                     )
-                    text_delta = '%s' % round(delta_total, 0)
+                    text_delta = round(delta_total, 0)
 
                     # Write data:
                     month_record[month - 1] = (
@@ -451,7 +451,7 @@ class MicronaetAccounting(osv.osv):
                         ('%s %%' % round(total_year_rate, 0), color[heat]),
                     ],
                     default_format=format_list['white']['text'],
-                    col= 1,
+                    col=1,
                     # col=len(record) + 12,
                 )
                 row += 1
