@@ -431,7 +431,7 @@ class MicronaetAccounting(osv.osv):
                         round(total_year_previous, 0),
                         round(total_year_delta, 0),
                     )
-                    comment_col = len(record) + 12
+                    comment_col = 1  # len(record) + 12
                     excel_pool.write_comment(
                         ws_name, row, comment_col, comment,
                         parameters=parameters)
