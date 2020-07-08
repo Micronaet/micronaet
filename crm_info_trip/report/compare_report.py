@@ -206,7 +206,11 @@ class MicronaetAccounting(osv.osv):
         # ---------------------------------------------------------------------
         # Excel generation:
         # ---------------------------------------------------------------------
-        parameters = {}
+        parameters = {
+            'width': 200,
+            'font_name': 'Courier New',
+            }
+
         ws_name = 'Confronto annuale'
         excel_pool.create_worksheet(name=ws_name)
         header = [
