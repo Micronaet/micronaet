@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# ODOO (ex OpenERP) 
+# ODOO (ex OpenERP)
 # Open Source Management Solution
 # Copyright (C) 2001-2015 Micronaet S.r.l. (<https://micronaet.com>)
 # Developer: Nicola Riolini @thebrush (<https://it.linkedin.com/in/thebrush>)
@@ -13,7 +13,7 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU Affero General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
@@ -36,24 +36,25 @@ from openerp import SUPERUSER_ID
 from openerp import tools
 from openerp.tools.translate import _
 from openerp.tools.float_utils import float_round as round
-from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT, 
-    DEFAULT_SERVER_DATETIME_FORMAT, 
-    DATETIME_FORMATS_MAP, 
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
+    DEFAULT_SERVER_DATETIME_FORMAT,
+    DATETIME_FORMATS_MAP,
     float_compare)
 
 _logger = logging.getLogger(__name__)
+
 
 class MrpProduction(orm.Model):
     """ Model name: MrpProduction
         Check all data present
     """
-    
+
     _inherit = 'mrp.production'
     _order = 'name desc'
-    
+
     def refresh_lavoration_material(self, cr, uid, ids, context=None):
-        ''' Refresh lavoration if present and not sync
-        '''
+        """ Refresh lavoration if present and not sync
+        """
         lavoration_pool = self.pool.get('mrp.production.workcenter.line')
         current = self.browse(cr, uid, ids, context=context)[0]
 
@@ -66,11 +67,11 @@ class MrpProduction(orm.Model):
         return True
 
     def add_new_lavoration(self, cr, uid, ids, context=None):
-        ''' Create new lavoration:
-        '''
+        """ Create new lavoration:
+        """
         if context is None:
             context = {}
-    
+
         context['default_production_id'] = ids[0]
         context['popup_mode'] = True
 
@@ -79,7 +80,7 @@ class MrpProduction(orm.Model):
             'name': _('Add lavoration'),
             'view_type': 'form',
             'view_mode': 'form',
-            #'res_id': 1,
+            # 'res_id': 1,
             'res_model': 'mrp.production.workcenter.line',
             'view_id': False,
             'views': [(False, 'form')],
@@ -90,35 +91,35 @@ class MrpProduction(orm.Model):
             }
 
     def check_function_data_present(self, cr, uid, ids, context=None):
-        ''' Check normal data in all production
-        '''
+        """ Check normal data in all production
+        """
         _logger.info('Checking MRP data')
         mrp_proxy = self.browse(cr, uid, ids, context=context)[0]
         error = ''
 
-        # ---------------------------------------------------------------------        
+        # ---------------------------------------------------------------------
         # Product need code:
-        # ---------------------------------------------------------------------        
+        # ---------------------------------------------------------------------
         if not mrp_proxy.product_id.default_code:
             error += _('MRP product %s without code\n') % (
                 mrp_proxy.product_id.name
                 )
-        
-        # ---------------------------------------------------------------------        
+
+        # ---------------------------------------------------------------------
         # Production material data:
-        # ---------------------------------------------------------------------        
+        # ---------------------------------------------------------------------
         # Need default code, price on product, price on pedimento if present
         for material in mrp_proxy.bom_material_ids:
             product = material.product_id
             pedimento = material.pedimento_id
             default_code = product.default_code or ''
-            
+
             # Raw material need code:
             if not default_code:
                 error += _('Material %s without default code\n') % (
                     product.name
                     )
-                    
+
             if not product.standard_price:
                 error += _('Material %s without price\n') % (
                     default_code or product.name,
@@ -127,27 +128,27 @@ class MrpProduction(orm.Model):
             if pedimento and not pedimento.standard_price:
                 error += _('Pedimento %s [%s] without price\n') % (
                     pedimento.name,
-                    default_code,                    
+                    default_code,
                     )
-        
-        # ---------------------------------------------------------------------        
-        # Lavoration material data:
-        # ---------------------------------------------------------------------        
-        # All lavoration need:
+
+        # ---------------------------------------------------------------------
+        # Job material data:
+        # ---------------------------------------------------------------------
+        # All job need:
         #    Material code, price on product, price on pedimento if present
         for lavoration in mrp_proxy.workcenter_lines:
             for material in mrp_proxy.bom_material_ids:
                 product = material.product_id
                 pedimento = material.pedimento_id
                 default_code = product.default_code or ''
-                
+
                 # Raw material need code:
                 if not default_code:
                     error += _('[%s] Material %s without code\n') % (
                         lavoration.name,
                         product.name,
                         )
-                        
+
                 if not product.standard_price:
                     error += _('[%s] Material %s without price\n') % (
                         lavoration.name,
@@ -158,12 +159,12 @@ class MrpProduction(orm.Model):
                     error += _('[%s] Pedimento %s [%s] without price\n') % (
                         lavoration.name,
                         pedimento.name,
-                        default_code,                    
+                        default_code,
                         )
-        
-        # ---------------------------------------------------------------------        
+
+        # ---------------------------------------------------------------------
         # Load data for unload material:
-        # ---------------------------------------------------------------------        
+        # ---------------------------------------------------------------------
         for load in mrp_proxy.load_ids:
             # -----------------------------------------------------------------
             # 1. Package:
@@ -179,7 +180,7 @@ class MrpProduction(orm.Model):
                     load.sequence,
                     package.default_code or package.name or '',
                     )
-                
+
             # -----------------------------------------------------------------
             # 2. Pedimento (mandatory on package)
             # -----------------------------------------------------------------
@@ -192,7 +193,7 @@ class MrpProduction(orm.Model):
                     )
 
             # -----------------------------------------------------------------
-            # 3. Pallet            
+            # 3. Pallet
             # -----------------------------------------------------------------
             pallet = load.pallet_product_id
             if pallet and not pallet.default_code:
@@ -205,21 +206,21 @@ class MrpProduction(orm.Model):
                     load.sequence,
                     pallet.default_code or pallet.name or '',
                     )
-        print error            
+        # print error
         return self.write(cr, uid, ids, {
             'check_mrp': error,
             }, context=context)
-        
+
     # Override to check product name
     def load_materials_from_bom(self, cr, uid, ids, context=None):
-        ''' Override original action
-        '''
+        """ Override original action
+        """
         # Call normally:
         super(MrpProduction, self).load_materials_from_bom(
             cr, uid, ids, context=context)
         return self.check_function_data_present(
             cr, uid, ids, context=context)
-    
+
     _columns = {
         'check_mrp': fields.text('Check error'),
         'mode': fields.selection([
@@ -230,43 +231,46 @@ class MrpProduction(orm.Model):
 
     _defaults = {
         'mode': lambda *x: 'production',
-        }    
+        }
+
 
 class MrpProductionWorkcenterLoad(orm.Model):
-    """ Model name: MrpProductionWorkcenterLoad
+    """ Model name: Mrp Production Workcenter Load
         Add extra fields for waste management:
     """
-    
+
     _inherit = 'mrp.production.workcenter.load'
 
     _columns = {
-        'waste_id': fields.many2one('product.product', 'Waste product',
+        'waste_id': fields.many2one(
+            'product.product', 'Waste product',
             help='When there\'s some waste production this product is loaded'),
         'waste_qty': fields.float('Waste Qty', digits=(16, 2)),
         }
 
+
 class MrpProductionMaterial(orm.Model):
     """ Model name: Material pedimento
     """
-    
+
     _inherit = 'mrp.production.material'
 
     def dummy_button(self, cr, uid, ids, context=None):
-        ''' Dummy button
-        '''
+        """ Dummy button
+        """
         return True
-    
+
     def manage_pedimento_error(self, cr, uid, ids, context=None):
-        ''' Duplicate line for use remain qty with another pedimento
-        '''
+        """ Duplicate line for use remain qty with another pedimento
+        """
         material = self.browse(cr, uid, ids, context=context)[0]
 
         qty = material.quantity
         pedimento_qty = material.pedimento_id.product_qty
-        
+
         if qty <= pedimento_qty:
             raise osv.except_osv(
-                _('Error'), 
+                _('Error'),
                 _('Split not necessary, request %s, pedimento %s') % (
                     qty, pedimento_qty),
                 )
@@ -275,70 +279,72 @@ class MrpProductionMaterial(orm.Model):
         self.write(cr, uid, ids, {
             'quantity': pedimento_qty,
             }, context=context)
-            
+
         # Create remain line:
         self.create(cr, uid, {
             'mrp_production_id': material.mrp_production_id.id,
             'quantity': qty - pedimento_qty,
             'product_id': material.product_id.id,
             'standard_price': material.standard_price,
-            'pedimento_id': False, # Let choose to the user!            
+            'pedimento_id': False,  # Let choose to the user!
             }, context=context)
 
-        # Refresh view:    
+        # Refresh view:
         return {
             'type': 'ir.actions.client',
             'tag': 'reload',
             }
 
     def _get_pedimento_covered(self, cr, uid, ids, fields, args, context=None):
-        ''' Fields function for calculate 
-        '''
+        """ Fields function for calculate
+        """
         res = {}
         for material in self.browse(cr, uid, ids, context=context):
             qty = material.quantity
             if material.pedimento_id:
-                pedimento_qty = material.pedimento_id.product_qty           
+                pedimento_qty = material.pedimento_id.product_qty
                 res[material.id] = (qty <= pedimento_qty)
-            else:    
-                res[material.id] = True # till selection
+            else:
+                res[material.id] = True  # till selection
         return res
 
-    def _get_accounting_covered(self, cr, uid, ids, fields, args, context=None):
-        ''' Fields function for calculate waste
-        '''
+    def _get_accounting_covered(
+            self, cr, uid, ids, fields, args, context=None):
+        """ Fields function for calculate waste
+        """
         res = {}
         for material in self.browse(cr, uid, ids, context=context):
             qty = material.quantity
-            accounting_qty = material.accounting_qty           
+            accounting_qty = material.accounting_qty
             res[material.id] = (qty <= accounting_qty)
         return res
-    
+
     _columns = {
         'pedimento_id': fields.many2one(
             'product.product.pedimento', 'Pedimento'),
         'standard_price': fields.related(
-            'product_id', 'standard_price', 
-            type='float', string='Standard price'),    
+            'product_id', 'standard_price',
+            type='float', string='Standard price'),
         'pedimento_price': fields.related(
-            'pedimento_id', 'standard_price', 
-            type='float', string='Pedimento price'),    
+            'pedimento_id', 'standard_price',
+            type='float', string='Pedimento price'),
         'pedimento_covered': fields.function(
-            _get_pedimento_covered, method=True, 
-            type='boolean', string='Pedimento covered'), 
+            _get_pedimento_covered, method=True,
+            type='boolean', string='Pedimento covered'),
         'accounting_covered': fields.function(
-            _get_accounting_covered, method=True, 
-            type='boolean', string='Pedimento covered'), 
+            _get_accounting_covered, method=True,
+            type='boolean', string='Pedimento covered'),
         }
 
+
 class product_product_extra(osv.osv):
-    ''' Extra fields for product.product object
-    '''
+    """ Extra fields for product.product object
+    """
     _inherit = "product.product"
 
     def rpc_import_stock_status_mx(
             self, cr, uid, stock, context=None):
-        ''' Launched externally (store procedure and passed database)
+        """ Launched externally (store procedure and passed database)
 
             -------------------------------------------------------
             |                     Read parameters:                |
@@ -358,13 +364,13 @@ class product_product_extra(osv.osv):
             | Cost                    |     7       |             |
             | Last cost               |     8       |      5      |
             -------------------------------------------------------
-        '''
+        """
         _logger.info('Import stock status from external')
 
-        if not stock: 
+        if not stock:
             _logger.error('Cannot import, no stock and pedimento stock passed')
             return False
-            
+
         # ---------------------------------------------------------------------
         #                          PEDIMENTO MANAGEMENT:
         # ---------------------------------------------------------------------
@@ -385,13 +391,13 @@ class product_product_extra(osv.osv):
         double = []
         total = {}
         product_type_db = []
-        for row in stock:                        
-            if len(row) == 6: # unit col 6
+        for row in stock:
+            if len(row) == 6:  # unit col 6
                 # -------------------------------------------------------------
-                continue # XXX Not used for now:                
+                continue  # XXX Not used for now:
                 default_code = row[0]
                 name = row[1]
-                control = row[2] # unit 
+                control = row[2] # unit
                 product_type = row[3] # MP
                 pedimento = False
                 lot = False
@@ -400,22 +406,22 @@ class product_product_extra(osv.osv):
                 last_cost = row[5]
                 # -------------------------------------------------------------
 
-            else: # pedimento: col 9 
+            else:  # pedimento: col 9
                 default_code = row[0]
                 name = row[1]
-                product_type = row[2] # MP
-                control = row[3] # pedimento
+                product_type = row[2]  # MP
+                control = row[3]  # pedimento
                 pedimento = row[4]
                 lot = row[5]
                 product_qty = row[6]
                 cost = row[7]
                 last_cost = row[8] or cost
 
-                if lot: # so no pedimento!
-                    pedimento = lot # Use pedimento as a code
-                    pedimento_code = lot # Use lot for code
-                else:    
-                    pedimento_code = pedimento.replace(' ', '') # clean
+                if lot:  # so no pedimento!
+                    pedimento = lot  # Use pedimento as a code
+                    pedimento_code = lot  # Use lot for code
+                else:
+                    pedimento_code = pedimento.replace(' ', '')  # clean
 
             if control == 'pediment':
                 control = 'pedimento'
@@ -436,47 +442,48 @@ class product_product_extra(osv.osv):
                         row, default_code))
                 continue
             product_id = product_ids[0]
-        
+
             # -----------------------------------------------------------------
             # Product type:
             # -----------------------------------------------------------------
             product_type_db.append((product_id, product_type))
-            
+
             # -----------------------------------------------------------------
             # Total update:
             # -----------------------------------------------------------------
             if product_id not in total:
-                total[product_id] = [0, last_cost, control]                        
+                total[product_id] = [0, last_cost, control]
             total[product_id][0] += product_qty
 
             # -----------------------------------------------------------------
             # Pedimento / Lot (use same management):
             # -----------------------------------------------------------------
             # Pedimento present
-            #if pedimento:
-            key = (pedimento_code, product_id) 
+            # if pedimento:
+            key = (pedimento_code, product_id)
             if key not in check_double:
-                check_double[key] = product_qty                
+                check_double[key] = product_qty
             else:
-                check_double[key] += product_qty # used to get total q.
-                if control == 'pedimento': # lot could be double!
-                    double.append((default_code, pedimento)) # for log double
+                check_double[key] += product_qty  # used to get total q.
+                if control == 'pedimento':  # lot could be double!
+                    double.append((default_code, pedimento))  # for log double
             subtotal = check_double[key]
 
-            # Search now:            
+            # Search now:
             odoo_ids = pedimento_pool.search(cr, uid, [
                 ('code', '=', pedimento_code),
                 ('product_id', '=', product_id),
                 ], context=context)
-            if odoo_ids: # Update pedimento:
+            if odoo_ids:  # Update pedimento:
                 data = {
-                    'product_qty': subtotal, # total for all read!
+                    'product_qty': subtotal,  # total for all read!
                     }
-                if last_cost: # XXX Update only if present:
+                if last_cost:  # XXX Update only if present:
                     data['standard_price'] = last_cost
-                pedimento_pool.write(cr, uid, [odoo_ids[0]], data, 
+                pedimento_pool.write(
+                    cr, uid, [odoo_ids[0]], data,
                     context=context)
-            else: # Create pedimento:
+            else:  # Create pedimento:
                 pedimento_pool.create(cr, uid, {
                     'name': pedimento,
                     'code': pedimento_code,
@@ -496,8 +503,8 @@ class product_product_extra(osv.osv):
             except:
                 _logger.error(
                     '%s product type not found: MP, PT' % product_type)
-                continue        
-            
+                continue
+
         # ---------------------------------------------------------------------
         # Reset accounting qty in ODOO:
         # ---------------------------------------------------------------------
@@ -515,16 +522,16 @@ class product_product_extra(osv.osv):
             # Update product data:
             # -----------------------------------------------------------------
             data = {
-                'accounting_qty': product_qty,                
+                'accounting_qty': product_qty,
                 'product_mode': control,
                 }
             if last_cost > 0.001:
                 data['standard_price'] = last_cost
-  
+
             self.write(
                 cr, uid, product_id, data, context=context)
         _logger.info('End import product account status')
-    
+
         if double:
             query = 'select partner_id from res_users;'
             cr.execute(query)
@@ -533,31 +540,31 @@ class product_product_extra(osv.osv):
             for item in double:
                 double_text += 'Codice: %s, Prodotto: %s\n' % item
             mail_pool.message_post(
-                cr, uid, False, 
-                type='email', 
+                cr, uid, False,
+                type='email',
                 body='Trovati numeri pedimento doppi in Contipaq: %s' % (
-                    double_text, ), 
+                    double_text, ),
                 subject='Trovati doppioni',
                 partner_ids=[(6, 0, partner_ids)],
                 context=context)
         return True
-    
+
     # -------------------------------------------------------------------------
     #                               Scheduled actions
     # -------------------------------------------------------------------------
     def schedule_etl_product_state_mx(
             self, cr, uid, path=False, start=1, context=None):
-        ''' Import from Import Excel file from accounting
-        '''
+        """ Import from Import Excel file from accounting
+        """
         return True
         # TODO remove, called from external:
 
     def get_waste_product(self, cr, uid, ids, context=None):
-        ''' Update if present same product with R
-        '''
+        """ Update if present same product with R
+        """
         current_proxy = self.browse(cr, uid, ids, context=context)[0]
         default_code = current_proxy.default_code or ''
-        waste_code = 'R' + default_code[1:] # Same as code but used R* format
+        waste_code = 'R' + default_code[1:]  # Same as code but used R* format
         product_ids = self.search(cr, uid, [
             ('default_code', '=', waste_code),
             ], context=context)
@@ -567,93 +574,95 @@ class product_product_extra(osv.osv):
                 }, context=context)
         else:
             raise osv.except_osv(
-                _('Waste code'), 
+                _('Waste code'),
                 _('Product %s doesn\'t have waste code: %s' % (
                     default_code,
                     waste_code,
                     )),
-                )            
-        return True
+                )
 
     _columns = {
-        'waste_id': fields.many2one('product.product', 'Waste product',
+        'waste_id': fields.many2one(
+            'product.product', 'Waste product',
             help='When there\'s some waste production this product is loaded'),
         'forced_price': fields.float(
-            'Forced price', digits=(16, 3), 
+            'Forced price', digits=(16, 3),
             help='Force price for raw material in product price'),
         }
 
+
 class MrpProductionWorkcenterLineExtra(osv.osv):
-    ''' Update some _defaults value
-    '''
+    """ Update some _defaults value
+    """
     _inherit = 'mrp.production.workcenter.line'
 
     def dummy_button(self, cr, uid, ids, context=None):
-        ''' Dummy button
-        '''
+        """ Dummy button
+        """
         return True
 
     # Override for manage pedimento
     # >>> ORM Function:
     def create(self, cr, uid, vals, context=None):
-        """ Override create method only for generare BOM materials in subfield
+        """ Override create method only to generate BOM materials in subfield
             bom_materials_ids, initially is a copy of mrp.production ones
         """
         mrp_pool = self.pool.get('mrp.production')
         material_pool = self.pool.get('mrp.production.material')
-        
+
         vals['real_date_planned_end'] = self.add_hour(
-            vals.get('real_date_planned',False), 
+            vals.get('real_date_planned',False),
             vals.get('hour',False))
         if vals.get('force_cycle_default', False):
             res = self.cycle_historyzation(cr, uid, vals, context=context)
-            vals['force_cycle_default'] = False 
+            vals['force_cycle_default'] = False
             # after historization force return False
 
         res_id = super(MrpProductionWorkcenterLineExtra, self).create(
             cr, uid, vals, context=context)
-        if res_id: # Create bom for this lavoration: (only during creations)!! 
+        if res_id:  # Create bom for this lavoration: (only during creations)!!
             # TODO test if is it is not created (or block qty if present)?
             mrp_proxy = mrp_pool.browse(
                 cr, uid, [vals.get('production_id', 0)], context=context)[0]
             total = mrp_proxy.product_qty
 
-            # Delete previous procedure records:            
+            # Delete previous procedure records:
             material_ids = material_pool.search(cr, uid, [
-                ('workcenter_production_id','=', res_id),
-                ], context=context)                
+                ('workcenter_production_id', '=', res_id),
+                ], context=context)
             material_pool.unlink(cr, uid, material_ids, context=context)
-            
+
             for item in mrp_proxy.bom_material_ids:
-                # proportionally created on total production order 
-                # and total lavoration order
+                # proportionally created on total production order
+                # and total job order
                 item_id = material_pool.create(cr, uid, {
                     'product_id': item.product_id.id,
                     'quantity': item.quantity * vals.get(
                         'product_qty', 0.0) / total if total else 0.0,
-                    # current yet created WC line:    
-                    'workcenter_production_id': res_id, 
+                    # current yet created WC line:
+                    'workcenter_production_id': res_id,
                     'pedimento_id': item.pedimento_id.id or False,
                     }, context=context)
         return res_id
 
-    def _create_bom_lines(self, cr, uid, lavoration_id, from_production=False, 
+    def _create_bom_lines(
+            self, cr, uid, lavoration_id, from_production=False,
             context=None):
-        ''' Create a BOM list for the passed lavoration
+        """ Create a BOM list for the passed job
             Actual items will be deleted and reloaded with quantity passed
-        '''
+        """
         lavoration_browse = self.browse(
             cr, uid, lavoration_id, context=context)
         try:
             mrp = lavoration_browse.production_id
             bom = mrp.bom_id
             if not bom and not lavoration_browse.product_qty:
-                return False # TODO raise error
+                return False  # TODO raise error
 
             # Delete all elements:
             material_pool = self.pool.get('mrp.production.material')
             material_ids = material_pool.search(cr, uid, [
-                ('workcenter_production_id','=', lavoration_id),
+                ('workcenter_production_id', '=', lavoration_id),
                 ], context=context)
             material_pool.unlink(cr, uid, material_ids, context=context)
 
@@ -662,19 +671,21 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
                 for element in mrp.bom_material_ids:
                     material_pool.create(cr, uid, {
                         'product_id': element.product_id.id,
-                        'quantity': element.quantity / mrp.product_qty * \
-                            lavoration_browse.product_qty \
+                        'quantity':
+                            element.quantity / mrp.product_qty *
+                            lavoration_browse.product_qty
                             if mrp.product_qty else 0.0,
-                        'pedimento_id': element.pedimento_id.id,    
+                        'pedimento_id': element.pedimento_id.id,
                         'uom_id': element.product_id.uom_id.id,
                         'workcenter_production_id': lavoration_id,
                     }, context=context)
-            else:                
+            else:
                 for element in bom.bom_lines:
                     material_pool.create(cr, uid, {
                         'product_id': element.product_id.id,
-                        'quantity': element.product_qty * \
-                            lavoration_browse.product_qty / bom.product_qty \
+                        'quantity':
+                            element.product_qty *
+                            lavoration_browse.product_qty / bom.product_qty
                             if bom.product_qty else 0.0,
                         'pedimento_id': False,
                         'uom_id': element.product_id.uom_id.id,
@@ -688,22 +699,22 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
     # Schedule import log:
     # -------------------------------------------------------------------------
     def schedule_import_log_event(self, cr, uid, folder, context=None):
-        ''' Start import from folder:
-        '''
+        """ Start import from folder:
+        """
         def clean(value):
-            ''' Clean as ascii
-            '''
+            """ Clean as ascii
+            """
             res = ''
             for c in (value or ''):
                 if ord(c) < 127:
                     res += c
                 else:
                     res += '*'
-            return res        
-                
+            return res
+
         path = os.path.expanduser(folder)
         _logger.info('Start reading log path: %s' % path)
-        
+
         wc_db = {}
         move_file = []
         for root, folders, files in os.walk(path):
@@ -718,16 +729,16 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
                 part = f.split('.')
                 openerp_part = part[0].split('_')
                 account_part = part[1].split('-')
-                
+
                 mode = openerp_part[0]
                 wc_id = int(openerp_part[1])
                 account_ref = account_part[1]
                 account_date = account_part[2]
 
                 if wc_id not in wc_db:
-                    wc_db[wc_id] = {} # data to create after log read
-                
-                # Write file name readed:
+                    wc_db[wc_id] = {}  # data to create after log read
+
+                # Write file name read:
                 wc_db[wc_id].update({
                     'log_filename_%s' % mode: f,
                     'log_account_%s' % mode: account_ref,
@@ -740,69 +751,71 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
                 fullname = os.path.join(path, f)
                 history_name = os.path.join(path, 'history', f)
                 move_file.append((fullname, history_name))
-                
+
                 log_error = False
                 log_error_text = ''
                 log_detail = ''
-                
+
                 i = 0
                 for line in open(fullname, 'r'):
                     i += 1
                     if i == 1:
-                        continue # Jump header
+                        continue  # Jump header
 
                     line.strip()
                     if not line:
                         continue
-                    row = line.split('\t')
-                    control = row[0].strip()
-                    note = row[1].strip() # 'Inserted movement' # CORRECT
-                    error = row[2].strip()
-                    default_code = row[3].strip()
-                    qty = row[4].strip()
-                    uom = row[5].strip()
-                    cost = row[6].strip()
-                    lot = row[7].strip() # or pedimento
-                    
+
+                    # CSV file:
+                    # row = line.split('\t')
+                    # control = row[0].strip()
+                    # note = row[1].strip() # 'Inserted movement' # CORRECT
+                    # error = row[2].strip()
+                    # default_code = row[3].strip()
+                    # qty = row[4].strip()
+                    # uom = row[5].strip()
+                    # cost = row[6].strip()
+                    # lot = row[7].strip() # or pedimento
+
                     # Update data:
                     if note != 'Inserted movement':
                         log_error = True
                         log_error_text += clean(line)
                     log_detail += clean(line)
-                    
+
                 wc_db[wc_id].update({
                     'log_error_%s' % mode: log_error,
                     'log_error_text_%s' % mode: log_error_text,
                     'log_detail_%s' % mode: log_detail,
                     })
-            break # only first folder
-        
+            break  # only first folder
+
         # Update database with log files:
-        _logger.info('Update log info in database:')             
+        _logger.info('Update log info in database:')
         for wc_id in wc_db:
             try:
                 self.write(cr, uid, [wc_id], wc_db[wc_id], context=context)
             except:
                 _logger.info('Workcenter ID %s no more present!' % wc_id)
-            
+
         # TODO remove only if update database!
         # History file read (after modify database):
-        _logger.info('History file readed:')
+        _logger.info('History file read:')
         for from_file, to_file in move_file:
             _logger.info('Move file: %s  >>  %s' % (from_file, to_file))
-            shutil.move(from_file, to_file)        
+            shutil.move(from_file, to_file)
         return True
 
     # -------------------------------------------------------------------------
     # Button event:
     # -------------------------------------------------------------------------
     def mark_ok(self, cr, uid, ids, context=None):
-        ''' Mark as view the log error
-        '''
+        """ Mark as view the log error
+        """
         return self.write(cr, uid, ids, {
             'log_ok': True,
             }, context=context)
-        
+
     _columns = {
         # Unload block:
         'log_filename_unload': fields.char('Filename unload', size=64),
@@ -821,5 +834,4 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
         'log_account_date_load': fields.char('Account date load', size=20),
 
         'log_ok': fields.boolean('OK (unload and load)'),
-       }        
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+       }
