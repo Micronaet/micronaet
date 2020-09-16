@@ -766,6 +766,18 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
                     if not line:
                         continue
 
+                    # Fixed file:
+                    control = line[:24].strip()
+                    note = line[24:64].strip()  # 'Inserted movement' # CORRECT
+                    error = line[64:120].strip()
+                    default_code = line[120:144].strip()
+                    qty = line[144:160].strip()
+                    uom = line[160:168].strip()
+                    cost = line[168:176].strip()
+                    pedimento = line[176:198].strip()
+                    lot = line[198:216].strip()
+                    stock = line[216:217].strip()
+
                     # CSV file:
                     # row = line.split('\t')
                     # control = row[0].strip()
