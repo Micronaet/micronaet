@@ -63,33 +63,37 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
 
         # Search block:
         filter_used = ''
+        if not wiz_browse.with_empty_code:
+            domain.append(('default_code', '!=', False))
+            filter_used += 'Solo prodotti con codice '
+
         if wiz_browse.mode == 'negative':
             domain.append(('accounting_qty', '<=', 0.0))
-            filter_used += 'Solo prodotti negativi (<0)'
+            filter_used += 'Solo prodotti negativi (<0) '
         elif wiz_browse.mode == 'positive':
             domain.append(('accounting_qty', '>', 0.0))
-            filter_used += 'Solo prodotti positivi (>0)'
+            filter_used += 'Solo prodotti positivi (>0) '
         elif wiz_browse.mode == 'zero':
             domain.append(('accounting_qty', '=', 0.0))
-            filter_used += 'Solo prodotti zero (=0)'
+            filter_used += 'Solo prodotti zero (=0) '
         else:
-            filter_used += 'Tutti i prodotti'
+            filter_used += 'Tutti i prodotti '
 
         if wiz_browse.from_code:
             domain.append(('default_code', '>=', wiz_browse.from_code))
-            filter_used += ', Codice >= %s' % wiz_browse.from_code
+            filter_used += ', Codice >= %s ' % wiz_browse.from_code
         if wiz_browse.to_code:
             domain.append(('default_code', '<=', wiz_browse.to_code))
-            filter_used += ', Codice <= %s' % wiz_browse.to_code
+            filter_used += ', Codice <= %s ' % wiz_browse.to_code
 
         if wiz_browse.statistic_category:
             domain.append(
                 ('statistic_category', '=', wiz_browse.statistic_category))
-            filter_used += ', Cat. stat. = %s' % wiz_browse.statistic_category
+            filter_used += ', Cat. stat. = %s ' % wiz_browse.statistic_category
 
         if wiz_browse.categ_id:
             domain.append(('categ_id', '=', wiz_browse.categ_id.id))
-            filter_used += ', Categoria = %s' % wiz_browse.categ_id.name
+            filter_used += ', Categoria = %s ' % wiz_browse.categ_id.name
 
         # Sort function:
         if wiz_browse.sort == 'default_code':
@@ -105,7 +109,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
 
         # Excel generation
         ws_name = 'Prodotti'
-        ws = excel_pool.create_worksheet(ws_name)
+        excel_pool.create_worksheet(ws_name)
 
         # Format used:
         # excel_pool.set_format()
@@ -156,11 +160,13 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 (product.accounting_qty, format_number),
                 ], format_text)
 
-        return excel_pool.return_attachment(cr, uid, 'Prodotti',
+        return excel_pool.return_attachment(
+            cr, uid, 'Prodotti',
             name_of_file=False, version='7.0', php=True,
             context=context)
 
     _columns = {
+        'with_empty_code': fields.boolean('Rimuovi senza codice'),
         'from_code': fields.char('From code', size=20),
         'to_code': fields.char('To code', size=20),
         'statistic_category': fields.char('Statistic_category', size=20),
