@@ -122,9 +122,8 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             filter_used,
             ], format_title)
 
-        row += 2
         excel_pool.column_width(ws_name, [10, 40, 20, 10, 12, 30, 10])
-        excel_pool.write_xls_line(ws_name, row, [
+        header = [
             u'Codice',
             u'Nome',
             u'Categoria',
@@ -132,7 +131,11 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             u'Cod. doganale',
             u'Primo fornitore',
             u'Q.',
-            ], format_header)
+            ]
+
+        row += 2
+        excel_pool.write_xls_line(ws_name, row, header, format_header)
+        excel_pool.autofilter(ws_name, (row, 0, row, len(header) - 1))
 
         for product in sorted(product_pool.browse(
                 cr, uid, product_ids, context=context),
