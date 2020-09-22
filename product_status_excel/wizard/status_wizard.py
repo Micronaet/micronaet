@@ -166,7 +166,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             context=context)
 
     _columns = {
-        'with_empty_code': fields.boolean('Rimuovi senza codice'),
+        'with_empty_code': fields.boolean('Includi i codice'),
         'from_code': fields.char('From code', size=20),
         'to_code': fields.char('To code', size=20),
         'statistic_category': fields.char('Statistic_category', size=20),
