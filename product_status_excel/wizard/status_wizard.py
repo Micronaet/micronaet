@@ -135,7 +135,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
 
         row += 2
         excel_pool.write_xls_line(ws_name, row, header, format_header)
-        excel_pool.autofilter(ws_name, (row, 0, row, len(header) - 1))
+        excel_pool.autofilter(ws_name, row, 0, row, len(header) - 1)
 
         for product in sorted(product_pool.browse(
                 cr, uid, product_ids, context=context),
