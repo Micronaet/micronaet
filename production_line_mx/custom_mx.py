@@ -704,7 +704,6 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
 
         wc_db = {}
         move_file = []
-        pdb.set_trace()
         for root, folders, files in os.walk(path):
             for f in files:
                 if not f.startswith('load_') and not f.startswith('unload_'):
