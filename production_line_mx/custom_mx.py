@@ -384,8 +384,8 @@ class product_product_extra(osv.osv):
                 continue  # XXX Not used for now:
                 default_code = row[0]
                 name = row[1]
-                control = row[2] # unit
-                product_type = row[3] # MP
+                control = row[2]  # unit
+                product_type = row[3]  # MP
                 pedimento = False
                 lot = False
                 product_qty = row[4]
