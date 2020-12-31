@@ -43,6 +43,7 @@ from openerp.tools import (
 
 _logger = logging.getLogger(__name__)
 
+
 class ProductProductPedimento(orm.Model):
     """ Model name: ProductProductPedimento
     """
@@ -83,6 +84,7 @@ class ProductProductPedimento(orm.Model):
         'product_qty': fields.float('Qty', digits=(16, 3)),
         'standard_price': fields.float('Cost', digits=(16, 3)),
         }
+
 
 class ProductProduct(orm.Model):
     """ Model name: ProductProduct
