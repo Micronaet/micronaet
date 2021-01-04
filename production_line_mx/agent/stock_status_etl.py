@@ -23,18 +23,19 @@ import pyodbc
 import erppeek
 import ConfigParser
 
+
 # -----------------------------------------------------------------------------
 #                                UTILITY
 # -----------------------------------------------------------------------------
 def get_erp(URL, database, user, password):
-    ''' Connect to log table in ODOO
-    '''
+    """ Connect to log table in ODOO
+    """
     return erppeek.Client(
         URL,
         db=database,
         user=user,
         password=password,
-        )   
+        )
 
 # -----------------------------------------------------------------------------
 #                                Parameters
@@ -47,9 +48,9 @@ config = ConfigParser.ConfigParser()
 config.read([fullname])
 
 # DSN block:
-dsn = config.get('dsn', 'name') 
-uid = config.get('dsn', 'uid') 
-pwd = config.get('dsn', 'pwd') 
+dsn = config.get('dsn', 'name')
+uid = config.get('dsn', 'uid')
+pwd = config.get('dsn', 'pwd')
 
 # OpenERP block:
 hostname = config.get('openerp', 'server')
@@ -58,13 +59,13 @@ database = config.get('openerp', 'database')
 user = config.get('openerp', 'user')
 password = config.get('openerp', 'password')
 
-URL = 'http://%s:%s' % (hostname, port) 
+URL = 'http://%s:%s' % (hostname, port)
 
 # Access MS SQL Database customer table:
 connection = pyodbc.connect('DSN=%s;UID=%s;PWD=%s' % (dsn, uid, pwd))
 cr = connection.cursor()
 
-# OPENERP Obj: 
+# OPENERP Obj:
 erp = get_erp(URL, database, user, password)
 
 stock = []
@@ -72,27 +73,27 @@ stock = []
 # -----------------------------------------------------------------------------
 # Pedimento stock:
 # -----------------------------------------------------------------------------
-print 'Start reading pedimento product'
+print('Start reading pedimento product')
 cr.execute('sp_existence_Pedimento_Product')
 for record in cr.fetchall():
     row = tuple(record)
-    print row
-    #if row[2] != 'MP':        
+    print(row)
+    #if row[2] != 'MP':
     #    continue
     stock.append(row)
 
 # -----------------------------------------------------------------------------
 # Lot stock:
 # -----------------------------------------------------------------------------
-print 'Start reading lot product'
+print('Start reading lot product')
 cr.execute('sp_existence_Product')
 for record in cr.fetchall():
     row = tuple(record)
-    print row
-    #if row[3] != 'MP':
+    print(row)
+    # if row[3] != 'MP':
     #    continue
     stock.append(row)
 
 product_pool = erp.model('product.product')
 product_pool.rpc_import_stock_status_mx(stock)
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+
