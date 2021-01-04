@@ -510,7 +510,7 @@ class product_product_extra(osv.osv):
         for product_id in total:
             product_qty, last_cost, control = total[product_id]
             if control == 'lotandpediment':
-                control = 'pediment'
+                control = 'pedimento'
 
             # -----------------------------------------------------------------
             # Update product data:

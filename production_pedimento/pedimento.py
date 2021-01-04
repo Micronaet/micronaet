@@ -85,7 +85,7 @@ class ProductProductPedimento(orm.Model):
         'product_qty': fields.float('Qty', digits=(16, 3)),
         'standard_price': fields.float(
             'Last Cost', digits=(16, 3),
-            help='Last cost for filna product calc.'),
+            help='Last cost for final product calc.'),
         'current_price': fields.float(
             'Current Cost', digits=(16, 3),
             help='Current lot / ped. cost, used for stock evaluation'),
@@ -107,7 +107,8 @@ class ProductProduct(orm.Model):
         'product_mode': fields.selection([
             ('lot', 'Lot'),
             ('pedimento', 'Pedimento'),
-            ('unit', 'Unit'), # not used
+            ('unit', 'Unit'),  # not used
+            # no lotandpediment!
             ], 'Product mode', required=True),
         'pedimento_ids': fields.one2many(
             'product.product.pedimento', 'product_id', 'Pedimento', ),
