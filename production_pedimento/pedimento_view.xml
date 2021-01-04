@@ -6,16 +6,17 @@
             <field name="name">product.product.pedimento.form</field>
             <field name="model">product.product.pedimento</field>
             <field name="arch" type="xml">
-                <form string="Pedimento" version="7.0">        
+                <form string="Pedimento" version="7.0">
                     <sheet>
                         <group col="4" colspan="4">
                             <field name="product_id" />
                             <field name="code" readonly="1" />
                             <field name="name" />
-                            <field name="product_qty" />                            
+                            <field name="product_qty" />
                             <field name="standard_price" />
+                            <field name="current_price" />
                         </group>
-                    </sheet>        
+                    </sheet>
                 </form>
             </field>
         </record>
@@ -28,7 +29,8 @@
                     <field name="code" readonly="1"/>
                     <field name="name" />
                     <field name="standard_price" />
-                    <field name="product_qty" sum="Total"/>                            
+                    <field name="current_price" />
+                    <field name="product_qty" sum="Total"/>
                 </tree>
             </field>
         </record>
@@ -36,14 +38,15 @@
             <field name="name">product.product.pedimento.search</field>
             <field name="model">product.product.pedimento</field>
             <field name="arch" type="xml">
-                <search string="Pedimento" version="7.0">        
+                <search string="Pedimento" version="7.0">
                     <field name="name" />
                     <field name="code" />
                     <field name="product_id" filter_domain="[('product_id','=',self)]"/>
                     <field name="standard_price" />
+                    <field name="current_price" />
                     <group expand="0" string="Group By...">
                         <filter name="group_product" string="Product" context="{'group_by': 'product_id'}"/>
-                    </group>                
+                    </group>
                 </search>
             </field>
         </record>
@@ -56,12 +59,12 @@
             <field name="context">{}</field>
             <field name="domain">[]</field>
         </record>
-        <menuitem 
-            parent="product.menu_products" 
-            id="menu_product_product_pedimento" 
+        <menuitem
+            parent="product.menu_products"
+            id="menu_product_product_pedimento"
             action="action_product_product_pedimento"
             sequence="10"
-            />        
+            />
 
         <record model="ir.ui.view" id="view_product_pedimento_form">
             <field name="name">product.product.pedimento.form</field>
@@ -81,10 +84,10 @@
                 <field name="qty_available" position="after">
                     <field name="product_mode" />
                 </field>
-                
+
             </field>
         </record>
-        
+
         <record model="ir.ui.view" id="view_product_pedimento_form">
             <field name="name">product.product.pedimento.form</field>
             <field name="model">product.product</field>
@@ -97,12 +100,12 @@
                             <field name="product_type"  />
                             <separator string="Pedimento:" colspan="4"/>
                             <field name="pedimento_ids" context="{'embedded': True}" readonly="1" nolabel="1"  colspan="4"/>
-                        </group>    
+                        </group>
                     </page>
-                </xpath>                
+                </xpath>
             </field>
         </record>
-        
+
         <!--
         <record model="ir.ui.view" id="view_product_material_pedimento_form">
             <field name="name">Material Pedimento</field>
@@ -110,7 +113,7 @@
             <field name="inherit_id" ref="production_line.default_mrp_production_form_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='bom_material_ids']/tree/field[@name='product_id']" position="after">
-                    <field name="pedimento_id" domain="[('product_id', '=', product_id)]"/>                    
+                    <field name="pedimento_id" domain="[('product_id', '=', product_id)]"/>
                 </xpath>
             </field>
         </record>-->

@@ -166,7 +166,7 @@ class MrpProduction(osv.Model):
         #                          Cost calculation:
         # ---------------------------------------------------------------------
         # Readability:
-        mrp = lavoration.production_id # for force rate
+        mrp = lavoration.production_id  # for force rate
         wc = lavoration.workcenter_id
 
         # Lavoration K cost (for line):
@@ -207,6 +207,7 @@ class MrpProduction(osv.Model):
             else:
                 pedimento = unload.pedimento_id
                 if pedimento:
+                    # TODO this is last:
                     standard_price = pedimento.standard_price
                 else:
                     standard_price = product.standard_price
@@ -229,8 +230,8 @@ class MrpProduction(osv.Model):
                 raise osv.except_osv(
                     _('Lavoration cost error!'),
                     _('Material without cost: %s' % default_code))
-                calc += u'[%s] ERROR calc subtota for line<br/>' % \
-                    default_code
+                # calc += u'[%s] ERROR calc subtotal for line<br/>' % \
+                #    default_code
 
         # ---------------------------------------------------------------------
         # 2. Unload from loading operation:
@@ -465,12 +466,12 @@ class MrpProduction(osv.Model):
                     standard_price = product.standard_price
 
             # -----------------------------------------------------------------
-            # Pedimento / Lot column: 
+            # Pedimento / Lot column:
             # -----------------------------------------------------------------
             if product.product_mode == 'lot':
                 pedimento_name = ''
                 lot_name = load.package_pedimento_id.name
-            else: # pedimento   
+            else: # pedimento
                 pedimento_name = load.package_pedimento_id.name
                 lot_name = ''
 
@@ -497,12 +498,12 @@ class MrpProduction(osv.Model):
                     standard_price = product.standard_price
 
                 # -------------------------------------------------------------
-                # Pedimento / Lot column: 
+                # Pedimento / Lot column:
                 # -------------------------------------------------------------
                 if product.product_mode == 'lot':
                     pedimento_name = ''
                     lot_name = load.pallet_pedimento_id.name
-                else: # pedimento   
+                else: # pedimento
                     pedimento_name = load.pallet_pedimento_id.name
                     lot_name = ''
 
@@ -553,15 +554,15 @@ class MrpProduction(osv.Model):
                     _('No standard price %s') % default_code)
 
             # -----------------------------------------------------------------
-            # Pedimento / Lot column: 
+            # Pedimento / Lot column:
             # -----------------------------------------------------------------
             if product.product_mode == 'lot':
                 pedimento_name = ''
                 lot_name = \
                     unload.pedimento_id.name if unload.pedimento_id else ''
-            else: # pedimento   
+            else: # pedimento
                 pedimento_name = \
-                    unload.pedimento_id.name if unload.pedimento_id else ''                    
+                    unload.pedimento_id.name if unload.pedimento_id else ''
                 lot_name = ''
 
             excel_pool.write_xls_line(ws_name, row, [
@@ -886,12 +887,12 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             ('product_id', '=', product_id)]
         return res
 
-    def onchange_pallet_id(self, cr, uid, ids, pallet_product_id, 
+    def onchange_pallet_id(self, cr, uid, ids, pallet_product_id,
             real_product_qty, pallet_max_weight, context=None):
         ''' Integration on onchange for package (inser domain filter)
         '''
         res = super(ConfirmMrpProductionWizard, self).onchange_pallet_id(
-            cr, uid, ids, pallet_product_id, real_product_qty, 
+            cr, uid, ids, pallet_product_id, real_product_qty,
             pallet_max_weight, context=context)
         if not pallet_product_id:
             return res

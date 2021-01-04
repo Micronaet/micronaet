@@ -467,6 +467,9 @@ class product_product_extra(osv.osv):
                     }
                 if last_cost:  # XXX Update only if present:
                     data['standard_price'] = last_cost
+                if cost:
+                    data['current_price'] = cost
+
                 pedimento_pool.write(
                     cr, uid, [odoo_ids[0]], data,
                     context=context)
@@ -477,6 +480,7 @@ class product_product_extra(osv.osv):
                     'product_id': product_id,
                     'product_qty': subtotal,
                     'standard_price': last_cost,
+                    'current_price': cost,
                     }, context=context)
 
         # ---------------------------------------------------------------------
@@ -610,7 +614,7 @@ class MrpProductionWorkcenterLineExtra(osv.osv):
 
         res_id = super(MrpProductionWorkcenterLineExtra, self).create(
             cr, uid, vals, context=context)
-        if res_id:  # Create bom for this lavoration: (only during creations)!!
+        if res_id:  # Create bom for this job: (only during creations)!!
             # TODO test if is it is not created (or block qty if present)?
             mrp_proxy = mrp_pool.browse(
                 cr, uid, [vals.get('production_id', 0)], context=context)[0]

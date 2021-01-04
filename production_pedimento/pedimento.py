@@ -78,11 +78,17 @@ class ProductProductPedimento(orm.Model):
 
     _columns = {
         'name': fields.char('Name', size=64, required=True),
-        'code': fields.char('Code', size=64,
+        'code': fields.char(
+            'Code', size=64,
             help='Same as name but without blanks'),
         'product_id': fields.many2one('product.product', 'Product'),
         'product_qty': fields.float('Qty', digits=(16, 3)),
-        'standard_price': fields.float('Cost', digits=(16, 3)),
+        'standard_price': fields.float(
+            'Last Cost', digits=(16, 3),
+            help='Last cost for filna product calc.'),
+        'current_price': fields.float(
+            'Current Cost', digits=(16, 3),
+            help='Current lot / ped. cost, used for stock evaluation'),
         }
 
 
