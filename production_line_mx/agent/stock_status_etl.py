@@ -78,7 +78,7 @@ cr.execute('sp_existence_Pedimento_Product')
 for record in cr.fetchall():
     row = tuple(record)
     print(row)
-    #if row[2] != 'MP':
+    # if row[2] != 'MP':
     #    continue
     stock.append(row)
 
