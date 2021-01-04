@@ -315,6 +315,9 @@ class MrpProductionMaterial(orm.Model):
         'pedimento_price': fields.related(
             'pedimento_id', 'standard_price',
             type='float', string='Pedimento price'),
+        'current_pedimento_price': fields.related(
+            'pedimento_id', 'current_price',
+            type='float', string='Pedimento current price'),
         'pedimento_covered': fields.function(
             _get_pedimento_covered, method=True,
             type='boolean', string='Pedimento covered'),

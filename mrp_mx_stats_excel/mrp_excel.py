@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# ODOO (ex OpenERP) 
+# ODOO (ex OpenERP)
 # Open Source Management Solution
 # Copyright (C) 2001-2015 Micronaet S.r.l. (<https://micronaet.com>)
 # Developer: Nicola Riolini @thebrush (<https://it.linkedin.com/in/thebrush>)
@@ -13,7 +13,7 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU Affero General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
@@ -34,46 +34,47 @@ from openerp import SUPERUSER_ID
 from openerp import tools
 from openerp.tools.translate import _
 from openerp.tools.float_utils import float_round as round
-from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT, 
-    DEFAULT_SERVER_DATETIME_FORMAT, 
-    DATETIME_FORMATS_MAP, 
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
+    DEFAULT_SERVER_DATETIME_FORMAT,
+    DATETIME_FORMATS_MAP,
     float_compare)
 
 
 _logger = logging.getLogger(__name__)
 
+
 class MrpProduction(orm.Model):
     """ Model name: MrpProduction
     """
-    
+
     _inherit = 'mrp.production'
-    
+
     def extract_mrp_stats_excel_report(
             self, cr, uid, report_mode='all', context=None):
-        ''' Extract report statistic and save in Excel file:
-        '''
+        """ Extract report statistic and save in Excel file:
+        """
         # =====================================================================
         #                             UTILITY:
         # =====================================================================
         def _get_product_mode(product):
-            ''' Extract final product, raw material, italian product
-            '''
+            """ Extract final product, raw material, italian product
+            """
             product_type = product.product_type
             default_code = (product.default_code or '').upper()
             if not product_type or not default_code:
                 return 'ERR'
-            
-            if product_type == 'PT': 
+
+            if product_type == 'PT':
                 if default_code.endswith('X'):
                     return 'PF'
                 else:
-                    return 'IT' # Comes from Italy                
+                    return 'IT'  # Comes from Italy
             else:
                 return 'MP'
 
         def _get_load_date(load):
-            ''' Problem: much load was done in the same day in initial phase
-            '''
+            """ Problem: much load was done in the same day in initial phase
+            """
             date = load.date
             if date >= '2019-08-01':
                 # Use correct load date:
@@ -81,10 +82,10 @@ class MrpProduction(orm.Model):
             else:
                 # Use production date:
                 return load.line_id.production_id.date_planned
-                
+
         def _get_period_date_dict(range_date):
-            ''' Generate period dict:
-            '''
+            """ Generate period dict:
+            """
             year_cols = {}  # Used for hide columns in report page
             res = {}
             ref_date = range_date[0]
@@ -95,22 +96,22 @@ class MrpProduction(orm.Model):
 
                 # Update ref_date:
                 year = ref_date[:4]
-                
+
                 # Total month per years (for hide after)
                 if year not in year_cols:
                     year_cols[year] = 0
-                year_cols[year] += 1    
-                
+                year_cols[year] += 1
+
                 if ref_date[5:7] == '12':
                     ref_date = '%s-01' % (int(ref_date[:4]) + 1)
-                else:    
+                else:
                     ref_date = '%s-%02d' % (
                         year,
                         int(ref_date[5:7]) + 1,
                         )
                 col += 1
-            return res, year_cols 
-        
+            return res, year_cols
+
         # =====================================================================
         #                         INITIAL SETUP:
         # =====================================================================
@@ -118,35 +119,35 @@ class MrpProduction(orm.Model):
             'unload': {},
             'load': {},
             }
-        
+
         currency = 'MXP'
         if context is None:
             context = {}
         save_mode = context.get('save_mode')
-        
+
         # Pool used:
         excel_pool = self.pool.get('excel.writer')
         product_pool = self.pool.get('product.product')
         job_pool = self.pool.get('mrp.production.workcenter.line')
-        
+
         # Collect data:
         now = ('%s' % datetime.now())[:7]
         total = {
             # Stock status:
-            'product': {}, # Product stock status
-            
-            # MRP:
-            'load': {}, # Product load
-            'unload': {}, # Raw material unload
+            'product': {},  # Product stock status
 
-            'production': {}, # Total production for product
-            
-            'check': {}, # Check production totals (in and out)
+            # MRP:
+            'load': {},  # Product load
+            'unload': {},  # Raw material unload
+
+            'production': {},  # Total production for product
+
+            'check': {},  # Check production totals (in and out)
             }
 
-        #month_column = []
-        _logger.info('%s. Start extract MRP statistic: %s' % 
-            (now, save_mode))
+        # month_column = []
+        _logger.info('%s. Start extract MRP statistic: %s' %
+                    (now, save_mode))
 
         # =====================================================================
         #                     STOCK PRODUCT DATA:
@@ -154,14 +155,14 @@ class MrpProduction(orm.Model):
 
         # ---------------------------------------------------------------------
         # Lot status:
-        # ---------------------------------------------------------------------               
+        # ---------------------------------------------------------------------
         ws_name = u'Inventario'  # Create before (Lotes didn't hide as first)
         excel_pool.create_worksheet(name=ws_name)
 
         ws_name = 'Lotes'
         excel_pool.create_worksheet(name=ws_name)
-        #excel_pool.freeze_panes(ws_name, row, col)        
-        
+        # excel_pool.freeze_panes(ws_name, row, col)
+
         if report_mode == 'minimal':
             excel_pool.hide(ws_name)
 
@@ -174,7 +175,7 @@ class MrpProduction(orm.Model):
         f_text_red = excel_pool.get_format('bg_red')
         f_text_bg_blue = excel_pool.get_format('bg_blue')
         f_text_bg_yellow = excel_pool.get_format('bg_yellow')
-        
+
         f_number = excel_pool.get_format('number')
         f_number_red = excel_pool.get_format('bg_red_number')
         f_number_bg_blue = excel_pool.get_format('bg_blue_number')
@@ -182,7 +183,7 @@ class MrpProduction(orm.Model):
         f_number_bg_blue_bold = excel_pool.get_format('bg_blue_number_bold')
         f_number_bg_red_bold = excel_pool.get_format('bg_red_number_bold')
         f_number_bg_green_bold = excel_pool.get_format('bg_green_number_bold')
-        
+
         # Column:
         width = [
             5, 12, 30, 20, 5,
@@ -195,12 +196,12 @@ class MrpProduction(orm.Model):
 
         row = 0
         excel_pool.column_width(ws_name, width)
-        
-        # Data:        
+
+        # Data:
         product_ids = product_pool.search(cr, uid, [], context=context)
         product_proxy = product_pool.browse(
             cr, uid, product_ids, context=context)
-            
+
         page_total = {}
         temp_list = []
         for product in sorted(
@@ -211,7 +212,7 @@ class MrpProduction(orm.Model):
                     continue
 
                 uom = product.uom_id
-                price = lot.standard_price
+                price = lot.current_price  # ex. lot.standard_price
                 subtotal = qty * price
 
                 # -------------------------------------------------------------
@@ -221,7 +222,7 @@ class MrpProduction(orm.Model):
                     page_total[uom] = [0.0, 0.0]
                 page_total[uom][0] += qty
                 page_total[uom][1] += subtotal
-                
+
                 # -------------------------------------------------------------
                 # COLLECT DATA:
                 # -------------------------------------------------------------
@@ -241,16 +242,16 @@ class MrpProduction(orm.Model):
                     f_number_current = f_number_red
                     total['product'][product][2] = False # Not OK
 
-                # Write data:                    
+                # Write data:
                 temp_list.append(([
                     _get_product_mode(product),
                     product.default_code or '',
                     product.name,
                     lot.code or '',
                     uom.name,
-                    (qty, f_number_current),                    
-                    (price, f_number_current),                    
-                    (subtotal, f_number_current),                    
+                    (qty, f_number_current),
+                    (price, f_number_current),
+                    (subtotal, f_number_current),
                     currency,
                     ], f_text_current))
 
@@ -262,8 +263,8 @@ class MrpProduction(orm.Model):
         for uom in sorted(page_total, key=lambda x: x.name):
             qty, subtotal = page_total[uom]
             master_total += subtotal
-            # Write data:                    
-            excel_pool.write_xls_line(                    
+            # Write data:
+            excel_pool.write_xls_line(
                 ws_name, row, [
                     '', '', '',
                     u'Parcial',
@@ -274,9 +275,9 @@ class MrpProduction(orm.Model):
                     currency
                     ], default_format=f_number_bg_blue_bold)
             row += 1
-            
-        # Write end total:                    
-        excel_pool.write_xls_line(                    
+
+        # Write end total:
+        excel_pool.write_xls_line(
             ws_name, row, [
                 u'Total:',
                 master_total,
@@ -290,44 +291,44 @@ class MrpProduction(orm.Model):
         row += 2 # extra space
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=f_header)
- 
+
         # Autofilter:
         excel_pool.autofilter(ws_name, row, 0, row, len(header) - 1)
-    
+
         # Data:
         for record, f_text_current in temp_list:
             row += 1
-            excel_pool.write_xls_line(                    
+            excel_pool.write_xls_line(
                 ws_name, row, record, default_format=f_text_current)
 
         # ---------------------------------------------------------------------
         # Product status:
-        # ---------------------------------------------------------------------               
+        # ---------------------------------------------------------------------
         ws_name = u'Inventario'
 
         # Column:
         width = [
             5, 12, 30, 5,
-            10, 15, 
-            5, 5, 
+            10, 15,
+            5, 5,
             ]
         header = [
             u'Tipo', u'Codigo', u'Productos', u'UM',
-            u'C.', u'Subtotal', 
+            u'C.', u'Subtotal',
             u'Moneda', u'Error',
             ]
 
         row = 0
         excel_pool.column_width(ws_name, width)
-        
-        # Data:        
+
+        # Data:
         partial = 0.0 # Stock value
 
         temp_list = []
-        for product in sorted(total['product'], 
+        for product in sorted(total['product'],
                 key=lambda x: (x.default_code, x.name)):
             qty, subtotal, ok = total['product'][product]
-                
+
             # Color setup:
             if ok:
                 f_text_current = f_text
@@ -336,14 +337,14 @@ class MrpProduction(orm.Model):
                 f_text_current = f_text_red
                 f_number_current = f_number_red
 
-            # Write data:      
+            # Write data:
             temp_list.append(([
                 _get_product_mode(product),
                 product.default_code or '',
                 product.name,
                 product.uom_id.name,
-                (qty, f_number_current),                    
-                (subtotal, f_number_current),                    
+                (qty, f_number_current),
+                (subtotal, f_number_current),
                 currency,
                 '' if ok else 'X',
                 ], f_text_current))
@@ -355,8 +356,8 @@ class MrpProduction(orm.Model):
         for uom in sorted(page_total, key=lambda x: x.name):
             qty, subtotal = page_total[uom]
             master_total += subtotal
-            # Write data:                    
-            excel_pool.write_xls_line(                    
+            # Write data:
+            excel_pool.write_xls_line(
                 ws_name, row, [
                     '', '',
                     u'Parcial',
@@ -366,9 +367,9 @@ class MrpProduction(orm.Model):
                     currency,
                     ], default_format=f_number_bg_blue_bold)
             row += 1
-            
-        # Write data:                    
-        excel_pool.write_xls_line(                    
+
+        # Write data:
+        excel_pool.write_xls_line(
             ws_name, row, [
                 u'Total:',
                 master_total,
@@ -387,15 +388,15 @@ class MrpProduction(orm.Model):
         excel_pool.autofilter(ws_name, row, 0, row, len(header) - 1)
 
         for record, f_text_current in temp_list:
-            row += 1              
-            excel_pool.write_xls_line(                    
-                ws_name, row, record, default_format=f_text_current)        
-        
+            row += 1
+            excel_pool.write_xls_line(
+                ws_name, row, record, default_format=f_text_current)
+
 
         # =====================================================================
         #                   Collect data for Production:
         # =====================================================================
-        # Data:        
+        # Data:
         job_ids = job_pool.search(cr, uid, [
             ('production_id.mode', '=', 'production'),
             ('state', '=', 'done'),
@@ -409,9 +410,9 @@ class MrpProduction(orm.Model):
             mrp = job.production_id
             if mrp not in total['check']:
                 total['check'][mrp] = [0.0, 0.0] # raw material, final product
-                     
+
             # -----------------------------------------------------------------
-            # Load data:        
+            # Load data:
             # -----------------------------------------------------------------
             for load in job.load_ids:
                 # Check data page:
@@ -424,35 +425,35 @@ class MrpProduction(orm.Model):
                 loop = [(
                     # Product:
                     'load',
-                    job.product, 
-                    load.product_qty - load.waste_qty, 
-                    production_price, 
+                    job.product,
+                    load.product_qty - load.waste_qty,
+                    production_price,
                     False), (
 
-                    # Package:    
+                    # Package:
                     'unload',
-                    load.package_id.linked_product_id, 
-                    load.ul_qty, 
-                    load.package_pedimento_id.standard_price or \
-                        load.package_id.linked_product_id.standard_price, 
+                    load.package_id.linked_product_id,
+                    load.ul_qty,
+                    load.package_pedimento_id.current_price or \
+                        load.package_id.linked_product_id.standard_price,
                     False), (
 
-                    # Pallet:        
+                    # Pallet:
                     'unload',
-                    load.pallet_product_id, 
-                    load.pallet_qty, 
-                    load.pallet_pedimento_id.standard_price or \
-                        load.pallet_product_id.standard_price, 
+                    load.pallet_product_id,
+                    load.pallet_qty,
+                    load.pallet_pedimento_id.current_price or \
+                        load.pallet_product_id.standard_price,
                     False),
                     ]
 
-                if load.waste_qty: #load.recycle:
+                if load.waste_qty:  # load.recycle:
                     loop.append((
-                        # Recycle:    
+                        # Recycle:
                         'load',
-                        load.waste_id, 
-                        load.waste_qty, 
-                        production_price, # Same as real production
+                        load.waste_id,
+                        load.waste_qty,
+                        production_price,  # Same as real production
                         True,
                         ))
 
@@ -461,34 +462,34 @@ class MrpProduction(orm.Model):
                         continue
 
                     if product not in total[mode]:
-                        total[mode][product] = []     
+                        total[mode][product] = []
                     total[mode][product].append((
-                        _get_load_date(load)[:10], # Date operation (sort key!)
-                        load.line_id, # Workcenter line
-                        qty, 
-                        price, 
+                        _get_load_date(load)[:10],  # Date operation (sort key)
+                        load.line_id,  # Workcenter line
+                        qty,
+                        price,
                         recycle,
                         ))
-                
+
             # -----------------------------------------------------------------
-            # Unload data:        
+            # Unload data:
             # -----------------------------------------------------------------
             for unload in job.bom_material_ids:
                 product = unload.product_id
-                date = job.production_id.date_planned[:10] # Directly MRP Date!
-                
+                date = job.production_id.date_planned[:10]  # Directly MRP Date
+
                 if product not in total['unload']:
                     total['unload'][product] = []
                 total['unload'][product].append((
                     date,
-                    job, # Workcenter line
-                    unload.quantity, 
-                    unload.pedimento_price or unload.standard_price,
-                    0.0, # Never present
+                    job,  # Workcenter line
+                    unload.quantity,
+                    unload.current_pedimento_price or unload.standard_price,
+                    0.0,  # Never present
                     ))
 
                 # Check data page:
-                total['check'][mrp][0] += unload.quantity # Raw material
+                total['check'][mrp][0] += unload.quantity  # Raw material
 
         # =====================================================================
         #                        PRODUCTION DETAIL:
@@ -496,7 +497,7 @@ class MrpProduction(orm.Model):
 
         # ---------------------------------------------------------------------
         # Production loaded product:
-        # ---------------------------------------------------------------------               
+        # ---------------------------------------------------------------------
         ws_name = u'Cargas de producción'
         excel_pool.create_worksheet(name=ws_name)
         if report_mode == 'minimal':
@@ -505,26 +506,26 @@ class MrpProduction(orm.Model):
         # Column:
         width = [
             10, 15, 15, 30, 10,
-            5, 10, 10, 
+            5, 10, 10,
             15, 15, 5,
             ]
         header = [
             u'Fecha', u'Referencia', u'Producto', u'Descripción', u'Linea',
-            u'UM', u'C.', u'C. incorrecta', 
+            u'UM', u'C.', u'C. incorrecta',
             u'Precio carga', u'Subtotal', u'Moneda',
             ]
-        
+
         # Header:
         row = 0
         excel_pool.column_width(ws_name, width)
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=f_header)
-        
+
         range_date = [False, False]
-        for product in sorted(total['load'], 
+        for product in sorted(total['load'],
                 key=lambda x: (x.default_code, x.name)):
 
-            # Readability:    
+            # Readability:
             for date, job, qty, price, recycle in sorted(
                     total['load'][product]):
 
@@ -534,7 +535,7 @@ class MrpProduction(orm.Model):
                     range_date[0] = period
                 if not range_date[1] or period > range_date[1]:
                     range_date[1] = period
-                    
+
                 subtotal = price * qty
 
                 if recycle:
@@ -542,7 +543,7 @@ class MrpProduction(orm.Model):
                     qty = 0.0
                     f_text_color = f_text_bg_blue
                     f_number_color = f_number_bg_blue
-                else:    
+                else:
                     recycle_qty = 0.0
                     f_text_color = f_text
                     f_number_color = f_number
@@ -556,13 +557,13 @@ class MrpProduction(orm.Model):
                         product.default_code or '',
                         product.name,
                         job.workcenter_id.name,
-                        
+
                         product.uom_id.name or '',
                         (qty, f_number_color),
                         (recycle_qty, f_number_color),
-                        
+
                         (price, f_number_color),
-                        (subtotal, f_number_color),                    
+                        (subtotal, f_number_color),
                         currency,
                         ], default_format=f_text_color)
 
@@ -570,7 +571,7 @@ class MrpProduction(orm.Model):
 
         # ---------------------------------------------------------------------
         # Production unloaded product:
-        # ---------------------------------------------------------------------               
+        # ---------------------------------------------------------------------
         ws_name = u'Descargas de producción'
         excel_pool.create_worksheet(name=ws_name)
         if report_mode == 'minimal':
@@ -583,22 +584,22 @@ class MrpProduction(orm.Model):
             15, 15, 5,
             ]
         header = [
-            u'Fecha', u'Referencia', u'Materia prima', u'Descripción', 
+            u'Fecha', u'Referencia', u'Materia prima', u'Descripción',
             u'Líneas', u'UM', u'C.',
             u'Precio descarga', u'Subtotal', u'Moneda',
             ]
-        
+
         # Header:
         row = 0
         excel_pool.column_width(ws_name, width)
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=f_header)
-        
+
         range_date = [False, False] # reset previous assigned
-        for product in sorted(total['unload'], 
+        for product in sorted(total['unload'],
                 key=lambda x: (x.default_code, x.name)):
 
-            # Readability:    
+            # Readability:
             for date, job, qty, price, recycle in sorted(
                     total['unload'][product]):
 
@@ -608,7 +609,7 @@ class MrpProduction(orm.Model):
                     range_date[0] = period
                 if not range_date[1] or period > range_date[1]:
                     range_date[1] = period
-                    
+
                 subtotal = price * qty
 
                 # Write data:
@@ -620,10 +621,10 @@ class MrpProduction(orm.Model):
                         product.default_code or '',
                         product.name,
                         job.workcenter_id.name,
-                        
+
                         product.uom_id.name or '',
                         (qty, f_number),
-                        
+
                         (price, f_number),
                         (subtotal, f_number),
                         currency,
@@ -635,27 +636,27 @@ class MrpProduction(orm.Model):
         # =====================================================================
         #                           REPORT FOR CHECK
         # =====================================================================
-        # ---------------------------------------------------------------------               
+        # ---------------------------------------------------------------------
         # Production in / out data:
-        # ---------------------------------------------------------------------               
+        # ---------------------------------------------------------------------
         ws_name = u'Control de producción'
         excel_pool.create_worksheet(name=ws_name)
 
         # Column:
         width = [
-            22, 25, 
-            5, 12, 12, 
+            22, 25,
+            5, 12, 12,
             10, 10,
             ]
         header = [
-            u'Producción', u'Productos', 
-            u'UM', u'Materies primas', u'P. terminado', 
+            u'Producción', u'Productos',
+            u'UM', u'Materies primas', u'P. terminado',
             u'Reducción', u'R. %',
             ]
 
         row = 0
         excel_pool.column_width(ws_name, width)
-        
+
         page_total = [0.0, 0.0]
         temp_list = []
         for mrp in sorted(total['check'], key=lambda x: (x.name)):
@@ -664,21 +665,21 @@ class MrpProduction(orm.Model):
             # Page total:
             page_total[0] += material
             page_total[1] += product
-            
+
             lost = material - product
             if product:
                 if material:
                     rate = lost / material * 100.0
                 else:
-                    rate = 0.0    
-            else:    
+                    rate = 0.0
+            else:
                 rate = 0.0
-            
+
             # Setup color:
             if not rate:
                 f_text_color = f_text_bg_blue
                 f_number_color = f_number_bg_blue
-            elif rate > 10.0:                
+            elif rate > 10.0:
                 f_text_color = f_text_bg_yellow
                 f_number_color = f_number_bg_yellow
             elif rate < 0.0:
@@ -687,47 +688,47 @@ class MrpProduction(orm.Model):
             else:
                 f_text_color = f_text
                 f_number_color = f_number
-                
+
             # Write fixed col data:
             temp_list.append(([
-                ('%s del %s' % (mrp.name, mrp.date_planned[:10]), 
+                ('%s del %s' % (mrp.name, mrp.date_planned[:10]),
                     f_text_color),
                 ('[%s] %s' % (
-                    mrp_product.default_code or '-', 
-                    mrp_product.name or '', 
+                    mrp_product.default_code or '-',
+                    mrp_product.name or '',
                     ), f_text_color),
                 (mrp_product.uom_id.name, f_text_color),
-                    
+
                 '%10.2f' % round(material, 2),
                 '%10.2f' % round(product, 2),
                 '%10.2f' % round(lost, 2),
                 '%10.2f' % round(rate, 2),
                 ], f_number_color))
 
-        # ---------------------------------------------------------------------               
+        # ---------------------------------------------------------------------
         # Write total:
-        # ---------------------------------------------------------------------               
+        # ---------------------------------------------------------------------
         total_material, total_product = page_total
         lost = total_material - total_product
-        
+
         excel_pool.write_xls_line(
             ws_name, row, [
-                (u'Totales', f_header), 
-                (u'KG', f_header), 
-                total_material, 
+                (u'Totales', f_header),
+                (u'KG', f_header),
+                total_material,
                 total_product,
                 u'%10.2f' % round(lost, 2),
                 u'%10.2f' % round(100.0 * lost / total_material, 2),
                 ], default_format=f_number_bg_green_bold, col=1)
 
-        # ---------------------------------------------------------------------               
+        # ---------------------------------------------------------------------
         # Write data:
-        # ---------------------------------------------------------------------               
+        # ---------------------------------------------------------------------
         # Header:
         row += 1
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=f_header)
-            
+
         for record, f_number_color in temp_list:
             row += 1
             excel_pool.write_xls_line(
@@ -748,12 +749,12 @@ class MrpProduction(orm.Model):
             header.append(col)
             col_total.append(0.0) # always KG
         empty = col_total[:]
-        
+
         temp_list = []
-        for product in sorted(total['load'], 
+        for product in sorted(total['load'],
                 key=lambda x: (x.default_code, x.name)):
 
-            row_total = {}            
+            row_total = {}
             data = empty[:]
             for date, job, qty, price, recycle in total['load'][product]:
                 period = date[:7]
@@ -761,7 +762,7 @@ class MrpProduction(orm.Model):
                     row_total[period[:4]] += qty
                 else:
                     row_total[period[:4]] = qty
-                    
+
                 col = load_col.get(period)
 
                 # Totals:
@@ -779,15 +780,15 @@ class MrpProduction(orm.Model):
         #                    PRODUCTION PER YEARS:
         # =====================================================================
         for year_block in sorted(year_cols['load']):
-            # ---------------------------------------------------------------------               
+            # ---------------------------------------------------------------------
             # Production in period:
-            # ---------------------------------------------------------------------               
+            # ---------------------------------------------------------------------
             ws_name = u'Producción en el periodo %s' % year_block
             excel_pool.create_worksheet(name=ws_name)
 
-            # ---------------------------------------------------------------------               
+            # ---------------------------------------------------------------------
             # Write total (row 0):
-            # ---------------------------------------------------------------------               
+            # ---------------------------------------------------------------------
             row = 0
 
             excel_pool.column_width(ws_name, width)
@@ -798,17 +799,17 @@ class MrpProduction(orm.Model):
 
             # Write variable col data:
             excel_pool.write_xls_line(
-                ws_name, row, col_total, default_format=f_number_bg_green_bold, 
+                ws_name, row, col_total, default_format=f_number_bg_green_bold,
                 col=fixed_col)
             row += 1
 
-            # ---------------------------------------------------------------------               
+            # ---------------------------------------------------------------------
             # Write data:
-            # ---------------------------------------------------------------------               
+            # ---------------------------------------------------------------------
             # Header:
             excel_pool.write_xls_line(
                 ws_name, row, header, default_format=f_header)
-            
+
             for fixed, data in temp_list:
                 row += 1
                 new_fixed = fixed[:]
@@ -828,7 +829,7 @@ class MrpProduction(orm.Model):
                 if not new_fixed[-1][0]:
                     # Hide row
                     excel_pool.row_hidden(ws_name, [row])
-            
+
             # Hide unused colums:
             hide_this_col = fixed_col   # Start variable columns:
             for year in sorted(year_cols['load']):
@@ -839,7 +840,7 @@ class MrpProduction(orm.Model):
                         hide_this_col + item for item in range(
                             year_cols['load'][year])]
                     excel_pool.column_hidden(ws_name, hide_this_cols)
-            
+
         # =====================================================================
         #                       UNLOAD PER YEARS:
         # =====================================================================
@@ -855,24 +856,24 @@ class MrpProduction(orm.Model):
             width.append(8)
             header.append(col)
             empty.append(0.0)
-        
-        temp_list = []        
-        for product in sorted(total['unload'], 
+
+        temp_list = []
+        for product in sorted(total['unload'],
                 key=lambda x: (x.default_code, x.name)):
             uom = product.uom_id
             if uom not in col_total:
                 col_total[uom] = []
                 for col in sorted(load_col):
                     col_total[uom].append(0.0)
-                    
-            row_total = {}            
+
+            row_total = {}
             data = empty[:]
             for date, job, qty, price, recycle in total['unload'][product]:
                 period = date[:7]
                 if period[:4] in row_total:
                     row_total[period[:4]] += qty
-                else:    
-                    row_total[period[:4]] = qty                    
+                else:
+                    row_total[period[:4]] = qty
                 col = unload_col.get(period)
 
                 # Totals:
@@ -891,7 +892,7 @@ class MrpProduction(orm.Model):
             # -----------------------------------------------------------------
             # Material in period:
             # -----------------------------------------------------------------
-            ws_name = u'Descargas en el periodo %s' % year_block 
+            ws_name = u'Descargas en el periodo %s' % year_block
             excel_pool.create_worksheet(name=ws_name)
 
             row = 0
@@ -905,12 +906,12 @@ class MrpProduction(orm.Model):
 
                 # Write fixed col data:
                 excel_pool.write_xls_line(
-                    ws_name, row, [u'Totales %s' % uom.name], 
+                    ws_name, row, [u'Totales %s' % uom.name],
                     default_format=f_header, col= fixed_col - 1)
 
                 # Write variable col data:
                 excel_pool.write_xls_line(
-                    ws_name, row, total, default_format=f_number_bg_green_bold, 
+                    ws_name, row, total, default_format=f_number_bg_green_bold,
                     col=fixed_col)
                 row += 1
 
@@ -922,7 +923,7 @@ class MrpProduction(orm.Model):
                 ws_name, row, header, default_format=f_header)
 
             for fixed, data in temp_list:
-                row += 1        
+                row += 1
                 new_fixed = fixed[:]
                 new_fixed[-1] = (
                     new_fixed[-1].get(year_block),
@@ -951,7 +952,7 @@ class MrpProduction(orm.Model):
                         hide_this_col + item for item in range(
                             year_cols['unload'][year])]
                     excel_pool.column_hidden(ws_name, hide_this_cols)
-                        
-        return excel_pool.save_file_as(save_mode)            
-    
+
+        return excel_pool.save_file_as(save_mode)
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
