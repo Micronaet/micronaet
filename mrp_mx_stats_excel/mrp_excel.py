@@ -952,4 +952,3 @@ class MrpProduction(orm.Model):
             excel_pool.column_hidden(ws_name, hide_this_cols)
 
         return excel_pool.save_file_as(save_mode)
-
