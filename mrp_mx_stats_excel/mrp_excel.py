@@ -566,7 +566,6 @@ class MrpProduction(orm.Model):
                         (subtotal, f_number_color),
                         currency,
                         ], default_format=f_text_color)
-        import pdb; pdb.set_trace()
         load_col, year_cols['load'] = _get_period_date_dict(range_date)
 
         # ---------------------------------------------------------------------
@@ -779,6 +778,7 @@ class MrpProduction(orm.Model):
         # =====================================================================
         #                    PRODUCTION PER YEARS:
         # =====================================================================
+        import pdb; pdb.set_trace()
         for year_block in sorted(year_cols['load']):
             # ---------------------------------------------------------------------
             # Production in period:
@@ -831,6 +831,7 @@ class MrpProduction(orm.Model):
                     excel_pool.row_hidden(ws_name, [row])
 
             # Hide unused colums:
+            import pdb; pdb.set_trace()
             hide_this_col = fixed_col   # Start variable columns:
             for year in sorted(year_cols['load']):
                 if year == year_block:  # Leave show
