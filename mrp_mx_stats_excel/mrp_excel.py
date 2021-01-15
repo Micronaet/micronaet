@@ -840,18 +840,6 @@ class MrpProduction(orm.Model):
                 left_start += year_cols['load'][year]
             excel_pool.column_hidden(ws_name, hide_this_cols)
 
-            import pdb; pdb.set_trace()
-            """
-            hide_this_col = fixed_col   # Start variable columns:
-            for year in sorted(year_cols['load']):
-                if year == year_block:  # Leave show
-                    hide_this_col += year_cols['load'][year]
-                else:  # Hide
-                    hide_this_cols = [
-                        hide_this_col + item for item in range(
-                            year_cols['load'][year])]
-                    excel_pool.column_hidden(ws_name, hide_this_cols)
-            """
         # =====================================================================
         #                       UNLOAD PER YEARS:
         # =====================================================================
@@ -897,7 +885,6 @@ class MrpProduction(orm.Model):
                 product.uom_id.name,
                 row_total,
                 ], data))
-
 
         for year_block in sorted(year_cols['unload']):
             # -----------------------------------------------------------------
@@ -954,15 +941,15 @@ class MrpProduction(orm.Model):
                     excel_pool.row_hidden(ws_name, [row])
 
             # Hide unused colums:
-            hide_this_col = fixed_col   # Start variable columns:
+            hide_this_cols = []
+            left_start = fixed_col
             for year in sorted(year_cols['unload']):
-                if year == year_block:  # Leave show
-                    hide_this_col += year_cols['unload'][year]
-                else:  # Hide
-                    hide_this_cols = [
-                        hide_this_col + item for item in range(
-                            year_cols['unload'][year])]
-                    excel_pool.column_hidden(ws_name, hide_this_cols)
+                total_month = year_cols['unload'][year]
+                for item in range(total_month):
+                    if year != year_block:
+                        hide_this_cols.append(left_start + item)
+                left_start += year_cols['unload'][year]
+            excel_pool.column_hidden(ws_name, hide_this_cols)
 
         return excel_pool.save_file_as(save_mode)
 
