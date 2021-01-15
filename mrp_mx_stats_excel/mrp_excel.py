@@ -566,7 +566,7 @@ class MrpProduction(orm.Model):
                         (subtotal, f_number_color),
                         currency,
                         ], default_format=f_text_color)
-
+        import pdb; pdb.set_trace()
         load_col, year_cols['load'] = _get_period_date_dict(range_date)
 
         # ---------------------------------------------------------------------
@@ -955,4 +955,3 @@ class MrpProduction(orm.Model):
 
         return excel_pool.save_file_as(save_mode)
 
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
