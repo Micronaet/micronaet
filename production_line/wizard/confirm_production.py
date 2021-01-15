@@ -169,7 +169,6 @@ class MrpProduction(osv.osv):
             )
         return True
 
-
 class confirm_mrp_production_wizard(osv.osv_memory):
     """ Wizard that confirm production/lavoration
     """
@@ -203,7 +202,6 @@ class confirm_mrp_production_wizard(osv.osv_memory):
         if not use_mrp_package:
             return res
 
-
         # Read info in
         wc_pool = self.pool.get('mrp.production.workcenter.line')
         wc_id = context.get('active_id', 0)
@@ -231,7 +229,8 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 }
             }
 
-    def onchange_package_id(self, cr, uid, ids, package_id, product_id, total,
+    def onchange_package_id(
+            self, cr, uid, ids, package_id, product_id, total,
             context=None):
         """ Get selected package_id and calculate total package
         """
@@ -241,8 +240,8 @@ class confirm_mrp_production_wizard(osv.osv_memory):
         if package_id and product_id and total:
             pack_pool = self.pool.get('product.packaging')
             pack_ids = pack_pool.search(cr, uid, [
-                ('product_id','=',product_id),
-                ('ul','=',package_id)], context=context)
+                ('product_id', '=', product_id),
+                ('ul', '=', package_id)], context=context)
             if pack_ids:
                 pack_proxy = pack_pool.browse(
                     cr, uid, pack_ids, context=context)[0]
@@ -301,7 +300,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
         # get parameters
         parameter = mrp_pool.get_sl_cl_parameter(cr, uid, context=context)
         wf_service = netsvc.LocalService('workflow')
-        error_prefix = '#' # TODO configuration area?
+        error_prefix = '#'  # TODO configuration area?
 
         # Interchange file:
         file_cl, file_cl_upd, file_sl = mrp_pool.get_interchange_files(
@@ -340,7 +339,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                             _('When is the last lavoration all lavoration must be in closed state!'),
                             )
 
-            if mrp.accounting_state in ('cancel'):
+            if mrp.accounting_state in ('cancel', ):
                 raise osv.except_osv(
                     _('Production error:'),
                     _('Could not add other extra load (production cancelled)!')
@@ -360,7 +359,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             product_qty = wiz_proxy.real_product_qty or 0.0
             wrong = wiz_proxy.wrong
             recycle = wiz_proxy.recycle
-            #recycle_product_id = wiz_proxy.recycle_product_id
+            # recycle_product_id = wiz_proxy.recycle_product_id
             package_id = \
                 wiz_proxy.package_id.id if wiz_proxy.package_id else False
             # TODO create a function for compute: sum ( q. x std. cost)
@@ -418,7 +417,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 code,
                 wc.code[:2],
                 ref_lot_name,
-                wiz_proxy.package_id.code if package_id else '', # Package
+                wiz_proxy.package_id.code if package_id else '',  # Package
                 )
 
             # Passed to account
@@ -433,7 +432,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 'product_code': real_product_code,
                 }, context=context)
 
-            ### Write load on accounting:
+            # ## Write load on accounting:
             # XXX potrebbe generare problemi se annullassero carichi o simili!
             # Better: reload from dbmirror (but in real time)
             product_pool.write(
@@ -471,8 +470,8 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 product_code, product_qty, price, ''))
 
             # TODO mode in product (end movement)
-            convert_load_id = {} # list for convert CL code in load.id
-            #for load in lavoration_browse.load_ids:
+            convert_load_id = {}  # list for convert CL code in load.id
+            # for load in lavoration_browse.load_ids:
 
             # -----------------------------------------------------
             # Export SL form package/pallet used in loaded products
@@ -481,7 +480,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 f_cl.write(
                     '%-10s%-25s%10.2f%-13s%16s\r\n' % ( # TODO 10 extra space
                         wiz_proxy.package_id.linked_product_id.default_code,
-                        '', #lavoration_browse.name[4:],
+                        '',  # lavoration_browse.name[4:],
                         - wiz_proxy.ul_qty,
                         lavoration_browse.accounting_sl_code,
                         '',
@@ -490,9 +489,9 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 pass # TODO raise error if no package? (no if wrong!)
             if pallet and wiz_proxy.pallet_qty:
                 f_cl.write(
-                    '%-10s%-25s%10.2f%-13s%16s\r\n' % ( # TODO 10 extra space
+                    '%-10s%-25s%10.2f%-13s%16s\r\n' % (  # TODO 10 extra space
                         pallet.default_code,
-                        '', #lavoration_browse.name[4:],
+                        '',  # lavoration_browse.name[4:],
                         - wiz_proxy.pallet_qty,
                         lavoration_browse.accounting_sl_code,
                         '',
@@ -537,7 +536,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
 
                 # TODO portare l'informazione sulla produzione qui non ha
                 # più senso con i carichi sballati
-                total = 0.0 # net production total
+                total = 0.0  # net production total
 
                 # Partial (calculated every load on all production)
                 cost_detail += u'<b>Lavorazioni toccate:</b><br/>'
@@ -557,7 +556,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 # TODO togliere i commenti nei log e metterli magari nella
                 # lavorazione per sapere come sono stati calcolati
                 _logger.info(_('Production real total: %s') % (total, ))
-                ######################### data = {'real_product_qty': total}
+                # ######################## data = {'real_product_qty': total}
 
                 # Last unload document (extra op. needed)
                 if not wiz_proxy.partial:
@@ -770,7 +769,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                         )
                         for (key,res) in res_list:
                             load_id = convert_load_id[key]
-                            if res: # if True update succesfully
+                            if res:  # if True update succesfully
                                 load_pool.write(
                                     cr, uid, load_id,
                                     {'accounting_cost_confirmed': True},
@@ -783,7 +782,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                     # ---------------------------------------------------------
                     # TODO Non occorre più verificare togliee questa parte:
                     # Close production order:
-                    #if mrp.accounting_state in ('draft', 'production'):
+                    # if mrp.accounting_state in ('draft', 'production'):
                     #    if mrp.accounting_state in ('production'):
                     #        all_closed = True
                     #        for lavoration in mrp.workcenter_lines:
@@ -809,7 +808,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 raise osv.except_osv(
                     _('Generic error'),
                     '%s' % (sys.exc_info(), )
-                    ) #error[0], '%s [%s]' % (error[1], sys.exc_info()) )
+                    ) # error[0], '%s [%s]' % (error[1], sys.exc_info()) )
 
         else: # state == 'material' >> unload all material and package:
             # -----------------------------------------------------------------
@@ -849,7 +848,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                     if accounting_sl_code.startswith(error_prefix):
                         error = (
                             _('Import SL error!'),
-                            _('Error from accounting:\n%s') % \
+                            _('Error from accounting:\n%s') %
                                 accounting_sl_code[len(error_prefix):],
                             )
                         raise osv.except_osv(*error)
@@ -879,7 +878,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                     raise osv.except_osv(*error)
             except:
                 raise osv.except_osv(*error)
-        return {'type':'ir.actions.act_window_close'}
+        return {'type': 'ir.actions.act_window_close'}
 
     # -----------------
     # default function:
@@ -900,8 +899,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             total = 0.0
         return total
 
-
-    #def default_mode(self, cr, uid, context=None):
+    # def default_mode(self, cr, uid, context=None):
     #    ''' Setup open mode of wizard depend of status check
     #    '''
     #    wc_pool = self.pool.get('mrp.production.workcenter.line')
@@ -915,7 +913,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
     #            return 'material'
     #    return 'matarial' # default
 
-    #def default_to_close(self, cr, uid, context=None):
+    # def default_to_close(self, cr, uid, context=None):
     #    ''' Get default value, if load_confirmed so to_close is True
     #    '''
     #    wc_pool = self.pool.get('mrp.production.workcenter.line')
@@ -944,8 +942,8 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 )
 
             # TODO Manage in production load
-            #res += '\nPackage:\n'
-            #for load in wc_browse.load_ids:
+            # res += '\nPackage:\n'
+            # for load in wc_browse.load_ids:
             #    if load.package_id:
             #        res += 'Load %s. [%s] - %s%s\n' % (
             #            load.sequence,
@@ -995,7 +993,8 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             'Max weight', digits=(16, 2), help='Max weight per pallet'),
         'pallet_qty': fields.integer('Pallet q.', help='Pallet total number'),
 
-        #'to_close': fields.boolean('To close', required=False, help='If the load is set ad not partial'), # TODO remove
+        # 'to_close': fields.boolean('To close', required=False,
+        # help='If the load is set ad not partial'), # TODO remove
         'list_unload': fields.text('List unload'),
 
         'recycle': fields.boolean('Recycle', help='Recycle product'),

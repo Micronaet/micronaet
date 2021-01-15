@@ -322,7 +322,7 @@ class MrpProduction(orm.Model):
         excel_pool.column_width(ws_name, width)
 
         # Data:
-        partial = 0.0 # Stock value
+        partial = 0.0  # Stock value
 
         temp_list = []
         for product in sorted(total['product'],
@@ -778,24 +778,23 @@ class MrpProduction(orm.Model):
         # =====================================================================
         #                    PRODUCTION PER YEARS:
         # =====================================================================
-        import pdb; pdb.set_trace()
         for year_block in sorted(year_cols['load']):
-            # ---------------------------------------------------------------------
+            # -----------------------------------------------------------------
             # Production in period:
-            # ---------------------------------------------------------------------
+            # -----------------------------------------------------------------
             ws_name = u'Producción en el periodo %s' % year_block
             excel_pool.create_worksheet(name=ws_name)
 
-            # ---------------------------------------------------------------------
+            # -----------------------------------------------------------------
             # Write total (row 0):
-            # ---------------------------------------------------------------------
+            # -----------------------------------------------------------------
             row = 0
 
             excel_pool.column_width(ws_name, width)
             # Write fixed col data:
             excel_pool.write_xls_line(
                 ws_name, row, [u'Totales KG', ], default_format=f_header,
-                col= fixed_col - 1)
+                col=fixed_col - 1)
 
             # Write variable col data:
             excel_pool.write_xls_line(
@@ -803,9 +802,9 @@ class MrpProduction(orm.Model):
                 col=fixed_col)
             row += 1
 
-            # ---------------------------------------------------------------------
+            # -----------------------------------------------------------------
             # Write data:
-            # ---------------------------------------------------------------------
+            # -----------------------------------------------------------------
             # Header:
             excel_pool.write_xls_line(
                 ws_name, row, header, default_format=f_header)
