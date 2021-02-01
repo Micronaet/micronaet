@@ -934,16 +934,19 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             res = 'Material:<br/>'
             for unload in wc_browse.bom_material_ids:
                 if unload.product_id.accounting_qty < 0:
-                    format_text = '<font color="red">'
+                    format_text_start = '<b><font color="red">'
+                    format_text_stop = '</font></b>'
                 else:
-                    format_text = '<font color="black">'
-                res += '%s[%s %s] - %s %s</font><br/>' % (
-                    format_text,
+                    format_text_start = ''
+                    format_text_stop = ''
+                res += '%s[%s %s] - %s %s%s<br/>' % (
+                    format_text_start,
                     unload.quantity,
                     unload.uom_id.name,
                     unload.product_id.name,
                     ('(Lotto: %s)' % unload.lot_id.name)
                     if unload.lot_id else '',
+                    format_text_stop,
                 )
 
             # TODO Manage in production load
