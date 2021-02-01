@@ -330,10 +330,10 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             # -----------
             # Init check:
             # -----------
-            # Verify thet if is the last load no lavoration are open:
+            # Verify then if is the last load no lavoration are open:
             if not wiz_proxy.partial:
                 for l in mrp.workcenter_lines:
-                    if l.state not in ('done', 'cancel'): # not closed
+                    if l.state not in ('done', 'cancel'):  # not closed
                         raise osv.except_osv(
                             _('Last lavoration:'),
                             _('When is the last lavoration all lavoration must be in closed state!'),
@@ -365,7 +365,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             # TODO create a function for compute: sum ( q. x std. cost)
             price = 0.0
             load_id = load_pool.create(cr, uid, {
-                'product_qty': product_qty, # only the wrote total
+                'product_qty': product_qty,  # only the wrote total
                 'line_id': lavoration_browse.id,
                 'partial': wiz_proxy.partial,
                 'package_id': package_id,
