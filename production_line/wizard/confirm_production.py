@@ -324,13 +324,13 @@ class confirm_mrp_production_wizard(osv.osv_memory):
         # 3. Last: also correct product price
         if wiz_proxy.state == 'product':
             # -----------------------------------------------------------------
-            #                      CL  (lavoration load)
+            #                      CL  (job load)
             # -----------------------------------------------------------------
 
             # -----------
             # Init check:
             # -----------
-            # Verify then if is the last load no lavoration are open:
+            # Verify then if is the last load no job are open:
             if not wiz_proxy.partial:
                 for l in mrp.workcenter_lines:
                     if l.state not in ('done', 'cancel'):  # not closed
@@ -931,14 +931,19 @@ class confirm_mrp_production_wizard(osv.osv_memory):
         active_id = context.get('active_id', 0)
         if active_id:
             wc_browse = wc_pool.browse(cr, uid, active_id, context=context)
-            res = 'Material:\n'
+            res = 'Material:<br/>'
             for unload in wc_browse.bom_material_ids:
-                res += '[%s %s] - %s %s\n' % (
+                if unload.product_id.accounting_qty < 0:
+                    format_text = '<font color="red">'
+                else:
+                    format_text = '<font color="black">'
+                res += '%s[%s %s] - %s %s</font><br/>' % (
+                    format_text,
                     unload.quantity,
                     unload.uom_id.name,
                     unload.product_id.name,
-                    ('(Lotto: %s)' % unload.lot_id.name) \
-                        if unload.lot_id else '',
+                    ('(Lotto: %s)' % unload.lot_id.name)
+                    if unload.lot_id else '',
                 )
 
             # TODO Manage in production load
@@ -1020,4 +1025,3 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             cr, uid, context=ctx),
         'use_mrp_package': lambda *x: True,
         }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
