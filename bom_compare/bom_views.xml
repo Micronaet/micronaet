@@ -1,6 +1,17 @@
 <?xml version="1.0" ?>
 <openerp>
 <data>
+    <record model="ir.ui.view" id="view_mrp_bom_primary_form">
+        <field name="name">mrp.bom.primary.form</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+        <field name="arch" type="xml">
+            <field name="code" position="after">
+                <field name="is_primary" />
+            </field>
+        </field>
+    </record>
+    
     <!-- etl.bom.line -->
     <record model="ir.ui.view" id="view_etl_bom_line_search">
         <field name="name">BOM line</field>

@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <openerp>
-    <data>
-    <!--
+    <data>    
         <record model="ir.ui.view" id="view_mrp_bom_note_form">
             <field name="name">mrp.bom.form</field>
             <field name="model">mrp.bom</field>
@@ -12,7 +11,7 @@
                     <field name="internal_note" colspan="4" nolabel="1"/>
                 </field>
             </field>
-        </record>-->
+        </record>
     </data>
 </openerp>
 
