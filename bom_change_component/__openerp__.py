@@ -37,6 +37,7 @@
     'demo': [],
     'data': [
         'wizard/bom_replace_view.xml',
+        'bom_view.xml',
         ],
     'active': False,
     'installable': True,
