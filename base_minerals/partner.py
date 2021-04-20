@@ -311,7 +311,7 @@ class res_partner_extra_fields(osv.osv):
         #partner_proxy=self.pool.get("res.partner")
         counter = {'tot':0,'upd':0, 'err':0, 'err_upd':0, 'new':0}
         comment = "" # for step of import, usefull for log error
-        mexal_types = {'s': file_name_supplier} #'c': file_name, # NOTE: viene importato da qualche altra procedura?
+        mexal_types = {'s': file_name_supplier, 'c': file_name, }# NOTE: viene importato da qualche altra procedura?
         mexal_destination = False
 
         try:
