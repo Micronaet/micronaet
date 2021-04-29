@@ -49,6 +49,7 @@ class mrp_bom_extra_fields(osv.osv):
     _inherit = 'mrp.bom'
     
     _columns = {
-        'internal_note': fields.text('Note interne (non stampate)'),
+        'internal_note': fields.text(
+            'Note interne (stampate solo in confronto ricette)'),
     }    
     
