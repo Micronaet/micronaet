@@ -109,17 +109,13 @@
          <!-- ################## BOM BLOCK ################################# -->
          <p><h2>Distinta base primaria: [${parent|entity}] ${get_mp_name(parent)}</h2></p>
          %if create_current_bom(parent):
-            <p><h1>Note interne: ${get_internal_note(parent)}</h1></p>
-         %endif
-
-         %if create_current_bom(parent):
              <table class="list_table">
                  <!-- ################## HEADER ############################ -->
                    <thead>
                        <tr>
                           <th>Componenti</th>
                           %for col in get_cols():
-                              <th>${col|entity}</th>
+                              <th>${col|entity}<br/>${get_internal_note(col)}</th>
                           %endfor
                        </tr>
                    </thead>

@@ -114,17 +114,31 @@ class report_webkit_html(report_sxw.rml_parse):
         global totals
 
         # initialize (every primary block is reset )
+        cr = self.cr
+        uid = self.uid
+        context = {'lang': 'it_IT'}
+
         current_bom = {}
         totals = {}
         rows = []
         cols = []
 
+        # Setup internal note:
+        recipe_pool = self.pool.get('mrp.bom')
+        recipe_ids = recipe_pool.search(cr, uid, [
+            ('internal_note', '!=', False)
+        ], context=context)
+
+        for recipe in recipe_pool.browse(cr, uid, recipe_ids):
+            product_note[recipe.product_id.default_code or ''] =\
+                recipe.internal_note
+
         # 1. Search lines that have passed primary name: ######################
         bom_pool = self.pool.get('etl.bom.line')
-        bom_ids = bom_pool.search(self.cr, self.uid, [
+        bom_ids = bom_pool.search(cr, uid, [
             ('primary', '=', primary)
             ], order='is_primary,code,seq')  # (only version)
-        bom_proxy = bom_pool.browse(self.cr, self.uid, bom_ids)
+        bom_proxy = bom_pool.browse(cr, uid, bom_ids)
 
         # 2. Loop element searching: component, version
         for item in bom_proxy:  # MP name
@@ -132,8 +146,6 @@ class report_webkit_html(report_sxw.rml_parse):
                 cols.append(item.code)
                 if item.code not in translate_name:
                     translate_name[item.code] = item.name
-                if item.code not in product_note:
-                    product_note[item.code] = item.internal_note
 
             # 3. Create table according to cols and rows ######################
             current_bom[(item.component_code, item.code)] = item.quantity
@@ -152,12 +164,12 @@ class report_webkit_html(report_sxw.rml_parse):
                 current_model[item.component_code] = 0.0
 
         # 6. Row list for sort:
-        bom_ids = bom_pool.search(self.cr, self.uid, [
+        bom_ids = bom_pool.search(cr, uid, [
             '|',
             ('code', '=', primary),
             ('primary', '=', primary),
             ], order='primary,code,seq')  # (only version)
-        bom_proxy = bom_pool.browse(self.cr, self.uid, bom_ids)
+        bom_proxy = bom_pool.browse(cr, uid, bom_ids)
         for item in bom_proxy:
             if item.component_code not in rows:
                 # for keep model first (only for previous if check)
