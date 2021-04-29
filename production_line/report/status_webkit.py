@@ -89,10 +89,10 @@ class report_webkit_html(report_sxw.rml_parse):
         return self.pool.get('mrp.production')._jump_is_all_zero(
             row, data=data)
 
+
 report_sxw.report_sxw(
     'report.webkitstatus',
     'sale.order',
     'addons/production_line/report/status_webkit.mako',
     parser=report_webkit_html
     )
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
