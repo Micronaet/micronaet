@@ -36,6 +36,7 @@ current_model = {}
 rows = []
 cols = []
 translate_name = {}
+product_note = {}
 totals = {}
 
 
@@ -58,6 +59,7 @@ class report_webkit_html(report_sxw.rml_parse):
             'create_current_bom': self._create_current_bom,
             'get_current_bom': self._get_current_bom,
             'get_mp_name': self._get_mp_name,
+            'get_internal_note': self._get_internal_note,
             'test_bom_model': self._test_bom_model,
             'get_cols': self._get_cols,
             'get_rows': self._get_rows,
@@ -74,10 +76,10 @@ class report_webkit_html(report_sxw.rml_parse):
         global translate_name
         parent_list = []
         if data is None:
-            data={}
+            data = {}
 
-        domain=[('is_primary', '=', True)]
-        primary = data.get('primary',False)
+        domain = [('is_primary', '=', True)]
+        primary = data.get('primary', False)
 
         if primary:
             domain.append(
@@ -108,6 +110,7 @@ class report_webkit_html(report_sxw.rml_parse):
         global cols
         global rows
         global translate_name
+        global product_note
         global totals
 
         # initialize (every primary block is reset )
@@ -120,18 +123,20 @@ class report_webkit_html(report_sxw.rml_parse):
         bom_pool = self.pool.get('etl.bom.line')
         bom_ids = bom_pool.search(self.cr, self.uid, [
             ('primary', '=', primary)
-            ], order='is_primary,code,seq') # (only version)
+            ], order='is_primary,code,seq')  # (only version)
         bom_proxy = bom_pool.browse(self.cr, self.uid, bom_ids)
 
         # 2. Loop element searching: component, version
         for item in bom_proxy:  # MP name
-            if item.code not in cols: # BOM Version name
+            if item.code not in cols:  # BOM Version name
                 cols.append(item.code)
                 if item.code not in translate_name:
                     translate_name[item.code] = item.name
+                if item.code not in product_note:
+                    product_note[item.code] = item.internal_note
 
             # 3. Create table according to cols and rows ######################
-            current_bom[(item.component_code,item.code)]=item.quantity
+            current_bom[(item.component_code, item.code)] = item.quantity
 
             # 4. Total for version (test is 1 in report) ######################
             if item.code in totals:
@@ -151,25 +156,32 @@ class report_webkit_html(report_sxw.rml_parse):
             '|',
             ('code', '=', primary),
             ('primary', '=', primary),
-            ], order='primary,code,seq') # (only version)
+            ], order='primary,code,seq')  # (only version)
         bom_proxy = bom_pool.browse(self.cr, self.uid, bom_ids)
         for item in bom_proxy:
             if item.component_code not in rows:
-                rows.append(item.component_code) # for keep model first (only for previous if check)
+                # for keep model first (only for previous if check)
+                rows.append(item.component_code)
                 if item.component_name not in translate_name:
                     translate_name[item.component_code] = item.component_name
-
         cols.sort()
         return True
 
-    def _get_mp_name(self,code):
-        """ Return name of component searcing the code
+    def _get_mp_name(self, code):
+        """ Return name of component searching the code
         """
-        global translate_name # for save all table
+        global translate_name  # for save all table
 
         return translate_name.get(code, '')
 
-    def _get_current_bom_real(self,row,col):
+    def _get_internal_note(self, code):
+        """ Return name of internal note searching the code
+        """
+        global product_note  # for save all table
+
+        return product_note.get(code, '')
+
+    def _get_current_bom_real(self, row, col):
         """ Get current bom table loaded with _create_current_bom (real number)
         """
         global current_bom # for save all table
