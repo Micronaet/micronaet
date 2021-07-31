@@ -193,7 +193,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 ], format_title)
 
             excel_pool.column_width(ws_name, [
-                1, 1, 1,
+                1, 1, 1, 1, 1,
                 5, 5,
                 10, 40, 20, 10, 12, 30,
                 10, 10, 10, 10, 15])
@@ -201,9 +201,11 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 'ID',
                 'Obsol. (orig.)',
                 'Escludi (orig.)',
+                u'Leadtime',
+                u'gg. approvv.',
 
-                'Obsol.',
-                'Escludi',
+                'OBSOL.',
+                'ESCL.',
 
                 u'Codice',
                 u'Nome',
@@ -212,8 +214,8 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 u'Cod. doganale',
                 u'Primo fornitore',
 
-                u'Leadtime',
-                u'gg. approvv.',
+                u'LEADTIME',
+                u'GG. APPROV.',
                 u'Liv. riord.',
                 u'Q.',
                 'Stato',
@@ -222,7 +224,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             row += 2
             excel_pool.write_xls_line(ws_name, row, header, format_header)
             excel_pool.autofilter(ws_name, row, 0, row, len(header) - 1)
-            excel_pool.freeze_panes(ws_name, row + 1, 6)
+            excel_pool.freeze_panes(ws_name, row + 1, 8)
             excel_pool.column_hidden(ws_name, [0, 1, 2])
 
             for product in sorted(product_pool.browse(
@@ -248,6 +250,8 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                     product.id,
                     'X' if product.stock_obsolete else '',
                     'X' if product.not_in_status else '',
+                    (product.day_leadtime, format_number),
+                    (product.day_min_level, format_number),
 
                     # Showed
                     'X' if product.stock_obsolete else '',
