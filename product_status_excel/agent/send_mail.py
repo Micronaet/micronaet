@@ -78,10 +78,6 @@ smtp = {
     'folder': config.get('smtp', 'folder'),
 }
 
-context = {
-    'save_mode': filename,
-}
-
 # -----------------------------------------------------------------------------
 # Connect to ODOO:
 # -----------------------------------------------------------------------------
@@ -94,8 +90,6 @@ odoo = erppeek.Client(
 mailer = odoo.model('ir.mail_server')
 
 # Setup context for order:
-print(context)
-odoo.context = context
 wizard = odoo.model('product.product.extract.xls.wizard')
 
 # Launch extract procedure:
