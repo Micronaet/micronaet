@@ -104,7 +104,7 @@ class ProductStatusWizard(osv.osv_memory):
             self, cr, uid, wizard=None, context=None):
         """ Send mail to group user for negative elements
         """
-        also_previsional = False # XXX need here?
+        also_previsional = False  # XXX need here?
         if context is None:
             context = {}
 

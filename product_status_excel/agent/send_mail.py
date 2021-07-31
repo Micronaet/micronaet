@@ -33,7 +33,6 @@ from email import Encoders
 # -----------------------------------------------------------------------------
 # Read configuration parameter:
 # -----------------------------------------------------------------------------
-#cfg_file = os.path.expanduser('../local.cfg')
 cfg_file = os.path.expanduser('./openerp.cfg')
 now = ('%s' % datetime.now())[:19]
 now_text = now.replace('/', '_').replace('-', '_').replace(':', '_')
@@ -41,7 +40,7 @@ now_text = now.replace('/', '_').replace('-', '_').replace(':', '_')
 config = ConfigParser.ConfigParser()
 config.read([cfg_file])
 
-filename = '/tmp/production_status.xlsx' # From wizard parameter!
+filename = '/tmp/stock_status_commpleted.xlsx'
 
 # ERP Connection:
 odoo = {
@@ -50,7 +49,7 @@ odoo = {
     'password': config.get('dbaccess', 'pwd'),
     'server': config.get('dbaccess', 'server'),
     'port': config.get('dbaccess', 'port'),
-    }
+}
 
 # Mail:
 smtp = {
@@ -59,50 +58,29 @@ smtp = {
         <p>Spett.li responsabili acquisto,</p>
 
         <p>questa &egrave; una mail automatica giornaliera inviata da 
-            <b>OpenERP</b> con lo stato materie prime in funzione del
-            magazzino attuale e delle produzioni schedulate, data: <b>%s</b>
+            <b>OpenERP</b> con lo stato materie prime come da magazzino,
+            data: <b>%s</b>
+        </p>
+        <p>
+        I 3 colori indicano lo stato le prodotto:<br/>
+        - Bianco: presente<br/>
+        - Giallo: sotto il livello di scorta minimo<br/>
+        - Rosso: non presente o negativo<br/>        
         </p>
 
-        <p>
-        La stampa presenta una finestra di 30 giorni nella quale viene indicato
-        lo stato giornaliero del magazzino, nella valorizzazione intervengono: 
-        <br/>
-        - lo stato attuale da programma di contabilit&agrave;<br/>
-        - le uscite di produzione pianificate (segno negativo)<br/>
-        - le consegne di materiale da fornitore (segno positivo)<br/>
-        </p>
-
-        <p>
-        Le materie prime visibili sono solo quelle sotto il livello di 
-        riordino. 
-        Nella stampa viene indicata la media delle produzione con una finestra
-        di 3 mesi antecedenti.
-        </p>
-        
-        <p><i>In giallo vengono indicate le celle dei prodotti sotto il 
-            livello minimo di riordino, in rosso le celle negative.</i></p>
+        <p><i>Le colonne: obsoleto, escludi, leadtime e gg. approvv. si possono
+        usare anche per impostare in Excel per poi reimportarle in OpenERP!
+        </i></p>
 
         <b>Micronaet S.r.l.</b>
-
-
         ''' % now,
-    'subject': 'PAN Stato materie prime con produzioni schedulate: %s' % now,
+    'subject': 'PAN Stato magazzino: %s' % now,
     'folder': config.get('smtp', 'folder'),
-    }
+}
 
 context = {
-    'save_mode': True,
-
-    # Wizard setup:
-    'datas': {
-        'days': 30,
-        'row_mode': 'level',
-        'with_medium': True,
-        'month_window': 3,
-        'with_order_detail': True,
-        'fake_ids': [], # TODO << nothing?
-        },
-    }
+    'save_mode': filename,
+}
 
 # -----------------------------------------------------------------------------
 # Connect to ODOO:
@@ -112,16 +90,16 @@ odoo = erppeek.Client(
     db=odoo['database'],
     user=odoo['user'],
     password=odoo['password'],
-    )
+)
 mailer = odoo.model('ir.mail_server')
 
 # Setup context for order:
 print(context)
 odoo.context = context
-wizard = odoo.model('product.status.wizard')
+wizard = odoo.model('product.product.extract.xls.wizard')
 
 # Launch extract procedure:
-wizard.schedule_send_negative_report_mailer()
+wizard.action_done()
 
 # -----------------------------------------------------------------------------
 # SMTP Sent:
@@ -139,7 +117,7 @@ print('[INFO] Sending using "%s" connection [%s:%s]' % (
     odoo_mailer.name,
     odoo_mailer.smtp_host,
     odoo_mailer.smtp_port,
-    ))
+))
 
 if odoo_mailer.smtp_encryption in ('ssl', 'starttls'):
     smtp_server = smtplib.SMTP_SSL(
@@ -147,7 +125,7 @@ if odoo_mailer.smtp_encryption in ('ssl', 'starttls'):
 else:
     print('[ERR] Connect only SMTP SSL server!')
     sys.exit()
-    #server_smtp.start() # TODO Check
+    # server_smtp.start() # TODO Check
 
 smtp_server.login(odoo_mailer.smtp_user, odoo_mailer.smtp_pass)
 for to in smtp['to'].replace(' ', '').split(','):
@@ -155,7 +133,7 @@ for to in smtp['to'].replace(' ', '').split(','):
     msg = MIMEMultipart()
     msg['Subject'] = smtp['subject']
     msg['From'] = odoo_mailer.smtp_user
-    msg['To'] = to #smtp['to'] #', '.join(self.EMAIL_TO)
+    msg['To'] = to  # smtp['to'] #', '.join(self.EMAIL_TO)
     msg.attach(MIMEText(smtp['text'], 'html'))
 
     part = MIMEBase('application', 'octet-stream')
@@ -163,7 +141,7 @@ for to in smtp['to'].replace(' ', '').split(','):
     Encoders.encode_base64(part)
     part.add_header(
         'Content-Disposition',
-        'attachment; filename="PAN Stato_materie_prime %s.xlsx"' % now_text)
+        'attachment; filename="PAN Stato_magazzino_%s.xlsx"' % now_text)
     msg.attach(part)
 
     # Send mail:

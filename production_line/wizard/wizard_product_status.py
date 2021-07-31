@@ -2,11 +2,11 @@
 ##############################################################################
 #
 #    OpenERP module
-#    Copyright (C) 2010 Micronaet srl (<http://www.micronaet.it>) 
-#    
+#    Copyright (C) 2010 Micronaet srl (<http://www.micronaet.it>)
+#
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution	
+#    OpenERP, Open Source Management Solution
 #    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>). All Rights Reserved
 #    $Id$
 #
@@ -32,9 +32,9 @@ import xlsxwriter
 from openerp.osv import fields, osv, expression
 from datetime import datetime, timedelta
 from openerp.tools.translate import _
-from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT, 
-    DEFAULT_SERVER_DATETIME_FORMAT, 
-    DATETIME_FORMATS_MAP, 
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
+    DEFAULT_SERVER_DATETIME_FORMAT,
+    DATETIME_FORMATS_MAP,
     float_compare)
 
 # Mail lib:
@@ -51,17 +51,17 @@ _logger = logging.getLogger(__name__)
 
 # WIZARD PRINT REPORT ########################################################
 class product_status_wizard(osv.osv_memory):
-    ''' Parameter for product status per day
-    '''    
+    """ Parameter for product status per day
+    """
     _name = 'product.status.wizard'
     _description = 'Product status wizard'
 
     # Utility:
     def send_mail(
-            self, send_from, send_to, subject, text, xls_filename, server, 
+            self, send_from, send_to, subject, text, xls_filename, server,
             port, username='', password='', isTls=False):
-        ''' Send mail procedure:
-        '''    
+        """ Send mail procedure:
+        """
         msg = MIMEMultipart()
         msg['From'] = send_from
         msg['To'] = send_to
@@ -73,7 +73,7 @@ class product_status_wizard(osv.osv_memory):
         part.set_payload(open(xls_filename, 'rb').read())
         encoders.encode_base64(part)
         part.add_header(
-            'Content-Disposition', 
+            'Content-Disposition',
             'attachment; filename=stato_magazzino.xlsx',
             )
         msg.attach(part)
@@ -84,17 +84,17 @@ class product_status_wizard(osv.osv_memory):
         if isTls:
             smtp.starttls()
         smtp.login(username,password)
-        smtp.sendmail(send_from, send_to, msg.as_string())        
+        smtp.sendmail(send_from, send_to, msg.as_string())
         smtp.quit()
         return True
-        
-    
+
+
     # -------------------------------------------------------------------------
     # Events:
     # -------------------------------------------------------------------------
     def get_data_description(self, data=None):
-        ''' Prepare description filter string from data dict
-        '''
+        """ Prepare description filter string from data dict
+        """
         if data is None:
            return _('No filter')
 
@@ -109,12 +109,12 @@ class product_status_wizard(osv.osv_memory):
             'with_order_detail', False) else 'No OF detail',
         res += 'With fake order: %s -' % (
             'yes' if datas.get('fake_ids', False) else 'no',
-            )            
+            )
         return res
 
     def prepare_data(self, cr, uid, ids, context=None):
-        ''' Prepare data dict
-        '''
+        """ Prepare data dict
+        """
         wiz_proxy = self.browse(cr, uid, ids)[0]
         datas = {}
         if wiz_proxy.days:
@@ -126,7 +126,7 @@ class product_status_wizard(osv.osv_memory):
         datas['with_medium'] = wiz_proxy.with_medium
         datas['month_window'] = wiz_proxy.month_window
         datas['with_order_detail'] = wiz_proxy.with_order_detail
-        
+
         datas['fake_ids'] = wiz_proxy.fake_ids
         return datas
 
@@ -134,25 +134,25 @@ class product_status_wizard(osv.osv_memory):
     # Button events:
     # -------------------------------------------------------------------------
     def export_excel(self, cr, uid, ids, context=None):
-        ''' Export excel file
-            Procedure used also for sent mail (used context parameter 
+        """ Export excel file
+            Procedure used also for sent mail (used context parameter
             sendmail for activate with datas passed)
-        '''
+        """
         if context is None:
             context = {}
-        
-        save_mode = context.get('save_mode')            
+
+        save_mode = context.get('save_mode')
         _logger.info('Start extract save mode: %s' % save_mode)
 
         # ---------------------------------------------------------------------
         # Utility:
         # ---------------------------------------------------------------------
         def write_supplier_order_detail(record):
-            '''
-            '''
+            """
+            """
             if not record:
                 return ''
-                
+
             res = ''
             for d, q in record.iteritems():
                 try:
@@ -162,11 +162,11 @@ class product_status_wizard(osv.osv_memory):
                         )
                 except:
                     return _('ERROR!')
-            return res    
-                
+            return res
+
         def write_xls_mrp_line(WS, row, line):
-            ''' Write line in excel file
-            '''
+            """ Write line in excel file
+            """
             col = 0
             for item, format_cell in line:
                 WS.write(row, col, item, format_cell)
@@ -174,8 +174,8 @@ class product_status_wizard(osv.osv_memory):
             return True
 
         def write_xls_mrp_line_comment(WS, row, line, gap_column=0):
-            ''' Write comment cell in excel file
-            '''
+            """ Write comment cell in excel file
+            """
             parameters = {
                 'width': 300,
                 }
@@ -185,35 +185,35 @@ class product_status_wizard(osv.osv_memory):
                     WS.write_comment(row, col, comment, parameters)
                 col += 1
             return True
-        
+
         def use_row(row, data=None, product=False):
-            ''' Check if row must be used depend on row_mode
-            '''
+            """ Check if row must be used depend on row_mode
+            """
             if data is None:
-                data = {}            
+                data = {}
             row_mode = data.get('row_mode', 'active')
 
-            # -----------------------------------------------------------------            
+            # -----------------------------------------------------------------
             # All record, All value
-            # -----------------------------------------------------------------            
+            # -----------------------------------------------------------------
             if row_mode == 'all':
                return True # no filter is required
-         
-            # -----------------------------------------------------------------            
-            # Record with data but no elements:   
-            # -----------------------------------------------------------------            
+
+            # -----------------------------------------------------------------
+            # Record with data but no elements:
+            # -----------------------------------------------------------------
             elif row_mode == 'active' and not any(row):
                 return False
-            
-            # -----------------------------------------------------------------            
+
+            # -----------------------------------------------------------------
             # Negative or under level:
-            # -----------------------------------------------------------------            
+            # -----------------------------------------------------------------
             elif row_mode in ('negative', 'level'):
                 if row_mode == 'negative' or not product:
                     level = 0.0
                 else:
                     level = product.min_stock_level
-    
+
                 partial = 0
                 for q in row:
                     partial += q
@@ -225,16 +225,16 @@ class product_status_wizard(osv.osv_memory):
 
         if context is None:
             context = {}
-            
+
         if context.get('datas', False):
             sendmail = True
             data = context.get('datas', {})
-        else:    
+        else:
             sendmail = False
             data = self.prepare_data(cr, uid, ids, context=context)
 
         # Pool used:
-        mrp_pool = self.pool.get('mrp.production')    
+        mrp_pool = self.pool.get('mrp.production')
         attachment_pool = self.pool.get('ir.attachment')
 
         # ---------------------------------------------------------------------
@@ -255,7 +255,7 @@ class product_status_wizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         num_format = '#,##0'
         format_title = WB.add_format({
-            'bold': True, 
+            'bold': True,
             'font_color': 'black',
             'font_name': 'Arial',
             'font_size': 10,
@@ -301,7 +301,7 @@ class product_status_wizard(osv.osv_memory):
             'font_name': 'Arial',
             'font_size': 9,
             'align': 'right',
-            'bg_color': '#c1ef94', #'green',
+            'bg_color': '#c1ef94',  # 'green',
             'border': 1,
             'num_format': num_format,
             })
@@ -310,28 +310,28 @@ class product_status_wizard(osv.osv_memory):
         # Format columns:
         # ---------------------------------------------------------------------
         # Column dimension:
-        WS.set_column ('A:A', 35)
-        WS.set_column ('E:E', 20)
+        WS.set_column('A:A', 35)
+        WS.set_column('E:E', 20)
         WS.set_row(0, 30)
-        WS_product.set_column ('A:A', 35)
-        WS_product.set_column ('E:E', 20)
+        WS_product.set_column('A:A', 35)
+        WS_product.set_column('E:E', 20)
         WS_product.set_row(0, 30)
-            
+
         # Generate report for export:
         context['lang'] = 'it_IT'
-        mrp_pool._start_up(cr, uid, data, context=context)        
+        mrp_pool._start_up(cr, uid, data, context=context)
         start_product = False
         cols = mrp_pool._get_cols()
-        
+
         if data.get('with_order_detail', False):
             history_supplier_orders = mrp_pool._get_history_supplier_orders()
         else:
-            history_supplier_orders = {}        
-        
+            history_supplier_orders = {}
+
         # Start loop for design table for product and material status:
-        # Header: 
+        # Header:
         header = [
-            [_('Material'), format_title], # list for update after for product
+            [_('Material'), format_title],  # list for update after for product
             (_('Code'), format_title),
             (_('Mx. stock'), format_title),
             (_('Min. stock'), format_title),
@@ -340,7 +340,7 @@ class product_status_wizard(osv.osv_memory):
             ]
         for col in cols:
             header.append((col, format_title))
-            
+
         # Material header:
         write_xls_mrp_line(WS, 0, header)
         # Product header
@@ -348,25 +348,25 @@ class product_status_wizard(osv.osv_memory):
         write_xls_mrp_line(WS_product, 0, header)
 
         # Body:
-        i = 1 # row position (before 0)
+        i = 1  # row position (before 0)
         rows = mrp_pool._get_rows()
 
         table, table_comment = mrp_pool._get_table() # For check row state
-        
+
         for row in rows:
             # Check mode: only active
             if not use_row(table[row[1]], data, product=row[2]):
-                 #_logger.error('No: %s' % (table[row[1]], ))
+                 # _logger.error('No: %s' % (table[row[1]], ))
                  continue
-            else:     
+            else:
                  pass
-                 #_logger.info('Yes: %s' % (table[row[1]], ))
+                 # _logger.info('Yes: %s' % (table[row[1]], ))
 
             if not start_product and row[0] == 'P':
                 WS = WS_product # change ref. for use second sheet
                 start_product = True
                 i = 1 # jump one line
-                                    
+
             status_line = 0.0
             default_code = (row[2].default_code or '/').strip()
             body = [
@@ -375,18 +375,18 @@ class product_status_wizard(osv.osv_memory):
                 (row[2].minimum_qty, format_white), # min level account
                 (row[2].min_stock_level, format_white), # min level calc
                 (write_supplier_order_detail(
-                    history_supplier_orders.get(default_code, '')), 
+                    history_supplier_orders.get(default_code, '')),
                     format_text,
-                    ), # OF detail
-                (row[3], format_white), # m(x)
+                    ),  # OF detail
+                (row[3], format_white),  # m(x)
                 ]
-            gap_columns = len(body)    
-                
+            gap_columns = len(body)
+
             j = 0
             for col in cols:
                 (q, minimum) = mrp_pool._get_cel(j, row[1])
                 j += 1
-                status_line += q                    
+                status_line += q
                 # Choose the color:
                 if not status_line: # value = 0
                     body.append((status_line, format_white))
@@ -403,14 +403,14 @@ class product_status_wizard(osv.osv_memory):
             comment_line = table_comment.get(row[1])
             if comment_line:
                 write_xls_mrp_line_comment(WS, i, comment_line, gap_columns)
-            
-            i += 1                
-        _logger.info('End export status on %s' % filename)        
+
+            i += 1
+        _logger.info('End export status on %s' % filename)
         WB.close()
 
         xlsx_raw = open(filename, 'rb').read()
         b64 = xlsx_raw.encode('base64')
-        if sendmail:        
+        if sendmail:
             # -----------------------------------------------------------------
             # Send via mail:
             # -----------------------------------------------------------------
@@ -422,22 +422,22 @@ class product_status_wizard(osv.osv_memory):
             model_pool = self.pool.get('ir.model.data')
             thread_pool = self.pool.get('mail.thread')
             server_pool = self.pool.get('ir.mail_server')
-            
+
             group_id = model_pool.get_object_reference(
-                cr, uid, 'production_line', 'group_stock_negative_status')[1]    
+                cr, uid, 'production_line', 'group_stock_negative_status')[1]
             partner_email = []
             for user in group_pool.browse(
                     cr, uid, group_id, context=context).users:
                 partner_email.append(user.partner_id.email) # .id
-                
+
             #thread_pool = self.pool.get('mail.thread')
-            #thread_pool.message_post(cr, uid, False, 
-            #    type='email', 
-            #    body=_('Negative stock status report'), 
+            #thread_pool.message_post(cr, uid, False,
+            #    type='email',
+            #    body=_('Negative stock status report'),
             #    subject='Stock status: %s' % date,
             #    partner_ids=[(6, 0, partner_ids)],
             #    attachments=[
-            #        ('stock_status.xlsx', xlsx_raw)], 
+            #        ('stock_status.xlsx', xlsx_raw)],
             #    context=context,
             #    )
             server_ids = server_pool.search(cr, uid, [
@@ -450,12 +450,12 @@ class product_status_wizard(osv.osv_memory):
                 cr, uid, server_ids, context=context)[0]
             _logger.info('SMTP server: %s:%s user: %s' % (
                 server_proxy.smtp_host,
-                server_proxy.smtp_port, 
-                server_proxy.smtp_user, 
+                server_proxy.smtp_port,
+                server_proxy.smtp_user,
                 ))
 
             # -----------------------------------------------------------------
-            # Save mode:                
+            # Save mode:
             # -----------------------------------------------------------------
             if save_mode: # Save as a file:
                 _logger.warning('Save mode: %s' % save_mode)
@@ -467,15 +467,15 @@ class product_status_wizard(osv.osv_memory):
             for email in partner_email:
                 _logger.warning('... sending mail: %s' % email)
                 self.send_mail(
-                    server_proxy.smtp_user,#'openerp@micronaet.com', 
-                    email, 
-                    _('Negative stock status report'), 
+                    server_proxy.smtp_user,#'openerp@micronaet.com',
+                    email,
+                    _('Negative stock status report'),
                     _('Stock status for negative product with production'),
-                    filename, 
+                    filename,
                     server_proxy.smtp_host,
-                    server_proxy.smtp_port, 
-                    username=server_proxy.smtp_user, 
-                    password=server_proxy.smtp_pass, 
+                    server_proxy.smtp_port,
+                    username=server_proxy.smtp_user,
+                    password=server_proxy.smtp_pass,
                     isTls=False,
                     )
         else:
@@ -504,12 +504,12 @@ class product_status_wizard(osv.osv_memory):
                 'context': context,
                 'target': 'current',
                 'nodestroy': False,
-                }       
+                }
 
     def schedule_send_negative_report(
             self, cr, uid, wizard=None, context=None):
-        ''' Send mail to group user for negative elements
-        '''                
+        """ Send mail to group user for negative elements
+        """
         # XXX Was overrided!!!
         if context is None:
             context = {}
@@ -526,27 +526,27 @@ class product_status_wizard(osv.osv_memory):
 
         if wizard is not None:
             context['datas'].update(wizard)
-        
-        # TODO update previsional order?    
-        self.export_excel(cr, uid, False, context=context)    
-        return True    
-        
+
+        # TODO update previsional order?
+        self.export_excel(cr, uid, False, context=context)
+        return True
+
     def print_report(self, cr, uid, ids, context=None):
-        ''' Redirect to bom report passing parameters
-        ''' 
+        """ Redirect to bom report passing parameters
+        """
         datas = self.prepare_data(cr, uid, ids, context=context)
         return {
             'type': 'ir.actions.report.xml',
             'report_name': 'webkitstatus',
             'datas': datas,
             }
-        
+
     _columns = {
         'days':fields.integer('Days from today', required=True),
         # REMOVE:
-        #'active':fields.boolean('Only record with data', required=False, 
+        #'active':fields.boolean('Only record with data', required=False,
         #    help="Show only product and material with movement"),
-        #'negative': fields.boolean('Only negative', required=False, 
+        #'negative': fields.boolean('Only negative', required=False,
         #    help="Show only product and material with negative value in range"),
         # USE:
         'row_mode': fields.selection([
@@ -554,15 +554,15 @@ class product_status_wizard(osv.osv_memory):
             ('active', 'With data'),
             ('negative', 'With negative'),
             ('level', 'Under minimum level'),
-            ], 'Row mode', required=True),            
-                
-        'month_window':fields.integer('Statistic production window ', 
+            ], 'Row mode', required=True),
+
+        'month_window':fields.integer('Statistic production window ',
             required=True, help="Month back for medium production monthly index (Kg / month of prime material)"),
-        'with_medium': fields.boolean('With m(x)', required=False, 
-            help="if check in report there's production m(x), if not check report is more fast"),        
+        'with_medium': fields.boolean('With m(x)', required=False,
+            help="if check in report there's production m(x), if not check report is more fast"),
         'with_order_detail': fields.boolean('With OF detail'),
         }
-        
+
     _defaults = {
         'days': lambda *a: 7,
         'month_window': lambda *x: 2,
@@ -572,11 +572,11 @@ class product_status_wizard(osv.osv_memory):
 
 class ProductStatusProductionFakeWizard(osv.osv_memory):
     """ Model name: MrpProductionFake
-    """    
+    """
     _name = 'product.status.production.fake.wizard'
     _rec_name = 'product_id'
     _order = 'product_id'
-    
+
     _columns = {
         'product_id': fields.many2one(
             'product.product', 'Product', required=True),
@@ -588,14 +588,14 @@ class ProductStatusProductionFakeWizard(osv.osv_memory):
         }
 
 class product_status_wizard(osv.osv_memory):
-    ''' Parameter for product status per day
-    '''    
+    """ Parameter for product status per day
+    """
     _inherit = 'product.status.wizard'
-    
+
     _columns = {
         'fake_ids': fields.one2many(
-            'product.status.production.fake.wizard', 'wizard_id', 
+            'product.status.production.fake.wizard', 'wizard_id',
             'Production fake'),
         }
-           
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

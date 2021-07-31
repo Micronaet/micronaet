@@ -52,7 +52,9 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         """
         if context is None:
             context = {}
-        report_mode = context.get('report_mode', 'wizard')  # or mail
+        save_mode = context.get('save_mode', False)
+        if save_mode:
+            _logger.info('Start extract save mode: %s' % save_mode)
 
         # Pool used:
         product_pool = self.pool.get('product.product')
@@ -60,7 +62,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
 
         filter_used = ''
         wizard_domain = []
-        if report_mode == 'wizard':
+        if not save_mode:
             wiz_browse = self.browse(cr, uid, ids, context=context)[0]
 
             # -----------------------------------------------------------------
@@ -158,7 +160,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         ]
         format_loaded = False
         for ws_name, page_domain in master_loop:
-            if report_mode == 'wizard':
+            if not save_mode:
                 domain = wizard_domain + page_domain
             else:
                 domain = page_domain
@@ -269,6 +271,13 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                     (product.accounting_qty, format_number),
                     state,
                     ], format_text)
+
+        # -----------------------------------------------------------------
+        # Save mode:
+        # -----------------------------------------------------------------
+        if save_mode: # Save as a file:
+            _logger.warning('Save mode: %s' % save_mode)
+            return filename
 
         return excel_pool.return_attachment(
             cr, uid, 'Prodotti',
