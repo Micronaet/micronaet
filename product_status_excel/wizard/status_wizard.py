@@ -54,7 +54,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         ctx = context.copy()
         pdb.set_trace()
         ctx['save_mode'] = filename
-        return self.action_done(cr, uid, ids, context=ctx)
+        return self.action_done(cr, uid, False, context=ctx)
 
     def action_done(self, cr, uid, ids, context=None):
         """ Event for button done
