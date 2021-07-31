@@ -99,7 +99,7 @@ odoo.context = context
 wizard = odoo.model('product.product.extract.xls.wizard')
 
 # Launch extract procedure:
-wizard.action_done()
+wizard.action_done_filename(filename)
 
 # -----------------------------------------------------------------------------
 # SMTP Sent:
