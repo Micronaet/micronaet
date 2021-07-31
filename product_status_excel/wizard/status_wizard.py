@@ -217,7 +217,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             row += 2
             excel_pool.write_xls_line(ws_name, row, header, format_header)
             excel_pool.autofilter(ws_name, row, 0, row, len(header) - 1)
-            excel_pool.freeze_panes(ws_name, row, 3)
+            excel_pool.freeze_panes(ws_name, row + 1, 4)
             excel_pool.column_hidden(ws_name, [0])
 
             for product in sorted(product_pool.browse(
@@ -245,9 +245,9 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                     product.statistic_category,
                     product.duty_id.name or '/',
                     product.first_supplier_id.name or '/',
-                    (min_stock, format_number),
                     (product.day_leadtime, format_number),
                     (product.day_min_level, format_number),
+                    (min_stock, format_number),
                     (product.accounting_qty, format_number),
                     ], format_text)
 
