@@ -123,7 +123,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             SELECT id from product_product 
             WHERE substring(default_code, 1, 1) not in ('A', 'B', 'M')
             ''')
-        product_ids = [record['id'] for record in cr.fetchall()]
+        product_ids = [record[0] for record in cr.fetchall()]
         master_loop = [
             ('Materie A', [
                 ('default_code', '=ilike', 'A%'),
