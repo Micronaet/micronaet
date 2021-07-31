@@ -52,6 +52,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         if context is None:
             context = {}
         ctx = context.copy()
+        ctx['save_mode'] = filename
         return self.action_done(cr, uid, ids, context=ctx)
 
     def action_done(self, cr, uid, ids, context=None):
