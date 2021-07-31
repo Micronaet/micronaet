@@ -21,6 +21,7 @@
 ###############################################################################
 
 import os
+import pdb
 import sys
 import logging
 import openerp
@@ -272,12 +273,14 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                     state,
                     ], format_text)
 
-        # -----------------------------------------------------------------
+        # ---------------------------------------------------------------------
         # Save mode:
-        # -----------------------------------------------------------------
-        if save_mode: # Save as a file:
+        # ---------------------------------------------------------------------
+        pdb.set_trace()
+        if save_mode:  # Save as a file:
             _logger.warning('Save mode: %s' % save_mode)
-            return filename
+            excel_pool.save_file_as(save_mode)
+            return True
 
         return excel_pool.return_attachment(
             cr, uid, 'Prodotti',
