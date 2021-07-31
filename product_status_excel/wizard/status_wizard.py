@@ -63,6 +63,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
 
         filter_used = ''
         wizard_domain = []
+        pdb.set_trace()
         if not save_mode:
             wiz_browse = self.browse(cr, uid, ids, context=context)[0]
 
