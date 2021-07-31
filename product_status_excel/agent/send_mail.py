@@ -57,9 +57,9 @@ smtp = {
     'text': '''
         <p>Spett.li responsabili acquisto,</p>
 
-        <p>questa &egrave; una mail automatica giornaliera inviata da 
-            <b>OpenERP</b> con lo stato materie prime come da magazzino,
-            data: <b>%s</b>
+        <p>questa &egrave; una mail automatica inviata da 
+            <b>OpenERP</b> con lo stato materie prime, come da magazzino,
+            in data: <b>%s</b>
         </p>
         <p>
         I 3 colori indicano lo stato le prodotto:<br/>
