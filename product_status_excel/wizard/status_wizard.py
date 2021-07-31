@@ -171,10 +171,20 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             if not format_loaded:  # Load once
                 format_title = excel_pool.get_format('title')
                 format_header = excel_pool.get_format('header')
-                format_text = excel_pool.get_format('text')
 
-                format_number_white = excel_pool.get_format('bg_white_number')
-                format_number_red = excel_pool.get_format('bg_red_number')
+                format_number_white = excel_pool.get_format(
+                    'bg_white_number')
+                format_number_yellow = excel_pool.get_format(
+                    'bg_yellow_number')
+                format_number_red = excel_pool.get_format(
+                    'bg_red_number')
+
+                format_text_white = excel_pool.get_format(
+                    'text')
+                format_text_yellow = excel_pool.get_format(
+                    'bg_yellow')
+                format_text_red = excel_pool.get_format(
+                    'bg_red')
                 format_loaded = True
 
             row = 0
@@ -182,14 +192,25 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 'Filtro: ', filter_used,
                 ], format_title)
 
-            excel_pool.column_width(ws_name, [10, 40, 20, 10, 12, 30, 10])
+            excel_pool.column_width(ws_name, [
+                1, 5, 5,
+                10, 40, 20, 10, 12, 30,
+                10, 10, 10, 10])
             header = [
+                'ID',
+                'Obsol.',
+                'Escludi',
+
                 u'Codice',
                 u'Nome',
                 u'Categoria',
                 u'Cat. stat.',
                 u'Cod. doganale',
                 u'Primo fornitore',
+
+                u'Leadtime',
+                u'Giorni approvv.',
+                u'Liv. min. riord.'
                 u'Q.',
                 ]
 
@@ -201,18 +222,30 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                     cr, uid, product_ids, context=context),
                     key=sort_key):
                 row += 1
-                if product.accounting_qty >= 0:
+                min_stock = product.min_stock_level
+                if product.accounting_qty > min_stock:
                     format_number = format_number_white
-                else:
+                    format_text = format_text_white
+                elif product.accounting_qty >= 0:  # Yellow (under min)
+                    format_number = format_number_yellow
+                    format_text = format_text_yellow
+                else:  # not present or negative
                     format_number = format_number_red
+                    format_text = format_text_red
 
                 excel_pool.write_xls_line(ws_name, row, [
+                    product.id,
+                    'X' if product.stock_obsolete else '',
+                    'X' if product.not_in_status else '',
                     product.default_code,
                     product.name,
                     product.categ_id.name,
                     product.statistic_category,
                     product.duty_id.name or '/',
                     product.first_supplier_id.name or '/',
+                    (min_stock, format_number),
+                    (product.day_leadtime, format_number),
+                    (product.day_min_level, format_number),
                     (product.accounting_qty, format_number),
                     ], format_text)
 
