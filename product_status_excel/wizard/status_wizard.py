@@ -121,13 +121,14 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         # ---------------------------------------------------------------------
         cr.execute('''
             SELECT id from product_product 
-            WHERE substring(default_code, 1, 1) not in ('A', 'B', 'M')
+            WHERE substring(default_code, 1, 1) not in ('C', 'V', 'Z')
             ''')
         excluded_ids = [record[0] for record in cr.fetchall()]
+
         cr.execute('''
             SELECT id from product_product 
             WHERE substring(default_code, 1, 1) not in 
-                ('A', 'B', 'C', 'L', 'M', 'R');
+                ('A', 'B', 'C', 'L', 'M', 'R', 'V', 'Z');
             ''')
         product_ids = [record[0] for record in cr.fetchall()]
         master_loop = [
@@ -148,6 +149,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             ]),
             ('Lavorazioni', [
                 ('default_code', '=ilike', 'L%'),
+                ('default_code', '=ilike', 'Z%'),
             ]),
             ('Esclusi', [
                 ('id', 'in', excluded_ids),
