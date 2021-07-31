@@ -141,7 +141,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 ('id', 'in', product_ids),
             ]),
             ('Recuperi', [
-                ('defau lt_code', '=ilike', 'R%'),
+                ('default_code', '=ilike', 'R%'),
             ]),
         ]
         format_loaded = False
