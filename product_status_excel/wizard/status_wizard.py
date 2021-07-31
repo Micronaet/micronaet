@@ -189,7 +189,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
 
             row = 0
             excel_pool.write_xls_line(ws_name, row, [
-                'Filtro: ', filter_used,
+                '', '', '', '', '', 'Stato prodotti, Filtro: ', filter_used,
                 ], format_title)
 
             excel_pool.column_width(ws_name, [
