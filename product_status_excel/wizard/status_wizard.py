@@ -209,14 +209,15 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 u'Primo fornitore',
 
                 u'Leadtime',
-                u'Giorni approvv.',
-                u'Liv. min. riord.'
+                u'gg. approvv.',
+                u'Liv. riord.',
                 u'Q.',
+                'Stato',
                 ]
 
             row += 2
             excel_pool.write_xls_line(ws_name, row, header, format_header)
-            excel_pool.autofilter(ws_name, row, 0, row, len(header))
+            excel_pool.autofilter(ws_name, row, 0, row, len(header) - 1)
             excel_pool.freeze_panes(ws_name, row + 1, 4)
             excel_pool.column_hidden(ws_name, [0])
 
@@ -228,12 +229,15 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 if product.accounting_qty > min_stock:
                     format_number = format_number_white
                     format_text = format_text_white
+                    state = 'Presente'
                 elif product.accounting_qty > 0:  # Yellow (under min)
                     format_number = format_number_yellow
                     format_text = format_text_yellow
+                    state = 'Sottoscorta'
                 else:  # not present or negative
                     format_number = format_number_red
                     format_text = format_text_red
+                    state = 'Non presente'
 
                 excel_pool.write_xls_line(ws_name, row, [
                     product.id,
@@ -249,6 +253,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                     (product.day_min_level, format_number),
                     (min_stock, format_number),
                     (product.accounting_qty, format_number),
+                    state,
                     ], format_text)
 
         return excel_pool.return_attachment(
