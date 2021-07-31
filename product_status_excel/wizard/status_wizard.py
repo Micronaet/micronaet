@@ -52,7 +52,6 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         if context is None:
             context = {}
         ctx = context.copy()
-        pdb.set_trace()
         ctx['save_mode'] = filename
         return self.action_done(cr, uid, False, context=ctx)
 
@@ -71,7 +70,6 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
 
         filter_used = ''
         wizard_domain = []
-        pdb.set_trace()
         if not save_mode:
             wiz_browse = self.browse(cr, uid, ids, context=context)[0]
 
@@ -285,7 +283,6 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         # ---------------------------------------------------------------------
         # Save mode:
         # ---------------------------------------------------------------------
-        pdb.set_trace()
         if save_mode:  # Save as a file:
             _logger.warning('Save mode: %s' % save_mode)
             excel_pool.save_file_as(save_mode)
