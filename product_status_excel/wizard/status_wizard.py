@@ -119,6 +119,11 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         # ---------------------------------------------------------------------
         # Master loop for page:
         # ---------------------------------------------------------------------
+        cr.execute('''
+            SELECT id from product_product 
+            WHERE substring(default_code, 1, 1) not in ('A', 'B', 'M')
+            ''')
+        product_ids = [record['id'] for record in cr.fetchall()]
         master_loop = [
             ('Materie A', [
                 ('default_code', '=ilike', 'A%'),
@@ -133,14 +138,10 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 ('default_code', '=ilike', 'L%'),
             ]),
             ('Prodotti', [
-                ('default_code', 'not =ilike', 'A%'),
-                ('default_code', 'not =ilike', 'B%'),
-                ('default_code', 'not =ilike', 'M%'),
-                ('default_code', 'not =ilike', 'L%'),
-                ('default_code', 'not =ilike', 'R%'),
+                ('id', 'in', product_ids),
             ]),
             ('Recuperi', [
-                ('default_code', '=ilike', 'R%'),
+                ('defau lt_code', '=ilike', 'R%'),
             ]),
         ]
         format_loaded = False
