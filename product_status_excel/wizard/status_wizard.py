@@ -48,7 +48,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
     # --------------------
     # Wizard button event:
     # --------------------
-    def action_done_filename(self, cr, uid, ids, filename, context=None):
+    def action_done_filename(self, cr, uid, filename, context=None):
         if context is None:
             context = {}
         ctx = context.copy()
