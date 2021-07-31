@@ -228,7 +228,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 if product.accounting_qty > min_stock:
                     format_number = format_number_white
                     format_text = format_text_white
-                elif product.accounting_qty >= 0:  # Yellow (under min)
+                elif product.accounting_qty > 0:  # Yellow (under min)
                     format_number = format_number_yellow
                     format_text = format_text_yellow
                 else:  # not present or negative
