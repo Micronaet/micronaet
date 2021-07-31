@@ -148,6 +148,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 ('default_code', '=ilike', 'M%'),
             ]),
             ('Lavorazioni', [
+                '|',
                 ('default_code', '=ilike', 'L%'),
                 ('default_code', '=ilike', 'Z%'),
             ]),
