@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# ODOO (ex OpenERP) 
+# ODOO (ex OpenERP)
 # Open Source Management Solution
 # Copyright (C) 2001-2015 Micronaet S.r.l. (<https://micronaet.com>)
 # Developer: Nicola Riolini @thebrush (<https://it.linkedin.com/in/thebrush>)
@@ -13,7 +13,7 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU Affero General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
@@ -33,16 +33,17 @@ from dateutil.relativedelta import relativedelta
 from openerp import SUPERUSER_ID
 from openerp import tools
 from openerp.tools.translate import _
-from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT, 
-    DEFAULT_SERVER_DATETIME_FORMAT, 
-    DATETIME_FORMATS_MAP, 
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
+    DEFAULT_SERVER_DATETIME_FORMAT,
+    DATETIME_FORMATS_MAP,
     float_compare)
 
 _logger = logging.getLogger(__name__)
 
+
 class MrpProductionExtractStatWizard(orm.TransientModel):
-    ''' Wizard for extract data from sale, invoice
-    '''
+    """ Wizard for extract data from sale, invoice
+    """
     _name = 'mrp.production.extract.stat.wizard'
     _description = 'Extract Excel export'
 
@@ -50,23 +51,23 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
     # Wizard button event:
     # -------------------------------------------------------------------------
     def action_report(self, cr, uid, ids, context=None):
-        ''' Event for button done
-        '''
+        """ Event for button done
+        """
         def clean_tags(value):
-            ''' Clean tags element:
-            '''
+            """ Clean tags element:
+            """
             if not value:
                 return ''
-                
+
             res = value.replace('<b>', '').replace('</b>', '').replace(
                 '<br />', '\n').replace('<br/>', '\n').replace(
                     '<br>', '\n') or ''
-            return res.replace('\n\n', '\n')                
+            return res.replace('\n\n', '\n')
 
         wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
         work_pool = self.pool.get('mrp.production.material')
         excel_pool = self.pool.get('excel.writer')
-        
+
         # ---------------------------------------------------------------------
         # Parameters:
         # ---------------------------------------------------------------------
@@ -74,7 +75,7 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
         to_date = wiz_proxy.to_date
         filter_product = wiz_proxy.product_id
         filter_material = wiz_proxy.material_id
-        #report_mode = wiz_proxy.report_mode
+        # report_mode = wiz_proxy.report_mode
 
         # ---------------------------------------------------------------------
         # Setup domain filter:
@@ -83,20 +84,20 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
             ('workcenter_production_id', '!=', False),
             ('workcenter_production_id.state', 'not in', ('cancel', 'draft')),
             ]
-        #filter_text = _('Report mode: %s') % report_mode
+        # filter_text = _('Report mode: %s') % report_mode
         filter_text = _('Filtro applicato: ')
 
-        #Period:
+        # Period:
         if from_date:
             domain.append(
                 ('workcenter_production_id.real_date_planned', '>=', from_date)
                 )
-            filter_text += _(u'[Dalla data %s] ') % from_date    
+            filter_text += _(u'[Dalla data %s] ') % from_date
         if to_date:
             domain.append(
                 ('workcenter_production_id.real_date_planned', '<=', to_date))
-            filter_text += _(u'[Alla data %s] ') % to_date    
-            
+            filter_text += _(u'[Alla data %s] ') % to_date
+
         # Many2one:
         # Raw material:
         if filter_material:
@@ -105,16 +106,16 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
             filter_text += _(u'[Materia prima %s] '
                 ) % filter_material.default_code
 
-        # ---------------------------------------------------------------------        
+        # ---------------------------------------------------------------------
         #                              EXCEL:
-        # ---------------------------------------------------------------------        
+        # ---------------------------------------------------------------------
         # Search and open line:
         work_ids = work_pool.search(cr, uid, domain, context=context)
         work_proxy = work_pool.browse(cr, uid, work_ids, context=context)
 
-        # ---------------------------------------------------------------------        
+        # ---------------------------------------------------------------------
         # A. Detail Page:
-        # ---------------------------------------------------------------------        
+        # ---------------------------------------------------------------------
         ws_name = _('Dettaglio')
         excel_pool.create_worksheet(ws_name)
 
@@ -122,7 +123,7 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
         excel_pool.set_format()
         f_title = excel_pool.get_format('title')
         f_header = excel_pool.get_format('header')
-        
+
         f_text = excel_pool.get_format('text')
         f_text_yellow = excel_pool.get_format('bg_yellow')
         f_text_red = excel_pool.get_format('bg_red')
@@ -130,7 +131,7 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
         f_number = excel_pool.get_format('number')
         f_number_yellow = excel_pool.get_format('bg_yellow_number')
         f_number_red = excel_pool.get_format('bg_red_number')
-            
+
         excel_pool.column_width(ws_name, [
             15, 20, 20,
             20, 30, 10, 15,
@@ -141,14 +142,14 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
         excel_pool.write_xls_line(ws_name, row, [
             filter_text,
             ], default_format=f_title)
-            
-        # Header:    
-        row += 1        
+
+        # Header:
+        row += 1
         excel_pool.write_xls_line(ws_name, row, [
-            _('Data'), _('Produzione'), _('Lavorazione'), 
+            _('Data'), _('Produzione'), _('Lavorazione'),
             _('Codice'), _('Nome'), _('UM'), _('Q.')
             ], default_format=f_header)
-            
+
         # Material line:
         wc_db = []
         product_report = {}
@@ -156,20 +157,20 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
         job_report = {}
 
         for line in sorted(
-                work_proxy, 
+                work_proxy,
                 key=lambda x: x.workcenter_production_id.real_date_planned):
             row += 1
 
             # Get data:
             wc = line.workcenter_production_id
-            mrp = wc.production_id            
+            mrp = wc.production_id
             product = mrp.product_id
             material = line.product_id
             qty = line.quantity
 
             # -----------------------------------------------------------------
             # Final product data:
-            # -----------------------------------------------------------------                        
+            # -----------------------------------------------------------------
             #`Check if there's some filtered product:
             if not filter_product or product.id == filter_product.id:
                 if wc not in wc_db:
@@ -178,37 +179,37 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
                         key = product # (product, load.recycle)
                         net_qty = load.product_qty - load.waste_qty
                         hour = wc.hour
-                        
+
                         # Product page:
-                        if key in product_report:             
+                        if key in product_report:
                             product_report[key][0] += net_qty
                             product_report[key][1] += load.waste_qty
                             product_report[key][2] += hour
-                        else:    
+                        else:
                             product_report[key] = [
-                                net_qty, 
+                                net_qty,
                                 load.waste_qty,
                                 hour
                                 ]
-                        
+
                         # Job page:
                         if product not in job_report:
                             job_report[product] = []
                         job_report[product].append(load)
-                                
+
                         # package_id, ul_qty
                         # package_pedimento_id
                         # palled_product_id, pallet_qty
                         # accounting_cost
                         # recycle_product
-            
-            # -----------------------------------------------------------------            
+
+            # -----------------------------------------------------------------
             # Raw material data:
-            # -----------------------------------------------------------------            
+            # -----------------------------------------------------------------
             key = material
             if key in material_report:
                 material_report[key] += qty
-            else:    
+            else:
                 material_report[key] = qty
 
             # standard_price
@@ -216,16 +217,16 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
             # pedimento_id
             # lot_id
             # mrp_waste_id
-            
-            #subtotal = line.price_subtotal
-            #net = (subtotal / qty) if qty else 0.0
+
+            # subtotal = line.price_subtotal
+            # net = (subtotal / qty) if qty else 0.0
             qty = material_report[material]
             excel_pool.write_xls_line(ws_name, row, [
-                wc.real_date_planned,                
+                wc.real_date_planned,
                 mrp.name,
                 wc.name,
-                
-                material.default_code or '', 
+
+                material.default_code or '',
                 material.name or '',
                 material.uom_id.name,
                 (qty, f_number),
@@ -241,7 +242,7 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
 
         row = 0
         excel_pool.write_xls_line(ws_name, row, [
-            _('Codice'), _('Nome'), _('UM'), _('Q.'), _('Magazzino'), 
+            _('Codice'), _('Nome'), _('UM'), _('Q.'), _('Magazzino'),
             ], default_format=f_header)
 
         for material in sorted(material_report, key=lambda x: x.default_code):
@@ -261,9 +262,9 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
             else:
                 f_text_color = f_text
                 f_number_color = f_number
-                
+
             excel_pool.write_xls_line(ws_name, row, [
-                material.default_code or '', 
+                material.default_code or '',
                 material.name or '',
                 material.uom_id.name,
                 (qty, f_number_color),
@@ -277,49 +278,49 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
         excel_pool.create_worksheet(ws_name)
 
         excel_pool.column_width(ws_name, [
-            10, 10, 16, 13, 
-            8, 10, 10, 
+            10, 10, 16, 13,
+            8, 10, 10,
             10, 15, 15, 15, 15, 20])
 
         row = 0
         excel_pool.write_xls_line(ws_name, row, [
-            _('Produzione'), _('Lavorazione'), _('Data'), _('Prodotto'), 
-            _('Cicli'), _('Q. ciclo'), _('H. ciclo'),  
-            _('H. totale'), _('Q. totale'), _('Q. produzione'), 
+            _('Produzione'), _('Lavorazione'), _('Data'), _('Prodotto'),
+            _('Cicli'), _('Q. ciclo'), _('H. ciclo'),
+            _('H. totale'), _('Q. totale'), _('Q. produzione'),
             _('Q. carico'), _('Q. rec.'), _('Prod. rec.'),
             ], default_format=f_header)
 
         for product in sorted(job_report, key=lambda x: x.default_code):
-            for load in sorted(job_report[product], 
+            for load in sorted(job_report[product],
                     key=lambda x: x.line_id.real_date_planned):
                 row += 1
 
                 # TODO Check:
                 wc = load.line_id
                 production = wc.production_id
-                
+
                 # -----------------------------------------------------------------
                 # Color setup:
                 # -----------------------------------------------------------------
                 excel_pool.write_xls_line(ws_name, row, [
                     # TODO remove:
-                    #production.id,
-                    #wc.id,
-                    #load.id,
-                    
+                    # production.id,
+                    # wc.id,
+                    # load.id,
+
                     production.name,
-                    wc.name, 
+                    wc.name,
                     wc.real_date_planned,
                     product.default_code,
-                    
+
                     (wc.cycle, f_number),
                     (wc.single_cycle_qty, f_number),
                     (wc.single_cycle_duration, f_number),
-                    
+
                     (wc.hour, f_number),
                     (wc.qty, f_number),
                     (production.product_qty, f_number),
-                    
+
                     (load.product_qty, f_number),
                     (load.waste_qty, f_number),
                     load.waste_id.default_code or ''
@@ -335,7 +336,7 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
 
         row = 0
         excel_pool.write_xls_line(ws_name, row, [
-            _('Codice'), _('Nome'), _('UM'), _('H'), _('Q.'), _('Riciclo'), 
+            _('Codice'), _('Nome'), _('UM'), _('H'), _('Q.'), _('Riciclo'),
             _('Magazzino'),
             ], default_format=f_header)
 
@@ -344,7 +345,7 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
             row += 1
             qty, waste_qty, hour = product_report[product]
             accounting_qty = product.accounting_qty
-            
+
             # -----------------------------------------------------------------
             # Color setup:
             # -----------------------------------------------------------------
@@ -357,9 +358,9 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
             else:
                 f_text_color = f_text
                 f_number_color = f_number
-                
+
             excel_pool.write_xls_line(ws_name, row, [
-                product.default_code or '', 
+                product.default_code or '',
                 product.name or '',
                 product.uom_id.name,
                 (hour, f_number_color),
@@ -378,7 +379,7 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
 
         row = 0
         excel_pool.write_xls_line(ws_name, row, [
-            _('Data'), _('Produzione'), _('Lavorazione'), _('State'), 
+            _('Data'), _('Produzione'), _('Lavorazione'), _('State'),
             _('Dettaglio'),
             ], default_format=f_header)
 
@@ -393,8 +394,8 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
                 clean_tags(wc.product_price_calc),
                 ], default_format=f_text)
 
-        return excel_pool.return_attachment(cr, uid, _('Production statistic'), 
-            version='7.0', 
+        return excel_pool.return_attachment(cr, uid, _('Production statistic'),
+            version='7.0',
             php=True,
             )
 
@@ -402,7 +403,7 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
         # Period:
         'from_date': fields.date('From date >='),
         'to_date': fields.date('To date <='),
-        
+
         # Foreign keys:
         'product_id': fields.many2one('product.product', 'Product'),
         'material_id': fields.many2one('product.product', 'Material'),
@@ -413,8 +414,7 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
             #('detail', 'Detail'),
             ], 'Report mode', required=True),
         }
-        
+
     _defaults = {
         'report_mode': lambda *x: 'material',
         }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
