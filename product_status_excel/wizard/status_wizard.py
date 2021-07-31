@@ -121,7 +121,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         # ---------------------------------------------------------------------
         cr.execute('''
             SELECT id from product_product 
-            WHERE substring(default_code, 1, 1) not in ('C', 'V', 'Z')
+            WHERE substring(default_code, 1, 1) in ('C', 'V', 'Z')
             ''')
         excluded_ids = [record[0] for record in cr.fetchall()]
 
