@@ -2,13 +2,13 @@
 ##############################################################################
 #
 #    OpenERP module
-#    Copyright (C) 2010 Micronaet srl (<http://www.micronaet.it>) 
-#    
+#    Copyright (C) 2010 Micronaet srl (<http://www.micronaet.it>)
+#
 #    Italian OpenERP Community (<http://www.openerp-italia.com>)
 #
 #############################################################################
 #
-#    OpenERP, Open Source Management Solution	
+#    OpenERP, Open Source Management Solution
 #    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>). All Rights Reserved
 #    $Id$
 #
@@ -38,13 +38,13 @@ def PrepareDate(valore):
        return time.strftime("%d/%m/%Y")
 
 def PrepareFloat(valore):
-    valore=valore.strip() 
-    if valore: # TODO test correct date format       
+    valore=valore.strip()
+    if valore: # TODO test correct date format
        return float(valore.replace(",","."))
     else:
        return 0.0   # for empty values
-       
-def Prepare(valore):  
+
+def Prepare(valore):
             # For problems: input win output ubuntu; trim extra spaces
             #valore=valore.decode('ISO-8859-1')
             valore=valore.decode('cp1252')
@@ -52,17 +52,17 @@ def Prepare(valore):
             return valore.strip()
 
 def getCountryFromCode(sock,dbname,uid,pwd,code):
-    if code: 
-       find_id = sock.execute(dbname, uid, pwd, 'res.country', 'search', [('code', '=', code),]) 
-       if find_id: 
-          return find_id[0] 
-       else: 
+    if code:
+       find_id = sock.execute(dbname, uid, pwd, 'res.country', 'search', [('code', '=', code),])
+       if find_id:
+          return find_id[0]
+       else:
           return False # TODO segnalare la mancanza della sigla
     else:
        return False # no code
 
 
-def ShortCut(valore=''): 
+def ShortCut(valore=''):
     # used for code the title (partner or contact), ex.: Sig.ra > SIGRA
     if valore:
        valore = valore.upper()
@@ -75,86 +75,93 @@ def getTaxID(sock,dbname,uid,pwd,description):
     return sock.execute(dbname, uid, pwd, 'account.tax', 'search', [('description', '=', description),])[0]
 
 def getLanguage(sock,dbname,uid,pwd,name):
-    # get Language if exist (use english name request 
+    # get Language if exist (use english name request
     return sock.execute(dbname, uid, pwd, 'res.lang', 'search', [('name', '=', name),])[0]
 
 # PRODUCT
 def getUomCateg(sock,dbname,uid,pwd,categ):
     # Create categ. for UOM
-    cat_id = sock.execute(dbname, uid, pwd, 'product.uom.categ', 'search', [('name', '=', categ),]) 
-    if len(cat_id): 
+    cat_id = sock.execute(dbname, uid, pwd, 'product.uom.categ', 'search', [('name', '=', categ),])
+    if len(cat_id):
        return cat_id[0] # take the first
     else:
-       return sock.execute(dbname,uid,pwd,'product.uom.categ','create',{'name': categ,})  
+       return sock.execute(dbname,uid,pwd,'product.uom.categ','create',{'name': categ,})
 
 def getUOM(sock,dbname,uid,pwd,name,data):
     # Create if not exist name: 'name' UOM with data: data{}
-    uom_id = sock.execute(dbname, uid, pwd, 'product.uom', 'search', [('name', '=', name),]) 
-    if len(uom_id): 
+    uom_id = sock.execute(dbname, uid, pwd, 'product.uom', 'search', [('name', '=', name),])
+    if len(uom_id):
        return uom_id[0] # take the first
     else:
-       return sock.execute(dbname,uid,pwd,'product.uom','create',data)  
+       return sock.execute(dbname,uid,pwd,'product.uom','create',data)
 
 # PARTNER & CONTACT
 def CreateTitle(sock,dbname,uid,pwd,titles,table):
     # Create standard title for partner (procedure batch from tupla, set up from user)
     for title in titles:
         title_id = sock.execute(dbname, uid, pwd, 'res.partner.title', 'search', [('name', '=', title)])
-        if not len(title_id):            
+        if not len(title_id):
            title_id = sock.execute(dbname,uid,pwd, 'res.partner.title', 'create', {
-               'name': title, 
-               'domain': table, 
+               'name': title,
+               'domain': table,
                'shortcut': ShortCut(title),
-               })  
-            
+               })
+
 class product_product_extra_fields(osv.osv):
-    ''' Extra fields for ETL in product.product
-    ''' 
+    """ Extra fields for ETL in product.product
+    """
     _name='product.product'
     _inherit = 'product.product'
 
     # Utility function: ########################################################
     def get_uom(self, cr, uid, name, context=None):
-        uom_id = self.pool.get('product.uom').search(cr, uid, [('name', '=', name),],context=context) 
-        if uom_id: 
+        uom_id = self.pool.get('product.uom').search(cr, uid, [('name', '=', name),],context=context)
+        if uom_id:
             return uom_id[0] # take the first
         else:
-            return False   
+            return False
 
-    # Scheduled action: ########################################################
-    def schedule_etl_product_import(self, cr, uid, path, file_name, context=None):
-        ''' ETL operations for import product in OpenERP (parameter setted up in
+    # Scheduled action: #######################################################
+    def schedule_etl_product_import(
+            self, cr, uid, path, file_name, context=None):
+        """ ETL operations for import product in OpenERP (parameter setted up in
             scheduled action for file name
-        '''
+        """
         import logging, os, csv, sys
         _logger = logging.getLogger('base_minerals')
 
-        counter = {'tot':0,'upd':0, 'err':0, 'err_upd':0, 'new':0}
+        counter = {
+            'tot': 0,
+            'upd': 0,
+            'err': 0,
+            'err_upd': 0,
+            'new': 0,
+        }
 
-        um={}
-        um['KG']=self.get_uom(cr, uid, 'kg', context=context)
-        um['T']=self.get_uom(cr, uid, 't', context=context)
-        um['N']=self.get_uom(cr, uid, 'Unit(s)', context=context)
+        um = {}
+        um['KG'] = self.get_uom(cr, uid, 'kg', context=context)
+        um['T'] = self.get_uom(cr, uid, 't', context=context)
+        um['N'] = self.get_uom(cr, uid, 'Unit(s)', context=context)
 
         try:
             file_name = os.path.expanduser(os.path.join(path, file_name))
-            lines = csv.reader(open(file_name,'rb'), delimiter = ";")
-            
+            lines = csv.reader(open(file_name,'rb'), delimiter=";")
+
             tot_colonne=0
             for line in lines:
-                if counter['tot'] < 0:  # jump n lines of header 
+                if counter['tot'] < 0:  # jump n lines of header
                    counter['tot'] += 1
-                else: 
+                else:
                    if not tot_colonne:
                        tot_colonne=len(line)
                        _logger.info('Start sync of product [cols=%s, file=%s]' % (tot_colonne, file_name))
-                      
+
                    if len(line): # jump empty lines
                        if tot_colonne != len(line): # tot # of colums must be equal to # of column in first line
                            _logger.error('Colums not the same')
-                           continue 
-                       
-                       counter['tot']+=1 
+                           continue
+
+                       counter['tot'] += 1
                        csv_id=0
                        ref = Prepare(line[csv_id])                      # codice
                        csv_id+=1
@@ -173,9 +180,9 @@ class product_product_extra_fields(osv.osv):
                        csv_id+=1
                        # numero 3 decimali??
                        csv_id+=1
-                       cost_std = PrepareFloat(line[csv_id])            
+                       cost_std = PrepareFloat(line[csv_id])
                        csv_id+=1
-                       cost_ult = 0.0 #PrepareFloat(line[csv_id])  
+                       cost_ult = 0.0 #PrepareFloat(line[csv_id])
                        csv_id+=1
                        #has_bom = "S" == Prepare(line[csv_id]).upper()
                        csv_id+=1
@@ -190,18 +197,18 @@ class product_product_extra_fields(osv.osv):
 
                        csv_id+=1
                        contropartita = Prepare(line[csv_id]).upper()              # Contropartita
-                       
+
                        # Calculated field:
                        contropartita=contropartita.strip()
                        if contropartita not in ("",
                                                 "RICAVI DA PRESTAZIONI DI SERVIZIO",
-                                                "MERCI C/VENDITE", 
+                                                "MERCI C/VENDITE",
                                                 "TRASPORTI ADDEBITATI A CLIENTI",
-                                                "AFFITTI ATTIVI", 
+                                                "AFFITTI ATTIVI",
                                                 "TRASPORTI SU VENDITE",
-                                                "NS. LAVORAZIONI PER TERZI", 
+                                                "NS. LAVORAZIONI PER TERZI",
                                                 "RIMBORSO SPESE BOLLI",
-                                                "COMPARTECIPAZIONE SPESE RECUPERI", 
+                                                "COMPARTECIPAZIONE SPESE RECUPERI",
                                                 "MERCI C/VENDITE             (C.AUTO)"):
                           contropartita=contropartita.replace("VENDITA","")
                           contropartita=contropartita.title()
@@ -210,52 +217,52 @@ class product_product_extra_fields(osv.osv):
                        else:
                           #chemical_category_id=False
                           pass
-                       
+
                        sale_name = name
                        category_id= False
-                       
+
                        if uom in ['NR', 'N.', ]: # Unit(s)
                           uom_id = um.get('N',False)
                        elif uom in ["KG", "KN",]:  # UM inserita errata KN
                            #uom_id = um.get('KG',False)
                            uom_id = um.get('T',False) # uso T in OpenERP al posto di Kg.
-                       elif uom in ["TN", "T", "T."]: 
+                       elif uom in ["TN", "T", "T."]:
                            uom_id = um.get('T',False)
-                       else: 
+                       else:
                            uom_id = um.get('N',False) # default
-         
+
 
                        data={'name': sale_name,
-                             'name_template': sale_name, 
+                             'name_template': sale_name,
                              #'partner_ref': sale_name,
                              'mexal_id': ref,    # Memorizzato ma non utilizzato
-                             'default_code': ref, 
-                             #'mexal_c': ref,  # TODO utilizzato ref per la sincronizzazione! 
+                             'default_code': ref,
+                             #'mexal_c': ref,  # TODO utilizzato ref per la sincronizzazione!
                              'imported': True,
                              'sale_ok':True,
                              #'purchase_ok': True,
                              'default_code': ref,
                              'type': 'consu',          # TODO parametrize: product consu service <<<<<<<<<<
                              #'supply_method': 'produce', # TODO parametrize: produce buy
-                             'standard_price': cost_ult or cost_std or 0, #cost_std or 0, 
-                             'list_price': 0.0,     
-                             #'procure_method': 'make_to_order', 
+                             'standard_price': cost_ult or cost_std or 0, #cost_std or 0,
+                             'list_price': 0.0,
+                             #'procure_method': 'make_to_order',
                              'description_sale': sale_name, # preserve original name (not code + name)
                              'description': sale_name,
                              #'categ_id': category_id,
                              #'chemical_category_id': chemical_category_id,
                              #'need_analysis': True,
-                             'uos_id': uom_id,  
-                             'uom_id': uom_id,  
+                             'uos_id': uom_id,
+                             'uom_id': uom_id,
                              'uom_po_id': uom_id,
                              }
-                            
+
                        #if taxes_id and taxes_id=='21':
                        #   data['taxes_id']= [(6,0,[iva_debito])]
                        #   data['supplier_taxes_id']= [(6,0,[iva_credito])]
                        #else:
-                       #   errori_iva.append("articolo: %s" % (name))                                       
-         
+                       #   errori_iva.append("articolo: %s" % (name))
+
                        # PRODUCT CREATION ***************
                        item = self.search(cr, uid, [('default_code', '=', ref)], context=context)
                        if item: # update
@@ -265,10 +272,10 @@ class product_product_extra_fields(osv.osv):
                           except:
                               _logger.info("[ERROR] Modify product [%s]"%(sys.exc_info()[0],))
 
-                       else:           
-                           counter['new'] += 1  
+                       else:
+                           counter['new'] += 1
                            try:
-                              product_id=self.create(cr, uid, data, context=context) 
+                              product_id=self.create(cr, uid, data, context=context)
                            except:
                                _logger.info("[ERROR] Create product [%s]"%(sys.exc_info()[0],))
 
@@ -276,16 +283,16 @@ class product_product_extra_fields(osv.osv):
             _logger.info('End importation\n Counter: %s'%(counter))
         except:
                        _logger.error('Error import product [%s]'%(sys.exc_info()[0],))
-                              
+
         return
-        
+
     _columns = {
                'imported': fields.boolean('Imported', required=False),
-               'mexal_id' : fields.char('Product mexal ID', size=20, required=False, readonly=False),                 
+               'mexal_id' : fields.char('Product mexal ID', size=20, required=False, readonly=False),
     }
     _defaults = {
         'imported': lambda *a: False,
-    }                               
+    }
 product_product_extra_fields()
 
 
@@ -295,19 +302,19 @@ class res_partner_extra_fields(osv.osv):
 
     # Scheduled action: ########################################################
     def schedule_etl_partner_import(self, cr, uid, path, file_name, file_name_supplier, context=None):
-        ''' ETL operations for import partner in OpenERP (parameter setted up in
+        """ ETL operations for import partner in OpenERP (parameter setted up in
             scheduled action for file name
-        '''
+        """
         import logging, os, csv
         _logger = logging.getLogger('base_minerals')
-        
-        def Prepare(valore):  
+
+        def Prepare(valore):
             # For problems: input win output ubuntu; trim extra spaces
             #valore=valore.decode('ISO-8859-1')
             valore=valore.decode('cp1252')
             valore=valore.encode('utf-8')
             return valore.strip()
-            
+
         #partner_proxy=self.pool.get("res.partner")
         counter = {'tot':0,'upd':0, 'err':0, 'err_upd':0, 'new':0}
         comment = "" # for step of import, usefull for log error
@@ -321,16 +328,16 @@ class res_partner_extra_fields(osv.osv):
 
                 tot_colonne=0
                 for line in lines:
-                    if counter['tot'] < 0:  # jump n lines of header 
+                    if counter['tot'] < 0:  # jump n lines of header
                        counter['tot'] += 1
-                    else: 
+                    else:
                        if not tot_colonne:
                            tot_colonne=len(line)
                            _logger.info('Start sync of partners type: %s [cols=%s, file=%s]'%(mexal_type, tot_colonne, file_name))
-                          
+
                        if len(line): # jump empty lines
                            if tot_colonne == len(line): # tot # of colums must be equal to # of column in first line
-                               counter['tot'] += 1 
+                               counter['tot'] += 1
                                csv_id=0
                                ref = Prepare(line[csv_id])
                                csv_id+=1
@@ -356,10 +363,10 @@ class res_partner_extra_fields(osv.osv):
                                csv_id+=1
                                vat = Prepare(line[csv_id]).upper()        # IT* format   (checked ??)
                                csv_id+=1
-                               type_CEI = Prepare(line[csv_id]).lower()   #  C | E | I 
+                               type_CEI = Prepare(line[csv_id]).lower()   #  C | E | I
                                csv_id+=1
                                #website = Prepare(line[12]).lower()       # not present!!!!
-                               code = Prepare(line[csv_id]).upper()       # Verify "IT" 
+                               code = Prepare(line[csv_id]).upper()       # Verify "IT"
                                csv_id+=1
                                private = Prepare(line[csv_id]).upper()=="S"  # S | N (True if S)
                                csv_id+=1
@@ -379,21 +386,21 @@ class res_partner_extra_fields(osv.osv):
                                # ID Categoria
                                csv_id+=1
                                category = Prepare(line[csv_id])              # categoria statistica cliente
-                               #category_id=get_statistic_category(sock, dbname, uid, pwd, category)                    
-       
+                               #category_id=get_statistic_category(sock, dbname, uid, pwd, category)
+
                                if mexal_destination:  # TODO with ^ XOR
                                   if not parent: # Destination have parent field                       if verbose: print "[INFO]", "JUMPED (not a destination)",ref,name
                                      continue # jump if is destination and record is c or s
-                               else: # c or s 
-                                  if parent: 
+                               else: # c or s
+                                  if parent:
                                      continue # jump if is c or s but parent is present
-                 
+
                                if type_CEI in ('c','e','i','v','r',):
                                   if type_CEI in ('v','r',):
                                       type_CEI='e' # Vaticano and RSM are extra CEE
-                                      
+
                                if type_CEI == "i":
-                                   lang = "it_IT" #getLanguage(sock,dbname,uid,pwd,"Italian / Italiano")   
+                                   lang = "it_IT" #getLanguage(sock,dbname,uid,pwd,"Italian / Italiano")
                                    property_account_position = 1
                                else:
                                    lang = "en_US" #getLanguage(sock,dbname,uid,pwd,"English")
@@ -403,8 +410,8 @@ class res_partner_extra_fields(osv.osv):
                                        property_account_position = 2
                                    else:
                                        property_account_position = False
-                                   
-                               # Calculated fields:    
+
+                               # Calculated fields:
                                if first_name: name+=" " + first_name
                                if prov: city+=" ("+ prov + ")"
                                type_address='default'  # TODO decide if invoice or defaulf (even for update...)
@@ -414,7 +421,7 @@ class res_partner_extra_fields(osv.osv):
                                          'active': True,
                                          'property_account_position': property_account_position,  # TODO parametrizzare
                                          'phone': phone,
-                                         'email': email, 
+                                         'email': email,
                                          'street': street,
                                          #'street2': street,
                                          'zip': zipcode,
@@ -431,10 +438,10 @@ class res_partner_extra_fields(osv.osv):
                                          #'comment': comment, # TODO create list of "province" / "regioni"
                                          'mexal_' + mexal_type : ref,
                                          #'discount_value': discount_parsed['value'],
-                                         #'discount_rates': discount_parsed['rates'],                             
+                                         #'discount_rates': discount_parsed['rates'],
                                          'imported': True,
                                         }
-                                        
+
                                    if mexal_type=='c': # and not destination!
                                       data['ref']=ref
                                       data['customer']=True
@@ -450,58 +457,58 @@ class res_partner_extra_fields(osv.osv):
                                    #data_address['mexal']= ref      # Codice mexal nell'address
 
                                #data['statistic_category_id']= category_id
-                                  
+
                                # PARTNER CREATION ***************
                                if not mexal_destination:  # partner creation only for c or s
                                    error="Searching partner with ref"
                                    item = self.search(cr, uid, [('mexal_' + mexal_type, '=', ref)]) # search if there is an import
-                                   if not item: 
+                                   if not item:
                                       if vat:
                                          item = self.search(cr, uid, [('vat', '=', vat)]) # search if there is a partner with same vat (c or f)
-                                         
+
                                       if not item and mexal_type=="s":
                                          data['customer']=False # If pass from here is: supplier and not customer
 
                                    if item: # update
-                                      counter['upd'] += 1  
+                                      counter['upd'] += 1
                                       try:
-                                          item_mod = self.write(cr, uid, item, data, context=context) 
+                                          item_mod = self.write(cr, uid, item, data, context=context)
                                           partner_id=item[0] # save ID (remove?)
                                       except:
                                           try: # Riprovo a scrivere rimuovendo la vat
-                                              del data['vat']    
+                                              del data['vat']
                                               item_mod = self.write(cr, uid, item, data, context=context)
                                               partner_id=item[0] # save ID (remove?)
-                                          except: 
-                                              _logger.error('Error update partner ref: %s'%(ref))  
-                                              counter['err_upd']+=1  
+                                          except:
+                                              _logger.error('Error update partner ref: %s'%(ref))
+                                              counter['err_upd']+=1
                                    else: # new
-                                      counter['new'] += 1  
+                                      counter['new'] += 1
                                       try:
                                           partner_id = self.create(cr, uid, data)
                                       except:
                                           try: # Riprovo a scrivere rimuovendo la vat
                                               del data['vat']
                                               partner_id = self.create(cr, uid, data)
-                                          except: 
-                                              _logger.error('Error create partner ref: %s'%(ref))  
-                                              counter['err']+= 1  
+                                          except:
+                                              _logger.error('Error create partner ref: %s'%(ref))
+                                              counter['err']+= 1
                                else: # destination
                                    partner_id = self.search(cr, uid, [('mexal_' + mexal_type, '=', parent),])
-                                   if partner_id: 
+                                   if partner_id:
                                       partner_id=partner_id[0] # only the first
-                               
-                               if not partner_id:  
-                                  _logger.error('Error no partner ID ref: %s'%(ref))  
-                                  continue # next record                           
-                           else: 
+
+                               if not partner_id:
+                                  _logger.error('Error no partner ID ref: %s'%(ref))
+                                  continue # next record
+                           else:
                                counter['err']+=1
                 _logger.info('End sync of partner type: %s \nCounter:%s'%(mexal_type, counter))
         except:
-            _logger.error('Error scheduler operation during: %s'%(comment))                    
-            
-        return    
-    
+            _logger.error('Error scheduler operation during: %s'%(comment))
+
+        return
+
     _columns = {
                'imported': fields.boolean('Imported', required=False),
                'mexal_c': fields.char('Code Customer', size=9, required=False),
@@ -514,22 +521,22 @@ class res_partner_extra_fields(osv.osv):
 res_partner_extra_fields()
 
 class account_payment_term_extra_fields(osv.osv):
-    ''' Extra fields for ETL in account.payment.term
-    ''' 
+    """ Extra fields for ETL in account.payment.term
+    """
     _name='account.payment.term'
     _inherit = 'account.payment.term'
 
     # Scheduled action: ########################################################
     def schedule_etl_payment_import(self, cr, uid, path, file_name, partner_file_name, context=None):
-        ''' ETL operations for import payment in OpenERP:
+        """ ETL operations for import payment in OpenERP:
             1. Create account.payment.term with list
             2. Create payment default for res.partner
-            
+
             Parameter:
             1. Path
             2. CSV file for payment list
-            3. CSV file for client (extra importation after res.partner)            
-        '''
+            3. CSV file for client (extra importation after res.partner)
+        """
         import logging, os, csv, sys
         _logger = logging.getLogger('base_minerals')
 
@@ -540,22 +547,22 @@ class account_payment_term_extra_fields(osv.osv):
         try:
             file_name = os.path.expanduser(os.path.join(path, file_name))
             lines = csv.reader(open(file_name,'rb'), delimiter = ";")
-            
+
             tot_colonne=0
             for line in lines:
-                if counter['tot'] < 0:  # jump n lines of header 
+                if counter['tot'] < 0:  # jump n lines of header
                    counter['tot'] += 1
-                else: 
+                else:
                    if not tot_colonne:
                        tot_colonne=len(line)
                        _logger.info('Start sync of payment [cols=%s, file=%s]'%(tot_colonne, file_name))
-                      
+
                    if len(line): # jump empty lines
                        if tot_colonne != len(line): # tot # of colums must be equal to # of column in first line
                            _logger.error('Colums not the same')
-                           continue 
-                       
-                       counter['tot']+=1 
+                           continue
+
+                       counter['tot']+=1
                        csv_id=0
                        ref = Prepare(line[csv_id])                      # code
                        csv_id+=1
@@ -565,7 +572,7 @@ class account_payment_term_extra_fields(osv.osv):
                        data={'name': name,
                              'active': True,
                              }
-                            
+
                        # PAYMENT CREATION ***************
                        item = self.search(cr, uid, [('name', '=', name)], context=context)
                        if item: # update
@@ -575,52 +582,52 @@ class account_payment_term_extra_fields(osv.osv):
                           except:
                               _logger.info("[ERROR] Modify payment [%s]"%(sys.exc_info()[0],))
 
-                       else:           
-                           counter['new'] += 1  
+                       else:
+                           counter['new'] += 1
                            try:
-                              payment_id=self.create(cr, uid, data, context=context) 
+                              payment_id=self.create(cr, uid, data, context=context)
                            except:
                                _logger.info("[ERROR] Create payment [%s]"%(sys.exc_info()[0],))
 
-                       payments[name]=payment_id        
+                       payments[name]=payment_id
 
 
             _logger.info('End importation payment, counter: %s'%(counter))
         except:
                        _logger.error('Error import payment [%s]'%(sys.exc_info()[0],))
-                              
+
         # Set default payment to res.partner ###################################
         counter = {'tot':0,'upd':0, 'err':0, 'err_upd':0, 'new':0}
 
         try:
             file_name = os.path.expanduser(os.path.join(path, partner_file_name))
             lines = csv.reader(open(file_name,'rb'), delimiter = ";")
-            
+
             tot_colonne=0
             for line in lines:
-                if counter['tot'] < 0:  # jump n lines of header 
+                if counter['tot'] < 0:  # jump n lines of header
                    counter['tot'] += 1
-                else: 
+                else:
                    if not tot_colonne:
                        tot_colonne=len(line)
                        _logger.info('Start sync of payment to res.partner [cols=%s, file=%s]'%(tot_colonne, file_name))
-                      
+
                    if len(line): # jump empty lines
                        if tot_colonne != len(line): # tot # of colums must be equal to # of column in first line
                            _logger.error('Colums not the same')
-                           continue 
-                       
-                       counter['tot']+=1 
+                           continue
+
+                       counter['tot']+=1
                        csv_id=0
                        ref = Prepare(line[csv_id])                         # code
                        csv_id=25
-                       
+
                        payment = Prepare(line[csv_id])                     # payment description
                        payment_id = payments.get(payment.replace(r"/",r"-"),False)
 
                        if payment_id:
                            data = {'property_payment_term': payment_id,}
-                                
+
                            # PAYMENT CREATION ***************
                            item = self.pool.get('res.partner').search(cr, uid, [('mexal_c', '=', ref)], context=context)
                            if item: # update
@@ -629,8 +636,8 @@ class account_payment_term_extra_fields(osv.osv):
                                   partner_id=item[0]
                               except:
                                   _logger.info("[ERROR] Modify partner payment [%s]"%(sys.exc_info()[0],))
-                           else:    # jump  
-                               counter['new'] += 1  
+                           else:    # jump
+                               counter['new'] += 1
                                _logger.info("[ERROR] Partner not found %s [%s]"%(ref, sys.exc_info()[0],))
 
             _logger.info('End importation partner payment, counter: %s'%(counter))
@@ -638,8 +645,8 @@ class account_payment_term_extra_fields(osv.osv):
             _logger.error('Error import partner payment [%s]'%(sys.exc_info()[0],))
 
 
-                                                            
-        return                           
+
+        return
 account_payment_term_extra_fields()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
