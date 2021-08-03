@@ -62,16 +62,18 @@
         <field name='arch' type='xml'>
            <xpath expr="/form/notebook/page[@string='Stock Moves']" position="after">
               <page string="Analisys">
-                 <field name="hygro" />
-                 <button name="%(action_analysis_of_lot)d" type="action" string="Open analysis" icon="terp-mrp" colspan="2"/>
-                 <separator string="Granulometric" />
-                 <field name="granulometric" colspan="4" nolabel="1"/>
-                 <separator string="Visual" />
-                 <field name="visual" colspan="4" nolabel="1"/>
-                 <separator string="Composition" />
-                 <field name="chemical_analysis_ids" colspan="4" nolabel="1">
+                 <group colspan="4" col="4">
+                    <field name="hygro" />
+                    <button name="%(action_analysis_of_lot)d" type="action" string="Open analysis" icon="terp-mrp" colspan="2"/>
+                    <separator string="Granulometric" />
+                    <field name="granulometric" colspan="4" nolabel="1"/>
+                    <separator string="Visual" />
+                    <field name="visual" colspan="4" nolabel="1"/>
+                    <separator string="Composition" />
+                    <field name="chemical_analysis_ids" colspan="4" nolabel="1">
                     <!--TODO form e tree? -->
                  </field>
+                  </group>
               </page>
            </xpath>
         </field>
