@@ -257,16 +257,15 @@
                        <field name="code" readonly="1" />
                        <!--<field name="quantity"/>-->
 
-                       <separator string="Product info" colspan="4" />
-                       <field name="product_id" readonly="1" />
                        <field name="prodlot_id" />
+                       <field name="product_id" readonly="1" />
                        <field name="date" />
                        <field name="date_in" readonly="1" />
                    </group>
                    <notebook colspan="4">
                        <page name="detail_page" string="Dettaglio">
                            <group colspan="4" col="4">
-                               <separator string="Dettaglio analisi" colspan="3" />
+                               <separator string="Dettaglio analisi:" colspan="3" />
                                <button type="object" name="load_from_model" string="Carica da modello" attrs="{'invisible': [('prodlot_id','=',False)]}" />
                                <field name="line_ids" nolabel="1" colspan="4">
                                     <tree string="Elementi" editable="bottom" colors="red:out_of_range==True"><!--blue:not(percentage_supplier or percentage or percentage_lab1 or percentage_lab2 or percentage_lab3)"-->
@@ -287,7 +286,6 @@
                        </page>
                        <page name="laboratory_page" string="Laboratorio">
                            <group colspan="4" col="6">
-                               <separator string="Laboratory info" colspan="6" />
                                <group colspan="2">
                                    <field name="laboratory1_id" domain="[('is_laboratory','=',True)]" />
                                    <field name="quantity_lab1" attrs="{'invisible': [('laboratory1_id','=', False)]}" />
@@ -306,9 +304,9 @@
                                </group>
                            </group>
                        </page>
-                       <page name="laboratory_page" string="Laboratorio">
+                       <page name="note_page" string="Note">
                            <group colspan="4" col="4">
-                               <separator string="Note" colspan="4" />
+                               <separator string="Note:" colspan="4" />
                                <field name="note" nolabel="1" colspan="4"/>
                            </group>
                        </page>
