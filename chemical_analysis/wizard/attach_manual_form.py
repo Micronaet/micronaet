@@ -145,15 +145,19 @@ class ChemicalAnalysis(osv.osv):
             self, cr, uid, form_id, attachment_id, context=None):
         """ Open wizard wit 2 mode:
         """
+        attachment_pool = self.pool.get('chemical.attach'.manual.form.wizard'')
         wizard_pool = self.pool.get('chemical.attach.manual.form.wizard')
         model_pool = self.pool.get('ir.model.data')
         view_id = model_pool.get_object_reference(
             cr, uid,
             'chemical_analysis', 'view_chemical_attach_manual_form_form')[1]
 
+        attachment = attachment_pool.browse(
+            cr, uid, attachment_id, context=context)
         ctx = context.copy()
         ctx['default_form_id'] = form_id
         ctx['default_attachment_id'] = attachment_id
+        ctx['default_extension'] = attachment.extension or 'docx'
         return {
             'type': 'ir.actions.act_window',
             'name': _('Importa allegati'),
@@ -189,7 +193,11 @@ class ChemicalAttachManualFormWizard(osv.osv_memory):
         form_id = wizard.form_id.id
         attach_id = wizard.attachment_id.id
 
-        if not attach_id:
+        if attach_id:
+            attach_pool.create(cr, uid, [attach_id], {
+                'extension': wizard.extension,  # Update extension
+            }, context=context)
+        else:
             attach_id = attach_pool.create(cr, uid, {
                 'name': wizard.name,
                 'form_id': form_id,
