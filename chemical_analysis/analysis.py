@@ -2,13 +2,13 @@
 ##############################################################################
 #
 #    OpenERP module
-#    Copyright (C) 2010 Micronaet srl (<http://www.micronaet.it>) 
-#    
+#    Copyright (C) 2010 Micronaet srl (<http://www.micronaet.it>)
+#
 #    Italian OpenERP Community (<http://www.openerp-italia.com>)
 #
 #############################################################################
 #
-#    OpenERP, Open Source Management Solution	
+#    OpenERP, Open Source Management Solution
 #    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>). All Rights Reserved
 #    $Id$
 #
@@ -66,7 +66,7 @@ class chemical_element(osv.osv):
     _columns = {
         'name':fields.char('Element', size=64, required=True, readonly=False),
         'symbol':fields.char('Chemical symbol', size=15, required=False, readonly=False),
-        'atomic': fields.integer('Atomic number', help="Atomic number if the element is a periodic table element, instead of not indicate")        
+        'atomic': fields.integer('Atomic number', help="Atomic number if the element is a periodic table element, instead of not indicate")
     }
 
 class chemical_product_category(osv.osv):
@@ -74,11 +74,11 @@ class chemical_product_category(osv.osv):
     '''
     _name = 'chemical.product.category'
     _description = 'Category'
-    
+
     _columns = {
         'name':fields.char('Type', size=64, required=True, readonly=False),
         'note': fields.text('Note'),
-        'code':fields.char('Code', size=5, required=True, readonly=False, help="Usually 2 char of product code"),       
+        'code':fields.char('Code', size=5, required=True, readonly=False, help="Usually 2 char of product code"),
     }
 
 class chemical_product_analysis_model(osv.osv):
@@ -120,27 +120,27 @@ class chemical_product_analysis_model(osv.osv):
         category_ids = category_pool.search(cr, uid, [('code', '=', code)], context=context)
         if category_ids:
             return category_ids[0]
-        return False    
+        return False
 
     def model_from_product_code(self, cr, uid, default_code, context=None):
         ''' Utility function for get model id from code
         '''
         if not default_code or len(default_code)<6:
             return False
-            
+
         model_ids = self.search(cr, uid, [('family', '=', default_code[:6])], context=context)
         if model_ids:
             return model_ids[0]
-        return False    
+        return False
 
     def update_all_category_and_product(self, cr, uid, force=False, context=None):
         ''' Procedure Una tantum for updating all:
             1. In model set category depend on first 2 char
             2. In product set model analysis depend on family-group (first 6 char of the code)
             3. Update all old product standard value when empty
-            
+
             force: force update instead don't touch record with model present
-        '''        
+        '''
         # Update category from family-group:
         _logger.info("Update category in model depend on family-group code")
         model_ids = self.search(cr, uid, [], context=context)
@@ -155,8 +155,8 @@ class chemical_product_analysis_model(osv.osv):
         domain = [('default_code', '>=', '01'), ('default_code', '<=', '10'), ]
         if not force:
             domain.append(('model_id', '=', False)) # only empty domain
-        
-        product_ids = product_pool.search(cr, uid, domain, context=context)            
+
+        product_ids = product_pool.search(cr, uid, domain, context=context)
         for product in product_pool.browse(cr, uid, model_ids, context=context):
             product_pool.write(cr, uid, product.id, {
                 'model_id': self.model_from_product_code(cr, uid, product.default_code, context=context)
@@ -167,15 +167,15 @@ class chemical_product_analysis_model(osv.osv):
         _logger.info("Update standard value where is empty")
         line_pool = self.pool.get('product.product.analysis.line')
         line_ids = line_pool.search(cr, uid, ['|', ('standard', '=', ''), ('standard', '=', False)], context=context)
-            
+
         for line in line_pool.browse(cr, uid, line_ids, context=context):
             line_pool.write(cr, uid, line.id, {
                 'standard': "> %s" % (line.min),
             }, context=context)
-            
+
         _logger.info("Updated %s model line record!" % (len(line_ids)))
-        return True            
-    
+        return True
+
     # -----------------
     # On change events:
     # -----------------
@@ -186,10 +186,10 @@ class chemical_product_analysis_model(osv.osv):
         res['value'] = {}
         if family:
             res['value']['chemical_category_id'] = self.category_from_code(cr, uid, family[:2], context=context)
-        else:    
+        else:
             res['value']['chemical_category_id'] = False
         return res
-        
+
     _columns = {
         'name':fields.char('Analysis model name', size=80, required=True, readonly=False),
         'chemical_category_id':fields.many2one('chemical.product.category', 'Chemical Category', required=False),
@@ -204,7 +204,7 @@ class chemical_product_category_line(osv.osv):
     '''
     _name = 'product.product.analysis.line'
     _description = 'Analysis model line'
-    
+
     # -----------------
     # On change events:
     # -----------------
@@ -215,12 +215,12 @@ class chemical_product_category_line(osv.osv):
             ''' Parse text return float
             '''
             try:
-                value = float(value.strip().replace(",",".")) 
+                value = float(value.strip().replace(",","."))
                 if value < 0.0 or value > 100.0:
                     return 0.0
-                return value    
+                return value
             except:
-                pass              
+                pass
             return 0.0
 
         res = {}
@@ -251,7 +251,7 @@ class chemical_product_category_line(osv.osv):
             res['value'] = {}
             res['value']['min'] = min_value
             res['value']['max'] = max_value
-            
+
         return res
 
     _columns = {
@@ -263,11 +263,11 @@ class chemical_product_category_line(osv.osv):
         'valutation': fields.selection([
             ('=','In range'),
             ('<','> Min %'),
-            ('>','< Max %'),            
+            ('>','< Max %'),
         ],'Valutation', readonly=False),
         'standard':fields.char('Standard', size=15, required=False, readonly=False, help="Use values like: '>14.45' or '<100'"),
     }
-    
+
     _defaults = {
         'valutation': lambda *x: '=',
     }
@@ -277,7 +277,7 @@ class chemical_product_analysis_model(osv.osv):
     '''
     _name = 'product.product.analysis.model'
     _inherit = 'product.product.analysis.model'
-    
+
     _columns = {
         'analysis_line_ids':fields.one2many('product.product.analysis.line', 'model_id', 'Lines per element', required=False),
     }
@@ -286,27 +286,27 @@ class product_product_extra_fields(osv.osv):
     ''' Extra field to catalog product for chemical category and composition range
     '''
     _name = 'product.product'
-    _inherit = 'product.product'    
+    _inherit = 'product.product'
     _description = 'Category'
-    
+
     def onchange_default_code(self, cr, uid, ids, default_code, model_id, context=None):
         ''' Search default model if not present
         '''
         res = {}
         if model_id or not default_code or len(default_code)<6: # no code or model yet present
             return res
-        
+
         chemical_pool = self.pool.get('product.product.analysis.model')
         chemical_ids = chemical_pool.search(cr, uid, [('family', '=', default_code[:6])], context=context)
         if chemical_ids:
             res['value'] = {}
             res['value']['model_id']=chemical_ids[0]
-        return res    
-            
-            
+        return res
+
+
     _columns = {
         'model_id':fields.many2one('product.product.analysis.model', 'Model', required=False, on_delete='cascade'),
-        'need_analysis': fields.boolean('Need analysis', help='Check this if the product require an analysis every purchase or sold', required=False), 
+        'need_analysis': fields.boolean('Need analysis', help='Check this if the product require an analysis every purchase or sold', required=False),
         'chemical_category_id': fields.related('model_id', 'chemical_category_id', type='many2one', relation="chemical.product.category", string='Category', readonly=True, store=True),
     }
 
@@ -317,12 +317,12 @@ class product_product_extra_fields(osv.osv):
 class chemical_analysis(osv.osv):
     ''' Chemical Analysis:
         This is the analysis element linked to a stock move for every product that
-        enter in company (or for the product that required it)        
-    '''    
+        enter in company (or for the product that required it)
+    '''
     _name = 'chemical.analysis'
     _description = 'Analysis'
     _order = 'code desc,date desc'
-    
+
     # ---------
     # Override:
     # ---------
@@ -340,7 +340,7 @@ class chemical_analysis(osv.osv):
     # -------
     # button:
     # -------
-    
+
     def load_from_model(self, cr, uid, ids, context = None):
         ''' Button for load elements from model:
         '''
@@ -348,8 +348,8 @@ class chemical_analysis(osv.osv):
         actual = [line.name.id for line in analysis_proxy.line_ids]
         if not(analysis_proxy.prodlot_id and analysis_proxy.prodlot_id.product_id and analysis_proxy.prodlot_id.product_id.model_id):
             raise osv.except_osv(_('Error!'), _('No model found in product linked to lot!'))
-        
-        try: 
+
+        try:
             chemical_line_pool = self.pool.get('chemical.analysis.line')
             model_pool = self.pool.get('product.product.analysis.model')
             model_ids = model_pool.search(cr, uid, [('id', '=', analysis_proxy.prodlot_id.product_id.model_id.id)], context = context)
@@ -370,13 +370,13 @@ class chemical_analysis(osv.osv):
                         'model_line_id': line.id,
                         'valutation': line.valutation,
                         'min': line.min,
-                        'max': line.max,                
+                        'max': line.max,
                         'standard': line.standard
                     }, context = context)
-            #model_pool.unlink(cr, uid, actual, context = context)    
+            #model_pool.unlink(cr, uid, actual, context = context)
         except:
             raise osv.except_osv(_('Error!'), _('Caricamento non riuscito [%s]!' % (sys.exc_info()[0], )))
-                    
+
         return True
     """
     #============================#
@@ -390,8 +390,8 @@ class chemical_analysis(osv.osv):
 
     def form_cancel(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'cancel'}, context=context)"""
-    
-    _columns = {        
+
+    _columns = {
         'code': fields.char('Code', size = 8, required = False, readonly = False),
         'name': fields.char('Description', size=100, required=True, readonly=False),
         'date': fields.date('Date'),
@@ -413,7 +413,7 @@ class chemical_analysis(osv.osv):
         'laboratory1_id':fields.many2one('res.partner', 'Laboratory 1', required=False),
         'laboratory2_id':fields.many2one('res.partner', 'Laboratory 2', required=False),
         'laboratory3_id':fields.many2one('res.partner', 'Laboratory 3', required=False),
-        
+
         #'state': fields.selection([
         #     ('draft', 'Draft'),
         #     ('complete', 'Complete'),
@@ -433,14 +433,14 @@ class chemical_analysis(osv.osv):
 class stock_move_add_fields(osv.osv):
     ''' Add field to stock movement for manage analysis
     '''
-    
+
     _name = 'stock.production.lot'
     _inherit = 'stock.production.lot'
 
     _columns = {
         'granulometric': fields.text('Granulometric analysis'), # TODO complete if are not only this
         'visual': fields.text('Visual analysis'),
-        'hygro': fields.float('% Hygro', digits=(5, 2)),        
+        'hygro': fields.float('% Hygro', digits=(5, 2)),
 
         'chemical_analysis_ids': fields.one2many('chemical.analysis', 'prodlot_id', 'Analysis', required=False),
     }
@@ -470,7 +470,7 @@ class stock_picking_add_fields(osv.osv):
                                             #'date_in': item.prdate,
                                             }
                             analysis_id=self.pool.get('chemical.analysis').create(cr, uid, analysis_data)
-                            
+
                             # Populare analysis element with default element of category
                             for element in item.product_id.model_id.analysis_line_ids:
                                 analysis_line_data = {
@@ -480,8 +480,8 @@ class stock_picking_add_fields(osv.osv):
                                             }
                                 analysis_line_id=self.pool.get('chemical.analysis.line').create(cr, uid, analysis_line_data)
         except:
-             raise osv.except_osv(_('Warning !'), _("Error creating analysis form for this picking element!"))                
-        return True 
+             raise osv.except_osv(_('Warning !'), _("Error creating analysis form for this picking element!"))
+        return True
 
 class res_partner_laboratory_extra_field(osv.osv):
     """ extra field for partner = laboratory
@@ -497,33 +497,44 @@ class chemical_analysis_line(osv.osv):
         require perc value
         Generated with auto mode from category of the product
     '''
-    
+
     _name = 'chemical.analysis.line'
     _description = 'Line of analysis'
 
     def _function_is_in_range(self, cr, uid, ids, field_name, arg, context=None):
         """ Test if all present value is in range
-            return True if correct         
+            return True if correct
         """
-        res={}
-        
+        res = {}
+
         for line in self.browse(cr, uid, ids):
-            if line.model_line_id: # only if there's the generator line
-               test_value=[item for item in (line.percentage,line.percentage_supplier, line.percentage_lab1, line.percentage_lab2, line.percentage_lab3,) if item>0.0]
-               res[line.id]={}
+            if line.model_line_id:  # only if there's the generator line
+               test_value=[
+                   item for item in (
+                       line.percentage,
+                       line.percentage_supplier,
+                       line.percentage_lab1,
+                       line.percentage_lab2,
+                       line.percentage_lab3,
+                   ) if item > 0.0]
+               res[line.id] = {}
                # default values:
-               res[line.id]['out_of_range']=False; res[line.id]['min_all']=0.0; res[line.id]['max_all']=0.0
-               
-               if test_value: # jump all empty
+               res[line.id]['out_of_range'] = False
+               res[line.id]['min_all'] = 0.0
+               res[line.id]['max_all'] = 0.0
+
+               if test_value:  # jump all empty
                   res[line.id]['min_all'] = min(test_value)
                   res[line.id]['max_all'] = max(test_value)
                   if res[line.id]['min_all'] < line.model_line_id.min or res[line.id]['max_all'] > line.model_line_id.max: # over value?
-                     res[line.id]['out_of_range']=True                        
-        return res         
-    
+                     res[line.id]['out_of_range']=True
+        return res
+
     _columns = {
         'name': fields.many2one('chemical.element', 'Element', required=True),
-        'chemical_analysis_id':fields.many2one('chemical.analysis', 'Analysis', required=False, on_delete='cascade'),
+        'chemical_analysis_id': fields.many2one(
+            'chemical.analysis', 'Analysis', required=False,
+            on_delete='cascade'),
 
         'percentage': fields.float('% internal', digits=(16, 4), required=True, help="Supplier value"),
         'percentage_supplier': fields.float('% supplier', digits=(16, 4), required=True, help="Internal value"),
@@ -535,7 +546,7 @@ class chemical_analysis_line(osv.osv):
         'symbol': fields.related('name', 'symbol', type='char', string='Symbol'),
 
         'model_line_id': fields.many2one('product.product.analysis.line', 'Model line', required=False, on_delete='cascade', help="reference for range for this element"),
-        
+
         'min': fields.related('model_line_id', 'min', type='float', digits=(16, 4), string='Min'),
         'max': fields.related('model_line_id', 'max', type='float', digits=(16, 4), string='Max'),
 
@@ -545,19 +556,19 @@ class chemical_analysis_line(osv.osv):
         'valutation': fields.selection([
             ('=','In range'),
             ('<','> Min %'),
-            ('>','< Max %'),            
+            ('>','< Max %'),
         ],'Valutation', readonly=False),
-        
+
         'standard': fields.related('model_line_id', 'standard', type='char', size=10, string='Standard'),
     }
-    
+
     _defaults = {
         'percentage': lambda *x: 0.0,
         'percentage_supplier': lambda *x: 0.0,
         'percentage_lab1': lambda *x: 0.0,
         'percentage_lab2': lambda *x: 0.0,
         'percentage_lab3': lambda *x: 0.0,
-        'note': lambda *x: False,        
+        'note': lambda *x: False,
     }
 
 class chemical_analysis(osv.osv):
@@ -565,7 +576,7 @@ class chemical_analysis(osv.osv):
     '''
     _name = 'chemical.analysis'
     _inherit = 'chemical.analysis'
-    
+
     _columns = {
        'line_ids': fields.one2many('chemical.analysis.line', 'chemical_analysis_id', 'Analysis', required=False),
     }
