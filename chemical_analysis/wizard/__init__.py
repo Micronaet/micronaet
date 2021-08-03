@@ -27,7 +27,5 @@
 import search_product
 import update_model_wizard
 import duplicate_model
-
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+import attach_manual_form
 

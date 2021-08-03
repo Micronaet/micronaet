@@ -29,31 +29,33 @@
                        write his spectrographic analysis (and linked document
                        for supplier version)
                     """,
-    'author' : 'Micronaet s.r.l.',
-    'website' : 'http://www.micronaet.it',
-    'depends' : [
+    'author': 'Micronaet s.r.l.',
+    'website': 'http://www.micronaet.it',
+    'depends': [
         'base',
         'product',
         'stock',
         'report_aeroo',
         'report_aeroo_ooo',
     ],
-    'init_xml' : [
+    'init_xml': [
         'data/chemical_element.xml',
-    ], 
-    'update_xml' : [
+        'data/parameter_data.xml',
+    ],
+    'update_xml': [
         'security/analysis_group.xml',
         'security/ir.model.access.csv',
-        
+
         'wizard/duplicate_model_view.xml',
 
         'chemical_sequence.xml',
-        'analysis_views.xml',   
-                         
+        'analysis_views.xml',
+
         'wizard/search_product_view.xml',
         'wizard/update_model_view.xml',
+        'wizard/attach_manual_wizard.xml',
     ],
     'demo_xml' : [],
-    'active' : False, 
-    'installable' : True, 
+    'active' : False,
+    'installable' : True,
 }

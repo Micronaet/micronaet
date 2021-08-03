@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<openerp>
+    <data noupdate="1">
+        <record model="ir.config_parameter" id="parameter_default_download_link">
+            <field name="key">web.base.url.chemical</field>
+            <field name="value">http://192.168.1.2:80</field>
+        </record>
+    </data>
+</openerp>
