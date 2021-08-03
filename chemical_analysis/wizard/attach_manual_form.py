@@ -43,7 +43,7 @@ class ChemicalAttachment(osv.osv):
     def open_attachment_wizard(self, cr, uid, ids, context=None):
         """ Button from Form
         """
-        form_pool = self.pool.get('attachment.analysis')
+        form_pool = self.pool.get('chemical.analysis')
         attachment_id = ids[0]
         attachment = self.browse(cr, uid, attachment_id, context=context)
         form_id = attachment.form_id.id
