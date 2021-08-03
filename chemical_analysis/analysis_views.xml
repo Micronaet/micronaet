@@ -304,6 +304,19 @@
                                </group>
                            </group>
                        </page>
+                       <page name="attachment_page" string="Allegati">
+                           <group colspan="4" col="4">
+                               <separator string="Note:" colspan="3" />
+                               <button string='Allega nuovo documento' name='open_attachment_wizard' type="object" icon='gtk-execute'/>
+                               <field name="attachment_ids" colspan="4" nolabel="1">
+                                   <tree editable="bottom" string="Allegati">
+                                       <field name="name"/>
+                                       <button string='Riallega documento' name='open_attachment_wizard' type="object" icon='gtk-execute' confirm="Vuoi riallegare il documento?"/>
+                                       <button string='Scarica documento' name='open_file' type="object" icon='gtk-save'/>
+                                   </tree>
+                               </field>
+                            </group>
+                        </page>
                        <page name="note_page" string="Note">
                            <group colspan="4" col="4">
                                <separator string="Note:" colspan="4" />
