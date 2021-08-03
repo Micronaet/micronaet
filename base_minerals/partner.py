@@ -168,10 +168,10 @@ class product_product_extra_fields(osv.osv):
                        name = Prepare(line[csv_id]).title()             # descrizione prodotto
                        name=name.replace(r"/",r"|")
                        csv_id+=1
-                       #name_eng1 = Prepare(line[csv_id]).title()
-                       #csv_id+=1
-                       #name_eng2 = Prepare(line[csv_id]).title()
-                       #csv_id+=1
+                       # name_eng1 = Prepare(line[csv_id]).title()
+                       # csv_id+=1
+                       # name_eng2 = Prepare(line[csv_id]).title()
+                       # csv_id+=1
                        uom = Prepare(line[csv_id]).upper()              # UOM
                        csv_id+=1
                        taxes_id = Prepare(line[csv_id])                 # IVA
