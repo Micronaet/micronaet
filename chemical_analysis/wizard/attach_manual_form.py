@@ -145,7 +145,7 @@ class ChemicalAnalysis(osv.osv):
             self, cr, uid, form_id, attachment_id, context=None):
         """ Open wizard wit 2 mode:
         """
-        attachment_pool = self.pool.get('chemical.attach')
+        attachment_pool = self.pool.get('chemical.attachment')
         wizard_pool = self.pool.get('chemical.attach.manual.form.wizard')
         model_pool = self.pool.get('ir.model.data')
         view_id = model_pool.get_object_reference(
