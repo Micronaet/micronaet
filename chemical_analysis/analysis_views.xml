@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <openerp>
 <data>
-    <!-- INHERIT VIEWS: -->    
+    <!-- INHERIT VIEWS: -->
     <!--res.partner-->
     <record id='view_partner_form_add_fields' model='ir.ui.view'>
         <field name='name'>Laboratory partner</field>
@@ -10,9 +10,9 @@
         <field name='arch' type='xml'>
            <field name="supplier" position="after">
                <field name="is_laboratory" />
-           </field>    
+           </field>
         </field>
-    </record>   
+    </record>
 
     <record id='view_partner_tree_add_fields' model='ir.ui.view'>
         <field name='name'>Laboratory partner</field>
@@ -21,9 +21,9 @@
         <field name='arch' type='xml'>
            <field name="name" position="after">
                <field name="is_laboratory" invisible="1" />
-           </field>    
+           </field>
         </field>
-    </record>   
+    </record>
 
     <record model="ir.actions.act_window" id="action_laboratory_tree">
         <field name="name">Laboratory</field>
@@ -43,16 +43,16 @@
         <field name='arch' type='xml'>
            <field name="stock_journal_id" position="after">
                <button name="create_all_analysis" string="Create analysis form" type="object" attrs="{'invisible': [('state','!=','done')]}" colspan="2" confirm="Confirm creation of analysis (one for every line)?"/>
-           </field>    
+           </field>
         </field>
-    </record>   
-    
+    </record>
+
     <act_window id="action_analysis_of_lot" name="Analisys list"
-        res_model="chemical.analysis" 
+        res_model="chemical.analysis"
         src_model="stock.production.lot"
-        view_type="form" 
+        view_type="form"
         view_mode="tree,form"
-        domain="['|',('prodlot_id','=', active_id),('prodlot_id','in', (active_ids))]" /> 
+        domain="['|',('prodlot_id','=', active_id),('prodlot_id','in', (active_ids))]" />
 
     <!--stock.production.form-->
     <record id='view_stock_production_lot_add_fields' model='ir.ui.view'>
@@ -60,22 +60,22 @@
         <field name='model'>stock.production.lot</field>
         <field name="inherit_id" ref="stock.view_production_lot_form" />
         <field name='arch' type='xml'>
-           <xpath expr="/form/notebook/page[@string='Stock Moves']" position="after"> 
+           <xpath expr="/form/notebook/page[@string='Stock Moves']" position="after">
               <page string="Analisys">
-                 <field name="hygro" /> 
-                 <button name="%(action_analysis_of_lot)d" type="action" string="Open analysis" icon="terp-mrp" colspan="2"/> 
+                 <field name="hygro" />
+                 <button name="%(action_analysis_of_lot)d" type="action" string="Open analysis" icon="terp-mrp" colspan="2"/>
                  <separator string="Granulometric" />
                  <field name="granulometric" colspan="4" nolabel="1"/>
                  <separator string="Visual" />
                  <field name="visual" colspan="4" nolabel="1"/>
                  <separator string="Composition" />
                  <field name="chemical_analysis_ids" colspan="4" nolabel="1">
-                    <!--TODO form e tree? -->                 
+                    <!--TODO form e tree? -->
                  </field>
-              </page>   
-           </xpath>    
+              </page>
+           </xpath>
         </field>
-    </record>   
+    </record>
 
     <!--product.product-->
     <record id='view_product_product_search_analysis_fields' model='ir.ui.view'>
@@ -88,7 +88,7 @@
                <field name="chemical_category_id" />
            </field>
         </field>
-    </record>   
+    </record>
 
     <record id='view_product_product_analysis_fields' model='ir.ui.view'>
         <field name='name'>Product analysis fields</field>
@@ -101,12 +101,12 @@
 
            <field name="default_code" position="after">
                <group colspan="2">
-                  <field name="need_analysis" />                  
+                  <field name="need_analysis" />
                   <field name="model_id" />
                </group>
            </field>
         </field>
-    </record>   
+    </record>
 
     <record id='view_product_product_tree_analysis_fields' model='ir.ui.view'>
         <field name='name'>Product tree analysis fields</field>
@@ -118,7 +118,7 @@
                <field name="chemical_category_id" />
            </field>
         </field>
-    </record>   
+    </record>
 
     <!--NEW VIEWS-->
     <!--product.product.analysis.model-->
@@ -131,8 +131,8 @@
                <field name="chemical_category_id"/>
                <field name="family"/>
             </search>
-        </field>    
-    </record>    
+        </field>
+    </record>
 
     <record id="view_product_product_analysis_model_tree" model="ir.ui.view">
         <field name="name">Analysis model</field>
@@ -143,7 +143,7 @@
                <field name="family"/>
                <field name="chemical_category_id"/>
             </tree>
-        </field>    
+        </field>
     </record>
 
     <record id="view_product_product_analysis_model_form" model="ir.ui.view">
@@ -158,7 +158,7 @@
                  <button string="Duplicate" type="action" name="%(action_duplicate_model_wizard)d" />
                </group>
                <separator string="Default elements" />
-               <field name="analysis_line_ids" nolabel="1" colspan="4"> 
+               <field name="analysis_line_ids" nolabel="1" colspan="4">
                   <tree string="Elements" editable="bottom">
                       <field name="name" />
                       <field name="standard" on_change="onchange_standard_value(standard)"/>
@@ -170,7 +170,7 @@
                <separator string="Note" />
                <field name="note" nolabel="1" colspan="4"/>
             </form>
-        </field>    
+        </field>
     </record>
 
     <record model="ir.actions.act_window" id="action_product_product_analysis_model">
@@ -181,7 +181,7 @@
         <field name="view_id" ref="view_product_product_analysis_model_tree" />
         <field name="search_id" ref="view_product_product_analysis_model_search" />
     </record>
-        
+
     <!-- chemical.analysis -->
     <record id="view_chemical_analysis_search" model="ir.ui.view">
         <field name="name">Analysis search</field>
@@ -198,7 +198,7 @@
                 <field name="product_id" />
                 <field name="model_id" />
                 <field name="chemical_category_id" />
-               
+
                 <field name="laboratory1_id" domain="[('is_laboratory','=',True)]" string="Laboratory" filter_domain="['|','|',('laboratory1_id','=',self),('laboratory2_id','=',self)]" /><!--('laboratory3_id','=',self)-->
                 <separator />
                 <!--<filter name="state_draft" string="Draft" domain="[('state','=','draft')]"/>
@@ -208,9 +208,9 @@
                     <filter name="group_product" string="Product" icon="terp-partner" context="{'group_by':'product_id'}"/>
                     <filter name="group_prodlot" string="Lot" icon="terp-partner" context="{'group_by':'prodlot_id'}"/>
                     <filter name="group_date" string="Date" icon="terp-accessories-archiver" context="{'group_by':'date'}"/>
-                </group>               
+                </group>
             </search>
-        </field>    
+        </field>
     </record>
 
     <record id="view_chemical_analysis_tree" model="ir.ui.view">
@@ -231,11 +231,11 @@
                 <!--<field name="laboratory3_id"/>-->
                 <!--<button string='Complete' name='form_complete' type='workflow' states='draft' class='oe_highlight' icon='gtk-apply'/>
                 <button string='Cancel' name='form_cancel1' type='workflow' states='draft' icon='gtk-stop'/>
-                <button string='Cancel' name='form_cancel2' type='workflow' states='complete' class='oe_highlight' icon='gtk-stop' />                      
+                <button string='Cancel' name='form_cancel2' type='workflow' states='complete' class='oe_highlight' icon='gtk-stop' />
                 <button string='Reactivate' name='form_redraft' type='workflow' states='cancel' class='oe_highlight' icon='gtk-go-forward' />
                 <field name='state' widget='statusbar' readonly='1'/>-->
             </tree>
-        </field>    
+        </field>
     </record>
 
     <record id="view_chemical_analysis_form" model="ir.ui.view">
@@ -246,8 +246,8 @@
                 <!--<header>
                     <button string='Complete' name='form_complete' type='workflow' states='draft' class='oe_highlight' icon='gtk-apply'/>
                     <button string='Cancel' name='form_cancel1' type='workflow' states='draft' icon='gtk-stop'/>
-                    <button string='Cancel' name='form_cancel2' type='workflow' states='complete' class='oe_highlight' icon='gtk-stop' />                             
-                    <button string='Reactivate' name='form_redraft' type='workflow' states='cancel' class='oe_highlight' icon='gtk-go-forward' />                    
+                    <button string='Cancel' name='form_cancel2' type='workflow' states='complete' class='oe_highlight' icon='gtk-stop' />
+                    <button string='Reactivate' name='form_redraft' type='workflow' states='cancel' class='oe_highlight' icon='gtk-go-forward' />
                     <field name='state' widget='statusbar' readonly='1'/>
                 </header>-->
                 <sheet>
@@ -263,53 +263,59 @@
                        <field name="date" />
                        <field name="date_in" readonly="1" />
                    </group>
+                   <notebook colspan="4">
+                       <page name="detail_page" string="Dettaglio">
+                           <group colspan="4" col="4">
+                               <separator string="Dettaglio analisi" colspan="3" />
+                               <button type="object" name="load_from_model" string="Carica da modello" attrs="{'invisible': [('prodlot_id','=',False)]}" />
+                               <field name="line_ids" nolabel="1" colspan="4">
+                                    <tree string="Elementi" editable="bottom" colors="red:out_of_range==True"><!--blue:not(percentage_supplier or percentage or percentage_lab1 or percentage_lab2 or percentage_lab3)"-->
+                                        <field name="name" />
+                                        <field name="percentage_supplier" string ="Forn." sum="Supplier"/>
+                                        <field name="percentage" string="Int." sum="Internal"  />
+                                        <field name="percentage_lab1" string = "Lab. 1" sum="Laboratory 1" />
+                                        <field name="percentage_lab2" string = "Lab. 2" sum="Laboratory 2" />
+                                        <field name="percentage_lab3" string = "Lab. 3" sum="Laboratory 3" />
+                                        <field name="note" rowspan="1" />
+                                        <field name="standard" readonly="1" />
+                                        <field name="min" readonly="1" invisible="1"/>
+                                        <field name="max" readonly="1" invisible="1"/>
+                                        <field name="out_of_range" invisible="1" />
+                                    </tree>
+                               </field>
+                           </group>
+                       </page>
+                       <page name="laboratory_page" string="Laboratorio">
+                           <group colspan="4" col="6">
+                               <separator string="Laboratory info" colspan="6" />
+                               <group colspan="2">
+                                   <field name="laboratory1_id" domain="[('is_laboratory','=',True)]" />
+                                   <field name="quantity_lab1" attrs="{'invisible': [('laboratory1_id','=', False)]}" />
+                                   <field name="code_lab1" attrs="{'invisible': [('laboratory1_id','=', False)]}" />
+                               </group>
 
-                   <group colspan="4" col="6">
-                       <separator string="Laboratory info" colspan="6" />     
-                       <group colspan="2">                  
-                           <field name="laboratory1_id" domain="[('is_laboratory','=',True)]" />
-                           <field name="quantity_lab1" attrs="{'invisible': [('laboratory1_id','=', False)]}" />
-                           <field name="code_lab1" attrs="{'invisible': [('laboratory1_id','=', False)]}" />
-                       </group>                  
-
-                       <group colspan="2">                  
-                           <field name="laboratory2_id" domain="[('is_laboratory','=',True)]" />
-                           <field name="quantity_lab2" attrs="{'invisible': [('laboratory2_id','=', False)]}" />
-                           <field name="code_lab2" attrs="{'invisible': [('laboratory2_id','=', False)]}" />
-                       </group>                  
-
-                       <!--<group colspan="2">                  
-                           <field name="laboratory3_id" domain="[('is_laboratory','=',True)]" />
-                           <field name="quantity_lab3" attrs="{'invisible': [('laboratory3_id','=', False)]}" />
-                           <field name="code_lab3" attrs="{'invisible': [('laboratory3_id','=', False)]}" />
-                       </group>-->
-                   </group>
-
-                   <group colspan="4" col="4">
-                       <separator string="Analysis details" colspan="3" />
-                       <button type="object" name="load_from_model" string="Load from model" attrs="{'invisible': [('prodlot_id','=',False)]}" />
-                       <field name="line_ids" nolabel="1" colspan="4">
-                            <tree string="Elements" editable="bottom" colors="red:out_of_range==True"><!--blue:not(percentage_supplier or percentage or percentage_lab1 or percentage_lab2 or percentage_lab3)"-->
-                                <field name="name" />
-                                <field name="percentage_supplier" string ="Forn." sum="Supplier"/>                      
-                                <field name="percentage" string="Int." sum="Internal"  />            
-                                <field name="percentage_lab1" string = "Lab. 1" sum="Laboratory 1" />  
-                                <field name="percentage_lab2" string = "Lab. 2" sum="Laboratory 2" /> 
-                                <!--<field name="percentage_lab3" string = "Lab. 3" sum="Laboratory 3" /> -->
-                                <field name="note" rowspan="1" />
-                                <field name="standard" readonly="1" />
-                                <field name="min" readonly="1" invisible="1"/>
-                                <field name="max" readonly="1" invisible="1"/>
-                                <field name="out_of_range" invisible="1" />
-                            </tree>
-                       </field>
-
-                       <separator string="Note" />
-                       <field name="note" nolabel="1" colspan="4"/>
-                   </group>                     
+                               <group colspan="2">
+                                   <field name="laboratory2_id" domain="[('is_laboratory','=',True)]" />
+                                   <field name="quantity_lab2" attrs="{'invisible': [('laboratory2_id','=', False)]}" />
+                                   <field name="code_lab2" attrs="{'invisible': [('laboratory2_id','=', False)]}" />
+                               </group>
+                               <group colspan="2">
+                                   <field name="laboratory3_id" domain="[('is_laboratory','=',True)]" />
+                                   <field name="quantity_lab3" attrs="{'invisible': [('laboratory3_id','=', False)]}" />
+                                   <field name="code_lab3" attrs="{'invisible': [('laboratory3_id','=', False)]}" />
+                               </group>
+                           </group>
+                       </page>
+                       <page name="laboratory_page" string="Laboratorio">
+                           <group colspan="4" col="4">
+                               <separator string="Note" colspan="4" />
+                               <field name="note" nolabel="1" colspan="4"/>
+                           </group>
+                       </page>
+                   </notebook>
               </sheet>
             </form>
-        </field>    
+        </field>
     </record>
 
     <record model="ir.actions.act_window" id="action_chemical_analysis">
@@ -321,7 +327,7 @@
         <field name="search_id" ref="view_chemical_analysis_search"/>
         <field name="context">{'search_default_state_draft':1}</field>
     </record>
-    
+
     <!-- chemical.element -->
     <record id="view_chemical_element_search" model="ir.ui.view">
         <field name="name">Element search</field>
@@ -331,7 +337,7 @@
                <field name="name"/>
                <field name="symbol"/>
             </search>
-        </field>    
+        </field>
     </record>
 
     <record id="view_chemical_element_tree" model="ir.ui.view">
@@ -343,7 +349,7 @@
                <field name="symbol"/>
                <field name="atomic"/>
             </tree>
-        </field>    
+        </field>
     </record>
 
     <record id="view_chemical_element_form" model="ir.ui.view">
@@ -355,9 +361,9 @@
                   <field name="name"/>
                   <field name="symbol"/>
                   <field name="atomic"/>
-               </group>   
+               </group>
             </form>
-        </field>    
+        </field>
     </record>
 
     <record model="ir.actions.act_window" id="action_chemical_element">
@@ -379,7 +385,7 @@
                <field name="name" />
                <field name="note" />
             </tree>
-        </field>    
+        </field>
     </record>
 
     <record id="view_chemical_product_category_form" model="ir.ui.view">
@@ -392,7 +398,7 @@
                <separator string="Note" />
                <field name="note" colspan="4" nolabel="1" />
             </form>
-        </field>    
+        </field>
     </record>
 
     <record model="ir.actions.act_window" id="action_chemical_product_category">
@@ -403,53 +409,53 @@
         <field name="view_id" ref="view_chemical_product_category_tree"/>
     </record>
 
-    <!--MENUITEM-->    
+    <!--MENUITEM-->
    <menuitem id="menu_analysis_root"
              name="Analysis"
-             icon="terp-stock" 
+             icon="terp-stock"
              sequence="10"
              web_icon="images/analysis.png"
-             web_icon_hover="images/analysis-hover.png" 
+             web_icon_hover="images/analysis-hover.png"
              groups="chemical_analysis.group_analysis_user,chemical_analysis.group_analysis_manager" />
 
         <menuitem id="menu_chemical_analysis_root"
              name="Analysis"
-             sequence="5"                 
+             sequence="5"
              parent="menu_analysis_root" />
             <menuitem id="menu_chemical_analysis_analysis_root"
                  name="Analysis list"
-                 sequence="10"                 
-                 parent="menu_chemical_analysis_root" 
+                 sequence="10"
+                 parent="menu_chemical_analysis_root"
                  action="action_chemical_analysis"
-                 /> 
+                 />
             <menuitem id="menu_chemical_analysis_laboratory_root"
                  name="Laboratory"
-                 sequence="20"                 
-                 parent="menu_chemical_analysis_root" 
+                 sequence="20"
+                 parent="menu_chemical_analysis_root"
                  action="action_laboratory_tree" />
-     
+
             <menuitem id="menu_analysis_product_lot"
                  name="Lots"
-                 sequence="30"                 
-                 parent="menu_chemical_analysis_root"  
-                 action="stock.action_production_lot_form" />    
-             
+                 sequence="30"
+                 parent="menu_chemical_analysis_root"
+                 action="stock.action_production_lot_form" />
+
         <menuitem id="menu_analysis_configuration_root"
              name="Configurazione"
-             sequence="99" 
-             parent="menu_analysis_root" 
+             sequence="99"
+             parent="menu_analysis_root"
              groups="chemical_analysis.group_analysis_manager" />
 
              <menuitem id="menu_analysis_configuration_element"
                  name="Elements"
-                 sequence="10" 
-                 parent="menu_analysis_configuration_root" 
+                 sequence="10"
+                 parent="menu_analysis_configuration_root"
                  action="action_chemical_element"/>
 
              <menuitem id="menu_analysis_configuration_category"
                  name="Category"
-                 sequence="20" 
-                 parent="menu_analysis_configuration_root" 
+                 sequence="20"
+                 parent="menu_analysis_configuration_root"
                  action="action_chemical_product_category" />
 
             <menuitem id="menu_analysis_product_product"
