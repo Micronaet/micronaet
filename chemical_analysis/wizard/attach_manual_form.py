@@ -152,12 +152,13 @@ class ChemicalAnalysis(osv.osv):
             cr, uid,
             'chemical_analysis', 'view_chemical_attach_manual_form_form')[1]
 
-        attachment = attachment_pool.browse(
-            cr, uid, attachment_id, context=context)
         ctx = context.copy()
+        if attachment_id:
+            attachment = attachment_pool.browse(
+                cr, uid, attachment_id, context=context)
+            ctx['default_extension'] = attachment.extension or 'docx'
         ctx['default_form_id'] = form_id
         ctx['default_attachment_id'] = attachment_id
-        ctx['default_extension'] = attachment.extension or 'docx'
         return {
             'type': 'ir.actions.act_window',
             'name': _('Importa allegati'),
