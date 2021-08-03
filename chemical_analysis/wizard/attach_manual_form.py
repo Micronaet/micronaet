@@ -194,7 +194,7 @@ class ChemicalAttachManualFormWizard(osv.osv_memory):
         attach_id = wizard.attachment_id.id
 
         if attach_id:
-            attach_pool.create(cr, uid, [attach_id], {
+            attach_pool.write(cr, uid, [attach_id], {
                 'extension': wizard.extension,  # Update extension
             }, context=context)
         else:
