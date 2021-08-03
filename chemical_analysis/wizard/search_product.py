@@ -26,6 +26,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+import pdb
 
 from openerp.osv import osv, fields
 from datetime import datetime
@@ -86,6 +87,7 @@ class search_element_wizard(osv.osv_memory):
         # search elements line to get lot (after)
         # TODO create a filter more restricted
         # (only one value can works instead of the range all include)
+        pdb.set_trace()
         find_line_ids = analysis_line_proxy.search(cr, uid, [
            ('name', '=', wizard_proxy['name']),
            ('min_all', '>=', wizard_proxy['min']),
