@@ -1,7 +1,7 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
 "access_chemical_element_other","chemical.element","model_chemical_element","base.group_user",1,0,0,0
 "access_chemical_element_user","chemical.element","model_chemical_element","chemical_analysis.group_analysis_user",1,0,0,0
-"access_chemical_attachment_user","chemical.attachment","model_attachment_element","chemical_analysis.group_analysis_user",1,0,0,0
+"access_chemical_attachment_user","chemical.attachment","model_chemical_attachment","chemical_analysis.group_analysis_user",1,0,0,0
 "access_chemical_element_manager","chemical.element","model_chemical_element","chemical_analysis.group_analysis_manager",1,1,1,1
 "access_chemical_product_category_other","chemical.product.category","model_chemical_product_category","base.group_user",1,0,0,0
 "access_chemical_product_category_user","chemical.product.category","model_chemical_product_category","chemical_analysis.group_analysis_user",1,0,0,0
