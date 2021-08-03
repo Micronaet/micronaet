@@ -193,6 +193,7 @@ class ChemicalAttachManualFormWizard(osv.osv_memory):
             attach_id = attach_pool.create(cr, uid, {
                 'name': wizard.name,
                 'form_id': form_id,
+                'extension': wizard.extension,
                 }, context=context)
         attach_filename = attach_pool.browse(
             cr, uid, attach_id, context=context).filename
@@ -207,7 +208,7 @@ class ChemicalAttachManualFormWizard(osv.osv_memory):
         'form_id': fields.many2one('chemical.analysis', 'Form'),
         'attachment_id': fields.many2one(
             'chemical.attachment', 'Allegato'),
-        'name': fields.char('Descrizione', size=60),
+        'name': fields.char('Descrizione', size=80),
         'file': fields.binary('File'),
         'extension': fields.selection([
             ('docx', 'Word (docx)'),
@@ -222,7 +223,7 @@ class ChemicalAttachManualFormWizard(osv.osv_memory):
     }
 
     _defaults = {
-        'name': lambda *s: 'Scheda cartacea',
+        'name': lambda *s: 'Scheda di analisi cartacea',
         'extension': lambda *s: 'docx',
     }
 
