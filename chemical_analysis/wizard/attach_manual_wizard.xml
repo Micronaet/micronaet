@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <openerp>
   <data>
-    <!--fashion.attach.manual.form.wizard-->
-    <record id="view_fashion_attach_manual_form_form" model="ir.ui.view">
-        <field name="name">fashion.attach.manual.form.wizard.form</field>
-        <field name="model">fashion.attach.manual.form.wizard</field>
+    <!--chemical.attach.manual.form.wizard-->
+    <record id="view_chemical_attach_manual_form_form" model="ir.ui.view">
+        <field name="name">chemical.attach.manual.form.wizard.form</field>
+        <field name="model">chemical.attach.manual.form.wizard</field>
         <field name="arch" type="xml">
             <form string="Allega wizard" version="7.0">
                 <header>
@@ -23,23 +23,13 @@
             </form>
         </field>
     </record>
-    <record id="action_view_fashion_attach_manual_form" model="ir.actions.act_window">
+    <record id="action_view_chemical_attach_manual_form" model="ir.actions.act_window">
             <field name="name">Import attachment report</field>
-            <field name="res_model">fashion.attach.manual.form.wizard</field>
+            <field name="res_model">chemical.attach.manual.form.wizard</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
-            <field name="view_id" ref="view_fashion_attach_manual_form_form"/>
+            <field name="view_id" ref="view_chemical_attach_manual_form_form"/>
             <field name="target">new</field>
     </record>
-    <!--<act_window
-        id="act_window_wizard_report_form"
-        name="Form Report"
-        res_model="fashion.report.wizard"
-        src_model="fashion.form"
-        view_mode="form"
-        view_type="form"
-        target="new"
-        />-->
-
   </data>
 </openerp>
