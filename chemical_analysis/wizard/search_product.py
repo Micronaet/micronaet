@@ -63,6 +63,7 @@ def return_view(self, cr, uid, domain):
             # 'res_id': res_id,  # ID selected
            }
 
+
 class search_element_wizard(osv.osv_memory):
     """ Search range of value for elements in analysis for lot
     """
@@ -78,27 +79,37 @@ class search_element_wizard(osv.osv_memory):
            context = {}
 
         # read wizard to get value:
-        wizard_proxy=self.read(cr, uid, ids, context=context)[0]
+        wizard_proxy = self.read(cr, uid, ids, context=context)[0]
 
-        analysis_line_proxy=self.pool.get('chemical.analysis.line')
+        analysis_line_proxy = self.pool.get('chemical.analysis.line')
 
         # search elements line to get lot (after)
-        # TODO create a filter more restricted (only one value can works instead of the range all include)
-        find_line_ids=analysis_line_proxy.search(cr, uid, [('name','=',wizard_proxy['name']),
-                                                           ('min_all','>=',wizard_proxy['min']),
-                                                           ('min_all','<=',wizard_proxy['max']),
-                                                           ('max_all','>=',wizard_proxy['min']),
-                                                           ('max_all','<=',wizard_proxy['max']),
-                                                           ])
+        # TODO create a filter more restricted
+        # (only one value can works instead of the range all include)
+        find_line_ids = analysis_line_proxy.search(cr, uid, [
+           ('name', '=', wizard_proxy['name']),
+           ('min_all', '>=', wizard_proxy['min']),
+           ('min_all', '<=', wizard_proxy['max']),
+           ('max_all', '>=', wizard_proxy['min']),
+           ('max_all', '<=', wizard_proxy['max']),
+           ])
 
         # get lot list from analysis lines:
-        domain_list_ids=[item.chemical_analysis_id.prodlot_id.id for item in analysis_line_proxy.browse(cr, uid, find_line_ids) if item.chemical_analysis_id.prodlot_id]
+        domain_list_ids = [
+            item.chemical_analysis_id.prodlot_id.id for item in
+            analysis_line_proxy.browse(cr, uid, find_line_ids) if
+            item.chemical_analysis_id.prodlot_id]
         return return_view(self, cr, uid, domain_list_ids)
 
     _columns = {
-        'name': fields.many2one('chemical.element', 'Element', required=True),
-        'min': fields.float('Min %', digits=(16, 2), help="Min value of element in %", required=True),
-        'max': fields.float('Max %', digits=(16, 2), help="Max value of element in %", required=True),
+        'name': fields.many2one(
+            'chemical.element', 'Element', required=True),
+        'min': fields.float(
+            'Min %', digits=(16, 2), help="Min value of element in %",
+            required=True),
+        'max': fields.float(
+            'Max %', digits=(16, 2), help="Max value of element in %",
+            required=True),
         'note': fields.text('Note'),
     }
 
