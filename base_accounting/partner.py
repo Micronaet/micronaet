@@ -126,7 +126,7 @@ class product_product_extra_fields(osv.osv):
         else:
             return False
 
-    # Scheduled action: ########################################################
+    # Scheduled action: #######################################################
     def schedule_etl_product_import(self, cr, uid, path, file_name, verbose=False, context=None):
         """ ETL operations for import product in OpenERP (parameter setted up in
             scheduled action for file name
@@ -137,9 +137,9 @@ class product_product_extra_fields(osv.osv):
         counter = {'tot':0,'upd':0, 'err':0, 'err_upd':0, 'new':0}
 
         um={}
-        um['KG']=self.get_uom(cr, uid, 'kg', context=context)
-        um['T']=self.get_uom(cr, uid, 't', context=context)
-        um['N']=self.get_uom(cr, uid, 'Unit(s)', context=context)
+        um['KG'] = self.get_uom(cr, uid, 'kg', context=context)
+        um['T'] = self.get_uom(cr, uid, 't', context=context)
+        um['N'] = self.get_uom(cr, uid, 'Unit(s)', context=context)
 
         try:
             file_name = os.path.expanduser(os.path.join(path, file_name))
