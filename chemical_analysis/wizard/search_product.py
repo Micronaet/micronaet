@@ -89,12 +89,8 @@ class search_element_wizard(osv.osv_memory):
         # (only one value can works instead of the range all include)
         find_line_ids = []
         for field in (
-                'percentage_supplier',
-                'percentage',
-                'percentage_lab1',
-                'percentage_lab2',
-                'percentage_lab3'):
-
+                'percentage_supplier', 'percentage',
+                'percentage_lab1', 'percentage_lab2', 'percentage_lab3'):
             find_line_ids.extend(analysis_line_proxy.search(cr, uid, [
                ('name', '=', wizard_proxy['name'][0]),
                (field, '>=', wizard_proxy['min']),
