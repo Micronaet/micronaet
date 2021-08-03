@@ -311,6 +311,7 @@
                                <field name="attachment_ids" colspan="4" nolabel="1">
                                    <tree editable="bottom" string="Allegati">
                                        <field name="name"/>
+                                       <field name="extension"/>
                                        <button string='Riallega documento' name='open_attachment_wizard' type="object" icon='gtk-execute' confirm="Vuoi riallegare il documento?"/>
                                        <button string='Scarica documento' name='open_file' type="object" icon='gtk-save'/>
                                    </tree>
