@@ -266,28 +266,10 @@
                    </group>
                    <notebook colspan="4">
                        <page name="detail_page" string="Dettaglio">
-                           <group colspan="4" col="4">
-                               <separator string="Dettaglio analisi:" colspan="3" />
-                               <button type="object" name="load_from_model" string="Carica da modello" attrs="{'invisible': [('prodlot_id','=',False)]}" />
-                               <field name="line_ids" nolabel="1" colspan="4">
-                                    <tree string="Elementi" editable="bottom" colors="red:out_of_range==True"><!--blue:not(percentage_supplier or percentage or percentage_lab1 or percentage_lab2 or percentage_lab3)"-->
-                                        <field name="name" />
-                                        <field name="percentage_supplier" string ="Forn." sum="Supplier"/>
-                                        <field name="percentage" string="Int." sum="Internal"  />
-                                        <field name="percentage_lab1" string = "Lab. 1" sum="Laboratory 1" />
-                                        <field name="percentage_lab2" string = "Lab. 2" sum="Laboratory 2" />
-                                        <field name="percentage_lab3" string = "Lab. 3" sum="Laboratory 3" />
-                                        <field name="note" rowspan="1" />
-                                        <field name="standard" readonly="1" />
-                                        <field name="min" readonly="1" invisible="1"/>
-                                        <field name="max" readonly="1" invisible="1"/>
-                                        <field name="out_of_range" invisible="1" />
-                                    </tree>
-                               </field>
-                           </group>
-                       </page>
-                       <page name="laboratory_page" string="Laboratorio">
                            <group colspan="4" col="6">
+                               <separator string="Dettaglio analisi:" colspan="5" />
+                               <button type="object" name="load_from_model" string="Carica da modello" attrs="{'invisible': [('prodlot_id','=',False)]}" />
+
                                <group colspan="2">
                                    <field name="laboratory1_id" domain="[('is_laboratory','=',True)]" />
                                    <field name="quantity_lab1" attrs="{'invisible': [('laboratory1_id','=', False)]}" />
@@ -304,6 +286,23 @@
                                    <field name="quantity_lab3" attrs="{'invisible': [('laboratory3_id','=', False)]}" />
                                    <field name="code_lab3" attrs="{'invisible': [('laboratory3_id','=', False)]}" />
                                </group>
+                           </group>
+                           <group colspan="4" col="4">
+                               <field name="line_ids" nolabel="1" colspan="4">
+                                    <tree string="Elementi" editable="bottom" colors="red:out_of_range==True"><!--blue:not(percentage_supplier or percentage or percentage_lab1 or percentage_lab2 or percentage_lab3)"-->
+                                        <field name="name" />
+                                        <field name="percentage_supplier" string ="Forn." sum="Supplier"/>
+                                        <field name="percentage" string="Int." sum="Internal"  />
+                                        <field name="percentage_lab1" string = "Lab. 1" sum="Laboratory 1" />
+                                        <field name="percentage_lab2" string = "Lab. 2" sum="Laboratory 2" />
+                                        <field name="percentage_lab3" string = "Lab. 3" sum="Laboratory 3" />
+                                        <field name="note" rowspan="1" />
+                                        <field name="standard" readonly="1" />
+                                        <field name="min" readonly="1" invisible="1"/>
+                                        <field name="max" readonly="1" invisible="1"/>
+                                        <field name="out_of_range" invisible="1" />
+                                    </tree>
+                               </field>
                            </group>
                        </page>
                        <page name="attachment_page" string="Allegati">
