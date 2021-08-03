@@ -87,9 +87,8 @@ class search_element_wizard(osv.osv_memory):
         # search elements line to get lot (after)
         # TODO create a filter more restricted
         # (only one value can works instead of the range all include)
-        pdb.set_trace()
         find_line_ids = analysis_line_proxy.search(cr, uid, [
-           ('name', '=', wizard_proxy['name']),
+           ('name', '=', wizard_proxy['name'][0]),
            ('min_all', '>=', wizard_proxy['min']),
            ('min_all', '<=', wizard_proxy['max']),
            ('max_all', '>=', wizard_proxy['min']),
