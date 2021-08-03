@@ -128,10 +128,6 @@ class ChemicalAttachment(osv.osv):
         'extension': fields.char('Estensione', size=5),
     }
 
-    _defaults = {
-        'extension': lambda *x: 'pdf'
-    }
-
 
 class ChemicalAnalysis(osv.osv):
     """ Analysis button
@@ -208,14 +204,25 @@ class ChemicalAttachManualFormWizard(osv.osv_memory):
         return True
 
     _columns = {
-         'form_id': fields.many2one('chemical.analysis', 'Form'),
-         'attachment_id': fields.many2one(
-             'chemical.attachment', 'Allegato'),
-         'name': fields.char('Descrizione', size=60),
-         'file': fields.binary('File'),
+        'form_id': fields.many2one('chemical.analysis', 'Form'),
+        'attachment_id': fields.many2one(
+            'chemical.attachment', 'Allegato'),
+        'name': fields.char('Descrizione', size=60),
+        'file': fields.binary('File'),
+        'extension': fields.selection([
+            ('docx', 'Word (docx)'),
+            ('doc', 'Word, obsoleto (doc)'),
+            ('xlsx', 'Excel (xlsx)'),
+            ('xlsx', 'Excel, obsoleto (xls)'),
+            ('pdf', 'Acrobat Reader (pdf)'),
+            ('txt', 'Blocco note (txt'),
+            # ('dat', 'Blocco note (txt'),
+        ], 'Estensione', required=True),
+
     }
 
     _defaults = {
         'name': lambda *s: 'Scheda cartacea',
+        'extension': lambda *s: 'docx',
     }
 
