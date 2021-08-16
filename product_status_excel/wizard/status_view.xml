@@ -12,14 +12,26 @@
                        <button name="action_done" string="Print" type="object" icon="gtk-print" class="oe_highlight" />
                    </header>
                    <group colspan="4" col="4">
-                        <field name="mode"/>
-                        <field name="sort" />
+                       <notebook>
+                           <page name="page_parameters" string="Parametri report">
+                               <group colspan="4" col="4">
+                                   <field name="mode"/>
+                                   <field name="sort" />
 
-                        <field name="from_code"/>
-                        <field name="to_code"/>
-                        <field name="statistic_category"/>
-                        <field name="categ_id"/>
-                        <field name="with_empty_code"/>
+                                   <field name="from_code"/>
+                                   <field name="to_code"/>
+                                   <field name="statistic_category"/>
+                                   <field name="categ_id"/>
+                                   <field name="with_empty_code"/>
+                               </group>
+                           </page>
+                           <page name="page_import" string="Importazione">
+                               <group colspan="4" col="4">
+                                   <field name="file" colspan="3"/>
+                                   <button name="action_import" string="Importa" type="object" icon="gtk-execute" class="oe_highlight" colspan="1"/>
+                               </group>
+                           </page>
+                       </notebook>
                    </group>
                 </form>
             </field>

@@ -36,6 +36,8 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
     DEFAULT_SERVER_DATETIME_FORMAT,
     DATETIME_FORMATS_MAP,
     float_compare)
+import base64
+import xlrd
 
 _logger = logging.getLogger(__name__)
 
@@ -54,6 +56,91 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         ctx = context.copy()
         ctx['save_mode'] = filename
         return self.action_done(cr, uid, False, context=ctx)
+
+    def action_import(self, cr, uid, ids, context=None):
+        """ Event for button import file
+        """
+        if context is None:
+            context = {}
+        product_pool = self.pool.get('product.product')
+
+        # ---------------------------------------------------------------------
+        # Save file passed:
+        # ---------------------------------------------------------------------
+        current_proxy = self.browse(cr, uid, ids, context=context)[0]
+        if not current_proxy.file:
+            raise osv.except_osv(
+                _('No file:'),
+                _('Please pass a XLSX file for import order'),
+                )
+        b64_file = base64.decodestring(current_proxy.file)
+        now = datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+        filename = '/tmp/tx_%s.xlsx' % now.replace(':', '_').replace('-', '_')
+        f = open(filename, 'wb')
+        f.write(b64_file)
+        f.close()
+
+        # ---------------------------------------------------------------------
+        # Load force name (for web publish)
+        # ---------------------------------------------------------------------
+        try:
+            WB = xlrd.open_workbook(filename)
+        except:
+            raise osv.except_osv(
+                _('Error XLSX'),
+                _('Cannot read XLS file: %s' % filename),
+                )
+
+        # ---------------------------------------------------------------------
+        # Loop on all pages:
+        # ---------------------------------------------------------------------
+        pdb.set_trace()
+        for ws_name in WB.sheet_names():
+            WS = WB.sheet_by_name(ws_name)
+            _logger.warning('Read page: %s' % ws_name)
+
+            start = False
+            i = 0
+            for row in range(WS.nrows):
+                i += 1
+                # -------------------------------------------------------------
+                # Read product code:
+                # -------------------------------------------------------------
+                item_id = WS.cell(row, 0).value
+                if item_id == 'ID':
+                    start = True
+                    _logger.info('%s. Find header line' % i)
+                    continue
+                if not start:
+                    _logger.info('%s. Jump line not used' % i)
+                    continue
+
+                # Original value:
+                excluded = WS.cell(row, 1).value.upper in ('SX')
+                day_leadtime = WS.cell(row, 2).value
+                day_min_level = WS.cell(row, 3).value
+
+                # New value:
+                new_excluded = WS.cell(row, 4).value.upper in ('SX')
+                new_day_leadtime = WS.cell(row, 11).value
+                new_day_min_level = WS.cell(row, 12).value
+
+                if (excluded == new_excluded and
+                        day_leadtime == new_day_leadtime and
+                        day_min_level == new_day_min_level):
+                    _logger.info('%s. No change' % i)
+                    continue
+                try:
+                    product_pool.write(cr, uid, [item_id], {
+                        'not_in_status': new_excluded,
+                        'day_leadtime': new_day_leadtime,
+                        'day_min_level': new_day_min_level,
+                    }, context=context)
+                    _logger.info('%s. Update record' % i)
+                except:
+                    _logger.error('%s. Error updating record' % i)
+                    continue
+        _logger('Importazione terminata')
 
     def action_done(self, cr, uid, ids, context=None):
         """ Event for button done
@@ -308,6 +395,9 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             ('categ_id', 'Categoria prodotto'),
             ('statistic_category', 'Statistic category'),
             ], 'Sort mode', required=True),
+
+        # Import:
+        'file': fields.binary('File XLSX', help='File da reimportare'),
         }
 
     _defaults = {
