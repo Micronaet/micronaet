@@ -166,7 +166,6 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             # -----------------------------------------------------------------
             # Create dynamic domain
             # -----------------------------------------------------------------
-
             # Search block:
             if not wiz_browse.with_empty_code:
                 wizard_domain.append(('default_code', '!=', False))
@@ -219,6 +218,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         # ---------------------------------------------------------------------
         # Master loop for page:
         # ---------------------------------------------------------------------
+        removed_ids = []  # Compiled when removed in first n-1 loop
         cr.execute('''
             SELECT id from product_product 
             WHERE substring(default_code, 1, 1) in ('C', 'V')
@@ -254,6 +254,9 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             ]),
             ('Esclusi', [
                 ('id', 'in', excluded_ids),
+            ]),
+            ('Rimossi', [
+                ('id', 'in', removed_ids),
             ]),
         ]
         format_loaded = False
@@ -329,6 +332,13 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             for product in sorted(product_pool.browse(
                     cr, uid, product_ids, context=context),
                     key=sort_key):
+
+                # Only not obsolete or with stock will be written:
+                if ws_name != 'Rimossi' and product.stock_obsolete and \
+                        not product.accounting_qty:
+                    removed_ids.append(product.id)  # For last loop 'Rimossi'
+                    continue
+
                 row += 1
                 min_stock = product.min_stock_level
                 if product.accounting_qty > min_stock:
