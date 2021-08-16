@@ -90,32 +90,38 @@ for ws_name in WB.sheet_names():
         item_id = int(item_id)
 
         # Original value:
-        pdb.set_trace()
         excluded = WS.cell(row, 1).value.upper()
         excluded = excluded and excluded in 'SX'
-        day_leadtime = WS.cell(row, 2).value
-        day_min_level = WS.cell(row, 3).value
+        day_leadtime = int(WS.cell(row, 2).value or '0')
+        day_min_level = int(WS.cell(row, 3).value or '0')
 
         # New value:
+        default_code = WS.cell(row, 5).value
         new_excluded = WS.cell(row, 4).value.upper()
         new_excluded = new_excluded and new_excluded in 'SX'
+        new_day_leadtime = int(WS.cell(row, 11).value or '0')
+        new_day_min_level = int(WS.cell(row, 12).value or '0')
+        pdb.set_trace()
 
-        new_day_leadtime = WS.cell(row, 11).value
-        new_day_min_level = WS.cell(row, 12).value
+        data = {}
+        comment = ''
+        if excluded == new_excluded:
+            data['stock_obsolete'] = new_excluded
+            comment += '[OBSOLETE]'
+        if day_leadtime == new_day_leadtime:
+            data['day_leadtime'] = new_day_leadtime
+            comment += '[LEADTIME]'
+        if day_min_level == new_day_min_level:
+            data['day_min_level'] = new_day_min_level
+            comment += '[MIN LEVEL]'
 
-        if (excluded == new_excluded and
-                day_leadtime == new_day_leadtime and
-                day_min_level == new_day_min_level):
+        if not data:
             print('%s. No change' % i)
             continue
         try:
-            product_pool.write([item_id], {
-                'not_in_status': new_excluded,
-                'day_leadtime': new_day_leadtime,
-                'day_min_level': new_day_min_level,
-            })
-            print('%s. Update record' % i)
+            product_pool.write([item_id], data)
+            print('%s. Update record %s: %s' % (i, default_code, comment))
         except:
-            print('%s. Error updating record' % i)
+            print('%s. Error updating record %s' % (i, default_code))
             continue
 print('Importazione terminata')

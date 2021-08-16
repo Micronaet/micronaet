@@ -347,12 +347,12 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 excel_pool.write_xls_line(ws_name, row, [
                     # Hidden:
                     product.id,
-                    'X' if product.not_in_status else '',
+                    'X' if product.stock_obsolete else '',  # used as excl.!
                     (product.day_leadtime, format_number),
                     (product.day_min_level, format_number),
 
                     # Showed
-                    'X' if product.not_in_status else '',
+                    'X' if product.stock_obsolete else '',
                     product.default_code,
                     product.name,
                     product.categ_id.name,
