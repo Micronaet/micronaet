@@ -37,7 +37,7 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
     DATETIME_FORMATS_MAP,
     float_compare)
 import base64
-import xlrd
+# import xlrd
 
 _logger = logging.getLogger(__name__)
 
@@ -84,7 +84,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         # Load force name (for web publish)
         # ---------------------------------------------------------------------
         try:
-            WB = xlrd.open_workbook(filename)
+            WB = []  # xlrd.open_workbook(filename)
         except:
             raise osv.except_osv(
                 _('Error XLSX'),
