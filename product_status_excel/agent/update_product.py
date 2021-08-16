@@ -101,22 +101,21 @@ for ws_name in WB.sheet_names():
         new_excluded = new_excluded and new_excluded in 'SX'
         new_day_leadtime = int(WS.cell(row, 11).value or '0')
         new_day_min_level = int(WS.cell(row, 12).value or '0')
-        pdb.set_trace()
 
         data = {}
         comment = ''
-        if excluded == new_excluded:
+        if excluded != new_excluded:
             data['stock_obsolete'] = new_excluded
             comment += '[OBSOLETE]'
-        if day_leadtime == new_day_leadtime:
+        if day_leadtime != new_day_leadtime:
             data['day_leadtime'] = new_day_leadtime
             comment += '[LEADTIME]'
-        if day_min_level == new_day_min_level:
+        if day_min_level != new_day_min_level:
             data['day_min_level'] = new_day_min_level
             comment += '[MIN LEVEL]'
 
         if not data:
-            print('%s. No change' % i)
+            print('%s. No change: %s' % (i, default_code))
             continue
         try:
             product_pool.write([item_id], data)
