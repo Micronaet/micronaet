@@ -140,7 +140,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 except:
                     _logger.error('%s. Error updating record' % i)
                     continue
-        _logger('Importazione terminata')
+        _logger.info('Importazione terminata')
 
     def action_done(self, cr, uid, ids, context=None):
         """ Event for button done
