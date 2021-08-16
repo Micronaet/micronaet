@@ -29,7 +29,7 @@ import xlrd
 # -----------------------------------------------------------------------------
 # Read configuration parameter:
 # -----------------------------------------------------------------------------
-cfg_file = os.path.expanduser('./openerp.cfg')
+cfg_file = os.path.expanduser('../openerp.cfg')
 config = ConfigParser.ConfigParser()
 config.read([cfg_file])
 
@@ -68,7 +68,6 @@ except:
 # -----------------------------------------------------------------------------
 # Loop on all pages:
 # -----------------------------------------------------------------------------
-pdb.set_trace()
 for ws_name in WB.sheet_names():
     WS = WB.sheet_by_name(ws_name)
     print('Read page: %s' % ws_name)
@@ -88,14 +87,19 @@ for ws_name in WB.sheet_names():
         if not start:
             print('%s. Jump line not used' % i)
             continue
+        item_id = int(item_id)
 
         # Original value:
-        excluded = WS.cell(row, 1).value.upper in 'SX'
+        pdb.set_trace()
+        excluded = WS.cell(row, 1).value.upper()
+        excluded = excluded and excluded in 'SX'
         day_leadtime = WS.cell(row, 2).value
         day_min_level = WS.cell(row, 3).value
 
         # New value:
-        new_excluded = WS.cell(row, 4).value.upper in 'SX'
+        new_excluded = WS.cell(row, 4).value.upper()
+        new_excluded = new_excluded and new_excluded in 'SX'
+
         new_day_leadtime = WS.cell(row, 11).value
         new_day_min_level = WS.cell(row, 12).value
 
