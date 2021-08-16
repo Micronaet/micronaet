@@ -36,7 +36,7 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
     DEFAULT_SERVER_DATETIME_FORMAT,
     DATETIME_FORMATS_MAP,
     float_compare)
-import base64
+# import base64
 # import xlrd
 
 _logger = logging.getLogger(__name__)
@@ -57,6 +57,8 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         ctx['save_mode'] = filename
         return self.action_done(cr, uid, False, context=ctx)
 
+    # todo xlrd library cannot installed on old Debian 7 Wheezy:
+    '''
     def action_import(self, cr, uid, ids, context=None):
         """ Event for button import file
         """
@@ -84,7 +86,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         # Load force name (for web publish)
         # ---------------------------------------------------------------------
         try:
-            WB = []  # xlrd.open_workbook(filename)
+            WB = xlrd.open_workbook(filename)
         except:
             raise osv.except_osv(
                 _('Error XLSX'),
@@ -141,6 +143,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                     _logger.error('%s. Error updating record' % i)
                     continue
         _logger.info('Importazione terminata')
+    '''
 
     def action_done(self, cr, uid, ids, context=None):
         """ Event for button done

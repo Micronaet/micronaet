@@ -25,12 +25,12 @@
                                    <field name="with_empty_code"/>
                                </group>
                            </page>
-                           <page name="page_import" string="Importazione">
+                           <!--<page name="page_import" string="Importazione">
                                <group colspan="4" col="4">
                                    <field name="file" colspan="3"/>
                                    <button name="action_import" string="Importa" type="object" icon="gtk-execute" class="oe_highlight" colspan="1"/>
                                </group>
-                           </page>
+                           </page>-->
                        </notebook>
                    </group>
                 </form>
