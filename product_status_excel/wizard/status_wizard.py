@@ -57,7 +57,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         ctx['save_mode'] = filename
         return self.action_done(cr, uid, False, context=ctx)
 
-    '''def action_import(self, cr, uid, ids, context=None):
+    def action_import(self, cr, uid, ids, context=None):
         """ Event for button import file
         """
         if context is None:
@@ -140,7 +140,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 except:
                     _logger.error('%s. Error updating record' % i)
                     continue
-        _logger.info('Importazione terminata')'''
+        _logger.info('Importazione terminata')
 
     def action_done(self, cr, uid, ids, context=None):
         """ Event for button done
