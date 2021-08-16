@@ -68,6 +68,7 @@ except:
 # -----------------------------------------------------------------------------
 # Loop on all pages:
 # -----------------------------------------------------------------------------
+pdb.set_trace()
 for ws_name in WB.sheet_names():
     WS = WB.sheet_by_name(ws_name)
     print('Read page: %s' % ws_name)
@@ -99,8 +100,8 @@ for ws_name in WB.sheet_names():
         default_code = WS.cell(row, 5).value
         new_excluded = WS.cell(row, 4).value.upper()
         new_excluded = new_excluded and new_excluded in 'SX'
-        new_day_leadtime = int(WS.cell(row, 11).value or '0')
-        new_day_min_level = int(WS.cell(row, 12).value or '0')
+        new_day_leadtime = int(WS.cell(row, 12).value or '0')
+        new_day_min_level = int(WS.cell(row, 13).value or '0')
 
         data = {}
         comment = ''
