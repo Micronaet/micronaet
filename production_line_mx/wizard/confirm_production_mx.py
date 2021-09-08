@@ -452,7 +452,7 @@ class MrpProduction(osv.Model):
             stock_number = '2' if product.product_type == 'MP' else '1'
 
             forced_price = product.forced_price
-            row +=1
+            row += 1
 
             # If pedimento use pedimento's price
             if forced_price:
@@ -471,7 +471,7 @@ class MrpProduction(osv.Model):
             if product.product_mode == 'lot':
                 pedimento_name = ''
                 lot_name = load.package_pedimento_id.name
-            else: # pedimento
+            else:  # pedimento
                 pedimento_name = load.package_pedimento_id.name
                 lot_name = ''
 
@@ -480,8 +480,8 @@ class MrpProduction(osv.Model):
                 load.ul_qty,
                 product.uom_id.contipaq_ref,
                 standard_price,
-                pedimento_name, # load.package_pedimento_id.name or '',
-                lot_name, # '', # lot
+                pedimento_name,  # load.package_pedimento_id.name or '',
+                lot_name,  # '', # lot
                 stock_number,
                 ])
 

@@ -171,7 +171,7 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
             # -----------------------------------------------------------------
             # Final product data:
             # -----------------------------------------------------------------
-            #`Check if there's some filtered product:
+            # `Check if there's some filtered product:
             if not filter_product or product.id == filter_product.id:
                 if wc not in wc_db:
                     wc_db.append(wc)
@@ -367,7 +367,7 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
                 (qty, f_number_color),
                 (waste_qty, f_number_color),
                 (accounting_qty, f_number_color),
-                #'X' if recycle else '',
+                # 'X' if recycle else '',
                 ], default_format=f_text_color)
 
         # ---------------------------------------------------------------------
