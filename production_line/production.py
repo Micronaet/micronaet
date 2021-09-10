@@ -32,6 +32,7 @@ from utility import *
 
 _logger = logging.getLogger(__name__)
 
+
 class StockProductionLot(osv.osv):
     """ Add extra function for changing state in mail.thread
     """
@@ -60,6 +61,7 @@ class StockProductionLot(osv.osv):
                     record.name, record.stock_available_accounting),
                 ))
         return res
+
 
 class mail_thread(osv.osv):
     """ Add extra function for changing state in mail.thread
@@ -119,6 +121,7 @@ class mail_thread(osv.osv):
         #        )
         return
 
+
 class res_company_send_mail(osv.osv):
     """ Add utility function for send mail
     """
@@ -158,6 +161,7 @@ class res_company_send_mail(osv.osv):
             ), )
         smtp.quit()
         return True
+
 
 class sale_order_add_extra(osv.osv):
     """ Create import scheduled action
