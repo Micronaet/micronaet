@@ -1155,7 +1155,7 @@ class mrp_production_workcenter_line_extra(osv.osv):
         """ Update or create record in history of lavoration
             (workcenter-product parameters)
         """
-         try:
+        try:
              history_pool = self.pool.get('mrp.workcenter.history')
              production_pool = self.pool.get('mrp.production')
 
