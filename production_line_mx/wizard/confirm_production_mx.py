@@ -41,8 +41,8 @@ from openerp.tools import (
 _logger = logging.getLogger(__name__)
 
 class ProductUom(osv.Model):
-    ''' Product uom
-    '''
+    """ Product uom
+    """
     _inherit = 'product.uom'
 
     _columns = {
@@ -69,8 +69,8 @@ class ResCompany(orm.Model):
     _inherit = 'res.company'
 
     def get_contipaq_folder_parameters(self, cr, uid, context=None):
-        ''' Return dict with parameter structure:
-        '''
+        """ Return dict with parameter structure:
+        """
         contipaq_samba_folder = self.browse(
             cr, uid, 1, context=context).contipaq_samba_folder
 
@@ -108,8 +108,8 @@ class ResCompany(orm.Model):
 
 
 class MrpProductionWorkcenterLine(osv.Model):
-    ''' MRP production
-    '''
+    """ MRP production
+    """
     _inherit = 'mrp.production.workcenter.line'
 
     _columns = {
@@ -117,8 +117,8 @@ class MrpProductionWorkcenterLine(osv.Model):
          }
 
 class MrpProduction(osv.Model):
-    ''' MRP production
-    '''
+    """ MRP production
+    """
     _inherit = 'mrp.production'
 
     _columns = {
@@ -137,14 +137,14 @@ class MrpProduction(osv.Model):
     # -------------------------------------------------------------------------
     # TODO move in mrp.production.workcenter.line?
     def write_excel_CL(self, cr, uid, lavoration_id, folder, context=None):
-        ''' Write CL document in Excel file
+        """ Write CL document in Excel file
             excel_pool: Excel file manager
             lavoration: Laboration browse obj
             folder: Folder parameter
 
             Prepare Excel file in correct parameter folder with material and
             Package used during lavoration process
-        '''
+        """
         # Pool used:
         excel_pool = self.pool.get('excel.writer')
         del(excel_pool)
@@ -413,7 +413,7 @@ class MrpProduction(osv.Model):
             }, context=context)
 
     def write_excel_SL(self, lavoration, folder):
-        ''' Write SL document in Excel file
+        """ Write SL document in Excel file
             self, cr, uid
             excel_pool: Excel file manager
             lavoration: Laboration browse obj
@@ -421,7 +421,7 @@ class MrpProduction(osv.Model):
 
             Prepare Excel file in correct parameter folder with material and
             Package used during lavoration process
-        '''
+        """
         excel_pool = self.pool.get('excel.writer')
 
         ws_name = 'unload'
@@ -582,8 +582,8 @@ class MrpProduction(osv.Model):
     # -------------------------------------------------------------------------
 
 class ConfirmMrpProductionWizard(osv.osv_memory):
-    ''' Wizard that confirm production/lavoration
-    '''
+    """ Wizard that confirm production/lavoration
+    """
     _inherit = 'mrp.production.confirm.wizard'
 
     # -------------------------------------------------------------------------
@@ -591,8 +591,8 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
     # -------------------------------------------------------------------------
     def onchange_waste_qty(self, cr, uid, ids, product_qty, waste_qty,
             context=None):
-        ''' Check qty for waste
-        '''
+        """ Check qty for waste
+        """
         if product_qty < waste_qty:
             return {'warning': {
                 'title': _('Error'),
@@ -601,8 +601,8 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
         return {}
 
     def onchange_waste(self, cr, uid, ids, product_id, recycle, context=None):
-        ''' Change filter for
-        '''
+        """ Change filter for
+        """
         res = {}
         if not recycle or not product_id:
             return res
@@ -619,8 +619,8 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
     #                        Wizard button events:
     # -------------------------------------------------------------------------
     def action_confirm_mrp_production_order(self, cr, uid, ids, context=None):
-        ''' Write confirmed weight (load or unload documents)
-        '''
+        """ Write confirmed weight (load or unload documents)
+        """
         if context is None:
             context = {}
 
@@ -721,7 +721,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
             # -----------------------------------------------------------------
             accounting_cl_code = 'CL???'
             product_qty = wiz_proxy.real_product_qty
-            #wrong = wiz_proxy.wrong
+            # wrong = wiz_proxy.wrong
 
             # -----------------------------------------------------------------
             # Manage recycle load
@@ -749,7 +749,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                 'accounting_cl_code': accounting_cl_code,
                 'product_qty': product_qty, # only the wrote total
                 'line_id': lavoration_proxy.id,
-                #XXX not manage, alwasy last! 'partial': wiz_proxy.partial,
+                # XXX not manage, alwasy last! 'partial': wiz_proxy.partial,
 
                 # Package:
                 'package_id': package_id,
@@ -795,7 +795,7 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
                 }, context=context)
 
             # Better: reload from dbmirror (but in real time)
-            #product_pool.write(
+            # product_pool.write(
             #    cr, uid, mrp.product_id.id,
             #    # Update accounting_qty on db for speed up
             #    {'accounting_qty':
@@ -835,8 +835,8 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
         return {'type': 'ir.actions.act_window_close'}
 
     def default_list_unload(self, cr, uid, context=None):
-        ''' Get default value, if load_confirmed so to_close is True
-        '''
+        """ Get default value, if load_confirmed so to_close is True
+        """
         wc_pool = self.pool.get('mrp.production.workcenter.line')
         res = ''
         active_id = context.get('active_id', 0)
@@ -858,8 +858,8 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
     # -------------------------------------------------------------------------
     def onchange_package_id(self, cr, uid, ids, package_id, product_id,
             real_product_qty, context=None):
-        ''' Integration on onchange for package (inser domain filter)
-        '''
+        """ Integration on onchange for package (inser domain filter)
+        """
         res = super(ConfirmMrpProductionWizard, self).onchange_package_id(
             cr, uid, ids, package_id, product_id, real_product_qty,
             context=context)
@@ -889,8 +889,8 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
 
     def onchange_pallet_id(self, cr, uid, ids, pallet_product_id,
             real_product_qty, pallet_max_weight, context=None):
-        ''' Integration on onchange for package (inser domain filter)
-        '''
+        """ Integration on onchange for package (inser domain filter)
+        """
         res = super(ConfirmMrpProductionWizard, self).onchange_pallet_id(
             cr, uid, ids, pallet_product_id, real_product_qty,
             pallet_max_weight, context=context)
@@ -918,8 +918,8 @@ class ConfirmMrpProductionWizard(osv.osv_memory):
     # Default function:
     # -------------------------------------------------------------------------
     def default_quantity(self, cr, uid, context=None):
-        ''' Get default value
-        '''
+        """ Get default value
+        """
         wc_pool = self.pool.get('mrp.production.workcenter.line')
         wc_proxy = wc_pool.browse(
             cr, uid, context.get('active_id', 0), context=context)

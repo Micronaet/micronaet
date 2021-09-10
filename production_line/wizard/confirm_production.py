@@ -345,10 +345,11 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                     _('Could not add other extra load (production cancelled)!')
                     )
 
-            if wiz_proxy.package_id and not wiz_proxy.ul_qty:
-                raise osv.except_osv(
-                    _('Package error:'),
-                    _('If package is present quantity is mandatory!'))
+            # Package can have 0 as qty (when not unloaded)
+            # if wiz_proxy.package_id and not wiz_proxy.ul_qty:
+            #    raise osv.except_osv(
+            #        _('Package error:'),
+            #        _('If package is present quantity is mandatory!'))
 
             if pallet and not wiz_proxy.pallet_qty:
                 raise osv.except_osv(
@@ -504,7 +505,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             #                         Load CL for product
             # -----------------------------------------------------------------
             try:
-                if parameter.production_demo: # Demo mode:
+                if parameter.production_demo:  # Demo mode:
                     accounting_cl_code = 'DEMOCL000'
                 else:
                     try:
