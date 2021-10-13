@@ -533,7 +533,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 # -------------------------------------------------------------
                 # Update lavoration with new info:
                 # -------------------------------------------------------------
-                cost_detail = u'' # To update MRP at the end of procedure
+                cost_detail = u''  # To update MRP at the end of procedure
 
                 # TODO portare l'informazione sulla produzione qui non ha
                 # più senso con i carichi sballati
@@ -811,7 +811,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                     '%s' % (sys.exc_info(), )
                     ) # error[0], '%s [%s]' % (error[1], sys.exc_info()) )
 
-        else: # state == 'material' >> unload all material and package:
+        else:  # state == 'material' >> unload all material and package:
             # -----------------------------------------------------------------
             #                              SL Document
             # -----------------------------------------------------------------

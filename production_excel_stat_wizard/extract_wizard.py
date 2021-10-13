@@ -375,22 +375,35 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
         # ---------------------------------------------------------------------
         ws_name = _('Dettaglio lavorazioni')
         excel_pool.create_worksheet(ws_name)
-        excel_pool.column_width(ws_name, [20, 30, 10, 15, 80])
+        excel_pool.column_width(ws_name, [
+            12, 30, 
+            20, 30, 10, 15, 
+            10, 10,
+            80])
 
         row = 0
         excel_pool.write_xls_line(ws_name, row, [
+            _('Codice'), _('Nome'), 
             _('Data'), _('Produzione'), _('Lavorazione'), _('State'),
+            _('Q.'), _('Prezzo'),             
             _('Dettaglio'),
             ], default_format=f_header)
 
         for wc in sorted(wc_db, key=lambda x: x.real_date_planned):
             row += 1
             excel_pool.row_height(ws_name, row, height=140)
+            production = wc.production_id
+            product = production.product_id
+            
             excel_pool.write_xls_line(ws_name, row, [
+                product.default_code,
+                product.name,
                 wc.real_date_planned,
-                wc.production_id.name,
+                production.name,
                 wc.name,
                 wc.state,
+                production.product_qty,  # Q.
+                '/', # todo Prezzo,
                 clean_tags(wc.product_price_calc),
                 ], default_format=f_text)
 
