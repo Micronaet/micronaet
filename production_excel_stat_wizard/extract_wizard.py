@@ -394,7 +394,11 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
             excel_pool.row_height(ws_name, row, height=140)
             production = wc.production_id
             product = production.product_id
-            
+            detail = clean_tags(wc.product_price_calc)
+            try:
+                unit_price = detail.split('=')[-1].strip()
+            except:
+                unit_price = '/'    
             excel_pool.write_xls_line(ws_name, row, [
                 product.default_code,
                 product.name,
@@ -403,8 +407,8 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
                 wc.name,
                 wc.state,
                 production.product_qty,  # Q.
-                '/', # todo Prezzo,
-                clean_tags(wc.product_price_calc),
+                unit_price,
+                detail,
                 ], default_format=f_text)
 
         return excel_pool.return_attachment(cr, uid, _('Production statistic'),
