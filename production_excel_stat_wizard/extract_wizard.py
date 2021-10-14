@@ -378,14 +378,14 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
         excel_pool.column_width(ws_name, [
             12, 30, 
             20, 30, 10, 15, 
-            10, 10,
+            10, 10, 10,
             80])
 
         row = 0
         excel_pool.write_xls_line(ws_name, row, [
             _('Codice'), _('Nome'), 
             _('Data'), _('Produzione'), _('Lavorazione'), _('State'),
-            _('Q.'), _('Prezzo'),             
+            _('Q.'), _('Q. real'), _('Prezzo'),             
             _('Dettaglio'),
             ], default_format=f_header)
 
@@ -399,6 +399,10 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
                 unit_price = float(detail.split('=')[-1].strip())
             except:
                 unit_price = '/'    
+            try:
+                load = detail.split('Load = ')[-1].split('\n')[0]    
+            except:
+                load = '/'    
             excel_pool.write_xls_line(ws_name, row, [
                 product.default_code,
                 product.name,
@@ -406,7 +410,8 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
                 production.name,
                 wc.name,
                 wc.state,
-                production.product_qty,  # Q.
+                production.product_qty,  # Q. nominale
+                load,  # Q. real
                 unit_price,
                 detail,
                 ], default_format=f_text)
