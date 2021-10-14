@@ -400,7 +400,8 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
             except:
                 unit_price = '/'    
             try:
-                load = detail.split('Load = ')[-1].split('\n')[0]    
+                load = float(
+                    detail.split('Load = ')[-1].split('\n')[0].strip())
             except:
                 load = '/'    
             excel_pool.write_xls_line(ws_name, row, [
