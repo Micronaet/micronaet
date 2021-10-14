@@ -384,8 +384,8 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
         row = 0
         excel_pool.write_xls_line(ws_name, row, [
             _('Codice'), _('Nome'), 
-            _('Data'), _('Produzione'), _('Lavorazione'), _('State'),
-            _('Q.'), _('Q. real'), _('Prezzo'),             
+            _('Data'), _('Produzione'), _('Lavorazione'), _('Stato'),
+            _('Q. nominale'), _('Q. reale'), _('Prezzo'),             
             _('Dettaglio'),
             ], default_format=f_header)
 
