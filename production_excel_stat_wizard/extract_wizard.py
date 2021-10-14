@@ -396,7 +396,7 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
             product = production.product_id
             detail = clean_tags(wc.product_price_calc)
             try:
-                unit_price = detail.split('=')[-1].strip()
+                unit_price = float(detail.split('=')[-1].strip())
             except:
                 unit_price = '/'    
             excel_pool.write_xls_line(ws_name, row, [
