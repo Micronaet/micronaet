@@ -384,10 +384,10 @@ class MrpProduction(osv.Model):
                     waste_qty,
                     product.uom_id.contipaq_ref,
                     unit_cost,
-                    '', # False, # No lot
+                    '%s / R' % mrp.name,  # False, # No lot when recycle
                     ])
                 row += 1
-                qty -= waste_qty # remove waste
+                qty -= waste_qty  # remove waste
 
             product = load.product_id # Real product:
             excel_pool.write_xls_line(ws_name, row, [
@@ -395,8 +395,8 @@ class MrpProduction(osv.Model):
                 qty,
                 product.uom_id.contipaq_ref,
                 unit_cost,
-                #load.product_code, # XXX Lot code (complex not used)
-                mrp.name, # Use production name
+                # load.product_code, # XXX Lot code (complex not used)
+                mrp.name,  # Use production name
                 ])
         excel_pool.save_file_as(folder['load']['data'] % lavoration.id)
 
