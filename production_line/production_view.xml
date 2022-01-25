@@ -157,6 +157,7 @@
                 <field name="security_template_id" />
                 <field name="cost_product_id" groups="production_line.group_production_admin" />
                 <field name="hour_daily_work" />
+                <field name="start_hour" />
                 <field name="parent_workcenter_id" groups="production_line.group_production_admin" />
             </field>
 

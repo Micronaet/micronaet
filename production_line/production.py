@@ -988,8 +988,11 @@ class mrp_workcenter(osv.osv):
         'history_lavoration_ids': fields.one2many(
             'mrp.workcenter.history', 'workcenter_id', 'Lavoration history'),
         'hour_daily_work': fields.float(
-            'Daily work hours', digits=(8,2),
+            'Daily work hours', digits=(8, 2),
             help='Usual working hour per day for this line'),
+        'start_hour': fields.float(
+            'Ora di partenza', digits=(8, 2),
+            help='Ora del giorno da cui parte la produzione'),
         'cost_product_id': fields.many2one(
             'product.product', 'Product linked',
             help='Product linked to the line for cost computation'),
@@ -998,8 +1001,10 @@ class mrp_workcenter(osv.osv):
             help='Parent workcenter line, used for put history elements (not for lavoration cost that are linked to line)'),
         }
     _defaults = {
-        'hour_daily_work': lambda *x: 16, # default working hour
+        'start_hour': lambda *x: 4,  # default working hour
+        'hour_daily_work': lambda *x: 16,  # default working hour
         }
+
 
 class mrp_production_workcenter_line_extra(osv.osv):
     """ Update some _defaults value
