@@ -815,13 +815,13 @@ class mrp_production_material(osv.osv):
     _rec_name = 'product_id'
 
     _columns = {
-        'product_id':fields.many2one('product.product', 'Product',
+        'product_id': fields.many2one('product.product', 'Product',
             required=True),
-        'lot_id':fields.many2one('stock.production.lot', 'Lot'),
+        'lot_id': fields.many2one('stock.production.lot', 'Lot'),
 
         'quantity': fields.float('Quantity', digits=(16, 2)),
         'uom_id': fields.related(
-            'product_id','uom_id', type='many2one', relation='product.uom',
+            'product_id', 'uom_id', type='many2one', relation='product.uom',
             string='UOM'),
 
         # Link if used mrp.production object
@@ -836,7 +836,7 @@ class mrp_production_material(osv.osv):
             ondelete='cascade'),
 
         'accounting_qty': fields.related(
-            'product_id','accounting_qty', type='float',  digits=(16, 3),
+            'product_id', 'accounting_qty', type='float',  digits=(16, 3),
             string='Accounting Q.ty', store=False),
     }
 
