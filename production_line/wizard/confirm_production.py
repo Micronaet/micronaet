@@ -33,6 +33,7 @@ from openerp.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 
+
 class MrpProduction(osv.osv):
     """ Utility for file operations
     """
@@ -60,7 +61,7 @@ class MrpProduction(osv.osv):
                     _('The exportation of CL and SL is not enabled, check and fix in '
                     'Company window to setup parameters!'))
 
-            if not all ((
+            if not all((
                     parameter.production_host,
                     parameter.production_port,
                     parameter.production_path,
@@ -168,6 +169,7 @@ class MrpProduction(osv.osv):
                     ' during export)!') % file_sl,
             )
         return True
+
 
 class confirm_mrp_production_wizard(osv.osv_memory):
     """ Wizard that confirm production/lavoration
@@ -977,7 +979,22 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             return wc_browse.product.id if wc_browse.product else False
         return False
 
+    def default_mrp_for_clean(self, cr, uid, context=None):
+        """ Get default mrp_for_clean
+        """
+        wc_pool = self.pool.get('mrp.production.workcenter.line')
+
+        if context.get('active_id', 0):
+            wc_browse = wc_pool.browse(
+                cr, uid, context.get('active_id', 0), context=context)
+            return wc_browse.production_id.mrp_for_clean
+        return False
+
+
+
+
     _columns = {
+        'mrp_for_clean': fields.boolean('Per pulizia'),
         'product_id': fields.many2one(
             'product.product', 'Product', required=True),
         'real_product_qty': fields.float(
@@ -1020,9 +1037,11 @@ class confirm_mrp_production_wizard(osv.osv_memory):
         }
 
     _defaults = {
+        'mrp_for_clean': lambda s, cr, uid, c: s.default_mrp_for_clean(
+            cr, uid, context=c),
         'product_id': lambda s, cr, uid, c: s.default_product(
             cr, uid, context=c),
-        'real_product_qty':  lambda s, cr, uid, c: s.default_quantity(
+        'real_product_qty': lambda s, cr, uid, c: s.default_quantity(
             cr, uid, context=c),
         'partial': lambda *a: True,
         'list_unload': lambda s, cr, uid, ctx: s.default_list_unload(
