@@ -791,7 +791,7 @@ class mrp_production_product_packaging(osv.osv):
     """ Manage packaging for production of product
     """
     _name = 'mrp.production.product.packaging'
-    _description= 'Production product packaging'
+    _description = 'Production product packaging'
     _rec_name = 'ul_id'
 
     _columns = {
@@ -1001,7 +1001,7 @@ class mrp_workcenter(osv.osv):
             help='Parent workcenter line, used for put history elements (not for lavoration cost that are linked to line)'),
         }
     _defaults = {
-        'start_hour': lambda *x: 4,  # default working hour
+        'start_hour': lambda *x: 3,  # default working hour
         'hour_daily_work': lambda *x: 16,  # default working hour
         }
 
@@ -1435,17 +1435,21 @@ class mrp_production_package(osv.osv):
     _rec_name = 'partner_id'
 
     _columns = {
-        'production_id':fields.many2one('mrp.production', 'Production',
+        'production_id': fields.many2one('mrp.production', 'Production',
             ondelete='cascade'),
         'product_ul_id':fields.many2one('product.ul', 'Required package',
             ondelete='set null'),
-        'partner_id':fields.many2one('res.partner', 'Customer',
+        'partner_id': fields.many2one('res.partner', 'Customer',
             ondelete='set null'),
         'order_line_id':fields.many2one('sale.order.line', 'Sale order line',
             ondelete='set null'),
         'quantity': fields.float('Quantity', digits=(16, 2)),
         'stock': fields.boolean('Stock'),
-        }
+        'mrp_for_clean': fields.boolean(
+            'Per pulizia',
+            help='Macchina utilizzata per la pulizia della linea'),
+
+    }
 
     _defaults = {
         'stock': lambda *x: True,
