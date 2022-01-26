@@ -1441,19 +1441,19 @@ class mrp_production_package(osv.osv):
             ondelete='set null'),
         'partner_id': fields.many2one('res.partner', 'Customer',
             ondelete='set null'),
-        'order_line_id':fields.many2one('sale.order.line', 'Sale order line',
+        'order_line_id': fields.many2one('sale.order.line', 'Sale order line',
             ondelete='set null'),
         'quantity': fields.float('Quantity', digits=(16, 2)),
         'stock': fields.boolean('Stock'),
         'mrp_for_clean': fields.boolean(
             'Per pulizia',
             help='Macchina utilizzata per la pulizia della linea'),
-
     }
 
     _defaults = {
         'stock': lambda *x: True,
         }
+
 
 class mrp_production_extra(osv.osv):
     """ Create extra fields in mrp.production obj
