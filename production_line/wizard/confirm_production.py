@@ -814,6 +814,13 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                     ) # error[0], '%s [%s]' % (error[1], sys.exc_info()) )
 
         else:  # state == 'material' >> unload all material and package:
+            # Update clean production if present
+            if wiz_proxy.mrp_for_clean:
+                _logger.info('Updating for clean production')
+                mrp_pool.write(
+                    cr, uid, [current_lavoration_id.production_id.id], {
+                        'mrp_for_clean': True,
+                    }, context=context)
             # -----------------------------------------------------------------
             #                              SL Document
             # -----------------------------------------------------------------
@@ -989,9 +996,6 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 cr, uid, context.get('active_id', 0), context=context)
             return wc_browse.production_id.mrp_for_clean
         return False
-
-
-
 
     _columns = {
         'mrp_for_clean': fields.boolean('Per pulizia'),
