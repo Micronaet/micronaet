@@ -1445,9 +1445,6 @@ class mrp_production_package(osv.osv):
             ondelete='set null'),
         'quantity': fields.float('Quantity', digits=(16, 2)),
         'stock': fields.boolean('Stock'),
-        'mrp_for_clean': fields.boolean(
-            'Per pulizia',
-            help='Macchina utilizzata per la pulizia della linea'),
     }
 
     _defaults = {

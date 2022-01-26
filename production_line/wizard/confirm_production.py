@@ -18,6 +18,7 @@
 #
 ###############################################################################
 import os
+import pdb
 import sys
 import openerp.netsvc as netsvc
 import logging
@@ -169,6 +170,12 @@ class MrpProduction(osv.osv):
                     ' during export)!') % file_sl,
             )
         return True
+
+    _columns = {
+        'mrp_for_clean': fields.boolean(
+            'Per pulizia',
+            help='Macchina utilizzata per la pulizia della linea'),
+    }
 
 
 class confirm_mrp_production_wizard(osv.osv_memory):
@@ -994,6 +1001,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
         if context.get('active_id', 0):
             wc_browse = wc_pool.browse(
                 cr, uid, context.get('active_id', 0), context=context)
+            pdb.set_trace()
             return wc_browse.production_id.mrp_for_clean
         return False
 
