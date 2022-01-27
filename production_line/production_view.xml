@@ -1224,6 +1224,8 @@
         <field name="inherit_id" ref="mrp.view_mrp_production_filter"/>
         <field name="arch" type="xml">
            <field name="name" position="after">
+                <filter name="mrp_for_clean" string="Di pulizia" domain="[('mrp_for_clean','=',True)]" />
+
                 <filter icon="terp-go-home" name="ul_state_draft" string="UL draft" domain="[('ul_state','=','draft')]" />
                 <filter icon="terp-go-home" name="ul_state_account" string="UL account" domain="[('ul_state','=','account')]" />
                 <filter icon="terp-go-home" name="ul_state_deleted" string="UL deleted" domain="[('ul_state','=','deleted')]" />
