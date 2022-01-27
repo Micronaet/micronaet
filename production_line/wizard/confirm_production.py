@@ -825,7 +825,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             if wiz_proxy.mrp_for_clean:
                 _logger.info('Updating for clean production')
                 mrp_pool.write(
-                    cr, uid, [current_lavoration_id.production_id.id], {
+                    cr, uid, [lavoration_browse.production_id.id], {
                         'mrp_for_clean': True,
                     }, context=context)
             # -----------------------------------------------------------------
