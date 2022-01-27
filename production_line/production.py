@@ -1406,8 +1406,8 @@ class mrp_production_workcenter_line_extra(osv.osv):
             help='Materials are loaded from production document, instead from product bom.'),
         'max_hour_day': fields.float('Max hour a day', digits=(5, 3),
             help='Max hour for daily work'),
-        #'hours_day_line': fields.function(_function_hours_day_line, method=True, type='float', string='Hours day line', store=False),
-        #'unload_confirmed': fields.boolean('Unload confirmed', help='All list of unload is confirmed!'),
+        # 'hours_day_line': fields.function(_function_hours_day_line, method=True, type='float', string='Hours day line', store=False),
+        # 'unload_confirmed': fields.boolean('Unload confirmed', help='All list of unload is confirmed!'),
         }
 
     _defaults = {
@@ -1417,15 +1417,16 @@ class mrp_production_workcenter_line_extra(osv.osv):
         'cycle': lambda *a: 1,
         'hour': lambda *a: 4,
         'real_date_planned': lambda *x: datetime.today().strftime(
-            '%Y-%m-%d 06:00:00'),#  '%s 08:00:00'%(ctx.get('date', fields.date.context_today(self,cr,uid,context=ctx))),
+            '%Y-%m-%d 06:00:00'),  # '%s 08:00:00'%(ctx.get('date', fields.date.context_today(self,cr,uid,context=ctx))),
         'material_from_production': lambda *x: False,
-        #'load_confirmed': lambda *a: False,
-
-        #'lavoration_number': lambda obj, cr, uid, context: obj.pool.get('ir.sequence').get(cr, uid, 'wcline.number'),
-        #'unload_confirmed': lambda *a: False,
-        #'real_date_planned_end': lambda *x: False,
-        #'bom_material_ids': lambda s, cr, uid, ctx: s.create_bom_elements_from_production(cr, uid, context=ctx),
+        # 'load_confirmed': lambda *a: False,
+        # 'lavoration_number': lambda obj, cr, uid, context: obj.pool.get(
+        # 'ir.sequence').get(cr, uid, 'wcline.number'),
+        # 'unload_confirmed': lambda *a: False,
+        # 'real_date_planned_end': lambda *x: False,
+        # 'bom_material_ids': lambda s, cr, uid, ctx: s.create_bom_elements_from_production(cr, uid, context=ctx),
         }
+
 
 class mrp_production_package(osv.osv):
     """ Package to use for production
@@ -1437,7 +1438,7 @@ class mrp_production_package(osv.osv):
     _columns = {
         'production_id': fields.many2one('mrp.production', 'Production',
             ondelete='cascade'),
-        'product_ul_id':fields.many2one('product.ul', 'Required package',
+        'product_ul_id': fields.many2one('product.ul', 'Required package',
             ondelete='set null'),
         'partner_id': fields.many2one('res.partner', 'Customer',
             ondelete='set null'),

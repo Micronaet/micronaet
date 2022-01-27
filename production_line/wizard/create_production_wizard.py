@@ -73,11 +73,11 @@ class create_mrp_production_wizard(osv.osv_memory):
     """
     _name = "mrp.production.create.wizard"
 
-    # Utility funtion
+    # Utility function
     def preserve_window(self, cr, uid, ids, context=None):
         """ Create action for return the same open wizard window
         """
-        view_id = self.pool.get('ir.ui.view').search(cr,uid,[
+        view_id = self.pool.get('ir.ui.view').search(cr, uid, [
             ('model', '=', 'mrp.production.create.wizard'),
             ('name', '=', 'Wizard create production order')])
 
