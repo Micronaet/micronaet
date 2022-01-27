@@ -1001,7 +1001,6 @@ class confirm_mrp_production_wizard(osv.osv_memory):
         if context.get('active_id', 0):
             wc_browse = wc_pool.browse(
                 cr, uid, context.get('active_id', 0), context=context)
-            pdb.set_trace()
             return wc_browse.production_id.mrp_for_clean
         return False
 
