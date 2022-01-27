@@ -742,6 +742,10 @@
         <field name="model">mrp.production</field>
         <field name="inherit_id" ref="mrp.mrp_production_tree_view" />
         <field name="arch" type="xml">
+            <field name="date_planned" position="after">
+                <field name="mrp_for_clean" string="Pulizia"/>
+            </field>
+
             <!--Tree colors -->
             <xpath expr="/tree" position="attributes">
                 <attribute name="colors">colors="blue:accounting_state in ('draft',);green:accounting_state in ('production',);red:accounting_state in ('cancel',);black:accounting_state in ('close',);</attribute>
@@ -804,6 +808,9 @@
         <field name="arch" type="xml">
             <field name="user_id" position="after">
                 <field name="state_info" />
+            </field>
+            <field name="date_planned" position="after">
+                <field name="mrp_for_clean"/>
             </field>
 
             <!-- New header -->

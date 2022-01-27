@@ -37,24 +37,26 @@ def return_view(self, cr, uid, res_id, view_name, object_name):
     """
     if not view_name: return {'type':'ir.actions.act_window_close'}
 
-    view_element=view_name.split(".")
-    views=[]
+    view_element = view_name.split(".")
+    views = []
 
-    if len(view_element)!=2: return  {'type':'ir.actions.act_window_close'}
+    if len(view_element) != 2:
+        return  {'type': 'ir.actions.act_window_close'}
 
-    model_id=self.pool.get('ir.model.data').search(cr, uid, [
-        ('model','=','ir.ui.view'),
-        ('module','=',view_element[0]),
+    model_id = self.pool.get('ir.model.data').search(cr, uid, [
+        ('model', '=', 'ir.ui.view'),
+        ('module', '=', view_element[0]),
         ('name', '=', view_element[1])
     ])
     if model_id:
-        view_id=self.pool.get('ir.model.data').read(cr, uid, model_id)[0]['res_id']
-        views = [(view_id, 'form'),(False, 'tree')]
+        view_id = self.pool.get('ir.model.data').read(
+            cr, uid, model_id)[0]['res_id']
+        views = [(view_id, 'form'), (False, 'tree')]
 
     return {
             'view_type': 'form',
             'view_mode': 'form,tree',
-            'res_model': object_name, # object linked to the view
+            'res_model': object_name,  # object linked to the view
             'views': views,
             'domain': [('id', 'in', res_id)],
             # 'views': [(view_id, 'form')],
