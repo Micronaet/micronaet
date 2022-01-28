@@ -248,18 +248,6 @@ class sale_order_add_extra(osv.osv):
     def schedule_etl_sale_order(self, cr, uid, context=None):
         """ Import OC and create sale.order
         """
-        currency_pool = self.pool.get('res.currency')
-        partner_pool = self.pool.get('res.partner')
-        accounting_pool = self.pool.get('micronaet.accounting')
-
-        empty_date = accounting_pool.get_empty_date()
-        log_info = ''
-
-        # Update boolean if store value < sum(oc line q.):
-        is_to_produce_q = {}
-        # ID for update boolean if store value < sum(oc line q.):
-        is_to_produce_line = {}
-
         # ---------------------------------------------------------------------
         #                                 Utility
         # ---------------------------------------------------------------------
@@ -271,6 +259,22 @@ class sale_order_add_extra(osv.osv):
                 record['NGB_SR_DOC'],
                 record['NGL_DOC'],
             )
+
+        currency_pool = self.pool.get('res.currency')
+        partner_pool = self.pool.get('res.partner')
+        accounting_pool = self.pool.get('micronaet.accounting')
+        line_pool = self.pool.get('sale.order.line')
+
+        # Parameter:
+        property_account_position = 1
+
+        empty_date = accounting_pool.get_empty_date()
+        log_info = ''
+
+        # Update boolean if store value < sum(oc line q.):
+        is_to_produce_q = {}
+        # ID for update boolean if store value < sum(oc line q.):
+        is_to_produce_line = {}
 
         # Open CSV passed file (see arguments) mode: read/binary, delim. char
         _logger.info('Start import OC header')
@@ -296,7 +300,7 @@ class sale_order_add_extra(osv.osv):
             'update sale_order set state=\'draft\' where state is null;')
         # to delete extra elements, on update order id is deleted from here
         all_order_ids = self.search(cr, uid, [
-            ('accounting_order', '=', True),
+            ('accounting_order', '=', True),  # All imported order
             ])
         # list of all modified orders header (for load lines to test deletion)
         all_order_updated_ids = []
@@ -307,7 +311,7 @@ class sale_order_add_extra(osv.osv):
                 self, cr, uid, 'schedule_etl_sale_order',
                 'Cannot connect to MSSQL OC_TESTATE'
             )
-        oc_header = {}  # save OpenERP ID  (ref, type, number)
+        oc_header = {}  # Save OpenERP ID  (ref, type, number)
 
         for oc in cursor_oc:
             try:  # master error
@@ -332,15 +336,19 @@ class sale_order_add_extra(osv.osv):
                 else:
                     partner_id = False
 
+                # todo use mexal_c old reference (used for pricelist)
                 partner_proxy = browse_partner_ref(
                     self, cr, uid, oc['CKY_CNT_CLFR'], context=context)
+
+                # -------------------------------------------------------------
+                #                           UPDATE:
+                # -------------------------------------------------------------
                 if oc_id:  # update   todo test for deadline update
                     oc_id = oc_id[0]
                     if oc_id not in all_order_updated_ids:
                         all_order_updated_ids.append(oc_id)
 
-                    oc_proxy = self.browse(cr, uid, oc_id, context=context)
-
+                    # oc_proxy = self.browse(cr, uid, oc_id, context=context)
                     # Possible error during importation:
                     # 1. partner not the same,
                     # 2. deadline changed (see in the line for value),
@@ -365,7 +373,10 @@ class sale_order_add_extra(osv.osv):
                     # stato ed anche lo stato delle line rimane l'informazione
                     # nelle bolle di produzione
 
-                else:  # new:
+                # -------------------------------------------------------------
+                #                         NEW:
+                # -------------------------------------------------------------
+                else:
                     if not partner_id:
                         _logger.error(
                             'No partner found (created minimal): %s' % (
@@ -375,14 +386,12 @@ class sale_order_add_extra(osv.osv):
                                 'res.partner').create(cr, uid, {
                                     'name': 'Partner %s' % (
                                         oc['CKY_CNT_CLFR']),
-                                    'sql_customer_code': oc['CKY_CNT_CLFR'],
-                                    'active': True,
-                                    # todo parametrizzare:
-                                    'property_account_position': 1,
+                                    'property_account_position':
+                                        property_account_position,
                                     'is_company': True,
-                                    'employee': False,
-                                    'parent_id': False,
+                                    # todo old mode:
                                     'mexal_c': oc['CKY_CNT_CLFR'],
+                                    'sql_customer_code': oc['CKY_CNT_CLFR'],
                                     # customer: True,  # OC so customer!
                                 }, context=context)
                         except:
@@ -390,21 +399,17 @@ class sale_order_add_extra(osv.osv):
                                 'Error creating minimal partner: %s [%s]' % (
                                     oc['CKY_CNT_CLFR'],
                                     sys.exc_info()))
-                            continue # jump this OC
+                            continue  # jump this OC
 
                     oc_id = self.create(cr, uid, {
-                        'name': name,  # max 64
+                        'name': name,
                         'accounting_order': True,  # comes from Accounting
-                        'origin': False,  # Source Document
                         'picking_policy': 'direct',
                         'order_policy': 'manual',
                         'date_order': oc['DTT_DOC'].strftime('%Y-%m-%d'),
                         'partner_id': partner_id,
                         'user_id': uid,
-                        'note': oc['CDS_NOTE'].strip(),  # Terms and conditions
-                        # State: draft sent cancel waiting_date progress
-                        # manual shipping_except invoice_except done
-                        # 'state': 'draft',
+                        'note': oc['CDS_NOTE'].strip(),
                         'invoice_quantity': 'order',  # order procurement
                         # product.pricelist   # todo put default!!!
                         'pricelist_id':
@@ -414,6 +419,11 @@ class sale_order_add_extra(osv.osv):
                         'partner_shipping_id': partner_id,
                         'currency_id': currency_convert.get(
                             oc['NKY_VLT'], currency_default),
+                        # 'origin': False,  # Source Document
+                        # Terms and conditions
+                        # State: draft sent cancel waiting_date progress
+                        # manual shipping_except invoice_except done
+                        # 'state': 'draft',
                         # accounting_state default = new
                         # order_line
                         # payment_term account.payment.term  'currency_id'
@@ -442,38 +452,39 @@ class sale_order_add_extra(osv.osv):
         # Delete header (and line linked):
         # todo Notify that OC is deleted from account (delivery or deleted???):
         for delete_id in all_order_ids:
-            # Rule: order before - order update = order to delete
+            # Rule used: order before - order update = order to delete
             try:
+                # Sapnaet: No deletion only closed!
                 self.unlink(cr, uid, [delete_id], context=context)
             except:
-                _logger.error('Error delete order id: %s' % (delete_id,))
+                _logger.error('Error delete order id: %s' % delete_id)
 
-            # self.write(cr, uid, all_order_ids, {'accounting_order': False,},
+            # self.write(cr, uid, all_order_ids, {'accounting_order': False},
             # context=context) # Not visible in production (only in jobs)
 
         # ---------------------------------------------------------------------
-        #                               IMPORT LINE
+        #                           IMPORT LINE
         # ---------------------------------------------------------------------
         _logger.info('Start import OC lines')
-        line_pool = self.pool.get('sale.order.line')
         all_order_line_ids = line_pool.search(cr, uid, [
             ('order_id', 'in', all_order_updated_ids)], context=context)
 
         # Set all line as 'not confirmed':
-        res = line_pool.write(cr, uid, all_order_line_ids, {
+        line_pool.write(cr, uid, all_order_line_ids, {
             'accounting_state': 'not'}, context=context)
 
         # Load all OC line in openerp in DB_line dict
         DB_line = {}
         for ol in line_pool.browse(
                 cr, uid, all_order_line_ids, context=context):
-            if ol.order_id.id not in DB_line:
-                DB_line[ol.order_id.id] = []
+            order_id = ol.order_id.id
+            if order_id not in DB_line:
+                DB_line[order_id] = []
 
             # ---------------
             # DB Line record:
             # ---------------
-            DB_line[ol.order_id.id].append([
+            DB_line[order_id].append([
                 ol.id,  # ID
                 False,  # find!
                 ol.product_id.id,  # product_id
@@ -481,6 +492,7 @@ class sale_order_add_extra(osv.osv):
                 ol.product_uom_qty],   # q.
             )
 
+        # Load order from accounting MySQL:
         cursor_oc_line = accounting_pool.get_oc_line(cr, uid)
         if not cursor_oc_line:
             return log_error(
@@ -496,25 +508,24 @@ class sale_order_add_extra(osv.osv):
                     continue
 
                 # Get product browse from code:
-                product_browse = browse_product_ref(
-                    self, cr, uid, oc_line['CKY_ART'].strip(), context=context)
-                if not product_browse:
+                default_code = oc_line['CKY_ART'].strip()
+                product = browse_product_ref(
+                    self, cr, uid, default_code, context=context)
+                product_id = product.id
+                if not product:
                     _logger.info(
-                        'No product found (OC line jumped): %s' % (
-                            oc_line['CKY_ART'], ))
+                        'No product found, OC line jumped: %s' % default_code)
                     continue
 
                 order_id = oc_header[oc_key][0]
-                date_deadline = oc_line['DTT_SCAD'].strftime(
-                    '%Y-%m-%d') \
+                date_deadline = oc_line['DTT_SCAD'].strftime('%Y-%m-%d') \
                     if oc_line['DTT_SCAD'] and \
-                        oc_line['DTT_SCAD'] != empty_date else False
+                    oc_line['DTT_SCAD'] != empty_date else False
+
                 # NOTE this is ID of line in OC (not really sequence order)
                 sequence = oc_line['NPR_RIGA']
 
-                uom_id = product_browse.uom_id.id if product_browse else False
-                # uoms.get(uom, product_browse.uom_id.id if product_browse
-                # else False) # take default unit
+                uom_id = product.uom_id.id if product else False
                 conversion = (
                     oc_line['NCF_CONV'] if oc_line['NCF_CONV'] else 1.0)
                 quantity = (
@@ -522,31 +533,33 @@ class sale_order_add_extra(osv.osv):
 
                 # Save deadline in OC header (first time):
                 if not oc_header[oc_key][1]:
-                    if date_deadline: # take the first deadline for save in header delivery (TODO manage rewrite)
+                    # take the first deadline for save in header delivery
+                    # todo manage rewrite
+                    if date_deadline:
                         oc_header[oc_key][1] = True
-                        mod = self.write(cr, uid, order_id, {
+                        self.write(cr, uid, order_id, {
                             'date_deadline': date_deadline}, context=context)
 
                 # common part of record (update/create):
                 data = {
                     'name': oc_line['CDS_VARIAZ_ART'],
-                    # product_browse.name if product_browse else 'Art. # %s' %
-                    # (oc_line['NPR_SORT_RIGA']),
-                    'product_id': product_browse.id,
+                    'product_id': product_id,
                     'product_uom_qty': quantity,
                     'product_uom': uom_id,
                     'price_unit': (oc_line['NPZ_UNIT'] or 0.0) * conversion,
-                    'tax_id': [(6, 0, [product_browse.taxes_id[0].id, ])]
                     # CSG_IVA
-                    if product_browse and product_browse.taxes_id else False,
+                    'tax_id': [(6, 0, [product.taxes_id[0].id])]
+                    if product and product.taxes_id else False,
                     'production_line':
-                        product_browse.supply_method == 'produce',
+                        product.supply_method == 'produce',
                     # IMPORTANTE CORREGGERE METTENDOLO NELLA IMPORTAZIONE
                     # PRODOTTI production_line,
                     'to_produce': True,
                     'date_deadline': date_deadline,
                     'order_id': order_id,
                     'sequence': sequence,  # id of row (not order field)
+                    # product.name if product else 'Art. # %s' %
+                    # (oc_line['NPR_SORT_RIGA']),
                     # 'accounting_state': 'modified',
                 }   # production_line
 
@@ -556,7 +569,7 @@ class sale_order_add_extra(osv.osv):
                     # list of all the order line in OpenERP
                     # [ID, finded, product_id, deadline, q.]
                     for element in DB_line[order_id]:
-                        if element[1] == False and element[2] == product_browse.id and date_deadline == element[3]:  # product and deadline
+                        if element[1] == False and element[2] == product.id and date_deadline == element[3]:  # product and deadline
                             # Q. different (with error)
                             if abs(element[4] - quantity) < 1.0:
                                 data['accounting_state'] = 'new'
@@ -577,14 +590,14 @@ class sale_order_add_extra(osv.osv):
                         cr, uid, data, context=context)
 
                 # Save data for accounting evaluations:
-                if product_browse.id in is_to_produce_q:
-                    is_to_produce_q[product_browse.id] += quantity or 0.0
-                    is_to_produce_line[product_browse.id].append(oc_line_id)
+                if product_id in is_to_produce_q:
+                    is_to_produce_q[product_id] += quantity or 0.0
+                    is_to_produce_line[product_id].append(oc_line_id)
                 else:    # new element
-                    is_to_produce_q[product_browse.id] = \
-                        (quantity or 0.0) + product_browse.min_stock_level
+                    is_to_produce_q[product_id] = \
+                        (quantity or 0.0) + product.min_stock_level
                     # Min q. + sum(all order Q)
-                    is_to_produce_line[product_browse.id] = [oc_line_id]
+                    is_to_produce_line[product_id] = [oc_line_id]
             except:
                 _logger.error('Problem with oc line record: %s\n%s' % (
                     oc_line,

@@ -34,41 +34,41 @@ _logger = logging.getLogger(__name__)
 
 
 class product_packaging(osv.osv):
-    ''' Extra fields for product.packaging object
-    '''    
+    """ Extra fields for product.packaging object
+    """
     _name = 'product.packaging'
     _inherit = 'product.packaging'
-    
+
     _columns = {
         'is_active': fields.boolean('Is Active'),
         }
-        
+
     _defaults = {
         'is_active': lambda *x: True,
-        }    
+        }
 class product_ul_extra(osv.osv):
-    ''' Extra fields for product.product object
-    '''    
+    """ Extra fields for product.product object
+    """
     _name = 'product.ul'
     _inherit = 'product.ul'
-    
+
     # TODO maybe a scheduled action (not yes scheduled):
-    def import_ul(self, cr, uid, file_name_package, context=None):    
-        ''' load accounting list of ul (from files for now)
-        '''
+    def import_ul(self, cr, uid, file_name_package, context=None):
+        """ load accounting list of ul (from files for now)
+        """
         if not file_name_package:
             return False
-            
+
         filename = os.path.expanduser(file_name_package)
         for line in open(filename, 'r'):
             try:
                  code = line[:10].strip()
                  name = "%s [%s]" % (
-                     line[10:40].strip().title(), 
+                     line[10:40].strip().title(),
                      code,
                      )
                  product_code = line[40:47].strip()
-                 
+
                  linked_product_id = self.pool.get('product.product').search(
                      cr, uid, [
                          ('default_code','=',product_code)
@@ -76,33 +76,33 @@ class product_ul_extra(osv.osv):
                  if not linked_product_id:
                      # log error
                      continue # jump line
-                 linked_product_id = linked_product_id[0]    
- 
+                 linked_product_id = linked_product_id[0]
+
                  ul_id = self.search(cr, uid, [
                      ('code', '=', code)], context=context)
                  data = {
                      'code': code,
                      'name': name,
-                     'linked_product_id': linked_product_id,                  
+                     'linked_product_id': linked_product_id,
                      'type': 'unit',
                      }
                  if ul_id:
                      self.write(cr, uid, ul_id, data, context=context)
                  else:
-                     self.create(cr, uid, data, context=context)                        
+                     self.create(cr, uid, data, context=context)
             except:
-                break    
+                break
         return True
-    
+
     _columns = {
-        'product_ids': fields.one2many('product.packaging', 'ul', 'Product'),    
+        'product_ids': fields.one2many('product.packaging', 'ul', 'Product'),
         'code': fields.char('Code', size=10, required=False, readonly=False),
         'linked_product_id': fields.many2one('product.product', 'Product linked', required=False, help="Used for unload package product after lavoration"),
         }
 
 class product_product_extra(osv.osv):
-    ''' Extra fields for product.product object
-    '''
+    """ Extra fields for product.product object
+    """
     _inherit = 'product.product'
 
     # -------------
@@ -117,9 +117,9 @@ class product_product_extra(osv.osv):
         @param view_type: defines a view type. it can be one of (form, tree, graph, calender, gantt, search, mdx)
         @param context: context arguments, like lang, time zone
         @param toolbar: contains a list of reports, wizards, and links related to current model
-        
+
         @return: returns a dict that contains definition for fields, views, and toolbars
-        """        
+        """
         if view_type == 'form' and no_establishment_group(self, cr, uid, context=context):
             toolbar = False
         return super(product_product_extra, self).fields_view_get(
@@ -128,35 +128,35 @@ class product_product_extra(osv.osv):
     # -------------------------------------------------------------------------
     #                               Scheduled actions
     # -------------------------------------------------------------------------
-    def schedule_etl_product_state_mssql(self, cr, uid, verbose=True, 
+    def schedule_etl_product_state_mssql(self, cr, uid, verbose=True,
             as_dict=True, file_name_package=False, context=None):
-        ''' Import from MSSQL DB linked to Company AQ_QUANTITY elements
-        '''
+        """ Import from MSSQL DB linked to Company AQ_QUANTITY elements
+        """
         _logger.info("Start import packages list")
-        
+
         # Pool used:
         ul_pool = self.pool.get('product.ul')
         accounting_pool = self.pool.get('micronaet.accounting')
         product_packaging_pool = self.pool.get('product.packaging')
         product_pool = self.pool.get("product.product")
-        
+
         try:
             cursor = accounting_pool.get_product_package_columns(
-                 cr, uid, context=context) 
+                 cr, uid, context=context)
             if not cursor:
                 _logger.error('Unable to connect no package imported!')
-            
+
             # -----------------------------------------------------------------
             #                Import Product UL from file:
-            # -----------------------------------------------------------------      
-            if file_name_package:    
+            # -----------------------------------------------------------------
+            if file_name_package:
                 ul_pool.import_ul(cr, uid, file_name_package, context=context)
                 ul_ids = ul_pool.search(cr, uid, [], context=context)
                 codepackage_2_id = {}
                 for item in ul_pool.browse(cr, uid, ul_ids, context=context):
                      codepackage_2_id[item.code] = item.id
 
-                # Get list of package with the ID 
+                # Get list of package with the ID
                 # (used in product-package populate operations)
                 for record in cursor:
                     try:
@@ -167,23 +167,23 @@ class product_product_extra(osv.osv):
                         code = code[4:]
                         pul_id = codepackage_2_id.get(code, False)
                         if not pul_id:
-                            _logger.error("UL code not found: '%s'" % (code))                                
+                            _logger.error("UL code not found: '%s'" % (code))
                     except:
                         _logger.error(sys.exc_info())
-                        
+
                 # -------------------------------------------------------------
                 # Start importation product-package:
                 # -------------------------------------------------------------
                 _logger.info("Start import packages for product")
-                
+
                 cursor = accounting_pool.get_product_package(
-                    cr, uid, context=context) 
+                    cr, uid, context=context)
                 if not cursor:
                     _logger.error(
                         'Unable to connect no importation of package list for product!')
 
                 # loop on all product elements with package
-                for product_package in cursor: 
+                for product_package in cursor:
                     product_code = product_package['CKY_ART'].strip()
                     product_ids = product_pool.search(cr, uid, [
                         ('default_code','=',product_code)], context=context)
@@ -193,17 +193,17 @@ class product_product_extra(osv.osv):
                         continue # next record!
 
                     product_id = product_ids[0]
-                    # loop on all elements/columns 
+                    # loop on all elements/columns
                     # (package NGD_* *=code of package)
-                    for key in codepackage_2_id: 
+                    for key in codepackage_2_id:
                         try:
-                            # TODO why a False value??!?!?!?!?                    
+                            # TODO why a False value??!?!?!?!?
                             if not key:
                                 _logger.error('Key not present!')
                                 continue
                             code = "NGD_" + key
                             # Q. is the value of the fields NDG_code!
-                            qty = product_package.get(code, 0.0) 
+                            qty = product_package.get(code, 0.0)
                             if qty > 0.0:  # search if present and > 0
                                 ul = codepackage_2_id.get(key,False)
                                 if not ul:
@@ -220,7 +220,7 @@ class product_product_extra(osv.osv):
                                     res = product_packaging_pool.write(
                                         cr, uid, ul_ids, {'qty': qty},
                                         context=context)
-                                else:      # create    
+                                else:      # create
                                     item_id = product_packaging_pool.create(
                                         cr, uid, {
                                             'product_id': product_id,
@@ -232,42 +232,42 @@ class product_product_extra(osv.osv):
                             _logger.error(sys.exc_info())
         except:
             _logger.error('Error import package during status importation!')
-            
-        # ---------------------------------------------------------------------    
+
+        # ---------------------------------------------------------------------
         # Start syncro product state:
-        # ---------------------------------------------------------------------    
+        # ---------------------------------------------------------------------
         _logger.info('Start syncro product state')
         cursor = accounting_pool.get_product_quantity(
             cr, uid, 1, 9, context=context) # current year always 9
         if not cursor:
             _logger.error(
                 'Unable to connect no importation of product state quantity!')
-        
+
         # Verbose variables:
         total = 0
         records = 0
         verbose_quantity = 100
-        
+
         # TODO Rewrite using base_mssql_accounting
         try:
             for record in cursor:
                 try:
                     records += 1
-                    
+
                     default_code = record['CKY_ART'].strip()
-                    
+
                     item_id = self.search(cr, uid, [
                         ('default_code','=',default_code),
                         ], context=context)
                     if item_id:
                         accounting_qty = record['NQT_INV'] + \
-                            record['NQT_CAR'] - record['NQT_SCAR']                     
+                            record['NQT_CAR'] - record['NQT_SCAR']
                         self.write(cr, uid, item_id, {
                             'accounting_qty': accounting_qty,
                             }, context=context)
                         total+=1
 
-                    if verbose and (records % verbose_quantity == 0): 
+                    if verbose and (records % verbose_quantity == 0):
                         _logger.info('%s State updated: %s]!' % (
                             records, total))
                 except:
@@ -285,7 +285,7 @@ class product_product_extra(osv.osv):
     def _function_linked_accounting_qty(
             self, cr, uid, ids, field, args, context=None):
         """ Calculate total of sale order line for used for accounting store
-        """ 
+        """
         res = dict.fromkeys(ids, 0)
         sol_pool = self.pool.get('sale.order.line')
         sol_ids = sol_pool.search(cr, uid, [
@@ -293,77 +293,81 @@ class product_product_extra(osv.osv):
             ('use_accounting_qty', '=', True),
             ], context=context)
         for line in sol_pool.browse(cr, uid, sol_ids, context=context):
-            try: 
+            try:
                 res[line.product_id.id] += line.product_uom_qty or 0.0
             except:
-                pass # no error!    
-        return res        
-        
+                pass # no error!
+        return res
+
     _columns = {
         'accounting_qty': fields.float('Account quantity', digits=(16, 3)),
         'linked_accounting_qty': fields.function(
-            _function_linked_accounting_qty, method=True, type='float', 
+            _function_linked_accounting_qty, method=True, type='float',
             string='OC qty linked to store', store=False, multi=False),
-                
+
         'minimum_qty': fields.float('Minimum alert quantity', digits=(16, 3)),
         'maximum_qty': fields.float('Maximum alert quantity', digits=(16, 3)),
-        'not_in_status': fields.boolean('Not in status', 
-            help='If checked in webkit report of status doesn\'t appear'), 
-        # 'to_produce': fields.boolean('To produce', help='If checked this 
-        # product appear on list of os lines during creation of production 
-        # orders'), 
-        
-        'is_pallet': fields.boolean('Is a pallet', help='The product is a pallet '), 
-        'pallet_max_weight': fields.float('Pallet weight', digits=(16, 3), 
+        'not_in_status': fields.boolean('Not in status',
+            help='If checked in webkit report of status doesn\'t appear'),
+        # 'to_produce': fields.boolean('To produce', help='If checked this
+        # product appear on list of os lines during creation of production
+        # orders'),
+
+        'is_pallet': fields.boolean('Is a pallet', help='The product is a pallet '),
+        'pallet_max_weight': fields.float('Pallet weight', digits=(16, 3),
             help='Max weight of the load on this pallet'),
-        
+
         'mrp_yield': fields.float('MRP m(x) yield', digits=(16, 3)),
-        'mrp_waste': fields.float('MRP m(x) waste', digits=(16, 3)),        
+        'mrp_waste': fields.float('MRP m(x) waste', digits=(16, 3)),
         }
 
     _defaults = {
         'accounting_qty': lambda *a: 0.0,
         'minimum_qty': lambda *a: 0.0,
-        'not_in_status': lambda *a: False, 
-        'is_pallet': lambda *a: False,         
-        }          
+        'not_in_status': lambda *a: False,
+        'is_pallet': lambda *a: False,
+        }
+
 
 # ID function:
 def get_partner_id(self, cr, uid, ref, context=None):
-    ''' Get OpenERP ID for res.partner with passed accounting reference
-    '''
+    """ Get OpenERP ID for res.partner with passed accounting reference
+    """
     partner_id=self.pool.get("res.partner").search(cr, uid, ["|","|",('mexal_c','=',ref),('mexal_d','=',ref),('mexal_s','=',ref)], context=context)
     return partner_id[0] if partner_id else False
 
+
 def browse_partner_id(self, cr, uid, item_id, context=None):
-    ''' Return browse obj for partner id
-    '''
+    """ Return browse obj for partner id
+    """
     browse_ids = self.pool.get('res.partner').browse(cr, uid, [item_id], context=context)
     return browse_ids[0] if browse_ids else False
 
+
 def browse_partner_ref(self, cr, uid, ref, context=None):
-    ''' Get OpenERP ID for res.partner with passed accounting reference
-    '''
-    partner_id = self.pool.get("res.partner").search(cr, uid, ["|","|",('mexal_c','=',ref),('mexal_d','=',ref),('mexal_s','=',ref)], context=context)
+    """ Get OpenERP ID for res.partner with passed accounting reference
+    """
+    partner_id = self.pool.get("res.partner").search(cr, uid, ["|", "|", ('mexal_c', '=', ref), ('mexal_d', '=', ref),('mexal_s','=',ref)], context=context)
     return self.pool.get('res.partner').browse(cr, uid, partner_id[0], context=context) if partner_id else False
 
+
 def get_product_id(self, cr, uid, ref, context=None):
-    ''' Get OpenERP ID for product.product with passed accounting reference
-    '''
+    """ Get OpenERP ID for product.product with passed accounting reference
+    """
     item_id = self.pool.get('product.product').search(cr, uid, [('default_code', '=', ref)], context=context)
     return item_id[0] if item_id else False
 
 def browse_product_id(self, cr, uid, item_id, context=None):
-    ''' Return browse obj for product id
-    '''
+    """ Return browse obj for product id
+    """
     browse_ids = self.pool.get('product.product').browse(cr, uid, [item_id], context=context)
     return browse_ids[0] if browse_ids else False
 
 def browse_product_ref(self, cr, uid, ref, context=None):
-    ''' Return browse obj for product ref
+    """ Return browse obj for product ref
         Create a minimal product with code ref for not jump oc line creation
         (after normal sync of product will update all the fields not present
-    '''
+    """
     item_id = self.pool.get('product.product').search(cr, uid, [('default_code', '=', ref)], context=context)
     if not item_id:
        try:
@@ -391,5 +395,5 @@ def browse_product_ref(self, cr, uid, ref, context=None):
         item_id=item_id[0]  # first
     return self.pool.get('product.product').browse(cr, uid, item_id, context=context)
 
-    
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

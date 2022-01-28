@@ -35,8 +35,8 @@ _logger = logging.getLogger(__name__)
 # -----------------------------------------------------------------------------
 # View function:
 def no_establishment_group(self, cr, uid, context=None):
-    ''' Test if current user belongs to group_production_production group    
-    '''
+    """ Test if current user belongs to group_production_production group
+    """
     group_pool = self.pool.get('res.groups')
     group_ids = group_pool.search(
         cr, uid, [
@@ -53,44 +53,46 @@ def prepare(valore):
     valore=valore.decode('cp1252')
     valore=valore.encode('utf-8')
     return valore.strip()
- 
+
 def log_error(self, cr, uid, operation, error, context=None):
     """ Log error in OpenERP log and add in log.activity object the same value
     """
     self.pool.get('log.activity').log_error(cr, uid, operation, error)
     _logger.error(error) # global variable
     return False
- 
+
 def prepare_date(valore):
     valore=valore.strip()
     if len(valore)==8:
        if valore: # TODO test correct date format
           return valore[:4] + "-" + valore[4:6] + "-" + valore[6:8]
     return False
- 
+
 def prepare_float(valore):
     valore=valore.strip()
     if valore: # TODO test correct date format
        return float(valore.replace(",","."))
     else:
        return 0.0   # for empty values
- 
+
 # ID function:
 def get_partner_id(self, cr, uid, ref, context=None):
-    ''' Get OpenERP ID for res.partner with passed accounting reference
-    '''
+    """ Get OpenERP ID for res.partner with passed accounting reference
+    """
     partner_id=self.pool.get("res.partner").search(cr, uid, ["|","|",('mexal_c','=',ref),('mexal_d','=',ref),('mexal_s','=',ref)], context=context)
     return partner_id[0] if partner_id else False
- 
+
+
 def browse_partner_id(self, cr, uid, item_id, context=None):
-    ''' Return browse obj for partner id
-    '''
+    """ Return browse obj for partner id
+    """
     browse_ids = self.pool.get('res.partner').browse(cr, uid, [item_id], context=context)
     return browse_ids[0] if browse_ids else False
- 
+
+
 def browse_partner_ref(self, cr, uid, ref, context=None):
-    ''' Get OpenERP ID for res.partner with passed accounting reference
-    '''
+    """ Get OpenERP ID for res.partner with passed accounting reference
+    """
     partner_id = self.pool.get("res.partner").search(cr, uid, [
         "|", "|",
         ('mexal_c', '=', ref),
@@ -100,24 +102,24 @@ def browse_partner_ref(self, cr, uid, ref, context=None):
 
     return self.pool.get('res.partner').browse(
         cr, uid, partner_id[0], context=context) if partner_id else False
- 
+
 def get_product_id(self, cr, uid, ref, context=None):
-    ''' Get OpenERP ID for product.product with passed accounting reference
-    '''
+    """ Get OpenERP ID for product.product with passed accounting reference
+    """
     item_id = self.pool.get('product.product').search(cr, uid, [('default_code', '=', ref)], context=context)
     return item_id[0] if item_id else False
- 
+
 def browse_product_id(self, cr, uid, item_id, context=None):
-    ''' Return browse obj for product id
-    '''
+    """ Return browse obj for product id
+    """
     browse_ids = self.pool.get('product.product').browse(cr, uid, [item_id], context=context)
     return browse_ids[0] if browse_ids else False
- 
+
 def browse_product_ref(self, cr, uid, ref, context=None):
-    ''' Return browse obj for product ref
+    """ Return browse obj for product ref
         Create a minimal product with code ref for not jump oc line creation
         (after normal sync of product will update all the fields not present
-    '''
+    """
     item_id = self.pool.get('product.product').search(cr, uid, [('default_code', '=', ref)], context=context)
     if not item_id:
        try:
@@ -144,5 +146,5 @@ def browse_product_ref(self, cr, uid, ref, context=None):
     else:
         item_id=item_id[0]  # first
     return self.pool.get('product.product').browse(cr, uid, item_id, context=context)
- 
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
