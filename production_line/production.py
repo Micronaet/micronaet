@@ -39,7 +39,7 @@ class StockProductionLot(osv.osv):
     _inherit = 'stock.production.lot'
 
     def name_get(self, cr, uid, ids, context=None):
-        """ Return a list of tupples contains id, name.
+        """ Return a list of tuples contains id, name.
             result format : {[(id, name), (id, name), ...]}
 
             @param cr: cursor to database
@@ -47,11 +47,11 @@ class StockProductionLot(osv.osv):
             @param ids: list of ids for which name should be read
             @param context: context arguments, like lang, time zone
 
-            @return: returns a list of tupples contains id, name
+            @return: returns a list of tuples contains id, name
         """
         if isinstance(ids, (list, tuple)) and not len(ids):
             return []
-        if isinstance(ids, (long, int)):
+        if isinstance(ids, (int, )):
             ids = [ids]
         res = []
         for record in self.browse(cr, uid, ids, context=context):
@@ -71,7 +71,8 @@ class mail_thread(osv.osv):
     # --------
     # Utility:
     # --------
-    def write_thread_message(self, cr, uid, ids, subject='', body='', context=None):
+    def write_thread_message(self, cr, uid, ids, subject='', body='',
+                             context=None):
         """ Write generic message
             # TODO unificare con quello dello stato
         """
@@ -79,17 +80,18 @@ class mail_thread(osv.osv):
         message = {
             'subject': subject,
             'body': body,
-            'type': 'comment', #'notification', 'email',
-            'subtype': False,  #parent_id, #attachments,
+            'type': 'comment',  # 'notification', 'email',
+            'subtype': False,   # parent_id, #attachments,
             'content_subtype': 'html',
             'partner_ids': [],
-            'email_from': 'openerp@micronaet.it', #wizard.email_from,
+            'email_from': 'openerp@micronaet.it',  # wizard.email_from,
             'context': context,
             }
         msg_id = self.message_post(cr, uid, ids, **message)
         return
 
-    def write_object_change_state(self, cr, uid, ids, state='state', context=None):
+    def write_object_change_state(self, cr, uid, ids, state='state',
+                                  context=None):
         """ Write info in thread list (used in WF actions)
         """
         current_proxy = self.browse(cr, uid, ids, context=context)[0]
@@ -100,20 +102,22 @@ class mail_thread(osv.osv):
             'body': _(
                 'State variation in <b>%s</b>') % current_proxy.__getattr__(
                     state),
-            'type': 'comment', #'notification', 'email',
-            'subtype': False,  #parent_id, #attachments,
+            'type': 'comment',  # 'notification', 'email',
+            'subtype': False,   # parent_id, #attachments,
             'content_subtype': 'html',
             'partner_ids': [],
-            'email_from': 'openerp@micronaet.it', #wizard.email_from,
+            'email_from': 'openerp@micronaet.it',  # wizard.email_from,
             'context': context,
             }
-        #message['partner_ids'].append(task_proxy.assigned_user_id.partner_id.id)
+        # message['partner_ids'].append(task_proxy.assigned_user_id.
+        # partner_id.id)
         self.message_subscribe_users(
             cr, uid, ids, user_ids=[uid], context=context)
 
         msg_id = self.message_post(cr, uid, ids, **message)
-        #if notification:
-        #    _logger.info('>> Send mail notification! [%s]' % message['partner_ids'])
+        # if notification:
+        #    _logger.info('>> Send mail notification! [%s]' %
+        #    message['partner_ids'])
         #    self.pool.get(
         #        'mail.notification')._notify(cr, uid, msg_id,
         #        message['partner_ids'],
@@ -127,10 +131,10 @@ class res_company_send_mail(osv.osv):
     """
     _inherit = 'res.company'
 
-    # TODO Riscrivere con la gestione dei thread
+    # todo Riscrivere con la gestione dei thread
     def send_mail(self, cr, uid, subject, body,
-            to_addr='nicola.riolini@gmail.com',
-            from_addr='OpenERP <openerp@micronaet.it>', context=None):
+                  to_addr='nicola.riolini@gmail.com',
+                  from_addr='OpenERP <openerp@micronaet.it>', context=None):
         """ Procedure for send control mail during importation
             Use default parameter for sending
             @return: False if mail is not sent
@@ -153,19 +157,14 @@ class res_company_send_mail(osv.osv):
         smtp.sendmail(
             from_addr, to_addr,
             'From: %s\nTo: %s\nSubject: %s\nDate: %s\n\n%s' % (
-                from_addr,
-                to_addr,
-                subject,
-                date,
-                body,
-            ), )
+                from_addr, to_addr, subject, date, body), )
         smtp.quit()
         return True
 
 
 class sale_order_add_extra(osv.osv):
     """ Create import scheduled action
-        Add extra field for manage termporary order in account program (for
+        Add extra field for manage temporary order in account program (for
         production and delivery decision)
     """
     _inherit = 'sale.order'
@@ -177,19 +176,19 @@ class sale_order_add_extra(osv.osv):
         uom_id = self.pool.get('product.uom').search(cr, uid, [
             ('name', '=', name), ])
         if uom_id:
-            return uom_id[0] # take the first
+            return uom_id[0]  # take the first
         else:
             return False
 
-    # TODO spostare in un posto migliore (o integrarlo nella gestione importaz)
+    # todo spostare in un posto migliore (o integrarlo nella gestione importaz)
     def send_mail(self, cr, uid, subject, body, context=None):
         """ Procedure for send control mail during importation
             @return: False if mail is not sent
         """
         from smtplib import SMTP
 
-        server_ids = self.pool.get('ir.mail_server').search(cr, uid, [],
-            context=context)
+        server_ids = self.pool.get('ir.mail_server').search(
+            cr, uid, [], context=context)
         if not server_ids:
             return False
 
@@ -204,7 +203,8 @@ class sale_order_add_extra(osv.osv):
         to_addr = 'nicola.riolini@gmail.com'
         date = datetime.now().strftime('%d/%m/%Y %H:%M')
 
-        smtp.sendmail(from_addr, to_addr,
+        smtp.sendmail(
+            from_addr, to_addr,
             'From: %s\nTo: %s\nSubject: %s\nDate: %s\n\n%s' % (
                 from_addr, to_addr, subject, date, body),)
         smtp.quit()
@@ -228,13 +228,12 @@ class sale_order_add_extra(osv.osv):
             'context': context
             }
 
-
     def confirm_delivery(self, cr, uid, ids, context=None):
         """ Change state for became mandatory the delivery date and block
             production orders
         """
         order_proxy = self.browse(cr, uid, ids, context=context)[0]
-        data = {'accounting_state': 'planned',}
+        data = {'accounting_state': 'planned'}
 
         if not order_proxy.date_delivery:
             data['date_delivery'] = \
@@ -251,9 +250,9 @@ class sale_order_add_extra(osv.osv):
         """
         currency_pool = self.pool.get('res.currency')
         partner_pool = self.pool.get('res.partner')
-        accouting_pool = self.pool.get('micronaet.accounting')
+        accounting_pool = self.pool.get('micronaet.accounting')
 
-        empty_date = accouting_pool.get_empty_date()
+        empty_date = accounting_pool.get_empty_date()
         log_info = ''
 
         # Update boolean if store value < sum(oc line q.):
@@ -483,7 +482,7 @@ class sale_order_add_extra(osv.osv):
                 ol.product_uom_qty],   # q.
             )
 
-        cursor_oc_line = accouting_pool.get_oc_line(cr, uid)
+        cursor_oc_line = accounting_pool.get_oc_line(cr, uid)
         if not cursor_oc_line:
             return log_error(
                 self, cr, uid,
