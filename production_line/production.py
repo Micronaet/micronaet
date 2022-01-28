@@ -563,17 +563,17 @@ class sale_order_add_extra(osv.osv):
                     # 'accounting_state': 'modified',
                 }   # production_line
 
-                # Syncronization part:
+                # Syncro part:
                 mod = False
                 if order_id in DB_line:
                     # list of all the order line in OpenERP
-                    # [ID, finded, product_id, deadline, q.]
+                    # [ID, found, product_id, deadline, q.]
                     for element in DB_line[order_id]:
                         if element[1] == False and element[2] == product.id and date_deadline == element[3]:  # product and deadline
                             # Q. different (with error)
                             if abs(element[4] - quantity) < 1.0:
                                 data['accounting_state'] = 'new'
-                                # set this line as assigned! # todo test!!
+                                # set this line as assigned! todo test!!
                                 element[1] = True
                             else:
                                 data['accounting_state'] = 'modified'
