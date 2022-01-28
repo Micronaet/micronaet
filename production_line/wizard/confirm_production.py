@@ -414,16 +414,18 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 if not recycle and lot_created_id:
                     ref_lot_id = '#%-9s' % lot_created_id
 
-            ref_lot_name = '%06d#%01d' % (
+            # MRP format: B1/00001
+            ref_lot_name = 'N%2s%05d#%01d' % (
+                mrp.name[:2],
                 int(mrp.name[-5:]),
                 sequence,
-                ) # Job <<< TODO use production (test, mrp is 5)
+                )  # Job <<< TODO use production (test, mrp is 5)
             if recycle:
-                # Replace first 0 with R:
+                # Replace first N with R:
                 ref_lot_name = 'R' + ref_lot_name[1:]
 
             # Written in CL info:
-            real_product_code = '%-8s%-2s%-10s%-10s' % (
+            real_product_code = '%-8s%-2s%-11s%-10s' % (
                 code,
                 wc.code[:2],
                 ref_lot_name,
@@ -431,11 +433,11 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 )
 
             # Passed to account
-            product_code = '%-8s%-2s%-10s%-10s' % (
+            product_code = '%-8s%-2s%-11s%-10s' % (
                 code,
                 wc.code[:2],
                 ref_lot_id or ref_lot_name,
-                wiz_proxy.package_id.code if package_id else '', # Package
+                wiz_proxy.package_id.code if package_id else '',  # Package
                 )
             load_pool.write(cr, uid, load_id, {
                 'product_code_id': lot_created_id,
@@ -488,7 +490,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             # -----------------------------------------------------
             if wiz_proxy.package_id and wiz_proxy.ul_qty:
                 f_cl.write(
-                    '%-10s%-25s%10.2f%-13s%16s\r\n' % ( # TODO 10 extra space
+                    '%-10s%-25s%10.2f%-13s%16s\r\n' % (  # TODO 10 extra space
                         wiz_proxy.package_id.linked_product_id.default_code,
                         '',  # lavoration_browse.name[4:],
                         - wiz_proxy.ul_qty,
@@ -595,7 +597,8 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                     if not cost_line:
                         raise osv.except_osv(
                             _('Calculate lavoration cost!'),
-                            _('Error calculating lavoration cost, verify if the workcenter has product linked'), )
+                            _('Error calculating lavoration cost, verify if the workcenter has product linked'),
+                        )
 
                     unload_cost_total = cost_line * total
                     _logger.info(_('Lavoration %s [%s]') % (
