@@ -289,7 +289,7 @@ class sale_order_add_extra(osv.osv):
             currency_convert[account_ref] = currency.id
 
         # ---------------------------------------------------------------------
-        #                               IMPORT HEADER
+        #                              IMPORT HEADER
         # ---------------------------------------------------------------------
         # todo rimuovere questo problema alcuni ordini hanno state empty!
         cr.execute(
@@ -301,8 +301,7 @@ class sale_order_add_extra(osv.osv):
         # list of all modified orders header (for load lines to test deletion)
         all_order_updated_ids = []
 
-        cursor_oc = self.pool.get(
-            'micronaet.accounting').get_oc_header(cr, uid)
+        cursor_oc = accounting_pool.get_oc_header(cr, uid)
         if not cursor_oc:
             return log_error(
                 self, cr, uid, 'schedule_etl_sale_order',
@@ -335,7 +334,7 @@ class sale_order_add_extra(osv.osv):
 
                 partner_proxy = browse_partner_ref(
                     self, cr, uid, oc['CKY_CNT_CLFR'], context=context)
-                if oc_id:  # update      # todo test for deadline update
+                if oc_id:  # update   todo test for deadline update
                     oc_id = oc_id[0]
                     if oc_id not in all_order_updated_ids:
                         all_order_updated_ids.append(oc_id)
