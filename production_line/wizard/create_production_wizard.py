@@ -105,23 +105,28 @@ class create_mrp_production_wizard(osv.osv_memory):
 
         # Create a production order and open it:
         production_pool = self.pool.get("mrp.production")
-        data = {'name': self.pool.get('ir.sequence').get(cr, uid, 'mrp.production'),
-              'product_id': wizard_browse.product_id.id,
-              'product_qty': wizard_browse.total,
-              'product_uom': wizard_browse.product_id.uom_id.id,
-              'date_planned': wizard_browse.date_deadline,
-              'bom_id': wizard_browse.bom_id.id,
-              'user_id': uid,
-              #'origin': "mexal order",
-              'order_lines_ids': [(6, 0, context.get("active_ids",[]))],
-              }
+        data = {
+            'name': self.pool.get('ir.sequence').get(cr, uid, 'mrp.production'),
+            'product_id': wizard_browse.product_id.id,
+            'product_qty': wizard_browse.total,
+            'product_uom': wizard_browse.product_id.uom_id.id,
+            'date_planned': wizard_browse.date_deadline,
+            'bom_id': wizard_browse.bom_id.id,
+            'user_id': uid,
+            # 'origin': "mexal order",
+            'order_lines_ids': [(6, 0, context.get('active_ids', []))],
+            }
         # if wizard_browse.all_in_one: # Create lavoration order
         #    pass#data['']
 
-        p_id = self.pool.get("mrp.production").create(cr, uid, data, context=context)
+        p_id = self.pool.get("mrp.production").create(
+            cr, uid, data, context=context)
         # Load element from BOM:
-        self.pool.get("mrp.production")._action_load_materials_from_bom(cr, uid, p_id, context=context)
-        return return_view(self, cr, uid, p_id, "mrp.mrp_production_form_view", "mrp.production")
+        self.pool.get("mrp.production")._action_load_materials_from_bom(
+            cr, uid, p_id, context=context)
+        return return_view(
+            self, cr, uid, p_id,
+            "mrp.mrp_production_form_view", "mrp.production")
         # return {'type':'ir.actions.act_window_close'}   # close
 
     # default function:

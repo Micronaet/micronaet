@@ -293,7 +293,7 @@ class sale_order_add_extra(osv.osv):
             currency_convert[account_ref] = currency.id
 
         # ---------------------------------------------------------------------
-        #                              IMPORT HEADER
+        #                           IMPORT HEADER
         # ---------------------------------------------------------------------
         # todo rimuovere questo problema alcuni ordini hanno state empty!
         cr.execute(
@@ -563,13 +563,17 @@ class sale_order_add_extra(osv.osv):
                     # 'accounting_state': 'modified',
                 }   # production_line
 
+                # -------------------------------------------------------------
                 # Syncro part:
+                # -------------------------------------------------------------
                 mod = False
                 if order_id in DB_line:
                     # list of all the order line in OpenERP
                     # [ID, found, product_id, deadline, q.]
                     for element in DB_line[order_id]:
-                        if element[1] == False and element[2] == product.id and date_deadline == element[3]:  # product and deadline
+                        # product and deadline
+                        if element[1] == False and element[2] == product.id \
+                                and date_deadline == element[3]:
                             # Q. different (with error)
                             if abs(element[4] - quantity) < 1.0:
                                 data['accounting_state'] = 'new'
@@ -582,7 +586,7 @@ class sale_order_add_extra(osv.osv):
                             oc_line_id = element[0]
                             mod = line_pool.write(
                                 cr, uid, oc_line_id, data, context=context)
-                            break # exit this for (no other lines as analyzed)
+                            break  # exit this for (no other lines as analyzed)
 
                 # Create record, not found: (product_id-date_deadline)
                 if not mod:
