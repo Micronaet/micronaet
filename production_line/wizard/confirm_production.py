@@ -412,7 +412,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 lot_created_id = mrp_pool.get_account_yet_created_ul(
                     cr, uid, mrp_id, wiz_proxy.package_id.id, context=context)
                 if not recycle and lot_created_id:
-                    ref_lot_id = '#%-9s' % lot_created_id
+                    ref_lot_id = '#%-10s' % lot_created_id
 
             # MRP format: B1/00001
             ref_lot_name = 'N%2s%05d#%01d' % (
@@ -498,7 +498,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                         '',
                         ))
             else:
-                pass # TODO raise error if no package? (no if wrong!)
+                pass  # todo raise error if no package? (no if wrong!)
             if pallet and wiz_proxy.pallet_qty:
                 f_cl.write(
                     '%-10s%-25s%10.2f%-13s%16s\r\n' % (  # TODO 10 extra space
