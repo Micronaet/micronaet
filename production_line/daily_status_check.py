@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# ODOO (ex OpenERP) 
+# ODOO (ex OpenERP)
 # Open Source Management Solution
 # Copyright (C) 2001-2015 Micronaet S.r.l. (<https://micronaet.com>)
 # Developer: Nicola Riolini @thebrush (<https://it.linkedin.com/in/thebrush>)
@@ -13,7 +13,7 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU Affero General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
@@ -34,9 +34,9 @@ from openerp import SUPERUSER_ID
 from openerp import tools
 from openerp.tools.translate import _
 from openerp.tools.float_utils import float_round as round
-from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT, 
-    DEFAULT_SERVER_DATETIME_FORMAT, 
-    DATETIME_FORMATS_MAP, 
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
+    DEFAULT_SERVER_DATETIME_FORMAT,
+    DATETIME_FORMATS_MAP,
     float_compare)
 
 
@@ -44,18 +44,18 @@ _logger = logging.getLogger(__name__)
 
 excluded = (
     'SCONTO', 'VV',
-    )    
+    )
 
 class MrpProductionDailyReport(orm.Model):
     """ Model name: Mrp Production for daily report
     """
-    
+
     _inherit = 'mrp.production'
 
-        
-    # -------------------------------------------------------------------------    
+
+    # -------------------------------------------------------------------------
     # Utility:
-    # -------------------------------------------------------------------------    
+    # -------------------------------------------------------------------------
     def get_excel_format(self, excel_pool):
         """ Return dict for all excel format used
         """
@@ -85,7 +85,7 @@ class MrpProductionDailyReport(orm.Model):
         """ Check yesterday movement for correct negative stock
         """
         sql_pool = self.pool.get('micronaet.accounting')
-        
+
         table_header = 'OC_TESTATE'
         table_line = 'OC_RIGHE'
         table_partner = 'PA_RUBR_PDC_CLFR'
@@ -94,8 +94,8 @@ class MrpProductionDailyReport(orm.Model):
             table_header = table_header.lower()
             table_line = table_line.lower()
             table_partner = table_partner.lower()
-            
-        # Query:    
+
+        # Query:
         cursor = sql_pool.connect(cr, uid, year=False, context=context)
         query = """
             SELECT 
@@ -116,7 +116,7 @@ class MrpProductionDailyReport(orm.Model):
                 JOIN %s r
                 ON (h.CKY_CNT_CLFR = r.CKY_CNT);
             """ % (
-               table_header, 
+               table_header,
                table_line,
                table_partner,
                # TODO excluded
@@ -132,7 +132,7 @@ class MrpProductionDailyReport(orm.Model):
             if default_code in excluded:
                 _logger.warning('Excluded code: %s' % default_code)
                 continue
-                
+
             ref = line['Ref']
             qty = line['Qty']
             deadline = line['Deadline']
@@ -143,7 +143,7 @@ class MrpProductionDailyReport(orm.Model):
                 res[default_code] = ''
                 res_comment[default_code] = []
                 res_total[default_code] = 0.0
-            
+
             res[default_code] += ('[Q. %s > Rif. %s Scad. %s]' % (
                 qty, ref, deadline)).replace(' 00:00:00', '')
             res_comment[default_code].append(('[%s] %10.0f: %s\n' % (
@@ -154,13 +154,13 @@ class MrpProductionDailyReport(orm.Model):
             res_total[default_code] += qty
 
         return res, res_comment, res_total
-    
+
     def get_oc_status_yesterday(self, cr, uid, context=None):
         """ SQL get previous day order
         """
         sql_pool = self.pool.get('micronaet.accounting')
         company_pool = self.pool.get('res.company')
-        
+
         # Find last worked date:
         days = 0
         while True:
@@ -168,23 +168,23 @@ class MrpProductionDailyReport(orm.Model):
             check_date_dt = datetime.now() + relativedelta(days=days)
             if check_date_dt.weekday() in (5, 6):
                 continue # No week end date
-                
+
             check_date = check_date_dt.strftime(DEFAULT_SERVER_DATE_FORMAT)
             break
-                
-        # ---------------------------------------------------------------------        
+
+        # ---------------------------------------------------------------------
         # Stock negative:
-        # ---------------------------------------------------------------------        
+        # ---------------------------------------------------------------------
         cursor = sql_pool.connect(cr, uid, year=False, context=context)
 
-        if company_pool.table_capital_name(cr, uid, 
+        if company_pool.table_capital_name(cr, uid,
                 context=context):
-            table = "AQ_QUANTITA" 
+            table = "AQ_QUANTITA"
         else:
             table = "aq_quantita"
-        
+
         store = 1
-        year_ref = 9        
+        year_ref = 9
         query = """
             SELECT CKY_ART, NQT_INV + NQT_CAR - NQT_SCAR as qty
             FROM %s
@@ -202,12 +202,12 @@ class MrpProductionDailyReport(orm.Model):
             qty = line['qty']
             stock_negative[default_code] = qty
 
-        # ---------------------------------------------------------------------        
-        # ACCOUNT MOVEMENT:        
-        # ---------------------------------------------------------------------        
+        # ---------------------------------------------------------------------
+        # ACCOUNT MOVEMENT:
+        # ---------------------------------------------------------------------
         _logger.info('Check account movement, data: %s [Excluded: %s]' % (
             check_date, excluded))
-        
+
         if company_pool.table_capital_name(
                 cr, uid, context=context):
             table_header = 'MM_TESTATE'
@@ -231,7 +231,7 @@ class MrpProductionDailyReport(orm.Model):
                 h.DTT_DOC >= '%s 00:00:00' AND 
                 h.CSG_DOC in ('BC', 'SL', 'CL', 'BF', 'BD', 'RC', 'BS');
             """ % (
-               table_header, 
+               table_header,
                table_line,
                check_date,
                )  #  AND h.CDS_NOTE != 'OPENERP'
@@ -249,7 +249,7 @@ class MrpProductionDailyReport(orm.Model):
                 date_document = line['DTT_DOC'].strftime(
                     DEFAULT_SERVER_DATE_FORMAT)
             except:
-                date_document = ''    
+                date_document = ''
             number = '%s: %s/%s' % (
                 document, line['NGB_SR_DOC'], line['NGL_DOC'])
             qty = line['NQT_RIGA_ART_PLOR']
@@ -258,18 +258,18 @@ class MrpProductionDailyReport(orm.Model):
                 product_type = 'Materie prime'
             elif default_code[:1] in 'M':
                 product_type = 'Macchinari'
-            else:   
+            else:
                 product_type = 'Prodotti finiti'
 
             if document in ('BC', 'SL', 'BD', 'RC', 'BS'):
                 sign = -1
             else:  # CL
-                sign = +1    
-            
+                sign = +1
+
             if conversion:
                 qty *= sign * 1.0 / conversion
-            stock_movement.append((                
-                document, 
+            stock_movement.append((
+                document,
                 number,
                 product_type,
                 default_code,
@@ -283,7 +283,7 @@ class MrpProductionDailyReport(orm.Model):
     def get_used_line(
             self, cr, uid, product_id, production_history, context=None):
         """ Load statistic on production and use for get line
-        """ 
+        """
         if not production_history:
             wc_pool = self.pool.get('mrp.workcenter')
             wc_db = {}
@@ -312,32 +312,31 @@ class MrpProductionDailyReport(orm.Model):
                 product_id = record[0]
                 wc_id = record[1]
                 total = record[2]
-                
+
                 wc_line = wc_db.get(wc_id)
                 if product_id not in production_history:
                     # Save reference line and comment for production stats
                     production_history[product_id] = [wc_line, '']
-                
-                # Update comment:    
+
+                # Update comment:
                 production_history[product_id][1] += '%s: q. %s\n' % (
                     wc_line.name,
                     total,
                     )
         return production_history.get(product_id, (False, False))
-                
-                    
+
         if product_id in production_history:
             return production_history[product_id]
-        
-        wc_pool = self.pool.get('mrp.production.workcenter.line')    
+
+        wc_pool = self.pool.get('mrp.production.workcenter.line')
         wc_ids = wc_pool.search(cr, uid, [
             ('product', '=', product_id),
             ], context=context)
         return wc.id, wd.name
-           
+
     # -------------------------------------------------------------------------
     # Scheduled action:
-    # -------------------------------------------------------------------------    
+    # -------------------------------------------------------------------------
     def extract_oc_status_x_line_excel_report(self, cr, uid, context=None):
         """ Get detail for ordered product in line
         """
@@ -348,7 +347,7 @@ class MrpProductionDailyReport(orm.Model):
         order_pool = self.pool.get('sale.order')
         excel_pool = self.pool.get('excel.writer')
         workcenter_pool = self.pool.get('mrp.workcenter')
-        
+
         exclude_product = ('VV', 'SCONTO', 'VV1', )
         exclude_start = 'ABCM'
 
@@ -362,100 +361,100 @@ class MrpProductionDailyReport(orm.Model):
         # Column:
         width = [
             10, 9, 12, 30, 15,
-            9, 7, 20, 
+            9, 7, 20,
             8, 25,
             17, 10, 10]
-        
+
         # Format:
         excel_format = self.get_excel_format(excel_pool)
-        
-        # ---------------------------------------------------------------------         
+
+        # ---------------------------------------------------------------------
         # Sale order data:
         # ---------------------------------------------------------------------
         header = [
-            'Rif.', 'Data', 'Incoterms', 'Cliente', 'Nazione', 
+            'Rif.', 'Data', 'Incoterms', 'Cliente', 'Nazione',
             ]
         gap = len(header)  # Detail gap for write data
-        header.extend([     
-            'Scadenza', 'Prodotto', 'Descrizione', 
+        header.extend([
+            'Scadenza', 'Prodotto', 'Descrizione',
             'Produzione', 'Stato',
             'Linea', 'Q. ord.', 'Q. pronta',
             #'Linea Carico', 'Linea pronti',
             ])
         line_gap = len(header)  # Line gap for variable columns
-        # TODO Line headers    
+        # TODO Line headers
 
         # Extend with Line columns data:
         wc_db = {}  # Column start for write
         workcenter_ids = workcenter_pool.search(cr, uid, [], context=None)
         wc_lines = sorted(
-            workcenter_pool.browse(cr, uid, workcenter_ids, context=context), 
+            workcenter_pool.browse(cr, uid, workcenter_ids, context=context),
             key=lambda x: x.name,
             )
-            
+
         i = 0
         line_cols = 2
         total_line = []
         master_total = [0.0, 0.0]
-        
+
         # Header for total block
         row = 0
-        excel_pool.write_xls_line(                    
-            ws_name, row, ['Totali', ''], 
+        excel_pool.write_xls_line(
+            ws_name, row, ['Totali', ''],
             default_format=excel_format['header'],
             col=line_gap + i - 2)
         # TODO Unificare
         excel_pool.merge_cell(
-            ws_name, 
+            ws_name,
             [row, line_gap + i - 2, row, line_gap + i - 1])
-        
+
         # Write extra line data:
         product_data = []
         col = 0
-        for workcenter in wc_lines:        
+        for workcenter in wc_lines:
             line_name = workcenter.name
             wc_db[workcenter.id] = col # line_gap + i
             col += 1
-            
+
             # Title:
-            excel_pool.write_xls_line(                    
-                ws_name, row, [line_name, ''], 
+            excel_pool.write_xls_line(
+                ws_name, row, [line_name, ''],
                 default_format=excel_format['header'],
                 col=line_gap + i)
             # TODO Unificare
             excel_pool.merge_cell(
-                ws_name, 
+                ws_name,
                 [row, line_gap + i, row, line_gap + i + 1])
-            
+
             i += line_cols
 
             # Total:
             total_line.extend([0.0, 0.0])
             product_data.extend([0.0, 0.0])
-            
+
             # Header:
             header.extend(['Da fare', 'Fatti'])
             width.extend([8, 8])
-            
+
         row = 2
         excel_pool.column_width(ws_name, width)
-        excel_pool.write_xls_line(                    
+        excel_pool.write_xls_line(
             ws_name, row, header, default_format=excel_format['header'])
-        excel_pool.autofilter(ws_name, row, 0, row, line_gap - 3)    
+        excel_pool.autofilter(ws_name, row, 0, row, line_gap - 3)
 
         excel_pool.freeze_panes(ws_name, 3, 7)
-        
+
         order_ids = order_pool.search(cr, uid, [
             ('state', 'in', ('draft', 'sent',)),
             ], context=context)
-        
-        excluded_product = []    
+
+        excluded_product = []
         production_history = {}  # Rememer for speed
         comment_parameters = {
-            'width': 200, 
+            'width': 200,
             'font_name': 'Courier New',
             }
-        
+
         for order in order_pool.browse(cr, uid, order_ids, context=context):
             partner = order.partner_id
             order_header = [
@@ -463,9 +462,9 @@ class MrpProductionDailyReport(orm.Model):
                 order.date_order,
                 '', # Incoterms
                 partner.name,
-                partner.country_id.name,                
+                partner.country_id.name,
                 ]
-                
+
             for line in order.order_line:
                 product = line.product_id
                 default_code = product.default_code
@@ -482,33 +481,33 @@ class MrpProductionDailyReport(orm.Model):
                 # Header:
                 row += 1
                 excel_pool.write_xls_line(
-                    ws_name, row, order_header, 
+                    ws_name, row, order_header,
                     default_format=excel_format['']['text'])
 
                 # Detail:
                 oc_qty = line.product_uom_qty
-                done_qty = 0.0 # TODO 
-                
+                done_qty = 0.0 # TODO
+
                 if wc_line:
                     color_format = excel_format['']
-                else:    
+                else:
                     color_format = excel_format['red']
-                    
-                if line.mrp_production_id:                
+
+                if line.mrp_production_id:
                     mrp_name = line.mrp_production_id.name
                     mrp_state = line.mrp_production_id.state_info.replace(
                         'Tutto pianificato:', 'Tot.:').replace(
                             ' ', '').replace('\n', '')
                     if mrp_state.startswith('Tot.:'):
-                        color_format = excel_format['blue']                        
+                        color_format = excel_format['blue']
                     else:
                         color_format = excel_format['yellow']
                         mrp_state = 'Parz.:%s' % mrp_state
-                        
+
                 else:
                     mrp_name = ''
                     mrp_state = ''
-                        
+
                 line_detail = [
                     line.date_deadline,
                     product.default_code,
@@ -519,51 +518,51 @@ class MrpProductionDailyReport(orm.Model):
                     (oc_qty, color_format['number']),
                     (done_qty, color_format['number']),
                     ]
-                    
+
                 # Add wc comment:
                 excel_pool.write_comment(
-                    ws_name, row, line_gap - 3, 
-                    wc_comment, parameters=comment_parameters)                    
+                    ws_name, row, line_gap - 3,
+                    wc_comment, parameters=comment_parameters)
 
                 excel_pool.write_xls_line(
-                    ws_name, row, line_detail, 
+                    ws_name, row, line_detail,
                     default_format=color_format['text'], col=gap)
-                
+
                 current_data = product_data[:]
                 if not wc_line or wc_line.id not in wc_db:
-                    #TODO manage 
+                    #TODO manage
                     continue
-                    
+
                 col = line_cols * wc_db[wc_line.id] # TODO set default position
                 current_data[col] = oc_qty
                 total_line[col] += oc_qty
                 master_total[0] += oc_qty
-                
+
                 # TODO produced qty!
 
                 excel_pool.write_xls_line(
-                    ws_name, row, current_data, 
+                    ws_name, row, current_data,
                     default_format=color_format['number'], col=line_gap)
 
         # Write total
         row = 1
-        excel_pool.write_xls_line(                    
-            ws_name, row, master_total, 
+        excel_pool.write_xls_line(
+            ws_name, row, master_total,
             default_format=excel_format['']['number'],
             col=line_gap -2,
             )
-        
-        excel_pool.write_xls_line(                    
-            ws_name, row, total_line, 
+
+        excel_pool.write_xls_line(
+            ws_name, row, total_line,
             default_format=excel_format['']['number'],
             col=line_gap,
             )
-            
+
         if save_mode:
-            return excel_pool.save_file_as(save_mode)         
+            return excel_pool.save_file_as(save_mode)
         else:
             return excel_pool.return_attachment(
-                cr, uid, 'Carico linee su ordinato', 
+                cr, uid, 'Carico linee su ordinato',
                 name_of_file=False, version='7.0', php=True,
                 context=context)
 
@@ -580,14 +579,14 @@ class MrpProductionDailyReport(orm.Model):
         load_pool = self.pool.get('mrp.production.workcenter.load') # CL
         excel_pool = self.pool.get('excel.writer')
         product_pool = self.pool.get('product.product')
-        
+
         today = datetime.now()
         last = False
         for day in range(1, 7):
             last = today - timedelta(days=day)
             if last.isoweekday() in range(1, 5): # Working day 1-5
                 break
-                
+
         if not last:
             _logger.error('Cannot find last day!')
             return False
@@ -595,7 +594,7 @@ class MrpProductionDailyReport(orm.Model):
         last_date = ('%s' % last)[:10]
         from_last = '%s 00:00:00' % last_date
         to_last = '%s 23:59:00' % last_date
-        
+
         _logger.info('Reporting moved product in day: [%s - %s]' % (
             from_last, to_last))
 
@@ -609,14 +608,14 @@ class MrpProductionDailyReport(orm.Model):
         # Column:
         width = [13, 35, 18, 18, 80]
         excel_pool.column_width(ws_name, width)
-        
+
         # Page Detail:
         ws_name = u'Dettaglio movimentazioni'
         excel_pool.create_worksheet(name=ws_name)
 
         # Format:
         excel_format = self.get_excel_format(excel_pool)
-        
+
         # Column:
         width = [13, 45, 18, 38, 15]
         excel_pool.column_width(ws_name, width)
@@ -627,28 +626,28 @@ class MrpProductionDailyReport(orm.Model):
             'Macchinari': [],
             }
 
-        # ---------------------------------------------------------------------         
+        # ---------------------------------------------------------------------
         # Account movement (over last date):
         # ---------------------------------------------------------------------
-        header = [u'Doc. contabile', u'Descrizione', u'Q.', u'Commento', 
+        header = [u'Doc. contabile', u'Descrizione', u'Q.', u'Commento',
             u'Date']
         row = 0
-        excel_pool.write_xls_line(                    
+        excel_pool.write_xls_line(
             ws_name, row, header, default_format=excel_format['header'])
 
         document_move = {}
         stock_movement, stock_negative = self.get_oc_status_yesterday(
             cr, uid, context=context)
-        
+
         for record in stock_movement:
-            (document, number, product_type, default_code, description, 
+            (document, number, product_type, default_code, description,
                 qty, comment, date_document) = record
-                
-            #if qty >= 0:
+
+            # if qty >= 0:
             color_format = excel_format['']
-            #else:    
+            # else:
             #    color_format = excel_format['red']
-            
+
             product_ids = product_pool.search(cr, uid, [
                 ('default_code', '=', default_code),
                 ], context=context)
@@ -657,36 +656,37 @@ class MrpProductionDailyReport(orm.Model):
                     cr, uid, product_ids, context=context)[0]
                 product_name = product.name
             else:
-                product_name = '/'    
-                
+                product_name = '/'
+
             # Excel log:
-            row += 1             
+            row += 1
             excel_pool.write_xls_line(ws_name, row, [
                 number,
                 '%s (%s)' % (
-                    description, 
+                    description,
                     product_name,
                     ),
                 (qty, color_format['number']),
                 comment,
                 date_document,
                 ], default_format=color_format['text'])
-                             
+
             product_pool = self.pool.get('product.product')
             product_ids = product_pool.search(cr, uid, [
                 ('default_code', '=', default_code),
                 ], context=context)
             if not product_ids:
-                print 'Code not found, create minimal: %s' % default_code
+                _logger.error(
+                    'Code not found, create minimal: %s' % default_code)
                 product_id = product_pool.create(cr, uid, {
                     'default_code': default_code,
                     'name': default_code,
                     }, context=context)
-                product_ids = [product_id]    
-            
+                product_ids = [product_id]
+
             product = product_pool.browse(
                 cr, uid, product_ids, context=context)[0]
-            
+
             if product not in product_moved[product_type]:
                 product_moved[product_type].append(product)
                 document_move[product] = ''
@@ -696,17 +696,17 @@ class MrpProductionDailyReport(orm.Model):
                 date_document,
                 )
 
-        # ---------------------------------------------------------------------         
+        # ---------------------------------------------------------------------
         # Unload documents (over last date):
-        # ---------------------------------------------------------------------         
+        # ---------------------------------------------------------------------
         header = [u'# SL', u'Descrizione', u'Linea', u'Lavorazione']
 
         row += 2
-        excel_pool.write_xls_line(                    
+        excel_pool.write_xls_line(
             ws_name, row, header, default_format=excel_format['header'])
 
-        unload_ids = unload_pool.search(cr, uid, [      
-            ('state', 'not in', ('cancel', )),  
+        unload_ids = unload_pool.search(cr, uid, [
+            ('state', 'not in', ('cancel', )),
             ('real_date_planned', '<=', to_last),
             ('real_date_planned_end', '>=', from_last),
             ], context=context)
@@ -716,11 +716,11 @@ class MrpProductionDailyReport(orm.Model):
         for unload in unload_document:
             if unload.accounting_sl_code:
                 color_format = excel_format['']
-            else:    
+            else:
                 color_format = excel_format['red']
-                
+
             # Excel log:
-            row += 1             
+            row += 1
             excel_pool.write_xls_line(ws_name, row, [
                 unload.accounting_sl_code,
                 'Prodotto: %s' % unload.product.default_code,
@@ -729,21 +729,21 @@ class MrpProductionDailyReport(orm.Model):
                 ], default_format=color_format['text'])
 
             # Product collect: # 17 apr 2020 remove from material list
-            #for material in unload.bom_material_ids:
+            # for material in unload.bom_material_ids:
             #    product = material.product_id
             #    if product not in product_moved['Materie prime']:
             #        product_moved['Materie prime'].append(product)
-        
-        # ---------------------------------------------------------------------         
+
+        # ---------------------------------------------------------------------
         # Load documents (in last date):
-        # ---------------------------------------------------------------------         
+        # ---------------------------------------------------------------------
         header = [u'# CL', u'Descrizione', 'Q.', 'Stato']
 
         row += 2
-        excel_pool.write_xls_line(                    
+        excel_pool.write_xls_line(
             ws_name, row, header, default_format=excel_format['header'])
 
-        load_ids = load_pool.search(cr, uid, [        
+        load_ids = load_pool.search(cr, uid, [
             ('date', '>=', from_last),
             ('date', '<=', to_last),
             ], context=context)
@@ -751,13 +751,13 @@ class MrpProductionDailyReport(orm.Model):
         for load in load_pool.browse(cr, uid, load_ids, context=context):
             if load.accounting_cl_code:
                 color_format = excel_format['']
-            else:    
+            else:
                 color_format = excel_format['red']
 
             # Excel log:
-            row += 1 
+            row += 1
             product = load.product_id
-                        
+
             excel_pool.write_xls_line(ws_name, row, [
                 load.accounting_cl_code or '',
                 u'Prodotto: %s %s' % (
@@ -770,46 +770,46 @@ class MrpProductionDailyReport(orm.Model):
                     '/' if not load.package_id else load.package_id.code,
                     '0' if not load.pallet_qty else load.pallet_qty,
                     '/' if not load.pallet_product_id else \
-                        load.pallet_product_id.code,            
+                        load.pallet_product_id.code,
                     )
                 ], default_format=color_format['text'])
 
             # Product collect: # 17 apr 2020 remove from product list
             # product_qty
-            #if product not in product_moved['Prodotti finiti']:
+            # if product not in product_moved['Prodotti finiti']:
             #    product_moved['Prodotti finiti'].append(product)
 
-        # ---------------------------------------------------------------------         
-        # Product / Material status:        
-        # ---------------------------------------------------------------------         
+        # ---------------------------------------------------------------------
+        # Product / Material status:
+        # ---------------------------------------------------------------------
         # Collect comment
         comment_line, comment_detail, comment_total = \
             self.get_oc_detail_x_product(cr, uid, context=context)
         comment_parameters = {
-            'width': 500, 
+            'width': 500,
             'font_name': 'Courier New',
             }
-    
+
         # XXX Return to check page:
         ws_name = 'Controlli da fare'
         row = -2
         for mode in product_moved:
             row += 2
             header = [mode, u'Nome', 'Tot. OC', u'Magaz.', 'Commento']
-            excel_pool.write_xls_line(                    
+            excel_pool.write_xls_line(
                 ws_name, row, header, default_format=excel_format['header'])
-        
+
             for product in sorted(
                     product_moved[mode], key=lambda x: x.default_code):
                 default_code = product.default_code or ''
-                if default_code.startswith('VV'): 
+                if default_code.startswith('VV'):
                     continue # Not use water!
                 if product.accounting_qty < 0.0:
                     color_format = excel_format['red']
-                else:    
+                else:
                     color_format = excel_format['']
 
-                row += 1           
+                row += 1
                 comment = comment_line.get(default_code) or ''
                 oc_total = comment_total.get(default_code) or ''
                 excel_pool.write_xls_line(ws_name, row, [
@@ -819,25 +819,25 @@ class MrpProductionDailyReport(orm.Model):
                     (product.accounting_qty, color_format['number']),
                     comment,
                     ], default_format=color_format['text'])
-                
+
                 movements = document_move.get(product, '')
                 excel_pool.write_comment(
-                    ws_name, row, 0, 
-                    movements, 
+                    ws_name, row, 0,
+                    movements,
                     comment_parameters)
-                
+
                 if comment:
                     tooltip = ''.join(
                         sorted(
                             comment_detail.get(default_code, [])
                             ))
                     excel_pool.write_comment(
-                        ws_name, row, 3, 
-                        tooltip, 
+                        ws_name, row, 3,
+                        tooltip,
                         comment_parameters)
 
-        # ---------------------------------------------------------------------         
-        # Negative product 
+        # ---------------------------------------------------------------------
+        # Negative product
         # ---------------------------------------------------------------------
         ws_name = 'Negativi'
         excel_pool.create_worksheet(name=ws_name)
@@ -845,16 +845,16 @@ class MrpProductionDailyReport(orm.Model):
         # Column:
         width = [20, 35, 15]
         excel_pool.column_width(ws_name, width)
-        
+
         header = [u'Codice', u'Nome', u'Quantità']
         row = 0
-        excel_pool.write_xls_line(                    
+        excel_pool.write_xls_line(
             ws_name, row, [
                 'Solo materie prime e prodotti negativi (tolti '\
                 'codici che iniziano per Z, M, L e C'
                 ], default_format=excel_format['title'])
         row += 2
-        excel_pool.write_xls_line(                    
+        excel_pool.write_xls_line(
             ws_name, row, header, default_format=excel_format['header'])
 
         for default_code in sorted(stock_negative):
@@ -862,7 +862,7 @@ class MrpProductionDailyReport(orm.Model):
                 continue
             if default_code[:1] in 'ZzMmLlCc':
                 continue
-            row += 1 
+            row += 1
 
             product_ids = product_pool.search(cr, uid, [
                 ('default_code', '=', default_code),
@@ -872,7 +872,7 @@ class MrpProductionDailyReport(orm.Model):
                     cr, uid, product_ids, context=context)[0]
                 product_name = product.name
             else:
-                product_name = '/'    
+                product_name = '/'
 
             excel_pool.write_xls_line(ws_name, row, [
                 default_code,
@@ -881,10 +881,10 @@ class MrpProductionDailyReport(orm.Model):
                 ], default_format=color_format['text'])
 
         if save_mode:
-            return excel_pool.save_file_as(save_mode)         
+            return excel_pool.save_file_as(save_mode)
         else:
-            return excel_pool.return_attachment(cr, uid, 'Movimenti di ieri', 
+            return excel_pool.return_attachment(cr, uid, 'Movimenti di ieri',
                 name_of_file=False, version='7.0', php=True,
                 context=context)
-                                   
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
