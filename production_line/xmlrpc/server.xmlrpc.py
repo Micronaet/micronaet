@@ -59,8 +59,10 @@ file_move = r"%s\production\%s" % (path, "move.txt")
 file_move_res = r"%s\production\%s" % (path, "esito_move.txt")
 # Note: result file are the same with "esito_" before file name
 
-sprix_command = r"%s\mxdesk.exe -command=mxrs.exe -login=openerp -t0 -x2 win32g -p#%s -a%s -k%s:%s" % (
-    path, "%s", company_code, mx_user, mx_login)
+sprix_command = \
+    r"%s\mxdesk.exe -command=mxrs.exe -login=openerp -t0 -x2 win32g -p#%s " \
+    r"-a%s -k%s:%s" % (
+        path, "%s", company_code, mx_user, mx_login)
 
 
 # -----------------------------------------------------------------------------

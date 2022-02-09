@@ -76,7 +76,7 @@ def store_forced(filename, forced_list):
         pickle.dump(forced_list, open(filename, "wb" ) )
         return True
     except:
-        return False    
+        return False
 
 def load_forced(filename):
     ''' Load list of forced from file
@@ -84,7 +84,7 @@ def load_forced(filename):
     try:
         res =  pickle.load(open(filename, "rb")) or []
         return res
-    except: 
+    except:
         return []
 
 # Log function:
@@ -115,9 +115,9 @@ def get_timestamp_from_file(file_in, path_in, company="ELI"):
     ''' Get timestamp value from file name
         File is: ELIORD20141103091707.ASC
                  ------YYYYMMGGhhmmss----
-        Millisecond are 
+        Millisecond are
             00 for create order ELIORD
-            10 for delete order ELICHG     
+            10 for delete order ELICHG
     '''
     if company == "ELI":
         return "%s-%s-%s %s:%s:%s.%s" % (
@@ -132,7 +132,7 @@ def get_timestamp_from_file(file_in, path_in, company="ELI"):
     else: # company == "SDX":
         return datetime.fromtimestamp(
             os.path.getctime(join(path_in, file_in)))
-        
+
 
 # SMTP function:
 def get_smtp(log_message):
@@ -144,13 +144,13 @@ def get_smtp(log_message):
         smtp.connect(smtp_server, smtp_port)
         smtp.login(smtp_user, smtp_password)
         log_message(
-            log_file, 
+            log_file,
             "Connesso al server %s:%s User: %s Pwd: %s" % (
                 smtp_server, smtp_port, smtp_user, smtp_password))
         return smtp
-    except:        
+    except:
         log_message(
-            log_file, 
+            log_file,
             "Impossibile collegarsi server %s:%s User: %s Pwd: %s" % (
                 smtp_server, smtp_port, smtp_user, smtp_password),
             'error', )
@@ -176,27 +176,27 @@ log_message(log_file, "Valutazione scadenza (salto se >= %s)" % max_date)
 file_list = []
 
 try:
-    # Sort correctly the files:       
+    # Sort correctly the files:
     for file_in in [f for f in listdir(path_in) if isfile(join(path_in, f))]:
         file_list.append(
             (get_timestamp_from_file(file_in, path_in, company), file_in))
     file_list.sort()
 
-    # Print list of sorted files for loggin the operation:
+    # Print list of sorted files for login the operation:
     for ts, file_in in file_list:
         log_message(log_file, "ID: Date: %s\t File: %s" % (
             ts, file_in ))
 except:
     log_message(
-        log_file, 
+        log_file,
         "Impossibile leggere i file da elaborare, script terminato",
         'error', )
-    sys.exit()    
-       
+    sys.exit()
+
 # Import files sorted
 order_imported = ""
 
-for ts, file_in in file_list:    
+for ts, file_in in file_list:
     # Jump file to delivery in 'left_days' days (usually 3):
     if jump_order_days:
         if left_date_on_file:
@@ -205,15 +205,15 @@ for ts, file_in in file_list:
             fin.close()
         else:  #on filename
             test_date = file_in[left_start_date:left_start_date + 8]
-            
-        
+
+
         # Load every time the force list:
         force_list = load_forced(force_file)
         if file_in in force_list:
             force_list.remove(file_in)
             store_forced(force_file, force_list) # TODO if not imported??
             log_message(log_file, "Importazione forzata: %s > %s" % (path_in, file_in))
-            
+
         elif test_date >= max_date:
             if urgent_order and urgent_order in file_in:# test urgent orders:
                 log_message(log_file, "Importazione urgente: %s > %s" % (
@@ -229,7 +229,7 @@ for ts, file_in in file_list:
         test_date = "Data non letta"
     log_message(log_file, "Divisione file: %s > %s" % (path_in, file_in))
     mail_error = "" # reset for every file readed
-   
+
     # Remove log file (if present):
     try:
         os.remove(file_err)
@@ -240,14 +240,14 @@ for ts, file_in in file_list:
     order_in = join(path_in, file_in)
     order_1 = join(path_out, 'ordine.1.txt')
     order_2 = join(path_out, 'ordine.2.txt')
-    if split_file:        
+    if split_file:
         # Output file parameters (open every loop because closed after import):
         file_out = {
             open(order_1, "w"): [0, 2036],
             open(order_2, "w"): [2036, 3507], # 1561
             }
         fin = open(order_in, "r")
-        
+
         for line in fin:
             position = 0
             for f in file_out:
@@ -256,13 +256,13 @@ for ts, file_in in file_list:
                     char_cr,
                     ))
 
-        # Close all file (input and 2 splitted)       
+        # Close all file (input and 2 splitted)
         for f in file_out:
             try:
                 f.close()
             except:
                 mail_error += "Errore chiudendo file split\n"
-        try:       
+        try:
             fin.close()
         except:
             mail_error += "Errore chiudendo il file di input\n"
@@ -272,12 +272,12 @@ for ts, file_in in file_list:
             shutil.copy(order_in, order_1)
         except:
             mail_error += "Errore copiando il file (no split)\n"
-        
+
     # Run mexal:
     try:
         comment_err = "Chiamata mexal client"
         os.system(sprix_command)
-    
+
         # Read error file for returned error:
         comment_err = "apertura file"
         f_err = open(file_err, "r")
@@ -293,33 +293,33 @@ for ts, file_in in file_list:
             order_imported += "\tCliente %s - Interno: %s (Scad.: %s\n" % (
                 result[1], result[2], test_date)
             log_message(log_file, " Ordine importato: %s" % (result, ))
-        comment_err = "chiusura file"    
+        comment_err = "chiusura file"
         f_err.close()
     except:
         mail_error += "Errore generico di importazione (file log non trovato)[%s]!" % comment_err
         pass # No file = no error
-       
+
     if mail_error: # Comunicate
         log_message(
             log_file, "Errore leggendo il file: %s" % mail_error, 'error')
 
         # Send mail for error (every file):
         smtp = get_smtp(log_message)
-        if smtp:    
+        if smtp:
             smtp.sendmail(
                 from_addr, to_addr,
                 "From: %s\nTo: %s\nSubject: %s\nDate: %s\n\n%s" % (
                     from_addr, to_addr, smtp_subject_mask % file_in,
                     datetime.now().strftime("%d/%m/%Y %H:%M"), mail_error))
-            smtp.quit()       
+            smtp.quit()
             log_message(log_file, "Invio mail errore importazione: da %s, a %s, \n\t<<<%s\t>>>" % (
-                from_addr, to_addr, mail_error))    
+                from_addr, to_addr, mail_error))
         else:
             log_message(
-                log_file, 
+                log_file,
                 "Mail errore importazione non iviata %s, a %s, \n\t<<<%s\t>>>" % (
-                    from_addr, to_addr, mail_error), 'error')   
-                    
+                    from_addr, to_addr, mail_error), 'error')
+
     else:
         # History the file (only if no error)
         try:
@@ -330,8 +330,8 @@ for ts, file_in in file_list:
             log_message(
                 log_file, "Errore storicizzando il file: %s" % file_in,
                 'error')
-            
-if order_imported: # Comunicate importation   
+
+if order_imported: # Comunicate importation
     smtp = get_smtp(log_message)
     if smtp:
         smtp.sendmail(
@@ -345,19 +345,19 @@ if order_imported: # Comunicate importation
             from_addr, to_addr, order_imported))
     else:
         log_message(
-            log_file, 
+            log_file,
             "Mail ordini importati non inviata: da %s, a %s, \n\t<<<%s\t>>>" % (
                 from_addr, to_addr, order_imported), "error")
-            
+
 log_scheduler_message(log_schedulers_file, "Stop importation [EDI: %s]" % company)
 
 # Close operations:
 try:
-    log_file.close()    
+    log_file.close()
 except:
     pass
 try:
-    log_scheduler_file.close()    
+    log_scheduler_file.close()
 except:
     pass
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
