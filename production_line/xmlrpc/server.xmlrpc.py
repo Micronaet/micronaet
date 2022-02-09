@@ -174,7 +174,7 @@ def sprix(operation, parameters=None):
         # get result of operation:
         return get_res(file_sl)
 
-    return False # error
+    return False  # error
 
 
 # -----------------------------------------------------------------------------
