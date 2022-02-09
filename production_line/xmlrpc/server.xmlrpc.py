@@ -84,8 +84,10 @@ server.register_introspection_functions()
 def sprix(operation, parameters=None):
     """ Call mxrs program passing sprix number
     """
+
     if parameters is None:
         parameters = {}
+
     # --------
     # Utility:
     # --------
