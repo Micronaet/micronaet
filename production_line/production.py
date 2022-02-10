@@ -822,17 +822,17 @@ class sale_order_line_extra(osv.osv):
     _columns = {
         'date_deadline': fields.date('Deadline'),
         'partner_id': fields.related(
-            'order_id','partner_id', type='many2one', relation='res.partner',
+            'order_id', 'partner_id', type='many2one', relation='res.partner',
             string='Partner', store=True),
         'duelist_exposition': fields.related(
             'partner_id','duelist_exposition', type='boolean',
             string='Exposed', store=False),
 
         # 'mandatory_delivery':fields.related('order_id', 'mandatory_delivery',  type='boolean', string='Mandatory delivery'),
-        'date_delivery':fields.related(
+        'date_delivery': fields.related(
             'order_id', 'date_delivery', type='date', string='Date delivery'),
 
-        'to_produce':fields.boolean(
+        'to_produce': fields.boolean(
             'To produce',
             required=False,
             help='During order importation test if the order line active has product that need to be produced'),
@@ -841,8 +841,8 @@ class sale_order_line_extra(osv.osv):
             help='Set the line to be carried on with store quantity present in accounting store',
             ),
 
-        'production_line':fields.boolean('Is for production'),
-        'mrp_production_id':fields.many2one(
+        'production_line': fields.boolean('Is for production'),
+        'mrp_production_id': fields.many2one(
             'mrp.production', 'Production order',
             ondelete='set null',),
         'accounting_qty': fields.related(

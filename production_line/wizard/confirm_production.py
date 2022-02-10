@@ -817,6 +817,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 # togliere: scriveva il totale carico e il load_confirmed
                 # lavoration_pool.write(cr, uid, [lavoration_browse.id], data,
                 # context=context)
+                return load_id  # Not normal exit but used for overridden
             except:
                 raise osv.except_osv(
                     _('Generic error'),
