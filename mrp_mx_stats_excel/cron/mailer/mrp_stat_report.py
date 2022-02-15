@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# ODOO (ex OpenERP) 
+# ODOO (ex OpenERP)
 # Open Source Management Solution
 # Copyright (C) 2001-2015 Micronaet S.r.l. (<http://www.micronaet.it>)
 # Developer: Nicola Riolini @thebrush (<https://it.linkedin.com/in/thebrush>)
@@ -12,7 +12,7 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU Affero General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
@@ -23,7 +23,7 @@ import os
 import sys
 import erppeek
 import ConfigParser
-import smtplib  
+import smtplib
 from datetime import datetime
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEBase import MIMEBase
@@ -170,7 +170,7 @@ smtp = {
             <br/>
             </p>
             ''' % now,
-            
+
         'minimal': '''
             <p>A los Gerentes de producci&oacute;n de PCA,</p> 
 
@@ -264,9 +264,9 @@ smtp = {
             </p>
             ''' % now,
         },
-            
-    'subject': 'PCA Detalles de produccion / ContipaQ : %s' % now,    
-    
+
+    'subject': 'PCA Detalles de produccion / ContipaQ : %s' % now,
+
     'folder': config.get('smtp', 'folder'),
     }
 
@@ -276,7 +276,7 @@ now = now.replace('/', '_').replace('-', '_').replace(':', '_')
 # Connect to ODOO:
 # -----------------------------------------------------------------------------
 odoo = erppeek.Client(
-    'http://%s:%s' % (odoo['server'], odoo['port']), 
+    'http://%s:%s' % (odoo['server'], odoo['port']),
     db=odoo['database'],
     user=odoo['user'],
     password=odoo['password'],
@@ -288,24 +288,26 @@ model = odoo.model('ir.model.data')
 # SMTP Sent:
 # -----------------------------------------------------------------------------
 # Get mailserver option:
-mailer_ids = mailer.search([])
+mailer_ids = mailer.search([
+    ('name', '=', 'PCA'),
+])
 if not mailer_ids:
-    print '[ERR] No mail server configured in ODOO'
+    print('[ERR] No mail server configured in ODOO')
     sys.exit()
 
 odoo_mailer = mailer.browse(mailer_ids)[0]
 
 # Open connection:
-print '[INFO] Sending using "%s" connection [%s:%s]' % (
+print('[INFO] Sending using "%s" connection [%s:%s]' % (
     odoo_mailer.name,
     odoo_mailer.smtp_host,
     odoo_mailer.smtp_port,
-    )
+    ))
 
 if odoo_mailer.smtp_encryption in ('ssl', 'starttls'):
-    smtp_server = smtplib.SMTP('smtp.gmail.com', 587)
+    smtp_server = smtplib.SMTP(odoo_mailer.smtp_host, odoo_mailer.smtp_port)
 else:
-    print '[ERR] Connect only SMTP SSL server!'
+    print('[ERR] Connect only SMTP SSL server!')
     sys.exit()
 
 smtp_server.ehlo() #open the connection
