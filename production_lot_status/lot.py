@@ -73,6 +73,7 @@ class stock_production_lot_accounting(orm.Model):
 
         i = 0
         lot_modify_ids = []
+        product_db = {}
         for line in f:
             try:
                 i += 1
@@ -85,7 +86,7 @@ class stock_production_lot_accounting(orm.Model):
                 stock_available_accounting = float(line_csv[3].strip() or "0")
                 accounting_ref = line_csv[4].strip()
 
-                try: # correct format, ex.: 000001
+                try:  # correct format, ex.: 000001
                     lot_code = "%06d" % (int(lot_code), )
                     anomaly = False
                 except:
@@ -96,7 +97,7 @@ class stock_production_lot_accounting(orm.Model):
                         ('code', '=', package_code)], context=context)
                     if package_ids:
                         package_id = package_ids[0]
-                    else: # fast create a package
+                    else:  # fast create a package
                         package_id = package_pool.create(cr, uid, {
                             'code': package_code,
                             'name': _("Package: %s") % package_code,
@@ -118,12 +119,16 @@ class stock_production_lot_accounting(orm.Model):
                 # Search lot
                 lot_ids = self.search(cr, uid, [
                     ('name', '=', name)], context=context)
+                product_id = product_ids[0]
+                if product_id not in product_db:
+                    product_db[product_id] = 0.0
+                product_db[product_id] += stock_available_accounting
                 data = {
                     'name': name,
-                    'product_id': product_ids[0],
+                    'product_id': product_id,
                     'package_id': package_id,
                     'stock_available_accounting': stock_available_accounting,
-                    'ref': accounting_ref, # ID in accounting
+                    'ref': accounting_ref,  # ID in accounting
                     'anomaly': anomaly,
                     }
 
@@ -134,10 +139,28 @@ class stock_production_lot_accounting(orm.Model):
                     lot_id = self.create(cr, uid, data, context=context)
                 lot_modify_ids.append(lot_id)
             except:
-                _logger.error("Umanaged error: %s" % (sys.exc_info(), ))
+                _logger.error("Unmanaged error: %s" % (sys.exc_info(), ))
 
-        # reset lot not present:
-        no_stock_ids = self.search(cr, uid, [('id', 'not in', lot_modify_ids)], context=context)
+        # ---------------------------------------------------------------------
+        # Update product stock status:
+        # ---------------------------------------------------------------------
+        for product_id in product_db:
+            product_pool.write(cr, uid, [product_id], {
+                'accounting_qty': product_db[product_id],
+            }, context=context)
+        no_stock_ids = product_pool.search(cr, uid, [
+            ('id', 'not in', product_db.keys()),
+        ], context=context)
+        product_pool.write(cr, uid, no_stock_ids, {
+            'accounting_qty': False,
+        }, context=context)
+
+        # ---------------------------------------------------------------------
+        # Reset lot not present:
+        # ---------------------------------------------------------------------
+        no_stock_ids = self.search(cr, uid, [
+            ('id', 'not in', lot_modify_ids),
+        ], context=context)
         self.write(cr, uid, no_stock_ids, {
             'stock_available_accounting': 0.0,
             }, context=context)
