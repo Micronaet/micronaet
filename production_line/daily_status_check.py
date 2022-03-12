@@ -379,10 +379,10 @@ class MrpProductionDailyReport(orm.Model):
             'Scadenza', 'Prodotto', 'Descrizione',
             'Produzione', 'Stato',
             'Linea', 'Q. ord.', 'Q. pronta',
-            #'Linea Carico', 'Linea pronti',
+            # 'Linea Carico', 'Linea pronti',
             ])
         line_gap = len(header)  # Line gap for variable columns
-        # TODO Line headers
+        # todo Line headers
 
         # Extend with Line columns data:
         wc_db = {}  # Column start for write
@@ -403,7 +403,8 @@ class MrpProductionDailyReport(orm.Model):
             ws_name, row, ['Totali', ''],
             default_format=excel_format['header'],
             col=line_gap + i - 2)
-        # TODO Unificare
+
+        # todo Unificare
         excel_pool.merge_cell(
             ws_name,
             [row, line_gap + i - 2, row, line_gap + i - 1])
@@ -413,7 +414,7 @@ class MrpProductionDailyReport(orm.Model):
         col = 0
         for workcenter in wc_lines:
             line_name = workcenter.name
-            wc_db[workcenter.id] = col # line_gap + i
+            wc_db[workcenter.id] = col  # line_gap + i
             col += 1
 
             # Title:
@@ -421,7 +422,7 @@ class MrpProductionDailyReport(orm.Model):
                 ws_name, row, [line_name, ''],
                 default_format=excel_format['header'],
                 col=line_gap + i)
-            # TODO Unificare
+            # todo Unificare
             excel_pool.merge_cell(
                 ws_name,
                 [row, line_gap + i, row, line_gap + i + 1])
@@ -440,7 +441,6 @@ class MrpProductionDailyReport(orm.Model):
         excel_pool.column_width(ws_name, width)
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=excel_format['header'])
-        excel_pool.autofilter(ws_name, row, 0, row, line_gap - 2)
 
         excel_pool.freeze_panes(ws_name, 3, 7)
 
@@ -449,7 +449,7 @@ class MrpProductionDailyReport(orm.Model):
             ], context=context)
 
         excluded_product = []
-        production_history = {}  # Rememer for speed
+        production_history = {}  # Remember for speed
         comment_parameters = {
             'width': 200,
             'font_name': 'Courier New',
@@ -460,7 +460,7 @@ class MrpProductionDailyReport(orm.Model):
             order_header = [
                 order.name,
                 order.date_order,
-                '', # Incoterms
+                '',  # Incoterms
                 partner.name,
                 partner.country_id.name,
                 ]
@@ -530,10 +530,10 @@ class MrpProductionDailyReport(orm.Model):
 
                 current_data = product_data[:]
                 if not wc_line or wc_line.id not in wc_db:
-                    #TODO manage
+                    # todo manage
                     continue
 
-                col = line_cols * wc_db[wc_line.id] # TODO set default position
+                col = line_cols * wc_db[wc_line.id] # todo set default position
                 current_data[col] = oc_qty
                 total_line[col] += oc_qty
                 master_total[0] += oc_qty
@@ -549,7 +549,7 @@ class MrpProductionDailyReport(orm.Model):
         excel_pool.write_xls_line(
             ws_name, row, master_total,
             default_format=excel_format['']['number'],
-            col=line_gap -2,
+            col=line_gap - 2,
             )
 
         excel_pool.write_xls_line(
@@ -557,6 +557,8 @@ class MrpProductionDailyReport(orm.Model):
             default_format=excel_format['']['number'],
             col=line_gap,
             )
+
+        excel_pool.autofilter(ws_name, 2, 0, 2, line_gap)
 
         if save_mode:
             return excel_pool.save_file_as(save_mode)
@@ -566,17 +568,16 @@ class MrpProductionDailyReport(orm.Model):
                 name_of_file=False, version='7.0', php=True,
                 context=context)
 
-
     def extract_daily_mrp_stats_excel_report(self, cr, uid, context=None):
-        ''' Jobs: unload and load material last production day
-        '''
+        """ Jobs: unload and load material last production day
+        """
         if context is None:
             context = {}
         save_mode = context.get('save_mode', False)
 
         # Pool used:
-        unload_pool = self.pool.get('mrp.production.workcenter.line') # Job/SL
-        load_pool = self.pool.get('mrp.production.workcenter.load') # CL
+        unload_pool = self.pool.get('mrp.production.workcenter.line')  # Job/SL
+        load_pool = self.pool.get('mrp.production.workcenter.load')  # CL
         excel_pool = self.pool.get('excel.writer')
         product_pool = self.pool.get('product.product')
 
@@ -584,7 +585,7 @@ class MrpProductionDailyReport(orm.Model):
         last = False
         for day in range(1, 7):
             last = today - timedelta(days=day)
-            if last.isoweekday() in range(1, 5): # Working day 1-5
+            if last.isoweekday() in range(1, 5):  # Working day 1-5
                 break
 
         if not last:
@@ -630,7 +631,7 @@ class MrpProductionDailyReport(orm.Model):
         # Account movement (over last date):
         # ---------------------------------------------------------------------
         header = [u'Doc. contabile', u'Descrizione', u'Q.', u'Commento',
-            u'Date']
+                  u'Date']
         row = 0
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=excel_format['header'])
