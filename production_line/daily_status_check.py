@@ -412,10 +412,12 @@ class MrpProductionDailyReport(orm.Model):
         # Write extra line data:
         product_data = []
         col = 0
+        max_col = 0
         for workcenter in wc_lines:
             line_name = workcenter.name
             wc_db[workcenter.id] = col  # line_gap + i
             col += 1
+            max_col = col
 
             # Title:
             excel_pool.write_xls_line(
@@ -486,7 +488,7 @@ class MrpProductionDailyReport(orm.Model):
 
                 # Detail:
                 oc_qty = line.product_uom_qty
-                done_qty = 0.0 # TODO
+                done_qty = 0.0  # todo
 
                 if wc_line:
                     color_format = excel_format['']
@@ -538,7 +540,7 @@ class MrpProductionDailyReport(orm.Model):
                 total_line[col] += oc_qty
                 master_total[0] += oc_qty
 
-                # TODO produced qty!
+                # todo produced qty!
 
                 excel_pool.write_xls_line(
                     ws_name, row, current_data,
@@ -558,7 +560,7 @@ class MrpProductionDailyReport(orm.Model):
             col=line_gap,
             )
 
-        excel_pool.autofilter(ws_name, 2, 0, 2, line_gap)
+        excel_pool.autofilter(ws_name, 2, 0, 2, max_col)
 
         if save_mode:
             return excel_pool.save_file_as(save_mode)
