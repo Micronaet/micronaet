@@ -577,7 +577,7 @@ class MrpProductionDailyReport(orm.Model):
             excel_pool.write_formula(
                 ws_name,
                 row, col, formula,
-                # excel_format['']['number'],
+                False, 0, # excel_format['']['number'],
                 # total_line[position],
             )
 
