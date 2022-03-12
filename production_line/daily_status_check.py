@@ -442,7 +442,7 @@ class MrpProductionDailyReport(orm.Model):
         excel_pool.column_width(ws_name, width)
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=excel_format['header'])
-        max_col = len(header)
+        max_col = len(header) - 1
 
         excel_pool.freeze_panes(ws_name, 3, 7)
 
@@ -498,13 +498,13 @@ class MrpProductionDailyReport(orm.Model):
                 if line.mrp_production_id:
                     mrp_name = line.mrp_production_id.name
                     mrp_state = line.mrp_production_id.state_info.replace(
-                        'Tutto pianificato:', 'Tot.:').replace(
+                        'Tutto pianificato: ', 'Tot.: ').replace(
                             ' ', '').replace('\n', '')
-                    if mrp_state.startswith('Tot.:'):
+                    if mrp_state.startswith('Tot.: '):
                         color_format = excel_format['blue']
                     else:
                         color_format = excel_format['yellow']
-                        mrp_state = 'Parz.:%s' % mrp_state
+                        mrp_state = 'Parz.: %s' % mrp_state
 
                 else:
                     mrp_name = ''
@@ -535,7 +535,7 @@ class MrpProductionDailyReport(orm.Model):
                     # todo manage
                     continue
 
-                col = line_cols * wc_db[wc_line.id] # todo set default position
+                col = line_cols * wc_db[wc_line.id]  # todo set default posit.
                 current_data[col] = oc_qty
                 total_line[col] += oc_qty
                 master_total[0] += oc_qty
@@ -546,22 +546,38 @@ class MrpProductionDailyReport(orm.Model):
                     ws_name, row, current_data,
                     default_format=color_format['number'], col=line_gap)
 
-        # Write total
+        # ---------------------------------------------------------------------
+        #                           Write header total:
+        # ---------------------------------------------------------------------
         row = 1
+
+        # Master total:
         excel_pool.write_xls_line(
             ws_name, row, master_total,
             default_format=excel_format['']['number'],
             col=line_gap - 2,
             )
 
-        excel_pool.write_xls_line(
-            ws_name, row, total_line,
-            default_format=excel_format['']['number'],
-            col=line_gap,
-            )
+        # ---------------------------------------------------------------------
+        # Line total:
+        # ---------------------------------------------------------------------
+        # excel_pool.write_xls_line(
+        #    ws_name, row, total_line,
+        #    default_format=excel_format['']['number'],
+        #    col=line_gap,
+        #    )
+
+        # Write as a formula:
+        for position in range(len(total_line)):
+            col = line_gap + position
+            formula = "=SUBTOTALE(9;L1:L2)"
+            excel_pool.write_formula(
+                ws_name,
+                row, col, formula,
+                excel_format['']['number'],
+                total_line[position])
 
         excel_pool.autofilter(ws_name, 2, 0, 2, max_col)
-
         if save_mode:
             return excel_pool.save_file_as(save_mode)
         else:
