@@ -552,16 +552,7 @@ class MrpProductionDailyReport(orm.Model):
         total_row = row - 1
         row = 1
 
-        # Master total:
-        #excel_pool.write_xls_line(
-        #    ws_name, row, master_total,
-        #    default_format=excel_format['']['number'],
-        #    col=line_gap - 2,
-        #    )
-
-        # ---------------------------------------------------------------------
-        # Line total with formula:
-        # ---------------------------------------------------------------------
+        # Master total + Line total
         complete_total = master_total + total_line
         for position in range(len(complete_total)):
             col = line_gap + position - 2
@@ -576,6 +567,7 @@ class MrpProductionDailyReport(orm.Model):
             )
 
         excel_pool.autofilter(ws_name, 2, 0, 2, max_col)
+
         if save_mode:
             return excel_pool.save_file_as(save_mode)
         else:
