@@ -546,10 +546,10 @@ class MrpProductionDailyReport(orm.Model):
                     ws_name, row, current_data,
                     default_format=color_format['number'], col=line_gap)
 
-        total_row = row
         # ---------------------------------------------------------------------
         #                           Write header total:
         # ---------------------------------------------------------------------
+        total_row = row - 1
         row = 1
 
         # Master total:
