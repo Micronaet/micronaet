@@ -564,7 +564,7 @@ class MrpProductionDailyReport(orm.Model):
         # ---------------------------------------------------------------------
         complete_total = master_total + total_line
         for position in range(len(complete_total)):
-            col = line_gap + position
+            col = line_gap + position - 2
             from_cell = excel_pool.rowcol_to_cell(row+2, col)
             to_cell = excel_pool.rowcol_to_cell(row+total_row, col)
             formula = u"=SUBTOTAL(9,%s:%s)" % (from_cell, to_cell)
@@ -572,7 +572,7 @@ class MrpProductionDailyReport(orm.Model):
                 ws_name,
                 row, col, formula,
                 excel_format['']['number'],
-                total_line[position],
+                complete_total[position],
             )
 
         excel_pool.autofilter(ws_name, 2, 0, 2, max_col)
