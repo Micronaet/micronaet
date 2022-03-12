@@ -546,6 +546,7 @@ class MrpProductionDailyReport(orm.Model):
                     ws_name, row, current_data,
                     default_format=color_format['number'], col=line_gap)
 
+        total_row = row
         # ---------------------------------------------------------------------
         #                           Write header total:
         # ---------------------------------------------------------------------
@@ -571,7 +572,7 @@ class MrpProductionDailyReport(orm.Model):
         for position in range(len(total_line)):
             col = line_gap + position
             from_cell = excel_pool.rowcol_to_cell(row+2, col)
-            to_cell = excel_pool.rowcol_to_cell(row+596, col)
+            to_cell = excel_pool.rowcol_to_cell(row+total_row, col)
             formula = '=SUBTOTAL(9;%s:%s)' % (from_cell, to_cell)
             excel_pool.write_formula(
                 ws_name,
