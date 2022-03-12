@@ -570,7 +570,9 @@ class MrpProductionDailyReport(orm.Model):
         # Write as a formula:
         for position in range(len(total_line)):
             col = line_gap + position
-            formula = "=SUBTOTALE(9;L4:L400)"
+            from_cell = excel_pool.rowcol_to_cell(row+2, col)
+            to_cell = excel_pool.rowcol_to_cell(row+596, col)
+            formula = '=SUBTOTAL(9;%s:%s)' % (from_cell, to_cell)
             excel_pool.write_formula(
                 ws_name,
                 row, col, formula,
