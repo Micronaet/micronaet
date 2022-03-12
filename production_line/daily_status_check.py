@@ -553,24 +553,18 @@ class MrpProductionDailyReport(orm.Model):
         row = 1
 
         # Master total:
-        excel_pool.write_xls_line(
-            ws_name, row, master_total,
-            default_format=excel_format['']['number'],
-            col=line_gap - 2,
-            )
-
-        # ---------------------------------------------------------------------
-        # Line total:
-        # ---------------------------------------------------------------------
-        # excel_pool.write_xls_line(
-        #    ws_name, row, total_line,
+        #excel_pool.write_xls_line(
+        #    ws_name, row, master_total,
         #    default_format=excel_format['']['number'],
-        #    col=line_gap,
+        #    col=line_gap - 2,
         #    )
 
-        # Write as a formula:
-        for position in range(len(total_line)):
-            col = line_gap + position
+        # ---------------------------------------------------------------------
+        # Line total with formula:
+        # ---------------------------------------------------------------------
+        complete_total = master_total + total_line
+        for position in range(len(complete_total)):
+            col = line_gap + position - 2
             from_cell = excel_pool.rowcol_to_cell(row+2, col)
             to_cell = excel_pool.rowcol_to_cell(row+total_row, col)
             formula = u"=SUBTOTAL(9,%s:%s)" % (from_cell, to_cell)
