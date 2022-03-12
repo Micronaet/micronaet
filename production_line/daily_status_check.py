@@ -22,6 +22,7 @@
 ###############################################################################
 
 import os
+import pdb
 import sys
 import logging
 import openerp
@@ -443,6 +444,7 @@ class MrpProductionDailyReport(orm.Model):
         excel_pool.column_width(ws_name, width)
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=excel_format['header'])
+        pdb.set_trace()
 
         excel_pool.freeze_panes(ws_name, 3, 7)
 
