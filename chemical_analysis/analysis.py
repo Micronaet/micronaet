@@ -427,8 +427,9 @@ class chemical_analysis(osv.osv):
         'quantity_lab3': lambda *a: 0.0,
         'date': lambda *a: time.strftime('%Y-%m-%d'),
         'code': lambda s, cr, uid, ctx: s.pool.get('ir.sequence').get(cr, uid, 'chemical.analysis')
-        #'state': lambda *a: 'draft',
+        # 'state': lambda *a: 'draft',
     }
+
 
 class stock_move_add_fields(osv.osv):
     ''' Add field to stock movement for manage analysis

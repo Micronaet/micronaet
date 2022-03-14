@@ -942,7 +942,7 @@ class mrp_production_workcenter_load(osv.osv):
         """
         last = 0
         wc_id = vals.get('line_id', False)
-        if wc_id: # mandatory
+        if wc_id:  # mandatory
             wc_pool = self.pool.get('mrp.production.workcenter.line')
             for lavoration in wc_pool.browse(
                     cr, uid, wc_id, context=context
