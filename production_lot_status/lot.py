@@ -32,8 +32,8 @@ from openerp.tools import (
 import openerp.addons.decimal_precision as dp
 from openerp.tools.translate import _
 
-
 _logger = logging.getLogger(__name__)
+
 
 class stock_production_lot_accounting(orm.Model):
     """ Add extra field for manage status of lot from accounting
@@ -46,7 +46,7 @@ class stock_production_lot_accounting(orm.Model):
     # -----------------
     def scheduled_import_lot_quantity(
             self, cr, uid, path, filename,
-            package=True, context=None):
+            total_filename, package=True, context=None):
         """ Scheduled function for import status lot from accounting
             self: this instance
             cr: cursor
@@ -68,12 +68,30 @@ class stock_production_lot_accounting(orm.Model):
             _logger.error("Error accessing file: %s" % file_csv)
             return False
 
+        total_csv = os.path.join(os.path.expanduser(path), total_filename)
+        try:
+            total_f = open(total_csv, 'r')
+        except:
+            _logger.error("Error accessing total stock file: %s" % total_csv)
+            return False
+
         product_pool = self.pool.get("product.product")
         package_pool = self.pool.get("product.ul")
 
+        # Cache product:
+        product_db = {}
+        product_ids = product_pool.search(cr, uid, [], context=context)
+        for product in product_pool.browse(
+                cr, uid, product_ids, context=context):
+            product_db[product.id] = product.default_code
+
+        # Reset all status:
+        product_pool.write(cr, uid, product_ids, {
+            'accounting_qty': False,
+        }, context=context)
+
         i = 0
         lot_modify_ids = []
-        product_db = {}
         for line in f:
             try:
                 i += 1
@@ -109,20 +127,15 @@ class stock_production_lot_accounting(orm.Model):
                     name = lot_code
 
                 # Get ref by ID of code read
-                product_ids = product_pool.search(cr, uid, [
-                    ('default_code', '=', product_code)], context=context)
-                if not product_ids:
-                    _logger.error("Line: %s - Product not found: %s" % (
-                            i, product_code))
+                product_id = product_db.get(product_code)
+                if not product_id:
+                    _logger.error('Line: %s - Product not found: %s' % (
+                        i, product_code))
                     continue
 
                 # Search lot
                 lot_ids = self.search(cr, uid, [
                     ('name', '=', name)], context=context)
-                product_id = product_ids[0]
-                if product_id not in product_db:
-                    product_db[product_id] = 0.0
-                product_db[product_id] += stock_available_accounting
                 data = {
                     'name': name,
                     'product_id': product_id,
@@ -144,16 +157,18 @@ class stock_production_lot_accounting(orm.Model):
         # ---------------------------------------------------------------------
         # Update product stock status:
         # ---------------------------------------------------------------------
-        for product_id in product_db:
-            product_pool.write(cr, uid, [product_id], {
-                'accounting_qty': product_db[product_id],
-            }, context=context)
-        no_stock_ids = product_pool.search(cr, uid, [
-            ('id', 'not in', product_db.keys()),
-        ], context=context)
-        product_pool.write(cr, uid, no_stock_ids, {
-            'accounting_qty': False,
-        }, context=context)
+        stock_used = '1'
+        for line in total_f:
+            line = line.strip()
+            row = line.replace()
+            if len(row) != 3:
+                _logger.warning('Jump line not 3 cols')
+                continue
+            if row[0].strip() == stock_used:
+                product_id = product_db.get(row[1].strip())
+                product_pool.write(cr, uid, [product_id], {
+                    'accounting_qty': float(row[2].strip().replace(',', '.'))
+                }, context=context)
 
         # ---------------------------------------------------------------------
         # Reset lot not present:
