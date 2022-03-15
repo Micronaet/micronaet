@@ -57,17 +57,19 @@ class stock_production_lot_accounting(orm.Model):
             package: manage package (default False)
         """
         # todo remove importation!!!!!!!
+        product_pool = self.pool.get("product.product")
+        package_pool = self.pool.get("product.ul")
 
         if context is None:
             context = {}
-        separator = ";"
+        separator = ';'
 
         filename = os.path.join(
             os.path.expanduser(path), filename)
         try:
             f = open(filename, 'r')
         except:
-            _logger.error("Error accessing file: %s" % filename)
+            _logger.error('Error accessing file: %s' % filename)
             return False
 
         total_filename = os.path.join(
@@ -76,18 +78,15 @@ class stock_production_lot_accounting(orm.Model):
             total_f = open(total_filename, 'r')
         except:
             _logger.error(
-                "Error accessing total stock file: %s" % total_filename)
+                'Error accessing total stock file: %s' % total_filename)
             return False
-
-        product_pool = self.pool.get("product.product")
-        package_pool = self.pool.get("product.ul")
 
         # Cache product:
         product_db = {}
         product_ids = product_pool.search(cr, uid, [], context=context)
         for product in product_pool.browse(
                 cr, uid, product_ids, context=context):
-            product_db[product.id] = product.default_code
+            product_db[product.default_code] = product.id
 
         # Reset all status:
         product_pool.write(cr, uid, product_ids, {
@@ -166,7 +165,7 @@ class stock_production_lot_accounting(orm.Model):
         stock_used = '1'
         for line in total_f:
             line = line.strip()
-            row = line.split(';')
+            row = line.split(separator)
             if len(row) != 3:
                 _logger.warning('Jump line not 3 cols')
                 continue
