@@ -61,18 +61,21 @@ class stock_production_lot_accounting(orm.Model):
             context = {}
         separator = ";"
 
-        file_csv = os.path.join(os.path.expanduser(path), filename)
+        filename = os.path.join(
+            os.path.expanduser(path), filename)
         try:
-            f = open(file_csv, 'r')
+            f = open(filename, 'r')
         except:
-            _logger.error("Error accessing file: %s" % file_csv)
+            _logger.error("Error accessing file: %s" % filename)
             return False
 
-        total_csv = os.path.join(os.path.expanduser(path), total_filename)
+        total_filename = os.path.join(
+            os.path.expanduser(path), total_filename)
         try:
-            total_f = open(total_csv, 'r')
+            total_f = open(total_filename, 'r')
         except:
-            _logger.error("Error accessing total stock file: %s" % total_csv)
+            _logger.error(
+                "Error accessing total stock file: %s" % total_filename)
             return False
 
         product_pool = self.pool.get("product.product")
