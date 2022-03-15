@@ -18,6 +18,7 @@
 #
 ###############################################################################
 import os
+import pdb
 import sys
 import openerp.netsvc
 import logging
@@ -172,6 +173,8 @@ class stock_production_lot_accounting(orm.Model):
 
             stock_number = row[0].strip()
             default_code = row[1].strip()
+            if default_code == 'X5600':
+                pdb.set_trace()
             stock_qty = float(row[2].strip().replace(',', '.'))
             if stock_number == stock_used:
                 product_id = product_db.get(default_code)
