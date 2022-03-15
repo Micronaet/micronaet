@@ -92,6 +92,7 @@ class stock_production_lot_accounting(orm.Model):
 
         i = 0
         lot_modify_ids = []
+        _logger.info('Reading %s file...' % filename)
         for line in f:
             try:
                 i += 1
@@ -157,6 +158,7 @@ class stock_production_lot_accounting(orm.Model):
         # ---------------------------------------------------------------------
         # Update product stock status:
         # ---------------------------------------------------------------------
+        _logger.info('Reading %s file...' % total_filename)
         stock_used = '1'
         for line in total_f:
             line = line.strip()
