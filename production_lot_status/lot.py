@@ -162,7 +162,7 @@ class stock_production_lot_accounting(orm.Model):
         stock_used = '1'
         for line in total_f:
             line = line.strip()
-            row = line.replace()
+            row = line.split(';')
             if len(row) != 3:
                 _logger.warning('Jump line not 3 cols')
                 continue
