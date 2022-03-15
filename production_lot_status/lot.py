@@ -164,10 +164,14 @@ class stock_production_lot_accounting(orm.Model):
             if len(row) != 3:
                 _logger.warning('Jump line not 3 cols')
                 continue
-            if row[0].strip() == stock_used:
-                product_id = product_db.get(row[1].strip())
+
+            stock_number = row[0].strip()
+            default_code = row[1].strip()
+            stock_qty = float(row[2].strip().replace(',', '.'))
+            if stock_number == stock_used:
+                product_id = product_db.get(default_code)
                 product_pool.write(cr, uid, [product_id], {
-                    'accounting_qty': float(row[2].strip().replace(',', '.'))
+                    'accounting_qty': stock_qty,
                 }, context=context)
 
         # ---------------------------------------------------------------------
