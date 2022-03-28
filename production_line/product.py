@@ -79,34 +79,34 @@ class product_ul_extra(osv.osv):
         filename = os.path.expanduser(file_name_package)
         for line in open(filename, 'r'):
             try:
-                 code = line[:10].strip()
-                 name = "%s [%s]" % (
-                     line[10:40].strip().title(),
-                     code,
-                     )
-                 product_code = line[40:47].strip()
+                code = line[:10].strip()
+                name = "%s [%s]" % (
+                    line[10:40].strip().title(),
+                    code,
+                    )
+                product_code = line[40:47].strip()
 
-                 linked_product_id = self.pool.get('product.product').search(
-                     cr, uid, [
-                         ('default_code','=',product_code)
-                 ], context=context)
-                 if not linked_product_id:
-                     # log error
-                     continue # jump line
-                 linked_product_id = linked_product_id[0]
+                linked_product_id = self.pool.get('product.product').search(
+                    cr, uid, [
+                        ('default_code', '=', product_code)
+                    ], context=context)
+                if not linked_product_id:
+                    # log error
+                    continue # jump line
+                linked_product_id = linked_product_id[0]
 
-                 ul_id = self.search(cr, uid, [
-                     ('code', '=', code)], context=context)
-                 data = {
-                     'code': code,
-                     'name': name,
-                     'linked_product_id': linked_product_id,
-                     'type': 'unit',
-                     }
-                 if ul_id:
-                     self.write(cr, uid, ul_id, data, context=context)
-                 else:
-                     self.create(cr, uid, data, context=context)
+                ul_id = self.search(cr, uid, [
+                    ('code', '=', code)], context=context)
+                data = {
+                    'code': code,
+                    'name': name,
+                    'linked_product_id': linked_product_id,
+                    'type': 'unit',
+                    }
+                if ul_id:
+                    self.write(cr, uid, ul_id, data, context=context)
+                else:
+                    self.create(cr, uid, data, context=context)
             except:
                 break
         return True
