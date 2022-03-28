@@ -45,10 +45,10 @@
                 <field name="code" />
             </field>
             <field name="type" position="after">
-                <field name="active" />
                 <field name="linked_product_id" />
+                <!--<field name="active" />
                 <button name="hide_product_ul" type="object" string="Nascondi" icon="gtk-no" attrs="{'invisible': [('active', '=', True)]}"/>
-                <button name="show_product_ul" type="object" string="Mostra" icon="gtk-yes" attrs="{'invisible': [('active', '=', False)]}"/>
+                <button name="show_product_ul" type="object" string="Mostra" icon="gtk-yes" attrs="{'invisible': [('active', '=', False)]}"/>-->
             </field>
         </field>
     </record>
