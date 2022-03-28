@@ -54,7 +54,7 @@ class product_ul_extra(osv.osv):
     _name = 'product.ul'
     _inherit = 'product.ul'
 
-    def hide_product_ul(self, cr, uid, ids, context=None):
+    '''def hide_product_ul(self, cr, uid, ids, context=None):
         """ Hide product UL
         """
         return self.write(cr, uid, ids, {
@@ -68,6 +68,7 @@ class product_ul_extra(osv.osv):
             'active': True,
             }, context=context)
 
+    '''
     # todo maybe a scheduled action (not yes scheduled):
     def import_ul(self, cr, uid, file_name_package, context=None):
         """ load accounting list of ul (from files for now)
@@ -116,12 +117,12 @@ class product_ul_extra(osv.osv):
         'linked_product_id': fields.many2one(
             'product.product', 'Product linked', required=False,
             help="Used for unload package product after lavoration"),
-        'active': fields.boolean('Attivo'),
+        # 'active': fields.boolean('Attivo'),
         }
 
-    _defaults = {
-        'active': lambda *x: True,
-        }
+    # _defaults = {
+    #    'active': lambda *x: True,
+    #    }
 
 
 class product_product_extra(osv.osv):
