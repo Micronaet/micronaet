@@ -39,13 +39,33 @@ class product_packaging(osv.osv):
     _name = 'product.packaging'
     _inherit = 'product.packaging'
 
+    def hide_product_ul(self, cr, uid, ids, context=None):
+        """ Hide product UL
+        """
+        return self.write(cr, uid, ids, {
+            'active': False,
+            'is_active': False,
+            }, context=context)
+
+    def show_product_ul(self, cr, uid, ids, context=None):
+        """ Show product UL
+        """
+        return self.write(cr, uid, ids, {
+            'active': True,
+            'is_active': True,
+            }, context=context)
+
     _columns = {
+        'active': fields.boolean('Attivo'),  # for hide when unlinked
         'is_active': fields.boolean('Is Active'),
         }
 
     _defaults = {
+        'active': lambda *x: True,
         'is_active': lambda *x: True,
         }
+
+
 class product_ul_extra(osv.osv):
     """ Extra fields for product.product object
     """

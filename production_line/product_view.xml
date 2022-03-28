@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="product.product_packaging_form_view"/>
         <field name="arch" type="xml">
             <field name="qty" position="before">
-                <field name="is_active" />                
+                <field name="is_active" />
             </field>
         </field>
     </record>
@@ -17,7 +17,7 @@
         <field name="inherit_id" ref="product.product_packaging_tree_view"/>
         <field name="arch" type="xml">
             <field name="sequence" position="after">
-                <field name="is_active" />                
+                <field name="is_active" />
             </field>
         </field>
     </record>
@@ -35,7 +35,7 @@
         </field>
     </record>
 
-    <!--product.ul--> 
+    <!--product.ul-->
     <record model="ir.ui.view" id="product_ul_tree_extra">
         <field name="name">Product UL extra</field>
         <field name="model">product.ul</field>
@@ -45,10 +45,12 @@
                 <field name="code" />
             </field>
             <field name="type" position="after">
+                <field name="active_id" invisible="1" />
                 <field name="linked_product_id" />
+                <button name="hide_product_ul" type="object" string="Nascondi" icon="gtk-no" attrs="{'invisible': [('active', '=', True)]}"/>
             </field>
         </field>
-    </record>    
+    </record>
     <record model="ir.ui.view" id="product_ul_form_view_extra">
         <field name="name">Product UL extra</field>
         <field name="model">product.ul</field>
@@ -62,7 +64,7 @@
                 <separator string="Prodotti che lo utilizzano:" colspan="4"/>
                 <field name="product_ids" nolabel="1" colspan="4">
                     <tree string="Product packaging" editable="bottom" colors="grey:is_active==False">
-                        <field name="is_active" />                        
+                        <field name="is_active" />
                         <field name="product_id" />
                         <field name="qty" />
                         <field name="ean" />
@@ -71,11 +73,11 @@
                     </tree>
                 </field>
             </field>
-            
-        </field>
-    </record>  
 
-    <!--product.product--> 
+        </field>
+    </record>
+
+    <!--product.product-->
     <record model="ir.ui.view" id="product_search_form_view_extra">
         <field name="name">Product accounting</field>
         <field name="model">product.product</field>
@@ -85,7 +87,7 @@
                 <filter string='Supply method' icon="terp-stock_symbol-selection" domain="[]" context="{'group_by' : 'supply_method'}"/>
             </filter>
         </field>
-    </record>  
+    </record>
     <record model="ir.ui.view" id="product_normal_form_view_pallet">
         <field name="name">Product pallet</field>
         <field name="model">product.product</field>
@@ -99,22 +101,22 @@
                 </group>
             </field>
         </field>
-    </record>      
+    </record>
     <record model="ir.ui.view" id="product_normal_form_view_extra">
         <field name="name">Product accounting</field>
         <field name="model">product.product</field>
         <field name="inherit_id" ref="stock.view_normal_procurement_locations_form" />
         <field name="arch" type="xml">
             <field name="incoming_qty" position="before">
-                <field name="not_in_status" />           
+                <field name="not_in_status" />
                 <field name="accounting_qty" />
                 <field name="linked_accounting_qty"/>
                 <field name="minimum_qty" />
                 <field name="maximum_qty" />
             </field>
         </field>
-    </record>  
-     
+    </record>
+
     <record model="ir.ui.view" id="product_normal_tree_view_extra">
         <field name="name">Product accounting</field>
         <field name="model">product.product</field>
@@ -123,7 +125,7 @@
             <field name="qty_available" position="after">
                 <field name="accounting_qty" />
                 <field name="not_in_status" />
-                <field name="supply_method" />           
+                <field name="supply_method" />
             </field>
             <field name="qty_available" position="attributes">
                 <attribute name="invisible">1</attribute>
@@ -131,4 +133,4 @@
         </field>
     </record>
    </data>
-</openerp>   
+</openerp>
