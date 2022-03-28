@@ -405,7 +405,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             else:
                 code = wiz_proxy.product_id.default_code
 
-            # TODO Check if lot is yet created:
+            # todo Check if lot is yet created:
             ref_lot_id = False
             mrp_id = self.get_mrp_id(cr, uid, context=context)
             if mrp_id:
@@ -910,7 +910,6 @@ class confirm_mrp_production_wizard(osv.osv_memory):
         wc_pool = self.pool.get('mrp.production.workcenter.line')
         wc_browse = wc_pool.browse(
             cr, uid, context.get('active_id', 0), context=context)
-
         total = 0.0
         try:
             for l in wc_browse.production_id.workcenter_lines:

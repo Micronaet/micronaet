@@ -109,7 +109,7 @@ class stock_production_lot_accounting(orm.Model):
                 accounting_ref = line_csv[4].strip()
 
                 try:  # correct format, ex.: 000001
-                    lot_code = "%06d" % (int(lot_code), )
+                    lot_code = "%06d" % int(lot_code)
                     anomaly = False
                 except:
                     anomaly = True

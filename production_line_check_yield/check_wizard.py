@@ -133,4 +133,4 @@ class confirm_mrp_production_update_wizard(osv.osv_memory):
         # Not used for now:
         'yield_comment_hide': fields.text('Rendimento (nascosto)'),
         }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+
