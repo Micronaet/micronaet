@@ -856,7 +856,7 @@ class sale_order_line_extra(osv.osv):
             String='Accounting order', store=True,
             help='Temporary line from accounting, when order is close it is deleted from OpenERP'),
         # todo fields.function da fare per testare quelli coperti da produzione, magazzino ordinato
-        'product_ul_id':fields.many2one(
+        'product_ul_id': fields.many2one(
             'product.ul', 'Required package',
             ondelete='set null',),
         'deliver_ready': fields.boolean('Deliver ready'),
