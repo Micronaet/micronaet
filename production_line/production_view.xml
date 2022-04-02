@@ -965,13 +965,13 @@
                                         <field name="stock" />
                                         <field name="partner_id" attrs="{'required':[('stock','=',False)]}"/>
                                         <field name="quantity" sum="total"/>
-                                        <field name="product_ul_id" string="Imballo (RIM)"/>
-                                        <field name="product_packaging" string="Imballo"/>
+                                        <field name="product_ul_id" string="Imballo"/>
+                                        <!--<field name="product_packaging" string="Imballo"/>-->
                                     </tree>
                                     <form string="Package extra sale order">
                                         <field name="stock" />
-                                        <field name="product_ul_id" string="Imballo (RIM)"/>
-                                        <field name="product_packaging" string="Imballo"/>
+                                        <field name="product_ul_id" string="Imballo"/>
+                                        <!--<field name="product_packaging" string="Imballo"/>-->
                                         <field name="partner_id" attrs="{'required':[('stock','=',False)]}"/>
                                         <field name="production_id" invisible="1"/>
                                         <field name="quantity" sum="total"/>
