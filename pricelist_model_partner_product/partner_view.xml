@@ -12,10 +12,10 @@
                 <field name="auto_updatable" /><newline/>
             </xpath>
             <xpath expr="//field[@name='pricelist_product_ids']/tree/field[@name='note']" position="before">
-                <field name="in_pricelist" groups="pricelist_model_partner_product.group_pricelist_manager" />
-                <field name="pricelist1" readonly="1" groups="pricelist_model_partner_product.group_pricelist_agent"/>
-                <field name="pricelist2" readonly="1" groups="pricelist_model_partner_product.group_pricelist_agent"/>
-                <field name="pricelist3" readonly="1" groups="pricelist_model_partner_product.group_pricelist_agent"/>
+                <field name="in_pricelist" groups="pricelist_model_partner_product.group_pricelist_manager" invisible="1"/>
+                <field name="pricelist1" readonly="1" groups="pricelist_model_partner_product.group_pricelist_agent" invisible="1"/>
+                <field name="pricelist2" readonly="1" groups="pricelist_model_partner_product.group_pricelist_agent" invisible="1"/>
+                <field name="pricelist3" readonly="1" groups="pricelist_model_partner_product.group_pricelist_agent" invisible="1"/>
             </xpath>
         </field>
     </record>
