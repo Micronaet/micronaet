@@ -874,6 +874,22 @@ class mrp_production_product_packaging(osv.osv):
     _description = 'Production product packaging'
     _rec_name = 'ul_id'
 
+    def assign_remain(self, cr, uid, ids, context=None):
+        """ Assign remain data
+        """
+        package_id = ids[0]
+        package = self.browse(cr, uid, ids, context=context)[0]
+        mrp = package.production_id
+        mrp_qty = mrp.product_qty
+        oc_qty = sum([oc.product_uom_qty for oc in mrp.order_lines_ids])
+        stock_qty = sum(
+            [stock.load_qty for stock in mrp.product_packaging_ids
+             if stock.id != package_id])
+        remain_qty = min(0.0, mrp_qty - oc_qty - stock_qty)
+        return self.write(cr, uid, ids, {
+            'load_qty': remain_qty,
+        }, context=context)
+
     _columns = {
         'production_id': fields.many2one('mrp.production', 'MRP'),
         'ul_id': fields.many2one('product.ul', 'Package'),
