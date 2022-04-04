@@ -944,14 +944,18 @@
                                         <tree string="Product package (red=deleted)" editable="bottom" colors="red:deleted==True;blue:account_id!=False">
                                             <field name="production_id" invisible="1"/>
                                             <field name="ul_id" readonly="1"/>
+                                            <field name="load_qty" />
+                                            <field name="pallet_weight" />
                                             <field name="account_id" readonly="1"/>
                                             <field name="lot_code" invisible="1"/>
                                             <field name="deleted" invisible="1"/>
                                         </tree>
                                         <form string="Product package">
-                                            <field name="production_id" invisible="1"/>
                                             <field name="ul_id" />
                                             <field name="account_id" />
+                                            <field name="load_qty" />
+                                            <field name="pallet_weight" />
+                                            <field name="production_id" invisible="1"/>
                                             <field name="lot_code" invisible="1"/>
                                             <field name="deleted" invisible="1"/>
                                         </form>

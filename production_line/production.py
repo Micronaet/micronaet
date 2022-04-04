@@ -877,10 +877,13 @@ class mrp_production_product_packaging(osv.osv):
     _columns = {
         'production_id': fields.many2one('mrp.production', 'MRP'),
         'ul_id': fields.many2one('product.ul', 'Package'),
-        'lot_code': fields.char('Lot', size=64), # XXX needed?
+        'lot_code': fields.char('Lot', size=64),  # XXX needed?
         'account_id': fields.char('Account ID', size=15),
         'deleted': fields.boolean(
             'Deleted', help='Deleted no load in account'),
+        # todo
+        'pallet_weight': fields.float('Peso pallet'),
+        'load_qty': fields.float('Produrre q.'),
         }
 
 
