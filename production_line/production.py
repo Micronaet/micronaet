@@ -18,6 +18,7 @@
 #
 ###############################################################################
 import os
+import pdb
 import sys
 import openerp.netsvc as netsvc
 import logging
@@ -877,6 +878,7 @@ class mrp_production_product_packaging(osv.osv):
     def assign_remain(self, cr, uid, ids, context=None):
         """ Assign remain data
         """
+        pdb.set_trace()
         package_id = ids[0]
         package = self.browse(cr, uid, ids, context=context)[0]
         mrp = package.production_id
