@@ -944,7 +944,7 @@
                                         <tree string="Product package (red=deleted)" editable="bottom" colors="red:deleted==True;blue:account_id!=False">
                                             <field name="production_id" invisible="1"/>
                                             <field name="ul_id" readonly="1"/>
-                                            <button name="assign_remain" type="object" string="Assegna residuo"/>
+                                            <button name="assign_remain" type="object" string="Assegna residuo" icon="gtk-execute"/>
                                             <field name="load_qty" sum="total"/>
                                             <field name="pallet_weight" />
                                             <field name="account_id" readonly="1"/>
