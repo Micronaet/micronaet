@@ -878,7 +878,6 @@ class mrp_production_product_packaging(osv.osv):
     def assign_remain(self, cr, uid, ids, context=None):
         """ Assign remain data
         """
-        pdb.set_trace()
         package_id = ids[0]
         package = self.browse(cr, uid, ids, context=context)[0]
         mrp = package.production_id
@@ -887,7 +886,7 @@ class mrp_production_product_packaging(osv.osv):
         stock_qty = sum(
             [stock.load_qty for stock in mrp.product_packaging_ids
              if stock.id != package_id])
-        remain_qty = min(0.0, mrp_qty - oc_qty - stock_qty)
+        remain_qty = max(0.0, mrp_qty - oc_qty - stock_qty)
         return self.write(cr, uid, ids, {
             'load_qty': remain_qty,
         }, context=context)
