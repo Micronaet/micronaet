@@ -956,6 +956,8 @@
                                             <field name="ul_id" />
                                             <field name="account_id" />
                                             <field name="load_qty" />
+                                            <button name="assign_remain" type="object" string="Assegna residuo" icon="gtk-execute"/>
+                                            <button name="remove_assign" type="object" string="Nessuna assegnazione" icon="gtk-undelete"/>
                                             <field name="pallet_weight" />
                                             <field name="production_id" invisible="1"/>
                                             <field name="lot_code" invisible="1"/>
