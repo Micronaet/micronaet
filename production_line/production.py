@@ -875,6 +875,13 @@ class mrp_production_product_packaging(osv.osv):
     _description = 'Production product packaging'
     _rec_name = 'ul_id'
 
+    def remove_assign(self, cr, uid, ids, context=None):
+        """ Clean assign
+        """
+        return self.write(cr, uid, ids, {
+            'load_qty': 0.0,
+        }, context=context)
+
     def assign_remain(self, cr, uid, ids, context=None):
         """ Assign remain data
         """
