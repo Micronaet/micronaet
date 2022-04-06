@@ -419,6 +419,8 @@ class product_product_extra(osv.osv):
             # -----------------------------------------------------------------
             # Mandatory fields check:
             # -----------------------------------------------------------------
+            if default_code == 'A3100':
+                pdb.set_trace()
             if not default_code:
                 _logger.error('%s. Code empty (jump line)' % row)
                 continue
