@@ -464,6 +464,7 @@ class product_product_extra(osv.osv):
                 ('code', '=', pedimento_code),
                 ('product_id', '=', product_id),
                 ], context=context)
+
             if odoo_ids:  # Update pedimento:
                 data = {
                     'name': pedimento,
