@@ -466,6 +466,7 @@ class product_product_extra(osv.osv):
                 ], context=context)
             if odoo_ids:  # Update pedimento:
                 data = {
+                    'name': pedimento,
                     'product_qty': subtotal,  # total for all read!
                     }
                 if last_cost:  # XXX Update only if present:
