@@ -460,8 +460,6 @@ class product_product_extra(osv.osv):
             subtotal = check_double[key]
 
             # Search now:
-            if default_code == 'A3100':
-                pdb.set_trace()
             odoo_ids = pedimento_pool.search(cr, uid, [
                 ('code', '=', pedimento_code),
                 ('product_id', '=', product_id),
