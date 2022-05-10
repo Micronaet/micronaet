@@ -913,6 +913,7 @@
                                         <field name="product_uom" string="UOM"/>
                                         <field name="product_ul_id" string="Imballo (RIM)"/>
                                         <field name="product_packaging" string="Imballo"/>
+                                        <field name="pallet_weight" string="Peso Pallet"/>
                                         <field name="state" invisible="1" />
                                         <button name="free_line" type="object" string="Free line" icon="gtk-disconnect" />
                                     </tree>

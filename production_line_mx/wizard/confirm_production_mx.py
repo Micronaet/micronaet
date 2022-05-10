@@ -251,12 +251,12 @@ class MrpProduction(osv.Model):
 
             if not package:
                 raise osv.except_osv(
-                    _('Lavoration cost error!'),
+                    _('Job cost error!'),
                     _('No package in load'))
 
             if not link_product:
                 raise osv.except_osv(
-                    _('Lavoration cost errort!'),
+                    _('Job cost error!'),
                     _('No package product in load'))
 
             # Package cost (always present!):
@@ -322,16 +322,16 @@ class MrpProduction(osv.Model):
                 _('Load qty must be present!'))
 
         # Add also Lavoration cost:
-        subtotal = (line_rate_cost * load_qty) # K of Line (medium cost)
+        subtotal = (line_rate_cost * load_qty)  # K of Line (medium cost)
         unload_cost += subtotal
-        calc += _(u'<br/>Lavoration: [K rate] %s x [load] %s = %s<br/>') % (
+        calc += _(u'<br/>Job: [K rate] %s x [load] %s = %s<br/>') % (
             line_rate_cost,
             load_qty,
             subtotal,
             )
 
         # Calculate unit cost for production:
-        unit_cost = unload_cost / load_qty #unload_qty #XXX before was material
+        unit_cost = unload_cost / load_qty #unload_qty before was material
 
         calc += _(u'<br/>Q. total:<br/>')
         calc += _(
@@ -365,7 +365,7 @@ class MrpProduction(osv.Model):
                 _('quantity'),
                 _('uom'),
                 _('cost'),
-                _('lot'), # Pedimento
+                _('lot'),  # Pedimento
                 ])
 
         # ---------------------------------------------------------------------
@@ -375,7 +375,7 @@ class MrpProduction(osv.Model):
             row += 1
             qty = load.product_qty
             if load.recycle:
-                product = load.waste_id # Product was waste
+                product = load.waste_id  # Product was waste
                 waste_qty = load.waste_qty
 
                 # Generate waste load:
@@ -389,7 +389,7 @@ class MrpProduction(osv.Model):
                 row += 1
                 qty -= waste_qty  # remove waste
 
-            product = load.product_id # Real product:
+            product = load.product_id  # Real product:
             excel_pool.write_xls_line(ws_name, row, [
                 product.default_code,
                 qty,
@@ -507,14 +507,14 @@ class MrpProduction(osv.Model):
                     pedimento_name = load.pallet_pedimento_id.name
                     lot_name = ''
 
-                row +=1
+                row += 1
                 excel_pool.write_xls_line(ws_name, row, [
                     product.default_code,
                     load.pallet_qty,
                     product.uom_id.contipaq_ref,
                     standard_price,
-                    pedimento_name, # No pedimento
-                    lot_name, # No lot
+                    pedimento_name,  # No pedimento
+                    lot_name,  # No lot
                     stock_number,
                     ])
 
