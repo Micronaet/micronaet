@@ -906,7 +906,7 @@ class mrp_production_product_packaging(osv.osv):
         'deleted': fields.boolean(
             'Deleted', help='Deleted no load in account'),
         # todo
-        'pallet_weight': fields.float('Peso pallet'),
+        'pallet_weight': fields.integer('Peso pallet'),
         'load_qty': fields.float('Produrre q.'),
         }
 
