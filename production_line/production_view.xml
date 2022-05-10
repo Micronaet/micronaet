@@ -905,6 +905,7 @@
                             <group string="Articoli Prodotti">
                                 <field name="order_lines_ids" nolabel="1">
                                     <tree string="OC line">
+                                        <button name="set_sale_line_as_default_for_partner" type="object" string="Imposta come predefinito per il cliente" icon="star-on" confirm="Imposto come default peso e imballo quelli della riga?" context="{'force_only_mrp': True}"/>
                                         <field name="order_id" />
                                         <field name="name" />
                                         <field name="partner_id" />
@@ -916,6 +917,7 @@
                                         <field name="pallet_weight" string="Peso Pallet"/>
                                         <field name="state" invisible="1" />
                                         <button name="free_line" type="object" string="Free line" icon="gtk-disconnect" />
+
                                     </tree>
                                     <form string="OC line">
                                         <group colspan="4" col="4">
