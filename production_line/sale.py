@@ -73,14 +73,15 @@ class sale_order(osv.osv):
 
     _columns = {
         'state': fields.selection([
-                ('draft', 'Draft Quotation'),
-                ('sent', 'Quotation Sent'),
-                ('cancel', 'Cancelled'),
-                ('confirmed', 'Confirmed'),
-                ('waiting_date', 'Waiting Schedule'),
-                ('progress', 'Sales Order'),
-                ('manual', 'Sale to Invoice'),
-                ('invoice_except', 'Invoice Exception'),
-                ('done', 'Done'),
-                ], 'State', readonly=True,)
+            ('draft', 'Draft Quotation'),
+            ('sent', 'Quotation Sent'),
+            ('cancel', 'Cancelled'),
+            ('confirmed', 'Confirmed'),
+            ('waiting_date', 'Waiting Schedule'),
+            ('progress', 'Sales Order'),
+            ('manual', 'Sale to Invoice'),
+            ('invoice_except', 'Invoice Exception'),
+            ('done', 'Done'),
+            ], 'State', readonly=True,
+        )
     }
