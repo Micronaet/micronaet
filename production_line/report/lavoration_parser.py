@@ -40,16 +40,16 @@ class Parser(report_sxw.rml_parse):
         super(Parser, self).__init__(cr, uid, name, context)
         self.localcontext.update({
             'load_parameter': self.load_parameter,
-            'get_parameter': self.get_parameter,            
+            'get_parameter': self.get_parameter,
             'get_analysis_info': self.get_analysis_info,
             'translate_static': self.translate_static,
         })
-        
+
     def translate_static(self, term, lang):
-        ''' Translate static text for module
-        '''     
+        """ Translate static text for module
+        """
         languages = {
-            #'en_US': {
+            # 'en_US': {
             #    },
             'es_AR': {
                 u'ORDINE DI PRODUZIONE': u'ORDER DE FABRICACIÓN',
@@ -58,15 +58,15 @@ class Parser(report_sxw.rml_parse):
                 u'FOGLIO PRODUZIONE': u'HOJA DE PRODUCCIÓN',
                 u'FOGLIO CONFEZIONAMENTO': u'HOLA DE ALMACEN',
                 u'N. Partita': u'N. Partida',
-                u'Prodotto': u'Producto', 
+                u'Prodotto': u'Producto',
                 u'Impianto': u'Planta',
                 u'Data': u'Fecha',
                 u'Lavorazioni': u'Fecha',
                 u'Cod. Dogan.': u'Cod. Dog.',
                 u'Componenti': u'Componente',
-                #'KG': u'KG',
-                #'LT': u'LT',
-                #'SAC': u'SAC',
+                # 'KG': u'KG',
+                # 'LT': u'LT',
+                # 'SAC': u'SAC',
                 u'Lotto': u'Lote',
                 u'Variazioni': u'Modificación',
                 u'Totale': u'Total',
@@ -90,62 +90,68 @@ class Parser(report_sxw.rml_parse):
                 u'N. bancale': 'N. Tarima',
                 u'Peso bancale': 'Peso',
                 u'Campione n.': 'N. Muestra',
-                u'Q.C.P.': 'Notas',          
+                u'Q.C.P.': 'Notas',
                 u'Verifica bonifica': 'Verifica bonifica',
-                u'Silos stoccaggio': 'Silos stoccaggio',      
-                },                
+                u'Silos stoccaggio': 'Silos stoccaggio',
+                u'Ora inizio': 'Ora inizio',
+                u'Ora fine': 'Ora fine',
+                },
             }
         if lang == 'it_IT' or lang not in languages:
             return term
-        
+
         return languages[lang].get(term, term)
-        
+
     def load_parameter(self, product_id, workcenter_id):
-        ''' Load browse object for get parameters
-        '''
+        """ Load browse object for get parameters
+        """
         global parameters, parameter_loaded
-        parameters = False # reset previous value
-        
+        parameters = False  # reset previous value
+
         workcenter_pool = self.pool.get('mrp.workcenter')
-        history_pool = self.pool.get('mrp.workcenter.history')        
+        history_pool = self.pool.get('mrp.workcenter.history')
         if product_id and workcenter_id:
             # test if workcenter is a child:
-            workcenter_proxy = workcenter_pool.browse(self.cr, self.uid, workcenter_id)
+            workcenter_proxy = workcenter_pool.browse(
+                self.cr, self.uid, workcenter_id)
             if workcenter_proxy.parent_workcenter_id:
                 workcenter_id = workcenter_proxy.parent_workcenter_id.id
-            
+
             # Setup browse object
             history_ids = history_pool.search(self.cr, self.uid, [
                 ('product_id', '=', product_id),
                 ('workcenter_id', '=', workcenter_id)
             ])
-            if history_ids:            
-                parameters = history_pool.browse(self.cr, self.uid, history_ids)[0]
+            if history_ids:
+                parameters = history_pool.browse(
+                    self.cr, self.uid, history_ids)[0]
+            else:
+                _logger.error('Paramter Line - Product not found!')
         return
 
     def get_parameter(self, name):
-        ''' Return parameters browse obj
-        '''
-        global parameters        
+        """ Return parameters browse obj
+        """
+        global parameters
         try:
-            return parameters.__getattr__(name) 
+            return parameters.__getattr__(name)
         except:
-            return ""            
+            return ""
         return parameters
 
     def get_analysis_info(self, production_id):
-        ''' Return specific information for customers that have this order line 
-        '''
+        """ Return specific information for customers that have this order line
+        """
         production_browse = self.pool.get("mrp.production").browse(self.cr, self.uid, production_id)
         note = {}
-       
+
         for line in production_browse.order_lines_ids:
             if line.partner_id and line.partner_id.analysis_required and line.partner_id.name not in note:
                 note[line.partner_id.name] = line.partner_id.analysis_note if line.partner_id.analysis_note else "Analysis mandatory"
-                    
-        res = ""           
+
+        res = ""
         for key in note:
             res += "[%s] %s\n" % (key, note[key])
         return res
-        
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

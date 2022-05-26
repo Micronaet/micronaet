@@ -1250,11 +1250,10 @@ class mrp_production_workcenter_line_extra(osv.osv):
                 }
         return res
 
-    def onchange_cycle_values(self, cr, uid, ids, cycle,
-                              single_cycle_duration,
-                                single_cycle_qty, real_date_planned, hour,
-                              product_qty, context=None):
-        #, mode='value', context=None):
+    def onchange_cycle_values(
+            self, cr, uid, ids, cycle, single_cycle_duration,
+            single_cycle_qty, real_date_planned, hour, product_qty,
+            context=None):  #, mode='value', context=None):
         """ On change cycle parameters (one function for all elements for loop
             problems.
             self: obj instance
