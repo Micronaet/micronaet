@@ -914,7 +914,7 @@
                                         <field name="product_uom" string="UOM"/>
                                         <field name="product_ul_id" string="Imballo (RIM)"/>
                                         <field name="product_packaging" string="Imballo"/>
-                                        <field name="pallet_weight" string="Peso Pallet"/>
+                                        <!--<field name="pallet_weight" string="Peso Pallet"/>-->
                                         <field name="state" invisible="1" />
                                         <button name="free_line" type="object" string="Free line" icon="gtk-disconnect" />
 
@@ -933,7 +933,7 @@
                                             <field name="product_ul_id" string="Imballo (RIM)"/>
                                             <field name="product_packaging" string="Imballo"/>
 
-                                            <field name="pallet_weight" string="Peso Pallet"/>
+                                            <!--<field name="pallet_weight" string="Peso Pallet"/>-->
                                             <field name="date_deadline" readonly="1"/>
 
                                             <field name="state" invisible="1" />
@@ -952,7 +952,7 @@
                                             <button name="assign_remain" type="object" string="Assegna residuo" icon="gtk-execute"/>
                                             <field name="load_qty" sum="total"/>
                                             <button name="remove_assign" type="object" string="Nessuna assegnazione" icon="gtk-undelete"/>
-                                            <field name="pallet_weight" />
+                                            <!--<field name="pallet_weight" />-->
                                             <field name="account_id" readonly="1"/>
                                             <field name="lot_code" invisible="1"/>
                                             <field name="deleted" invisible="1"/>
@@ -963,7 +963,7 @@
                                             <field name="load_qty" />
                                             <button name="assign_remain" type="object" string="Assegna residuo" icon="gtk-execute"/>
                                             <button name="remove_assign" type="object" string="Nessuna assegnazione" icon="gtk-undelete"/>
-                                            <field name="pallet_weight" />
+                                            <!--<field name="pallet_weight" />-->
                                             <field name="production_id" invisible="1"/>
                                             <field name="lot_code" invisible="1"/>
                                             <field name="deleted" invisible="1"/>
