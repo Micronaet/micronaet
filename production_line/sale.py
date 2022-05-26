@@ -44,7 +44,7 @@ _logger = logging.getLogger(__name__)
 class sale_order_line(osv.osv):
     """ Problem with confirmed files # patch
     """
-    _name = 'sale.order.line'
+    _inherit = 'sale.order.line'
 
     _columns = {
         # Added also here for MX installation
