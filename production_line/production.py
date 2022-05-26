@@ -1847,9 +1847,9 @@ class mrp_production_extra(osv.osv):
     # ----------------
     # Function fields:
     # ----------------
-    def _function_lavoration_planned(self, cr, uid, ids, field, args,
-                                     context=None):
-        """ Check and return total planned lavoration and boolean if it is all
+    def _function_lavoration_planned(
+            self, cr, uid, ids, field, args, context=None):
+        """ Check and return total planned job and boolean if it is all
             planned
         """
         res = {}
@@ -1863,17 +1863,17 @@ class mrp_production_extra(osv.osv):
             min_date = False
             max_date = False
 
-            for lavoration in production.workcenter_lines:
-                if lavoration.real_date_planned:  # todo remove!
-                    if not min_date or lavoration.real_date_planned[
+            for job in production.workcenter_lines:
+                if job.real_date_planned:  # todo remove!
+                    if not min_date or job.real_date_planned[
                             :10] < min_date:
-                        min_date=lavoration.real_date_planned[:10]
-                    if not max_date or lavoration.real_date_planned[
+                        min_date=job.real_date_planned[:10]
+                    if not max_date or job.real_date_planned[
                             :10] > max_date:
-                        max_date=lavoration.real_date_planned[:10]
+                        max_date=job.real_date_planned[:10]
                 res[production.id][
-                    'lavoration_planned'] += lavoration.product_qty or 0.0
-                for load in lavoration.load_ids:
+                    'lavoration_planned'] += job.product_qty or 0.0
+                for load in job.load_ids:
                     res[production.id][
                         'total_production_loaded'] += load.product_qty
 
@@ -1956,7 +1956,7 @@ class mrp_production_extra(osv.osv):
             string='Lavoration planned', store=False, multi='planned'),
         'lavoration_all_planned': fields.function(
             _function_lavoration_planned, method=True, type='boolean',
-            string='Is all planned', store=True, multi='planned'),
+            string='Is all planned', store=False, multi='planned'),
         'state_info': fields.function(
             _function_lavoration_planned, method=True, type='char',
             size=30, string='State info', store=False, multi='planned'),
