@@ -32,30 +32,45 @@ from openerp import SUPERUSER_ID
 from openerp import tools
 from openerp.tools.translate import _
 from openerp.tools.float_utils import float_round as round
-from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT, 
-    DEFAULT_SERVER_DATETIME_FORMAT, 
-    DATETIME_FORMATS_MAP, 
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
+    DEFAULT_SERVER_DATETIME_FORMAT,
+    DATETIME_FORMATS_MAP,
     float_compare)
 
 
 _logger = logging.getLogger(__name__)
 
+
+class sale_order_line(osv.osv):
+    """ Problem with confirmed files # patch
+    """
+    _name = 'sale.order.line'
+
+    _columns = {
+        # Added also here for MX installation
+        # Was in partner_product_detail for Italy
+        'pallet_weight': fields.integer(
+            'Peso pallet',
+            help='Caricare per questo prodotto il pallet con questi Kg'),
+    }
+
+
 class sale_order(osv.osv):
-    ''' Problem with confirmed files # patch
-    '''    
+    """ Problem with confirmed files # patch
+    """
     _name = 'sale.order'
     _inherit = 'sale.order'
-    
+
     def get_selection(self, cr, uid, context=None):
-        ''' Get current selection and append field
-        '''
+        """ Get current selection and append field
+        """
         if 'state' not in self._columns:
             return []
-        
+
         confirmed = ('confirmed', 'Confirmed')
         if confirmed not in self._columns['state'].selection:
             self._columns['state'].selection.append(confirmed)
-        
+
     _columns = {
         'state': fields.selection([
                 ('draft', 'Draft Quotation'),
@@ -68,6 +83,4 @@ class sale_order(osv.osv):
                 ('invoice_except', 'Invoice Exception'),
                 ('done', 'Done'),
                 ], 'State', readonly=True,)
-    }    
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+    }
