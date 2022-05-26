@@ -32,7 +32,7 @@ msgstr "Produzione per un ciclo (q.)"
 #. module: production_line
 #: model:ir.ui.menu,name:production_line.menu_base_production_root_lavoration_incomplete
 msgid "Production order (incomplete)"
-msgstr "Ordine produzione (incompleto)"
+msgstr "Ordine produzione (aperti)"
 
 #. module: production_line
 #: view:sale.order:0
