@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
-    <!--res.company--> 
+    <!--res.company-->
     <record model="ir.ui.view" id="res_company_production_parameter_form_view">
         <field name="name">Company production parameters</field>
         <field name="model">res.company</field>
@@ -11,15 +11,16 @@
 			    <page string="Production parameters">
    	                <group colspan="4" col="4">
 			            <field name="production_export" />
+			            <field name="production_mx" />
 			            <field name="production_mount_mandatory" attrs="{'invisible': [('production_export','=',False)]}"/>
 			            <field name="production_demo" attrs="{'invisible': [('production_export','=',False)]}" />
 			        </group>
 			        <group colspan="4" col="4" attrs="{'invisible': [('production_export','=',False)]}">
-			           
+
 			           <separator string="XML RPC parameters:" colspan="4"/>
 			           <field name="production_host"  attrs="{'required': [('production_export','=',True)]}"/>
 			           <field name="production_port" attrs="{'required': [('production_export','=',True)]}"/>
-			           
+
 			           <!--<separator string="Mount point:" colspan="4" />
 			           <field name="production_path" />
 			           <field name="production_mount_unc" />
@@ -29,7 +30,7 @@
 
 			           <field name="production_mount_user" />
 			           <field name="production_mount_password" />
-			           
+
 			           <field name="production_mount_sudo_password" />-->
 
 			           <separator string="Exchange document:" colspan="4" />
@@ -37,12 +38,12 @@
 			           <field name="production_cl" attrs="{'required': [('production_export','=',True)]}" />
 			           <field name="production_cl_upd" attrs="{'required': [('production_export','=',True)]}" />
 			           <field name="production_sl" attrs="{'required': [('production_export','=',True)]}" />
-			           
+
 			        </group>
-			    </page>                
+			    </page>
             </xpath>
         </field>
-    </record>    
+    </record>
     </data>
-</openerp>    
-    
+</openerp>
+

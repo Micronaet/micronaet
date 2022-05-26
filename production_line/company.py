@@ -47,7 +47,7 @@ class res_company(osv.osv):
             return False
 
     def xmlrpc_get_server(self, cr, uid, context=None):
-        ''' Configure and retur XML-RPC server for accounting        
+        ''' Configure and retur XML-RPC server for accounting
         '''
         parameters = self.get_production_parameter(cr, uid, context=context)
         try:
@@ -66,24 +66,41 @@ class res_company(osv.osv):
         return xmlrpclib.ServerProxy(xmlrpc_server)
 
     _columns = {
-        'production_export': fields.boolean('Production export', required=False, help="Enable export of CL and SL document via XML-RPC with exchange file"),
-        'production_demo': fields.boolean('Production demo', required=False, help="Jump XMLRPC for demo test"),
-        'production_mount_mandatory': fields.boolean('Mount mandatory', required=False, help="Test if folder for interchange files must be mounted"),
-        'production_host': fields.char('Production XMLRPC host', size=64, required=False, readonly=False, help="Host name, IP address: 10.0.0.2 or hostname: server.example.com"),
-        'production_port': fields.integer('MS SQL server port', required=False, readonly=False, help="XMLRPC port, example: 8000"),
-        'production_cl': fields.char('Production interchange file CL', size=64, required=False, readonly=False, help="File name for CL exhange file"),
-        'production_cl_upd': fields.char('Production interchange file SL', size=64, required=False, readonly=False, help="File name for SL exhange file"),
-        'production_sl': fields.char('Production interchange file SL', size=64, required=False, readonly=False, help="File name for SL exhange file"),
+        'production_export': fields.boolean(
+            'Production export',
+            help="Enable export of CL and SL document via XML-RPC with exchange file"),
+        'production_mx': fields.boolean(
+            'Installazione MX',
+            help="Installazione succursale Messico"),
+        'production_demo': fields.boolean(
+            'Production demo', help="Jump XMLRPC for demo test"),
+        'production_mount_mandatory': fields.boolean(
+            'Mount mandatory',
+            help="Test if folder for interchange files must be mounted"),
+        'production_host': fields.char(
+            'Production XMLRPC host', size=64,
+            help="Host name, IP address: 10.0.0.2 or hostname: server.example.com"),
+        'production_port': fields.integer(
+            'MS SQL server port', help="XMLRPC port, example: 8000"),
+        'production_cl': fields.char(
+            'Production interchange file CL', size=64,
+            help="File name for CL exhange file"),
+        'production_cl_upd': fields.char(
+            'Production interchange file SL', size=64,
+            help="File name for SL exhange file"),
+        'production_sl': fields.char(
+            'Production interchange file SL', size=64,
+            help="File name for SL exhange file"),
 
         # Mount point:
-        'production_path': fields.text('Production interchange path', required=False, readonly=False, help="Path of folder used for interchange, passed as a list: ('~','home','exchange')"),
-        #'production_mount_unc':fields.char('Windows UNC name', size=64, required=False, readonly=False, help="Example: //server_ip/share_name"),
-        #'production_mount_user':fields.char('Windows user for mount resource', size=64, required=False, readonly=False),
-        #'production_mount_password':fields.char('Windows user for mount resource', size=64, required=False, readonly=False, password=True),
-        #'production_mount_sudo_password':fields.char('Linux sudo password', size=64, required=False, readonly=False, password=True),
-        #'production_mount_uid':fields.char('Linux user group for mount resource', size=64, required=False, readonly=False),
-        #'production_mount_gid':fields.char('Linux user group for mount resource', size=64, required=False, readonly=False),
-    }    
+        'production_path': fields.text('Production interchange path', help="Path of folder used for interchange, passed as a list: ('~','home','exchange')"),
+        #'production_mount_unc':fields.char('Windows UNC name', size=64, help="Example: //server_ip/share_name"),
+        #'production_mount_user':fields.char('Windows user for mount resource', size=64, readonly=False),
+        #'production_mount_password':fields.char('Windows user for mount resource', size=64, password=True),
+        #'production_mount_sudo_password':fields.char('Linux sudo password', size=64, password=True),
+        #'production_mount_uid':fields.char('Linux user group for mount resource', size=64, readonly=False),
+        #'production_mount_gid':fields.char('Linux user group for mount resource', size=64, readonly=False),
+    }
     _defaults = {
         'production_demo': lambda *x: False,
         'production_mount_mandatory': lambda *x: True,
@@ -92,10 +109,9 @@ class res_company(osv.osv):
         'production_sl': lambda *a: "sl.txt",
         'production_cl_upd': lambda *a: "cl_upd.txt",
         'production_export': lambda *a: False,
-        
-        #'production_mount_user': lambda *a: "administrator",
-        #'production_mount_uid': lambda *a: "openerp",
-        #'production_mount_gid': lambda *a: "openerp",
+
+        # 'production_mount_user': lambda *a: "administrator",
+        # 'production_mount_uid': lambda *a: "openerp",
+        # 'production_mount_gid': lambda *a: "openerp",
     }
 res_company()
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
