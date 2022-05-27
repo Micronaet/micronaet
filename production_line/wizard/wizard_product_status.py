@@ -132,6 +132,96 @@ class product_status_wizard(osv.osv_memory):
     # -------------------------------------------------------------------------
     # Button events:
     # -------------------------------------------------------------------------
+    def export_material_used(self, cr, uid, ids, context=None):
+        """ Export excel file
+            Check material in job scheduled in period
+        """
+        if context is None:
+            context = {}
+
+        # Pool used:
+        job_pool = self.pool.get('mrp.production.workcenter.line')
+        excel_pool = self.pool.get('excel.writer')
+
+        wizard = self.browse(cr, uid, ids, context=context)[0]
+        days = wizard.days or 7
+        now_dt = datetime.now()
+        end_dt = now_dt + timedelta(days=days)
+        now_text = str(now_dt)[:10]
+        end_text = str(end_dt)[:10]
+        job_ids = job_pool.search(cr, uid, [
+            ('real_date_planned', '>=', now_text),
+            ('real_date_planned', '<=', end_text),
+        ], context=context)
+        material_db = {}
+        for job in job_pool.browse(cr, uid, job_ids, context=context):
+            for material in job.bom_material_ids:
+                product = material.product_id
+                quantity = material.quantity
+                if product not in material_db:
+                    material_db[product] = {
+                        'quantity': 0.0,
+                        'job': [],
+                    }
+
+                if job not in material_db[product]['job']:
+                    material_db[product]['job'].append(job)  # for comment
+                material_db[product]['quantity'] += quantity
+
+        ws_name = 'Modificati'
+        excel_pool.create_worksheet(ws_name)
+
+        # Format:
+        excel_pool.set_format()
+        excel_format = {
+            'title': excel_pool.get_format('title'),
+            'header': excel_pool.get_format('header'),
+            'text': excel_pool.get_format('text'),
+            'number': excel_pool.get_format('number'),
+        }
+
+        # Column setup:
+        excel_pool.column_width(ws_name, [
+            15, 40, 10, 60,
+        ])
+
+        # Write header:
+        row = 0
+        excel_pool.write_xls_line(ws_name, row, [
+            'Stato uscita materie prime lavorazioni schedulate dalla '
+            'data {} all a data {}'.format(
+                now_text,
+                end_text
+            )
+        ], default_format=excel_format['title'])
+
+        row += 1
+        excel_pool.write_xls_line(ws_name, row, [
+            'Codice',
+            'Nome',
+            'Q. uscita',
+            'Dettaglio',
+        ], default_format=excel_format['header'])
+
+        for product in sorted(material_db, key=lambda p: p.default_code):
+            record = material_db[product]
+            jobs = material_db[product]['job']
+            jobs_text = ['[%s del %s] ' % (
+                j.name, j.real_planned_date) for j in jobs]
+            jobs_text = ''.join(tuple(jobs_text))
+
+            row += 1
+            excel_pool.write_xls_line(ws_name, row, [
+                product.default_code,
+                product.name,
+                record['quantity'],
+                jobs_text,
+            ], default_format=excel_format['text'])
+
+        return excel_pool.return_attachment(
+            cr, uid, 'Stato settimanale', version='7.0', php=True,
+            context=context)
+
     def export_excel(self, cr, uid, ids, context=None):
         """ Export excel file
             Procedure used also for sent mail (used context parameter
