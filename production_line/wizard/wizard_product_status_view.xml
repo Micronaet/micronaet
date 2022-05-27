@@ -9,7 +9,8 @@
             <field name="arch" type="xml">
                 <form string="Product and material status" version="7.0">
                     <header>
-                        <button string="Cancel" special="cancel" />                   
+                        <button string="Cancel" special="cancel" />
+                        <button name="export_material_used" type="object" string="Materiali usati" icon="gtk-print" class="oe_highlight"/>
                         <button name="export_excel" type="object" string="Export XLS" icon="terp-go-month" class="oe_highlight"/>
                     </header>
                     <sheet>
@@ -20,10 +21,10 @@
 
                             <field name="with_medium"/>
                             <field name="month_window" attrs="{'invisible':[('with_medium','=',False)]}"/>
-                            
+
                             <field name="with_order_detail" />
                             <newline/>
-                            
+
                             <separator string="Fake production:" colspan="4" />
                             <field name="fake_ids" colspan="4" nolabel="1">
                                  <tree string="Fake production" editable="bottom">
@@ -32,13 +33,13 @@
                                      <field name="production_date" />
                                      <field name="bom_id" domain="[('product_id', '=', product_id)]"/>
                                  </tree>
-                            </field> 
+                            </field>
                         </group>
                     </sheet>
                 </form>
             </field>
       </record>
-      
+
       <record id="product_status_wizard_action" model="ir.actions.act_window">
         <field name="name">Product and material wizard</field>
         <field name="type">ir.actions.act_window</field>
@@ -65,7 +66,7 @@
         res_model="product.status.wizard"
         key2="client_action_multi"
         src_model="sale.order"/>
-                
+
     <act_window
         id="act_product_status_wizard_action_3"
         name="Product and material status"
@@ -82,7 +83,7 @@
         target="new"
         res_model="product.status.wizard"
         key2="client_action_multi"
-        src_model="mrp.production"/>                
+        src_model="mrp.production"/>
 
       <menuitem name="Status analysis" parent="menu_base_production_root_production" id="menuitem_status_analysys_1" action="product_status_wizard_action" sequence="50" />
       <menuitem name="Status analysis" parent="menu_base_production_root_lavoration" id="menuitem_status_analysys_2" action="product_status_wizard_action" sequence="30" />
@@ -91,7 +92,7 @@
       <menuitem name="Status analysis" parent="menu_base_production_root_reporting" id="menuitem_status_analysys" action="product_status_wizard_action" sequence="20" />
       <menuitem name="Status analysis" parent="menu_root_establishment_report" id="menuitem_status_report_analysys_establ" action="product_status_wizard_action" string="Analisi stato magazzino"
           sequence="30" />
-        
+
   </data>
 </openerp>
 
