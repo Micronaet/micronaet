@@ -227,7 +227,7 @@ class product_status_wizard(osv.osv_memory):
             excel_pool.write_xls_line(ws_name, row, [
                 product.default_code,
                 product.name,
-                record['quantity'],
+                (record['quantity'], excel_format['number']),
             ], default_format=excel_format['text'])
             excel_pool.write_comment(
                 ws_name, row, 2, comment,
