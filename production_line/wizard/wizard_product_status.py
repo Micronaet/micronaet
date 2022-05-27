@@ -225,11 +225,11 @@ class product_status_wizard(osv.osv_memory):
 
             comment = ''
             for material_qty, job in jobs:
-                comment += '%s: Produz. %s [Job: %s q. %s]\n' % (
+                comment += '%s x [%s: Produz. %s Job: %s]\n' % (
+                    material_qty,
                     job.real_date_planned[:10],
                     job.product.default_code or '',
                     job.name,
-                    material_qty,
                 )
 
             row += 1
