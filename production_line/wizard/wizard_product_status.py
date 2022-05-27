@@ -233,8 +233,8 @@ class product_status_wizard(osv.osv_memory):
                 )
 
             row += 1
-            account_qty = product.accounting_qty
-            used_qty = record['quantity']
+            account_qty = int(product.accounting_qty)
+            used_qty = int(record['quantity'])
             if account_qty < used_qty:
                 color = excel_format['red']
             else:
