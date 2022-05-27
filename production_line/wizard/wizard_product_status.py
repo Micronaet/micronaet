@@ -190,6 +190,10 @@ class product_status_wizard(osv.osv_memory):
                 'text': excel_pool.get_format('bg_red'),
                 'number': excel_pool.get_format('bg_red_number'),
             },
+            'white': {
+                'text': excel_pool.get_format('text'),
+                'number': excel_pool.get_format('number'),
+            },
         }
 
         # Column setup:
@@ -234,7 +238,7 @@ class product_status_wizard(osv.osv_memory):
             if account_qty < used_qty:
                 color = excel_pool['red']
             else:
-                color = excel_pool  # Normal
+                color = excel_pool['white']  # Normal
             excel_pool.write_xls_line(ws_name, row, [
                 product.default_code,
                 product.name,
