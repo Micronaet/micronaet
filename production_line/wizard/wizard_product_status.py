@@ -190,7 +190,7 @@ class product_status_wizard(osv.osv_memory):
 
         # Column setup:
         excel_pool.column_width(ws_name, [
-            20, 45, 15,
+            20, 45, 15, 15,
         ])
 
         # Write header:
@@ -207,6 +207,7 @@ class product_status_wizard(osv.osv_memory):
         excel_pool.write_xls_line(ws_name, row, [
             'Codice',
             'Nome',
+            'Q. Magazz.',
             'Q. uscita',
         ], default_format=excel_format['header'])
 
@@ -227,6 +228,7 @@ class product_status_wizard(osv.osv_memory):
             excel_pool.write_xls_line(ws_name, row, [
                 product.default_code,
                 product.name,
+                (product.accounting_qty, excel_format['number']),
                 (record['quantity'], excel_format['number']),
             ], default_format=excel_format['text'])
             excel_pool.write_comment(
