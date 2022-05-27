@@ -145,13 +145,15 @@ class product_status_wizard(osv.osv_memory):
 
         wizard = self.browse(cr, uid, ids, context=context)[0]
         days = wizard.days or 7
+
         now_dt = datetime.now()
         end_dt = now_dt + timedelta(days=days)
         now_text = str(now_dt)[:10]
         end_text = str(end_dt)[:10]
+
         job_ids = job_pool.search(cr, uid, [
-            ('real_date_planned', '>=', now_text),
-            ('real_date_planned', '<=', end_text),
+            ('real_date_planned', '>=', '%s 00:00:00' % now_text),
+            ('real_date_planned', '<=', '%s 23:59:59' % end_text),
         ], context=context)
         material_db = {}
         for job in job_pool.browse(cr, uid, job_ids, context=context):
@@ -207,7 +209,7 @@ class product_status_wizard(osv.osv_memory):
             record = material_db[product]
             jobs = material_db[product]['job']
             jobs_text = ['[%s del %s] ' % (
-                j.name, j.real_planned_date) for j in jobs]
+                j.name, j.real_date_planned) for j in jobs]
             jobs_text = ''.join(tuple(jobs_text))
 
             row += 1
