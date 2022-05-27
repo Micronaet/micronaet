@@ -78,8 +78,8 @@ class product_status_wizard(osv.osv_memory):
             )
         msg.attach(part)
 
-        #context = ssl.SSLContext(ssl.PROTOCOL_SSLv3)
-        #SSL connection only working on Python 3+
+        # context = ssl.SSLContext(ssl.PROTOCOL_SSLv3)
+        # SSL connection only working on Python 3+
         smtp = smtplib.SMTP(server, port)
         if isTls:
             smtp.starttls()
@@ -88,14 +88,13 @@ class product_status_wizard(osv.osv_memory):
         smtp.quit()
         return True
 
-
     # -------------------------------------------------------------------------
     # Events:
     # -------------------------------------------------------------------------
-    def get_data_description(self, data=None):
+    def get_data_description(self, datas=None):
         """ Prepare description filter string from data dict
         """
-        if data is None:
+        if datas is None:
            return _('No filter')
 
         res = ''
@@ -121,8 +120,8 @@ class product_status_wizard(osv.osv_memory):
             datas['days'] = wiz_proxy.days
 
         datas['row_mode'] = wiz_proxy.row_mode
-        #datas['active'] = wiz_proxy.row_mode
-        #datas['negative'] = wiz_proxy.negative
+        # datas['active'] = wiz_proxy.row_mode
+        # datas['negative'] = wiz_proxy.negative
         datas['with_medium'] = wiz_proxy.with_medium
         datas['month_window'] = wiz_proxy.month_window
         datas['with_order_detail'] = wiz_proxy.with_order_detail
@@ -285,7 +284,7 @@ class product_status_wizard(osv.osv_memory):
             'font_name': 'Arial',
             'font_size': 9,
             'align': 'right',
-            'bg_color': '#ffff99', #'yellow',
+            'bg_color': '#ffff99',  # 'yellow',
             'border': 1,
             'num_format': num_format,
             })
@@ -293,7 +292,7 @@ class product_status_wizard(osv.osv_memory):
             'font_name': 'Arial',
             'font_size': 9,
             'align': 'right',
-            'bg_color': '#ff9999', #'red',
+            'bg_color': '#ff9999',  # 'red',
             'border': 1,
             'num_format': num_format,
             })
@@ -351,21 +350,21 @@ class product_status_wizard(osv.osv_memory):
         i = 1  # row position (before 0)
         rows = mrp_pool._get_rows()
 
-        table, table_comment = mrp_pool._get_table() # For check row state
+        table, table_comment = mrp_pool._get_table()  # For check row state
 
         for row in rows:
             # Check mode: only active
             if not use_row(table[row[1]], data, product=row[2]):
-                 # _logger.error('No: %s' % (table[row[1]], ))
-                 continue
+                # _logger.error('No: %s' % (table[row[1]], ))
+                continue
             else:
-                 pass
-                 # _logger.info('Yes: %s' % (table[row[1]], ))
+                pass
+                # _logger.info('Yes: %s' % (table[row[1]], ))
 
             if not start_product and row[0] == 'P':
-                WS = WS_product # change ref. for use second sheet
+                WS = WS_product  # change ref. for use second sheet
                 start_product = True
-                i = 1 # jump one line
+                i = 1  # jump one line
 
             status_line = 0.0
             default_code = (row[2].default_code or '/').strip()
@@ -430,8 +429,8 @@ class product_status_wizard(osv.osv_memory):
                     cr, uid, group_id, context=context).users:
                 partner_email.append(user.partner_id.email) # .id
 
-            #thread_pool = self.pool.get('mail.thread')
-            #thread_pool.message_post(cr, uid, False,
+            # thread_pool = self.pool.get('mail.thread')
+            # thread_pool.message_post(cr, uid, False,
             #    type='email',
             #    body=_('Negative stock status report'),
             #    subject='Stock status: %s' % date,
@@ -467,7 +466,7 @@ class product_status_wizard(osv.osv_memory):
             for email in partner_email:
                 _logger.warning('... sending mail: %s' % email)
                 self.send_mail(
-                    server_proxy.smtp_user,#'openerp@micronaet.com',
+                    server_proxy.smtp_user,  # 'openerp@micronaet.com',
                     email,
                     _('Negative stock status report'),
                     _('Stock status for negative product with production'),
@@ -521,7 +520,7 @@ class product_status_wizard(osv.osv_memory):
             'with_medium': True,
             'month_window': 3,
             'with_order_detail': True,
-            'fake_ids': [], # TODO << nothing?
+            'fake_ids': [],  # todo << nothing?
             }
 
         if wizard is not None:
@@ -542,12 +541,12 @@ class product_status_wizard(osv.osv_memory):
             }
 
     _columns = {
-        'days':fields.integer('Days from today', required=True),
+        'days': fields.integer('Days from today', required=True),
         # REMOVE:
-        #'active':fields.boolean('Only record with data', required=False,
-        #    help="Show only product and material with movement"),
-        #'negative': fields.boolean('Only negative', required=False,
-        #    help="Show only product and material with negative value in range"),
+        # 'active':fields.boolean('Only record with data', required=False,
+        # help="Show only product and material with movement"),
+        # 'negative': fields.boolean('Only negative', required=False,
+        # help="Show only product and material with negative value in range"),
         # USE:
         'row_mode': fields.selection([
             ('all', 'All data'),
@@ -556,7 +555,8 @@ class product_status_wizard(osv.osv_memory):
             ('level', 'Under minimum level'),
             ], 'Row mode', required=True),
 
-        'month_window':fields.integer('Statistic production window ',
+        'month_window': fields.integer(
+            'Statistic production window ',
             required=True, help="Month back for medium production monthly index (Kg / month of prime material)"),
         'with_medium': fields.boolean('With m(x)', required=False,
             help="if check in report there's production m(x), if not check report is more fast"),
@@ -569,6 +569,7 @@ class product_status_wizard(osv.osv_memory):
         'with_medium': lambda *x: True,
         'row_mode': lambda *x: 'active',
         }
+
 
 class ProductStatusProductionFakeWizard(osv.osv_memory):
     """ Model name: MrpProductionFake
@@ -587,6 +588,7 @@ class ProductStatusProductionFakeWizard(osv.osv_memory):
             'product.status.wizard', 'Wizard ID'),
         }
 
+
 class product_status_wizard(osv.osv_memory):
     """ Parameter for product status per day
     """
@@ -597,5 +599,3 @@ class product_status_wizard(osv.osv_memory):
             'product.status.production.fake.wizard', 'wizard_id',
             'Production fake'),
         }
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
