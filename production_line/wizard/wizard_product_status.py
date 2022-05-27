@@ -167,7 +167,8 @@ class product_status_wizard(osv.osv_memory):
                     }
 
                 if job not in material_db[product]['job']:
-                    material_db[product]['job'].append(job)  # for comment
+                    material_db[product]['job'].append(
+                        (quantity, job))  # for comment purposes
                 material_db[product]['quantity'] += quantity
 
         ws_name = 'Modificati'
@@ -202,22 +203,26 @@ class product_status_wizard(osv.osv_memory):
             'Codice',
             'Nome',
             'Q. uscita',
-            'Dettaglio',
         ], default_format=excel_format['header'])
 
         for product in sorted(material_db, key=lambda p: p.default_code):
             record = material_db[product]
             jobs = material_db[product]['job']
-            jobs_text = ['[%s del %s] ' % (
-                j.name, j.real_date_planned) for j in jobs]
-            jobs_text = ''.join(tuple(jobs_text))
+
+            comment = ''
+            for material_qty, job in jobs:
+                comment += 'Produz. %s [Job: %s q. %s] data %s\n' % (
+                    job.product.default_code or '',
+                    job.name,
+                    material_qty,
+                    job.real_date_planned,
+                )
 
             row += 1
             excel_pool.write_xls_line(ws_name, row, [
                 product.default_code,
                 product.name,
                 record['quantity'],
-                jobs_text,
             ], default_format=excel_format['text'])
 
         return excel_pool.return_attachment(
