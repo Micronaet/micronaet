@@ -238,7 +238,8 @@ class product_status_wizard(osv.osv_memory):
             if account_qty < used_qty:
                 color = excel_pool['red']
             else:
-                color = excel_pool['white']  # Normal
+                color = excel_pool['white']
+
             excel_pool.write_xls_line(ws_name, row, [
                 product.default_code,
                 product.name,
