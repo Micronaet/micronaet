@@ -205,7 +205,7 @@ class product_status_wizard(osv.osv_memory):
         row = 0
         excel_pool.write_xls_line(ws_name, row, [
             'Stato uscita materie prime lavorazioni schedulate dalla '
-            'data {} all a data {}'.format(
+            'data {} alla data {}'.format(
                 now_text,
                 end_text
             )
@@ -226,7 +226,7 @@ class product_status_wizard(osv.osv_memory):
             comment = ''
             for material_qty, job in jobs:
                 comment += '%s x [%s: Produz. %s Job: %s]\n' % (
-                    material_qty,
+                    int(material_qty),
                     job.real_date_planned[:10],
                     job.product.default_code or '',
                     job.name,
