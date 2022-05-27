@@ -190,7 +190,7 @@ class product_status_wizard(osv.osv_memory):
 
         # Column setup:
         excel_pool.column_width(ws_name, [
-            15, 40, 10, 60,
+            20, 45, 15,
         ])
 
         # Write header:
