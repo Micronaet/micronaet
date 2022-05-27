@@ -144,7 +144,7 @@ class product_status_wizard(osv.osv_memory):
         excel_pool = self.pool.get('excel.writer')
 
         comment_parameters = {
-            'width': 300,
+            'width': 450,
             'font_name': 'Courier New',
         }
 
@@ -216,11 +216,11 @@ class product_status_wizard(osv.osv_memory):
 
             comment = ''
             for material_qty, job in jobs:
-                comment += 'Produz. %s [Job: %s q. %s] data %s\n' % (
+                comment += '%s: Produz. %s [Job: %s q. %s]\n' % (
+                    job.real_date_planned[:10],
                     job.product.default_code or '',
                     job.name,
                     material_qty,
-                    job.real_date_planned,
                 )
 
             row += 1
