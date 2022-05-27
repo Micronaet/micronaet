@@ -143,6 +143,11 @@ class product_status_wizard(osv.osv_memory):
         job_pool = self.pool.get('mrp.production.workcenter.line')
         excel_pool = self.pool.get('excel.writer')
 
+        comment_parameters = {
+            'width': 300,
+            'font_name': 'Courier New',
+        }
+
         wizard = self.browse(cr, uid, ids, context=context)[0]
         days = wizard.days or 7
 
@@ -224,6 +229,9 @@ class product_status_wizard(osv.osv_memory):
                 product.name,
                 record['quantity'],
             ], default_format=excel_format['text'])
+            excel_pool.write_comment(
+                ws_name, row, 2, comment,
+                parameters=comment_parameters)
 
         return excel_pool.return_attachment(
             cr, uid, 'Stato settimanale', version='7.0', php=True,
