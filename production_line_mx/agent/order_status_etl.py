@@ -152,7 +152,7 @@ query_records = {}
 for key in query_list:
     query_records[key] = []
     query = query_list[key]
-    print('Executinq...:\n%s' % query)
+    print('Executing ...:\n%s' % query)
     cr.execute(query)
     for record in cr.fetchall():
         row = tuple(record)
