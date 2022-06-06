@@ -117,7 +117,7 @@ query_list = {
             ap.CIDPRODUCTO = am.CIDPRODUCTO AND 
             aum.CIDUNIDAD = am.CIDUNIDAD AND
             amo.CIDMONEDA = ad.CIDMONEDA AND
-            ad.cfecha BETWEEN '2022-01-01' AND '2022-05-31' AND
+            -- ad.cfecha BETWEEN '2022-01-01' AND '2022-05-31' AND
             ad.CIDDOCUMENTODE = 2    
         ORDER BY CCODIGOCLIENTE, ad.crazonsocial, ad.cfecha;
         ''',
@@ -130,17 +130,26 @@ query_list = {
             ad.CTOTAL, ad.CIDMONEDA, amo.CPLURAL, amo.CCLAVESAT,
             am.CIDMOVIMIENTO, am.CNUMEROMOVIMIENTO, am.CIDPRODUCTO, 
             ap.CCODIGOPRODUCTO, ap.CNOMBREPRODUCTO, am.CUNIDADES, am.CPRECIO,  
-            CASE WHEN am.CUNIDADESPENDIENTES > 0 THEN 
-                am.CUNIDADES - am.CUNIDADESPENDIENTES ELSE am.CUNIDADES END 
-                Surtida, 
+            CASE 
+                WHEN am.CUNIDADESPENDIENTES > 0 THEN 
+                    am.CUNIDADES - am.CUNIDADESPENDIENTES 
+                ELSE am.CUNIDADES 
+                END Surtida, 
             am.CUNIDADESPENDIENTES, aum.CABREVIATURA, am.CNETO, 
-            CASE CCANCELADO WHEN 0 THEN CASE WHEN (
-                am.CUNIDADESPENDIENTES <> am.CUNIDADES AND 
-                am.CUNIDADESPENDIENTES > 0) THEN 'Parcial' WHEN 
-                am.CUNIDADESPENDIENTES = 0 THEN 'Surtido' WHEN 
-                am.CUNIDADESPENDIENTES = am.CUNIDADES THEN 'Sin Surtir' 
-                ELSE ' '  
-                END ELSE 'Cancelado' END Estado
+            CASE CCANCELADO 
+                WHEN 0 THEN CASE WHEN (
+                    am.CUNIDADESPENDIENTES <> am.CUNIDADES AND 
+                    am.CUNIDADESPENDIENTES > 0) THEN 
+                        'Parcial' 
+                WHEN am.CUNIDADESPENDIENTES = 0 THEN 
+                    'Surtido'
+                WHEN am.CUNIDADESPENDIENTES = am.CUNIDADES THEN 
+                    'Sin Surtir' 
+                ELSE 
+                    ' '  
+                END 
+            ELSE 'Cancelado' 
+            END Estado
         FROM 
             admDocumentos ad, admClientes ac, admConceptos act, 
             admMovimientos am, admProductos ap, admUnidadesMedidaPeso aum, 
@@ -152,7 +161,7 @@ query_list = {
             ap.CIDPRODUCTO = am.CIDPRODUCTO AND 
             aum.CIDUNIDAD = am.CIDUNIDAD AND 
             amo.CIDMONEDA = ad.CIDMONEDA AND
-            ad.cfecha BETWEEN '2022-01-01' AND '2022-05-31' AND
+            -- ad.cfecha BETWEEN '2022-01-01' AND '2022-05-31' AND
             ad.CIDDOCUMENTODE = 17
         ORDER BY CCODIGOCLIENTE, ad.crazonsocial, ad.cfecha;
     ''',
