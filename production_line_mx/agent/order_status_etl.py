@@ -23,10 +23,13 @@ import sys
 import pyodbc
 import erppeek
 import ConfigParser
+import xlsxwriter
+
+filename = 'order_from_contipaq.xlsx'
 
 
 # -----------------------------------------------------------------------------
-#                                UTILITY
+# Utility:
 # -----------------------------------------------------------------------------
 def get_erp(URL, database, user, password):
     """ Connect to log table in ODOO
@@ -38,6 +41,103 @@ def get_erp(URL, database, user, password):
         password=password,
         )
 
+
+def write_xls_mrp_line(WS, row, line, force_format=None):
+    """ Write line in excel file
+    """
+    col = 0
+    for item, format_cell in line:
+        if len(row) == 2:
+            item, format_cell = row
+        else:
+            item = row
+            format_cell = force_format
+        WS.write(row, col, item, format_cell)
+        col += 1
+    return True
+
+
+def write_xls_mrp_line_comment(WS, row, line, gap_column=0):
+    """ Write comment cell in excel file
+    """
+    parameters = {
+        'width': 300,
+    }
+    col = gap_column
+    for comment in line:
+        if comment:
+            WS.write_comment(row, col, comment, parameters)
+        col += 1
+    return True
+
+
+# ---------------------------------------------------------------------
+# XLS file:
+# ---------------------------------------------------------------------
+filename = os.path.expanduser(filename)
+
+# Open file and write header
+WB = xlsxwriter.Workbook(filename)
+
+# 2 Sheets
+WS_customer = WB.add_worksheet('Customer')
+WS_supplier = WB.add_worksheet('Supplier')
+
+# ---------------------------------------------------------------------
+# Format elements:
+# ---------------------------------------------------------------------
+num_format = '#,##0'
+format_title = WB.add_format({
+    'bold': True,
+    'font_color': 'black',
+    'font_name': 'Arial',
+    'font_size': 10,
+    'align': 'center',
+    'valign': 'vcenter',
+    'bg_color': 'gray',
+    'border': 1,
+    'text_wrap': True,
+})
+
+format_text = WB.add_format({
+    'font_name': 'Arial',
+    'align': 'left',
+    'font_size': 9,
+    'border': 1,
+})
+
+format_white = WB.add_format({
+    'font_name': 'Arial',
+    'font_size': 9,
+    'align': 'right',
+    'bg_color': 'white',
+    'border': 1,
+    'num_format': num_format,
+})
+format_yellow = WB.add_format({
+    'font_name': 'Arial',
+    'font_size': 9,
+    'align': 'right',
+    'bg_color': '#ffff99',  # 'yellow',
+    'border': 1,
+    'num_format': num_format,
+})
+format_red = WB.add_format({
+    'font_name': 'Arial',
+    'font_size': 9,
+    'align': 'right',
+    'bg_color': '#ff9999',  # 'red',
+    'border': 1,
+    'num_format': num_format,
+})
+format_green = WB.add_format({
+    'font_name': 'Arial',
+    'font_size': 9,
+    'align': 'right',
+    'bg_color': '#c1ef94',  # 'green',
+    'border': 1,
+    'num_format': num_format,
+})
 
 # -----------------------------------------------------------------------------
 #                                Parameters
@@ -167,17 +267,34 @@ query_list = {
     ''',
     }
 
-pdb.set_trace()
-query_records = {}
+# query_records = {}
+header = [
+    'Material',
+]
 for key in query_list:
-    query_records[key] = []
+    if key == 'customer':
+        WS = WS_customer
+    else:
+        WS = WS_supplier
+
+    # Column dimension:
+    WS.set_column('A:Z', 25)
+    WS.set_row(0, 15)
+
+    # Start loop for design table for product and material status:
+    # Header:
+    row = 0
+    write_xls_mrp_line(WS, row, header)  # todo format
+
+    # query_records[key] = []
     query = query_list[key]
     print('Executing ...:\n%s' % query)
     cr.execute(query)
     for record in cr.fetchall():
-        row = tuple(record)
-        print(row)
-        query_records[key].append(row)
+        row += 1
+        write_xls_mrp_line(WS, row, tuple(record))  # todo format
+        # query_records[key].append(row)
+WB.close()
 
 product_pool = erp.model('sale.order')
 # product_pool.rpc_import_order_mx(stock)

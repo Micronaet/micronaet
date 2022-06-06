@@ -631,7 +631,7 @@ class product_status_wizard(osv.osv_memory):
             self, cr, uid, wizard=None, context=None):
         """ Send mail to group user for negative elements
         """
-        # XXX Was overrided!!!
+        # XXX Was overridden!!!
         if context is None:
             context = {}
 
