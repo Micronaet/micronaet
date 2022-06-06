@@ -46,11 +46,11 @@ def write_xls_mrp_line(WS, row, line, force_format=None):
     """ Write line in excel file
     """
     col = 0
-    for item, format_cell in line:
-        if len(row) == 2:
-            item, format_cell = row
+    for record in line:
+        if len(record) == 2:
+            item, format_cell = record
         else:
-            item = row
+            item = record
             format_cell = force_format
         WS.write(row, col, item, format_cell)
         col += 1
