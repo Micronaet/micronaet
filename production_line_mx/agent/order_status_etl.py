@@ -47,11 +47,12 @@ def write_xls_mrp_line(WS, row, line, force_format=None):
     """
     col = 0
     for record in line:
-        if len(record) == 2:
+        if type(record) in (tuple, list) and len(record) == 2:
             item, format_cell = record
         else:
             item = record
             format_cell = force_format
+
         WS.write(row, col, item, format_cell)
         col += 1
     return True
