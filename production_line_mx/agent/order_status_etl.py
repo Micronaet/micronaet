@@ -285,7 +285,7 @@ for key in query_list:
     # Start loop for design table for product and material status:
     # Header:
     row = 0
-    write_xls_mrp_line(WS, row, header)  # todo format
+    write_xls_mrp_line(WS, row, header, format_text)
 
     # query_records[key] = []
     query = query_list[key]
@@ -293,7 +293,7 @@ for key in query_list:
     cr.execute(query)
     for record in cr.fetchall():
         row += 1
-        write_xls_mrp_line(WS, row, tuple(record))  # todo format
+        write_xls_mrp_line(WS, row, tuple(record), format_text)
         # query_records[key].append(row)
 WB.close()
 
