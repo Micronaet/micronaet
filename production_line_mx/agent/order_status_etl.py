@@ -270,7 +270,33 @@ query_list = {
 
 # query_records = {}
 header = [
-    'Material',
+    'Riferimento',
+    'Cod. partner',
+    'Rag. soc.',
+    'Fecha',
+    'Vencimiento',
+    'Folio',
+    'Serie',
+    'Num. concepto',
+    'Netto',
+    'Total unit.',
+    'VAT',
+    'Totale',
+    'ID Moneta',
+    'Plural',
+    'Clavesat',
+    'ID Movimento0,'
+    'Num. movimento',
+    'ID Prod.',
+    'Codice',
+    'Numero prod.',
+    u'Unità',
+    'Prezzo',
+    'Verso',
+    u'Unità indip.',
+    'Abbr.',
+    'Netto',
+    'Cancellato',
 ]
 for key in query_list:
     if key == 'customer':
