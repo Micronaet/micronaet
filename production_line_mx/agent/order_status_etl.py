@@ -318,9 +318,10 @@ for key in query_list:
     query = query_list[key]
     print('Executing ...:\n%s' % query)
     cr.execute(query)
-    from_date = datetime.strftime('1900-01-01', '')
+    from_date = datetime.strptime('1900-01-01', '%Y-%M-%D')
     for record in cr.fetchall():
         row += 1
+        pdb.set_trace()
         record = list(record)
         record[3] = str(from_date + timedelta(days=record[3]))
         # record[4]
