@@ -321,7 +321,6 @@ for key in query_list:
     from_date = datetime.strptime('1900-01-01', '%Y-%m-%d')
     for record in cr.fetchall():
         row += 1
-        pdb.set_trace()
         record = list(record)
         record[3] = str(from_date + timedelta(days=record[3]))
         # record[4]
