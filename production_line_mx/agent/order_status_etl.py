@@ -322,6 +322,7 @@ for key in query_list:
     for record in cr.fetchall():
         row += 1
         record = list(record)
+        pdb.set_trace()
         record[3] = str(from_date + timedelta(days=record[3]))
         # record[4]
         write_xls_mrp_line(WS, row, record, format_text)
