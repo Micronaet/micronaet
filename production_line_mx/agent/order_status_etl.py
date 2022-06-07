@@ -318,13 +318,12 @@ for key in query_list:
     query = query_list[key]
     print('Executing ...:\n%s' % query)
     cr.execute(query)
-    from_date = datetime.strptime('1900-01-01', '%Y-%m-%d')
     for record in cr.fetchall():
         row += 1
         record = list(record)
         pdb.set_trace()
-        record[3] = str(from_date + timedelta(days=record[3]))
-        # record[4]
+        record[3] = str(record[3])
+        record[4] = str(record[4])
         write_xls_mrp_line(WS, row, record, format_text)
         # query_records[key].append(row)
 WB.close()
