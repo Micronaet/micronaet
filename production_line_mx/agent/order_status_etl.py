@@ -321,7 +321,9 @@ for key in query_list:
     # Column dimension:
     WS.set_column('A:B', 5)
     WS.set_column('C:C', 30)
-    WS.set_column('D:E', 12)
+    WS.set_column('D:E', 14)
+    WS.set_column('H:H', 15)
+    WS.set_column('I:G', 8)
     WS.set_column('F:P', 10)
     WS.set_column('Q:R', 5)
     WS.set_column('S:S', 8)
