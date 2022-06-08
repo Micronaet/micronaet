@@ -306,7 +306,7 @@ for key in query_list:
         WS = WS_supplier
 
     # Column dimension:
-    WS.set_column('A:Z', 25)
+    WS.set_column('A:Z', 22)
     WS.set_row(0, 15)
 
     # Start loop for design table for product and material status:
