@@ -341,6 +341,8 @@ for key in query_list:
     print('Executing ...:\n%s' % query)
     cr.execute(query)
     for record in cr.fetchall():
+        if record[26] in ('Parcial', 'Sin Surtir'):
+            continue  # Closed order line
         row += 1
         record = list(record)
         record[3] = str(record[3])
