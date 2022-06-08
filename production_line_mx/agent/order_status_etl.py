@@ -271,7 +271,7 @@ query_list = {
 
 # query_records = {}
 header = [
-    'ID Doc.',
+    'ID Ordine',
     'Cod. partner',
     'Cliente',
     'Data',
@@ -279,13 +279,14 @@ header = [
     'Numero ord.',
     'Serie ord.',
     'Tipo ord.',
-    'Imponibile netto',
-    'Q.',
-    'IVA',
-    'Totale ordine',
+    'Imp. ordine',
+    'Q. ordine',
+    'IVA ordine',
+    'Tot. ordine',
     'ID Valuta',
     'Valuta',
-    'Valuta?',
+    'Sigla',
+
     'ID Movimento',
     'Seq.',
     'ID Prodotto',
@@ -295,10 +296,11 @@ header = [
     'Prezzo unit.',
     'Arrivati',
     'Attesi',
-    'Sigla',
-    'Netto',
-    'Stato',
+    'UM',
+    'Netto riga',
+    'Stato riga',
 ]
+
 for key in query_list:
     if key == 'customer':
         WS = WS_customer
@@ -306,7 +308,16 @@ for key in query_list:
         WS = WS_supplier
 
     # Column dimension:
-    WS.set_column('A:Z', 22)
+    WS.set_column('A:B', 5)
+    WS.set_column('C:C', 30)
+    WS.set_column('D:E', 12)
+    WS.set_column('F:P', 10)
+    WS.set_column('Q:R', 5)
+    WS.set_column('S:S', 8)
+    WS.set_column('T:T', 12)
+    WS.set_column('U:X', 10)
+    WS.set_column('Y:Y', 5)
+    WS.set_column('Z:AA', 10)
     WS.set_row(0, 15)
 
     # Start loop for design table for product and material status:
