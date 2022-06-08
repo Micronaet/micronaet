@@ -291,13 +291,13 @@ header = [
     'ID Prodotto',
     'Codice',
     'Descrizione',
-    'UM',
-    'Prezzo',
-    'Verso',
-    u'Unità indip.',
-    'Abbr.',
+    'Ordinati',
+    'Prezzo unit.',
+    'Arrivati',
+    'Attesi',
+    'Sigla',
     'Netto',
-    'Cancellato',
+    'Stato',
 ]
 for key in query_list:
     if key == 'customer':
