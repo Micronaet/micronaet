@@ -100,6 +100,17 @@ format_title = WB.add_format({
     'border': 1,
     'text_wrap': True,
 })
+format_header = WB.add_format({
+    'bold': True,
+    'font_color': 'black',
+    'font_name': 'Arial',
+    'font_size': 10,
+    'align': 'center',
+    'valign': 'vcenter',
+    'bg_color': 'gray',
+    'border': 1,
+    'text_wrap': True,
+})
 
 format_text = WB.add_format({
     'font_name': 'Arial',
@@ -323,7 +334,7 @@ for key in query_list:
     # Start loop for design table for product and material status:
     # Header:
     row = 0
-    write_xls_mrp_line(WS, row, header, format_text)
+    write_xls_mrp_line(WS, row, header, format_header)
 
     # query_records[key] = []
     query = query_list[key]
