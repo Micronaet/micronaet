@@ -340,7 +340,6 @@ for key in query_list:
     row = 0
     write_xls_mrp_line(WS, row, header, format_header)
 
-    # query_records[key] = []
     query = query_list[key]
     print('Executing ...:\n%s' % query)
     cr.execute(query)
@@ -352,7 +351,6 @@ for key in query_list:
         record[3] = str(record[3])
         record[4] = str(record[4])
         write_xls_mrp_line(WS, row, record, format_text)
-        # query_records[key].append(row)
 WB.close()
 
 product_pool = erp.model('sale.order')
