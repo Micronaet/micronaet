@@ -319,15 +319,17 @@ for key in query_list:
         WS = WS_supplier
 
     # Column dimension:
-    WS.set_column('A:B', 5)
+    WS.set_column('A:B', 7)
     WS.set_column('C:C', 30)
     WS.set_column('D:E', 14)
-    WS.set_column('H:H', 15)
+    WS.set_column('H:H', 18)
     WS.set_column('I:G', 8)
-    WS.set_column('F:P', 10)
+    WS.set_column('F:L', 10)
+    WS.set_column('M:O', 7)
+    WS.set_column('P:P', 10)
     WS.set_column('Q:R', 5)
-    WS.set_column('S:S', 8)
-    WS.set_column('T:T', 12)
+    WS.set_column('S:S', 10)
+    WS.set_column('T:T', 16)
     WS.set_column('U:X', 10)
     WS.set_column('Y:Y', 5)
     WS.set_column('Z:AA', 10)
