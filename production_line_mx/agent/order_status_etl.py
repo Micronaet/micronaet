@@ -107,7 +107,7 @@ format_header = WB.add_format({
     'font_size': 10,
     'align': 'center',
     'valign': 'vcenter',
-    'bg_color': 'gray',
+    'bg_color': '#fcf683',  # Yellow
     'border': 1,
     'text_wrap': True,
 })
