@@ -1,4 +1,7 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
 access_safety_symbol_user,safety.symbol,model_safety_symbol,base.group_user,1,1,1,1
 access_safety_symbol_template_user,safety.symbol.template,model_safety_symbol_template,base.group_user,1,1,1,1
+access_safety_h_user,safety.h,model_safety_h,base.group_user,1,1,1,1
+access_safety_p_user,safety.p,model_safety_p,base.group_user,1,1,1,1
+access_safety_dpi_user,safety.dpi,model_safety_dpi,base.group_user,1,1,1,1
 
