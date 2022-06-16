@@ -81,7 +81,7 @@ class SafetyH(orm.Model):
     """ Model name: Safety H
     """
 
-    _name = 'safety.H'
+    _name = 'safety.h'
     _description = 'Safety H'
     _rec_name = 'name'
     _order = 'name'
@@ -96,7 +96,7 @@ class SafetyP(orm.Model):
     """ Model name: Safety P
     """
 
-    _name = 'safety.P'
+    _name = 'safety.p'
     _description = 'Safety P'
     _rec_name = 'name'
     _order = 'name'
@@ -111,7 +111,7 @@ class SafetyDPI(orm.Model):
     """ Model name: Safety DPI
     """
 
-    _name = 'safety.DPI'
+    _name = 'safety.dpi'
     _description = 'Safety DPI'
     _rec_name = 'name'
     _order = 'name'
@@ -133,15 +133,15 @@ class ProductProduct(orm.Model):
             'safety.symbol.template', 'Modello sicurezza'),
 
         'H_ids': fields.many2many(
-            'safety.H', 'product_H_rel',
+            'safety.h', 'product_h_rel',
             'template_id', 'H_id',
             'H'),
         'P_ids': fields.many2many(
-            'safety.P', 'product_P_rel',
+            'safety.p', 'product_p_rel',
             'template_id', 'P_id',
             'P'),
         'DPI_ids': fields.many2many(
-            'safety.DPI', 'product_DPI_rel',
+            'safety.dpi', 'product_dpi_rel',
             'template_id', 'DPI_id',
             'DPI'),
         }

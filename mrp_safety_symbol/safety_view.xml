@@ -25,10 +25,10 @@
                     <field name="default_code" readonly="1"/>
                     <field name="name" readonly="1" />
                     <field name="uom_id" readonly="1" />
+                    <field name="H_ids" widget="many2many_tags"/>
+                    <field name="P_ids" widget="many2many_tags" />
+                    <field name="DPI_ids" widget="many2many_tags" />
                     <field name="security_template_id" />
-                    <field name="H_ids" />
-                    <field name="P_ids" />
-                    <field name="DPI_ids" />
                 </tree>
             </field>
         </record>
@@ -83,8 +83,8 @@
 
         <!--safety.H-->
         <record model="ir.ui.view" id="view_safety_H_tree">
-            <field name="name">safety.H.tree</field>
-            <field name="model">safety.H</field>
+            <field name="name">safety.h.tree</field>
+            <field name="model">safety.h</field>
             <field name="arch" type="xml">
                 <tree string="Termini H">
                     <field name="name" />
@@ -93,15 +93,15 @@
             </field>
         </record>
         <record model="ir.ui.view" id="view_safety_H_form">
-            <field name="name">safety.H.form</field>
-            <field name="model">safety.H</field>
+            <field name="name">safety.h.form</field>
+            <field name="model">safety.h</field>
             <field name="arch" type="xml">
                 <form string="Termini H" version="7.0">
                     <sheet>
                         <group colspan="4" col="4">
                             <field name="name" />
                             <newline/>
-                            <separator string="note" colspan="4"/>
+                            <separator string="Note" colspan="4"/>
                             <field name="note" nolabel="1" colspan="4"/>
                         </group>
                     </sheet>
@@ -110,7 +110,7 @@
         </record>
         <record model="ir.actions.act_window" id="action_safety_H">
             <field name="name">Termini H</field>
-            <field name="res_model">safety.symbol</field>
+            <field name="res_model">safety.h</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_safety_H_tree"/>
@@ -120,8 +120,8 @@
 
         <!--safety.P-->
         <record model="ir.ui.view" id="view_safety_P_tree">
-            <field name="name">safety.P.tree</field>
-            <field name="model">safety.P</field>
+            <field name="name">safety.p.tree</field>
+            <field name="model">safety.p</field>
             <field name="arch" type="xml">
                 <tree string="Termini P">
                     <field name="name" />
@@ -130,15 +130,15 @@
             </field>
         </record>
         <record model="ir.ui.view" id="view_safety_P_form">
-            <field name="name">safety.P.form</field>
-            <field name="model">safety.P</field>
+            <field name="name">safety.p.form</field>
+            <field name="model">safety.p</field>
             <field name="arch" type="xml">
                 <form string="Termini P" version="7.0">
                     <sheet>
                         <group colspan="4" col="4">
                             <field name="name" />
                             <newline/>
-                            <separator string="note" colspan="4"/>
+                            <separator string="Note" colspan="4"/>
                             <field name="note" nolabel="1" colspan="4"/>
                         </group>
                     </sheet>
@@ -147,7 +147,7 @@
         </record>
         <record model="ir.actions.act_window" id="action_safety_P">
             <field name="name">Termini P</field>
-            <field name="res_model">safety.symbol</field>
+            <field name="res_model">safety.p</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_safety_P_tree"/>
@@ -157,25 +157,25 @@
 
         <!--safety.DPI-->
         <record model="ir.ui.view" id="view_safety_DPI_tree">
-            <field name="name">safety.DPI.tree</field>
-            <field name="model">safety.DPI</field>
+            <field name="name">safety.dpi.tree</field>
+            <field name="model">safety.dpi</field>
             <field name="arch" type="xml">
-                <tree string="Termini PDPI">
+                <tree string="Termini DPI">
                     <field name="name" />
                     <field name="note" />
                 </tree>
             </field>
         </record>
         <record model="ir.ui.view" id="view_safety_DPI_form">
-            <field name="name">safety.DPI.form</field>
-            <field name="model">safety.DPI</field>
+            <field name="name">safety.dpi.form</field>
+            <field name="model">safety.dpi</field>
             <field name="arch" type="xml">
                 <form string="Termini DPI" version="7.0">
                     <sheet>
                         <group colspan="4" col="4">
                             <field name="name" />
                             <newline/>
-                            <separator string="note" colspan="4"/>
+                            <separator string="Note" colspan="4"/>
                             <field name="note" nolabel="1" colspan="4"/>
                         </group>
                     </sheet>
@@ -184,7 +184,7 @@
         </record>
         <record model="ir.actions.act_window" id="action_safety_DPI">
             <field name="name">Termini DPI</field>
-            <field name="res_model">safety.symbol</field>
+            <field name="res_model">safety.dpi</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_safety_DPI_tree"/>
