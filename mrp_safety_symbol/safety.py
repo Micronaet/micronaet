@@ -131,10 +131,14 @@ class ProductProduct(orm.Model):
     _columns = {
         'security_template_id': fields.many2one(
             'safety.symbol.template', 'Modello di sicurezza'),
-       'term_h_ids': fields.many2many(
+        'term_h_ids': fields.many2many(
            'safety.h', 'safety_h_rel',
            'product_id', 'term_h_id',
            'Termini H'),
+        'term_p_ids': fields.many2many(
+            'safety.p', 'safety_p_rel',
+            'product_id', 'term_p_id',
+            'Termini P'),
         # 'h_term_ids': fields.many2many(
         #    'safety.h', 'template_h_rel',
         #    'template_id', 'H_id',
