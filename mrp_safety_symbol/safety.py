@@ -87,8 +87,9 @@ class SafetyH(orm.Model):
     _order = 'name'
 
     _columns = {
-        'name': fields.char('Nome H', size=64, required=True),
-        'note': fields.text('Descrizione'),
+        'name': fields.char(
+            'H: Particolarità prodotto', size=64, required=True),
+        'note': fields.text('Descrizione particolarità prodotto'),
         }
 
 
@@ -102,8 +103,8 @@ class SafetyP(orm.Model):
     _order = 'name'
 
     _columns = {
-        'name': fields.char('Nome P', size=64, required=True),
-        'note': fields.text('Descrizione'),
+        'name': fields.char('P: Comportamento', size=64, required=True),
+        'note': fields.text('Descrizione comportamento da tenere'),
         }
 
 
@@ -117,8 +118,8 @@ class SafetyDPI(orm.Model):
     _order = 'name'
 
     _columns = {
-        'name': fields.char('Nome DPI', size=64, required=True),
-        'note': fields.text('Descrizione'),
+        'name': fields.char('DPI: Dotazione', size=64, required=True),
+        'note': fields.text('Descrizione dotazione personale'),
         }
 
 
