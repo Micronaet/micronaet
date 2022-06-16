@@ -132,16 +132,16 @@ class ProductProduct(orm.Model):
         'security_template_id': fields.many2one(
             'safety.symbol.template', 'Modello di sicurezza'),
 
-        'safety_h_ids': fields.many2many(
-            'safety.h', 'product_safety_h_rel',
+        'h_term_ids': fields.many2many(
+            'safety.h', 'template_h_rel',
             'template_id', 'H_id',
             'H'),
-        'safety_p_ids': fields.many2many(
-            'safety.p', 'product_safety_p_rel',
+        'p_term_ids': fields.many2many(
+            'safety.p', 'template_p_rel',
             'template_id', 'P_id',
             'P'),
-        'safety_dpi_ids': fields.many2many(
-            'safety.dpi', 'product_safety_dpi_rel',
+        'dpi_term_ids': fields.many2many(
+            'safety.dpi', 'template_dpi_rel',
             'template_id', 'DPI_id',
             'DPI'),
         }
