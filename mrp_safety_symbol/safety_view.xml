@@ -6,14 +6,14 @@
             <field name="name">product.product.search</field>
             <field name="model">product.product</field>
             <field name="arch" type="xml">
-                <search string="Ricerca prodotti sicurezza" version="7.0">        
+                <search string="Ricerca prodotti sicurezza" version="7.0">
                     <field name="default_code" />
                     <field name="name" />
                     <filter name="state_on" string="Sicurezza impostata" domain="[('security_template_id','!=',False)]"/>
                     <filter name="state_off" string="Sicurezza non impostata" domain="[('security_template_id','=',False)]"/>
                     <group expand="0" string="Group By...">
                         <filter name="group_state" string="Sicurezza" context="{'group_by': 'security_template_id'}"/>
-                    </group>                
+                    </group>
                 </search>
             </field>
         </record>
@@ -21,11 +21,14 @@
             <field name="name">product.product.tree</field>
             <field name="model">product.product</field>
             <field name="arch" type="xml">
-                <tree string="Prodotti con modello sicurezza" editable="bottom" colors="blue:security_template_id!=False">     
+                <tree string="Prodotti con modello sicurezza" editable="bottom" colors="blue:security_template_id!=False">
                     <field name="default_code" readonly="1"/>
                     <field name="name" readonly="1" />
                     <field name="uom_id" readonly="1" />
                     <field name="security_template_id" />
+                    <field name="H_ids" />
+                    <field name="P_ids" />
+                    <field name="DPI_ids" />
                 </tree>
             </field>
         </record>
@@ -39,7 +42,7 @@
             <field name="context">{}</field>
             <field name="domain">[]</field>
         </record>
-        
+
         <!--safety.symbol-->
         <record model="ir.ui.view" id="view_safety_symbol_tree">
             <field name="name">safety.symbol.tree</field>
@@ -74,6 +77,117 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_safety_symbol_tree"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
+
+        <!--safety.H-->
+        <record model="ir.ui.view" id="view_safety_H_tree">
+            <field name="name">safety.H.tree</field>
+            <field name="model">safety.H</field>
+            <field name="arch" type="xml">
+                <tree string="Termini H">
+                    <field name="name" />
+                    <field name="note" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_safety_H_form">
+            <field name="name">safety.H.form</field>
+            <field name="model">safety.H</field>
+            <field name="arch" type="xml">
+                <form string="Termini H" version="7.0">
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <field name="name" />
+                            <newline/>
+                            <separator string="note" colspan="4"/>
+                            <field name="note" nolabel="1" colspan="4"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_safety_H">
+            <field name="name">Termini H</field>
+            <field name="res_model">safety.symbol</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_safety_H_tree"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
+
+        <!--safety.P-->
+        <record model="ir.ui.view" id="view_safety_P_tree">
+            <field name="name">safety.P.tree</field>
+            <field name="model">safety.P</field>
+            <field name="arch" type="xml">
+                <tree string="Termini P">
+                    <field name="name" />
+                    <field name="note" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_safety_P_form">
+            <field name="name">safety.P.form</field>
+            <field name="model">safety.P</field>
+            <field name="arch" type="xml">
+                <form string="Termini P" version="7.0">
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <field name="name" />
+                            <newline/>
+                            <separator string="note" colspan="4"/>
+                            <field name="note" nolabel="1" colspan="4"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_safety_P">
+            <field name="name">Termini P</field>
+            <field name="res_model">safety.symbol</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_safety_P_tree"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
+
+        <!--safety.DPI-->
+        <record model="ir.ui.view" id="view_safety_DPI_tree">
+            <field name="name">safety.DPI.tree</field>
+            <field name="model">safety.DPI</field>
+            <field name="arch" type="xml">
+                <tree string="Termini PDPI">
+                    <field name="name" />
+                    <field name="note" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_safety_DPI_form">
+            <field name="name">safety.DPI.form</field>
+            <field name="model">safety.DPI</field>
+            <field name="arch" type="xml">
+                <form string="Termini DPI" version="7.0">
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <field name="name" />
+                            <newline/>
+                            <separator string="note" colspan="4"/>
+                            <field name="note" nolabel="1" colspan="4"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_safety_DPI">
+            <field name="name">Termini DPI</field>
+            <field name="res_model">safety.symbol</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_safety_DPI_tree"/>
             <field name="context">{}</field>
             <field name="domain">[]</field>
         </record>
@@ -115,31 +229,46 @@
             <field name="context">{}</field>
             <field name="domain">[]</field>
         </record>
-        
-        <menuitem 
-            parent="mrp.menu_mrp_configuration" 
-            id="menu_safety_root" 
+
+        <menuitem
+            parent="mrp.menu_mrp_configuration"
+            id="menu_safety_root"
             name="Safety"
             sequence="10"
             />
-            <menuitem 
-                parent="menu_safety_root" 
-                id="menu_menu_safety_symbol" 
+            <menuitem
+                parent="menu_safety_root"
+                id="menu_menu_safety_symbol"
                 action="action_safety_symbol"
                 sequence="10"/>
+            <menuitem
+                parent="menu_safety_root"
+                id="menu_safety_H"
+                action="action_safety_H"
+                sequence="11"/>
+            <menuitem
+                parent="menu_safety_root"
+                id="menu_safety_P"
+                action="action_safety_P"
+                sequence="12"/>
+            <menuitem
+                parent="menu_safety_root"
+                id="menu_safety_DPI"
+                action="action_safety_DPI"
+                sequence="13"/>
 
-            <menuitem 
-                parent="menu_safety_root" 
-                id="menu_menu_safety_symbol_template" 
+            <menuitem
+                parent="menu_safety_root"
+                id="menu_menu_safety_symbol_template"
                 action="action_safety_symbol_template"
                 sequence="20"/>
-            
-            <menuitem 
-                parent="menu_safety_root" 
-                id="menu_menu_safety_symbol_product" 
+
+            <menuitem
+                parent="menu_safety_root"
+                id="menu_menu_safety_symbol_product"
                 action="action_product_product_security"
                 sequence="30"/>
-            
+
     </data>
 </openerp>
 
