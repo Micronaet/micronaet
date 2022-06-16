@@ -18,6 +18,7 @@
 #
 ###############################################################################
 import os
+import pdb
 import sys
 import openerp.netsvc as netsvc
 import logging
@@ -57,24 +58,28 @@ class Parser(report_sxw.rml_parse):
         """ Load if not present the security table for this job
         """
         o_id = o.id
+        pdb.set_trace()
         if o_id not in self._cache_security:
             self._cache_security[o_id] = []
             # Load security data from Security component
             for material in o.bom_material_ids:
                 product = material.product_id
-                h = product.term_h_ids
-                p = product.term_p_ids
-                dpi = product.term_dpi_ids
+                h = product.term_h_ids or ()
+                p = product.term_p_ids or ()
+                dpi = product.term_dpi_ids or ()
 
                 if h or p or dpi:
                     self._cache_security[o_id].append({
                         'product': product,
-                        'h': '\n'.join([term.note for term in h]),
-                        'p': '\n'.join([term.note for term in p]),
-                        'dpi': '\n'.join([term.note for term in dpi]),
+                        'h': '\n'.join(
+                            [term.note or term.name for term in h]),
+                        'p': '\n'.join(
+                            [term.note or term.name for term in p]),
+                        'dpi': '\n'.join(
+                            [term.note or term.name for term in dpi]),
                     })
 
-        return self._cache_security[o_id]
+        return self._cache_security[o_id] or False
 
     def translate_static(self, term, lang):
         """ Translate static text for module
