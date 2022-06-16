@@ -26,8 +26,8 @@
                     <field name="name" readonly="1" />
                     <field name="uom_id" readonly="1" />
                     <field name="term_h_ids" widget="many2many_tags"/>
-                    <!--<field name="p_term_ids" widget="many2many_tags" />
-                    <field name="dpi_term_ids" widget="many2many_tags" />-->
+                    <field name="term_p_ids" widget="many2many_tags"/>
+                    <field name="term_dpi_ids" widget="many2many_tags"/>
                     <field name="security_template_id" />
                 </tree>
             </field>

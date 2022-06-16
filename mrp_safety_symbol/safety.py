@@ -139,16 +139,8 @@ class ProductProduct(orm.Model):
             'safety.p', 'safety_p_rel',
             'product_id', 'term_p_id',
             'Termini P'),
-        # 'h_term_ids': fields.many2many(
-        #    'safety.h', 'template_h_rel',
-        #    'template_id', 'H_id',
-        #    'H'),
-        # 'p_term_ids': fields.many2many(
-        #    'safety.p', 'template_p_rel',
-        #    'template_id', 'P_id',
-        #    'P'),
-        # 'dpi_term_ids': fields.many2many(
-        #    'safety.dpi', 'template_dpi_rel',
-        #    'template_id', 'DPI_id',
-        #    'DPI'),
+        'term_dpi_ids': fields.many2many(
+            'safety.dpi', 'safety_dpi_rel',
+            'product_id', 'term_dpi_id',
+            'Termini DPI'),
         }
