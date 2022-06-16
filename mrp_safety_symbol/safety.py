@@ -134,14 +134,14 @@ class ProductProduct(orm.Model):
 
         'safety_h_ids': fields.many2many(
             'safety.h', 'product_safety_h_rel',
-            'template_id', 'H_id',
+            'template_id', 'h_id',
             'H'),
         'safety_p_ids': fields.many2many(
             'safety.p', 'product_safety_p_rel',
-            'template_id', 'P_id',
+            'template_id', 'p_id',
             'P'),
         'safety_dpi_ids': fields.many2many(
             'safety.dpi', 'product_safety_dpi_rel',
-            'template_id', 'DPI_id',
+            'template_id', 'dpi_id',
             'DPI'),
         }
