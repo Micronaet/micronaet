@@ -35,15 +35,46 @@ _logger = logging.getLogger(__name__)
 # Global parameters:
 parameters = False
 
+
 class Parser(report_sxw.rml_parse):
+    """ Parser item for report
+    """
     def __init__(self, cr, uid, name, context):
+        """ Setup Instance for this Object
+        """
+        self._cache_security = {}  # Clean every report
+
         super(Parser, self).__init__(cr, uid, name, context)
         self.localcontext.update({
             'load_parameter': self.load_parameter,
             'get_parameter': self.get_parameter,
             'get_analysis_info': self.get_analysis_info,
             'translate_static': self.translate_static,
+            'get_security_loaded': self. get_security_loaded,
         })
+
+    def get_security_loaded(self, o):
+        """ Load if not present the security table for this job
+        """
+        o_id = o.id
+        if o_id not in self._cache_security:
+            self._cache_security[o_id] = []
+            # Load security data from Security component
+            for material in o.bom_material_ids:
+                product = material.product_id
+                h = product.term_h_ids
+                p = product.term_p_ids
+                dpi = product.term_dpi_ids
+
+                if h or p or dpi:
+                    self._cache_security[o_id].append({
+                        'product': product,
+                        'h': '\n'.join([term.note for term in h]),
+                        'p': '\n'.join([term.note for term in p]),
+                        'dpi': '\n'.join([term.note for term in dpi]),
+                    })
+
+        return self._cache_security[o_id]
 
     def translate_static(self, term, lang):
         """ Translate static text for module
