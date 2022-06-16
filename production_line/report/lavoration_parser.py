@@ -58,7 +58,6 @@ class Parser(report_sxw.rml_parse):
         """ Load if not present the security table for this job
         """
         o_id = o.id
-        pdb.set_trace()
         if o_id not in self._cache_security:
             self._cache_security[o_id] = []
             # Load security data from Security component
