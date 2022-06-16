@@ -71,11 +71,11 @@ class Parser(report_sxw.rml_parse):
                 if h or p or dpi:
                     self._cache_security[o_id].append({
                         'product': product,
-                        'h': '\n'.join(
+                        'H': '\n'.join(
                             [term.note or term.name for term in h]),
-                        'p': '\n'.join(
+                        'P': '\n'.join(
                             [term.note or term.name for term in p]),
-                        'dpi': '\n'.join(
+                        'DPI': '\n'.join(
                             [term.note or term.name for term in dpi]),
                     })
 
