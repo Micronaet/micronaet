@@ -129,10 +129,11 @@ class res_company(osv.osv):
         ], default_format=excel_format['header'])
 
         load_ids = load_pool.search(cr, uid, [
-            ('date', '=', '%s-01-01' % year),  # This year
+            ('date', '>=', '%s-01-01' % year),  # This year
             ('accounting_cl_code', '!=', False),
             ], context=context)
 
+        _logger.warning('Load document found #%s' % len(load_ids))
         for load in load_pool.browse(cr, uid, load_ids, context=context):
             name = load.accounting_cl_code
             if name in account_data['CL']:
