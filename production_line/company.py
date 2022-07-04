@@ -84,70 +84,99 @@ class res_company(osv.osv):
         """ Check CL and CL
         """
         load_pool = self.pool.get('mrp.production.workcenter.load')
+        unload_pool = self.pool.get('mrp.production.workcenter.line')
         excel_pool = self.pool.get('excel.writer')
 
         now = str(datetime.now())
         year = now[:4]
         account_data = self.sql_mrp_get_cl(cr, uid, year, context=context)
 
-        ws_name = 'Carichi di produzione'
-        excel_pool.create_worksheet(ws_name)
-
-        # Format:
-        excel_pool.set_format()
-        excel_format = {
-            'title': excel_pool.get_format('title'),
-            'header': excel_pool.get_format('header'),
-            'text': excel_pool.get_format('text'),
-            'number': excel_pool.get_format('number'),
-            'red': {
-                'text': excel_pool.get_format('bg_red'),
-                'number': excel_pool.get_format('bg_red_number'),
-            },
-            'white': {
-                'text': excel_pool.get_format('text'),
-                'number': excel_pool.get_format('number'),
-            },
-        }
-
-        # Column setup:
-        excel_pool.column_width(ws_name, [
-            15, 15, 20,
-        ])
-
-        # Write header:
-        row = 0
-        excel_pool.write_xls_line(ws_name, row, [
-            'Documenti di carico da OpenERP e da Mexal',
-            ], default_format=excel_format['title'])
-
-        row += 1
-        excel_pool.write_xls_line(ws_name, row, [
-            'Numero OpenERP',
-            'Numero Mexal',
-            'Stato'
-        ], default_format=excel_format['header'])
-
+        # ---------------------------------------------------------------------
+        # Collect data:
+        # ---------------------------------------------------------------------
+        # Load:
         load_ids = load_pool.search(cr, uid, [
             ('date', '>=', '%s-01-01' % year),  # This year
             ('accounting_cl_code', '!=', False),
             ], context=context)
 
         _logger.warning('Load document found #%s' % len(load_ids))
-        for load in load_pool.browse(cr, uid, load_ids, context=context):
-            name = load.accounting_cl_code
-            if name in account_data['CL']:
-                state = ''
-                account_name = name
-            else:
-                state = 'Non trovato'
-                account_name = ''
+        loads = load_pool.browse(cr, uid, load_ids, context=context)
+
+        # Unload:
+        unload_ids = unload_pool.search(cr, uid, [
+            ('date_start', '>=', '%s-01-01' % year),  # This year
+            ('accounting_sl_code', '!=', False),
+            ], context=context)
+
+        _logger.warning('Unload document found #%s' % len(unload_ids))
+        unloads = unload_pool.browse(cr, uid, unload_ids, context=context)
+
+        loop = [
+            ('Carichi di produzione', 'CL', loads),
+            ('Scarichi di produzione', 'SL', unloads),
+        ]
+
+        excel_format = False
+        for ws_name, document, records in loop:
+            excel_pool.create_worksheet(ws_name)
+
+            # Format:
+            if not excel_format:
+                excel_pool.set_format()
+                excel_format = {
+                    'title': excel_pool.get_format('title'),
+                    'header': excel_pool.get_format('header'),
+                    'text': excel_pool.get_format('text'),
+                    'number': excel_pool.get_format('number'),
+                    'red': {
+                        'text': excel_pool.get_format('bg_red'),
+                        'number': excel_pool.get_format('bg_red_number'),
+                    },
+                    'white': {
+                        'text': excel_pool.get_format('text'),
+                        'number': excel_pool.get_format('number'),
+                    },
+                }
+
+            # Column setup:
+            excel_pool.column_width(ws_name, [
+                15, 15, 20,
+            ])
+
+            # Write header:
+            row = 0
+            excel_pool.write_xls_line(ws_name, row, [
+                'Documenti %s da OpenERP e Gestionale' % document,
+                ], default_format=excel_format['title'])
+
             row += 1
             excel_pool.write_xls_line(ws_name, row, [
-                name,
-                account_name,
-                state,
-            ], default_format=excel_format['text'])
+                'Numero OpenERP',
+                'Numero Gestionale',
+                'Stato'
+            ], default_format=excel_format['header'])
+
+            _logger.warning('Load document found #%s' % len(records))
+            for record in records:
+                if document == 'CL':
+                    name = record.accounting_cl_code
+                else:
+                    name = record.accounting_sl_code
+                name = '%s-%s' % (document, name)
+
+                if name in account_data[document]:
+                    state = ''
+                    account_name = name
+                else:
+                    state = 'Non trovato'
+                    account_name = ''
+                row += 1
+                excel_pool.write_xls_line(ws_name, row, [
+                    name,
+                    account_name,
+                    state,
+                ], default_format=excel_format['text'])
 
         return excel_pool.return_attachment(
             cr, uid, 'Stato documenti di MRP', version='7.0', php=True,
