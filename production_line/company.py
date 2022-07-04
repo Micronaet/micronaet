@@ -53,7 +53,7 @@ class res_company(osv.osv):
             table = 'mm_testate'
 
         pdb.set_trace()
-        cursor = sql_pool.connect(cr, uid, year=year, context=context)
+        cursor = sql_pool.connect(cr, uid, year=False, context=context)
         if not cursor:
             raise Exception('Impossibile leggere i dati contabili')
 
