@@ -80,7 +80,7 @@ class res_company(osv.osv):
     def check_account_document(self, cr, uid, ids, context=None):
         """ Check CL and CL
         """
-        load_pool = self.pool.get('mrp.production_workcenter.load')
+        load_pool = self.pool.get('mrp.production.workcenter.load')
 
         now = str(datetime.now())
         year = now[:4]
