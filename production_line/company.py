@@ -86,7 +86,7 @@ class res_company(osv.osv):
         year = now[:4]
         account_data = self.sql_mrp_get_cl(cr, uid, year, context=context)
         load_ids = load_pool.search(cr, uid, [
-            ('date', '=', year),  # This year
+            ('date', '=', '%s-01-01' % year),  # This year
             ], context=context)
         load_check = {}
         for load in load_pool.browse(cr, uid, load_ids, context=context):
