@@ -163,7 +163,6 @@ class res_company(osv.osv):
                     name = record.accounting_cl_code
                 else:
                     name = record.accounting_sl_code
-                name = '%s-%s' % (document, name)
 
                 if name in account_data[document]:
                     state = ''
@@ -171,7 +170,9 @@ class res_company(osv.osv):
                 else:
                     state = 'Non trovato'
                     account_name = ''
+
                 row += 1
+                fullname = '%s-%s' % (document, name)
                 excel_pool.write_xls_line(ws_name, row, [
                     name,
                     account_name,
