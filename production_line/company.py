@@ -168,6 +168,8 @@ class res_company(osv.osv):
                 if name in account_data[document]:
                     state = ''
                     account_name = fullname
+                    # Clean record:
+                    account_data[document].remove(name)
                 else:
                     state = 'Non trovato'
                     account_name = ''
@@ -177,6 +179,31 @@ class res_company(osv.osv):
                     fullname,
                     account_name,
                     state,
+                ], default_format=excel_format['text'])
+
+        # Remain only in Account:
+        for document in account_data:
+            records = account_data[document]
+            ws_name = '%s solo a gestionale' % document
+
+            # Write header:
+            excel_pool.column_width(ws_name, [
+                15, 15, 20,
+            ])
+
+            row = 0
+            excel_pool.write_xls_line(ws_name, row, [
+                'Documenti %s solo a gestionale' % document,
+                ], default_format=excel_format['title'])
+            row += 1
+            excel_pool.write_xls_line(ws_name, row, [
+                'Documento',
+            ], default_format=excel_format['header'])
+
+            for record in records:
+                row += 1
+                excel_pool.write_xls_line(ws_name, row, [
+                    record,
                 ], default_format=excel_format['text'])
 
         return excel_pool.return_attachment(
