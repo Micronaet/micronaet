@@ -52,6 +52,7 @@ class res_company(osv.osv):
         else:
             table = 'mm_testate'
 
+        pdb.set_trace()
         cursor = sql_pool.connect(cr, uid, year=year, context=context)
         res = {
             'CL': [],
@@ -66,7 +67,6 @@ class res_company(osv.osv):
                     CSG_DOC in ('SL', 'CL') AND 
                     CDS_NOTE = 'OPENERP';
                 """ % table)
-            pdb.set_trace()
             for record in cursor.fetchall():
                 if record[2] == 'SL':
                     res['SL'].append(record[1])
