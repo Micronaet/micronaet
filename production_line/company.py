@@ -186,6 +186,7 @@ class res_company(osv.osv):
             records = account_data[document]
             ws_name = '%s solo a gestionale' % document
 
+            excel_pool.create_worksheet(ws_name)
             # Write header:
             excel_pool.column_width(ws_name, [
                 15, 15, 20,
