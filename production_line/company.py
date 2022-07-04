@@ -71,13 +71,13 @@ class res_company(osv.osv):
                     CDS_NOTE = 'OPENERP';
                 """ % table)
             for record in cursor.fetchall():
-                if record[2] == 'SL':
-                    res['SL'].append(record[1])
+                if record['CSG_DOC'] == 'SL':
+                    res['SL'].append(record['NGL_DOC'])
                 else:
-                    res['CL'].append(record[1])
+                    res['CL'].append(record['NGL_DOC'])
             return res
         except:
-            _logger.error('Error readiny CL and SL')
+            _logger.error('Error reading CL and SL')
             return res  # empty
 
     def check_account_document(self, cr, uid, ids, context=None):
