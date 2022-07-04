@@ -72,7 +72,6 @@ class res_company(osv.osv):
                     res['SL'].append(record[1])
                 else:
                     res['CL'].append(record[1])
-
             return res
         except:
             _logger.error('Error readiny CL and SL')
@@ -88,7 +87,7 @@ class res_company(osv.osv):
         account_data = self.sql_mrp_get_cl(cr, uid, year, context=context)
         load_ids = load_pool.search(cr, uid, [
             ('date', '=', year),  # This year
-        ], context=context)
+            ], context=context)
         load_check = {}
         for load in load_pool.browse(cr, uid, load_ids, context=context):
             load_check[load.accounting_cl_code] = load
