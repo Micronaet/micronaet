@@ -71,10 +71,11 @@ class res_company(osv.osv):
                     CDS_NOTE = 'OPENERP';
                 """ % table)
             for record in cursor.fetchall():
+                number = str(record['NGL_DOC'])
                 if record['CSG_DOC'] == 'SL':
-                    res['SL'].append(record['NGL_DOC'])
+                    res['SL'].append(number)
                 else:
-                    res['CL'].append(record['NGL_DOC'])
+                    res['CL'].append(number)
             return res
         except:
             _logger.error('Error reading CL and SL')
