@@ -52,7 +52,6 @@ class res_company(osv.osv):
         else:
             table = 'mm_testate'
 
-        pdb.set_trace()
         cursor = sql_pool.connect(cr, uid, year=False, context=context)
         if not cursor:
             raise Exception('Impossibile leggere i dati contabili')
@@ -85,19 +84,71 @@ class res_company(osv.osv):
         """ Check CL and CL
         """
         load_pool = self.pool.get('mrp.production.workcenter.load')
+        excel_pool = self.pool.get('excel.writer')
 
         now = str(datetime.now())
         year = now[:4]
         account_data = self.sql_mrp_get_cl(cr, uid, year, context=context)
+
+        ws_name = 'Carichi di produzione'
+        excel_pool.create_worksheet(ws_name)
+
+        # Format:
+        excel_pool.set_format()
+        excel_format = {
+            'title': excel_pool.get_format('title'),
+            'header': excel_pool.get_format('header'),
+            'text': excel_pool.get_format('text'),
+            'number': excel_pool.get_format('number'),
+            'red': {
+                'text': excel_pool.get_format('bg_red'),
+                'number': excel_pool.get_format('bg_red_number'),
+            },
+            'white': {
+                'text': excel_pool.get_format('text'),
+                'number': excel_pool.get_format('number'),
+            },
+        }
+
+        # Column setup:
+        excel_pool.column_width(ws_name, [
+            15, 15, 20,
+        ])
+
+        # Write header:
+        row = 0
+        excel_pool.write_xls_line(ws_name, row, [
+            'Documenti di carico da OpenERP e da Mexal',
+            ], default_format=excel_format['title'])
+
+        row += 1
+        excel_pool.write_xls_line(ws_name, row, [
+            'Numero OpenERP',
+            'Numero Mexal',
+            'Stato'
+        ], default_format=excel_format['header'])
+
         load_ids = load_pool.search(cr, uid, [
             ('date', '=', '%s-01-01' % year),  # This year
             ], context=context)
-        load_check = {}
         for load in load_pool.browse(cr, uid, load_ids, context=context):
-            load_check[load.accounting_cl_code] = load
+            name = load.accounting_cl_code
+            if name in account_data['CL']:
+                state = ''
+                account_name = name
+            else:
+                state = 'Non trovato'
+                account_name = ''
+            row += 1
+            excel_pool.write_xls_line(ws_name, row, [
+                name,
+                account_name,
+                state,
+            ], default_format=excel_format['text'])
 
-
-        return True
+        return excel_pool.return_attachment(
+            cr, uid, 'Stato documenti di MRP', version='7.0', php=True,
+            context=context)
 
     def get_production_parameter(self, cr, uid, context=None):
         """ Return browse object for default company for get all parameter
