@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# ODOO (ex OpenERP) 
+# ODOO (ex OpenERP)
 # Open Source Management Solution
 # Copyright (C) 2001-2015 Micronaet S.r.l. (<http://www.micronaet.it>)
 # Developer: Nicola Riolini @thebrush (<https://it.linkedin.com/in/thebrush>)
@@ -12,7 +12,7 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU Affero General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
@@ -29,8 +29,8 @@
     'website': 'http://www.micronaet.it',
     'license': 'AGPL-3',
     'depends': [
-        'base', 
-        'sale', 
+        'base',
+        'sale',
         'account',
         'mrp',
         'mail',
@@ -42,20 +42,20 @@
         'base_mssql',
         'base_mssql_accounting',
         'partner_addresses',
-        'base_log_scheduler',        
-        'mrp_safety_symbol', # Safety symbol
-        #'web_m2o_enhanced',
-        #'product_adr', # field: adr
-        #'sql_product', # field: statistic category
-        #'sale_address', # field: address_id
-        #'sale_booked', # fields for booking (ex mx_sale)
-        #'report_webkit', # for reports
+        'base_log_scheduler',
+        'mrp_safety_symbol',  # Safety symbol
+        # 'web_m2o_enhanced',
+        # 'product_adr', # field: adr
+        # 'sql_product', # field: statistic category
+        # 'sale_address', # field: address_id
+        # 'sale_booked', # fields for booking (ex mx_sale)
+        # 'report_webkit', # for reports
         ],
     'init_xml': [],
     'demo_xml': [],
     'update_xml': [
         'security/visibility_group.xml',
-        'security/ir.model.access.csv',                     
+        'security/ir.model.access.csv',
         'wizard/confirm_production_wizard.xml',
         'wizard/split_lavoration_wizard.xml',
         'wizard/assign_production.xml',
@@ -67,26 +67,24 @@
         'production_view.xml',
         'partner_view.xml',
         'analysis.xml',
-        'daily_status_view.xml', # Server action for report
+        'daily_status_view.xml',  # Server action for report
 
         'scheduler.xml',
         'wizard/view_production_wizard.xml',
         'wizard/wizard_product_status_view.xml',
         'workflow/mrp_production_workflow.xml',
-        
+
         'report/status_webkit.xml',
         'report/lavoration_report.xml',
         'report/workcenter_lavoration.xml',
         'report/order_covered.xml',
         'report/bom_report.xml',
         'report/ul_report.xml',
-        
+
         'data/template.xml',
-        
+
         'counter.xml',
         ],
     'active': False,
     'installable': True,
 }
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

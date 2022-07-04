@@ -34,7 +34,7 @@
 			           <field name="production_mount_sudo_password" />-->
 
 			           <separator string="Exchange document:" colspan="3" />
-						<button name="check_account_document" type="object" string="Controllo documenti con gestionale" icon="gtk-refresh"/>
+						<button name="check_account_document" type="object" string="Controllo documenti con gestionale" icon="gtk-refresh" colspan="1"/>
 			           <field name="production_path" attrs="{'required': [('production_export','=',True)]}" />
 			           <field name="production_cl" attrs="{'required': [('production_export','=',True)]}" />
 			           <field name="production_cl_upd" attrs="{'required': [('production_export','=',True)]}" />

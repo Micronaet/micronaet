@@ -18,6 +18,7 @@
 #
 ###############################################################################
 import os
+import pdb
 import sys
 import openerp.netsvc as netsvc
 import logging
@@ -38,9 +39,61 @@ class res_company(osv.osv):
     _name = "res.company"
     _inherit = "res.company"
 
+    # -------------------------------------------------------------------------
+    # Utility:
+    # -------------------------------------------------------------------------
+    def sql_mrp_get_cl(self, cr, uid, year, context=None):
+        """ Load CL document
+        """
+        sql_pool = self.pool.get('micronaet.accounting')
+
+        if self.table_capital_name(cr, uid, context=context):
+            table = 'MM_TESTATE'
+        else:
+            table = 'mm_testate'
+
+        cursor = sql_pool.connect(cr, uid, year=year, context=context)
+        res = {
+            'CL': [],
+            'SL': [],
+            }
+        try:
+            cursor.execute("""
+                SELECT
+                    NGL_DOC, CSG_DOC  
+                FROM %s
+                WHERE 
+                    CSG_DOC in ('SL', 'CL') AND 
+                    CDS_NOTE = 'OPENERP';
+                """ % table)
+            pdb.set_trace()
+            for record in cursor.fetchall():
+                if record[2] == 'SL':
+                    res['SL'].append(record[1])
+                else:
+                    res['CL'].append(record[1])
+
+            return res
+        except:
+            _logger.error('Error readiny CL and SL')
+            return res  # empty
+
     def check_account_document(self, cr, uid, ids, context=None):
         """ Check CL and CL
         """
+        load_pool = self.pool.get('mrp.production_workcenter.load')
+
+        now = str(datetime.now())
+        year = now[:4]
+        account_data = self.sql_mrp_get_cl(cr, uid, year, context=context)
+        load_ids = load_pool.search(cr, uid, [
+            ('date', '=', year),  # This year
+        ], context=context)
+        load_check = {}
+        for load in load_pool.browse(cr, uid, load_ids, context=context):
+            load_check[load.accounting_cl_code] = load
+
+
         return True
 
     def get_production_parameter(self, cr, uid, context=None):
