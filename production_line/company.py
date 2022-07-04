@@ -54,6 +54,9 @@ class res_company(osv.osv):
 
         pdb.set_trace()
         cursor = sql_pool.connect(cr, uid, year=year, context=context)
+        if not cursor:
+            raise Exception('Impossibile leggere i dati contabili')
+
         res = {
             'CL': [],
             'SL': [],
