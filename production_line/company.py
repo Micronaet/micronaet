@@ -31,15 +31,22 @@ from openerp.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 
+
 class res_company(osv.osv):
-    ''' Extra fields for res.company object
-    '''
+    """ Extra fields for res.company object
+    """
     _name = "res.company"
     _inherit = "res.company"
 
+    def check_account_document(self, cr, uid, ids, context=None):
+        """ Check CL and CL
+        """
+        return True
+
     def get_production_parameter(self, cr, uid, context=None):
-        ''' Return browse object for default company for get all parameter created
-        '''
+        """ Return browse object for default company for get all parameter
+            created
+        """
         company_id = self.search(cr, uid, [], context=context)
         if company_id:
             return self.browse(cr, uid, company_id, context=context)[0]
@@ -47,8 +54,8 @@ class res_company(osv.osv):
             return False
 
     def xmlrpc_get_server(self, cr, uid, context=None):
-        ''' Configure and retur XML-RPC server for accounting
-        '''
+        """ Configure and retur XML-RPC server for accounting
+        """
         parameters = self.get_production_parameter(cr, uid, context=context)
         try:
             mx_parameter_server = parameters.production_host
@@ -93,13 +100,21 @@ class res_company(osv.osv):
             help="File name for SL exhange file"),
 
         # Mount point:
-        'production_path': fields.text('Production interchange path', help="Path of folder used for interchange, passed as a list: ('~','home','exchange')"),
-        #'production_mount_unc':fields.char('Windows UNC name', size=64, help="Example: //server_ip/share_name"),
-        #'production_mount_user':fields.char('Windows user for mount resource', size=64, readonly=False),
-        #'production_mount_password':fields.char('Windows user for mount resource', size=64, password=True),
-        #'production_mount_sudo_password':fields.char('Linux sudo password', size=64, password=True),
-        #'production_mount_uid':fields.char('Linux user group for mount resource', size=64, readonly=False),
-        #'production_mount_gid':fields.char('Linux user group for mount resource', size=64, readonly=False),
+        'production_path': fields.text(
+            'Production interchange path',
+            help="Path of folder used for interchange, passed as a list: ('~','home','exchange')"),
+        # 'production_mount_unc':fields.char('Windows UNC name', size=64,
+        # help="Example: //server_ip/share_name"),
+        # 'production_mount_user':fields.char('Windows user for mount
+        # resource', size=64, readonly=False),
+        # 'production_mount_password':fields.char('Windows user for mount
+        # resource', size=64, password=True),
+        # 'production_mount_sudo_password':fields.char('Linux sudo password',
+        # size=64, password=True),
+        # 'production_mount_uid':fields.char('Linux user group for mount
+        # resource', size=64, readonly=False),
+        # 'production_mount_gid':fields.char('Linux user group for mount
+        # resource', size=64, readonly=False),
     }
     _defaults = {
         'production_demo': lambda *x: False,
@@ -114,4 +129,3 @@ class res_company(osv.osv):
         # 'production_mount_uid': lambda *a: "openerp",
         # 'production_mount_gid': lambda *a: "openerp",
     }
-res_company()
