@@ -80,6 +80,135 @@ class res_company(osv.osv):
             _logger.error('Error reading CL and SL')
             return res  # empty
 
+    def sql_get_price(self, record):
+        """ Generate price:
+        """
+        price = record['NPZ_UNIT']
+        conversion = record['NCF_CONV']
+
+        if conversion:
+            price *= conversion
+        return price
+
+    def sql_mm_line_get_data(self, cr, uid, year, context=None):
+        """ Load CL document
+        """
+        sql_pool = self.pool.get('micronaet.accounting')
+        reference = 200.0  # +/- 200% of range
+
+        if self.table_capital_name(cr, uid, context=context):
+            table = 'MM_RIGHE'
+        else:
+            table = 'mm_righe'
+
+        cursor = sql_pool.connect(cr, uid, year=False, context=context)
+        if not cursor:
+            raise Exception('Impossibile leggere i dati contabili')
+
+        res = {}
+        try:
+            cursor.execute("""
+                SELECT
+                    *  
+                FROM %s
+                WHERE 
+                    CSG_DOC in ('BF', 'SL', 'CL');
+                """ % table)
+            for record in cursor.fetchall():
+                number = str(record['NGL_DOC'])
+                default_code = record['CKY_ART']
+
+                # Price:
+                price = self.sql_get_price(record)
+                if default_code not in res:
+                    res[default_code] = {
+                        'price': price,
+                        'problem': False,
+                        'record': [],
+                    }
+
+                res[default_code]['record'].append(record)
+                gap = 100.0 * abs(price - res[default_code]['price']) / \
+                    res[default_code]['price']
+                if not res[default_code]['problem'] and gap >= reference:
+                    res[default_code]['problem'] = True  # There's a problem
+            return res
+        except:
+            _logger.error('Error reading movement lines')
+            return res  # empty
+
+    def check_price_out_of_scale(self, cr, uid, ids, context=None):
+        """ Check out of scale price on MySQL
+        """
+        excel_pool = self.pool.get('excel.writer')
+        account_data = self.sql_mm_line_get_data(
+            cr, uid, False, context=context)
+
+        ws_name = 'Movimenti magazzino'
+        excel_pool.create_worksheet(ws_name)
+        excel_pool.set_format()
+        excel_format = {
+            'title': excel_pool.get_format('title'),
+            'header': excel_pool.get_format('header'),
+            'text': excel_pool.get_format('text'),
+            'number': excel_pool.get_format('number'),
+            'red': {
+                'text': excel_pool.get_format('bg_red'),
+                'number': excel_pool.get_format('bg_red_number'),
+            },
+            'white': {
+                'text': excel_pool.get_format('text'),
+                'number': excel_pool.get_format('number'),
+            },
+        }
+
+        # Column setup:
+        excel_pool.column_width(ws_name, [
+            15, 15, 20, 15,
+        ])
+        header = [
+            'Codice prodotto', 'Prezzo', 'Documento', 'Data'
+        ]
+
+        # Write title:
+        row = 0
+        excel_pool.write_xls_line(ws_name, row, [
+            'Movimenti di magazzino con confronto prezzi prodotto',
+        ], default_format=excel_format['title'])
+
+        # Write title:
+        row += 1
+        excel_pool.write_xls_line(
+            ws_name, row, header, default_format=excel_format['header'])
+
+        for default_code in account_data:
+            data = account_data[default_code]
+
+            problem = data['problem']
+            if not problem:
+                continue
+
+            for record in data['record']:
+                row += 1
+                price = self.sql_get_price(record)
+                line = [
+                    default_code,
+                    price,
+                    '%s/%s %s' % (
+                        record['CSG_DOC'],
+                        record['NGB_SR_DOC'],
+                        record['NGL_DOC'],
+                        ),
+                    record['DTT_SCAD']
+                ]
+                excel_pool.write_xls_line(
+                    ws_name, row, line,
+                    default_format=excel_format['text'])
+
+        return excel_pool.return_attachment(
+            cr, uid, 'Stato documenti di MRP', version='7.0', php=True,
+            context=context)
+
     def check_account_document(self, cr, uid, ids, context=None):
         """ Check CL and CL
         """
