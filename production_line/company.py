@@ -230,7 +230,6 @@ class res_company(osv.osv):
             #    continue
             first = True
             for record in data['record']:
-                row += 1
                 price = self.sql_get_price(record)
                 deviation = 100.0 * (price - medium) / medium
 
@@ -244,6 +243,7 @@ class res_company(osv.osv):
                 else:
                     color = excel_format['white']
                     extra_medium = ''
+                    continue
 
                 line = [
                     default_code if first else '',
@@ -258,6 +258,7 @@ class res_company(osv.osv):
                     record['DTT_SCAD'],
                     extra_medium,
                 ]
+                row += 1
                 excel_pool.write_xls_line(
                     ws_name, row, line,
                     default_format=color['text'])
