@@ -184,8 +184,8 @@ class res_company(osv.osv):
             data = account_data[default_code]
 
             problem = data['problem']
-            if not problem:
-                continue
+            # if not problem:
+            #    continue
 
             for record in data['record']:
                 row += 1
