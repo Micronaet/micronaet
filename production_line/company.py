@@ -121,18 +121,21 @@ class res_company(osv.osv):
             default_code = record['CKY_ART']
 
             # Price:
-            price = self.sql_get_price(record)
+            current_price = self.sql_get_price(record)
+            reference_price = res[default_code]['price']
             if default_code not in res:
                 _logger.warning('New code found: %s' % default_code)
                 res[default_code] = {
-                    'price': price,
+                    'price': current_price,
                     'problem': False,
                     'record': [],
                 }
 
             res[default_code]['record'].append(record)
-            gap = 100.0 * abs(price - res[default_code]['price']) / \
-                res[default_code]['price']
+            if not reference_price:
+                pdb.set_trace()
+            gap = 100.0 * abs(current_price - reference_price) / \
+                reference_price
             if not res[default_code]['problem'] and gap >= reference:
                 res[default_code]['problem'] = True  # There's a problem
         return res
