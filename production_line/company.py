@@ -209,7 +209,8 @@ class res_company(osv.osv):
             data = account_data[default_code]
 
             problem = data['problem']
-            medium = data['sum'] / data['counter']
+            counter = data['counter']
+            medium = data['sum'] / counter
 
             if not problem:
                 continue
@@ -219,7 +220,7 @@ class res_company(osv.osv):
                 row += 1
                 price = self.sql_get_price(record)
 
-                variant = 100.0 * (price - medium) / medium
+                variant = 100.0 * (price - medium) ^ 2 / counter
 
                 if abs(variant) >= reference:
                     color = excel_format['red']
