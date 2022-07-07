@@ -220,7 +220,7 @@ class res_company(osv.osv):
                 row += 1
                 price = self.sql_get_price(record)
 
-                variant = 100.0 * (price - medium) ^ 2 / counter
+                variant = 100.0 * (price - medium) ^ 2 / int(counter)
 
                 if abs(variant) >= reference:
                     color = excel_format['red']
