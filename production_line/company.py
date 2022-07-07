@@ -141,10 +141,6 @@ class res_company(osv.osv):
                     'sum': 0.0,
                     'counter': 0,
                 }
-            # Medium part:
-            res[default_code]['sum'] += current_price
-            res[default_code]['counter'] += 1
-
             # Price check:
             reference_price = res[default_code]['price']
             res[default_code]['record'].append(record)
@@ -153,8 +149,13 @@ class res_company(osv.osv):
             gap = 100.0 * abs(current_price - reference_price) / \
                 reference_price
 
-            if not res[default_code]['problem'] and gap >= reference:
-                res[default_code]['problem'] = True  # There's a problem
+            if gap >= reference:
+                if not res[default_code]['problem']:
+                    res[default_code]['problem'] = True  # There's a problem
+            else:
+                # Medium part (used only if not extra gap):
+                res[default_code]['sum'] += current_price
+                res[default_code]['counter'] += 1
         return res, empty
 
     def check_price_out_of_scale(self, cr, uid, ids, context=None):
@@ -189,8 +190,8 @@ class res_company(osv.osv):
             15, 12, 12, 12, 18, 15,
         ])
         header = [
-            'Codice prodotto', 'Prezzo medio',
-            'Prezzo', '% Varianza', 'Documento', 'Data'
+            'Codice prodotto', 'p(x) senza outsider',
+            'Prezzo', '% Deviazione', 'Documento', 'Data'
         ]
 
         # Write title:
@@ -220,9 +221,9 @@ class res_company(osv.osv):
                 row += 1
                 price = self.sql_get_price(record)
 
-                variant = 100.0 * (price - medium) ** 2 / counter
+                deviation = 100.0 * (price - medium) / medium
 
-                if abs(variant) >= reference:
+                if abs(deviation) >= reference:
                     color = excel_format['red']
                 else:
                     color = excel_format['white']
@@ -230,7 +231,7 @@ class res_company(osv.osv):
                     default_code if first else '',
                     (medium if first else '', color['number']),
                     (price, color['number']),
-                    (variant, color['number']),
+                    (deviation, color['number']),
                     '%s/%s %s' % (
                         record['CSG_DOC'],
                         record['NGB_SR_DOC'],
