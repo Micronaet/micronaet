@@ -94,7 +94,7 @@ class res_company(osv.osv):
         """ Load CL document
         """
         sql_pool = self.pool.get('micronaet.accounting')
-        reference = 200.0  # +/- 200% of range
+        reference = 100.0  # +/- 200% of range
 
         if self.table_capital_name(cr, uid, context=context):
             table = 'MM_RIGHE'
@@ -108,8 +108,7 @@ class res_company(osv.osv):
         res = {}
         try:
             cursor.execute("""
-                SELECT
-                    *  
+                SELECT *  
                 FROM %s
                 WHERE 
                     CSG_DOC in ('BF', 'SL', 'CL');
