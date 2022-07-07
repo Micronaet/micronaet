@@ -234,7 +234,7 @@ class res_company(osv.osv):
                 deviation = 100.0 * (price - medium) / medium
 
                 # Color:
-                if abs(deviation) >= 50.0:
+                if abs(deviation) >= 100.0:
                     color = excel_format['red']
                     extra_medium = 'X'
                 elif abs(deviation) >= 25.0:
