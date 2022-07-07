@@ -199,11 +199,12 @@ class res_company(osv.osv):
 
         # Column setup:
         excel_pool.column_width(ws_name, [
-            15, 12, 12, 12, 18, 15,
+            15, 12, 12, 12, 18, 15, 5
         ])
         header = [
             'Codice prodotto', 'm(x) no outsider',
-            'Prezzo', '% Deviazione', 'Documento', 'Data'
+            'Prezzo', '% Deviazione', 'Documento', 'Data',
+            'Problema',
         ]
 
         # Write title:
@@ -236,12 +237,13 @@ class res_company(osv.osv):
                 # Color:
                 if abs(deviation) >= 50.0:
                     color = excel_format['red']
+                    extra_medium = 'X'
                 elif abs(deviation) >= 25.0:
                     color = excel_format['yellow']
+                    extra_medium = 'X'
                 else:
                     color = excel_format['white']
-                    # continue
-                    # Write only extra medium
+                    extra_medium = ''
 
                 line = [
                     default_code if first else '',
@@ -254,6 +256,7 @@ class res_company(osv.osv):
                         record['NGL_DOC'],
                         ),
                     record['DTT_SCAD'],
+                    extra_medium,
                 ]
                 excel_pool.write_xls_line(
                     ws_name, row, line,
