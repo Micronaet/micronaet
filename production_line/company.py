@@ -94,7 +94,7 @@ class res_company(osv.osv):
         """ Load CL document
         """
         sql_pool = self.pool.get('micronaet.accounting')
-        reference = 200.0  # +/- 200% of range
+        reference = 100.0  # +/- 200% of range
 
         if self.table_capital_name(cr, uid, context=context):
             table = 'MM_RIGHE'
@@ -120,17 +120,25 @@ class res_company(osv.osv):
             ))
         for record in records:
             default_code = record['CKY_ART']
+
+            # -----------------------------------------------------------------
+            # Remove unused product:
+            # -----------------------------------------------------------------
             if default_code[:1] in 'M':
                 _logger.warning('Code not used: %s' % default_code)
                 continue
+            if default_code[:2] in ('VV', ):
+                _logger.warning('Code not used: %s' % default_code)
+                continue
+            if default_code in ('SCONTO', ):
+                _logger.warning('Code not used: %s' % default_code)
+                continue
 
+            # No price 0:
             current_price = self.sql_get_price(record)
             if not current_price:
-                if default_code.startswith('VV'):
-                    _logger.warning('Water product jump: %s' % default_code)
-                else:
-                    _logger.warning('No price for code: %s' % default_code)
-                    empty.append(record)
+                _logger.warning('No price for code: %s' % default_code)
+                empty.append(record)
                 continue
 
             if default_code not in res:
@@ -179,6 +187,10 @@ class res_company(osv.osv):
                 'text': excel_pool.get_format('bg_red'),
                 'number': excel_pool.get_format('bg_red_number'),
             },
+            'yellow': {
+                'text': excel_pool.get_format('bg_yellow'),
+                'number': excel_pool.get_format('bg_yellow_number'),
+            },
             'white': {
                 'text': excel_pool.get_format('text'),
                 'number': excel_pool.get_format('number'),
@@ -222,10 +234,16 @@ class res_company(osv.osv):
                 price = self.sql_get_price(record)
                 deviation = 100.0 * (price - medium) / medium
 
-                if abs(deviation) >= reference:
+                # Color:
+                if abs(deviation) >= 50.0:
                     color = excel_format['red']
+                elif abs(deviation) >= 25.0:
+                    color = excel_format['yellow']
                 else:
-                    color = excel_format['white']
+                    # color = excel_format['white']
+                    continue
+                    # Write only extra medium
+
                 line = [
                     default_code if first else '',
                     (medium if first else '', color['number']),
