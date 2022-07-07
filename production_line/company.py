@@ -94,7 +94,7 @@ class res_company(osv.osv):
         """ Load CL document
         """
         sql_pool = self.pool.get('micronaet.accounting')
-        reference = 100.0  # +/- 200% of range
+        reference = 200.0  # +/- 200% of range
 
         if self.table_capital_name(cr, uid, context=context):
             table = 'MM_RIGHE'
@@ -138,7 +138,12 @@ class res_company(osv.osv):
                     'price': current_price,
                     'problem': False,
                     'record': [],
+                    'sum': 0.0,
+                    'counter': 0,
                 }
+            # Medium part:
+            res[default_code]['sum'] += current_price
+            res[default_code]['counter'] += 1
 
             # Price check:
             reference_price = res[default_code]['price']
@@ -179,10 +184,11 @@ class res_company(osv.osv):
 
         # Column setup:
         excel_pool.column_width(ws_name, [
-            15, 15, 20, 15,
+            15, 12, 12, 12, 18, 15,
         ])
         header = [
-            'Codice prodotto', 'Prezzo', 'Documento', 'Data'
+            'Codice prodotto', 'Prezzo medio',
+            'Prezzo', 'Varianza', 'Documento', 'Data'
         ]
 
         # Write title:
@@ -201,25 +207,33 @@ class res_company(osv.osv):
             data = account_data[default_code]
 
             problem = data['problem']
+            medium = data['sum'] / data['counter']
+
             if not problem:
                 continue
 
+            first = True
             for record in data['record']:
                 row += 1
                 price = self.sql_get_price(record)
+
+                variant = 100.0 * (price - medium) / medium
                 line = [
-                    default_code,
+                    default_code if first else '',
+                    medium if first else '',
                     price,
+                    variant,
                     '%s/%s %s' % (
                         record['CSG_DOC'],
                         record['NGB_SR_DOC'],
                         record['NGL_DOC'],
                         ),
-                    record['DTT_SCAD']
+                    record['DTT_SCAD'],
                 ]
                 excel_pool.write_xls_line(
                     ws_name, row, line,
                     default_format=excel_format['text'])
+                first = False
 
         # Empty data:
         ws_name = 'Prezzi a zero'
@@ -229,6 +243,9 @@ class res_company(osv.osv):
         excel_pool.column_width(ws_name, [
             15, 15, 20, 15,
         ])
+        header = [
+            'Codice prodotto', 'Prezzo', 'Documento', 'Data'
+        ]
 
         # Write title:
         row = 0
