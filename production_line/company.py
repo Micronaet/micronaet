@@ -120,6 +120,9 @@ class res_company(osv.osv):
             ))
         for record in records:
             default_code = record['CKY_ART']
+            if default_code[:1] in 'M':
+                _logger.warning('Code not used: %s' % default_code)
+                continue
 
             current_price = self.sql_get_price(record)
             if not current_price:
@@ -198,8 +201,8 @@ class res_company(osv.osv):
             data = account_data[default_code]
 
             problem = data['problem']
-            # if not problem:
-            #    continue
+            if not problem:
+                continue
 
             for record in data['record']:
                 row += 1
