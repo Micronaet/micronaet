@@ -190,7 +190,7 @@ class res_company(osv.osv):
         ])
         header = [
             'Codice prodotto', 'Prezzo medio',
-            'Prezzo', 'Varianza', 'Documento', 'Data'
+            'Prezzo', '% Varianza', 'Documento', 'Data'
         ]
 
         # Write title:
