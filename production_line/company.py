@@ -113,7 +113,11 @@ class res_company(osv.osv):
                 WHERE 
                     CSG_DOC in ('BF', 'SL', 'CL');
                 """ % table)
-            for record in cursor.fetchall():
+            records = cursor.fetchall()
+            _logger.warning('Record selected from %s: %s' % (
+                table, len(records),
+                ))
+            for record in records:
                 default_code = record['CKY_ART']
 
                 # Price:
