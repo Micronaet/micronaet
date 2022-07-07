@@ -120,6 +120,7 @@ class res_company(osv.osv):
         for record in records:
             default_code = record['CKY_ART']
 
+            current_price = self.sql_get_price(record)
             if default_code not in res:
                 _logger.warning('New code found: %s' % default_code)
                 res[default_code] = {
@@ -129,7 +130,6 @@ class res_company(osv.osv):
                 }
 
             # Price check:
-            current_price = self.sql_get_price(record)
             reference_price = res[default_code]['price']
             res[default_code]['record'].append(record)
             if not reference_price:
