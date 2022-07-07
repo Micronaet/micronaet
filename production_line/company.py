@@ -121,8 +121,11 @@ class res_company(osv.osv):
             default_code = record['CKY_ART']
 
             current_price = self.sql_get_price(record)
+            if not current_price:
+                _logger.warning('No price for code: %s' % default_code)
+                continue
+
             if default_code not in res:
-                _logger.warning('New code found: %s' % default_code)
                 res[default_code] = {
                     'price': current_price,
                     'problem': False,
