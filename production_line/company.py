@@ -221,13 +221,12 @@ class res_company(osv.osv):
         for default_code in account_data:
             data = account_data[default_code]
 
-            problem = data['problem']
+            # problem = data['problem']
             counter = data['counter']
             medium = data['sum'] / counter
 
             # if not problem:
             #    continue
-
             first = True
             for record in data['record']:
                 row += 1
@@ -240,8 +239,8 @@ class res_company(osv.osv):
                 elif abs(deviation) >= 25.0:
                     color = excel_format['yellow']
                 else:
-                    # color = excel_format['white']
-                    continue
+                    color = excel_format['white']
+                    # continue
                     # Write only extra medium
 
                 line = [
