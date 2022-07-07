@@ -106,6 +106,7 @@ class res_company(osv.osv):
             raise Exception('Impossibile leggere i dati contabili')
 
         res = {}
+        empty = []
         cursor.execute("""
             SELECT *  
             FROM %s
@@ -122,7 +123,11 @@ class res_company(osv.osv):
 
             current_price = self.sql_get_price(record)
             if not current_price:
-                _logger.warning('No price for code: %s' % default_code)
+                if default_code.startswith('VV'):
+                    _logger.warning('Water product jump: %s' % default_code)
+                else:
+                    _logger.warning('No price for code: %s' % default_code)
+                    empty.append(record)
                 continue
 
             if default_code not in res:
@@ -142,13 +147,13 @@ class res_company(osv.osv):
 
             if not res[default_code]['problem'] and gap >= reference:
                 res[default_code]['problem'] = True  # There's a problem
-        return res
+        return res, empty
 
     def check_price_out_of_scale(self, cr, uid, ids, context=None):
         """ Check out of scale price on MySQL
         """
         excel_pool = self.pool.get('excel.writer')
-        account_data = self.sql_mm_line_get_data(
+        account_data, empty_data = self.sql_mm_line_get_data(
             cr, uid, False, context=context)
 
         ws_name = 'Movimenti magazzino'
@@ -189,7 +194,6 @@ class res_company(osv.osv):
             ws_name, row, header, default_format=excel_format['header'])
 
         _logger.warning('Product found: %s' % len(account_data))
-        pdb.set_trace()
         for default_code in account_data:
             data = account_data[default_code]
 
@@ -213,6 +217,46 @@ class res_company(osv.osv):
                 excel_pool.write_xls_line(
                     ws_name, row, line,
                     default_format=excel_format['text'])
+
+        # Empty data:
+        ws_name = 'Prezzi a zero'
+        excel_pool.create_worksheet(ws_name)
+
+        # Column setup:
+        excel_pool.column_width(ws_name, [
+            15, 15, 20, 15,
+        ])
+
+        # Write title:
+        row = 0
+        excel_pool.write_xls_line(ws_name, row, [
+            'Documenti con prezzi a zero',
+        ], default_format=excel_format['title'])
+
+        # Write title:
+        row += 1
+        excel_pool.write_xls_line(
+            ws_name, row, header, default_format=excel_format['header'])
+
+        _logger.warning('Empty found: %s' % len(empty_data))
+        for record in empty_data:
+            default_code = record['CKY_ART']
+
+            row += 1
+            price = self.sql_get_price(record)
+            line = [
+                default_code,
+                price,
+                '%s/%s %s' % (
+                    record['CSG_DOC'],
+                    record['NGB_SR_DOC'],
+                    record['NGL_DOC'],
+                    ),
+                record['DTT_SCAD']
+            ]
+            excel_pool.write_xls_line(
+                ws_name, row, line,
+                default_format=excel_format['text'])
 
         return excel_pool.return_attachment(
             cr, uid, 'Stato documenti di MRP', version='7.0', php=True,
