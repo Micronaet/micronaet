@@ -227,9 +227,9 @@ class res_company(osv.osv):
                     color = excel_format['white']
                 line = [
                     default_code if first else '',
-                    medium if first else '',
-                    price,
-                    variant,
+                    (medium if first else '', color['number']),
+                    (price, color['number']),
+                    (variant, color['number']),
                     '%s/%s %s' % (
                         record['CSG_DOC'],
                         record['NGB_SR_DOC'],
