@@ -161,7 +161,7 @@ class res_company(osv.osv):
     def check_price_out_of_scale(self, cr, uid, ids, context=None):
         """ Check out of scale price on MySQL
         """
-        reference = 100.0  # +/- 200% of range
+        reference = 25.0  # +/- 200% of range
 
         excel_pool = self.pool.get('excel.writer')
         account_data, empty_data = self.sql_mm_line_get_data(
@@ -220,7 +220,6 @@ class res_company(osv.osv):
             for record in data['record']:
                 row += 1
                 price = self.sql_get_price(record)
-
                 deviation = 100.0 * (price - medium) / medium
 
                 if abs(deviation) >= reference:
