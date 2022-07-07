@@ -114,7 +114,6 @@ class res_company(osv.osv):
                     CSG_DOC in ('BF', 'SL', 'CL');
                 """ % table)
             for record in cursor.fetchall():
-                number = str(record['NGL_DOC'])
                 default_code = record['CKY_ART']
 
                 # Price:
@@ -180,6 +179,8 @@ class res_company(osv.osv):
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=excel_format['header'])
 
+        _logger.warning('Product found: %s' % len(account_data))
+        pdb.set_trace()
         for default_code in account_data:
             data = account_data[default_code]
 
