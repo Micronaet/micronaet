@@ -160,6 +160,8 @@ class res_company(osv.osv):
     def check_price_out_of_scale(self, cr, uid, ids, context=None):
         """ Check out of scale price on MySQL
         """
+        reference = 200.0  # +/- 200% of range
+
         excel_pool = self.pool.get('excel.writer')
         account_data, empty_data = self.sql_mm_line_get_data(
             cr, uid, False, context=context)
@@ -218,6 +220,11 @@ class res_company(osv.osv):
                 price = self.sql_get_price(record)
 
                 variant = 100.0 * (price - medium) / medium
+
+                if abs(variant) >= reference:
+                    color = excel_format['red']
+                else:
+                    color = excel_format['white']
                 line = [
                     default_code if first else '',
                     medium if first else '',
@@ -232,7 +239,7 @@ class res_company(osv.osv):
                 ]
                 excel_pool.write_xls_line(
                     ws_name, row, line,
-                    default_format=excel_format['text'])
+                    default_format=color['text'])
                 first = False
 
         # Empty data:
