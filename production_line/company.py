@@ -106,38 +106,36 @@ class res_company(osv.osv):
             raise Exception('Impossibile leggere i dati contabili')
 
         res = {}
-        try:
-            cursor.execute("""
-                SELECT *  
-                FROM %s
-                WHERE 
-                    CSG_DOC in ('BF', 'SL', 'CL');
-                """ % table)
-            records = cursor.fetchall()
-            _logger.warning('Record selected from %s: %s' % (
-                table, len(records),
-                ))
-            for record in records:
-                default_code = record['CKY_ART']
+        cursor.execute("""
+            SELECT *  
+            FROM %s
+            WHERE 
+                CSG_DOC in ('BF', 'SL', 'CL');
+            """ % table)
 
-                # Price:
-                price = self.sql_get_price(record)
-                if default_code not in res:
-                    res[default_code] = {
-                        'price': price,
-                        'problem': False,
-                        'record': [],
-                    }
+        records = cursor.fetchall()
+        _logger.warning('Record selected from %s: %s' % (
+            table, len(records),
+            ))
+        for record in records:
+            default_code = record['CKY_ART']
 
-                res[default_code]['record'].append(record)
-                gap = 100.0 * abs(price - res[default_code]['price']) / \
-                    res[default_code]['price']
-                if not res[default_code]['problem'] and gap >= reference:
-                    res[default_code]['problem'] = True  # There's a problem
-            return res
-        except:
-            _logger.error('Error reading movement lines')
-            return res  # empty
+            # Price:
+            price = self.sql_get_price(record)
+            if default_code not in res:
+                _logger.warning('New code found: %s' % default_code)
+                res[default_code] = {
+                    'price': price,
+                    'problem': False,
+                    'record': [],
+                }
+
+            res[default_code]['record'].append(record)
+            gap = 100.0 * abs(price - res[default_code]['price']) / \
+                res[default_code]['price']
+            if not res[default_code]['problem'] and gap >= reference:
+                res[default_code]['problem'] = True  # There's a problem
+        return res
 
     def check_price_out_of_scale(self, cr, uid, ids, context=None):
         """ Check out of scale price on MySQL
