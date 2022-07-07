@@ -190,7 +190,7 @@ class res_company(osv.osv):
             15, 12, 12, 12, 18, 15,
         ])
         header = [
-            'Codice prodotto', 'p(x) senza outsider',
+            'Codice prodotto', 'm(x) no outsider',
             'Prezzo', '% Deviazione', 'Documento', 'Data'
         ]
 
@@ -213,8 +213,8 @@ class res_company(osv.osv):
             counter = data['counter']
             medium = data['sum'] / counter
 
-            if not problem:
-                continue
+            # if not problem:
+            #    continue
 
             first = True
             for record in data['record']:
