@@ -132,6 +132,9 @@ class ResCompany(osv.osv):
     _inherit = 'res.company'
 
     def cron_scheduled_check_product_price(self, cr, uid, context=None):
+        """ Cron scheduled operation
+        """
+        # Run externally (internal wont run)
         return self.scheduled_check_product_price(cr, uid, [], context=context)
 
     def scheduled_check_product_price(self, cr, uid, ids, context=None):
@@ -164,7 +167,7 @@ class ResCompany(osv.osv):
             table, len(records),
             ))
         raise_error = []
-        # empty_price = []
+        double_price = []
         for record in records:
             default_code = record['CKY_ART']
             new_price = record['NMP_UCA'] or record['NMP_COSTD']
@@ -192,6 +195,7 @@ class ResCompany(osv.osv):
             if len(product_ids) > 1:
                 _logger.warning(
                     'More product found %s, use first' % default_code)
+                double_price.append(default_code)
 
             product_id = product_ids[0]
             product = product_pool.browse(cr, uid, product_id, context=context)
@@ -224,6 +228,11 @@ class ResCompany(osv.osv):
 
         telegram_pool.command_send_telegram(
             cr, uid, telegram_id, message, context=context)
+
+        if double_price:
+            message = 'Codici doppi:\n%s' % ('\n'.join(double_price))
+            telegram_pool.command_send_telegram(
+                cr, uid, telegram_id, message, context=context)
         return True
 
 
