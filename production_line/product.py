@@ -161,9 +161,8 @@ class ResCompany(osv.osv):
             table, len(records),
             ))
         raise_error = []
-        empty_price = []
+        # empty_price = []
         for record in records:
-            pdb.set_trace()
             default_code = record['CKY_ART']
             new_price = record['NMP_UCA'] or record['NMP_COSTD']
 
