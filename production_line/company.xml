@@ -41,8 +41,10 @@
                        <field name="production_sl" attrs="{'required': [('production_export','=',True)]}" />
 
                        <separator string="Stampe di controllo:" colspan="4" />
-                       <button name="check_price_out_of_scale" type="object" string="Controllo prezzi" icon="gtk-print" colspan="1"/>
-
+                       <button name="check_price_out_of_scale" type="object" string="Controllo prezzi" icon="gtk-print" colspan="2"/>
+                       <newline/>
+                       <button name="scheduled_check_product_price" type="object" string="Prezzi anomali" icon="gtk-execute" colspan="2"/>
+                       <newline/>
                     </group>
                 </page>
             </xpath>

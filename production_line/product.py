@@ -136,6 +136,7 @@ class product_product_extra(osv.osv):
         sql_pool = self.pool.get('micronaet.accounting')
         product_pool = self.pool.get('product.product')
         user_pool = self.pool.get('res.users')
+        telegram_pool = self.pool.get('flask.telegram')
 
         # Parameters:
         reference = 50.0
@@ -214,17 +215,16 @@ class product_product_extra(osv.osv):
         for record in raise_error:
             message += '%s: da %s a %s' % record
 
+        user = user_pool.browse(cr, uid, uid, context=context)
+        telegram_id = user.company_id.telegram_product_id.id
         if message:
             message = 'Segnalazione prezzi anomali:\n%s' % message
-            # todo send with telegram:
-            user = user_pool.browse(cr, uid, uid, context=context)
-            telegram_id = user.company_id.telegram_product_id.id
+        else:
+            message = 'Nessun prezzo anomalo'
 
-            #command_send_telegram(
-            #        self, cr, uid, telegram_id, message, context=None)
+        telegram_pool.command_send_telegram(
+            cr, uid, telegram_id, message, context=context)
         return True
-
-    # def check_price_out_of_scale(self, cr, uid, ids, context=None):
 
     # -------------
     # Override ORM:
