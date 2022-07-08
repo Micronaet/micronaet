@@ -130,6 +130,102 @@ class product_product_extra(osv.osv):
     """
     _inherit = 'product.product'
 
+    def scheduled_check_product_price(self, cr, uid, ids, context=None):
+        """ Check price and save last
+        """
+        sql_pool = self.pool.get('micronaet.accounting')
+        product_pool = self.pool.get('product.product')
+        user_pool = self.pool.get('res.users')
+
+        # Parameters:
+        reference = 50.0
+
+        if self.table_capital_name(cr, uid, context=context):
+            table = 'AR_ANAGRAFICHE'
+        else:
+            table = 'ar_anagrafiche'
+
+        cursor = sql_pool.connect(cr, uid, year=False, context=context)
+        if not cursor:
+            _logger.error('Cannot read product price cursor')
+
+        cursor.execute("""
+            SELECT CKY_ART, NMP_UCA, NMP_COSTD  
+            FROM %s;
+            """ % table)
+
+        records = cursor.fetchall()
+        _logger.warning('Product selected from %s: %s' % (
+            table, len(records),
+            ))
+        raise_error = []
+        for record in records:
+            default_code = record['CKY_ART']
+            new_price = record['NMP_UCA'] or record['NMP_COSTD']
+
+            # -----------------------------------------------------------------
+            # Remove unused:
+            # -----------------------------------------------------------------
+            # Water and discount:
+            if default_code[:2] in ('VV', ):
+                _logger.warning('Code not used: %s' % default_code)
+                continue
+            if default_code in ('SCONTO', ):
+                _logger.warning('Code not used: %s' % default_code)
+                continue
+
+            # No cost:
+            if not new_price:
+                _logger.warning('Cost not found %s' % default_code)
+                continue
+
+            # Not present:
+            product_ids = product_pool.search(cr, uid, [
+                ('default_code', '=', default_code),
+            ], context=context)
+            if not product_ids:
+                _logger.error('Product not found %s' % default_code)
+                continue
+
+            # Warning: more than one
+            if len(product_ids) > 1:
+                _logger.warning(
+                    'More product found %s, use first' % default_code)
+
+            product_id = product_ids[0]
+            product = product_pool.browse(cr, uid, product_id, context=context)
+            last_standard_price = \
+                product.last_standard_price or product.standard_price
+
+            # Check price:
+            gap = abs(last_standard_price - new_price) / new_price
+            if gap > reference:
+                raise_error.append(
+                    (default_code, last_standard_price, new_price))
+
+            # Update price (if needed)
+            product_pool.write(cr, uid, [product_id], {
+                'last_standard_price': new_price,  # Not visible in form!
+                'standard_price': new_price,
+                }, context=context)
+
+        # Raise error on telegram:
+        message = ''
+        for record in raise_error:
+            message += '%s: da %s a %s' % record
+
+        if message:
+            message = 'Segnalazione prezzi anomali:\n%s' % message
+            # todo send with telegram:
+            user = user_pool.browse(cr, uid, uid, context=context)
+            telegram_id = user.company_id.telegram_product_id.id
+
+            #command_send_telegram(
+            #        self, cr, uid, telegram_id, message, context=None)
+        return True
+
+    # def check_price_out_of_scale(self, cr, uid, ids, context=None):
+
     # -------------
     # Override ORM:
     # -------------
@@ -327,6 +423,8 @@ class product_product_extra(osv.osv):
         return res
 
     _columns = {
+        'last_standard_price': fields.float(
+            'Prezzo precedente', digits=(16, 3)),
         'accounting_qty': fields.float('Account quantity', digits=(16, 3)),
         'linked_accounting_qty': fields.function(
             _function_linked_accounting_qty, method=True, type='float',
