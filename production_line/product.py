@@ -211,7 +211,7 @@ class ResCompany(osv.osv):
             message += '%s: da %s a %s' % record
 
         user = user_pool.browse(cr, uid, uid, context=context)
-        telegram_id = user.company_id.telegram_product_id.id
+        telegram_id = user.company_id.telegram_product_alert_id.id
         if message:
             message = 'Segnalazione prezzi anomali:\n%s' % message
         else:
