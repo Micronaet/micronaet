@@ -277,10 +277,10 @@ class res_company(osv.osv):
 
         # Column setup:
         excel_pool.column_width(ws_name, [
-            15, 15, 15, 25,
+            15, 30, 15, 15, 25,
         ])
         header = [
-            'Codice prodotto', 'Prezzo medio', 'Documento',  # 'Data'
+            'Codice prodotto', 'Nome', 'Prezzo medio', 'Documento',  # 'Data'
         ]
 
         # Write title:
@@ -300,6 +300,7 @@ class res_company(osv.osv):
             row += 1
             line = [
                 default_code,
+                record['CDS_VARIAB_ART'],
                 medium,
                 '%s/%s %s' % (
                     record['CSG_DOC'],
