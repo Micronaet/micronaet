@@ -131,6 +131,9 @@ class ResCompany(osv.osv):
     """
     _inherit = 'res.company'
 
+    def cron_scheduled_check_product_price(self, cr, uid, context=None):
+        return self.scheduled_check_product_price(cr, uid, [], context=context)
+
     def scheduled_check_product_price(self, cr, uid, ids, context=None):
         """ Check price and save last
         """

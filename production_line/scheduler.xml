@@ -48,7 +48,7 @@
 
 		<!--price managenet check:-->
 		<record id="ir_cron_scheduled_check_product_price_1" model="ir.cron">
-			<field eval="&quot;&quot;&quot;scheduled_check_product_price&quot;&quot;&quot;" name="function"/>
+			<field eval="&quot;&quot;&quot;cron_scheduled_check_product_price&quot;&quot;&quot;" name="function"/>
 			<field eval="&quot;&quot;&quot;days&quot;&quot;&quot;" name="interval_type"/>
 			<field name="user_id" ref="base.user_root"/>
 			<field eval="&quot;&quot;&quot;Prezzi materie prime 1: Controllo e aggiornamento prezzi&quot;&quot;&quot;" name="name"/>
@@ -62,7 +62,7 @@
 			<field eval="&quot;&quot;&quot;rec.company&quot;&quot;&quot;" name="model"/>
 		</record>
 		<record id="ir_cron_scheduled_check_product_price_2" model="ir.cron">
-			<field eval="&quot;&quot;&quot;scheduled_check_product_price&quot;&quot;&quot;" name="function"/>
+			<field eval="&quot;&quot;&quot;cron_scheduled_check_product_price&quot;&quot;&quot;" name="function"/>
 			<field eval="&quot;&quot;&quot;days&quot;&quot;&quot;" name="interval_type"/>
 			<field name="user_id" ref="base.user_root"/>
 			<field eval="&quot;&quot;&quot;Prezzi materie prime 2: Controllo e aggiornamento prezzi&quot;&quot;&quot;" name="name"/>
