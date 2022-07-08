@@ -2,13 +2,13 @@
 ##############################################################################
 #
 #    OpenERP module
-#    Copyright (C) 2010 Micronaet srl (<http://www.micronaet.it>) 
-#    
+#    Copyright (C) 2010 Micronaet srl (<http://www.micronaet.it>)
+#
 #    Italian OpenERP Community (<http://www.openerp-italia.com>)
 #
 #############################################################################
 #
-#    OpenERP, Open Source Management Solution	
+#    OpenERP, Open Source Management Solution
 #    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>). All Rights Reserved
 #    $Id$
 #
@@ -40,9 +40,9 @@ class product_product(osv.osv):
         list_bom=cr.fetchall()
         if list_bom:
            return list_bom[0][0] # return id TODO (only one?)
-        else:   
+        else:
            return False
-           
+
     def _compute_recursive_price_bom(self, cr, uid, bom_id):
         '''Recursive function for calculate bom price:
            get id of mrp.bom
@@ -51,51 +51,51 @@ class product_product(osv.osv):
         '''
         # 1. find bom
         bom_proxy = self.pool.get('mrp.bom').browse(cr, uid, bom_id)
-        
+
         # 2. loop on component, test if product has bom without bom_id (semi-worked)
         tot = 0
-        for component in bom_proxy.bom_lines:                         
+        for component in bom_proxy.bom_lines:
             has_bom = self._product_has_bom(cr, uid, component.product_id.id)
             if has_bom: # recurse:
                 tot += component.product_qty * self._compute_recursive_price_bom(cr, uid, has_bom)
             else:
                if component.product_id.force_manual:
                    tot += component.product_qty * (component.product_id.manual_price or 0)   # TODO raise error?
-               else:   
+               else:
                    tot += component.product_qty * (component.product_id.standard_price or 0) # TODO raise error?
         return tot
 
     def compute_price_from_bom(self, cr, uid, context=None):
         '''Procedura per calcolare il prezzo dei prodotti finiti in base
-           al prezzo delle materie prime e della ricetta nella distinta 
+           al prezzo delle materie prime e della ricetta nella distinta
            base, viene chiamato all'esterno appena finita l'importazione
            dei prodotti e ricette
         '''
-        cr.execute("SELECT id, product_id FROM mrp_bom WHERE bom_id is null") 
+        cr.execute("SELECT id, product_id FROM mrp_bom WHERE bom_id is null")
 
         for item in cr.fetchall(): # loop for all bom without parent
             product_price = self._compute_recursive_price_bom(cr, uid, item[0])
             self.pool.get("product.product").write(
-                cr, 
-                uid, 
-                item[1], 
-                {'standard_price': product_price, }, 
-                context = context)
+                cr,
+                uid,
+                item[1],
+                {'standard_price': product_price, },
+                context=context)
         return True
 
     def compute_price_from_bom_action(self, cr, uid, ids, context=None):
         '''Button event clicked from product.product form
-        '''        
-        
+        '''
+
         self.compute_price_from_bom(cr, uid, context=context)
         #raise osv.except_osv("Info", "Prezzi dei prodotti aggiornati!") # return??
         return True
-        
+
     _columns = {
-        'force_manual': fields.boolean('Force manual', required=False), 
-        'manual_price': fields.float('Manual price', digits=(8,5), required=True,),                            
+        'force_manual': fields.boolean('Force manual', required=False),
+        'manual_price': fields.float('Manual price', digits=(8,5), required=True,),
     }
-                
+
     _defaults = {
         'force_manual': lambda *x: False,
         'manual_price': lambda *x: 0.0,

@@ -400,7 +400,7 @@ def browse_product_ref(self, cr, uid, ref, context=None):
        try:
            uom_id = self.pool.get('product.uom').search(cr, uid, [('name', '=', 'kg')],context=context)
            uom_id = uom_id[0] if uom_id else False
-           item_id=self.pool.get('product.product').create(cr,uid,{
+           item_id=self.pool.get('product.product').create(cr, uid, {
                'name': ref,
                'name_template': ref,
                'mexal_id': ref,
@@ -409,7 +409,7 @@ def browse_product_ref(self, cr, uid, ref, context=None):
                'type': 'consu',
                'standard_price': 0.0,
                'list_price': 0.0,
-               'description_sale': ref, # preserve original name (not code + name)
+               'description_sale': ref,  # preserve original name (not code + name)
                'description': ref,
                'uos_id': uom_id,
                'uom_id': uom_id,
@@ -417,10 +417,7 @@ def browse_product_ref(self, cr, uid, ref, context=None):
                'supply_method': 'produce',
            }, context=context)
        except:
-           return False # error creating product
+           return False  # error creating product
     else:
         item_id=item_id[0]  # first
     return self.pool.get('product.product').browse(cr, uid, item_id, context=context)
-
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

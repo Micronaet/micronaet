@@ -181,7 +181,7 @@ class product_product_extra_fields(osv.osv):
     # Scheduled action: #######################################################
     def schedule_etl_product_import(self, cr, uid, context=None):
         """ ETL operations for import product in OpenERP (parameter set up in
-            scheduled action for file name
+            scheduled action for file name)
         """
         _logger.info(
             "base_panchem: Start base sync product from AR_ANAGRAFICHE!")
