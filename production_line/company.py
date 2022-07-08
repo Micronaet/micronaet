@@ -256,7 +256,7 @@ class res_company(osv.osv):
                         record['NGB_SR_DOC'],
                         record['NGL_DOC'],
                         ),
-                    record['DTT_SCAD'],
+                    # record['DTT_SCAD'],
                     # extra_medium,
                 ]
                 row += 1
