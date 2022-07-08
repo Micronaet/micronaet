@@ -164,6 +164,8 @@ class ResCompany(osv.osv):
         # empty_price = []
         for record in records:
             default_code = record['CKY_ART']
+            if default_code == 'A0001':
+                pdb.set_trace()
             new_price = record['NMP_UCA'] or record['NMP_COSTD']
 
             # -----------------------------------------------------------------
