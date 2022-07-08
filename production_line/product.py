@@ -161,6 +161,7 @@ class ResCompany(osv.osv):
             table, len(records),
             ))
         raise_error = []
+        empty_price = []
         for record in records:
             pdb.set_trace()
             default_code = record['CKY_ART']
@@ -196,7 +197,7 @@ class ResCompany(osv.osv):
                 product.last_standard_price or product.standard_price
 
             # Check price:
-            gap = abs(last_standard_price - new_price) / new_price
+            gap = 100.0 * abs(last_standard_price - new_price) / new_price
             if gap > reference:
                 raise_error.append(
                     (default_code, last_standard_price, new_price))
