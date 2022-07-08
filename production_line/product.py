@@ -167,12 +167,7 @@ class ResCompany(osv.osv):
             # -----------------------------------------------------------------
             # Remove unused:
             # -----------------------------------------------------------------
-            # Water and discount:
-            if default_code[:2] in ('VV', ):
-                _logger.warning('Code not used: %s' % default_code)
-                continue
-            if default_code in ('SCONTO', ):
-                _logger.warning('Code not used: %s' % default_code)
+            if default_code[:1] not in 'AB':
                 continue
 
             # No cost:
