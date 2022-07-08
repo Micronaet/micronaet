@@ -277,10 +277,10 @@ class res_company(osv.osv):
 
         # Column setup:
         excel_pool.column_width(ws_name, [
-            15, 15, 15, 15, 25,
+            15, 15, 15, 25,
         ])
         header = [
-            'Codice prodotto', 'Prezzo medio', 'Prezzo', 'Documento',  # 'Data'
+            'Codice prodotto', 'Prezzo medio', 'Documento',  # 'Data'
         ]
 
         # Write title:
@@ -298,11 +298,9 @@ class res_company(osv.osv):
         for default_code, medium, record in single:
 
             row += 1
-            price = self.sql_get_price(record)
             line = [
                 default_code,
                 medium,
-                price,
                 '%s/%s %s' % (
                     record['CSG_DOC'],
                     record['NGB_SR_DOC'],
