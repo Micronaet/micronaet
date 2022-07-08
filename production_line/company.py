@@ -218,6 +218,7 @@ class res_company(osv.osv):
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=excel_format['header'])
 
+        single = []
         _logger.warning('Product found: %s' % len(account_data))
         for default_code in account_data:
             data = account_data[default_code]
@@ -229,7 +230,10 @@ class res_company(osv.osv):
             # if not problem:
             #    continue
             first = True
-            for record in data['record']:
+            records = data['record']
+            if len(records) == 1:
+                single.append((default_code, medium, records[0]))
+            for record in records:
                 price = self.sql_get_price(record)
                 deviation = 100.0 * (price - medium) / medium
 
@@ -265,7 +269,53 @@ class res_company(osv.osv):
                     default_format=color['text'])
                 first = False
 
+        # ---------------------------------------------------------------------
+        # Single data:
+        # ---------------------------------------------------------------------
+        ws_name = 'Singolo prezzo'
+        excel_pool.create_worksheet(ws_name)
+
+        # Column setup:
+        excel_pool.column_width(ws_name, [
+            15, 15, 15, 15, 25,
+        ])
+        header = [
+            'Codice prodotto', 'Prezzo medio', 'Prezzo', 'Documento',  # 'Data'
+        ]
+
+        # Write title:
+        row = 0
+        excel_pool.write_xls_line(ws_name, row, [
+            u'Documenti con prodotti singoli (non si vede la variazione)',
+        ], default_format=excel_format['title'])
+
+        # Write title:
+        row += 1
+        excel_pool.write_xls_line(
+            ws_name, row, header, default_format=excel_format['header'])
+
+        _logger.warning('Single found: %s' % len(single))
+        for default_code, medium, record in single:
+
+            row += 1
+            price = self.sql_get_price(record)
+            line = [
+                default_code,
+                medium,
+                price,
+                '%s/%s %s' % (
+                    record['CSG_DOC'],
+                    record['NGB_SR_DOC'],
+                    record['NGL_DOC'],
+                    ),
+            ]
+            excel_pool.write_xls_line(
+                ws_name, row, line,
+                default_format=excel_format['text'])
+
+        # ---------------------------------------------------------------------
         # Empty data:
+        # ---------------------------------------------------------------------
         ws_name = 'Prezzi a zero'
         excel_pool.create_worksheet(ws_name)
 
