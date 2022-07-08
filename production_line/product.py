@@ -210,7 +210,7 @@ class ResCompany(osv.osv):
         # Raise error on telegram:
         message = ''
         for record in raise_error:
-            message += '%s: da %s a %s' % record
+            message += '%s: da %s a %s\n' % record
 
         user = user_pool.browse(cr, uid, uid, context=context)
         telegram_id = user.company_id.telegram_product_alert_id.id
