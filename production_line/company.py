@@ -169,7 +169,7 @@ class res_company(osv.osv):
     def check_price_out_of_scale(self, cr, uid, ids, context=None):
         """ Check out of scale price on MySQL
         """
-        reference = 25.0  # +/- 200% of range
+        only_error = False  # todo parameter
 
         excel_pool = self.pool.get('excel.writer')
         account_data, empty_data = self.sql_mm_line_get_data(
@@ -199,12 +199,12 @@ class res_company(osv.osv):
 
         # Column setup:
         excel_pool.column_width(ws_name, [
-            15, 12, 12, 12, 18, 15, 5
+            15, 12, 12, 12, 18,  # 15, 5
         ])
         header = [
             'Codice prodotto', 'm(x) no outsider',
-            'Prezzo', '% Deviazione', 'Documento', 'Data',
-            'Problema',
+            'Prezzo', '% Deviazione', 'Documento',  # 'Data',
+            # 'Problema',
         ]
 
         # Write title:
@@ -243,7 +243,8 @@ class res_company(osv.osv):
                 else:
                     color = excel_format['white']
                     extra_medium = ''
-                    continue
+                    if only_error:
+                        continue
 
                 line = [
                     default_code if first else '',
@@ -256,7 +257,7 @@ class res_company(osv.osv):
                         record['NGL_DOC'],
                         ),
                     record['DTT_SCAD'],
-                    extra_medium,
+                    # extra_medium,
                 ]
                 row += 1
                 excel_pool.write_xls_line(
