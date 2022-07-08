@@ -125,10 +125,10 @@ class product_ul_extra(osv.osv):
     #    }
 
 
-class product_product_extra(osv.osv):
+class ResCompany(osv.osv):
     """ Extra fields for product.product object
     """
-    _inherit = 'product.product'
+    _inherit = 'res.company'
 
     def scheduled_check_product_price(self, cr, uid, ids, context=None):
         """ Check price and save last
@@ -226,10 +226,18 @@ class product_product_extra(osv.osv):
             cr, uid, telegram_id, message, context=context)
         return True
 
+
+class product_product_extra(osv.osv):
+    """ Extra fields for product.product object
+    """
+    _inherit = 'product.product'
+
     # -------------
     # Override ORM:
     # -------------
-    def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False):
+    def fields_view_get(
+            self, cr, uid, view_id=None, view_type='form', context=None,
+            toolbar=False):
         """
         Return a view and fields for current model. where view will be depends on {view_type}.
         @param cr: cursor to database
@@ -241,7 +249,8 @@ class product_product_extra(osv.osv):
 
         @return: returns a dict that contains definition for fields, views, and toolbars
         """
-        if view_type == 'form' and no_establishment_group(self, cr, uid, context=context):
+        if view_type == 'form' and no_establishment_group(
+                self, cr, uid, context=context):
             toolbar = False
         return super(product_product_extra, self).fields_view_get(
             cr, uid, view_id, view_type, context=context, toolbar=toolbar)
