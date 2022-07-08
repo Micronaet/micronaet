@@ -18,6 +18,7 @@
 #
 ###############################################################################
 import os
+import pdb
 import sys
 import openerp.netsvc as netsvc
 import logging
@@ -160,6 +161,7 @@ class ResCompany(osv.osv):
             table, len(records),
             ))
         raise_error = []
+        pdb.set_trace()
         for record in records:
             default_code = record['CKY_ART']
             new_price = record['NMP_UCA'] or record['NMP_COSTD']
