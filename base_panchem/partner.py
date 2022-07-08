@@ -64,30 +64,32 @@ def PrepareDate(valore):
 
 
 def PrepareFloat(valore):
-    valore=valore.strip()
-    if valore: # TODO test correct date format
+    valore = valore.strip()
+    if valore:  # TODO test correct date format
        return float(valore.replace(",","."))
     else:
        return 0.0   # for empty values
 
 
 def Prepare(valore):
-            # For problems: input win output ubuntu; trim extra spaces
-            #valore=valore.decode('ISO-8859-1')
-            valore=valore.decode('cp1252')
-            valore=valore.encode('utf-8')
-            return valore.strip()
+    # For problems: input win output ubuntu; trim extra spaces
+    # valore=valore.decode('ISO-8859-1')
+    valore = valore.decode('cp1252')
+    valore = valore.encode('utf-8')
+    return valore.strip()
 
 
-def getCountryFromCode(sock,dbname,uid,pwd,code):
+def getCountryFromCode(sock, dbname, uid, pwd, code):
     if code:
-       find_id = sock.execute(dbname, uid, pwd, 'res.country', 'search', [('code', '=', code),])
-       if find_id:
-          return find_id[0]
-       else:
-          return False # TODO segnalare la mancanza della sigla
+        find_id = sock.execute(dbname, uid, pwd, 'res.country', 'search', [
+            ('code', '=', code),
+        ])
+        if find_id:
+            return find_id[0]
+        else:
+            return False  # todo segnalare la mancanza della sigla
     else:
-       return False # no code
+        return False  # no code
 
 
 def ShortCut(valore=''):
@@ -99,14 +101,18 @@ def ShortCut(valore=''):
        return valore
 
 
-def getTaxID(sock,dbname,uid,pwd,description):
+def getTaxID(sock, dbname, uid, pwd, description):
     # get ID of tax from description value
-    return sock.execute(dbname, uid, pwd, 'account.tax', 'search', [('description', '=', description),])[0]
+    return sock.execute(dbname, uid, pwd, 'account.tax', 'search', [
+        ('description', '=', description),
+    ])[0]
 
 
 def getLanguage(sock,dbname,uid,pwd,name):
     # get Language if exist (use english name request
-    return sock.execute(dbname, uid, pwd, 'res.lang', 'search', [('name', '=', name),])[0]
+    return sock.execute(dbname, uid, pwd, 'res.lang', 'search', [
+        ('name', '=', name),
+    ])[0]
 
 
 # PRODUCT
