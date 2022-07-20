@@ -18,6 +18,7 @@
 #
 ###############################################################################
 import os
+import pdb
 import sys
 import copy
 import openerp.netsvc as netsvc
@@ -317,6 +318,8 @@ class mrp_production_extra(osv.osv):
                 # prepare data structure:
                 rows.append(element)
                 table[element[1]] = [0.0 for item in range(0, range_date)]
+                if lavoration.product.default_code == 'S00367V':
+                    pdb.set_trace()
                 account_qty = lavoration.product.accounting_qty
                 # Sapnaet integrazione (if stock linked to order)
                 account_qty += lavoration.product.locked_qty  # need dep.
