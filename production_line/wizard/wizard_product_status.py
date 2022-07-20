@@ -493,12 +493,12 @@ class product_status_wizard(osv.osv_memory):
             body = [
                 (row[2].name, format_text),
                 (default_code, format_text),
-                (row[2].minimum_qty, format_white), # min level account
-                (row[2].min_stock_level, format_white), # min level calc
+                (row[2].minimum_qty, format_white),  # min level account
+                (row[2].min_stock_level, format_white),  # min level calc
                 (write_supplier_order_detail(
-                    history_supplier_orders.get(default_code, '')),
-                    format_text,
-                    ),  # OF detail
+                 history_supplier_orders.get(default_code, '')),
+                 format_text,
+                 ),  # OF detail
                 (row[3], format_white),  # m(x)
                 ]
             gap_columns = len(body)
@@ -509,16 +509,16 @@ class product_status_wizard(osv.osv_memory):
                 j += 1
                 status_line += q
                 # Choose the color:
-                if not status_line: # value = 0
+                if not status_line:  # value = 0
                     body.append((status_line, format_white))
-                elif status_line > minimum: # > minimum value (green)
+                elif status_line > minimum:  # > minimum value (green)
                     body.append((status_line, format_green))
-                    pass # Green
-                elif status_line > 0.0: # under minimum (yellow)
+                    pass  # Green
+                elif status_line > 0.0:  # under minimum (yellow)
                     body.append((status_line, format_yellow))
-                elif status_line < 0.0: # under 0 (red)
+                elif status_line < 0.0:  # under 0 (red)
                     body.append((status_line, format_red))
-                else: # ("=", "<"): # not present!!!
+                else:  # ("=", "<"): # not present!!!
                     body.append((status_line, format_white))
             write_xls_mrp_line(WS, i, body)
             comment_line = table_comment.get(row[1])
@@ -614,7 +614,6 @@ class product_status_wizard(osv.osv_memory):
                 }, context=context)
 
             return {
-                'type': 'ir.actions.act_window',
                 'name': _('XLS file status'),
                 'type': 'ir.actions.act_window',
                 'view_type': 'form',

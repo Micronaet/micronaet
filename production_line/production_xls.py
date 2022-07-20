@@ -204,7 +204,7 @@ class mrp_production_extra(osv.osv):
                 col_ids[d.strftime('%Y-%m-%d')] = i
 
         # ---------------------------------------------------------------------
-        #                     SYNCRONIZATION PRE REPORT
+        #                     SYNCRO PRE REPORT
         # ---------------------------------------------------------------------
         # --------------------------------------
         # 1. Import status material and product:
@@ -265,7 +265,7 @@ class mrp_production_extra(osv.osv):
             element = (
                 'P',
                 line.product_id.id,
-                line.product_id, # XXX used for min qty
+                line.product_id,  # XXX used for min qty
                 0.0,
                 )
             # initialize row (today, < today, +1, +2, ... +n)
@@ -283,7 +283,7 @@ class mrp_production_extra(osv.osv):
                     line.product_uom_qty or 0.0  # OC deadlined this date
             if not line.order_id.date_deadline or \
                     line.order_id.date_deadline < start_date.strftime(
-                        '%Y-%m-%d'): # only < today
+                        '%Y-%m-%d'):  # only < today
                 # OC deadlined before today:
                 table[element[1]][1] -= line.product_uom_qty or 0.0
 
@@ -317,7 +317,11 @@ class mrp_production_extra(osv.osv):
                 # prepare data structure:
                 rows.append(element)
                 table[element[1]] = [0.0 for item in range(0, range_date)]
-                table[element[1]][0] = lavoration.product.accounting_qty or 0.0
+                account_qty = lavoration.product.accounting_qty
+                # Sapnaet integrazione (if stock linked to order)
+                account_qty += lavoration.product.locked_qty
+                table[element[1]][0] = account_qty
+
 
             # Product production:
             if real_date_planned in col_ids:
