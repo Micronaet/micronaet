@@ -78,9 +78,13 @@ class mrp_production_extra(osv.osv):
             table_comment[element[1]] = ['' for item in range(0,range_date)]
 
             # prepare data structure:
-            table[element[1]][0] = product.accounting_qty
+            # Sapnaet integrazione:
+            accounting_qty = product.accounting_qty
+            accounting_qty += product.locked_qty
+
+            table[element[1]][0] = accounting_qty
             table_comment[element[1]][0] += \
-                'Gest.: Q. %s\n' % product.accounting_qty
+                'Gest.: Q. %s\n' % accounting_qty
 
         if real_date_planned in col_ids:
             position = col_ids[real_date_planned]
@@ -277,7 +281,10 @@ class mrp_production_extra(osv.osv):
                 table[element[1]] = [0.0 for item in range(0, range_date)]
 
                 # start q.
-                table[element[1]][0] = line.product_id.accounting_qty or 0.0
+                # Sapnaet integrazione (if stock linked to order)
+                account_qty = line.product_id.accounting_qty
+                account_qty += line.product_id.locked_qty  # need dep.
+                table[element[1]][0] = account_qty
 
             if line.order_id.date_deadline in col_ids: # all date
                 table[element[1]][col_ids[line.order_id.date_deadline]] -= \
@@ -318,8 +325,7 @@ class mrp_production_extra(osv.osv):
                 # prepare data structure:
                 rows.append(element)
                 table[element[1]] = [0.0 for item in range(0, range_date)]
-                if lavoration.product.default_code == 'S00367V':
-                    pdb.set_trace()
+
                 account_qty = lavoration.product.accounting_qty
                 # Sapnaet integrazione (if stock linked to order)
                 account_qty += lavoration.product.locked_qty  # need dep.
