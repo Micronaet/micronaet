@@ -319,9 +319,8 @@ class mrp_production_extra(osv.osv):
                 table[element[1]] = [0.0 for item in range(0, range_date)]
                 account_qty = lavoration.product.accounting_qty
                 # Sapnaet integrazione (if stock linked to order)
-                account_qty += lavoration.product.locked_qty
+                account_qty += lavoration.product.locked_qty  # need dep.
                 table[element[1]][0] = account_qty
-
 
             # Product production:
             if real_date_planned in col_ids:
