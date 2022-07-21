@@ -155,7 +155,6 @@ format_green = WB.add_format({
 #                                Parameters
 # -----------------------------------------------------------------------------
 # Extract config file name from current name
-pdb.set_trace()
 path, name = os.path.split(os.path.abspath(__file__))
 fullname = os.path.join(path, 'openerp.cfg')
 
@@ -182,7 +181,7 @@ cr = connection.cursor()
 
 # OPENERP Obj:
 erp = get_erp(URL, database, user, password)
-move_pool = erp.model('contipaq.stock.movement')
+move_pool = erp.model('contipaq.stock.move')
 
 records = []
 
