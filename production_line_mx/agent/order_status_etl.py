@@ -27,7 +27,6 @@ import xlsxwriter
 from datetime import datetime, timedelta
 
 filename = 'order_from_contipaq.xlsx'
-pdb.set_trace()
 
 # -----------------------------------------------------------------------------
 # Utility:
@@ -156,6 +155,7 @@ format_green = WB.add_format({
 #                                Parameters
 # -----------------------------------------------------------------------------
 # Extract config file name from current name
+pdb.set_trace()
 path, name = os.path.split(os.path.abspath(__file__))
 fullname = os.path.join(path, 'openerp.cfg')
 
