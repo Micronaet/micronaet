@@ -314,6 +314,7 @@ header = [
 ]
 
 # Clean stock move previous loaded:
+pdb.set_trace()
 move_ids = move_pool.search([])
 print('Deleting movements: %s' % len(move_ids))
 move_pool.unlink(move_ids)
