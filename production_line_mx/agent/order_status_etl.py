@@ -357,8 +357,8 @@ for key in query_list:
         record[3] = str(record[3])
         record[4] = str(record[4])
         write_xls_mrp_line(WS, row, record, format_text)
-
-        move_pool.create({
+        pdb.set_trace()
+        data = {
             'name': record[5],
             'type': record[6],
             'date': record[3],
@@ -368,5 +368,6 @@ for key in query_list:
             'default_code': record[18],
             'quantity': record[23],
             'uom': record[24],
-            })
+            }
+        move_pool.create(data)
 WB.close()
