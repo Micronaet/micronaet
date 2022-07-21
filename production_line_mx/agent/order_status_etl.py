@@ -313,7 +313,6 @@ header = [
 ]
 
 # Clean stock move previous loaded:
-pdb.set_trace()
 move_ids = move_pool.search([])
 print('Deleting movements: %s' % len(move_ids))
 move_pool.unlink(move_ids)
@@ -357,7 +356,6 @@ for key in query_list:
         record[3] = str(record[3])
         record[4] = str(record[4])
         write_xls_mrp_line(WS, row, record, format_text)
-        pdb.set_trace()
         data = {
             'name': record[5],
             'type': record[6],
