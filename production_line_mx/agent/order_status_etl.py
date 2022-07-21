@@ -182,6 +182,7 @@ cr = connection.cursor()
 
 # OPENERP Obj:
 erp = get_erp(URL, database, user, password)
+move_pool = erp.model('contipaq.stock.movement')
 
 records = []
 
@@ -312,6 +313,11 @@ header = [
     'Stato riga',
 ]
 
+# Clean stock move previous loaded:
+move_ids = move_pool.search([])
+print('Deleting movements: %s' % len(move_ids))
+move_pool.unlink(move_ids)
+
 for key in query_list:
     if key == 'customer':
         WS = WS_customer
@@ -351,8 +357,16 @@ for key in query_list:
         record[3] = str(record[3])
         record[4] = str(record[4])
         write_xls_mrp_line(WS, row, record, format_text)
+
+        move_pool.create({
+            'name': record[5],
+            'type': record[6],
+            'date': record[3],
+            'deadline': record[4],
+            'partner_name': record[2],
+
+            'default_code': record[18],
+            'quantity': record[23],
+            'uom': record[24],
+            })
 WB.close()
-
-product_pool = erp.model('sale.order')
-# product_pool.rpc_import_order_mx(stock)
-
