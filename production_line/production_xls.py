@@ -80,7 +80,10 @@ class mrp_production_extra(osv.osv):
             # prepare data structure:
             # Sapnaet integrazione:
             accounting_qty = product.accounting_qty
-            accounting_qty += product.locked_qty
+            try:
+                accounting_qty += product.locked_qty
+            except:
+                pass  # No sapnaet mode
 
             table[element[1]][0] = accounting_qty
             table_comment[element[1]][0] += \
@@ -283,7 +286,10 @@ class mrp_production_extra(osv.osv):
                 # start q.
                 # Sapnaet integrazione (if stock linked to order)
                 account_qty = line.product_id.accounting_qty
-                account_qty += line.product_id.locked_qty  # need dep.
+                try:
+                    account_qty += line.product_id.locked_qty  # need dep.
+                except:
+                    pass  # No sapnaet mode
                 table[element[1]][0] = account_qty
 
             if line.order_id.date_deadline in col_ids: # all date
@@ -328,7 +334,10 @@ class mrp_production_extra(osv.osv):
 
                 account_qty = lavoration.product.accounting_qty
                 # Sapnaet integrazione (if stock linked to order)
-                account_qty += lavoration.product.locked_qty  # need dep.
+                try:
+                    account_qty += lavoration.product.locked_qty  # need dep.
+                except:
+                    pass  # No sapnaet mode
                 table[element[1]][0] = account_qty
 
             # Product production:
