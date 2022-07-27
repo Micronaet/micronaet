@@ -1938,8 +1938,9 @@ class mrp_production_extra(osv.osv):
             ('accounting_qty', '>', 0),  # todo locked_qty
             ('default_code', '=ilike', 'R%'),
         ], context=context)
-        res[ids[0]] = sum([p.accounting_qty for p in
-             product_pool.browse(cr, uid, product_ids, context=context)])
+        res[ids[0]] = sum([
+            p.accounting_qty for p in
+            product_pool.browse(cr, uid, product_ids, context=context)])
         return res
 
     _columns = {

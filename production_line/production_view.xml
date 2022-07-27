@@ -851,9 +851,10 @@
             <xpath expr="/form/sheet/notebook" position="after">
                <notebook>
                         <page string="Prodotti Utilizzati">
-                            <group>
+                            <group col="4">
                                 <separator string="Articoli Prodotti" colspan="3"/>
                                 <button type="object" colspan="1" name="load_materials_from_bom" string="Load element from BOM" class="oe_highlight"/>
+
                                 <field name="recycle_remain" />
                                 <button type="object" colspan="2" name="get_recycle_list" string="Prodotti da recuperare" class="oe_highlight"/>
 
