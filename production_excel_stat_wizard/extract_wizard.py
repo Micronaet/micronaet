@@ -175,8 +175,8 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
             if not filter_product or product.id == filter_product.id:
                 if wc not in wc_db:
                     wc_db.append(wc)
-                    for load in wc.load_ids: # Normally one!
-                        key = product # (product, load.recycle)
+                    for load in wc.load_ids:  # Normally one!
+                        key = product  # (product, load.recycle)
                         net_qty = load.product_qty - load.waste_qty
                         hour = wc.hour
 
@@ -376,16 +376,16 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
         ws_name = _('Dettaglio lavorazioni')
         excel_pool.create_worksheet(ws_name)
         excel_pool.column_width(ws_name, [
-            12, 30, 
-            20, 30, 10, 15, 
+            12, 30,
+            20, 30, 10, 15,
             10, 10, 10,
             80])
 
         row = 0
         excel_pool.write_xls_line(ws_name, row, [
-            _('Codice'), _('Nome'), 
+            _('Codice'), _('Nome'),
             _('Data'), _('Produzione'), _('Lavorazione'), _('Stato'),
-            _('Q. nominale'), _('Q. reale'), _('Prezzo'),             
+            _('Q. nominale'), _('Q. reale'), _('Prezzo'),
             _('Dettaglio'),
             ], default_format=f_header)
 
@@ -398,12 +398,12 @@ class MrpProductionExtractStatWizard(orm.TransientModel):
             try:
                 unit_price = float(detail.split('=')[-1].strip())
             except:
-                unit_price = '/'    
+                unit_price = '/'
             try:
                 load = float(
                     detail.split('Load = ')[-1].split('\n')[0].strip())
             except:
-                load = '/'    
+                load = '/'
             excel_pool.write_xls_line(ws_name, row, [
                 product.default_code,
                 product.name,

@@ -372,7 +372,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             # recycle_product_id = wiz_proxy.recycle_product_id
             package_id = \
                 wiz_proxy.package_id.id if wiz_proxy.package_id else False
-            # TODO create a function for compute: sum ( q. x std. cost)
+            # todo create a function for compute: sum ( q. x std. cost)
             price = 0.0
             load_id = load_pool.create(cr, uid, {
                 'product_qty': product_qty,  # only the wrote total
@@ -477,7 +477,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             #        price,
             #        '',
             #        ))
-            #else:
+            # else:
             f_cl.write('%-35s%10.2f%13.5f%16s\r\n' % (
                 product_code, product_qty, price, ''))
 
@@ -490,7 +490,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             # -----------------------------------------------------
             if wiz_proxy.package_id and wiz_proxy.ul_qty:
                 f_cl.write(
-                    '%-10s%-25s%10.2f%-13s%16s\r\n' % (  # TODO 10 extra space
+                    '%-10s%-25s%10.2f%-13s%16s\r\n' % (  # todo 10 extra space
                         wiz_proxy.package_id.linked_product_id.default_code,
                         '',  # lavoration_browse.name[4:],
                         - wiz_proxy.ul_qty,
