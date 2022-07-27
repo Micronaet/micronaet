@@ -1927,11 +1927,29 @@ class mrp_production_extra(osv.osv):
                 production.product_qty)
         return res
 
+    def _get_recycle_remain(self, cr, uid, ids, name, args, context=None):
+        """ Total of recycle present
+        """
+        assert len(ids) == 1, 'Dettaglio recuperi solo nella produzione'
+
+        res = {}
+        product_pool = self.pool.get('product.product')
+        product_ids = product_pool.search(cr, uid, [
+            ('accounting_qty', '>', 0),  # todo locked_qty
+            ('default_code', '=ilike', 'R%'),
+        ], context=context)
+        res[ids[0]] = sum([p.accounting_qty for p in
+             product_pool.browse(cr, uid, product_ids, context=context)])
+        return res
+
     _columns = {
         'order_lines_ids': fields.one2many(
             'sale.order.line', 'mrp_production_id', 'Order lines'),
         # write=['base.group_sale_manager'], read=['base.group_user',
         # 'base.group_sale_salesman']),
+        'recycle_remain': fields.function(
+            _get_recycle_remain, string='Recuperabili', type='float',
+            method=True),
         'bom_material_ids': fields.one2many(
             'mrp.production.material', 'mrp_production_id',
             'BOM material lines'),
