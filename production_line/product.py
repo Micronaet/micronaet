@@ -223,11 +223,8 @@ class ResCompany(osv.osv):
         telegram_id = user.company_id.telegram_product_alert_id.id
         if message:
             message = 'Segnalazione prezzi anomali:\n%s' % message
-        else:
-            message = 'Nessun prezzo anomalo'
-
-        telegram_pool.command_send_telegram(
-            cr, uid, telegram_id, message, context=context)
+            telegram_pool.command_send_telegram(
+                cr, uid, telegram_id, message, context=context)
 
         if double_price:
             message = 'Codici doppi:\n%s' % ('\n'.join(double_price))
