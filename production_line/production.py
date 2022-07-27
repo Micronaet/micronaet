@@ -1843,6 +1843,30 @@ class mrp_production_extra(osv.osv):
         return self._action_load_materials_from_bom(
             cr, uid, ids[0], context=context)
 
+    def get_recycle_list(self, cr, uid, ids, context=None):
+        """ Extract list of recovery product usable
+        """
+        product_pool = self.pool.get('product.product')
+        product_ids = product_pool.search(cr, uid, [
+            ('accounting_qty', '>', 0),  # todo locked_qty
+            ('default_code', '=ilike', 'R%'),
+        ], context=context)
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Recuperabili'),
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            # 'res_id': 1,
+            'res_model': 'product.product',
+            'view_id': False,
+            'views': [(False, 'tree'), (False, 'form')],
+            'domain': [('id', 'in', product_ids)],
+            'context': context,
+            'target': 'current',  # 'new'
+            'nodestroy': False,
+        }
+
     # ----------------
     # Function fields:
     # ----------------
