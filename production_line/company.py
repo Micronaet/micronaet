@@ -463,7 +463,7 @@ class res_company(osv.osv):
                 ], default_format=excel_format['text'])
 
         # Remain only in Account:
-        telegram_error = []
+        telegram_error = ''
         for document in account_data:
             records = account_data[document]
             ws_name = '%s solo a gestionale' % document
@@ -488,9 +488,20 @@ class res_company(osv.osv):
                 excel_pool.write_xls_line(ws_name, row, [
                     record,
                 ], default_format=excel_format['text'])
-                telegram_error.append((document, record))
+                telegram_error += '%s: %s\n' % (document, record)
 
-        pdb.set_trace()  # telegram_error
+        # Send telegram Message i error:
+        if telegram_error:
+            telegram_error = 'Documenti Mexal non in OpenERP:\n' \
+                             '%s' % telegram_error
+            telegram_pool = self.pool.get('flask.telegram')
+            company = self.browse(cr, uid, ids, context=context)[0]
+            telegram_id = company.telegram_mrp_alert_id.id
+            if not telegram_id:
+                _logger.error('Gruppo non presente, controllare MRP')
+            return telegram_pool.command_send_telegram(
+                cr, uid, telegram_id, telegram_error, context=context)
+
         return excel_pool.return_attachment(
             cr, uid, 'Stato documenti di MRP', version='7.0', php=True,
             context=context)
