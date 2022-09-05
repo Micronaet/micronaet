@@ -61,4 +61,4 @@ company = odoo.model('res.company')
 
 # Launch extract procedure:
 company_id = company.search([])[0]
-company.check_account_document([company_id])
+company.check_account_document_alert([company_id])

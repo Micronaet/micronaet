@@ -361,9 +361,22 @@ class res_company(osv.osv):
             cr, uid, 'Stato documenti di MRP', version='7.0', php=True,
             context=context)
 
+    def check_account_document_alert(self, cr, uid, ids, context=None):
+        """ Scheduled operations
+        """
+        if context is None:
+            context = {}
+        ctx = context.copy()
+        ctx['only_alert'] = True
+        return self.check_account_document(cr, uid, ids, context=ctx)
+
     def check_account_document(self, cr, uid, ids, context=None):
         """ Check CL and CL
         """
+        if context is None:
+            context = {}
+        only_alert = context.get('only_alert')
+
         load_pool = self.pool.get('mrp.production.workcenter.load')
         unload_pool = self.pool.get('mrp.production.workcenter.line')
         excel_pool = self.pool.get('excel.writer')
@@ -400,43 +413,44 @@ class res_company(osv.osv):
 
         excel_format = False
         for ws_name, document, records in loop:
-            excel_pool.create_worksheet(ws_name)
+            if not only_alert:
+                excel_pool.create_worksheet(ws_name)
 
-            # Format:
-            if not excel_format:
-                excel_pool.set_format()
-                excel_format = {
-                    'title': excel_pool.get_format('title'),
-                    'header': excel_pool.get_format('header'),
-                    'text': excel_pool.get_format('text'),
-                    'number': excel_pool.get_format('number'),
-                    'red': {
-                        'text': excel_pool.get_format('bg_red'),
-                        'number': excel_pool.get_format('bg_red_number'),
-                    },
-                    'white': {
+                # Format:
+                if not excel_format:
+                    excel_pool.set_format()
+                    excel_format = {
+                        'title': excel_pool.get_format('title'),
+                        'header': excel_pool.get_format('header'),
                         'text': excel_pool.get_format('text'),
                         'number': excel_pool.get_format('number'),
-                    },
-                }
+                        'red': {
+                            'text': excel_pool.get_format('bg_red'),
+                            'number': excel_pool.get_format('bg_red_number'),
+                        },
+                        'white': {
+                            'text': excel_pool.get_format('text'),
+                            'number': excel_pool.get_format('number'),
+                        },
+                    }
 
-            # Column setup:
-            excel_pool.column_width(ws_name, [
-                15, 15, 20,
-            ])
+                # Column setup:
+                excel_pool.column_width(ws_name, [
+                    15, 15, 20,
+                ])
 
-            # Write header:
-            row = 0
-            excel_pool.write_xls_line(ws_name, row, [
-                'Documenti %s da OpenERP e Gestionale' % document,
-                ], default_format=excel_format['title'])
+                # Write header:
+                row = 0
+                excel_pool.write_xls_line(ws_name, row, [
+                    'Documenti %s da OpenERP e Gestionale' % document,
+                    ], default_format=excel_format['title'])
 
-            row += 1
-            excel_pool.write_xls_line(ws_name, row, [
-                'Numero OpenERP',
-                'Numero Gestionale',
-                'Stato'
-            ], default_format=excel_format['header'])
+                row += 1
+                excel_pool.write_xls_line(ws_name, row, [
+                    'Numero OpenERP',
+                    'Numero Gestionale',
+                    'Stato'
+                ], default_format=excel_format['header'])
 
             _logger.warning('Load document found #%s' % len(records))
             for record in records:
@@ -455,12 +469,13 @@ class res_company(osv.osv):
                     state = 'Non trovato'
                     account_name = ''
 
-                row += 1
-                excel_pool.write_xls_line(ws_name, row, [
-                    fullname,
-                    account_name,
-                    state,
-                ], default_format=excel_format['text'])
+                if not only_alert:
+                    row += 1
+                    excel_pool.write_xls_line(ws_name, row, [
+                        fullname,
+                        account_name,
+                        state,
+                    ], default_format=excel_format['text'])
 
         # Remain only in Account:
         telegram_error = ''
@@ -468,30 +483,33 @@ class res_company(osv.osv):
             records = account_data[document]
             ws_name = '%s solo a gestionale' % document
 
-            excel_pool.create_worksheet(ws_name)
-            # Write header:
-            excel_pool.column_width(ws_name, [
-                15, 15, 20,
-            ])
+            if not only_alert:
+                excel_pool.create_worksheet(ws_name)
+                # Write header:
+                excel_pool.column_width(ws_name, [
+                    15, 15, 20,
+                ])
 
-            row = 0
-            excel_pool.write_xls_line(ws_name, row, [
-                'Documenti %s solo a gestionale' % document,
-                ], default_format=excel_format['title'])
-            row += 1
-            excel_pool.write_xls_line(ws_name, row, [
-                'Documento',
-            ], default_format=excel_format['header'])
-
-            for record in records:
+                row = 0
+                excel_pool.write_xls_line(ws_name, row, [
+                    'Documenti %s solo a gestionale' % document,
+                    ], default_format=excel_format['title'])
                 row += 1
                 excel_pool.write_xls_line(ws_name, row, [
-                    record,
-                ], default_format=excel_format['text'])
-                telegram_error += '%s: %s\n' % (document, record)
+                    'Documento',
+                ], default_format=excel_format['header'])
+
+            for record in records:
+                if only_alert:
+                    telegram_error += '%s: %s\n' % (document, record)
+                else:
+                    row += 1
+                    excel_pool.write_xls_line(ws_name, row, [
+                        record,
+                    ], default_format=excel_format['text'])
 
         # Send telegram Message i error:
-        if telegram_error:
+        if telegram_error and only_alert:
             telegram_error = 'Documenti Mexal non in OpenERP:\n' \
                              '%s' % telegram_error
             telegram_pool = self.pool.get('flask.telegram')
@@ -499,12 +517,13 @@ class res_company(osv.osv):
             telegram_id = company.telegram_mrp_alert_id.id
             if not telegram_id:
                 _logger.error('Gruppo non presente, controllare MRP')
-            return telegram_pool.command_send_telegram(
+            telegram_pool.command_send_telegram(
                 cr, uid, telegram_id, telegram_error, context=context)
-
-        return excel_pool.return_attachment(
-            cr, uid, 'Stato documenti di MRP', version='7.0', php=True,
-            context=context)
+            return True
+        else:
+            return excel_pool.return_attachment(
+                cr, uid, 'Stato documenti di MRP', version='7.0', php=True,
+                context=context)
 
     def get_production_parameter(self, cr, uid, context=None):
         """ Return browse object for default company for get all parameter
