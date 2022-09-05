@@ -463,6 +463,7 @@ class res_company(osv.osv):
                 ], default_format=excel_format['text'])
 
         # Remain only in Account:
+        telegram_error = []
         for document in account_data:
             records = account_data[document]
             ws_name = '%s solo a gestionale' % document
@@ -487,7 +488,9 @@ class res_company(osv.osv):
                 excel_pool.write_xls_line(ws_name, row, [
                     record,
                 ], default_format=excel_format['text'])
+                telegram_error.append((document, record))
 
+        pdb.set_trace()  # telegram_error
         return excel_pool.return_attachment(
             cr, uid, 'Stato documenti di MRP', version='7.0', php=True,
             context=context)
