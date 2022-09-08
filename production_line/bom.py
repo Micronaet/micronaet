@@ -39,6 +39,9 @@ class BomProductAlernative(osv.osv):
     """
     _name = 'bom.product.alternative'
 
+    # -------------------------------------------------------------------------
+    # Utility:
+    # -------------------------------------------------------------------------
     def get_alternative_groups(self, cr, uid, ids, product_id, context=None):
         """ Extract product alternatives for a product
         """
@@ -57,6 +60,45 @@ class BomProductAlernative(osv.osv):
         res = [r[0] for r in cr.fetchall()]
         return res
 
+    def choose_material_alternative(self, cr, uid, ids, context=None):
+        """ Open alternatives materials
+        """
+        if context is None:
+            context = {}
+
+        from_id = context.get('from_id')
+        from_model = context.get('from_model')
+        if not from_id or not from_model:
+            raise Exception('Non trovato origine per aggiornare')
+
+        # Pool used:
+        model_pool = self.pool.get('ir.model.data')
+        from_pool = self.pool.get(from_model)
+
+        view_id = model_pool.get_object_reference(
+            cr, uid,
+            'production_line', 'view_bom_product_alternative_list_tree')[1]
+
+        # Get information from record/model:
+        from_line = from_pool.browse(cr, uid, ids, context=context)[0]
+        from_product_id = from_line.product_id.id  # For alternative
+        product_ids = self.get_alternative_groups(
+            cr, uid, ids, from_product_id, context=context)
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Prodotti alternativi'),
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_id': False,
+            'res_model': 'product.product',
+            'view_id': view_id,
+            'views': [(view_id, 'tree')],
+            'domain': [('id', 'in', product_ids)],
+            'context': context,
+            'target': 'new',
+            'nodestroy': False,
+            }
+
     _columns = {
         'name': fields.char('Nome raggruppamento', size=35, required=True),
         'group_ids': fields.many2many(
@@ -66,7 +108,7 @@ class BomProductAlernative(osv.osv):
     }
 
 
-class MrpBom(osv.osv):
+class ProductProduct(osv.osv):
     """ Alternative groups for BOM
     """
     _inherit = 'product.product'
@@ -95,45 +137,44 @@ class MrpBom(osv.osv):
     def choose_material_alternative(self, cr, uid, ids, context=None):
         """ Open alternatives materials
         """
-        pdb.set_trace()
         if context is None:
             context = {}
-
-        # Pool used:
         alternative_pool = self.pool.get('bom.product.alternative')
-        model_pool = self.pool.get('ir.model.data')
 
-        view_id = model_pool.get_object_reference(
-            cr, uid,
-            'production_line', 'view_bom_product_alternative_list_tree')[1]
-
-        this_line = self.browse(cr, uid, ids, context=context)[0]
-        old_product_id = this_line.product_id.id  # For alternative
-        product_ids = alternative_pool.get_alternative_groups(
-            cr, uid, ids, old_product_id, context=context)
         ctx = context.copy()
         ctx.update({
             'from_id': ids[0],
             'from_model': 'mrp.bom',
         })
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('Prodotti alternativi'),
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_id': False,
-            'res_model': 'product.product',
-            'view_id': view_id,
-            'views': [(view_id, 'tree')],
-            'domain': [('id', 'in', product_ids)],
-            'context': ctx,
-            'target': 'new',
-            'nodestroy': False,
-            }
+        return alternative_pool.choose_material_alternative(
+            cr, uid, ids, context=ctx)
 
-'''
+
 class MrpProductionMaterial(osv.osv):
     """ Alternative groups for BOM
     """
     _inherit = 'mrp.production.material'
-'''
+
+    def choose_material_alternative(self, cr, uid, ids, context=None):
+        """ Open alternatives materials
+        """
+        if context is None:
+            context = {}
+
+        # Check state:
+        this_line = self.browse(cr, uid, ids, context=context)[0]
+        # mrp_production_id
+
+        # Check only for WC, production can change
+        if this_line.workcenter_production_id.accounting_sl_code:
+            raise Exception('Lavorazione già chiusa, non possibile cambiare')
+
+        alternative_pool = self.pool.get('bom.product.alternative')
+
+        ctx = context.copy()
+        ctx.update({
+            'from_id': ids[0],
+            'from_model': 'mrp.production.material',
+        })
+        return alternative_pool.choose_material_alternative(
+            cr, uid, ids, context=ctx)
