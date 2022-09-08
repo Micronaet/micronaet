@@ -34,6 +34,38 @@ from utility import no_establishment_group
 _logger = logging.getLogger(__name__)
 
 
+class BomProductAlernative(osv.osv):
+    """ Alternative groups for BOM
+    """
+    _name = 'bom.product.alternative'
+
+    def get_alternative_groups(self, cr, uid, ids, product_id, context=None):
+        """ Extract product alternatives for a product
+        """
+        res = False
+        if not product_id:
+            return res
+        query = '''
+            SELECT DISTINCT product_id 
+            FROM bom_product_alternative_group_rel
+            WHERE group_id in (  
+                SELECT group_id 
+                FROM bom_product_alternative_group_rel 
+                WHERE product_id = %s); 
+            '''
+        cr.execute(query, [product_id])
+        res = [r[0] for r in cr.fetchall]
+        return res
+
+    _columns = {
+        'name': fields.char('Nome raggruppamento'),
+        'group_ids': fields.many2many(
+            'product.product', 'bom_product_alternative_group_rel',
+            'group_id', 'product_id',
+            'Prodotti'),
+    }
+
+
 class product_packaging(osv.osv):
     """ Extra fields for product.packaging object
     """

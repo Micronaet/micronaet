@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# ODOO (ex OpenERP) 
+# ODOO (ex OpenERP)
 # Open Source Management Solution
 # Copyright (C) 2001-2015 Micronaet S.r.l. (<https://micronaet.com>)
 # Developer: Nicola Riolini @thebrush (<https://it.linkedin.com/in/thebrush>)
@@ -13,7 +13,7 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU Affero General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
@@ -31,7 +31,7 @@
     'author': 'Micronaet S.r.l. - Nicola Riolini',
     'website': 'http://www.micronaet.it',
     'license': 'AGPL-3',
-    'depends': [    
+    'depends': [
         'base',
         'mrp',
         'production_line',
@@ -43,13 +43,13 @@
     'demo': [],
     'data': [
         'security/mx_group.xml',
-        #'security/ir.model.access.csv',    
-        
+        # 'security/ir.model.access.csv',
+
         'custom_mx_view.xml',
         'wizard/parameter_view.xml',
         'wizard/confirm_production_mx_wizard.xml',
         'wizard/waste_product_view.xml',
-        'scheduler.xml',        
+        'scheduler.xml',
         ],
     'active': False,
     'installable': True,
