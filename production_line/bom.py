@@ -42,6 +42,10 @@ class BomProductAlernativeWizard(osv.osv_memory):
     """
     _name = 'bom.product.alternative.wizard'
 
+    _columns = {
+        'name': fields.char('Nome', size=20)
+        }
+
 
 class BomProductAlernativeLineWizard(osv.osv_memory):
     """ Alternative groups for BOM Wizard
@@ -62,7 +66,7 @@ class BomProductAlernativeLineWizard(osv.osv_memory):
 
     _columns = {
         'wizard_id': fields.many2one(
-            'bom.product.alternative.line.wizard', 'Wizard'),
+            'bom.product.alternative.wizard', 'Wizard'),
         'product_id': fields.many2one('product.product', 'Prodotto'),
     }
 
@@ -99,7 +103,7 @@ class BomProductAlernative(osv.osv):
                 WHERE product_id = %s);
             """
         cr.execute(query, [product_id])
-        res = [r[0] for r in cr.fetchall]
+        res = [r[0] for r in cr.fetchall()]
         return res
 
     _columns = {
@@ -124,22 +128,28 @@ class MrpBom(osv.osv):
 
         # Pool used:
         alternative_pool = self.pool.get('bom.product.alternative')
-        wizard_pool = self.pool.get('mrp.product.alternative.wizard')
+        wizard_pool = self.pool.get('bom.product.alternative.wizard')
+        wizard_line_pool = self.pool.get('bom.product.alternative.line.wizard')
         model_pool = self.pool.get('ir.model.data')
 
         view_id = model_pool.get_object_reference(
             cr, uid,
             'production_line', 'view_bom_product_alternative_wizard_form')[1]
 
-        pdb.set_trace()
         this_line = self.browse(cr, uid, ids, context=context)[0]
-        product_id = this_line.product_id.id  # For alternative
-        product_ids = alternative_pool.get_alternative_groups(
-            cr, uid, ids, product_id, context=context)
+        old_product_id = this_line.product_id.id  # For alternative
 
+        # Prepare data:
+        pdb.set_trace()
         wizard_id = wizard_pool.create(cr, uid, {
-            'product_ids': [(6, 0, product_ids)],
-        }, context=context)  # todo
+            'name': datetime.now(),
+        }, context=context)
+        for product_id in alternative_pool.get_alternative_groups(
+                cr, uid, ids, old_product_id, context=context):
+            wizard_line_pool.create(cr, uid, {
+                'wizard_id': wizard_id,
+                'product_id': product_id,
+            }, context=context)
         ctx = context.copy()
         return {
             'type': 'ir.actions.act_window',
