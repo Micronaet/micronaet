@@ -20,7 +20,6 @@
 import os
 import pdb
 import sys
-import openerp.netsvc as netsvc
 import logging
 from openerp import tools
 from openerp.osv import osv, fields
@@ -28,9 +27,7 @@ from datetime import datetime, timedelta
 from openerp.tools import (
     DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT,
     DATETIME_FORMATS_MAP, float_compare)
-import openerp.addons.decimal_precision as dp
 from openerp.tools.translate import _
-from utility import no_establishment_group
 
 
 _logger = logging.getLogger(__name__)
@@ -41,39 +38,6 @@ class BomProductAlernative(osv.osv):
     """ Alternative groups for BOM
     """
     _name = 'bom.product.alternative'
-
-    def choose_material_alternative(self, cr, uid, ids, context=None):
-        """ Open alternatives materials
-            context with parameter: from_model, from_id
-        """
-        # Pool used:
-        alternative_pool = self.pool.get('bom.product.alternative')
-        model_pool = self.pool.get('ir.model.data')
-
-        view_id = model_pool.get_object_reference(
-            cr, uid,
-            'production_line', 'view_bom_product_alternative_list_tree')[1]
-
-        this_line = self.browse(cr, uid, ids, context=context)[0]
-        old_product_id = this_line.product_id.id  # For alternative
-        product_ids = alternative_pool.get_alternative_groups(
-            cr, uid, ids, old_product_id, context=context)
-
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('Prodotti alternativi'),
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_id': False,
-            'res_model': 'product.product',
-            'view_id': view_id,
-            'views': [(view_id, 'tree')],
-            'domain': [('id', 'in', product_ids)],
-            'context': context,
-            'target': 'new',
-            'nodestroy': False,
-            }
-
 
     def get_alternative_groups(self, cr, uid, ids, product_id, context=None):
         """ Extract product alternatives for a product
@@ -107,7 +71,7 @@ class MrpBom(osv.osv):
     """
     _inherit = 'product.product'
 
-    def select_alternative_product_button(self, cr, uid, ids, context=None):
+    def select_this_product_button(self, cr, uid, ids, context=None):
         """ Update previous DB with new product
         """
         if context is None:
@@ -134,32 +98,42 @@ class MrpBom(osv.osv):
         pdb.set_trace()
         if context is None:
             context = {}
+
+        # Pool used:
         alternative_pool = self.pool.get('bom.product.alternative')
+        model_pool = self.pool.get('ir.model.data')
+
+        view_id = model_pool.get_object_reference(
+            cr, uid,
+            'production_line', 'view_bom_product_alternative_list_tree')[1]
+
+        this_line = self.browse(cr, uid, ids, context=context)[0]
+        old_product_id = this_line.product_id.id  # For alternative
+        product_ids = alternative_pool.get_alternative_groups(
+            cr, uid, ids, old_product_id, context=context)
         ctx = context.copy()
         ctx.update({
             'from_id': ids[0],
             'from_model': 'mrp.bom',
         })
-        return alternative_pool.choose_material_alternative(
-            cr, uid, ids, context=ctx)
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Prodotti alternativi'),
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_id': False,
+            'res_model': 'product.product',
+            'view_id': view_id,
+            'views': [(view_id, 'tree')],
+            'domain': [('id', 'in', product_ids)],
+            'context': ctx,
+            'target': 'new',
+            'nodestroy': False,
+            }
 
-
+'''
 class MrpProductionMaterial(osv.osv):
     """ Alternative groups for BOM
     """
     _inherit = 'mrp.production.material'
-
-    def choose_material_alternative(self, cr, uid, ids, context=None):
-        """ Open alternatives materials
-        """
-        if context is None:
-            context = {}
-        alternative_pool = self.pool.get('bom.product.alternative')
-        ctx = context.copy()
-        ctx.update({
-            'from_id': ids[0],
-            'from_model': 'mrp.production.material',
-        })
-        return alternative_pool.choose_material_alternative(
-            cr, uid, ids, context=ctx)
-
+'''
