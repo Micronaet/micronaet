@@ -22,7 +22,8 @@ import pdb
 import sys
 import logging
 from openerp import tools
-from openerp.osv import osv, fields
+from openerp.osv import osv, fields, orm
+
 from datetime import datetime, timedelta
 from openerp.tools import (
     DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT,
@@ -167,7 +168,8 @@ class MrpProductionMaterial(osv.osv):
 
         # Check only for WC, production can change
         if this_line.workcenter_production_id.accounting_sl_code:
-            raise Exception('Lavorazione già chiusa, non possibile cambiare')
+            raise orm.except_orm(
+                'Errore', u'Lavorazione già chiusa, non possibile cambiare')
 
         alternative_pool = self.pool.get('bom.product.alternative')
 

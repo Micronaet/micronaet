@@ -863,6 +863,9 @@
                                 <field name="bom_material_ids" nolabel="1" colspan="4">
                                     <tree string="Material BOM list" editable="bottom">
                                         <field name="product_id" />
+                                        <button type="object" name="choose_material_alternative" string="Seleziona prodotto alternativo"
+                                            icon="terp-stock_effects-object-colorize"/>
+
                                         <field name="lot_id" groups="production_line.group_stock_lot_enable" domain="[('product_id', '=', product_id)]" options="{'limit': 15, 'create': false, 'create_edit': false}"/>
                                         <field name="uom_id" readonly="1" />
                                         <field name="quantity" sum="total"/>
