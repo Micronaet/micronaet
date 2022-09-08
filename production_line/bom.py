@@ -36,6 +36,49 @@ from utility import no_establishment_group
 _logger = logging.getLogger(__name__)
 
 
+# Wizard:
+class BomProductAlernativeWizard(osv.osv_memory):
+    """ Alternative groups for BOM Wizard
+    """
+    _name = 'bom.product.alternative.wizard'
+
+
+class BomProductAlernativeLineWizard(osv.osv_memory):
+    """ Alternative groups for BOM Wizard
+    """
+    _name = 'bom.product.alternative.line.wizard'
+
+    def select_alternative_product_button(self, cr, uid, ids, context=None):
+        """ Select this product
+        """
+        if context is None:
+            context = {}
+        bom_id = context.get('this_bom_id')
+        bom_obj = context.get('this_bom_obj')  # comes from various part
+
+        # todo Update caller record:
+
+        return True
+
+    _columns = {
+        'wizard_id': fields.many2one(
+            'bom.product.alternative.line.wizard', 'Wizard'),
+        'product_id': fields.many2one('product.product', 'Prodotto'),
+    }
+
+
+class BomProductAlernativeWizardInherit(osv.osv_memory):
+    """ Alternative groups for BOM Wizard
+    """
+    _inherit = 'bom.product.alternative.wizard'
+
+    _columns = {
+        'product_ids': fields.many2one(
+            'bom.product.alternative.line.wizard', 'wizard_id', 'Prodotti'),
+        }
+
+
+# Objects:
 class BomProductAlernative(osv.osv):
     """ Alternative groups for BOM
     """
@@ -66,4 +109,50 @@ class BomProductAlernative(osv.osv):
             'group_id', 'product_id',
             'Prodotti'),
     }
+
+
+class MrpBom(osv.osv):
+    """ Alternative groups for BOM
+    """
+    _inherit = 'mrp.bom'
+
+    def choose_material_alternative(self, cr, uid, ids, context=None):
+        """ Open alternatives materials
+        """
+        if context is None:
+            context = {}
+
+        # Pool used:
+        alternative_pool = self.pool.get('bom.product.alternative')
+        wizard_pool = self.pool.get('mrp.product.alternative.wizard')
+        model_pool = self.pool.get('ir.model.data')
+
+        view_id = model_pool.get_object_reference(
+            cr, uid,
+            'production_line', 'view_bom_product_alternative_wizard_form')[1]
+
+        pdb.set_trace()
+        this_line = self.browse(cr, uid, ids, context=context)[0]
+        product_id = this_line.product_id.id  # For alternative
+        product_ids = alternative_pool.get_alternative_groups(
+            cr, uid, ids, product_id, context=context)
+
+        wizard_id = wizard_pool.create(cr, uid, {
+            'product_ids': [(6, 0, product_ids)],
+        }, context=context)  # todo
+        ctx = context.copy()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Prodotti alternativi'),
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_id': wizard_id,
+            'res_model': 'mrp.product.alternative.wizard',
+            'view_id': view_id,  # False
+            'views': [(view_id, 'tree')],
+            'domain': [],
+            'context': ctx,
+            'target': 'new',
+            'nodestroy': False,
+            }
 
