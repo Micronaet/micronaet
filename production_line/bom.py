@@ -72,6 +72,27 @@ class BomProductAlernative(osv.osv):
 class MrpBom(osv.osv):
     """ Alternative groups for BOM
     """
+    _inherit = 'product.product'
+
+    def select_alternative_product_button(self, cr, uid, ids, context=None):
+        """ Update previous DB with new product
+        """
+        if context is None:
+            context = {}
+        from_id = context.get('from_id')
+        from_model = context.get('from_model')
+        if not from_id or not from_model:
+            raise Exception('Non trovato origine per aggiornare')
+
+        from_pool = self.pool.get(from_model)
+        from_pool.write(cr, uid, [from_id], {
+            'product_id': ids[0]}, context=context)
+        return
+
+
+class MrpBom(osv.osv):
+    """ Alternative groups for BOM
+    """
     _inherit = 'mrp.bom'
 
     def choose_material_alternative(self, cr, uid, ids, context=None):
@@ -82,27 +103,28 @@ class MrpBom(osv.osv):
 
         # Pool used:
         alternative_pool = self.pool.get('bom.product.alternative')
-        wizard_pool = self.pool.get('bom.product.alternative.wizard')
-        wizard_line_pool = self.pool.get('bom.product.alternative.line.wizard')
         model_pool = self.pool.get('ir.model.data')
 
         view_id = model_pool.get_object_reference(
             cr, uid,
-            'production_line', 'view_bom_product_alternative_wizard_form')[1]
+            'production_line', 'view_bom_product_alternative_list_tree')[1]
 
         this_line = self.browse(cr, uid, ids, context=context)[0]
         old_product_id = this_line.product_id.id  # For alternative
         product_ids = alternative_pool.get_alternative_groups(
             cr, uid, ids, old_product_id, context=context)
         ctx = context.copy()
-
+        ctx.update({
+            'from_id': ids[0],
+            'from_model': 'mrp.bom',
+        })
         return {
             'type': 'ir.actions.act_window',
             'name': _('Prodotti alternativi'),
             'view_type': 'form',
             'view_mode': 'form',
             'res_id': False,
-            'res_model': 'bom.product.alternative.wizard',
+            'res_model': 'product.product',
             'view_id': view_id,
             'views': [(view_id, 'tree')],
             'domain': [('id', 'in', product_ids)],
