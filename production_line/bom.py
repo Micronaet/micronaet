@@ -36,52 +36,6 @@ from utility import no_establishment_group
 _logger = logging.getLogger(__name__)
 
 
-# Wizard:
-class BomProductAlernativeWizard(osv.osv_memory):
-    """ Alternative groups for BOM Wizard
-    """
-    _name = 'bom.product.alternative.wizard'
-
-    _columns = {
-        'name': fields.char('Nome', size=20)
-        }
-
-
-class BomProductAlernativeLineWizard(osv.osv_memory):
-    """ Alternative groups for BOM Wizard
-    """
-    _name = 'bom.product.alternative.line.wizard'
-
-    def select_alternative_product_button(self, cr, uid, ids, context=None):
-        """ Select this product
-        """
-        if context is None:
-            context = {}
-        bom_id = context.get('this_bom_id')
-        bom_obj = context.get('this_bom_obj')  # comes from various part
-
-        # todo Update caller record:
-
-        return True
-
-    _columns = {
-        'wizard_id': fields.many2one(
-            'bom.product.alternative.wizard', 'Wizard'),
-        'product_id': fields.many2one('product.product', 'Prodotto'),
-    }
-
-
-class BomProductAlernativeWizardInherit(osv.osv_memory):
-    """ Alternative groups for BOM Wizard
-    """
-    _inherit = 'bom.product.alternative.wizard'
-
-    _columns = {
-        'product_ids': fields.many2one(
-            'bom.product.alternative.line.wizard', 'wizard_id', 'Prodotti'),
-        }
-
-
 # Objects:
 class BomProductAlernative(osv.osv):
     """ Alternative groups for BOM
@@ -138,31 +92,21 @@ class MrpBom(osv.osv):
 
         this_line = self.browse(cr, uid, ids, context=context)[0]
         old_product_id = this_line.product_id.id  # For alternative
-
-        # Prepare data:
-        pdb.set_trace()
-        wizard_id = wizard_pool.create(cr, uid, {
-            'name': datetime.now(),
-        }, context=context)
-        for product_id in alternative_pool.get_alternative_groups(
-                cr, uid, ids, old_product_id, context=context):
-            wizard_line_pool.create(cr, uid, {
-                'wizard_id': wizard_id,
-                'product_id': product_id,
-            }, context=context)
+        product_ids = alternative_pool.get_alternative_groups(
+            cr, uid, ids, old_product_id, context=context)
         ctx = context.copy()
+
         return {
             'type': 'ir.actions.act_window',
             'name': _('Prodotti alternativi'),
             'view_type': 'form',
             'view_mode': 'form',
-            'res_id': wizard_id,
-            'res_model': 'mrp.product.alternative.wizard',
-            'view_id': view_id,  # False
+            'res_id': False,
+            'res_model': 'bom.product.alternative.wizard',
+            'view_id': view_id,
             'views': [(view_id, 'tree')],
-            'domain': [],
+            'domain': [('id', 'in', product_ids)],
             'context': ctx,
             'target': 'new',
             'nodestroy': False,
             }
-
