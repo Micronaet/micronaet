@@ -64,6 +64,7 @@
 
         'company.xml',
         'product_view.xml',
+        'bom_view.xml',
         'production_view.xml',
         'partner_view.xml',
         'analysis.xml',

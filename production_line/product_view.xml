@@ -1,192 +1,137 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
-    <record model="ir.ui.view" id="view_bom_product_alternative_form">
-        <field name="name">bom.product.alternative.form</field>
-        <field name="model">bom.product.alternative</field>
-        <field name="arch" type="xml">
-            <form string="Alternative" version="7.0">
-                <sheet>
-                    <group col="4">
-                        <field name="name" />
-                        <field name="group_ids" widget="many2many_tags"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="view_bom_product_alternative_tree">
-        <field name="name">bom.product.alternative.tree</field>
-        <field name="model">bom.product.alternative</field>
-        <field name="arch" type="xml">
-            <tree string="Alternative" editable="bottom">
-                <field name="name" />
-                <field name="group_ids" widget="many2many_tags"/>
-            </tree>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="view_bom_product_alternative_search">
-        <field name="name">bom.product.alternative.search</field>
-        <field name="model">bom.product.alternative</field>
-        <field name="arch" type="xml">
-            <search string="Alternative" version="7.0">
-                <field name="name" />
-                <!--<field name="partner_id" filter_domain="[('partner_id','=',self)]"/>
-                <filter name="state_draft" string="Draft state" domain="[('state','=','draft')]"/>
-                <group expand="0" string="Group By...">
-                    <filter name="group_partner" string="Partner" context="{'group_by': 'partner_id'}"/>
-                    <filter string="Status" context="{'group_by': 'state'}" />
-                </group>-->
-            </search>
-        </field>
-    </record>
-    <record model="ir.actions.act_window" id="action_bom_product_alternative">
-        <field name="name">Alternative prodotti (DB)</field>
-        <field name="res_model">bom.product.alternative</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree</field>
-        <field name="view_id" ref="view_bom_product_alternative_tree"/>
-        <field name="context">{}</field>
-        <field name="domain">[]</field>
-    </record>
-
-    <record model="ir.ui.view" id="view_product_packaging_active_form">
-        <field name="name">product.packaging.form</field>
-        <field name="model">product.packaging</field>
-        <field name="inherit_id" ref="product.product_packaging_form_view"/>
-        <field name="arch" type="xml">
-            <field name="qty" position="before">
-                <field name="is_active" />
-            </field>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="view_product_packaging_tree">
-        <field name="name">product.packaging.tree</field>
-        <field name="model">product.packaging</field>
-        <field name="inherit_id" ref="product.product_packaging_tree_view"/>
-        <field name="arch" type="xml">
-            <field name="sequence" position="after">
-                <field name="is_active" />
-            </field>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="view_product_product_active_form">
-        <field name="name">product.product.form</field>
-        <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_normal_form_view"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='packaging']/form/group/field[@name='ean']" position="before">
-                <field name="is_active" />
-            </xpath>
-            <!--<xpath expr="//field[@name='packaging']/tree" position="attributes">
-                <attribute name="colors">red:is_active==False</attribute>
-            </xpath>-->
-        </field>
-    </record>
-
-    <!--product.ul-->
-    <record model="ir.ui.view" id="product_ul_tree_extra">
-        <field name="name">Product UL extra</field>
-        <field name="model">product.ul</field>
-        <field name="inherit_id" ref="product.product_ul_tree" />
-        <field name="arch" type="xml">
-            <field name="name" position="before">
-                <field name="code" />
-            </field>
-            <field name="type" position="after">
-                <field name="linked_product_id" />
-                <!--<field name="active" />
-                <button name="hide_product_ul" type="object" string="Nascondi" icon="gtk-no" attrs="{'invisible': [('active', '=', True)]}"/>
-                <button name="show_product_ul" type="object" string="Mostra" icon="gtk-yes" attrs="{'invisible': [('active', '=', False)]}"/>-->
-            </field>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="product_ul_form_view_extra">
-        <field name="name">Product UL extra</field>
-        <field name="model">product.ul</field>
-        <field name="inherit_id" ref="product.product_ul_form_view" />
-        <field name="arch" type="xml">
-            <field name="name" position="before">
-                <field name="code" />
-            </field>
-            <field name="type" position="after">
-                <field name="linked_product_id" />
-                <separator string="Prodotti che lo utilizzano:" colspan="4"/>
-                <field name="product_ids" nolabel="1" colspan="4">
-                    <tree string="Product packaging" editable="bottom" colors="grey:is_active==False">
-                        <field name="is_active" />
-                        <field name="product_id" />
-                        <field name="qty" />
-                        <field name="ean" />
-                        <field name="code" />
-                        <!--<field name="rows" />-->
-                    </tree>
+        <record model="ir.ui.view" id="view_product_packaging_active_form">
+            <field name="name">product.packaging.form</field>
+            <field name="model">product.packaging</field>
+            <field name="inherit_id" ref="product.product_packaging_form_view"/>
+            <field name="arch" type="xml">
+                <field name="qty" position="before">
+                    <field name="is_active" />
                 </field>
             </field>
+        </record>
+        <record model="ir.ui.view" id="view_product_packaging_tree">
+            <field name="name">product.packaging.tree</field>
+            <field name="model">product.packaging</field>
+            <field name="inherit_id" ref="product.product_packaging_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="sequence" position="after">
+                    <field name="is_active" />
+                </field>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_product_product_active_form">
+            <field name="name">product.product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='packaging']/form/group/field[@name='ean']" position="before">
+                    <field name="is_active" />
+                </xpath>
+                <!--<xpath expr="//field[@name='packaging']/tree" position="attributes">
+                    <attribute name="colors">red:is_active==False</attribute>
+                </xpath>-->
+            </field>
+        </record>
 
-        </field>
-    </record>
+        <!--product.ul-->
+        <record model="ir.ui.view" id="product_ul_tree_extra">
+            <field name="name">Product UL extra</field>
+            <field name="model">product.ul</field>
+            <field name="inherit_id" ref="product.product_ul_tree" />
+            <field name="arch" type="xml">
+                <field name="name" position="before">
+                    <field name="code" />
+                </field>
+                <field name="type" position="after">
+                    <field name="linked_product_id" />
+                    <!--<field name="active" />
+                    <button name="hide_product_ul" type="object" string="Nascondi" icon="gtk-no" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <button name="show_product_ul" type="object" string="Mostra" icon="gtk-yes" attrs="{'invisible': [('active', '=', False)]}"/>-->
+                </field>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="product_ul_form_view_extra">
+            <field name="name">Product UL extra</field>
+            <field name="model">product.ul</field>
+            <field name="inherit_id" ref="product.product_ul_form_view" />
+            <field name="arch" type="xml">
+                <field name="name" position="before">
+                    <field name="code" />
+                </field>
+                <field name="type" position="after">
+                    <field name="linked_product_id" />
+                    <separator string="Prodotti che lo utilizzano:" colspan="4"/>
+                    <field name="product_ids" nolabel="1" colspan="4">
+                        <tree string="Product packaging" editable="bottom" colors="grey:is_active==False">
+                            <field name="is_active" />
+                            <field name="product_id" />
+                            <field name="qty" />
+                            <field name="ean" />
+                            <field name="code" />
+                            <!--<field name="rows" />-->
+                        </tree>
+                    </field>
+                </field>
 
-    <!--product.product-->
-    <record model="ir.ui.view" id="product_search_form_view_extra">
-        <field name="name">Product accounting</field>
-        <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_search_form_view" />
-        <field name="arch" type="xml">
-            <filter string="Category" position="before">
-                <filter string='Supply method' icon="terp-stock_symbol-selection" domain="[]" context="{'group_by' : 'supply_method'}"/>
-            </filter>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="product_normal_form_view_pallet">
-        <field name="name">Product pallet</field>
-        <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_normal_form_view" />
-        <field name="arch" type="xml">
-            <field name="weight_net" position="after">
-                <group cospan="2" col="2">
-                    <separator string="Pallet product" colspan="2"/>
-                    <field name="is_pallet" />
-                    <field name="pallet_max_weight" attrs="{'invisible':[('is_pallet','=',False)]}"/>
-                </group>
             </field>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="product_normal_form_view_extra">
-        <field name="name">Product accounting</field>
-        <field name="model">product.product</field>
-        <field name="inherit_id" ref="stock.view_normal_procurement_locations_form" />
-        <field name="arch" type="xml">
-            <field name="incoming_qty" position="before">
-                <field name="not_in_status" />
-                <field name="accounting_qty" />
-                <field name="linked_accounting_qty"/>
-                <field name="minimum_qty" />
-                <field name="maximum_qty" />
-            </field>
-        </field>
-    </record>
+        </record>
 
-    <record model="ir.ui.view" id="product_normal_tree_view_extra">
-        <field name="name">Product accounting</field>
-        <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_product_tree_view" />
-        <field name="arch" type="xml">
-            <field name="qty_available" position="after">
-                <field name="accounting_qty" />
-                <field name="not_in_status" />
-                <field name="supply_method" />
+        <!--product.product-->
+        <record model="ir.ui.view" id="product_search_form_view_extra">
+            <field name="name">Product accounting</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_search_form_view" />
+            <field name="arch" type="xml">
+                <filter string="Category" position="before">
+                    <filter string='Supply method' icon="terp-stock_symbol-selection" domain="[]" context="{'group_by' : 'supply_method'}"/>
+                </filter>
             </field>
-            <field name="qty_available" position="attributes">
-                <attribute name="invisible">1</attribute>
+        </record>
+        <record model="ir.ui.view" id="product_normal_form_view_pallet">
+            <field name="name">Product pallet</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="arch" type="xml">
+                <field name="weight_net" position="after">
+                    <group cospan="2" col="2">
+                        <separator string="Pallet product" colspan="2"/>
+                        <field name="is_pallet" />
+                        <field name="pallet_max_weight" attrs="{'invisible':[('is_pallet','=',False)]}"/>
+                    </group>
+                </field>
             </field>
-        </field>
-    </record>
-    <menuitem
-        id="menu_bom_product_alternative"
-        name="Alternative DB"
-        parent="mrp.menu_mrp_manufacturing"
-        sequence="100" groups="group_production_admin,group_production_logistic,group_production_stock"
-        action="action_bom_product_alternative"/>
+        </record>
+        <record model="ir.ui.view" id="product_normal_form_view_extra">
+            <field name="name">Product accounting</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="stock.view_normal_procurement_locations_form" />
+            <field name="arch" type="xml">
+                <field name="incoming_qty" position="before">
+                    <field name="not_in_status" />
+                    <field name="accounting_qty" />
+                    <field name="linked_accounting_qty"/>
+                    <field name="minimum_qty" />
+                    <field name="maximum_qty" />
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="product_normal_tree_view_extra">
+            <field name="name">Product accounting</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view" />
+            <field name="arch" type="xml">
+                <field name="qty_available" position="after">
+                    <field name="accounting_qty" />
+                    <field name="not_in_status" />
+                    <field name="supply_method" />
+                </field>
+                <field name="qty_available" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+            </field>
+        </record>
    </data>
 </openerp>
