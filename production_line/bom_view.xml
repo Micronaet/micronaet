@@ -11,7 +11,7 @@
                     <field name="default_code" readonly="1"/>
                     <field name="name" readonly="1"/>
                     <field name="accounting_qty" readonly="1"/>
-                    <button type="object"  name="select_this_product_button" string="Seleziona questo" icon="gtk-execute"/>
+                    <button type="object"  name="select_this_product_button" string="Seleziona questo" icon="terp-stock_effects-object-colorize"/>
                 </tree>
             </field>
         </record>
