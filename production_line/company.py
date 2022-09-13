@@ -399,7 +399,7 @@ class res_company(osv.osv):
 
         # Unload:
         unload_ids = unload_pool.search(cr, uid, [
-            # ('date_start', '>=', '%s-01-01' % year),  # This year
+            # ('date_start', '>=', '%s-01-01' % year),  # This year (no inv.)
             ('date_finished', '>=', '%s-01-01' % year),  # This year
             ('accounting_sl_code', '!=', False),
             ], context=context)
