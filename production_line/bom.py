@@ -150,6 +150,10 @@ class MrpBom(osv.osv):
         return alternative_pool.choose_material_alternative(
             cr, uid, ids, context=ctx)
 
+    _columns = {
+        'create_date': fields.datetime('Data creazione'),
+    }
+
 
 class MrpProductionMaterial(osv.osv):
     """ Alternative groups for BOM

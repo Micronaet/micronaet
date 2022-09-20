@@ -2,8 +2,8 @@
 ##############################################################################
 #
 #    OpenERP module
-#    Copyright (C) 2010 Micronaet srl (<http://www.micronaet.it>) 
-#    OpenERP, Open Source Management Solution	
+#    Copyright (C) 2010 Micronaet srl (<http://www.micronaet.it>)
+#    OpenERP, Open Source Management Solution
 #    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>). All Rights Reserved
 #    $Id$
 #
@@ -28,19 +28,19 @@ from openerp import netsvc
 
 
 class mrp_production_extra(osv.osv):
-    ''' Add estra fields for coal BOM
-    '''
+    """ Add estra fields for coal BOM
+    """
     _name = 'mrp.production'
     _inherit = 'mrp.production'
-    
+
     # --------
     # Utility:
     # --------
     def create_bom_coal(self, cr, uid, production_id, context=None):
-        ''' Create a mrp.production from bom_id passed (coal bom)
-        '''
+        """ Create a mrp.production from bom_id passed (coal bom)
+        """
         production_proxy = self.browse(cr, uid, production_id, context=context)
-        
+
         if not production_proxy.coal_production_id:
             # Create a new production order (header):
             new_id = self.create(cr, uid, {
@@ -52,9 +52,9 @@ class mrp_production_extra(osv.osv):
                 'date_planned': production_proxy.date_planned,
                 #'workcenter_id': production_proxy.workcenter_id.id,
                 'bom_id': production_proxy.bom_id.coal_bom_id.id,
-                'user_id': production_proxy.user_id.id,                
+                'user_id': production_proxy.user_id.id,
             }, context=context)
-            
+
             # VIA button:
             self.pool.get('mrp.production').get_via_number(cr, uid, [new_id], context=context)
 
@@ -63,7 +63,7 @@ class mrp_production_extra(osv.osv):
             wf_service.trg_validate(uid, 'mrp.production', new_id, 'button_confirm', cr)
             # Manual button_force event
             # Manual force todo from view
-        
+
             # Update parent production with new linked coal production:
             self.write(cr, uid, production_id, {'coal_production_id': new_id}, context=context)
         return True
@@ -74,15 +74,16 @@ class mrp_production_extra(osv.osv):
             ondelete="set null"),
         'linked_to_coal': fields.boolean('Linked to coal production', required=False),
     }
-    
+
     _defaults = {
         'coal_production_id': False,
         'linked_to_coal': False,
     }
 
+
 class mrp_production_extra(osv.osv):
-    ''' Add estra fields for coal BOM
-    '''
+    """ Add estra fields for coal BOM
+    """
     _name = 'mrp.bom'
     _inherit = 'mrp.bom'
 
@@ -91,18 +92,18 @@ class mrp_production_extra(osv.osv):
     # On Change function:
     # -------------------
     def onchange_only_coal(self, cr, uid, only_coal, context=None):
-        ''' Reset BOM
-        '''
+        """ Reset BOM
+        """
         res = {}
         if not only_coal:
             res['value'] = {}
             res['value']['coal_bom_id'] = False
-        return res    
+        return res
 
     _columns = {
-        'only_coal': fields.boolean('Only for coal', required=False, 
+        'only_coal': fields.boolean('Only for coal', required=False,
             help='Only for coal BOM, go in coal registry!'),
-        'coal_bom_id':fields.many2one('mrp.bom', 'Coal BOM', 
+        'coal_bom_id':fields.many2one('mrp.bom', 'Coal BOM',
             required=False, domain=[('bom_id', '=', False)],
             help="Auto generate related bom for coal production and registry",
             ondelete="set null"),
