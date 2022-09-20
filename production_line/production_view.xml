@@ -17,8 +17,8 @@
         <field name="inherit_id" ref="mrp.view_mrp_bom_filter"/>
         <field name="arch" type="xml">
             <xpath expr="/search/group" position="after">
-                <field name="create_date" string="Dalla data creazione" domain="[('create_date', '&gt;=', self)]"/>
-                <field name="create_date" string="Alla data creazione" domain="[('create_date', '&lt;=', self)]"/>
+                <field name="create_date" string="Dalla data creazione" filter_domain="[('create_date', '&gt;=', '%s 00:00:00' % self)]"/>
+                <field name="create_date" string="Alla data creazione" filter_domain="[('create_date', '&lt;=', '%s 23:59:59' % self)]"/>
             </xpath>
             <xpath expr="/search/group/filter[1]" position="after">
                  <filter string="Creazione" domain="[]" context="{'group_by':'create_date'}"/>
