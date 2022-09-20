@@ -1,6 +1,17 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+    <record model="ir.ui.view" id="view_mrp_bom_create_date_tree">
+        <field name="name">mrp.bom.create.date</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="code" position="after">
+                <field name="create_date" />
+            </field>
+        </field>
+    </record>
+
     <!--mrp.production.material-->
     <record model="ir.ui.view" id="view_mrp_production_material_tree">
         <field name="name">Production material</field>
