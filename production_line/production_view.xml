@@ -11,6 +11,20 @@
             </field>
         </field>
     </record>
+    <record model="ir.ui.view" id="view_mrp_bom_filter_create_filter">
+        <field name="name">mrp.bom.create.filter</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.view_mrp_bom_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="/search/group" position="after">
+                <field name="create_date" string="Dalla data creazione" domain="[('create_date', '>=', '%s 00:00:00' % self)]"/>
+                <field name="create_date" string="Alla data creazione" domain="[('create_date', '<=', '%s 23:59:59' % self)]"/>
+            </xpath>
+            <xpath expr="/search/group/filter[1]" position="after">
+                 <filter string="Creazione" domain="[]" context="{'group_by':'create_date'}"/>
+            </xpath>
+        </field>
+    </record>
 
     <!--mrp.production.material-->
     <record model="ir.ui.view" id="view_mrp_production_material_tree">
