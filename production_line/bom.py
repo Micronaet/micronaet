@@ -152,6 +152,7 @@ class MrpBom(osv.osv):
 
     _columns = {
         'create_date': fields.datetime('Data creazione'),
+        #  'is_active': fields.boolean('Attivo (rimuovere)!'),
         'obsolete': fields.boolean(
             'Obsoleta',
             help='Se attivo è considerata obsolete e non visibile in '
