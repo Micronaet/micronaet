@@ -1,6 +1,26 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+        <record model="ir.ui.view" id="view_mrp_bom_last_bom_use_form">
+            <field name="name">mrp.bom.last.used.bom.form</field>
+            <field name="model">mrp.bom</field>
+            <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+            <field name="arch" type="xml">
+               <field name="name" position="after">
+                   <field name="obsolete" />
+               </field>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_mrp_bom_last_bom_use_tree">
+            <field name="name">mrp.bom.last.used.bom.form</field>
+            <field name="model">mrp.bom</field>
+            <field name="inherit_id" ref="mrp.mrp_bom_tree_view"/>
+            <field name="arch" type="xml">
+               <field name="name" position="after">
+                   <field name="obsolete" />
+               </field>
+            </field>
+        </record>
         <!--Wizard:-->
         <!--bom.product.alternative.wizard-->
         <record model="ir.ui.view" id="view_bom_product_alternative_list_tree">
