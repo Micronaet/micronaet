@@ -1,6 +1,21 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+        <record model="ir.ui.view" id="view_mrp_bom_obsolete_search">
+            <field name="name">mrp.bom.obsoletesearch</field>
+            <field name="model">mrp.bom</field>
+            <field name="inherit_id" ref="mrp.view_mrp_bom_filter"/>
+            <field name="arch" type="xml">
+               <field name="name" position="after">
+                   <filter string="Obsolete" domain="[('obsolete', '=', True)]]" />
+                   <filter string="In uso" domain="[('obsolete', '=', False)]]" />
+               </field>
+               <filter string="Product" position="after">
+                   <filter string="Obsolete" context="{'group_by': 'obsolete'}" />
+               </filter>
+            </field>
+        </record>
+
         <record model="ir.ui.view" id="view_mrp_bom_last_bom_use_form">
             <field name="name">mrp.bom.last.used.bom.form</field>
             <field name="model">mrp.bom</field>
