@@ -12,13 +12,16 @@
             </field>
         </record>
         <record model="ir.ui.view" id="view_mrp_bom_last_bom_use_tree">
-            <field name="name">mrp.bom.last.used.bom.form</field>
+            <field name="name">mrp.bom.last.used.bom.tree</field>
             <field name="model">mrp.bom</field>
             <field name="inherit_id" ref="mrp.mrp_bom_tree_view"/>
             <field name="arch" type="xml">
-               <field name="name" position="after">
-                   <field name="obsolete" />
-               </field>
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="colors">grey: obsolete == True</attribute>
+                </xpath>
+                <field name="name" position="after">
+                    <field name="obsolete" />
+                </field>
             </field>
         </record>
         <!--Wizard:-->
