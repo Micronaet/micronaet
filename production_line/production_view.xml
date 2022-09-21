@@ -8,6 +8,7 @@
         <field name="arch" type="xml">
             <field name="code" position="after">
                 <field name="create_date" />
+                <field name="is_active" />
             </field>
         </field>
     </record>
@@ -22,6 +23,7 @@
             </xpath>
             <xpath expr="/search/group/filter[1]" position="after">
                  <filter string="Creazione" domain="[]" context="{'group_by':'create_date'}"/>
+                 <filter string="Attive" domain="[]" context="{'group_by':'is_active'}"/>
             </xpath>
         </field>
     </record>
