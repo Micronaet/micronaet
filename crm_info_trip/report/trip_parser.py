@@ -18,6 +18,7 @@
 #
 ###############################################################################
 import os
+import pdb
 import sys
 import openerp.netsvc
 import logging
@@ -173,6 +174,8 @@ class Parser(report_sxw.rml_parse):
             if not product.default_code:
                 _logger.error('Product without code: %s' % product.name)
                 continue
+            if product.default_code == 'MQ340287':
+                pdb.set_trace()
             self.products_uom[product.default_code] = (
                 product.uom_id.account_ref or '',
                 product.uom_id.moltiplicator or 1,
@@ -283,7 +286,7 @@ class Parser(report_sxw.rml_parse):
                 self.total_invoiced[year] = 0.0
                 mysql_cursor = query.get_mm_situation(
                     self.cr, self.uid,
-                    document="BC",
+                    document='BC',
                     partner_code=partner_code,
                     originator=True,
                     year=year)
