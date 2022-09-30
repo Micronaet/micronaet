@@ -174,8 +174,6 @@ class Parser(report_sxw.rml_parse):
             if not product.default_code:
                 _logger.error('Product without code: %s' % product.name)
                 continue
-            if product.default_code == 'MQ340287':
-                pdb.set_trace()
             self.products_uom[product.default_code] = (
                 product.uom_id.account_ref or '',
                 product.uom_id.moltiplicator or 1,
