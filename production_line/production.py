@@ -744,6 +744,7 @@ class sale_order_add_extra(osv.osv):
         # ---------------------------------------------------------------------
         # Log operations:
         # ---------------------------------------------------------------------
+        pdb.set_trace()
         for key in telegram_message:
             message, mask = telegram_message[key]
             if not message:
