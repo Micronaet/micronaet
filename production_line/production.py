@@ -250,7 +250,7 @@ class sale_order_add_extra(osv.osv):
         """ Import OC and create sale.order
         """
         # ---------------------------------------------------------------------
-        #                                 Utility
+        #                               Utility
         # ---------------------------------------------------------------------
         def get_oc_key(record):
             """ Compose and return key for OC
@@ -261,30 +261,36 @@ class sale_order_add_extra(osv.osv):
                 record['NGL_DOC'],
             )
 
+        _logger.info('Start import OC header')
         currency_pool = self.pool.get('res.currency')
         partner_pool = self.pool.get('res.partner')
         accounting_pool = self.pool.get('micronaet.accounting')
         line_pool = self.pool.get('sale.order.line')
+        user_pool = self.pool.get('res.users')
+        telegram_pool = self.pool.get('flask.telegram')  # not in this module!
 
+        # ---------------------------------------------------------------------
         # Parameter:
+        # ---------------------------------------------------------------------
         property_account_position = 1
-
         empty_date = accounting_pool.get_empty_date()
-        log_info = ''
 
         # Update boolean if store value < sum(oc line q.):
         is_to_produce_q = {}
         # ID for update boolean if store value < sum(oc line q.):
         is_to_produce_line = {}
 
-        # Open CSV passed file (see arguments) mode: read/binary, delim. char
-        _logger.info('Start import OC header')
+        # Telegram alert reference:
+        user = user_pool.browse(cr, uid, uid, context=context)
+        company = user.company_id
+        telegram_id = company.telegram_mrp_alert_id.id or \
+            company.telegram_admin_alert_id.id
 
         # ---------------------------------------------------------------------
-        # Load DB for currency:
+        # Load data for currency assignation:
         # ---------------------------------------------------------------------
         currency_convert = {}
-        currency_default = 1  # EUR (TODO parameter)
+        currency_default = 1  # EUR todo keep as parameter
         currency_ids = currency_pool.search(cr, uid, [], context=None)
         for currency in currency_pool.browse(
                 cr, uid, currency_ids, context=context):
@@ -306,6 +312,7 @@ class sale_order_add_extra(osv.osv):
         # list of all modified orders header (for load lines to test deletion)
         all_order_updated_ids = []
 
+        # Load header from account:
         cursor_oc = accounting_pool.get_oc_header(cr, uid)
         if not cursor_oc:
             return log_error(
@@ -314,12 +321,26 @@ class sale_order_add_extra(osv.osv):
             )
         oc_header = {}  # Save OpenERP ID  (ref, type, number)
 
+        telegram_message = {
+            'order': [  # New order created here
+                '',
+                'Nuovi ordini arrivati:\n%s',
+                ],
+            'partner': [  # New partner created minimal
+                '',
+                'Nuovo partner creati (non trovati):\n%s',
+                ],
+            'unlink': [  # Unlinked line that are in MRP production
+                '',
+                'Righe OC eliminate presenti in MRP:\n%s'
+                ],
+            }
         for oc in cursor_oc:
             try:  # master error
                 name = '%s/%s' % (
                     oc['NGL_DOC'],
                     oc['DTT_DOC'].strftime('%Y'),
-                )
+                    )
                 oc_id = self.search(cr, uid, [
                     ('name', '=', name)], context=context)
 
@@ -378,10 +399,13 @@ class sale_order_add_extra(osv.osv):
                 #                         NEW:
                 # -------------------------------------------------------------
                 else:
+                    telegram_message['order'][0] += '%s\n' % name
                     if not partner_id:
                         _logger.error(
                             'No partner found (created minimal): %s' % (
                                 oc['CKY_CNT_CLFR']))
+                        telegram_message['partner'][0] += \
+                            '%s\n' % oc['CKY_CNT_CLFR']
                         try:
                             partner_id = self.pool.get(
                                 'res.partner').create(cr, uid, {
@@ -390,7 +414,7 @@ class sale_order_add_extra(osv.osv):
                                     'property_account_position':
                                         property_account_position,
                                     'is_company': True,
-                                    # todo old mode:
+                                    # todo old mode, remove:
                                     'mexal_c': oc['CKY_CNT_CLFR'],
                                     'sql_customer_code': oc['CKY_CNT_CLFR'],
                                     # customer: True,  # OC so customer!
@@ -400,6 +424,9 @@ class sale_order_add_extra(osv.osv):
                                 'Error creating minimal partner: %s [%s]' % (
                                     oc['CKY_CNT_CLFR'],
                                     sys.exc_info()))
+                            telegram_message['error'][0] += \
+                                'Impossibile create partner %s ' \
+                                '(ordine saltato)\n' % oc['CKY_CNT_CLFR']
                             continue  # jump this OC
 
                     oc_id = self.create(cr, uid, {
@@ -573,7 +600,7 @@ class sale_order_add_extra(osv.osv):
                     # [ID, found, product_id, deadline, q.]
                     for element in DB_line[order_id]:
                         # product and deadline
-                        if element[1] == False and element[2] == product.id \
+                        if not element[1] and element[2] == product.id \
                                 and date_deadline == element[3]:
                             # Q. different (with error)
                             if abs(element[4] - quantity) < 1.0:
@@ -611,17 +638,17 @@ class sale_order_add_extra(osv.osv):
 
         # NOTE: only deleted lines with order still present!!!!:
         # ---------------------------------------------------------------------
-        #                       Delete lines in production (logging)
+        #             Delete lines in production (for log operation)
         # ---------------------------------------------------------------------
         to_delete_ids = line_pool.search(cr, uid, [
             ('accounting_state', '=', 'not'),
             ('mrp_production_id', '!=', False)
-        ]) # to delete (in production) # TODO log!
+        ])  # to delete (in production) # TODO log!
         if to_delete_ids:
-            delete_oc_in_production_error = ''
+            # delete_oc_in_production_error = ''
             for item in line_pool.browse(
                     cr, uid, to_delete_ids, context=context):
-                delete_oc_in_production_error += \
+                telegram_message['unlink'][0] += \
                     'Order: %s (%s) [%s q.: %s] >> %s' % (
                         item.order_id.name,
                         item.date_deadline,
@@ -629,21 +656,6 @@ class sale_order_add_extra(osv.osv):
                         item.product_uom_qty,
                         item.mrp_production_id.name,
                         )
-
-            try:
-                # and self.send_mail(cr, uid,
-                # 'Import sale order: Warning deletion of OC line in
-                # production',
-                #  delete_oc_in_production_error, context=context)
-                if delete_oc_in_production_error:
-                    _logger.warning(
-                        'Send mail for error / warning '
-                        '(OC line in production deleted)!')
-                else:
-                    _logger.error(
-                        'Server SMTP not set up, no mail will be sent!')
-            except:
-                _logger.error('Error sending email!')
 
             for del_id in to_delete_ids:
                 try:
@@ -659,7 +671,7 @@ class sale_order_add_extra(osv.osv):
                 'Deleted %s OC lines non present in Accounting '
                 '(in production)!' % len(to_delete_ids))
 
-        # TODO IMPORTANTE: quanto verranno eliminati ordini se ci sono righe
+        # todo IMPORTANTE: quanto verranno eliminati ordini se ci sono righe
         # in produzione devono essere caricate come 'use accounting store'
 
         # ---------------------------------------------------------------------
@@ -672,7 +684,7 @@ class sale_order_add_extra(osv.osv):
         # todo solve the problem if order are confirmed or cancel...
         for item_id in to_delete_ids:  # loop for manage error during deletion
             try:
-                # TODO note: always error:
+                # todo note: always error:
                 line_pool.unlink(cr, uid, [item_id], context=context)
                 _logger.info(
                     'Deleted %s OC lines non present in Accounting '
@@ -718,15 +730,32 @@ class sale_order_add_extra(osv.osv):
         if over_store_error:
             _logger.warning('OC not covered with store!')
         # try:
-        #     if self.send_mail(cr, uid, 'Import sale order: Warning variation in store cover', over_store_error, context=context):
-        #         _logger.warning('Send mail for error / warning (OC not covered with store)!')
+        #     if self.send_mail(cr, uid, 'Import sale order:
+        #     Warning variation in store cover', over_store_error,
+        #     context=context):
+        #         _logger.warning('Send mail for error / warning
+        #         (OC not covered with store)!')
         #     else:
-        #         _logger.error('Server SMTP not setted up, no mail will be sent!')
+        #         _logger.error('Server SMTP not set up, no mail will be
+        #         sent!')
         # except:
         #     _logger.error('Error sending email!')
 
+        # ---------------------------------------------------------------------
+        # Log operations:
+        # ---------------------------------------------------------------------
+        for key in telegram_message:
+            message, mask = telegram_message[key]
+            try:
+                telegram_pool.command_send_telegram(
+                    cr, uid, telegram_id, mask % message, context=context)
+            except:
+                _logger.error(
+                    'Error sending telegram log message %s:\n%s' % (
+                        key, message))
+
         # todo testare bene gli ordini di produzione che potrebbero avere
-        # delle mancanze!
+        #  delle mancanze!
         _logger.info('End importation OC header and line!')
         return
 
@@ -737,7 +766,8 @@ class sale_order_add_extra(osv.osv):
             'Previous deadline',
             help='If during sync deadline is modified this field contain old value before update'),
 
-        # 'mandatory_delivery': fields.boolean('Delivery mandatory', help='If true moving of order is not possible'),
+        # 'mandatory_delivery': fields.boolean('Delivery mandatory',
+        # help='If true moving of order is not possible'),
         'date_delivery': fields.date(
             'Delivery',
             help='Contain delivery date, when present production plan work with this instead of deadline value, if forced production cannot be moved'),
