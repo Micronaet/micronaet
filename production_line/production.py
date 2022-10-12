@@ -749,6 +749,8 @@ class sale_order_add_extra(osv.osv):
             try:
                 telegram_pool.command_send_telegram(
                     cr, uid, telegram_id, mask % message, context=context)
+                _logger.info(
+                    'Telegram sent message %s:\n%s' % (key, message))
             except:
                 _logger.error(
                     'Error sending telegram log message %s:\n%s' % (
