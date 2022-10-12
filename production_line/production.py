@@ -746,6 +746,8 @@ class sale_order_add_extra(osv.osv):
         # ---------------------------------------------------------------------
         for key in telegram_message:
             message, mask = telegram_message[key]
+            if not message:
+                continue
             try:
                 telegram_pool.command_send_telegram(
                     cr, uid, telegram_id, mask % message, context=context)
