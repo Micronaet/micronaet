@@ -39,19 +39,20 @@
                                         <separator string="Simboli di sicurezza" colspan="4"/>
                                         <field name="symbol_ids" widget="many2many_tags" domain="[('mode', '=', 'danger')]" colspan="4"/>
 
-                                        <separator string="Simboli di protezione" colspan="4"/>
-                                        <field name="protection_eye_id" />
-                                        <field name="protection_eye_text" />
-                                        <field name="protection_skin_id" />
-                                        <field name="protection_skin_text" />
-                                        <field name="protection_hand_id" />
-                                        <field name="protection_hand_text" />
-                                        <field name="protection_air_id" />
-                                        <field name="protection_air_text" />
-                                        <field name="protection_body_id" />
-                                        <field name="protection_body_text" />
-                                        <field name="protection_foot_id" />
-                                        <field name="protection_foot_text" />
+                                        <separator string="Simboli protezione" colspan="2"/>
+                                        <separator string="Testi protezione" colspan="2"/>
+                                        <field name="protection_eye_id" string="Occhi"/>
+                                        <field name="protection_eye_text" nolabel="1" colspan="2"/>
+                                        <field name="protection_skin_id" string="Pelle"/>
+                                        <field name="protection_skin_text" nolabel="1" colspan="2"/>
+                                        <field name="protection_hand_id" string="Mani"/>
+                                        <field name="protection_hand_text" nolabel="1" colspan="2"/>
+                                        <field name="protection_air_id" string="Vie respiratorie"/>
+                                        <field name="protection_air_text" nolabel="1" colspan="2"/>
+                                        <field name="protection_body_id" string="Tuta"/>
+                                        <field name="protection_body_text" nolabel="1" colspan="2"/>
+                                        <field name="protection_foot_id" string="Scarpe"/>
+                                        <field name="protection_foot_text" nolabel="1" colspan="2"/>
                                     </group>
                                 </page>
                                 <page name="term_page" string="Termini">
