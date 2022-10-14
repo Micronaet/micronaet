@@ -25,7 +25,22 @@
                     <field name="default_code" readonly="1"/>
                     <field name="name" readonly="1" />
                     <field name="uom_id" readonly="1" />
+
+                    <!-- Security: -->
                     <field name="security_off" />
+                    <field name="symbol_ids" widget="many2many_tags"/>
+
+                    <!-- Protection: -->
+                    <field name="protection_eye_id" />
+                    <field name="protection_skin_id" />
+                    <field name="protection_hand_id" />
+                    <field name="protection_air_id" />
+                    <field name="protection_body_id" />
+                    <field name="protection_foot_id" />
+
+                    <field name="symbol_ids" widget="many2many_tags"/>
+
+                    <!-- Terms: -->
                     <field name="term_h_ids" widget="many2many_tags"/>
                     <field name="term_p_ids" widget="many2many_tags"/>
                     <field name="term_dpi_ids" widget="many2many_tags"/>

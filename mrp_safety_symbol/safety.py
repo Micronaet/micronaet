@@ -145,6 +145,32 @@ class ProductProduct(orm.Model):
                  'viene indicata nella tabella riepilogativa'),
         'security_template_id': fields.many2one(
             'safety.symbol.template', 'Modello di sicurezza'),
+
+        # Mandatory for equipmeny:
+        'protection_eye_id': fields.many2one(
+            'safety.symbol', 'Protezione occhi',
+            domain="[('mode', '=', 'equipment')]"),
+        'protection_skin_id': fields.many2one(
+            'safety.symbol', 'Protezione pelle',
+            domain="[('mode', '=', 'equipment')]"),
+        'protection_hand_id': fields.many2one(
+            'safety.symbol', 'Protezione mani',
+            domain="[('mode', '=', 'equipment')]"),
+        'protection_air_id': fields.many2one(
+            'safety.symbol', 'Protezione respiratoria',
+            domain="[('mode', '=', 'equipment')]"),
+        'protection_body_id': fields.many2one(
+            'safety.symbol', 'Protezione tuta',
+            domain="[('mode', '=', 'equipment')]"),
+        'protection_foot_id': fields.many2one(
+           'safety.symbol', 'Protezione scarpe',
+           domain="[('mode', '=', 'equipment')]"),
+
+        'symbol_ids': fields.many2many(
+           'safety.symbol', 'safety_symbol_danger_rel',
+           'product_id', 'simbol_id',
+           'Pittogrammi', domain="[('mode', '=', 'danger')]"),
+
         'term_h_ids': fields.many2many(
            'safety.h', 'safety_h_rel',
            'product_id', 'term_h_id',
