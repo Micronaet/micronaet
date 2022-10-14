@@ -169,7 +169,7 @@ class ProductProduct(orm.Model):
         'symbol_ids': fields.many2many(
            'safety.symbol', 'safety_symbol_danger_rel',
            'product_id', 'simbol_id',
-           'Pittogrammi', domain="[('mode', '=', 'danger')]"),
+           'Pittogrammi'),
 
         'term_h_ids': fields.many2many(
            'safety.h', 'safety_h_rel',

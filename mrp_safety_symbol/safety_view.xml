@@ -28,7 +28,7 @@
 
                     <!-- Security: -->
                     <field name="security_off" />
-                    <field name="symbol_ids" widget="many2many_tags"/>
+                    <field name="symbol_ids" widget="many2many_tags" domain="[('mode', '=', 'danger')]"/>
 
                     <!-- Protection: -->
                     <field name="protection_eye_id" />
@@ -66,6 +66,7 @@
             <field name="arch" type="xml">
                 <tree string="Symbol">
                     <field name="name" />
+                    <field name="mode" />
                     <field name="note" />
                 </tree>
             </field>
@@ -77,11 +78,15 @@
                 <form string="Symbol" version="7.0">
                     <sheet>
                         <group colspan="4" col="4">
-                            <field name="image" widget="image" nolabel="1"/>
-                            <field name="name" />
-                            <newline/>
-                            <separator string="note" colspan="4"/>
-                            <field name="note" nolabel="1" colspan="4"/>
+                            <group colspan="2" col="2">
+                                <field name="name" />
+                                <field name="mode" />
+                                <separator string="note" colspan="2"/>
+                                <field name="note" nolabel="1" colspan="2"/>
+                            </group>
+                            <group colspan="2" col="2">
+                                <field name="image" widget="image" nolabel="1"/>
+                            </group>
                         </group>
                     </sheet>
                 </form>
