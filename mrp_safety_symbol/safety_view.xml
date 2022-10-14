@@ -47,12 +47,43 @@
                 </tree>
             </field>
         </record>
+        <record model="ir.ui.view" id="view_product_product_security_top_tree">
+            <field name="name">product.product.tree</field>
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+                <tree string="Prodotti con modello sicurezza" colors="blue:security_template_id!=False">
+                    <field name="default_code" />
+                    <field name="name" />
+                    <field name="uom_id" />
+
+                    <!-- Security: -->
+                    <field name="security_off" />
+                    <field name="symbol_ids" widget="many2many_tags" />
+
+                    <!-- Terms: -->
+                    <field name="term_h_ids" widget="many2many_tags"/>
+                    <field name="term_p_ids" widget="many2many_tags"/>
+                    <field name="term_dpi_ids" widget="many2many_tags"/>
+                    <field name="security_template_id" />
+                </tree>
+            </field>
+        </record>
         <record model="ir.actions.act_window" id="action_product_product_security">
             <field name="name">Prodotti e sicurezza</field>
             <field name="res_model">product.product</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_product_product_security_tree"/>
+            <field name="search_view_id" ref="view_product_product_security_search"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
+        <record model="ir.actions.act_window" id="action_product_product_security_top">
+            <field name="name">Prodotti e sicurezza dett.</field>
+            <field name="res_model">product.product</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_product_product_security_top_tree"/>
             <field name="search_view_id" ref="view_product_product_security_search"/>
             <field name="context">{}</field>
             <field name="domain">[]</field>
@@ -290,7 +321,11 @@
                 id="menu_menu_safety_symbol_product"
                 action="action_product_product_security"
                 sequence="30"/>
-
+            <menuitem
+                parent="menu_safety_root"
+                id="menu_menu_safety_symbol_product_top"
+                action="action_product_product_security_top"
+                sequence="40"/>
     </data>
 </openerp>
 

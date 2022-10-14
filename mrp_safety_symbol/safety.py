@@ -167,6 +167,13 @@ class ProductProduct(orm.Model):
            'safety.symbol', 'Protezione scarpe',
            domain="[('mode', '=', 'equipment')]"),
 
+        'protection_eye_text': fields.text('Protezione occhi'),
+        'protection_skin_text': fields.text('Protezione pelle'),
+        'protection_hand_text': fields.text('Protezione mani'),
+        'protection_air_text': fields.text('Protezione respiratoria'),
+        'protection_body_text': fields.text('Protezione tuta'),
+        'protection_foot_text': fields.text('Protezione scarpe'),
+
         'symbol_ids': fields.many2many(
            'safety.symbol', 'safety_symbol_danger_rel',
            'product_id', 'simbol_id',
