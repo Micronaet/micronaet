@@ -60,19 +60,30 @@ class Parser(report_sxw.rml_parse):
         """
         security_material = []
         security_advice = []
+
+        total = 0.0
+        rate = {}
         for material in o.bom_material_ids:
             product = material.product_id
+            if product not in rate:
+                rate[product] = 0.0
+            quantity = material.quantity
+            rate[product] += quantity
+            total += quantity
             if product.term_h_ids:
                 security_material.append(product)
                 for term in product.term_h_ids:
                     if term not in security_advice:
                         security_advice.append(term)
 
+        for product in rate:
+            rate[product] /= total * 0.01
+
         # Sort:
         security_material.sort(key=lambda x: x.default_code)
         security_advice.sort(key=lambda x: x.name)
 
-        return [security_material, security_advice]
+        return [(security_material, security_advice, rate)]
 
     def get_security_loaded(self, o):
         """ Load if not present the security table for this job

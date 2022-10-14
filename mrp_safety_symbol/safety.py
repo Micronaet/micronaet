@@ -130,6 +130,11 @@ class ProductProduct(orm.Model):
     _inherit = 'product.product'
 
     _columns = {
+        'security_off': fields.boolean(
+            'Non pericoloso',
+            help='Indica che la materia prima non è da considerarsi '
+                 'pericolosa quindi nella scheda di produzione non '
+                 'viene indicata nella tabella riepilogativa'),
         'security_template_id': fields.many2one(
             'safety.symbol.template', 'Modello di sicurezza'),
         'term_h_ids': fields.many2many(
