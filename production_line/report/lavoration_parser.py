@@ -101,7 +101,7 @@ class Parser(report_sxw.rml_parse):
 
             # Equipment:
             for part in equipment:
-                equipment_item = eval('product.protection_%s_id')
+                equipment_item = eval('product.protection_%s_id' % part)
                 if equipment_item and equipment_item not in security_equipment:
                     security_equipment.append(equipment_item)
 
