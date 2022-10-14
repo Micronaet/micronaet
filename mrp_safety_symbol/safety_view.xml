@@ -17,6 +17,58 @@
                 </search>
             </field>
         </record>
+        <record model="ir.ui.view" id="view_product_product_security_form">
+            <field name="name">product.product.form</field>
+            <field name="model">product.product</field>
+            <field name="priority" eval="40"/>
+            <field name="arch" type="xml">
+                <form string="Prodotti con modello sicurezza" editable="bottom" colors="blue:security_template_id!=False">
+                    <sheet>
+                        <group col="4">
+                            <field name="default_code" readonly="1"/>
+                            <field name="name" readonly="1" />
+
+                            <field name="uom_id" readonly="1" />
+                            <field name="security_off" />
+
+                            <notebook colspan="4">
+                                <page name="protection_page" string="Simboli">
+                                    <group col="4">
+                                        <field name="security_template_id" />
+
+                                        <separator string="Simboli di sicurezza" colspan="4"/>
+                                        <field name="symbol_ids" widget="many2many_tags" domain="[('mode', '=', 'danger')]" colspan="4"/>
+
+                                        <!-- Protection: -->
+                                        <separator string="Simboli di protezione" colspan="4"/>
+                                        <field name="protection_eye_id" />
+                                        <field name="protection_eye_text" />
+                                        <field name="protection_skin_id" />
+                                        <field name="protection_skin_text" />
+                                        <field name="protection_hand_id" />
+                                        <field name="protection_hand_text" />
+                                        <field name="protection_air_id" />
+                                        <field name="protection_air_text" />
+                                        <field name="protection_body_id" />
+                                        <field name="protection_body_text" />
+                                        <field name="protection_foot_id" />
+                                        <field name="protection_foot_text" />
+                                    </group>
+                                </page>
+                                <page name="term_page" string="Termini">
+                                    <group col="4">
+                                        <!-- Terms: -->
+                                        <field name="term_h_ids" widget="many2many_tags" colspan="4"/>
+                                        <field name="term_p_ids" widget="many2many_tags" colspan="4"/>
+                                        <field name="term_dpi_ids" widget="many2many_tags" colspan="4"/>
+                                    </group>
+                                </page>
+                            </notebook>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
         <record model="ir.ui.view" id="view_product_product_security_tree">
             <field name="name">product.product.tree</field>
             <field name="model">product.product</field>
@@ -75,7 +127,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_product_product_security_tree"/>
             <field name="search_view_id" ref="view_product_product_security_search"/>
-            <field name="context">{}</field>
+            <field name="context">{'form_view_ref': 'mrp_safety_symbol.view_product_product_security_form'}</field>
             <field name="domain">[]</field>
         </record>
         <record model="ir.actions.act_window" id="action_product_product_security_top">
@@ -85,7 +137,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_product_product_security_top_tree"/>
             <field name="search_view_id" ref="view_product_product_security_search"/>
-            <field name="context">{}</field>
+            <field name="context">{'form_view_ref': 'mrp_safety_symbol.view_product_product_security_form'}</field>
             <field name="domain">[]</field>
         </record>
 
