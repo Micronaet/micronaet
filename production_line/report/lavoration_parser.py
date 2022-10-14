@@ -63,8 +63,8 @@ class Parser(report_sxw.rml_parse):
             'skin',
             'hand',
             'air',
-            'head',
             'body',
+            'foot',
         ]
         security_material = []
         security_advice = []
