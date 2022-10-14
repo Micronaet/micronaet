@@ -17,7 +17,7 @@
                 </search>
             </field>
         </record>
-        <record model="ir.ui.view" id="view_product_product_security_form">
+        <!--<record model="ir.ui.view" id="view_product_product_security_form">
             <field name="name">product.product.form</field>
             <field name="model">product.product</field>
             <field name="priority" eval="40"/>
@@ -26,7 +26,7 @@
                     <sheet>
                         <group col="4">
                             <field name="default_code" readonly="1"/>
-                            <!--<field name="name" readonly="1" />
+                            <field name="name" readonly="1" />
 
                             <field name="uom_id" readonly="1" />
                             <field name="security_off" />
@@ -61,12 +61,12 @@
                                         <field name="term_dpi_ids" widget="many2many_tags" colspan="4"/>
                                     </group>
                                 </page>
-                            </notebook>-->
+                            </notebook>
                         </group>
                     </sheet>
                 </form>
             </field>
-        </record>
+        </record>-->
         <record model="ir.ui.view" id="view_product_product_security_tree">
             <field name="name">product.product.tree</field>
             <field name="model">product.product</field>
@@ -125,7 +125,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_product_product_security_tree"/>
             <field name="search_view_id" ref="view_product_product_security_search"/>
-            <field name="context">{'form_view_ref': 'mrp_safety_symbol.view_product_product_security_form'}</field>
+            <!--<field name="context">{'form_view_ref': 'mrp_safety_symbol.view_product_product_security_form'}</field>-->
             <field name="domain">[]</field>
         </record>
         <record model="ir.actions.act_window" id="action_product_product_security_top">
@@ -135,7 +135,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_product_product_security_top_tree"/>
             <field name="search_view_id" ref="view_product_product_security_search"/>
-            <field name="context">{'form_view_ref': 'mrp_safety_symbol.view_product_product_security_form'}</field>
+            <!--<field name="context">{'form_view_ref': 'mrp_safety_symbol.view_product_product_security_form'}</field>-->
             <field name="domain">[]</field>
         </record>
 
