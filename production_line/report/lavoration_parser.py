@@ -58,9 +58,18 @@ class Parser(report_sxw.rml_parse):
     def get_security_object(self, o):
         """ Return security data for last page
         """
+        equipment = [  # List of equiment
+            'eye',
+            'skin',
+            'hand',
+            'air',
+            'head',
+            'body',
+        ]
         security_material = []
         security_advice = []
         security_symbol = []
+        security_equipment = []
 
         total = 0.0
         rate = {}
@@ -90,7 +99,13 @@ class Parser(report_sxw.rml_parse):
                     if symbol not in security_symbol:
                         security_symbol.append(symbol)
 
-        # Update rate:
+            # Equipment:
+            for part in equipment:
+                equipment_item = eval('product.protection_%s_id')
+                if equipment_item and equipment_item not in security_equipment:
+                    security_equipment.append(equipment_item)
+
+            # Update rate:
         for product in rate:
             rate[product] /= total * 0.01
 
@@ -98,7 +113,9 @@ class Parser(report_sxw.rml_parse):
         security_material.sort(key=lambda x: x.default_code)
         security_advice.sort(key=lambda x: x.name)
 
-        return [(security_material, security_advice, rate, security_symbol)]
+        return [
+            (security_material, security_advice, rate, security_symbol,
+             security_equipment)]
 
     def get_security_loaded(self, o):
         """ Load if not present the security table for this job
