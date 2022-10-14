@@ -22,7 +22,7 @@
             <field name="model">product.product</field>
             <field name="priority" eval="40"/>
             <field name="arch" type="xml">
-                <form string="Prodotti con modello sicurezza" editable="bottom" colors="blue:security_template_id!=False">
+                <form string="Prodotti con modello sicurezza">
                     <sheet>
                         <group col="4">
                             <field name="default_code" readonly="1"/>
