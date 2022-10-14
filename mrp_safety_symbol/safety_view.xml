@@ -63,7 +63,8 @@
             <field name="name">safety.symbol.tree</field>
             <field name="model">safety.symbol</field>
             <field name="arch" type="xml">
-                <tree string="Symbol">
+                <tree string="Symbol" colors="red:mode == 'danger'">
+                    <field name="code" />
                     <field name="name" />
                     <field name="mode" />
                     <field name="note" />
@@ -78,6 +79,7 @@
                     <sheet>
                         <group colspan="4" col="4">
                             <group colspan="2" col="2">
+                                <field name="code" />
                                 <field name="name" />
                                 <field name="mode" />
                                 <separator string="note" colspan="2"/>

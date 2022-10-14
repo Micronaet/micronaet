@@ -52,6 +52,7 @@ class SafetySymbol(orm.Model):
     _order = 'name'
 
     _columns = {
+        'code': fields.char('Codice', size=10),
         'name': fields.char('Name', size=64, required=True),
         'image': fields.binary('Image', filters=None),
         'note': fields.text('Note'),
