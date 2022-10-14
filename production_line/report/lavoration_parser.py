@@ -52,7 +52,27 @@ class Parser(report_sxw.rml_parse):
             'get_analysis_info': self.get_analysis_info,
             'translate_static': self.translate_static,
             'get_security_loaded': self. get_security_loaded,
+            'get_security_object': self.get_security_object,
         })
+
+    def get_security_object(self, o):
+        """ Return security data for last page
+        """
+        security_material = []
+        security_advice = []
+        for material in o.bom_material_ids:
+            product = material.product_id
+            if product.term_h_ids:
+                security_material.append(product)
+                for term in product.term_h_ids:
+                    if term not in security_advice:
+                        security_advice.append(term)
+
+        # Sort:
+        security_material.sort(key=lambda x: x.default_code)
+        security_advice.sort(key=lambda x: x.name)
+
+        return [security_material, security_advice]
 
     def get_security_loaded(self, o):
         """ Load if not present the security table for this job
