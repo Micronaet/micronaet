@@ -65,13 +65,18 @@ class Parser(report_sxw.rml_parse):
         rate = {}
         for material in o.bom_material_ids:
             product = material.product_id
+            if product.security_off:  # Not required!
+                continue
+
+            # Total management:
             if product not in rate:
                 rate[product] = 0.0
             quantity = material.quantity
             rate[product] += quantity
             total += quantity
+
+            security_material.append(product)  # Always
             if product.term_h_ids:
-                security_material.append(product)
                 for term in product.term_h_ids:
                     if term not in security_advice:
                         security_advice.append(term)

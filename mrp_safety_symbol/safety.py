@@ -55,7 +55,15 @@ class SafetySymbol(orm.Model):
         'name': fields.char('Name', size=64, required=True),
         'image': fields.binary('Image', filters=None),
         'note': fields.text('Note'),
+        'mode': fields.selection([
+            ('equipment', 'Attrezzatura'),
+            ('danger', 'Pericolosità')
+        ], 'Modalità', required=True)
         }
+
+    _defaults = {
+        'mode': lambda *x: 'equipment',
+    }
 
 
 class SafetySymbolTemplate(orm.Model):
