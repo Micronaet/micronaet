@@ -554,10 +554,13 @@ class product_status_wizard(osv.osv_memory):
 
             status_line = 0.0
             default_code = (row[2].default_code or '/').strip()
+
+            # -----------------------------------------------------------------
+            # Peak data:
+            # -----------------------------------------------------------------
             monthly_peak = monthly_peak_data.get(default_code, {})
+            peak_comment = peak_data = ''
             if monthly_peak:
-                peak_comment = ''
-                peak_data = ''
                 peak_max = 0.0
                 for period in monthly_peak:
                     peak_q = monthly_peak[period]
@@ -565,9 +568,7 @@ class product_status_wizard(osv.osv_memory):
                         peak_max = peak_q
                         peak_data = '%s: Kg.%s' % (period, peak_q)
 
-                    peak_comment = '%s: Kg.%s\n' % (period, peak_q)
-            else:
-                peak_data = peak_comment = ''
+                    peak_comment += '%s: Kg.%s\n' % (period, peak_q)
 
             body = [
                 (row[2].name, format_text),
@@ -605,7 +606,7 @@ class product_status_wizard(osv.osv_memory):
             if comment_line:
                 write_xls_mrp_line_comment(WS, i, comment_line, gap_columns)
             if peak_comment:
-                write_xls_mrp_line_comment(WS, i, peak_comment, 5)
+                write_xls_mrp_line_comment(WS, i, peak_comment, 4)
 
 
             i += 1
