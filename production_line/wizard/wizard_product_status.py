@@ -554,7 +554,13 @@ class product_status_wizard(osv.osv_memory):
 
             status_line = 0.0
             default_code = (row[2].default_code or '/').strip()
-            monthly_peak = monthly_peak_data.get(default_code, '')
+            monthly_peak = monthly_peak_data.get(default_code, {})
+            if monthly_peak:
+                peak_max = sorted(
+                    monthly_peak.iteritems(), key=lambda k: k[1])[-1]
+                peak_data = '%s - Kg. %s' % peak_max
+            else:
+                peak_data = ''
             # todo write montly peak comment?
             body = [
                 (row[2].name, format_text),
@@ -565,7 +571,7 @@ class product_status_wizard(osv.osv_memory):
                  history_supplier_orders.get(default_code, '')),
                  format_text,
                  ),  # OF detail
-                (monthly_peak, format_white),  # Peak
+                (peak_data, format_white),  # Peak
                 (row[3], format_white),  # m(x)
                 ]
             gap_columns = len(body)
