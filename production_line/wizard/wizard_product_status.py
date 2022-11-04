@@ -268,6 +268,57 @@ class product_status_wizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         # Utility:
         # ---------------------------------------------------------------------
+        def load_montly_peak_stats(self, cr, uid, ids, context=None):
+            """ Load SL for row materials (monthly peak)
+            """
+            log_mode = True
+
+            res = {}
+            material_pool = self.pool.get('mrp.production.material')
+
+            if log_mode:
+                log_file = open('/tmp/peak_material.log', 'w')
+
+            now = datetime.now()
+            from_date = '%04d-%02d-01' % (
+                now.year,
+                now.month,
+            )
+            material_ids = material_pool.search(cr, uid, [
+                ('workcenter_production_id.state', '=', 'done'),
+                ('workcenter_production_id.date_start', '>=', from_date),
+            ], context=context)
+            for material in material_pool.browse(
+                    cr, uid, material_ids, context=context):
+                wc = material.workcenter_production_id
+                name = wc.name
+                period = wc.date_start[:7]
+                quantity = material.quantity
+                product = material.product_id
+                default_code = product.default_code or ''
+                start = default_code[:1]
+
+                if start and start not in 'AB':
+                    continue  # Raw material only:
+
+                if default_code not in res:
+                    res[default_code] = {}
+                if period not in res[default_code]:
+                    res[default_code][period] = 0.0
+
+                res[default_code][period] += quantity
+                if log_mode:
+                    log_file.write('%s|%s|%s|%s\n' % (
+                        name,
+                        default_code,
+                        period,
+                        quantity,
+                    ))
+
+            if log_mode:
+                log_mode.close()
+            return res
+
         def write_supplier_order_detail(record):
             """
             """
@@ -357,6 +408,13 @@ class product_status_wizard(osv.osv_memory):
         # Pool used:
         mrp_pool = self.pool.get('mrp.production')
         attachment_pool = self.pool.get('ir.attachment')
+
+        # ---------------------------------------------------------------------
+        # Preload
+        # ---------------------------------------------------------------------
+        # Monthly peak
+        monthly_peak_data = load_montly_peak_stats(
+            self, cr, uid, ids, context=context)
 
         # ---------------------------------------------------------------------
         # XLS file:
@@ -495,6 +553,8 @@ class product_status_wizard(osv.osv_memory):
 
             status_line = 0.0
             default_code = (row[2].default_code or '/').strip()
+            monthly_peak = monthly_peak_data.get(default_code, '')
+            # todo write montly peak comment?
             body = [
                 (row[2].name, format_text),
                 (default_code, format_text),
@@ -504,10 +564,11 @@ class product_status_wizard(osv.osv_memory):
                  history_supplier_orders.get(default_code, '')),
                  format_text,
                  ),  # OF detail
-                '',  # Monthly peak
+                (monthly_peak, format_white),  # Peak
                 (row[3], format_white),  # m(x)
                 ]
             gap_columns = len(body)
+
 
             j = 0
             for col in cols:
