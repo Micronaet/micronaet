@@ -282,7 +282,7 @@ class product_status_wizard(osv.osv_memory):
 
             now = datetime.now()
             from_date = '%04d-%02d-01' % (
-                now.year,
+                now.year - 1,
                 now.month,
             )
             material_ids = material_pool.search(cr, uid, [
@@ -582,7 +582,6 @@ class product_status_wizard(osv.osv_memory):
                 (row[3], format_white),  # m(x)
                 ]
             gap_columns = len(body)
-
 
             j = 0
             for col in cols:
