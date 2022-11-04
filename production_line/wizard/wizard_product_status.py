@@ -583,6 +583,7 @@ class product_status_wizard(osv.osv_memory):
                 (row[3], format_white),  # m(x)
                 ]
             gap_columns = len(body)
+            peak_columns = gap_columns - 2
 
             j = 0
             for col in cols:
@@ -605,8 +606,8 @@ class product_status_wizard(osv.osv_memory):
             comment_line = table_comment.get(row[1])
             if comment_line:
                 write_xls_mrp_line_comment(WS, i, comment_line, gap_columns)
-            # if peak_comment:
-            #    write_xls_mrp_line_comment(WS, i, peak_comment, 4)
+            if peak_comment:
+                write_xls_mrp_line_comment(WS, i, peak_comment, peak_columns)
 
 
             i += 1
