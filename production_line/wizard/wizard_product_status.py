@@ -606,7 +606,7 @@ class product_status_wizard(osv.osv_memory):
             if comment_line:
                 write_xls_mrp_line_comment(WS, i, comment_line, gap_columns)
             if peak_comment:
-                write_xls_mrp_line_comment(WS, i, 5, peak_comment)
+                write_xls_mrp_line_comment(WS, i, peak_comment, 5)
 
 
             i += 1
