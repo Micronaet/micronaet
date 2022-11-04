@@ -556,12 +556,19 @@ class product_status_wizard(osv.osv_memory):
             default_code = (row[2].default_code or '/').strip()
             monthly_peak = monthly_peak_data.get(default_code, {})
             if monthly_peak:
-                peak_max = sorted(
-                    monthly_peak.iteritems(), key=lambda k: k[1])[-1]
-                peak_data = '%s: Kg.%s' % peak_max
-            else:
+                peak_comment = ''
                 peak_data = ''
-            # todo write montly peak comment?
+                peak_max = 0.0
+                for period in monthly_peak:
+                    peak_q = monthly_peak[period]
+                    if peak_q > peak_max:
+                        peak_max = peak_q
+                        peak_data = '%s: Kg.%s' % (period, peak_q)
+
+                    peak_comment = '%s: Kg.%s\n' % (period, peak_q)
+            else:
+                peak_data = peak_comment = ''
+
             body = [
                 (row[2].name, format_text),
                 (default_code, format_text),
@@ -598,6 +605,9 @@ class product_status_wizard(osv.osv_memory):
             comment_line = table_comment.get(row[1])
             if comment_line:
                 write_xls_mrp_line_comment(WS, i, comment_line, gap_columns)
+            if peak_comment:
+                write_xls_mrp_line_comment(WS, i, 5, peak_comment)
+
 
             i += 1
         _logger.info('End export status on %s' % filename)
