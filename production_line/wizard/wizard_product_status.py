@@ -25,6 +25,7 @@
 #
 ##############################################################################
 import os
+import pdb
 import sys
 import logging
 import openerp
@@ -317,6 +318,7 @@ class product_status_wizard(osv.osv_memory):
 
             if log_mode:
                 log_file.close()
+            pdb.set_trace()
             return res
 
         def write_supplier_order_detail(record):
