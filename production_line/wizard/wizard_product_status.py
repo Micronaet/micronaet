@@ -83,7 +83,7 @@ class product_status_wizard(osv.osv_memory):
         smtp = smtplib.SMTP(server, port)
         if isTls:
             smtp.starttls()
-        smtp.login(username,password)
+        smtp.login(username, password)
         smtp.sendmail(send_from, send_to, msg.as_string())
         smtp.quit()
         return True
@@ -95,7 +95,7 @@ class product_status_wizard(osv.osv_memory):
         """ Prepare description filter string from data dict
         """
         if datas is None:
-           return _('No filter')
+            return _('No filter')
 
         res = ''
         res += 'Period in days: %s -' % datas.get('days', '')
@@ -318,7 +318,7 @@ class product_status_wizard(osv.osv_memory):
             # All record, All value
             # -----------------------------------------------------------------
             if row_mode == 'all':
-               return True # no filter is required
+               return True  # no filter is required
 
             # -----------------------------------------------------------------
             # Record with data but no elements:
@@ -452,11 +452,16 @@ class product_status_wizard(osv.osv_memory):
         # Start loop for design table for product and material status:
         # Header:
         header = [
-            [_('Material'), format_title],  # list for update after for product
+            # list for update after for product:
+            [_('Material'), format_title],
+
             (_('Code'), format_title),
             (_('Mx. stock'), format_title),
             (_('Min. stock'), format_title),
             (_('OF detail'), format_title),
+
+            (_('Picco mensile MP'), format_title),
+
             (_('m(x) last %s month') % data['month_window'], format_title),
             ]
         for col in cols:
@@ -499,6 +504,7 @@ class product_status_wizard(osv.osv_memory):
                  history_supplier_orders.get(default_code, '')),
                  format_text,
                  ),  # OF detail
+                '',  # Monthly peak
                 (row[3], format_white),  # m(x)
                 ]
             gap_columns = len(body)
@@ -541,7 +547,7 @@ class product_status_wizard(osv.osv_memory):
             # Send mail with attachment:
             group_pool = self.pool.get('res.groups')
             model_pool = self.pool.get('ir.model.data')
-            thread_pool = self.pool.get('mail.thread')
+            # thread_pool = self.pool.get('mail.thread')
             server_pool = self.pool.get('ir.mail_server')
 
             group_id = model_pool.get_object_reference(
@@ -588,7 +594,7 @@ class product_status_wizard(osv.osv_memory):
             for email in partner_email:
                 _logger.warning('... sending mail: %s' % email)
                 self.send_mail(
-                    server_proxy.smtp_user,  # 'openerp@micronaet.com',
+                    server_proxy.smtp_user,
                     email,
                     _('Negative stock status report'),
                     _('Stock status for negative product with production'),
@@ -647,7 +653,7 @@ class product_status_wizard(osv.osv_memory):
         if wizard is not None:
             context['datas'].update(wizard)
 
-        # TODO update previsional order?
+        # todo update previsional order?
         self.export_excel(cr, uid, False, context=context)
         return True
 
@@ -678,7 +684,8 @@ class product_status_wizard(osv.osv_memory):
 
         'month_window': fields.integer(
             'Statistic production window ',
-            required=True, help="Month back for medium production monthly index (Kg / month of prime material)"),
+            required=True,
+            help="Month back for medium production monthly index (Kg / month of prime material)"),
         'with_medium': fields.boolean('With m(x)', required=False,
             help="if check in report there's production m(x), if not check report is more fast"),
         'with_order_detail': fields.boolean('With OF detail'),
