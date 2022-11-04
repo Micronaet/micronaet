@@ -316,7 +316,7 @@ class product_status_wizard(osv.osv_memory):
                     ))
 
             if log_mode:
-                log_mode.close()
+                log_file.close()
             return res
 
         def write_supplier_order_detail(record):
