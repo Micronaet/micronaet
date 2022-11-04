@@ -494,7 +494,7 @@ class product_status_wizard(osv.osv_memory):
         WS.set_column('E:E', 20)
         WS.set_row(0, 30)
         WS_product.set_column('A:A', 35)
-        WS_product.set_column('E:E', 20)
+        WS_product.set_column('E:F', 20)
         WS_product.set_row(0, 30)
 
         # Generate report for export:
