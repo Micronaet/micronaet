@@ -558,7 +558,7 @@ class product_status_wizard(osv.osv_memory):
             if monthly_peak:
                 peak_max = sorted(
                     monthly_peak.iteritems(), key=lambda k: k[1])[-1]
-                peak_data = '%s - Kg. %s' % peak_max
+                peak_data = '%s: Kg.%s' % peak_max
             else:
                 peak_data = ''
             # todo write montly peak comment?
