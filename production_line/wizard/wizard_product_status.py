@@ -607,6 +607,7 @@ class product_status_wizard(osv.osv_memory):
             # -----------------------------------------------------------------
             # Comment:
             # -----------------------------------------------------------------
+            pdb.set_trace()
             comment_line = table_comment.get(row[1])
             if peak_comment:
                 write_xls_mrp_line_comment(
