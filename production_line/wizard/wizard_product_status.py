@@ -569,7 +569,7 @@ class product_status_wizard(osv.osv_memory):
                         peak_max = peak_q
                         peak_data = '%s: Kg.%s' % (period, peak_q)
 
-                    peak_comment.append('%s: Kg.%s' % (period, int(peak_q)))
+                    peak_comment.append('%s: Kg.%10.0f' % (period, peak_q))
 
             body = [
                 (row[2].name, format_text),
