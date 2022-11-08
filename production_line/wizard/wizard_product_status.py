@@ -568,7 +568,7 @@ class product_status_wizard(osv.osv_memory):
                     peak_q = monthly_peak[period]
                     if peak_q > peak_max:
                         peak_max = peak_q
-                        peak_data = '%s: Kg.%s' % (period, peak_q)
+                        peak_data = '%s: Kg.%.0f' % (period, peak_q)
 
                     peak_comment.append('%s: Kg.%10.0f' % (period, peak_q))
 
