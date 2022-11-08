@@ -611,7 +611,8 @@ class product_status_wizard(osv.osv_memory):
             if peak_comment:
                 peak_comment_text = '\n'.join(sorted(peak_comment))
                 write_xls_mrp_line_comment(
-                    WS, row=i, line=[peak_comment], gap_column=peak_columns)
+                    WS, row=i, line=[peak_comment_text],
+                    gap_column=peak_columns)
             comment_line = table_comment.get(row[1])
             if comment_line:
                 write_xls_mrp_line_comment(
