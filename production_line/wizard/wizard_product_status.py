@@ -611,9 +611,10 @@ class product_status_wizard(osv.osv_memory):
             comment_line = table_comment.get(row[1])
             if peak_comment:
                 write_xls_mrp_line_comment(
-                    WS, i, [peak_comment], peak_columns)
+                    WS, row=i, line=[peak_comment], gap_columns=peak_columns)
             if comment_line:
-                write_xls_mrp_line_comment(WS, i, comment_line, gap_columns)
+                write_xls_mrp_line_comment(
+                    WS, row=i, line=comment_line, gap_columns=gap_columns)
 
             i += 1
         _logger.info('End export status on %s' % filename)
