@@ -351,7 +351,7 @@ class product_status_wizard(osv.osv_memory):
             """
             parameters = {
                 'width': 300,
-                'font_name': 'Courier New',
+                'font_name': 'Courier 10 Pitch',
                 }
             col = gap_column
             for comment in line:
