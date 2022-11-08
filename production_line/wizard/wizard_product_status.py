@@ -352,7 +352,7 @@ class product_status_wizard(osv.osv_memory):
             parameters = {
                 'width': 300,
                 }
-            col = gap_columns
+            col = gap_column
             for comment in line:
                 if comment:
                     WS.write_comment(row, col, comment, parameters)
