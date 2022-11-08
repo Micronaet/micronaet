@@ -583,7 +583,7 @@ class product_status_wizard(osv.osv_memory):
                 (row[3], format_white),  # m(x)
                 ]
             gap_columns = len(body)
-            peak_columns = gap_columns - 2
+            peak_columns = gap_columns - 4
 
             j = 0
             for col in cols:
