@@ -1105,7 +1105,7 @@
                     <field name="accounting_qty" string="In magazz."/>
                     <field name="state" invisible="1" />
                     <field name="to_produce" invisible="1" />
-                    <field name="accounting_state" string="Stato"/>
+                    <field name="accounting_state" string="Stato" invisible="1"/> <!--Not needed in MRP-->
             </tree>
         </field>
     </record>
