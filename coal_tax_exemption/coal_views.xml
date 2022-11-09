@@ -22,7 +22,7 @@
         <field name="inherit_id" ref="stock.view_move_picking_tree" />
         <field name='arch' type='xml'>
            <field name="picking_id" position="before">
-               <field name="product_packaging"/>
+               <field name="product_packaging"/><!--domain="[('is_active', '=', True), ('product_id', '=', product_id)]"-->
                <!--<field name="product_packaging" string="Imballo" domain="[('product_id', '=', product_id)]"/>-->
                <field name="prodlot_id"/>
            </field>
