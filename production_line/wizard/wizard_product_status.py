@@ -524,8 +524,13 @@ class product_status_wizard(osv.osv_memory):
 
             (_('m(x) last %s month') % data['month_window'], format_title),
             ]
+        fixed_col = len(header)
         for col in cols:
             header.append((col, format_title))
+        try:  # Override description for first column variable:
+            header[fixed_col] = 'Giacenza KG'
+        except:
+            pass
 
         # Material header:
         write_xls_mrp_line(WS, 0, header)
