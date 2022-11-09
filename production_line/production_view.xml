@@ -1089,14 +1089,19 @@
                     <field name="mrp_production_id" string="MRP"/>
                     <field name="state_info" string="MRP info"/>
                     <field name="date_deadline" />
-                    <field name="date_delivery" string="Cons. obbl."/>
+                    <field name="date_delivery" string="Tassativo" />
                     <field name="mandatory_delivery" invisible="1" />
                     <field name="product_uom" string="UM"/>
                     <field name="product_uom_qty" sum="Total" string="Q." />
                     <!--<field name="product_ul_id" string="Imballo (RIM)"/>-->
                     <field name="product_packaging" string="Imballo" /><!--domain="[('is_active', '=', True), ('product_id', '=', product_id)]"-->
+
+                    <!--
+                    No more used:
                     <button name="close_with_accounting_store" type="object" string="Use mag." icon="gtk-go-forward" attrs="{'invisible':['|',('use_accounting_qty','=',True),('mrp_production_id','!=',False),]}"/>
                     <field name="use_accounting_qty" invisible="1" />
+                    -->
+
                     <field name="accounting_qty" string="In magazz."/>
                     <field name="state" invisible="1" />
                     <field name="to_produce" invisible="1" />
