@@ -965,7 +965,7 @@
                                             <field name="product_uom_qty" readonly="1"/>
                                             <field name="product_uom" readonly="1"/>
 
-                                            <field name="product_ul_id" string="Imballo (RIM)"/>
+                                            <!--<field name="product_ul_id" string="Imballo (RIM)"/>-->
                                             <field name="product_packaging" string="Imballo" domain="[('is_active', '=', True), ('product_id', '=', product_id)]"/>
 
                                             <field name="pallet_weight" string="Peso Pallet"/>
@@ -1093,7 +1093,7 @@
                     <field name="mandatory_delivery" invisible="1" />
                     <field name="product_uom" />
                     <field name="product_uom_qty" sum="Total" />
-                    <field name="product_ul_id" string="Imballo (RIM)"/>
+                    <!--<field name="product_ul_id" string="Imballo (RIM)"/>-->
                     <field name="product_packaging" string="Imballo" domain="[('is_active', '=', True), ('product_id', '=', product_id)]"/>
                     <button name="close_with_accounting_store" type="object" string="Use mag." icon="gtk-go-forward" attrs="{'invisible':['|',('use_accounting_qty','=',True),('mrp_production_id','!=',False),]}"/>
                     <field name="use_accounting_qty" invisible="1"/>
@@ -1119,7 +1119,7 @@
                 <group colspan="4" col="4">
                     <separator string="Line:" colspan="4" />
                     <field name="sequence" />
-                    <field name="product_ul_id" string="Imballo (RIM)"/>
+                    <!--<field name="product_ul_id" string="Imballo (RIM)"/>-->
                     <field name="product_packaging" string="Imballo" domain="[('is_active', '=', True), ('product_id', '=', product_id)]"/>
 
                     <field name="product_id" />
@@ -1427,7 +1427,7 @@
                                         <field name="product_id" />
                                         <field name="name" string="Marcatura"/>
                                         <field name="date_deadline" />
-                                        <field name="product_ul_id" string="Imballo (RIM)"/>
+                                        <!--<field name="product_ul_id" string="Imballo (RIM)"/>-->
                                         <field name="product_packaging" string="Imballo" domain="[('is_active', '=', True), ('product_id', '=', product_id)]"/>
                                         <field name="product_uom_qty" />
                                         <field name="product_uom" />
