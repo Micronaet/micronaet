@@ -1085,22 +1085,22 @@
                     <field name="partner_id" />
                     <!--<field name="duelist_uncovered" invisible="1" />
                     <button name="button_duelist_uncovered" type="object" string="uncovered present" icon="gtk-dialog-error" attrs="{'invisible':[('duelist_uncovered','=',False)]}" />-->
-                    <field name="order_id" />
-                    <field name="mrp_production_id" />
-                    <field name="state_info" />
+                    <field name="order_id" string="OC"/>
+                    <field name="mrp_production_id" string="MRP"/>
+                    <field name="state_info" string="MRP info"/>
                     <field name="date_deadline" />
-                    <field name="date_delivery" />
+                    <field name="date_delivery" string="Cons. obbl."/>
                     <field name="mandatory_delivery" invisible="1" />
-                    <field name="product_uom" />
-                    <field name="product_uom_qty" sum="Total" />
+                    <field name="product_uom" string="UM"/>
+                    <field name="product_uom_qty" sum="Total" string="Q." />
                     <!--<field name="product_ul_id" string="Imballo (RIM)"/>-->
-                    <field name="product_packaging" string="Imballo" domain="[('is_active', '=', True), ('product_id', '=', product_id)]"/>
+                    <field name="product_packaging" string="Imballo" /><!--domain="[('is_active', '=', True), ('product_id', '=', product_id)]"-->
                     <button name="close_with_accounting_store" type="object" string="Use mag." icon="gtk-go-forward" attrs="{'invisible':['|',('use_accounting_qty','=',True),('mrp_production_id','!=',False),]}"/>
-                    <field name="use_accounting_qty" invisible="1"/>
-                    <field name="accounting_qty" />
+                    <field name="use_accounting_qty" invisible="1" />
+                    <field name="accounting_qty" string="In magazz."/>
                     <field name="state" invisible="1" />
                     <field name="to_produce" invisible="1" />
-                    <field name="accounting_state" />
+                    <field name="accounting_state" string="Stato"/>
             </tree>
         </field>
     </record>
