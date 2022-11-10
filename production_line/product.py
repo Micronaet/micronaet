@@ -269,7 +269,6 @@ class product_product_extra(osv.osv):
             as_dict=True, file_name_package=False, context=None):
         """ Import from MSSQL DB linked to Company AQ_QUANTITY elements
         """
-        pdb.set_trace()
         _logger.info("Start import packages list")
 
         # Pool used:
