@@ -286,7 +286,7 @@ class product_product_extra(osv.osv):
             # -----------------------------------------------------------------
             #                Import Product UL from file:
             # -----------------------------------------------------------------
-            if file_name_package:
+            if file_name_package:  # No more used
                 ul_pool.import_ul(cr, uid, file_name_package, context=context)
                 ul_ids = ul_pool.search(cr, uid, [], context=context)
                 codepackage_2_id = {}
