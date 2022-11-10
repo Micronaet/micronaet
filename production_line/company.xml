@@ -13,6 +13,7 @@
                         <field name="production_export" />
                         <field name="production_mx" />
                         <field name="production_mount_mandatory" attrs="{'invisible': [('production_export','=',False)]}"/>
+                        <field name="manage_order_internal" />
                         <field name="production_demo" attrs="{'invisible': [('production_export','=',False)]}" />
                     </group>
                     <group colspan="4" col="4" attrs="{'invisible': [('production_export','=',False)]}">

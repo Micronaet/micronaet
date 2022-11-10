@@ -562,6 +562,10 @@ class res_company(osv.osv):
         'production_mx': fields.boolean(
             'Installazione MX',
             help="Installazione succursale Messico"),
+        'manage_order_internal': fields.boolean(
+            'Gestione ordini interna',
+            help='Gli ordini non vengono più importati dal gestionale ma'
+                 'creati direttamente in OpenERP'),
         'production_demo': fields.boolean(
             'Production demo', help="Jump XMLRPC for demo test"),
         'production_mount_mandatory': fields.boolean(
