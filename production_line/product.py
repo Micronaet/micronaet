@@ -52,7 +52,6 @@ class product_packaging(osv.osv):
 class product_ul_extra(osv.osv):
     """ Extra fields for product.product object
     """
-    _name = 'product.ul'
     _inherit = 'product.ul'
 
     '''def hide_product_ul(self, cr, uid, ids, context=None):
@@ -118,12 +117,12 @@ class product_ul_extra(osv.osv):
         'linked_product_id': fields.many2one(
             'product.product', 'Product linked', required=False,
             help="Used for unload package product after lavoration"),
-        # 'active': fields.boolean('Attivo'),
+        'active': fields.boolean('Attivo'),
         }
 
-    # _defaults = {
-    #    'active': lambda *x: True,
-    #    }
+    _defaults = {
+        'active': lambda *x: True,
+        }
 
 
 class ResCompany(osv.osv):
