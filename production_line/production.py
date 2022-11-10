@@ -410,11 +410,6 @@ class sale_order_add_extra(osv.osv):
                 #                         NEW:
                 # -------------------------------------------------------------
                 else:
-                    oc_markup = mask_pool.get_markup_link_text(
-                        name, oc_id, 'OC', mask_db)
-                    telegram_message['order'][0] += '%s\n' % oc_markup
-                    # telegram_message['order'][0] += '%s\n' % name
-
                     if not partner_id:
                         _logger.error(
                             'No partner found (created minimal): %s' % (
@@ -482,6 +477,10 @@ class sale_order_add_extra(osv.osv):
                         # amount_untaxed #amount_total #invoiced_rate
                         # message_unread
                     }, context=context)
+                    oc_markup = mask_pool.get_markup_link_text(
+                        name, oc_id, 'OC', mask_db)
+                    telegram_message['order'][0] += '%s\n' % oc_markup
+                    # telegram_message['order'][0] += '%s\n' % name
 
                 oc_key = get_oc_key(oc)
                 if oc_key not in oc_header:
