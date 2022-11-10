@@ -267,7 +267,18 @@ class sale_order_add_extra(osv.osv):
         accounting_pool = self.pool.get('micronaet.accounting')
         line_pool = self.pool.get('sale.order.line')
         user_pool = self.pool.get('res.users')
-        telegram_pool = self.pool.get('flask.telegram')  # not in this module!
+
+        # not in this module!:
+        telegram_pool = self.pool.get('flask.telegram')
+        mask_pool = self.pool.get('telegram.mark.link')
+
+        # ---------------------------------------------------------------------
+        # Preload
+        # ---------------------------------------------------------------------
+        mask_ids = mask_pool.search([])
+        mask_db = {}
+        for mask in mask_pool.browse(mask_ids):
+            mask_db[mask.code] = mask.mask
 
         # ---------------------------------------------------------------------
         # Parameter:
@@ -399,7 +410,11 @@ class sale_order_add_extra(osv.osv):
                 #                         NEW:
                 # -------------------------------------------------------------
                 else:
-                    telegram_message['order'][0] += '%s\n' % name
+                    oc_markup = mask_pool.get_markup_link_text(
+                        name, oc_id, 'OC', mask_db)
+                    telegram_message['order'][0] += '%s\n' % oc_markup
+                    # telegram_message['order'][0] += '%s\n' % name
+
                     if not partner_id:
                         _logger.error(
                             'No partner found (created minimal): %s' % (
