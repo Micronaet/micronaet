@@ -275,9 +275,9 @@ class sale_order_add_extra(osv.osv):
         # ---------------------------------------------------------------------
         # Preload
         # ---------------------------------------------------------------------
-        mask_ids = mask_pool.search([])
+        mask_ids = mask_pool.search(cr, uid, [], context=context)
         mask_db = {}
-        for mask in mask_pool.browse(mask_ids):
+        for mask in mask_pool.browse(cr, uid, mask_ids, context=context):
             mask_db[mask.code] = mask.mask
 
         # ---------------------------------------------------------------------
