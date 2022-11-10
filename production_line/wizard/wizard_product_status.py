@@ -528,7 +528,7 @@ class product_status_wizard(osv.osv_memory):
         for col in cols:
             header.append((col, format_title))
         try:  # Override description for first column variable:
-            header[fixed_col] = 'Giacenza KG'
+            header[fixed_col] = (_('Giacenza KG'), format_title)
         except:
             pass
 
