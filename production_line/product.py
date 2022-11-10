@@ -299,7 +299,7 @@ class product_product_extra(osv.osv):
                     try:
                         code = record['COLUMN_NAME'].strip()  # no "NGD_"
                         if code[:4] != "NGD_":
-                            continue # jump no field NGD_
+                            continue  # jump no field NGD_
 
                         code = code[4:]
                         pul_id = codepackage_2_id.get(code, False)
