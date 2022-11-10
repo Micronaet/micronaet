@@ -414,6 +414,7 @@ class sale_order_add_extra(osv.osv):
                         _logger.error(
                             'No partner found (created minimal): %s' % (
                                 oc['CKY_CNT_CLFR']))
+                        # todo add also telegram link for partner?
                         telegram_message['partner'][0] += \
                             '%s\n' % oc['CKY_CNT_CLFR']
                         try:
@@ -480,7 +481,6 @@ class sale_order_add_extra(osv.osv):
                     oc_markup = mask_pool.get_markup_link_text(
                         name, oc_id, 'OC', mask_db)
                     telegram_message['order'][0] += '%s\n' % oc_markup
-                    # telegram_message['order'][0] += '%s\n' % name
 
                 oc_key = get_oc_key(oc)
                 if oc_key not in oc_header:
@@ -657,19 +657,26 @@ class sale_order_add_extra(osv.osv):
         to_delete_ids = line_pool.search(cr, uid, [
             ('accounting_state', '=', 'not'),
             ('mrp_production_id', '!=', False)
-        ])  # to delete (in production) # TODO log!
+        ])  # to delete (in production) # todo log!
         if to_delete_ids:
             # delete_oc_in_production_error = ''
             for item in line_pool.browse(
                     cr, uid, to_delete_ids, context=context):
+
                 telegram_message['unlink'][0] += \
-                    'Order: %s (%s) [%s q.: %s] >> %s' % (
-                        item.order_id.name,
+                    'OC: %s (%s) [%s q.: %s] >> %s' % (
+                        # item.order_id.name,
+                        mask_pool.get_markup_link_record(
+                            item.order_id, 'OC', mask_db),
+
                         item.date_deadline,
                         item.product_id.name,
                         item.product_uom_qty,
-                        item.mrp_production_id.name,
-                        )
+
+                        # item.mrp_production_id.name,
+                        mask_pool.get_markup_link_record(
+                            item.mrp_production_id, 'MRP', mask_db),
+                    )
 
             for del_id in to_delete_ids:
                 try:
