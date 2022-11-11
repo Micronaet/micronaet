@@ -599,11 +599,9 @@ class MrpProduction(orm.Model):
         for product in sorted(
                 total['unload'],
                 key=lambda x: (x.default_code, x.name),
-                reverse=True,
                 ):
 
             # Readability:
-            pdb.set_trace()
             for date, job, qty, price, recycle in sorted(
                     total['unload'][product], reverse=True):
 
