@@ -22,6 +22,7 @@
 ###############################################################################
 
 import os
+import pdb
 import sys
 import logging
 import openerp
@@ -602,6 +603,7 @@ class MrpProduction(orm.Model):
                 ):
 
             # Readability:
+            pdb.set_trace()
             for date, job, qty, price, recycle in sorted(
                     total['unload'][product], reverse=True):
 
