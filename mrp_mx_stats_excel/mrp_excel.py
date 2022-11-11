@@ -594,9 +594,12 @@ class MrpProduction(orm.Model):
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=f_header)
 
-        range_date = [False, False] # reset previous assigned
-        for product in sorted(total['unload'],
-                key=lambda x: (x.default_code, x.name)):
+        range_date = [False, False]  # reset previous assigned
+        for product in sorted(
+                total['unload'],
+                key=lambda x: (x.default_code, x.name),
+                reverse=True,
+                ):
 
             # Readability:
             for date, job, qty, price, recycle in sorted(
@@ -631,7 +634,6 @@ class MrpProduction(orm.Model):
 
         unload_col, year_cols['unload'] = _get_period_date_dict(range_date)
 
-
         # =====================================================================
         #                           REPORT FOR CHECK
         # =====================================================================
@@ -658,7 +660,11 @@ class MrpProduction(orm.Model):
 
         page_total = [0.0, 0.0]
         temp_list = []
-        for mrp in sorted(total['check'], key=lambda x: (x.name)):
+        for mrp in sorted(
+                total['check'],
+                key=lambda x: (x.name),
+                reverse=True,
+                ):
             material, product = total['check'][mrp]
             mrp_product = mrp.product_id
             # Page total:
@@ -778,7 +784,10 @@ class MrpProduction(orm.Model):
         # =====================================================================
         #                    PRODUCTION PER YEARS:
         # =====================================================================
-        for year_block in sorted(year_cols['load']):
+        for year_block in sorted(
+                year_cols['load'],
+                reverse=True,
+                ):
             # -----------------------------------------------------------------
             # Production in period:
             # -----------------------------------------------------------------
@@ -857,7 +866,8 @@ class MrpProduction(orm.Model):
             empty.append(0.0)
 
         temp_list = []
-        for product in sorted(total['unload'],
+        for product in sorted(
+                total['unload'],
                 key=lambda x: (x.default_code, x.name)):
             uom = product.uom_id
             if uom not in col_total:
@@ -886,7 +896,10 @@ class MrpProduction(orm.Model):
                 row_total,
                 ], data))
 
-        for year_block in sorted(year_cols['unload']):
+        for year_block in sorted(
+                year_cols['unload'],
+                reverse=True,
+                ):
             # -----------------------------------------------------------------
             # Material in period:
             # -----------------------------------------------------------------
