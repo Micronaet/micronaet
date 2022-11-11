@@ -603,7 +603,7 @@ class MrpProduction(orm.Model):
 
             # Readability:
             for date, job, qty, price, recycle in sorted(
-                    total['unload'][product]):
+                    total['unload'][product], reverse=True):
 
                 # Setup range data for load:
                 period = date[:7]
