@@ -527,7 +527,7 @@ class MrpProduction(orm.Model):
 
             # Readability:
             for date, job, qty, price, recycle in sorted(
-                    total['load'][product]):
+                    total['load'][product], reverse=True):
 
                 # Setup range data for load:
                 period = date[:7]
@@ -734,8 +734,8 @@ class MrpProduction(orm.Model):
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=f_header)
 
-        for record, f_number_color in sorted(
-                temp_list, key=lambda r: r[0][0], reverse=True):
+        for record, f_number_color in sorted(temp_list):
+            # , key=lambda r: r[0][0], reverse=True
             row += 1
             excel_pool.write_xls_line(
                 ws_name, row, record, default_format=f_number_color)
@@ -757,7 +757,8 @@ class MrpProduction(orm.Model):
         empty = col_total[:]
 
         temp_list = []
-        for product in sorted(total['load'],
+        for product in sorted(
+                total['load'],
                 key=lambda x: (x.default_code, x.name)):
 
             row_total = {}
