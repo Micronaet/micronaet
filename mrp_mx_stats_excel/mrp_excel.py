@@ -662,7 +662,7 @@ class MrpProduction(orm.Model):
         temp_list = []
         for mrp in sorted(
                 total['check'],
-                key=lambda x: (x.name),
+                key=lambda x: x.name,
                 reverse=True,
                 ):
             material, product = total['check'][mrp]
@@ -734,7 +734,8 @@ class MrpProduction(orm.Model):
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=f_header)
 
-        for record, f_number_color in temp_list:
+        for record, f_number_color in sorted(
+                temp_list, key=lambda r: r[0][0], reverse=True):
             row += 1
             excel_pool.write_xls_line(
                 ws_name, row, record, default_format=f_number_color)
@@ -752,7 +753,7 @@ class MrpProduction(orm.Model):
         for col in sorted(load_col):
             width.append(8)
             header.append(col)
-            col_total.append(0.0) # always KG
+            col_total.append(0.0)  # always KG
         empty = col_total[:]
 
         temp_list = []
