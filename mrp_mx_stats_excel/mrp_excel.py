@@ -523,7 +523,8 @@ class MrpProduction(orm.Model):
             ws_name, row, header, default_format=f_header)
 
         range_date = [False, False]
-        for product in sorted(total['load'],
+        for product in sorted(
+                total['load'],
                 key=lambda x: (x.default_code, x.name)):
 
             # Readability:
@@ -596,6 +597,7 @@ class MrpProduction(orm.Model):
             ws_name, row, header, default_format=f_header)
 
         range_date = [False, False]  # reset previous assigned
+        # todo Sort not necessary here!?!
         for product in sorted(
                 total['unload'],
                 key=lambda x: (x.default_code, x.name),
@@ -734,7 +736,7 @@ class MrpProduction(orm.Model):
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=f_header)
 
-        for record, f_number_color in sorted(temp_list):
+        for record, f_number_color in sorted(temp_list, reverse=True):
             # , key=lambda r: r[0][0], reverse=True
             row += 1
             excel_pool.write_xls_line(
