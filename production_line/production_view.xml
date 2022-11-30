@@ -1258,8 +1258,8 @@
         <field name="view_mode">tree,form,graph,calendar</field>
         <field name="search_view_id" ref="view_sale_order_line_search"/>
         <field name="view_id" ref="view_sale_order_line_tree"/>
-        <field name="domain">[('accounting_state','!=','deleted'),('accounting_order','=',True),('production_line','=',True)]</field>
-        <field name="context">{'form_view_ref':'production_line.view_sale_order_line_form','search_default_Production1':True,}</field>
+        <field name="domain">[('accounting_state', '!=', 'deleted'), ('accounting_order', '=', True), ('production_line', '=', True)]</field>
+        <field name="context">{'form_view_ref':'production_line.view_sale_order_line_form','search_default_Production1': True}</field>
     </record>
     <record model="ir.actions.act_window" id="action_view_sale_order_line_d20">   <!--ALL PRODUCTION LINE FROM ACCOUNTING NOT DELETED Month 1-->
         <field name="name">OC line analysis</field>

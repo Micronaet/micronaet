@@ -839,7 +839,8 @@ class sale_order_line_extra(osv.osv):
         line = self.browse(cr, uid, ids, context=context)[0]
         product_id = line.product_id.id
 
-        res_id = wizard_pool.crate(cr, uid, {
+        # todo found if there's one production?
+        res_id = wizard_pool.create(cr, uid, {
             'product_id': product_id,
         }, context=context)
 
