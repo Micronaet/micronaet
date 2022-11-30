@@ -1086,7 +1086,8 @@
                     <!--<field name="duelist_uncovered" invisible="1" />
                     <button name="button_duelist_uncovered" type="object" string="uncovered present" icon="gtk-dialog-error" attrs="{'invisible':[('duelist_uncovered','=',False)]}" />-->
                     <field name="order_id" string="OC"/>
-                    <button name="%(action_assign_mrp_production_wizard_form)d" string="Assign lavoration" type="action" context="{'product_id':product_id}" icon="STOCK_SAVE_AS"/>
+                    <!--<button name="%(action_assign_mrp_production_wizard_form)d" string="Assign lavoration" type="action" context="{'product_id':product_id}" icon="STOCK_SAVE_AS"/>-->
+                    <button name="function_assign_mrp_production_wizard_form" string="Assegna lavorazione" type="object" icon="STOCK_SAVE_AS"/>
                     <field name="mrp_production_id" string="MRP"/>
                     <field name="state_info" string="MRP info"/>
                     <field name="date_deadline" />

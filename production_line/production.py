@@ -825,6 +825,39 @@ class sale_order_line_extra(osv.osv):
     # -------------------------------------------------------------------------
     #                          Button events
     # -------------------------------------------------------------------------
+    def function_assign_mrp_production_wizard_form(
+            self, cr, uid, ids, context=None):
+        """ Open Wizard view
+        """
+        wizard_pool = self.pool.get('mrp.production.assign.wizard')
+        model_pool = self.pool.get('ir.model.data')
+        view_id = model_pool.get_object_reference(
+            cr, uid,
+            'production_line', 'mrp_production_assign_wizard_view',
+            context=context)[1]
+
+        line = self.browse(cr, uid, ids, context=context)[0]
+        product_id = line.product_id.id
+
+        res_id = wizard_pool.crate(cr, uid, {
+            'product_id': product_id,
+        }, context=context)
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Assegna produzione'),
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_id': res_id,
+            'res_model': 'mrp.production.assign.wizard',
+            'view_id': view_id,
+            'views': [(view_id, 'form')],
+            'domain': [],
+            'context': context,
+            'target': 'new',
+            'nodestroy': False,
+            }
+
     def button_star_off(self, cr, uid, ids, context=None):
         """ Star off press
         """
