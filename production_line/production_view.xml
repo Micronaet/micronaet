@@ -945,6 +945,7 @@
                                         <field name="name" />
                                         <field name="partner_id" />
                                         <field name="date_deadline" />
+                                        <field name="use_stock_qty" sum="Stock"/>
                                         <field name="product_uom_qty" sum="Total" />
                                         <field name="product_uom" string="UOM"/>
                                         <!--<field name="product_ul_id" string="Imballo (RIM)"/>-->
