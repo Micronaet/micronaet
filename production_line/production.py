@@ -834,7 +834,7 @@ class sale_order_line_extra(osv.osv):
         view_id = model_pool.get_object_reference(
             cr, uid,
             'production_line', 'mrp_production_assign_wizard_view',
-            context=context)[1]
+            )[1]
 
         line = self.browse(cr, uid, ids, context=context)[0]
         product_id = line.product_id.id
