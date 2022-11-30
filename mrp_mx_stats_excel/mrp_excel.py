@@ -957,7 +957,7 @@ class MrpProduction(orm.Model):
                     # Hide row
                     excel_pool.row_hidden(ws_name, [row])
 
-            # Hide unused colums:
+            # Hide unused columns:
             hide_this_cols = []
             left_start = fixed_col
             for year in sorted(year_cols['unload']):
