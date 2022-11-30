@@ -1079,6 +1079,7 @@
         <field name="priority" eval="20"/>
         <field name="arch" type="xml">
             <tree string="OC line" colors="red:accounting_state=='deleted';black:mandatory_delivery;blue:mrp_production_id;green:to_produce==False" editable="bottom">
+                    <button name="open_sale_line_detail" string="Dettaglio riga" type="object" icon="terp-gtk-select-all"/>
                     <field name="production_line" invisible="1" />
                     <field name="name" readonly="1"/>
                     <field name="product_id" readonly="1"/>
@@ -1088,7 +1089,6 @@
                     <field name="order_id" string="OC" readonly="1"/>
                     <!--<button name="%(action_assign_mrp_production_wizard_form)d" string="Assign lavoration" type="action" context="{'product_id':product_id}" icon="STOCK_SAVE_AS"/>-->
                     <button name="function_assign_mrp_production_wizard_form" string="Assegna lavorazione" type="object" icon="STOCK_SAVE_AS"/>
-                    <button name="open_sale_line_detail" string="Dettaglio riga" type="object" icon="terp-gtk-select-all"/>
                     <field name="mrp_production_id" string="MRP" readonly="1"/>
                     <field name="state_info" string="MRP info" readonly="1"/>
                     <field name="date_deadline" readonly="1"/>
@@ -1257,7 +1257,7 @@
         <field name="name">OC line analysis</field>
         <field name="res_model">sale.order.line</field>
         <field name="view_type">form</field>
-        <field name="view_mode">tree,form,graph,calendar</field>
+        <field name="view_mode">tree,graph,calendar</field>
         <field name="search_view_id" ref="view_sale_order_line_search"/>
         <field name="view_id" ref="view_sale_order_line_tree"/>
         <field name="domain">[('accounting_state', '!=', 'deleted'), ('accounting_order', '=', True), ('production_line', '=', True)]</field>
@@ -1267,7 +1267,7 @@
         <field name="name">OC line analysis</field>
         <field name="res_model">sale.order.line</field>
         <field name="view_type">form</field>
-        <field name="view_mode">tree,form,graph,calendar</field>
+        <field name="view_mode">tree,graph,calendar</field>
         <field name="search_view_id" ref="view_sale_order_line_search"/>
         <field name="view_id" ref="view_sale_order_line_tree"/>
         <field name="domain">[('accounting_state','!=','deleted'),('accounting_order','=',True),('production_line','=',True)]</field>
@@ -1277,7 +1277,7 @@
         <field name="name">OC line analysis</field>
         <field name="res_model">sale.order.line</field>
         <field name="view_type">form</field>
-        <field name="view_mode">tree,form,graph,calendar</field>
+        <field name="view_mode">tree,graph,calendar</field>
         <field name="search_view_id" ref="view_sale_order_line_search"/>
         <field name="view_id" ref="view_sale_order_line_tree"/>
         <field name="domain">[('accounting_state','!=','deleted'),('accounting_order','=',True),('production_line','=',True)]</field>
