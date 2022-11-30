@@ -1073,12 +1073,12 @@
             </search>
         </field>
     </record>
-    <record model="ir.ui.view" id="view_sale_order_line_tree">
+    <record model="ir.ui.view" id="view_sale_order_line_stock_tree">
         <field name="name">OC line</field>
         <field name="model">sale.order.line</field>
         <field name="priority" eval="20"/>
         <field name="arch" type="xml">
-            <tree string="OC line" colors="red:accounting_state=='deleted';black:mandatory_delivery;blue:mrp_production_id;green:to_produce==False" editable="bottom">
+            <tree editable="bottom" string="OC line" colors="red:accounting_state=='deleted';black:mandatory_delivery;blue:mrp_production_id;green:to_produce==False" >
                     <button name="open_sale_line_detail" string="Dettaglio riga" type="object" icon="terp-gtk-select-all"/>
                     <field name="production_line" invisible="1" />
                     <field name="name" readonly="1"/>
@@ -1248,7 +1248,7 @@
         <field name="view_type">form</field>
         <field name="view_mode">tree,form,graph,calendar</field>
         <field name="search_view_id" ref="view_sale_order_line_search"/>
-        <field name="view_id" ref="view_sale_order_line_tree"/>
+        <field name="view_id" ref="view_sale_order_line_stock_tree"/>
         <field name="domain">[('accounting_order','=',True),('production_line','=',True)]</field>
         <field name="context">{'form_view_ref':'production_line.view_sale_order_line_form'}</field>
     </record>
@@ -1259,7 +1259,7 @@
         <field name="view_type">form</field>
         <field name="view_mode">tree,form,graph,calendar</field>
         <field name="search_view_id" ref="view_sale_order_line_search"/>
-        <field name="view_id" ref="view_sale_order_line_tree"/>
+        <field name="view_id" ref="view_sale_order_line_stock_tree"/>
         <field name="domain">[('accounting_state', '!=', 'deleted'), ('accounting_order', '=', True), ('production_line', '=', True)]</field>
         <field name="context">{'form_view_ref': 'production_line.view_sale_order_line_form', 'search_default_Production1': True}</field>
     </record><!--'form_view_ref':'production_line.view_sale_order_line_form',-->
@@ -1269,7 +1269,7 @@
         <field name="view_type">form</field>
         <field name="view_mode">tree,form,graph,calendar</field>
         <field name="search_view_id" ref="view_sale_order_line_search"/>
-        <field name="view_id" ref="view_sale_order_line_tree"/>
+        <field name="view_id" ref="view_sale_order_line_stock_tree"/>
         <field name="domain">[('accounting_state','!=','deleted'),('accounting_order','=',True),('production_line','=',True)]</field>
         <field name="context">{'form_view_ref': 'production_line.view_sale_order_line_form', 'search_default_Production2': True}</field>
     </record><!---->
@@ -1279,7 +1279,7 @@
         <field name="view_type">form</field>
         <field name="view_mode">tree,form,graph,calendar</field>
         <field name="search_view_id" ref="view_sale_order_line_search"/>
-        <field name="view_id" ref="view_sale_order_line_tree"/>
+        <field name="view_id" ref="view_sale_order_line_stock_tree"/>
         <field name="domain">[('accounting_state','!=','deleted'),('accounting_order','=',True),('production_line','=',True)]</field>
         <field name="context">{'form_view_ref': 'production_line.view_sale_order_line_form', 'search_default_Production3': True,}</field>
     </record><!--'form_view_ref':'production_line.view_sale_order_line_form',-->
