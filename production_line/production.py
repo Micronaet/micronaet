@@ -2262,10 +2262,17 @@ class sale_order_line_extra(osv.osv):
         return res
 
     _columns = {
-        'state_info': fields.related('mrp_production_id', 'state_info',
+        'state_info': fields.related(
+            'mrp_production_id', 'state_info',
             type='char', string='Production info', store=False),
 
-        'previous_product_qty': fields.float('Previous quantity',
+        'use_stock_qty': fields.float(
+            'Usa mag.', digits=(16, 6),
+            help='Da usare il magazzino per Kg. indicati (il reparto'
+                 'preparazione ordini dovrà poi indicare i pallet da usare'
+                 'e chiudere con la quantità indicata)'),
+        'previous_product_qty': fields.float(
+            'Previous quantity',
             digits=(16, 6), help='Save last modified value if Q. is changed'),
         'previous_product_id': fields.many2one(
             'product.product', 'Previous product',

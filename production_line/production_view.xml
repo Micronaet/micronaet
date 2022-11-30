@@ -1078,25 +1078,27 @@
         <field name="model">sale.order.line</field>
         <field name="priority" eval="20"/>
         <field name="arch" type="xml">
-            <tree string="OC line" colors="red:accounting_state=='deleted';black:mandatory_delivery;blue:mrp_production_id;green:to_produce==False">
+            <tree string="OC line" colors="red:accounting_state=='deleted';black:mandatory_delivery;blue:mrp_production_id;green:to_produce==False" editable="bottom">
                     <field name="production_line" invisible="1" />
-                    <field name="name" />
-                    <field name="product_id" />
-                    <field name="partner_id" />
+                    <field name="name" readonly="1"/>
+                    <field name="product_id" readonly="1"/>
+                    <field name="partner_id" readonly="1"/>
                     <!--<field name="duelist_uncovered" invisible="1" />
                     <button name="button_duelist_uncovered" type="object" string="uncovered present" icon="gtk-dialog-error" attrs="{'invisible':[('duelist_uncovered','=',False)]}" />-->
-                    <field name="order_id" string="OC"/>
+                    <field name="order_id" string="OC" readonly="1"/>
                     <!--<button name="%(action_assign_mrp_production_wizard_form)d" string="Assign lavoration" type="action" context="{'product_id':product_id}" icon="STOCK_SAVE_AS"/>-->
                     <button name="function_assign_mrp_production_wizard_form" string="Assegna lavorazione" type="object" icon="STOCK_SAVE_AS"/>
-                    <field name="mrp_production_id" string="MRP"/>
-                    <field name="state_info" string="MRP info"/>
-                    <field name="date_deadline" />
-                    <field name="date_delivery" string="Tassativo" />
+                    <button name="open_sale_line_detail" string="Dettaglio riga" type="object" icon="terp-gtk-select-all"/>
+                    <field name="mrp_production_id" string="MRP" readonly="1"/>
+                    <field name="state_info" string="MRP info" readonly="1"/>
+                    <field name="date_deadline" readonly="1"/>
+                    <field name="date_delivery" string="Tassativo" readonly="1"/>
                     <field name="mandatory_delivery" invisible="1" />
-                    <field name="product_uom" string="UM"/>
-                    <field name="product_uom_qty" sum="Total" string="Q." />
+                    <field name="product_uom" string="UM" readonly="1"/>
+                    <field name="product_uom_qty" sum="Total" string="Q." readonly="1"/>
+                    <field name="use_stock_qty" sum="Stock" string="Usare mag."/>
                     <!--<field name="product_ul_id" string="Imballo (RIM)"/>-->
-                    <field name="product_packaging" string="Imballo" /><!--domain="[('is_active', '=', True), ('product_id', '=', product_id)]"-->
+                    <field name="product_packaging" string="Imballo" domain="[('is_active', '=', True), ('product_id', '=', product_id)]" />
 
                     <!--
                     No more used:
@@ -1259,8 +1261,8 @@
         <field name="search_view_id" ref="view_sale_order_line_search"/>
         <field name="view_id" ref="view_sale_order_line_tree"/>
         <field name="domain">[('accounting_state', '!=', 'deleted'), ('accounting_order', '=', True), ('production_line', '=', True)]</field>
-        <field name="context">{'form_view_ref':'production_line.view_sale_order_line_form','search_default_Production1': True}</field>
-    </record>
+        <field name="context">{'search_default_Production1': True}</field>
+    </record><!--'form_view_ref':'production_line.view_sale_order_line_form',-->
     <record model="ir.actions.act_window" id="action_view_sale_order_line_d20">   <!--ALL PRODUCTION LINE FROM ACCOUNTING NOT DELETED Month 1-->
         <field name="name">OC line analysis</field>
         <field name="res_model">sale.order.line</field>
@@ -1269,8 +1271,8 @@
         <field name="search_view_id" ref="view_sale_order_line_search"/>
         <field name="view_id" ref="view_sale_order_line_tree"/>
         <field name="domain">[('accounting_state','!=','deleted'),('accounting_order','=',True),('production_line','=',True)]</field>
-        <field name="context">{'form_view_ref':'production_line.view_sale_order_line_form','search_default_Production2':True,}</field>
-    </record>
+        <field name="context">{'search_default_Production2':True}</field>
+    </record><!--'form_view_ref':'production_line.view_sale_order_line_form'-->
     <record model="ir.actions.act_window" id="action_view_sale_order_line_d30">   <!--ALL PRODUCTION LINE FROM ACCOUNTING NOT DELETED Month 2-->
         <field name="name">OC line analysis</field>
         <field name="res_model">sale.order.line</field>
@@ -1279,8 +1281,8 @@
         <field name="search_view_id" ref="view_sale_order_line_search"/>
         <field name="view_id" ref="view_sale_order_line_tree"/>
         <field name="domain">[('accounting_state','!=','deleted'),('accounting_order','=',True),('production_line','=',True)]</field>
-        <field name="context">{'form_view_ref':'production_line.view_sale_order_line_form','search_default_Production3':True,}</field>
-    </record>
+        <field name="context">{'search_default_Production3':True,}</field>
+    </record><!--'form_view_ref':'production_line.view_sale_order_line_form',-->
 
     <record model="ir.ui.view" id="view_mrp_production_filter_extra">
         <field name="name">Search Production order</field>
