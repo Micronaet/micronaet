@@ -2267,7 +2267,7 @@ class sale_order_line_extra(osv.osv):
             type='char', string='Production info', store=False),
 
         'use_stock_qty': fields.float(
-            'Usa mag.', digits=(16, 6),
+            'Usa mag.', digits=(16, 2),
             help='Da usare il magazzino per Kg. indicati (il reparto'
                  'preparazione ordini dovrà poi indicare i pallet da usare'
                  'e chiudere con la quantità indicata)'),
