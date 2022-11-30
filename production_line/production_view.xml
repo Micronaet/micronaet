@@ -1113,6 +1113,34 @@
             </tree>
         </field>
     </record>
+    <record model="ir.ui.view" id="action_view_sale_order_package_line">
+        <field name="name">OC assign stock line</field>
+        <field name="model">sale.order.line</field>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+            <tree editable="bottom" string="OC line" colors="red:accounting_state=='deleted';black:mandatory_delivery;blue:mrp_production_id;green:to_produce==False" >
+                    <field name="production_line" invisible="1" />
+                    <field name="name" readonly="1"/>
+                    <field name="product_id" readonly="1"/>
+                    <field name="partner_id" readonly="1"/>
+                    <field name="order_id" string="OC" readonly="1"/>
+                    <field name="mrp_production_id" string="MRP" readonly="1"/>
+                    <field name="state_info" string="MRP info" readonly="1"/>
+                    <field name="date_deadline" readonly="1"/>
+                    <field name="date_delivery" string="Tassativo" readonly="1"/>
+                    <field name="mandatory_delivery" invisible="1" />
+                    <field name="product_uom" string="UM" readonly="1"/>
+                    <field name="product_uom_qty" sum="Total" string="Q." readonly="1"/>
+                    <field name="use_stock_qty" sum="Stock" string="Usare mag." readonly="1"/>
+                    <field name="product_packaging" string="Imballo" readonly="1" domain="[('is_active', '=', True), ('product_id', '=', product_id)]" />
+                    <field name="accounting_qty" string="A magazz." readonly="1"/>
+                    <field name="state" invisible="1" />
+                    <field name="to_produce" invisible="1" />
+                    <field name="accounting_state" string="Stato" invisible="1"/> <!--Not needed in MRP-->
+            </tree>
+        </field>
+    </record>
+
     <record model="ir.ui.view" id="view_sale_order_line_form">
         <field name="name">OC line</field>
         <field name="model">sale.order.line</field>
@@ -1252,6 +1280,16 @@
         <field name="view_id" ref="view_sale_order_line_tree"/>
         <field name="domain">[('accounting_order','=',True),('production_line','=',True)]</field>
         <field name="context">{'form_view_ref':'production_line.view_sale_order_line_form'}</field>
+    </record>
+    <record model="ir.actions.act_window" id="action_view_sale_order_package_line">
+        <field name="name">OC package to stock</field>
+        <field name="res_model">sale.order.line</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,graph,calendar</field>
+        <field name="search_view_id" ref="view_sale_order_line_search"/>
+        <field name="view_id" ref="view_sale_order_line_assign_stock_tree"/>
+        <field name="domain">[('use_stock_qty','>',0),('accounting_order','=',True),('production_line','=',True)]</field>
+        <field name="context">{}</field>
     </record>
     <!-- Tolto: ('use_accounting_qty','=',False)-->
     <record model="ir.actions.act_window" id="action_view_sale_order_line_d10">   <!--ALL PRODUCTION LINE FROM ACCOUNTING NOT DELETED Month 0-->
