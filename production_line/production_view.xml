@@ -1281,6 +1281,7 @@
         <field name="domain">[('accounting_order','=',True),('production_line','=',True)]</field>
         <field name="context">{'form_view_ref':'production_line.view_sale_order_line_form'}</field>
     </record>
+    <!--todo convert in server action or add a button for make as done!-->
     <record model="ir.actions.act_window" id="action_view_sale_order_package_line">
         <field name="name">OC package to stock</field>
         <field name="res_model">sale.order.line</field>
