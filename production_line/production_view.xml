@@ -967,6 +967,7 @@
 
                                             <!--<field name="product_ul_id" string="Imballo (RIM)"/>-->
                                             <field name="product_packaging" string="Imballo" domain="[('is_active', '=', True), ('product_id', '=', product_id)]"/>
+                                            <field name="use_stock_qty" />
 
                                             <field name="pallet_weight" string="Peso Pallet"/>
                                             <field name="date_deadline" readonly="1"/>
