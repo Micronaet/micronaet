@@ -101,12 +101,13 @@ class create_mrp_production_wizard(osv.osv_memory):
         if context is None:
            context = {}
 
-        wizard_browse = self.browse(cr, uid, ids, context=context)[0] # wizard fields proxy
+        wizard_browse = self.browse(cr, uid, ids, context=context)[0]
 
         # Create a production order and open it:
         production_pool = self.pool.get("mrp.production")
         data = {
-            'name': self.pool.get('ir.sequence').get(cr, uid, 'mrp.production'),
+            'name': self.pool.get('ir.sequence').get(
+                cr, uid, 'mrp.production'),
             'product_id': wizard_browse.product_id.id,
             'product_qty': wizard_browse.total,
             'product_uom': wizard_browse.product_id.uom_id.id,
@@ -122,8 +123,9 @@ class create_mrp_production_wizard(osv.osv_memory):
         p_id = self.pool.get("mrp.production").create(
             cr, uid, data, context=context)
         # Load element from BOM:
-        self.pool.get("mrp.production")._action_load_materials_from_bom(
-            cr, uid, p_id, context=context)
+        self.pool.get(
+            "mrp.production")._action_load_materials_from_bom(
+                cr, uid, p_id, context=context)
         return return_view(
             self, cr, uid, p_id,
             "mrp.mrp_production_form_view", "mrp.production")
@@ -140,11 +142,15 @@ class create_mrp_production_wizard(osv.osv_memory):
             return False
         sol_browse = sol_pool.browse(cr, uid, ids, context=context)
         product = sol_browse[0].product_id
+        if ids:
+            accounting_qty = product.accounting_qty
+        else:
+            accounting_qty = 0.0
         default = {
-            "list": _("- Q. in store (don't produce): %6.3f\n") % (
-                product.accounting_qty if (len(sol_browse)>0 and product) else 0.0),
+            "list": _("- Q. in store (don't produce): %6.3f\n") %
+                    product.accounting_qty,
             "error": False,
-            "total": 0.0 - (product.accounting_qty if (len(sol_browse) > 0 and product) else 0.0),
+            "total": 0.0 - accounting_qty,
             "product": False,
             "deadline": False,
             "bom": False,
@@ -168,13 +174,13 @@ class create_mrp_production_wizard(osv.osv_memory):
             return False
 
         for item in sol_browse:
-            if old_product_id==False:
-                old_product_id=item.product_id.id
+            if old_product_id == False:
+                old_product_id = item.product_id.id
 
             # Test function mode ##############################################
-            if field =="list":
+            if field == "list":
                 if item.product_id.id != old_product_id:
-                    res="Error! Choose order line that are of one product ID"
+                    res = "Error! Choose order line that are of one product ID"
                     break
 
                 res += "+ OC: %s [Row: %s] q.: %s (Scad.: %s).\n" % (
@@ -184,13 +190,15 @@ class create_mrp_production_wizard(osv.osv_memory):
                     "%s/%s/%s" % (
                         item.date_deadline[8:10],
                         item.date_deadline[5:7],
-                        item.date_deadline[:4]) if item.date_deadline else "Not present!"
+                        item.date_deadline[:4]) if item.date_deadline else
+                    "Not present!"
                     )
             elif field == "error":
                 if item.product_id.id != old_product_id:
                     return True
             elif field == "total" or field == "mrp_yield_total":
-                res += item.product_uom_qty or 0.0
+                # todo (use palled linked?)
+                res += (item.product_uom_qty - item.use_stock_qty)
             elif field == "deadline":
                 if not res:
                     res = item.date_deadline
@@ -203,18 +211,24 @@ class create_mrp_production_wizard(osv.osv_memory):
     _columns = {
         'name': fields.text('List of OC elements',),
         'error': fields.boolean('Error', required=False),
-        'all_in_one': fields.boolean('All in one', required=False, help="All the production is made in one lavoration"),
+        'all_in_one': fields.boolean(
+            'All in one', required=False,
+            help="All the production is made in one lavoration"),
         'total': fields.float('Total', digits=(16, 2), required=True),
-        'product_id': fields.many2one('product.product', 'Product', required=True),
+        'product_id': fields.many2one(
+            'product.product', 'Product', required=True),
         'bom_id': fields.many2one('mrp.bom', 'BOM', required=True),
         'date_deadline': fields.date(
             'Date deadline', required=True,
             help="Generated automatically based on min deadline of order header selected, changeable form user but not tipped!"),
-        'mrp_yield': fields.float('Yield rate',
+        'mrp_yield': fields.float(
+            'Yield rate',
             digits=(16, 2), readonly=True),
-        'mrp_waste': fields.float('Yield waste',
+        'mrp_waste': fields.float(
+            'Yield waste',
             digits=(16, 2), readonly=True),
-        'mrp_yield_total': fields.float('Yield total',
+        'mrp_yield_total': fields.float(
+            'Yield total',
             digits=(16, 2), readonly=True),
         }
 
