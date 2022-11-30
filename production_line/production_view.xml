@@ -1113,7 +1113,7 @@
             </tree>
         </field>
     </record>
-    <record model="ir.ui.view" id="action_view_sale_order_package_line">
+    <record model="ir.ui.view" id="view_sale_order_line_assign_stock_tree">
         <field name="name">OC assign stock line</field>
         <field name="model">sale.order.line</field>
         <field name="priority" eval="20"/>
