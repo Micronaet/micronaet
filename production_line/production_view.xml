@@ -1106,7 +1106,7 @@
                     <field name="use_accounting_qty" invisible="1" />
                     -->
 
-                    <field name="accounting_qty" string="In magazz."/>
+                    <field name="accounting_qty" string="A magazz." readonly="1"/>
                     <field name="state" invisible="1" />
                     <field name="to_produce" invisible="1" />
                     <field name="accounting_state" string="Stato" invisible="1"/> <!--Not needed in MRP-->
@@ -1122,34 +1122,35 @@
               <sheet string="OC line">
                 <group colspan="4" col="4">
                     <separator string="Header:" colspan="4" />
-                    <field name="order_id" />
-                    <field name="date_deadline" />
+                    <field name="order_id" readonly="1"/>
+                    <field name="date_deadline" readonly="1"/>
                 </group>
                 <group colspan="4" col="4">
                     <separator string="Line:" colspan="4" />
-                    <field name="sequence" />
+                    <!--<field name="sequence" readonly="1"/>-->
                     <!--<field name="product_ul_id" string="Imballo (RIM)"/>-->
+                    <field name="product_id" readonly="1"/>
                     <field name="product_packaging" string="Imballo" domain="[('is_active', '=', True), ('product_id', '=', product_id)]"/>
 
-                    <field name="product_id" />
-                    <field name="product_uom_qty" />
+                    <field name="product_uom_qty" readonly="1"/>
                 </group>
                 <group colspan="4" col="6">
+                    <field name="use_stock_qty" />
                     <field name="accounting_qty" readonly="1"/>
-                    <button name="close_with_accounting_store" type="object" string="Use mag." icon="gtk-go-forward" attrs="{'invisible':['|',('use_accounting_qty','=',True),('mrp_production_id','!=',False),]}"/>
-                    <field name="use_accounting_qty" />
+                    <!--todo use for partial? <button name="close_with_accounting_store" type="object" string="Use mag." icon="gtk-go-forward" attrs="{'invisible':['|',('use_accounting_qty','=',True),('mrp_production_id','!=',False),]}"/>-->
+                    <!--<field name="use_accounting_qty" />-->
                 </group>
                 <group colspan="4" col="4">
                     <field name="state" invisible="1"/>
                     <separator string="Description:" colspan="4" />
-                    <field name="name"  />
+                    <field name="name" readonly="1" />
                     <separator string="Production:" colspan="4" />
                     <field name="mrp_production_id" domain="[('product_id','=',product_id)]" readonly="1"/>
                     <button name="%(action_assign_mrp_production_wizard_form)d" string="Assign lavoration" type="action" context="{'product_id':product_id}"/>
                 </group>
-                <group>
-                  <separator string="Note" colspan="4"/>
-                </group>
+                <!--<group>
+                  <separator string="Note" colspan="4" />
+                </group>-->
               </sheet>
             </form>
         </field>
