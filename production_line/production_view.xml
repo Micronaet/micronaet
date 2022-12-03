@@ -34,6 +34,7 @@
         <field name="priority" eval="40"/>
         <field name="arch" type="xml">
             <form string="Material for production" version="7.0">
+                <header/>
                 <sheet>
                     <group col="4" colspan="4">
                         <field name="product_id" readonly="1"/>
@@ -47,6 +48,9 @@
                         <field name="note_internal" colspan="4"/>
                     </group>
                 </sheet>
+                <footer>
+                    <button special="cancel" string="_Chiudi" />
+                </footer>
            </form>
         </field>
     </record>
