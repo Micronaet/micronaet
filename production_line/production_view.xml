@@ -33,7 +33,7 @@
         <field name="model">sale.order.line</field>
         <field name="priority" eval="40"/>
         <field name="arch" type="xml">
-            <form string="Material for production">
+            <form string="Material for production" version="7.0">
                 <sheet>
                     <group col="4" colspan="4">
                         <field name="product_id" readonly="1"/>
