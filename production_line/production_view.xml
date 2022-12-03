@@ -27,7 +27,29 @@
         </field>
     </record>
 
-    <!--mrp.production.material-->
+    <!--sale.order.line-->
+    <record model="ir.ui.view" id="view_sale_order_line_note_form">
+        <field name="name">Note riga ordine</field>
+        <field name="model">sale.order.line</field>
+        <field name="priority" eval="40"/>
+        <field name="arch" type="xml">
+            <form string="Material for production">
+                <sheet>
+                    <group col="4" colspan="4">
+                        <field name="product_id" readonly="1"/>
+                        <field name="name" readonly="1"/>
+
+                        <field name="note_packaging" colspan="4"/>
+                        <field name="note_mrp" colspan="4"/>
+                        <field name="note_laboratory" colspan="4"/>
+                        <field name="note_delivery" colspan="4"/>
+                        <field name="note_internal" colspan="4"/>
+                    </group>
+                </sheet>
+           </form>
+        </field>
+    </record>
+
     <record model="ir.ui.view" id="view_mrp_production_material_tree">
         <field name="name">Production material</field>
         <field name="model">mrp.production.material</field>

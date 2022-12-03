@@ -51,7 +51,31 @@ class sale_order_line(osv.osv):
         # Was in partner_product_detail for Italy
         'pallet_weight': fields.integer(
             'Peso pallet',
-            help='Caricare per questo prodotto il pallet con questi Kg'),
+            help='Caricare per questo prodotto il pallet con questi Kg'
+            ),
+
+        'note_packaging': fields.char(
+            'Note packaging', size=100,
+            help='Note per il personale che preparerà la consegna nel '
+                 'magazzino',
+            ),
+        'note_mrp': fields.char(
+            'Note produzione', size=100,
+            help='Note per il personale che prepara la produzione',
+            ),
+        'note_laboratory': fields.char(
+            'Note laboratorio', size=100,
+            help='Note per il personale del laboratorio',
+            ),
+        'note_delivery': fields.char(
+            'Note consegna', size=100,
+            help='Note per il personale che effettua fisicamente la consegna',
+            ),
+        'note_internal': fields.char(
+            'Note interne', size=100,
+            help='Note interne amministrative che rimangono collegate alla'
+                 'riga della offerta'
+            ),
     }
 
 
