@@ -46,6 +46,28 @@ class sale_order_line(osv.osv):
     """
     _inherit = 'sale.order.line'
 
+    def open_sale_line_note(self, cr, uid, ids, context=None):
+        """ Open note view
+        """
+        model_pool = self.pool.get('ir.model.data')
+        view_id = model_pool.get_object_reference(
+            cr, uid, 'production_line', 'view_sale_order_line_note_form')[1]
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Note di riga ordine'),
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_id': ids[0],
+            'res_model': 'sale.order.line',
+            'view_id': view_id,
+            'views': [(False, 'form')],
+            'domain': [],
+            'context': context,
+            'target': 'new',
+            'nodestroy': False,
+            }
+
     _columns = {
         # Added also here for MX installation
         # Was in partner_product_detail for Italy
