@@ -49,7 +49,8 @@
                     </group>
                 </sheet>
                 <footer>
-                    <button special="cancel" string="_Chiudi" />
+                    <button special="cancel" string="_Annulla"/>
+                    <button name="dummy_button" string="_Salva" type="object" class="oe_highlight" />
                 </footer>
            </form>
         </field>

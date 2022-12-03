@@ -46,6 +46,11 @@ class sale_order_line(osv.osv):
     """
     _inherit = 'sale.order.line'
 
+    def dummy_button(self, cr, uid, ids, context=None):
+        """ Return button
+        """
+        return True
+
     def open_sale_line_note(self, cr, uid, ids, context=None):
         """ Open note view
         """
