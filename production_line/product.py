@@ -37,12 +37,17 @@ _logger = logging.getLogger(__name__)
 class product_packaging(osv.osv):
     """ Extra fields for product.packaging object
     """
-    _name = 'product.packaging'
     _inherit = 'product.packaging'
 
     _columns = {
         'is_active': fields.boolean('Is Active'),
-        }
+        'pallet_qty': fields.interger(
+            'Peso pallet',
+            help='Peso pallet che di solito si carica con questo'
+                 'imballo per questo prodotto',
+        ),
+        # todo uom_id?
+    }
 
     _defaults = {
         'is_active': lambda *x: True,
