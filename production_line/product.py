@@ -41,7 +41,7 @@ class product_packaging(osv.osv):
 
     _columns = {
         'is_active': fields.boolean('Is Active'),
-        'pallet_qty': fields.interger(
+        'pallet_qty': fields.integer(
             'Peso pallet',
             help='Peso pallet che di solito si carica con questo'
                  'imballo per questo prodotto',
