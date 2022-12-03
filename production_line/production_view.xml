@@ -39,6 +39,7 @@
                         <field name="product_id" readonly="1"/>
                         <field name="name" readonly="1"/>
 
+                        <separator string="Note per i vari reparti:" colspan="4"/>
                         <field name="note_packaging" colspan="4"/>
                         <field name="note_mrp" colspan="4"/>
                         <field name="note_laboratory" colspan="4"/>
