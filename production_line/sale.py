@@ -61,7 +61,7 @@ class sale_order_line(osv.osv):
             'res_id': ids[0],
             'res_model': 'sale.order.line',
             'view_id': view_id,
-            'views': [(False, 'form')],
+            'views': [(view_id, 'form')],
             'domain': [],
             'context': context,
             'target': 'new',
