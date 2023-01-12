@@ -241,7 +241,7 @@ class MrpProduction(orm.Model):
                 else:
                     f_text_current = f_text_red
                     f_number_current = f_number_red
-                    total['product'][product][2] = False # Not OK
+                    total['product'][product][2] = False  # Not OK
 
                 # Write data:
                 temp_list.append(([
@@ -293,7 +293,7 @@ class MrpProduction(orm.Model):
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=f_header)
 
-        # Autofilter:
+        # Auto-filter:
         excel_pool.autofilter(ws_name, row, 0, row, len(header) - 1)
 
         # Data:
@@ -393,7 +393,6 @@ class MrpProduction(orm.Model):
             excel_pool.write_xls_line(
                 ws_name, row, record, default_format=f_text_current)
 
-
         # =====================================================================
         #                   Collect data for Production:
         # =====================================================================
@@ -417,7 +416,7 @@ class MrpProduction(orm.Model):
             # -----------------------------------------------------------------
             for load in job.load_ids:
                 # Check data page:
-                total['check'][mrp][1] += load.product_qty # Final product
+                total['check'][mrp][1] += load.product_qty  # Final product
 
                 # (Mode, Product, Qty, Price, Recycle)
                 production_price = (load.accounting_cost / load.product_qty) \
@@ -745,6 +744,20 @@ class MrpProduction(orm.Model):
         # =====================================================================
         #                           REPORT x PERIOD
         # =====================================================================
+        # Create all sheet in reverse order per years:
+        # =====================================================================
+        all_year = set(year_cols['load']) | set(year_cols['unload'])
+        for year_block in sorted(all_year, reverse=True):
+            if year_block in year_cols['load']:
+                # Production in period:
+                ws_name = u'Producción en el periodo %s' % year_block
+                excel_pool.create_worksheet(name=ws_name)
+
+            if year_block in year_cols['unload']:
+                # Material in period:
+                ws_name = u'Descargas en el periodo %s' % year_block
+                excel_pool.create_worksheet(name=ws_name)
+
         # Column:
         width = [10, 30, 4, 10]
         header = [u'Productos', u'Descripción', u'UM', u'Total']
@@ -796,7 +809,7 @@ class MrpProduction(orm.Model):
             # Production in period:
             # -----------------------------------------------------------------
             ws_name = u'Producción en el periodo %s' % year_block
-            excel_pool.create_worksheet(name=ws_name)
+            # excel_pool.create_worksheet(name=ws_name)
 
             # -----------------------------------------------------------------
             # Write total (row 0):
@@ -908,7 +921,7 @@ class MrpProduction(orm.Model):
             # Material in period:
             # -----------------------------------------------------------------
             ws_name = u'Descargas en el periodo %s' % year_block
-            excel_pool.create_worksheet(name=ws_name)
+            # excel_pool.create_worksheet(name=ws_name)
 
             row = 0
             excel_pool.column_width(ws_name, width)
@@ -922,7 +935,7 @@ class MrpProduction(orm.Model):
                 # Write fixed col data:
                 excel_pool.write_xls_line(
                     ws_name, row, [u'Totales %s' % uom.name],
-                    default_format=f_header, col= fixed_col - 1)
+                    default_format=f_header, col=fixed_col - 1)
 
                 # Write variable col data:
                 excel_pool.write_xls_line(

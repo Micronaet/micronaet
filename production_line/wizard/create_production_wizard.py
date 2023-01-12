@@ -35,13 +35,14 @@ from openerp.tools.translate import _
 def return_view(self, cr, uid, res_id, view_name, object_name):
     """ Function that return dict action for next step of the wizard
     """
-    if not view_name: return {'type':'ir.actions.act_window_close'}
+    if not view_name:
+        return {'type': 'ir.actions.act_window_close'}
 
     view_element = view_name.split(".")
     views = []
 
     if len(view_element) != 2:
-        return  {'type': 'ir.actions.act_window_close'}
+        return {'type': 'ir.actions.act_window_close'}
 
     model_id = self.pool.get('ir.model.data').search(cr, uid, [
         ('model', '=', 'ir.ui.view'),
