@@ -696,20 +696,23 @@ class MrpProduction(orm.Model):
                 f_number_color = f_number
 
             # Write fixed col data:
-            temp_list.append(([
-                ('%s del %s' % (mrp.name, mrp.date_planned[:10]),
-                    f_text_color),
-                ('[%s] %s' % (
-                    mrp_product.default_code or '-',
-                    mrp_product.name or '',
-                    ), f_text_color),
-                (mrp_product.uom_id.name, f_text_color),
+            sort_date = mrp.date_planned[:10]
+            temp_list.append((
+                sort_date,
+                [
+                    ('%s del %s' % (mrp.name, sort_date), f_text_color),
+                    ('[%s] %s' % (
+                        mrp_product.default_code or '-',
+                        mrp_product.name or '',
+                        ), f_text_color),
+                    (mrp_product.uom_id.name, f_text_color),
 
-                '%10.2f' % round(material, 2),
-                '%10.2f' % round(product, 2),
-                '%10.2f' % round(lost, 2),
-                '%10.2f' % round(rate, 2),
-                ], f_number_color))
+                    '%10.2f' % round(material, 2),
+                    '%10.2f' % round(product, 2),
+                    '%10.2f' % round(lost, 2),
+                    '%10.2f' % round(rate, 2),
+                ],
+                f_number_color))
 
         # ---------------------------------------------------------------------
         # Write total:
@@ -735,7 +738,8 @@ class MrpProduction(orm.Model):
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=f_header)
 
-        for record, f_number_color in sorted(temp_list, reverse=True):
+        for sort_date, record, f_number_color in sorted(
+                temp_list, reverse=True):
             # , key=lambda r: r[0][0], reverse=True
             row += 1
             excel_pool.write_xls_line(
