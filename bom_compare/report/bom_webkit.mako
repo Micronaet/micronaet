@@ -124,7 +124,7 @@
                   <tbody>
                       <%i=0%>
                       <%rows = get_rows()%>
-                      %for row in rows:
+                      %for row in sorted(rows):
                           %if (i % 2) == 0:
                               <% c = "even" %>
                           %else:
