@@ -801,7 +801,7 @@ class sale_order_add_extra(osv.osv):
             'Accounting order',
             help='It true the order is generated from accounting program, so it is temporarly present in OpenERP only for production and delivery operations'),
         'accounting_state': fields.selection([
-            ('not', 'Not Confirmed'),  # Not confirmed (first step during importation)
+            ('not', 'Not Confirmed'),  # (first step during importation)
             ('new', 'New'),  # Confirmed
             ('modified', 'Modified'),  # Quantity only (for production or linked to store)
             ('planned', 'Planned for delivery'),
@@ -915,7 +915,7 @@ class sale_order_line_extra(osv.osv):
             If ok set order as linked removing the line from production
         """
         # test yet checked lines
-        sol_browse=self.browse(cr, uid, ids, context=context)[0]
+        sol_browse = self.browse(cr, uid, ids, context=context)[0]
         if sol_browse.mrp_production_id or sol_browse.use_accounting_qty:
            raise osv.except_osv('Error','Element in production or yet linked')
            return
@@ -930,7 +930,8 @@ class sale_order_line_extra(osv.osv):
                    sol_browse.product_id.accounting_qty,
                    ))
         else:
-           res=self.write(cr, uid, ids, {'use_accounting_qty':True}, context=context)
+           res = self.write(
+               cr, uid, ids, {'use_accounting_qty':True}, context=context)
         return True
 
     _columns = {
@@ -939,10 +940,11 @@ class sale_order_line_extra(osv.osv):
             'order_id', 'partner_id', type='many2one', relation='res.partner',
             string='Partner', store=True),
         'duelist_exposition': fields.related(
-            'partner_id','duelist_exposition', type='boolean',
+            'partner_id', 'duelist_exposition', type='boolean',
             string='Exposed', store=False),
 
-        # 'mandatory_delivery':fields.related('order_id', 'mandatory_delivery',  type='boolean', string='Mandatory delivery'),
+        # 'mandatory_delivery':fields.related('order_id',
+        # 'mandatory_delivery',  type='boolean', string='Mandatory delivery'),
         'date_delivery': fields.related(
             'order_id', 'date_delivery', type='date', string='Date delivery'),
 
@@ -951,13 +953,13 @@ class sale_order_line_extra(osv.osv):
             required=False,
             help='During order importation test if the order line active has product that need to be produced'),
         'use_accounting_qty': fields.boolean(
-            'Use accounting qty',
+            'Use accounting qty', copy=False,
             help='Set the line to be carried on with store quantity present in accounting store',
             ),
 
         'production_line': fields.boolean('Is for production'),
         'mrp_production_id': fields.many2one(
-            'mrp.production', 'Production order',
+            'mrp.production', 'Production order', copy=False,
             ondelete='set null',),
         'accounting_qty': fields.related(
             'product_id', 'accounting_qty', type='float', digits=(16, 3),
@@ -969,7 +971,8 @@ class sale_order_line_extra(osv.osv):
             'order_id', 'accounting_order', type='boolean',
             String='Accounting order', store=True,
             help='Temporary line from accounting, when order is close it is deleted from OpenERP'),
-        # todo fields.function da fare per testare quelli coperti da produzione, magazzino ordinato
+        # todo fields.function da fare per testare quelli coperti da
+        #  produzione, magazzino ordinato
         'product_ul_id': fields.many2one(
             'product.ul', 'Required package',
             ondelete='set null',),
@@ -1031,7 +1034,7 @@ class mrp_production_material(osv.osv):
         the list of fields instead of create another object
     """
     _name = 'mrp.production.material'
-    _description= 'Production used material'
+    _description = 'Production used material'
     _rec_name = 'product_id'
 
     _columns = {
@@ -1111,7 +1114,7 @@ class mrp_production_workcenter_load(osv.osv):
             'Workcenter line', required=True, ondelete='cascade'
             ),  # XXX ha generato cancellazione?
 
-        'package_id':fields.many2one('product.ul', 'Package'),
+        'package_id': fields.many2one('product.ul', 'Package'),
         'ul_qty': fields.integer(
             'Package q.', help='Package quantity to unload from accounting'),
 
