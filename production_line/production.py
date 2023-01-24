@@ -1150,7 +1150,7 @@ class mrp_production_workcenter_load(osv.osv):
             store=True),
         }
 
-    _defaults={
+    _defaults = {
         'date': lambda *x: datetime.today().strftime('%Y-%m-%d %H:%M:%S'),
         'user_id': lambda obj, cr, uid, context: uid,
         'sequence': lambda *x: 0,

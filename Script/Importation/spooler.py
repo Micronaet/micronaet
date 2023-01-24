@@ -32,7 +32,7 @@ cfg_file = "openerp.cfg"
 config = ConfigParser.ConfigParser()
 config.read([os.path.expanduser(os.path.join("~", cfg_file))])
 
-# SMB parameters: 
+# SMB parameters:
 smb_path = config.get('smb', 'path')
 #smb_user = config.get('smb','user'))
 #smb_password = config.get('smb','password'))
@@ -42,9 +42,9 @@ smtp_server = config.get('smtp', 'server')
 smtp_user = config.get('smtp', 'user')
 smtp_password = config.get('smtp', 'password')
 smtp_port = config.get('smtp', 'port')
-smtp_destination = eval(config.get('smtp', 'destination'))  
-smtp_ssl_auth = eval(config.get('smtp', 'ssl'))             
-smtp_spa_auth = eval(config.get('smtp', 'spa'))             
+smtp_destination = eval(config.get('smtp', 'destination'))
+smtp_ssl_auth = eval(config.get('smtp', 'ssl'))
+smtp_spa_auth = eval(config.get('smtp', 'spa'))
 
 # Import parameters:
 import_path_temp = config.get('import', 'path')
@@ -63,22 +63,22 @@ split_block = {} # element with key (number of split): value ((tot field, file))
 # Utility function ############################################################
 def import_init():
     global split_block
-    
+
     def create_block(split_block, file_out_path, file_out_mask, tot):
-        ''' Create new block with total and file
-        '''
+        """ Create new block with total and file
+        """
         position = len(split_block) + 1     # next ID key
         split_block[position] = (tot, open(os.path.join(file_out_path,file_out_mask % (position)), "w"))
-        return 
+        return
 
     # Calculate split blocks
     split_block = {}
     tot = 0
-    
+
     for item in fields.order: # all the field list (ordered as is)
         if tot + fields.field_order[item][0] > max_field:
             create_block(split_block, import_path_temp, file_out_mask, tot)
-            tot = fields.field_order[item][0]   # reset counter to current field length        
+            tot = fields.field_order[item][0]   # reset counter to current field length
             print "Campo", item
         else:
             tot += fields.field_order[item][0]  # update counter with field length
@@ -89,8 +89,8 @@ def import_init():
     #print split_block
 
 def split_file(file_in):
-    ''' Split file depend on blocks
-    '''
+    """ Split file depend on blocks
+    """
     global split_block
 
     fin = open(file_in, "r")
@@ -107,14 +107,14 @@ def split_file(file_in):
         split_block[key][1].close()
 
 def import_file(order_file, import_path_temp, import_filename_temp):
-    ''' Rename file, split and lauch importation
-    '''
+    """ Rename file, split and lauch importation
+    """
     try:
         # Rename file in local order
         f_tmp = os.path.join(import_path_temp, import_filename_temp)
         shutil.copy(order_file, f_tmp)
 
-        # Split file in 2 elements        
+        # Split file in 2 elements
         split_file(f_tmp)
 
         # Launch importation
@@ -122,7 +122,7 @@ def import_file(order_file, import_path_temp, import_filename_temp):
 
         # Check importation error
         # TODO
-        
+
         try:
             open(import_errorfile, "r")
             return False # there's some error
@@ -138,9 +138,9 @@ def import_file(order_file, import_path_temp, import_filename_temp):
         return "Error"
 
 # TODO log operations
-for file_name in os.listdir(smb_path):     
+for file_name in os.listdir(smb_path):
     try:
-        if file_name.split(".")[-1].lower() == import_extension: 
+        if file_name.split(".")[-1].lower() == import_extension:
             import_init()
             order_file = os.path.join(smb_path, file_name)
             res = import_file(order_file, import_path_temp ,import_filename_temp)
