@@ -1110,7 +1110,8 @@ class mrp_production_workcenter_load(osv.osv):
             help='ID lot from accounting (if created from)'),
         'partial': fields.boolean('Partial'),
         'user_id': fields.many2one('res.users', 'User', required=True),
-        'line_id': fields.many2one('mrp.production.workcenter.line',
+        'line_id': fields.many2one(
+            'mrp.production.workcenter.line',
             'Workcenter line', required=True, ondelete='cascade'
             ),  # XXX ha generato cancellazione?
 
