@@ -1133,7 +1133,7 @@ class mrp_production_workcenter_load(osv.osv):
         'recycle': fields.boolean('Recycle', help='Recycle product'),
         'recycle_product_id': fields.many2one('product.product', 'Product'),
 
-        'wrong':fields.boolean(
+        'wrong': fields.boolean(
             'Wrong', help='Wrong product, coded with a standard code'),
         'wrong_comment': fields.text('Wrong comment'),
 

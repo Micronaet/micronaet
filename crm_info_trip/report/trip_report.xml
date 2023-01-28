@@ -12,7 +12,7 @@
         <field name="report_rml">crm_info_trip/report/trip.odt</field>
         <field name="parser_state">loc</field>
         <field name="tml_source">file</field>
-        <field name="out_format" eval="ref('report_aeroo_ooo.report_mimetypes_pdf_odt')"></field>
+        <field name="out_format" eval="ref('report_aeroo_ooo.report_mimetypes_pdf_odt')"/>
     </record>
 
     <ir_set>

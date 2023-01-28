@@ -20,12 +20,12 @@
 import os
 import pdb
 import sys
-import openerp.netsvc
 import logging
 from openerp.osv import osv, orm, fields
 from datetime import datetime, timedelta
-from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, DATETIME_FORMATS_MAP, float_compare
-import openerp.addons.decimal_precision as dp
+from openerp.tools import (
+    DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT,
+    DATETIME_FORMATS_MAP, float_compare)
 from openerp.tools.translate import _
 from openerp.report import report_sxw
 from openerp.report.report_sxw import rml_parse
@@ -245,11 +245,11 @@ class Parser(report_sxw.rml_parse):
             # -----------------------------------------------------------------
             #                   Accounting movement list
             # -----------------------------------------------------------------
-            mysql_data = [] # dict of fetch all years
+            mysql_data = []  # dict of fetch all years
             for year in years:
                 mysql_cursor = query.get_mm_header_line(  # get_mm_line(
                     self.cr, self.uid,
-                    # TODO no FT only BC in this DB
+                    # todo no FT only BC in this DB
                     where_document=('BC', 'BS'),
                     where_partner=partner_code,
                     originator=True,
@@ -266,7 +266,7 @@ class Parser(report_sxw.rml_parse):
             for year in years:
                 mysql_cursor = query.get_mm_header_line(
                     self.cr, self.uid,
-                    where_document=("BC", "BS"),
+                    where_document=('BC', 'BS'),
                     where_partner=partner_code,
                     originator=True,
                     year=year,
@@ -419,7 +419,7 @@ class Parser(report_sxw.rml_parse):
             domain = [('partner_id', '=', partner_id)]
             offer_pool = self.pool.get('sale.order')
 
-            # TODO da rivedere in base alla gestione che faremo delle offerte
+            # todo da rivedere in base alla gestione che faremo delle offerte
             if mode == 'order':
                 domain.append(('accounting_order', '=', True))  # else if offer
             elif mode == 'quotation':
