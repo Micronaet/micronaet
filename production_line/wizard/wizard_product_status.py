@@ -1007,7 +1007,6 @@ class product_status_wizard(osv.osv_memory):
             # list for update after for product:
             (_('Materiale'), format_title),
             (_('Codice'), format_title),
-            (_('Magazzino'), format_title),
             ]
         fixed_col = len(header)
         for col in cols:
@@ -1029,11 +1028,11 @@ class product_status_wizard(osv.osv_memory):
             body = [
                 (row[2].name, format_text),
                 (default_code, format_text),
-                '',
                 ]
             gap_columns = len(body)
             j = 0
             for col in cols:
+                # (q, minimum) = mrp_pool._get_cel(j, row[1])
                 product_id = row[1]
                 data_position = master_data['cols'].index(col)
                 if product_id in table:
@@ -1045,7 +1044,6 @@ class product_status_wizard(osv.osv_memory):
 
                 j += 1
                 status_line += q
-
                 # Choose the color:
                 if not status_line:  # value = 0
                     body.append((status_line, format_white))
