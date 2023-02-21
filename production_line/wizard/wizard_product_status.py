@@ -1007,7 +1007,6 @@ class product_status_wizard(osv.osv_memory):
             # list for update after for product:
             (_('Materiale'), format_title),
             (_('Codice'), format_title),
-            (_('Magazzino'), format_title),
             ]
         fixed_col = len(header)
         for col in cols:
@@ -1029,7 +1028,6 @@ class product_status_wizard(osv.osv_memory):
             body = [
                 (row[2].name, format_text),
                 (default_code, format_text),
-                (row[2].minimum_qty, format_white),  # min level account
                 ]
             gap_columns = len(body)
             j = 0
