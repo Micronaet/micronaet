@@ -1024,14 +1024,12 @@ class product_status_wizard(osv.osv_memory):
                 ]
             gap_columns = len(body)
             j = 0
-            pdb.set_trace()
             for col in cols:
                 # (q, minimum) = mrp_pool._get_cel(j, row[1])
                 product_id = row[1]
                 if product_id in table:
                     q, minimum = (
                         table[product_id][col], minimum.get(row, 0.0))
-                    pdb.set_trace()
                 else:
                     q = minimum = 0.0
 
