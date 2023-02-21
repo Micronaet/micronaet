@@ -1043,7 +1043,7 @@ class product_status_wizard(osv.osv_memory):
                     q = minimum = 0.0
 
                 j += 1
-                status_line += q
+                status_line = q
                 # Choose the color:
                 if not status_line:  # value = 0
                     body.append((status_line, format_white))
