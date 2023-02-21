@@ -158,7 +158,7 @@ class MrpProductionExtraFunctions(osv.osv):
         for i in range(0, week_range):
             this_date = start_date + timedelta(days=7 * (i - 1))
             isocalendar = this_date.isocalendar()
-            range_low = this_date - timedelta(days=isocalendar[3])
+            range_low = this_date - timedelta(days=isocalendar[2])  # DOW
             range_high = range_low + timedelta(days=7)
 
             if i == 0:  # today
