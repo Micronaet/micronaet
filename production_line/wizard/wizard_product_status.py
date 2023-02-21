@@ -96,7 +96,7 @@ class MrpProductionExtraFunctions(osv.osv):
                     'Gest.: Q. %s\n' % accounting_qty
 
             isocalendar = datetime.strptime(
-                real_date_planned, DEFAULT_SERVER_DATE_FORMAT).\
+                real_date_planned[:10], DEFAULT_SERVER_DATE_FORMAT).\
                 isocalendar()
             week_ref = '%s/%s' % (isocalendar[0], isocalendar[1])
 
