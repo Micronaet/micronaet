@@ -171,8 +171,8 @@ class MrpProductionExtraFunctions(osv.osv):
                 week_ref = '%s/%s' % (isocalendar[0], isocalendar[1])
                 col_text = '%s\n%s-%s' % (
                     week_ref,
-                    range_low.strftime('dd/mm'),
-                    range_high.strftime('dd/mm'),
+                    range_low.strftime('%d/%m'),
+                    range_high.strftime('%d/%m'),
                 )
                 master_data['cols'].append(col_text)
                 col_ids[week_ref] = i - 1
