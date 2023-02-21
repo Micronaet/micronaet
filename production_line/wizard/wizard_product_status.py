@@ -1031,7 +1031,7 @@ class product_status_wizard(osv.osv_memory):
                 if product_id in table:
                     q, minimum = (
                         table[product_id][data_position],
-                        minimum.get(row, 0.0))
+                        minimum.get(product_id, 0.0))
                 else:
                     q = minimum = 0.0
 
