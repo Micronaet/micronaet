@@ -1044,22 +1044,20 @@ class product_status_wizard(osv.osv_memory):
                     q = minimum = 0.0
 
                 j += 1
-                status_line = q  # not +
+                status_line = q
 
                 # Choose the color:
-                body.append((status_line, format_white))
-
-                #if not status_line:  # value = 0
-                #    body.append((status_line, format_white))
-                #elif status_line > minimum:  # > minimum value (green)
-                #    body.append((status_line, format_green))
-                #    pass  # Green
-                #elif status_line > 0.0:  # under minimum (yellow)
-                #    body.append((status_line, format_yellow))
-                #elif status_line < 0.0:  # under 0 (red)
-                #    body.append((status_line, format_red))
-                #else:  # ("=", "<"): # not present!!!
-                #    body.append((status_line, format_white))
+                if not status_line:  # value = 0
+                    body.append((status_line, format_white))
+                elif status_line > minimum:  # > minimum value (green)
+                    body.append((status_line, format_green))
+                    pass  # Green
+                elif status_line > 0.0:  # under minimum (yellow)
+                    body.append((status_line, format_yellow))
+                elif status_line < 0.0:  # under 0 (red)
+                    body.append((status_line, format_red))
+                else:  # ("=", "<"): # not present!!!
+                    body.append((status_line, format_white))
             write_xls_mrp_line(WS, i, body)
 
             # -----------------------------------------------------------------
