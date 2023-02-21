@@ -103,11 +103,10 @@ class MrpProductionExtraFunctions(osv.osv):
             # Write data:
             master_data['table'][element[1]][position] -= quantity
             master_data['table_comment'][element[1]][position] += \
-                '%s: Q. %s [%s] %s\n' % (
-                    'CL prod.' if quantity > 0 else 'SL prod.',
-                        quantity,
-                        real_date_planned,
-                        extra_comment,
+                'SL: Q. %s [%s] %s\n' % (
+                    quantity,
+                    real_date_planned,
+                    extra_comment,
                     )
             return
 
@@ -983,8 +982,8 @@ class product_status_wizard(osv.osv_memory):
         # Format columns:
         # ---------------------------------------------------------------------
         # Column dimension:
-        WS.set_column('A:A', 35)
-        WS.set_column('E:F', 20)
+        WS.set_column('A:A', 30)
+        # WS.set_column('E:F', 20)
         WS.set_row(0, 30)
 
         # Generate report for export:
