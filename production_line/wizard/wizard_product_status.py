@@ -148,16 +148,15 @@ class MrpProductionExtraFunctions(osv.osv):
         end_date = datetime.now() + timedelta(days=range_date - 1)
         # with_order_detail = data.get('with_order_detail', False) # no used
 
+        isocalendar = start_date.isocalendar()
+        start_week = '%s/%s' % (isocalendar[0], isocalendar[1])
+
         # 0 (<today), 1..n [today, today + total days], delta)
         # todo change in Week
         for i in range(0, week_range):
-            if i == 0:  # today
+            if i == 1:  # before today
                 this_date = start_date
-                master_data['cols'].append(this_date.strftime('%d/%m'))
-                col_ids[this_date.strftime('%Y-%m-%d')] = 0
-            elif i == 1:  # before today
-                this_date = start_date
-                master_data['cols'].append(this_date.strftime('< %d/%m'))
+                master_data['cols'].append('< %s' % start_week)
                 col_ids['before'] = 1  # not used!
             else:  # other days
                 this_date = start_date + timedelta(days=7 * i)
