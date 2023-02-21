@@ -96,7 +96,8 @@ class MrpProductionExtraFunctions(osv.osv):
                     'Gest.: Q. %s\n' % accounting_qty
 
             isocalendar = datetime.strptime(
-                real_date_planned, DEFAULT_SERVER_DATETIME_FORMAT).isocalendar
+                real_date_planned, DEFAULT_SERVER_DATETIME_FORMAT).\
+                isocalendar()
             week_ref = '%s/%s' % (isocalendar[0], isocalendar[1])
 
             if week_ref in col_ids:
@@ -159,7 +160,7 @@ class MrpProductionExtraFunctions(osv.osv):
                 col_ids['before'] = 1  # not used!
             else:  # other days
                 this_date = start_date + timedelta(days=7 * i)
-                isocalendar = this_date.isocalendar
+                isocalendar = this_date.isocalendar()
                 week_ref = '%s/%s' % (isocalendar[0], isocalendar[1])
                 master_data['cols'].append(week_ref)
                 col_ids[week_ref] = i
