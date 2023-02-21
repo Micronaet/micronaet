@@ -143,13 +143,14 @@ class MrpProductionExtraFunctions(osv.osv):
         # Init parameters:
         col_ids = {}
         range_date = data.get('days', 7) + 1
+        week_range = 1 + range_date // 7  # Total week
         start_date = datetime.now()
         end_date = datetime.now() + timedelta(days=range_date - 1)
         # with_order_detail = data.get('with_order_detail', False) # no used
 
         # 0 (<today), 1..n [today, today + total days], delta)
         # todo change in Week
-        for i in range(0, range_date, 7):
+        for i in range(0, week_range):
             if i == 0:  # today
                 this_date = start_date
                 master_data['cols'].append(this_date.strftime('%d/%m'))
