@@ -85,11 +85,12 @@ class MrpProductionExtraFunctions(osv.osv):
                     ['' for item in range(0, range_date)]
 
                 # Sapnaet integrazione:
-                accounting_qty = product.accounting_qty
-                try:
-                    accounting_qty += product.locked_qty
-                except:
-                    pass  # No sapnaet mode
+                # accounting_qty = product.accounting_qty
+                # try:
+                #    accounting_qty += product.locked_qty
+                # except:
+                #    pass  # No sapnaet mode
+                accounting_qty = 0.0  # Not used for relative update!
 
                 master_data['table'][element[1]][0] = accounting_qty
                 master_data['table_comment'][element[1]][0] += \
