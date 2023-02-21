@@ -106,7 +106,7 @@ class mrp_production_extra(osv.osv):
         # -------------------------------------------------------------
         # OF order:
         # -------------------------------------------------------------
-        if default_code in supplier_orders: # all OF orders
+        if default_code in supplier_orders:  # all OF orders
             for of_deadline in supplier_orders[default_code].keys():
                 # deadline is present in the window of cols
 

@@ -990,7 +990,7 @@ class product_status_wizard(osv.osv_memory):
         # Generate report for export:
         context['lang'] = 'it_IT'
         master_data = mrp_pool._start_up_weekly(cr, uid, data, context=context)
-        cols = mrp_pool._get_cols()
+        cols = master_data['cols']
 
         # Start loop for design table for product and material status:
         # Header:
@@ -1009,9 +1009,10 @@ class product_status_wizard(osv.osv_memory):
 
         # Body:
         i = 1  # row position (before 0)
-        rows = mrp_pool._get_rows()
+        rows = master_data['rows']
 
-        table, table_comment = mrp_pool._get_table()  # For check row state
+        table = master_data['table']
+        table_comment = master_data['table_comment']
 
         for row in rows:
             status_line = 0.0
@@ -1025,7 +1026,12 @@ class product_status_wizard(osv.osv_memory):
             gap_columns = len(body)
             j = 0
             for col in cols:
-                (q, minimum) = mrp_pool._get_cel(j, row[1])
+                # (q, minimum) = mrp_pool._get_cel(j, row[1])
+                if row in table:
+                    q, minimum = (table[row][col], minimum.get(row, 0.0))
+                else:
+                    q = minimum = 0.0
+
                 j += 1
                 status_line += q
                 # Choose the color:
