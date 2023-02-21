@@ -189,7 +189,7 @@ class MrpProductionExtraFunctions(osv.osv):
                     real_date_planned,
                 )
         master_data['rows'].sort()
-        return True
+        return master_data
 
 
 # WIZARD PRINT REPORT ########################################################
@@ -1010,7 +1010,6 @@ class product_status_wizard(osv.osv_memory):
         # Body:
         i = 1  # row position (before 0)
         rows = master_data['rows']
-
         table = master_data['table']
         table_comment = master_data['table_comment']
 
@@ -1025,6 +1024,7 @@ class product_status_wizard(osv.osv_memory):
                 ]
             gap_columns = len(body)
             j = 0
+            pdb.set_trace()
             for col in cols:
                 # (q, minimum) = mrp_pool._get_cel(j, row[1])
                 if row in table:
