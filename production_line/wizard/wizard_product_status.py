@@ -161,13 +161,10 @@ class MrpProductionExtraFunctions(osv.osv):
             range_low = this_date - timedelta(days=isocalendar[2])  # DOW
             range_high = range_low + timedelta(days=7)
 
-            if i == 0:  # today
-                master_data['cols'].append(start_week)
-                col_ids[start_week] = 0
-            elif i == 1:  # before today
-                master_data['cols'].append('< %s' % start_week)
-                col_ids['before'] = 1  # not used!
-            else:  # other days
+            if not i:  # before today
+                master_data['cols'].append('< %s' % range_low)
+                col_ids['before'] = 0  # not used!
+            else:
                 week_ref = '%s/%s' % (isocalendar[0], isocalendar[1])
                 col_text = '%s\n%s-%s' % (
                     week_ref,
