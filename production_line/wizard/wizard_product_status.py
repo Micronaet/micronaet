@@ -154,16 +154,19 @@ class MrpProductionExtraFunctions(osv.osv):
         # 0 (<today), 1..n [today, today + total days], delta)
         # todo change in Week
         for i in range(0, week_range):
-            if i == 1:  # before today
+            if i == 0:  # today
+                master_data['cols'].append(start_week)
+                col_ids[start_week] = 0
+            elif i == 1:  # before today
                 this_date = start_date
                 master_data['cols'].append('< %s' % start_week)
                 col_ids['before'] = 1  # not used!
             else:  # other days
-                this_date = start_date + timedelta(days=7 * i)
+                this_date = start_date + timedelta(days=7 * (i - 1))
                 isocalendar = this_date.isocalendar()
                 week_ref = '%s/%s' % (isocalendar[0], isocalendar[1])
                 master_data['cols'].append(week_ref)
-                col_ids[week_ref] = i
+                col_ids[week_ref] = i - 1
 
         # ---------------------------------------------------------------------
         #                       GENERATE HEADER VALUES
