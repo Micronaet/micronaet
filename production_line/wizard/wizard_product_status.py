@@ -1027,9 +1027,11 @@ class product_status_wizard(osv.osv_memory):
             for col in cols:
                 # (q, minimum) = mrp_pool._get_cel(j, row[1])
                 product_id = row[1]
+                data_position = master_data['cols'].get(col)
                 if product_id in table:
                     q, minimum = (
-                        table[product_id][col], minimum.get(row, 0.0))
+                        table[product_id][data_position],
+                        minimum.get(row, 0.0))
                 else:
                     q = minimum = 0.0
 
