@@ -77,26 +77,30 @@ class MrpProductionExtraFunctions(osv.osv):
             )
             if element not in master_data['rows']:
                 master_data['rows'].append(element)
+
                 # prepare data structure:
                 master_data['table'][element[1]] = \
                     [0.0 for item in range(0, range_date)]
                 master_data['table_comment'][element[1]] = \
                     ['' for item in range(0, range_date)]
 
-                # prepare data structure:
-                accounting_qty = product.accounting_qty
                 # Sapnaet integrazione:
-                # try:
-                #    accounting_qty += product.locked_qty
-                # except:
-                #    pass  # No sapnaet mode
+                accounting_qty = product.accounting_qty
+                try:
+                    accounting_qty += product.locked_qty
+                except:
+                    pass  # No sapnaet mode
 
                 master_data['table'][element[1]][0] = accounting_qty
                 master_data['table_comment'][element[1]][0] += \
                     'Gest.: Q. %s\n' % accounting_qty
 
-            if real_date_planned in col_ids:
-                position = col_ids[real_date_planned]
+            isocalendar = datetime.strptime(
+                real_date_planned, DEFAULT_SERVER_DATETIME_FORMAT).isocalendar
+            week_ref = '%s/%s' % (isocalendar[0], isocalendar[1])
+
+            if week_ref in col_ids:
+                position = col_ids[week_ref]
             else:  # XXX TODO manage over date!?! < today
                 position = 1
 
@@ -144,19 +148,21 @@ class MrpProductionExtraFunctions(osv.osv):
 
         # 0 (<today), 1..n [today, today + total days], delta)
         # todo change in Week
-        for i in range(0, range_date):
+        for i in range(0, range_date, 7):
             if i == 0:  # today
-                d = start_date
-                master_data['cols'].append(d.strftime('%d/%m'))
-                col_ids[d.strftime('%Y-%m-%d')] = 0
+                this_date = start_date
+                master_data['cols'].append(this_date.strftime('%d/%m'))
+                col_ids[this_date.strftime('%Y-%m-%d')] = 0
             elif i == 1:  # before today
-                d = start_date
-                master_data['cols'].append(d.strftime('< %d/%m'))
+                this_date = start_date
+                master_data['cols'].append(this_date.strftime('< %d/%m'))
                 col_ids['before'] = 1  # not used!
             else:  # other days
-                d = start_date + timedelta(days=i - 1)
-                master_data['cols'].append(d.strftime('%d/%m'))
-                col_ids[d.strftime('%Y-%m-%d')] = i
+                this_date = start_date + timedelta(days=7 * i)
+                isocalendar = this_date.isocalendar
+                week_ref = '%s/%s' % (isocalendar[0], isocalendar[1])
+                master_data['cols'].append(week_ref)
+                col_ids[week_ref] = i
 
         # ---------------------------------------------------------------------
         #                       GENERATE HEADER VALUES
