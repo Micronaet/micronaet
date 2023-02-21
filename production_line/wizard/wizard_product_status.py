@@ -104,8 +104,8 @@ class MrpProductionExtraFunctions(osv.osv):
 
             if week_ref in col_ids:
                 position = col_ids[week_ref]
-            else:  # XXX TODO manage over date!?! < today
-                position = 1
+            else:  # XXX tod manage over date!?! < today
+                position = 0  # Previous
 
             # Write data:
             master_data['table'][element[1]][position] -= quantity
@@ -168,7 +168,7 @@ class MrpProductionExtraFunctions(osv.osv):
                     range_high.strftime('%d/%m'),
                 )
                 master_data['cols'].append(col_text)
-                col_ids[week_ref] = i
+                col_ids[week_ref] = i + 1
 
         # ---------------------------------------------------------------------
         #                       GENERATE HEADER VALUES
