@@ -1029,6 +1029,7 @@ class product_status_wizard(osv.osv_memory):
                 # (q, minimum) = mrp_pool._get_cel(j, row[1])
                 if row in table:
                     q, minimum = (table[row][col], minimum.get(row, 0.0))
+                    pdb.set_trace()
                 else:
                     q = minimum = 0.0
 
