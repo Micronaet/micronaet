@@ -150,11 +150,6 @@ class MrpProductionExtraFunctions(osv.osv):
         end_date = datetime.now() + timedelta(days=range_date - 1)
         # with_order_detail = data.get('with_order_detail', False) # no used
 
-        isocalendar = start_date.isocalendar()
-        start_week = '%s/%s' % (isocalendar[0], isocalendar[1])
-
-        # 0 (<today), 1..n [today, today + total days], delta)
-        # todo change in Week
         for i in range(-1, week_range):
             this_date = start_date + timedelta(days=7 * i)
             isocalendar = this_date.isocalendar()
