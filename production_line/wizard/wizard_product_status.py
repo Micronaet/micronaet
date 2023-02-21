@@ -50,6 +50,148 @@ from email import encoders
 _logger = logging.getLogger(__name__)
 
 
+class MrpProductionExtraFunctions(osv.osv):
+    """ Create extra fields in mrp.production obj
+    """
+    _inherit = 'mrp.production'
+
+    def _start_up_weekly(self, cr, uid, data=None, context=None):
+        """ Master function for prepare report weekly used
+        """
+        # ---------------------------------------------------------------------
+        # Utility for procedure:
+        # ---------------------------------------------------------------------
+        def add_element_material_composition(
+                product, quantity, master_data, extra_comment,
+                real_date_planned
+                ):
+            """ Block used for unload materials and for simulation
+            """
+            if product.not_in_status:  # Jump 'not in status' material
+                return
+
+            element = (
+                'M',
+                product.id,
+                product,  # XXX for minimum
+            )
+            if element not in master_data['rows']:
+                master_data['rows'].append(element)
+                # prepare data structure:
+                master_data['table'][element[1]] = \
+                    [0.0 for item in range(0, range_date)]
+                master_data['table_comment'][element[1]] = \
+                    ['' for item in range(0, range_date)]
+
+                # prepare data structure:
+                accounting_qty = product.accounting_qty
+                # Sapnaet integrazione:
+                # try:
+                #    accounting_qty += product.locked_qty
+                # except:
+                #    pass  # No sapnaet mode
+
+                master_data['table'][element[1]][0] = accounting_qty
+                master_data['table_comment'][element[1]][0] += \
+                    'Gest.: Q. %s\n' % accounting_qty
+
+            if real_date_planned in col_ids:
+                position = col_ids[real_date_planned]
+            else:  # XXX TODO manage over date!?! < today
+                position = 1
+
+            # Write data:
+            master_data['table'][element[1]][position] -= quantity
+            master_data['table_comment'][element[1]][position] += \
+                '%s: Q. %s [%s] %s\n' % (
+                    'CL prod.' if quantity > 0 else 'SL prod.',
+                        quantity,
+                        real_date_planned,
+                        extra_comment,
+                    )
+            return
+
+        # ---------------------------------------------------------------------
+        #                            Start procedure:
+        # ---------------------------------------------------------------------
+        if data is None:
+            data = {}
+
+        # Pool used:
+        lavoration_pool = self.pool.get('mrp.production.workcenter.line')
+        product_pool = self.pool.get('product.product')
+
+        # Global parameters:
+        master_data = {
+            'rows': [], 'cols': [],
+            'minimum': {},  # Stock level
+            'table': {},
+            'table_comment': {},
+            'error_in_print': '',
+            }
+
+        # todo optimize:
+        product_ids = product_pool.search(cr, uid, [], context=context)
+        for product in product_pool.browse(
+                cr, uid, product_ids, context=context):
+            master_data['minimum'][product.id] = product.min_stock_level
+
+        # Init parameters:
+        col_ids = {}
+        range_date = data.get('days', 7) + 1
+        start_date = datetime.now()
+        end_date = datetime.now() + timedelta(days=range_date - 1)
+        # with_order_detail = data.get('with_order_detail', False) # no used
+
+        # 0 (<today), 1..n [today, today + total days], delta)
+        # todo change in Week
+        for i in range(0, range_date):
+            if i == 0:  # today
+                d = start_date
+                master_data['cols'].append(d.strftime('%d/%m'))
+                col_ids[d.strftime('%Y-%m-%d')] = 0
+            elif i == 1:  # before today
+                d = start_date
+                master_data['cols'].append(d.strftime('< %d/%m'))
+                col_ids['before'] = 1  # not used!
+            else:  # other days
+                d = start_date + timedelta(days=i - 1)
+                master_data['cols'].append(d.strftime('%d/%m'))
+                col_ids[d.strftime('%Y-%m-%d')] = i
+
+        # ---------------------------------------------------------------------
+        #                       GENERATE HEADER VALUES
+        # ---------------------------------------------------------------------
+        # Get material list from Job order
+        # ---------------------------------------------------------------------
+        lavoration_ids = lavoration_pool.search(cr, uid, [
+            # only < max date range
+            ('real_date_planned', '<=', end_date.strftime(
+                '%Y-%m-%d 23:59:59')),
+            ('state', 'not in', ('cancel', 'done')),
+        ], context=context)  # only open not canceled
+
+        for lavoration in lavoration_pool.browse(
+                cr, uid, lavoration_ids, context=context):  # filtered BL ord.
+
+            real_date_planned = lavoration.real_date_planned[:10]  # readab.
+            # -----------------------------------------------------------------
+            # Material in BOM:
+            # -----------------------------------------------------------------
+            extra_comment = '%s (Lav. %s)' % (
+                lavoration.product.default_code, lavoration.name)
+            for material in lavoration.bom_material_ids:
+                add_element_material_composition(
+                    material.product_id,
+                    material.quantity,
+                    master_data,
+                    extra_comment,
+                    real_date_planned,
+                )
+        master_data['rows'].sort()
+        return True
+
+
 # WIZARD PRINT REPORT ########################################################
 class product_status_wizard(osv.osv_memory):
     """ Parameter for product status per day
@@ -724,6 +866,222 @@ class product_status_wizard(osv.osv_memory):
                 'target': 'current',
                 'nodestroy': False,
                 }
+
+    def export_excel_used_weekly(self, cr, uid, ids, context=None):
+        """ Export excel file
+            Procedure used also for sent mail (used context parameter
+            sendmail for activate with datas passed)
+        """
+        def write_xls_mrp_line(WS, row, line):
+            """ Write line in excel file
+            """
+            col = 0
+            for item, format_cell in line:
+                WS.write(row, col, item, format_cell)
+                col += 1
+            return True
+
+        def write_xls_mrp_line_comment(WS, row, line, gap_column=0):
+            """ Write comment cell in excel file
+            """
+            parameters = {
+                'width': 300,
+                'font_name': 'Courier 10 Pitch',
+                }
+            col = gap_column
+            for comment in line:
+                if comment:
+                    WS.write_comment(row, col, comment, parameters)
+                col += 1
+            return True
+
+        # ---------------------------------------------------------------------
+        # Start procedure
+        # ---------------------------------------------------------------------
+        if context is None:
+            context = {}
+
+        if context.get('datas', False):
+            sendmail = True
+            data = context.get('datas', {})
+        else:
+            sendmail = False
+            data = self.prepare_data(cr, uid, ids, context=context)
+
+        # Pool used:
+        mrp_pool = self.pool.get('mrp.production')
+        attachment_pool = self.pool.get('ir.attachment')
+
+        # ---------------------------------------------------------------------
+        # XLS file:
+        # ---------------------------------------------------------------------
+        filename = '/tmp/production_weekly_used.xlsx'
+        filename = os.path.expanduser(filename)
+        _logger.info('Start export weekly used on %s' % filename)
+
+        # Open file and write header
+        WB = xlsxwriter.Workbook(filename)
+        WS = WB.add_worksheet('Material')
+
+        # ---------------------------------------------------------------------
+        # Format elements:
+        # ---------------------------------------------------------------------
+        num_format = '#,##0'
+        format_title = WB.add_format({
+            'bold': True,
+            'font_color': 'black',
+            'font_name': 'Arial',
+            'font_size': 10,
+            'align': 'center',
+            'valign': 'vcenter',
+            'bg_color': 'gray',
+            'border': 1,
+            'text_wrap': True,
+            })
+
+        format_text = WB.add_format({
+            'font_name': 'Arial',
+            'align': 'left',
+            'font_size': 9,
+            'border': 1,
+            })
+
+        format_white = WB.add_format({
+            'font_name': 'Arial',
+            'font_size': 9,
+            'align': 'right',
+            'bg_color': 'white',
+            'border': 1,
+            'num_format': num_format,
+            })
+        format_yellow = WB.add_format({
+            'font_name': 'Arial',
+            'font_size': 9,
+            'align': 'right',
+            'bg_color': '#ffff99',  # 'yellow',
+            'border': 1,
+            'num_format': num_format,
+            })
+        format_red = WB.add_format({
+            'font_name': 'Arial',
+            'font_size': 9,
+            'align': 'right',
+            'bg_color': '#ff9999',  # 'red',
+            'border': 1,
+            'num_format': num_format,
+            })
+        format_green = WB.add_format({
+            'font_name': 'Arial',
+            'font_size': 9,
+            'align': 'right',
+            'bg_color': '#c1ef94',  # 'green',
+            'border': 1,
+            'num_format': num_format,
+            })
+
+        # ---------------------------------------------------------------------
+        # Format columns:
+        # ---------------------------------------------------------------------
+        # Column dimension:
+        WS.set_column('A:A', 35)
+        WS.set_column('E:F', 20)
+        WS.set_row(0, 30)
+
+        # Generate report for export:
+        context['lang'] = 'it_IT'
+        master_data = mrp_pool._start_up_weekly(cr, uid, data, context=context)
+        cols = mrp_pool._get_cols()
+
+        # Start loop for design table for product and material status:
+        # Header:
+        header = [
+            # list for update after for product:
+            (_('Materiale'), format_title),
+            (_('Codice'), format_title),
+            (_('Magazzino'), format_title),
+            ]
+        fixed_col = len(header)
+        for col in cols:
+            header.append((col, format_title))
+
+        # Material header:
+        write_xls_mrp_line(WS, 0, header)
+
+        # Body:
+        i = 1  # row position (before 0)
+        rows = mrp_pool._get_rows()
+
+        table, table_comment = mrp_pool._get_table()  # For check row state
+
+        for row in rows:
+            status_line = 0.0
+            default_code = (row[2].default_code or '/').strip()
+
+            body = [
+                (row[2].name, format_text),
+                (default_code, format_text),
+                (row[2].minimum_qty, format_white),  # min level account
+                ]
+            gap_columns = len(body)
+            j = 0
+            for col in cols:
+                (q, minimum) = mrp_pool._get_cel(j, row[1])
+                j += 1
+                status_line += q
+                # Choose the color:
+                if not status_line:  # value = 0
+                    body.append((status_line, format_white))
+                elif status_line > minimum:  # > minimum value (green)
+                    body.append((status_line, format_green))
+                    pass  # Green
+                elif status_line > 0.0:  # under minimum (yellow)
+                    body.append((status_line, format_yellow))
+                elif status_line < 0.0:  # under 0 (red)
+                    body.append((status_line, format_red))
+                else:  # ("=", "<"): # not present!!!
+                    body.append((status_line, format_white))
+            write_xls_mrp_line(WS, i, body)
+
+            # -----------------------------------------------------------------
+            # Comment:
+            # -----------------------------------------------------------------
+            comment_line = table_comment.get(row[1])
+            if comment_line:
+                write_xls_mrp_line_comment(
+                    WS, row=i, line=comment_line, gap_column=gap_columns)
+
+            i += 1
+        _logger.info('End export status on %s' % filename)
+        WB.close()
+
+        xlsx_raw = open(filename, 'rb').read()
+        b64 = xlsx_raw.encode('base64')
+
+        # -----------------------------------------------------------------
+        # Open attachment form:
+        # -----------------------------------------------------------------
+        attachment_id = attachment_pool.create(cr, uid, {
+            'name': 'Status MRP Weekly Used Report',
+            'datas_fname': 'status_weekly_used_report.xlsx',
+            'type': 'binary',
+            'datas': b64,
+            'partner_id': 1,
+            'res_model': 'res.partner',
+            'res_id': 1,
+            }, context=context)
+
+        return {
+            'name': _('XLSX Weekly used status'),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_id': attachment_id,
+            'res_model': 'ir.attachment',
+            'views': [(False, 'form')],
+            'context': context,
+            'target': 'current',
+            'nodestroy': False,
+            }
 
     def schedule_send_negative_report(
             self, cr, uid, wizard=None, context=None):

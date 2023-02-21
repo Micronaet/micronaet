@@ -12,6 +12,7 @@
                         <button string="Cancel" special="cancel" />
                         <button name="export_material_used" type="object" string="Materiali usati" icon="gtk-print" class="oe_highlight"/>
                         <button name="export_excel" type="object" string="Export XLS" icon="terp-go-month" class="oe_highlight"/>
+                        <button name="export_excel_used_weekly" type="object" string="Utilizzo settimanale XLS" icon="terp-go-month" class="oe_highlight"/>
                     </header>
                     <sheet>
                         <group colspan="4" col="4">

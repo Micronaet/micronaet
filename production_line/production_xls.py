@@ -74,8 +74,8 @@ class mrp_production_extra(osv.osv):
         if element not in rows:
             rows.append(element)
             # prepare data structure:
-            table[element[1]] = [0.0 for item in range(0,range_date)]
-            table_comment[element[1]] = ['' for item in range(0,range_date)]
+            table[element[1]] = [0.0 for item in range(0, range_date)]
+            table_comment[element[1]] = ['' for item in range(0, range_date)]
 
             # prepare data structure:
             # Sapnaet integrazione:
@@ -248,7 +248,7 @@ class mrp_production_extra(osv.osv):
             for lavoration in lavoration_pool.browse(
                     cr, uid, lavoration_material_ids, context=context):
                 for material in lavoration.bom_material_ids:
-                    product = material.product_id # Readability:
+                    product = material.product_id  # Readability:
                     if product.id in material_mx:
                         material_mx[product.id] += material.quantity or 0.0
                     else:
@@ -266,7 +266,7 @@ class mrp_production_extra(osv.osv):
             ('date_deadline', '<=', end_date.strftime('%Y-%m-%d')),
             ], context=context) # only active from accounting
         for line in order_line_pool.browse(cr, uid, line_ids, context=context):
-            if line.product_id.not_in_status: # jump line if product checked!
+            if line.product_id.not_in_status:  # jump line if product checked!
                 _logger.warning(
                     'Not in status product: %s' % line.product_id.name)
                 continue
@@ -309,8 +309,8 @@ class mrp_production_extra(osv.osv):
             # only < max date range
             ('real_date_planned', '<=', end_date.strftime(
                 '%Y-%m-%d 23:59:59')),
-            ('state', 'not in', ('cancel','done')),
-            ], context=context) # only open not canceled
+            ('state', 'not in', ('cancel', 'done')),
+            ], context=context)  # only open not canceled
 
         for lavoration in lavoration_pool.browse(
                 cr, uid, lavoration_ids, context=context): # filtered BL orders

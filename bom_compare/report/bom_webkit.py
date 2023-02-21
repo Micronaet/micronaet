@@ -66,7 +66,7 @@ class report_webkit_html(report_sxw.rml_parse):
             'get_total_cols': self._get_total_cols,
             })
 
-    def _object_list(self,data=None):
+    def _object_list(self, data=None):
         """ Master function that generate the list of record to print:
             row = component (all list)
             column = version of BOM
