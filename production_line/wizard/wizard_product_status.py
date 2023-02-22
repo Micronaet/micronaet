@@ -91,11 +91,11 @@ class MrpProductionExtraFunctions(osv.osv):
                 except:
                     pass  # No sapnaet mode
 
-                # master_data['table_comment'][element[1]][0] += \
-                #    'Gest.: Q. %s\n' % accounting_qty
+                master_data['table_comment'][element[1]][0] += \
+                    'Gest.: Q. %s\n' % accounting_qty
 
-                master_data['table'][element[1]][0] = 0  # Total
-                master_data['table'][element[1]][1] = accounting_qty  # Stock
+                master_data['table'][element[1]][0] = accounting_qty  # Stock
+                master_data['table'][element[1]][1] = 0  # Total
 
             isocalendar = datetime.strptime(
                 real_date_planned[:10], DEFAULT_SERVER_DATE_FORMAT).\
