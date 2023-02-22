@@ -75,13 +75,14 @@ class MrpProductionExtraFunctions(osv.osv):
                 product.id,
                 product,  # XXX for minimum
             )
+            product_id = element[1]
             if element not in master_data['rows']:
                 master_data['rows'].append(element)
 
                 # prepare data structure:
-                master_data['table'][element[1]] = \
+                master_data['table'][product_id] = \
                     [0.0 for item in range(0, 2 * range_date)]
-                master_data['table_comment'][element[1]] = \
+                master_data['table_comment'][product_id] = \
                     ['' for item in range(0, 2 * range_date)]
 
                 # Sapnaet integrazione:
@@ -91,11 +92,11 @@ class MrpProductionExtraFunctions(osv.osv):
                 except:
                     pass  # No sapnaet mode
 
-                master_data['table_comment'][element[1]][0] += \
+                # Start:
+                master_data['table_comment'][product_id][0] += \
                     'Gest.: Q. %s\n' % accounting_qty
-
-                master_data['table'][element[1]][0] = accounting_qty  # Stock
-                master_data['table'][element[1]][1] = 0  # Total
+                master_data['table'][product_id][0] = accounting_qty  # Stock
+                master_data['table'][product_id][1] = 0  # Total
 
             isocalendar = datetime.strptime(
                 real_date_planned[:10], DEFAULT_SERVER_DATE_FORMAT).\
@@ -108,14 +109,17 @@ class MrpProductionExtraFunctions(osv.osv):
                 position = 0  # Previous
 
             # Write data:
-            master_data['table'][element[1]][position] -= quantity  # Total
-            master_data['table'][element[1]][position + 1] -= quantity  # Stock
-            master_data['table_comment'][element[1]][position] += \
+            master_data['table'][product_id][position] -= quantity  # Total
+            master_data['table'][product_id][position + 1] -= quantity  # Stock
+            master_data['table_comment'][product_id][position] += \
                 'SL: Q. %s [%s] %s\n' % (
                     quantity,
                     real_date_planned,
                     extra_comment,
                     )
+            print(master_data['table'][product_id])
+            print(master_data['table_comment'][product_id])
+            pdb.set_trace()
             return
 
         # ---------------------------------------------------------------------
@@ -174,7 +178,7 @@ class MrpProductionExtraFunctions(osv.osv):
                 )
                 master_data['cols'].append(col_text)
                 col_ids[week_ref] = 2 * i + 1
-            # 2 Columns
+            # 2 Columns merged:
             master_data['cols'].append('')  # Double column
 
         # ---------------------------------------------------------------------
