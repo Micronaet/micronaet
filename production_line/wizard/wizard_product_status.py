@@ -85,17 +85,18 @@ class MrpProductionExtraFunctions(osv.osv):
                     ['' for item in range(0, 2 * range_date)]
 
                 # Sapnaet integrazione:
-                # accounting_qty = product.accounting_qty
-                # try:
-                #    accounting_qty += product.locked_qty
-                # except:
-                #    pass  # No sapnaet mode
+                accounting_qty = product.accounting_qty
+                try:
+                    accounting_qty += product.locked_qty
+                except:
+                    pass  # No sapnaet mode
 
                 accounting_qty = 0.0  # Not used for relative update!
                 # master_data['table_comment'][element[1]][0] += \
                 #    'Gest.: Q. %s\n' % accounting_qty
 
-                master_data['table'][element[1]][0] = accounting_qty
+                master_data['table'][element[1]][0] = 0  # Total
+                master_data['table'][element[1]][1] = accounting_qty  # Stock
 
             isocalendar = datetime.strptime(
                 real_date_planned[:10], DEFAULT_SERVER_DATE_FORMAT).\
@@ -108,7 +109,8 @@ class MrpProductionExtraFunctions(osv.osv):
                 position = 0  # Previous
 
             # Write data:
-            master_data['table'][element[1]][position] -= quantity
+            master_data['table'][element[1]][position] -= quantity  # Total
+            master_data['table'][element[1]][position+1] -= quantity  # Stock
             master_data['table_comment'][element[1]][position] += \
                 'SL: Q. %s [%s] %s\n' % (
                     quantity,
@@ -150,6 +152,9 @@ class MrpProductionExtraFunctions(osv.osv):
         end_date = datetime.now() + timedelta(days=range_date - 1)
         # with_order_detail = data.get('with_order_detail', False) # no used
 
+        # ---------------------------------------------------------------------
+        #                       GENERATE HEADER VALUES
+        # ---------------------------------------------------------------------
         for i in range(-1, week_range):
             this_date = start_date + timedelta(days=7 * i)
             isocalendar = this_date.isocalendar()
@@ -159,7 +164,6 @@ class MrpProductionExtraFunctions(osv.osv):
             if i == -1:  # before today
                 master_data['cols'].append('< %s' % range_high.strftime(
                     '%d/%m/%Y'))
-                master_data['cols'].append('')  # Double column
 
                 col_ids['before'] = 0  # not used!
             else:
@@ -171,9 +175,9 @@ class MrpProductionExtraFunctions(osv.osv):
                 )
                 master_data['cols'].append(col_text)
                 col_ids[week_ref] = 2 * i + 1
+            # 2 Columns
+            master_data['cols'].append('')  # Double column
 
-        # ---------------------------------------------------------------------
-        #                       GENERATE HEADER VALUES
         # ---------------------------------------------------------------------
         # Get material list from Job order
         # ---------------------------------------------------------------------
