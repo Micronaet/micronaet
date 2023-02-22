@@ -75,28 +75,27 @@ class MrpProductionExtraFunctions(osv.osv):
                 product.id,
                 product,  # XXX for minimum
             )
-            product_id = element[1]
             if element not in master_data['rows']:
                 master_data['rows'].append(element)
 
                 # prepare data structure:
-                master_data['table'][product_id] = \
-                    [0.0 for item in range(0, 2 * range_date)]
-                master_data['table_comment'][product_id] = \
-                    ['' for item in range(0, 2 * range_date)]
+                master_data['table'][element[1]] = \
+                    [0.0 for item in range(0, range_date)]
+                master_data['table_comment'][element[1]] = \
+                    ['' for item in range(0, range_date)]
 
                 # Sapnaet integrazione:
-                accounting_qty = product.accounting_qty
-                try:
-                    accounting_qty += product.locked_qty
-                except:
-                    pass  # No sapnaet mode
+                # accounting_qty = product.accounting_qty
+                # try:
+                #    accounting_qty += product.locked_qty
+                # except:
+                #    pass  # No sapnaet mode
 
-                # Start:
-                master_data['table_comment'][product_id][0] += \
-                    'Gest.: Q. %s\n' % accounting_qty
-                master_data['table'][product_id][0] = accounting_qty  # Stock
-                master_data['table'][product_id][1] = 0  # Total
+                accounting_qty = 0.0  # Not used for relative update!
+                # master_data['table_comment'][element[1]][0] += \
+                #    'Gest.: Q. %s\n' % accounting_qty
+
+                master_data['table'][element[1]][0] = accounting_qty
 
             isocalendar = datetime.strptime(
                 real_date_planned[:10], DEFAULT_SERVER_DATE_FORMAT).\
@@ -109,17 +108,13 @@ class MrpProductionExtraFunctions(osv.osv):
                 position = 0  # Previous
 
             # Write data:
-            master_data['table'][product_id][position] -= quantity  # Total
-            master_data['table'][product_id][position + 1] -= quantity  # Stock
-            master_data['table_comment'][product_id][position] += \
+            master_data['table'][element[1]][position] -= quantity
+            master_data['table_comment'][element[1]][position] += \
                 'SL: Q. %s [%s] %s\n' % (
                     quantity,
                     real_date_planned,
                     extra_comment,
                     )
-            print(master_data['table'][product_id])
-            print(master_data['table_comment'][product_id])
-            pdb.set_trace()
             return
 
         # ---------------------------------------------------------------------
@@ -155,9 +150,6 @@ class MrpProductionExtraFunctions(osv.osv):
         end_date = datetime.now() + timedelta(days=range_date - 1)
         # with_order_detail = data.get('with_order_detail', False) # no used
 
-        # ---------------------------------------------------------------------
-        #                       GENERATE HEADER VALUES
-        # ---------------------------------------------------------------------
         for i in range(-1, week_range):
             this_date = start_date + timedelta(days=7 * i)
             isocalendar = this_date.isocalendar()
@@ -167,7 +159,6 @@ class MrpProductionExtraFunctions(osv.osv):
             if i == -1:  # before today
                 master_data['cols'].append('< %s' % range_high.strftime(
                     '%d/%m/%Y'))
-
                 col_ids['before'] = 0  # not used!
             else:
                 week_ref = '%s/%s' % (isocalendar[0], isocalendar[1])
@@ -177,10 +168,10 @@ class MrpProductionExtraFunctions(osv.osv):
                     range_high.strftime('%d/%m'),
                 )
                 master_data['cols'].append(col_text)
-                col_ids[week_ref] = 2 * i + 1
-            # 2 Columns merged:
-            master_data['cols'].append('')  # Double column
+                col_ids[week_ref] = i + 1
 
+        # ---------------------------------------------------------------------
+        #                       GENERATE HEADER VALUES
         # ---------------------------------------------------------------------
         # Get material list from Job order
         # ---------------------------------------------------------------------
@@ -839,7 +830,7 @@ class product_status_wizard(osv.osv_memory):
             # -----------------------------------------------------------------
             # Save mode:
             # -----------------------------------------------------------------
-            if save_mode:  # Save as a file:
+            if save_mode: # Save as a file:
                 _logger.warning('Save mode: %s' % save_mode)
                 return filename
 
