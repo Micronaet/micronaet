@@ -80,9 +80,9 @@ class MrpProductionExtraFunctions(osv.osv):
 
                 # prepare data structure:
                 master_data['table'][element[1]] = \
-                    [0.0 for item in range(0, range_date)]
+                    [0.0 for item in range(0, 2 * range_date)]
                 master_data['table_comment'][element[1]] = \
-                    ['' for item in range(0, range_date)]
+                    ['' for item in range(0, 2 * range_date)]
 
                 # Sapnaet integrazione:
                 # accounting_qty = product.accounting_qty
@@ -159,6 +159,8 @@ class MrpProductionExtraFunctions(osv.osv):
             if i == -1:  # before today
                 master_data['cols'].append('< %s' % range_high.strftime(
                     '%d/%m/%Y'))
+                master_data['cols'].append('')  # Double column
+
                 col_ids['before'] = 0  # not used!
             else:
                 week_ref = '%s/%s' % (isocalendar[0], isocalendar[1])
@@ -168,7 +170,7 @@ class MrpProductionExtraFunctions(osv.osv):
                     range_high.strftime('%d/%m'),
                 )
                 master_data['cols'].append(col_text)
-                col_ids[week_ref] = i + 1
+                col_ids[week_ref] = 2 * i + 1
 
         # ---------------------------------------------------------------------
         #                       GENERATE HEADER VALUES
