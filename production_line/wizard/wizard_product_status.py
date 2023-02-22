@@ -91,7 +91,6 @@ class MrpProductionExtraFunctions(osv.osv):
                 except:
                     pass  # No sapnaet mode
 
-                accounting_qty = 0.0  # Not used for relative update!
                 # master_data['table_comment'][element[1]][0] += \
                 #    'Gest.: Q. %s\n' % accounting_qty
 
@@ -836,7 +835,7 @@ class product_status_wizard(osv.osv_memory):
             # -----------------------------------------------------------------
             # Save mode:
             # -----------------------------------------------------------------
-            if save_mode: # Save as a file:
+            if save_mode:  # Save as a file:
                 _logger.warning('Save mode: %s' % save_mode)
                 return filename
 
