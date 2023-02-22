@@ -109,7 +109,7 @@ class MrpProductionExtraFunctions(osv.osv):
 
             # Write data:
             master_data['table'][element[1]][position] -= quantity  # Total
-            master_data['table'][element[1]][position+1] -= quantity  # Stock
+            master_data['table'][element[1]][position + 1] -= quantity  # Stock
             master_data['table_comment'][element[1]][position] += \
                 'SL: Q. %s [%s] %s\n' % (
                     quantity,
