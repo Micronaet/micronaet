@@ -23,7 +23,7 @@ sprix_sl = 127
 sprix_bom = 608
 
 # XMLRPC server:
-xmlrpc_host = "10.0.0.222"
+xmlrpc_host = "10.0.0.223"
 xmlrpx_port = 8000
 
 sprix_command = r"%s\mxdesk.exe -command=mxrs.exe -login=openerp -t0 -x2 win32g -p#%s -a%s -k%s:%s"%(path, "%s",company_code, admin, password)
@@ -48,57 +48,57 @@ def sprix(operation):
         """
         try:
             res_file = open(transit_file, "r")
-            
+
             if is_list:
                 res=[]
                 for item in res_file:
                     code=item[:6].strip()
                     operation= "OK" == item[6:8].upper()
                     res.append((code, operation))
-            else:        
+            else:
                 res = res_file.read().strip()
 
             res_file.close()
-            os.remove(transit_file)    
-            return res                
+            os.remove(transit_file)
+            return res
         except:
-            return False # for all errors    
-        
+            return False # for all errors
+
     if operation.upper() == "CL": # call sprix for create CL: #################
         try:
-            os.system(sprix_command%(sprix_cl))            
+            os.system(sprix_command%(sprix_cl))
         except:
-            return "#Error launching importation CL command" # on error    
-        
+            return "#Error launching importation CL command" # on error
+
         # get result of operation:
-        return get_res(file_cl) 
-        
+        return get_res(file_cl)
+
     elif operation.upper() == "CLW": # call sprix for update price in CL: #####
         try:
             os.system (sprix_command%(sprix_cl_upd))
         except:
-            return False # on error    
-        
+            return False # on error
+
         # get result of operation:
         return get_res(file_cl_upd, is_list=True)
-        
+
     elif operation.upper() == "SL": # call sprix for create SL: ###############
         try:
             os.system (sprix_command%(sprix_sl))
         except:
-            return "#Error launching importation SL command" # on error    
-        
+            return "#Error launching importation SL command" # on error
+
         # get result of operation:
-        return get_res(file_sl) 
+        return get_res(file_sl)
 
     elif operation.upper() == "BOM": # call sprix for create BOM: #############
         try:
             os.system (sprix_command%(sprix_bom))
         except:
-            return "#Error launching export BOM" 
-        
+            return "#Error launching export BOM"
+
         # get result of operation:
-        return get_res(file_sl) 
+        return get_res(file_sl)
 
     return False # error
 
