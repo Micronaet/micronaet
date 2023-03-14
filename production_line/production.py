@@ -1119,7 +1119,7 @@ class mrp_production_workcenter_load(osv.osv):
         'ul_qty': fields.integer(
             'Package q.', help='Package quantity to unload from accounting'),
 
-        'pallet_product_id':fields.many2one('product.product', 'Pallet'),
+        'pallet_product_id': fields.many2one('product.product', 'Pallet'),
         'pallet_qty': fields.integer(
             'Pallet q.', help='Pallet quantity to unload for accounting'),
 
