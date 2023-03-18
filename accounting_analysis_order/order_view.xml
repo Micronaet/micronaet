@@ -10,7 +10,7 @@
             <search string="OC line">
                     <field name="partner_id" string="Partner" filter_domain="[('partner_id','=',self)]"/>
                     <field name="product_id" string="Product" filter_domain="[('product_id','=',self)]"/>
-                    <field name="order_id" string="Order" filter_domain="[('order_id','=',self)]"/>  
+                    <field name="order_id" string="Order" filter_domain="[('order_id','=',self)]"/>
 
                     <filter icon="terp-go-home" name="Next10" string="Deadline &lt; 10gg" domain="[('date_deadline','&lt;',(context_today()+relativedelta(days=10)).strftime('%%Y-%%m-%%d'))]" />
                     <filter icon="terp-go-home" name="Next20" string="Deadline &lt; 20gg" domain="[('date_deadline','&lt;',(context_today()+relativedelta(days=20)).strftime('%%Y-%%m-%%d'))]" />
@@ -19,11 +19,12 @@
                     <group expand="1" string="Group By...">
                         <filter name="group_partner" string="Partner" icon="terp-partner" context="{'group_by':'partner_id'}"/>
                         <filter name="group_product" string="Product" icon="terp-partner" context="{'group_by':'product_id'}"/>
-                    </group>                    
+                        <filter name="group_packaging" string="Imballo" context="{'group_by':'product_packaging'}"/>
+                    </group>
             </search>
         </field>
     </record>
-    
+
     <record model="ir.ui.view" id="view_sale_order_line_tree">
         <field name="name">OC line</field>
         <field name="model">sale.order.line</field>
@@ -33,9 +34,9 @@
                     <field name="name" />
                     <field name="product_id" />
                     <field name="partner_id" />
-                    <field name="order_id" />                   
-                    <field name="date_order" />                    
-                    <field name="date_deadline" />                    
+                    <field name="order_id" />
+                    <field name="date_order" />
+                    <field name="date_deadline" />
                     <field name="product_uom" />
                     <field name="product_uom_qty" sum="Tot. q" />
                     <field name="price_subtotal" sum="Tot. amount" />
@@ -43,7 +44,7 @@
             </tree>
         </field>
     </record>
-    
+
     <record model="ir.ui.view" id="view_sale_order_line_form">
         <field name="name">OC line</field>
         <field name="model">sale.order.line</field>
@@ -54,20 +55,20 @@
                     <field name="sequence" />
                     <field name="product_id" />
                     <field name="name" />
-                    
-                    <field name="order_id" /> 
-                    <field name="date_order" />                    
-                    <field name="date_deadline" />                    
+
+                    <field name="order_id" />
+                    <field name="date_order" />
+                    <field name="date_deadline" />
 
                     <field name="product_uom" />
                     <field name="product_uom_qty" />
                     <field name="price_subtotal" />
 
                     <field name="state" />
-                </group>   
+                </group>
                 <group>
                   <separator string="Note" colspan="4"/>
-                </group>   
+                </group>
             </form>
         </field>
     </record>
@@ -194,6 +195,6 @@
     <!-- Create production order from customer order lines -->
     <menuitem name="Order" parent="accounting_analysis.menu_accounting_analysis_root" id="menu_analysis_order_root" sequence="60" action="action_board_accounting_analysis_order_default" />
        <menuitem name="OC line (detailed)" parent="menu_analysis_order_root" id="menu_analysis_order_line" action="action_view_sale_order_line_partner" sequence="10" />
-       
+
   </data>
 </openerp>
