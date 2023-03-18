@@ -1098,7 +1098,8 @@
                     <group expand="1" string="Group By...">
                         <filter name="group_partner" string="Partner" icon="terp-partner" context="{'group_by':'partner_id'}"/>
                         <filter name="group_product" string="Product" icon="terp-accessories-archiver" context="{'group_by':'product_id'}"/>
-                        <filter name="group_deadline" string="Deadline" icon="terp-accessories-archiver" context="{'group_by':'date_deadline'}"/>
+                        <filter name="group_packaging" string="Imballo" context="{'group_by':'product_packaging'}"/>
+                        <filter name="group_deadline" string="Scadenza" icon="terp-accessories-archiver" context="{'group_by':'date_deadline'}"/>
                     </group>
             </search>
         </field>
