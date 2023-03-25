@@ -30,6 +30,7 @@ from openerp.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 
+
 class account_analytic_account_pricelist(osv.osv):
     """ Pricelist for analytic account
     """

@@ -369,6 +369,21 @@ class sale_order_add_extra(osv.osv):
                 else:
                     partner_id = False
 
+                # -------------------------------------------------------------
+                # Get address:
+                # -------------------------------------------------------------
+                address_id = False
+                address_code = oc['CKY_CNT_SPED_ALT']
+                if address_code:
+                    address_ids = partner_pool.search(cr, uid, [
+                        '|', '|',
+                        ('sql_customer_code', '=', address_code),
+                        ('sql_supplier_code', '=', address_code),
+                        ('sql_destination_code', '=', address_code),
+                        ], context=context)
+                    if address_ids:
+                        address_id = address_ids[0]
+
                 # todo use mexal_c old reference (used for pricelist)
                 partner_proxy = browse_partner_ref(
                     self, cr, uid, oc['CKY_CNT_CLFR'], context=context)
@@ -392,6 +407,8 @@ class sale_order_add_extra(osv.osv):
                         }
                     if partner_id:
                         header['partner_id'] = partner_id
+                    if address_id:
+                        header['address_id'] = address_id
 
                     if header:  # not working for now, decide if is necessary
                         self.write(
@@ -454,8 +471,13 @@ class sale_order_add_extra(osv.osv):
                         'pricelist_id':
                             partner_proxy.property_product_pricelist.id
                             if partner_proxy else 1,
+
+                        # todo remove:
                         'partner_invoice_id': partner_id,
                         'partner_shipping_id': partner_id,
+
+                        'address_id': address_id,
+
                         'currency_id': currency_convert.get(
                             oc['NKY_VLT'], currency_default),
                         # 'origin': False,  # Source Document
