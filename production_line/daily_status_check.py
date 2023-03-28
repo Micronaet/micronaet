@@ -447,7 +447,8 @@ class MrpProductionDailyReport(orm.Model):
         excel_pool.freeze_panes(ws_name, 3, 7)
 
         order_ids = order_pool.search(cr, uid, [
-            ('state', 'in', ('draft', 'sent',)),
+            # ('state', 'in', ('draft', 'sent',)),
+            ('accounting_order', '=', True),
             ], context=context)
 
         excluded_product = []
