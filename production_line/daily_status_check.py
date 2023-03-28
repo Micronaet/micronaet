@@ -47,12 +47,12 @@ excluded = (
     'SCONTO', 'VV',
     )
 
+
 class MrpProductionDailyReport(orm.Model):
     """ Model name: Mrp Production for daily report
     """
 
     _inherit = 'mrp.production'
-
 
     # -------------------------------------------------------------------------
     # Utility:
@@ -338,6 +338,8 @@ class MrpProductionDailyReport(orm.Model):
     # -------------------------------------------------------------------------
     # Scheduled action:
     # -------------------------------------------------------------------------
+    # todo overridden in sapnaet module!
+    '''
     def extract_oc_status_x_line_excel_report(self, cr, uid, context=None):
         """ Get detail for ordered product in line
         """
@@ -584,6 +586,7 @@ class MrpProductionDailyReport(orm.Model):
                 cr, uid, 'Carico linee su ordinato',
                 name_of_file=False, version='7.0', php=True,
                 context=context)
+    '''
 
     def extract_daily_mrp_stats_excel_report(self, cr, uid, context=None):
         """ Jobs: unload and load material last production day
