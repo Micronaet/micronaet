@@ -493,7 +493,11 @@ class MrpProductionDailyReport(orm.Model):
 
                 # Detail:
                 oc_qty = line.product_uom_qty
-                done_qty = 0.0  # todo
+
+                # Pallet management:  # todo not in this module!
+                done_qty = 0.0
+                for pallet in line.assigned_pallet_ids:
+                    done_qty += pallet.available_product_qty
 
                 if wc_line:
                     color_format = excel_format['']
