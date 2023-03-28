@@ -472,7 +472,8 @@ class MrpProductionDailyReport(orm.Model):
                 product = line.product_id
                 if not product:
                     _logger.error('Line without product: %s' % order.name)
-                    pdb.set_trace()
+                    continue
+
                 default_code = product.default_code
                 if default_code in exclude_product or \
                         default_code[:1] in exclude_start:
