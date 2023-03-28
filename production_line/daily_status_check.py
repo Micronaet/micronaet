@@ -469,6 +469,8 @@ class MrpProductionDailyReport(orm.Model):
 
             for line in order.order_line:
                 product = line.product_id
+                if not product:
+                    _logger.error('Line without product: %s' % order.name)
                 default_code = product.default_code
                 if default_code in exclude_product or \
                         default_code[:1] in exclude_start:
@@ -896,4 +898,3 @@ class MrpProductionDailyReport(orm.Model):
                 name_of_file=False, version='7.0', php=True,
                 context=context)
 
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
