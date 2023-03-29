@@ -2077,7 +2077,8 @@ class mrp_production_extra(osv.osv):
             )
         return res
 
-    def _function_total_material(self, cr, uid, ids, field, args, context=None):
+    def _function_total_material(
+            self, cr, uid, ids, field, args, context=None):
         """ Extra information about materials used (totals for check)
         """
         res = {}
