@@ -366,8 +366,11 @@ class sale_order_add_extra(osv.osv):
                     ], context=context)
                 if partner_ids:
                     partner_id = partner_ids[0]
+                    partner = partner_pool.browse(
+                        cr, uid, partner_id, context=context)
+                    fiscal_position_id = partner.property_account_position.id
                 else:
-                    partner_id = False
+                    partner_id = fiscal_position_id = False
 
                 # -------------------------------------------------------------
                 # Get address:
@@ -404,6 +407,7 @@ class sale_order_add_extra(osv.osv):
                     header = {
                         'currency_id': currency_convert.get(
                             oc['NKY_VLT'], currency_default),
+                        'fiscal_position': fiscal_position_id,
                         }
                     if partner_id:
                         header['partner_id'] = partner_id
@@ -446,6 +450,7 @@ class sale_order_add_extra(osv.osv):
                                     'mexal_c': oc['CKY_CNT_CLFR'],
                                     'sql_customer_code': oc['CKY_CNT_CLFR'],
                                     # customer: True,  # OC so customer!
+                                    # todo fiscal position!
                                 }, context=context)
                         except:
                             _logger.error(
@@ -480,6 +485,8 @@ class sale_order_add_extra(osv.osv):
 
                         'currency_id': currency_convert.get(
                             oc['NKY_VLT'], currency_default),
+                        'fiscal_position': fiscal_position_id,
+
                         # 'origin': False,  # Source Document
                         # Terms and conditions
                         # State: draft sent cancel waiting_date progress
