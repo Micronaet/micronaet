@@ -6,7 +6,7 @@
 #    Italian OpenERP Community (<http://www.openerp-italia.com>)
 #
 #    ########################################################################
-#    OpenERP, Open Source Management Solution	
+#    OpenERP, Open Source Management Solution
 #    Copyright (C) 2004-2008 Tiny SPRL (<http://tiny.be>). All Rights Reserved
 #    $Id$
 #
@@ -25,21 +25,23 @@
 #
 ##############################################################################
 
+import os
 from openerp.osv import fields,osv
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 from openerp.tools.translate import _
-import os
+
 
 class mrp_print_lavoration_week__wizard(osv.osv_memory):
-    ''' Wizard that let choose week and print the list of lavorations
-    '''
+    """ Wizard that let choose week and print the list of lavorations
+    """
     _name = "mrp.print.lavoration.week.wizard"
 
     # On Change event:
-    def onchange_reference_date(self, cr, uid, ids, reference_date, 
+    def onchange_reference_date(self, cr, uid, ids, reference_date,
             context=None):
-        ''' Compute from date to date and week
-        '''
+        """ Compute from date to date and week
+        """
         res={}
         res['value']={}
         res['value']['week'] = self.default_date_from_to(
@@ -49,16 +51,16 @@ class mrp_print_lavoration_week__wizard(osv.osv_memory):
         res['value']['to_date'] = self.default_date_from_to(
             cr, uid, 'to_date', reference_date, context=context)
         return res
-        
+
     # Wizard button:
     def action_print_lavoration_week(self, cr, uid, ids, context=None):
-        ''' Create new lavoration and recompute actual materials according 
+        """ Create new lavoration and recompute actual materials according
             to quantity to produce
-        '''
-        if context is None: context={}        
-        
+        """
+        if context is None: context={}
+
         wizard_browse = self.browse(cr, uid, ids, context=context)[0]
-        
+
         datas = {}
         if wizard_browse.workcenter_ids:
             datas['workcenter_ids'] = [
@@ -76,52 +78,54 @@ class mrp_print_lavoration_week__wizard(osv.osv_memory):
                 'type': 'ir.actions.report.xml',
                 'report_name': "lavoration_weekly_planner_report",
                 'datas': datas,
-            }            
+            }
 
-    # default function:        
-    def default_date_from_to(self, cr, uid, data_type, reference_date=False, 
+    # default function:
+    def default_date_from_to(self, cr, uid, data_type, reference_date=False,
             context=None):
-        ''' Get default value for 4 type of data:
-        '''        
-        from dateutil.relativedelta import relativedelta
-        
+        """ Get default value for 4 type of data:
+        """
         if reference_date:
             ref = datetime.strptime(reference_date, "%Y-%m-%d")
         else:
             ref = datetime.now()
-            #ref = datetime.date.today()
+            # ref = datetime.date.today()
         iso_info = ref.isocalendar()
 
         if data_type == 'date':
             return ref.strftime("%Y-%m-%d")
         elif data_type == 'from_date':
             return (ref + relativedelta(
-                days = -(iso_info[2] -1))).strftime("%Y-%m-%d")
+                days=-(iso_info[2]-1))).strftime("%Y-%m-%d")
         elif data_type == 'to_date':
             return (ref + relativedelta(
-                days = 7 - iso_info[2])).strftime("%Y-%m-%d")
+                days=7 - iso_info[2])).strftime("%Y-%m-%d")
         elif data_type == 'week':
-            return iso_info[1] # week of a year
-        else: 
-            return False # not possible
+            return iso_info[1]  # week of a year
+        else:
+            return False  # not possible
 
     _columns = {
-        'date': fields.date('Reference date', 
+        'date': fields.date(
+            'Reference date',
             help='Reference date for get week information', required=True),
         'from_date': fields.date('Date from'),
         'to_date': fields.date('Date to'),
         'week': fields.integer('Week of the year',),
-        'extended': fields.boolean('Extended',
+        'extended': fields.boolean(
+            'Extended',
             help="Extended week (from monday to sunday, else from monday to friday)"),
-        'only_open': fields.boolean('Only open', 
+        'only_open': fields.boolean(
+            'Only open',
             help="Print lavoration open, for all uncheck the value"),
-        'workcenter_id':fields.many2one('mrp.workcenter', 'Workcenter', 
+        'workcenter_id': fields.many2one(
+            'mrp.workcenter', 'Workcenter',
             help="No selection is for all workcenter used in the range of dates"),
-        'workcenter_ids':fields.many2many(
-            'mrp.workcenter', 'planner_workcenter_rel', 'wizard_id', 
+        'workcenter_ids': fields.many2many(
+            'mrp.workcenter', 'planner_workcenter_rel', 'wizard_id',
             'workcenter_id', 'Workcenters'),
         }
-        
+
     _defaults = {
         'date': lambda s, cr, uid, c: s.default_date_from_to(
             cr, uid, 'date', context=c),
@@ -133,5 +137,4 @@ class mrp_print_lavoration_week__wizard(osv.osv_memory):
             cr, uid, 'week', context=c),
         'extended': lambda *x: False,
         'only_open': lambda *x: True,
-        }    
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+        }

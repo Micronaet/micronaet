@@ -2029,10 +2029,10 @@ class mrp_production_extra(osv.osv):
                 if job.real_date_planned:  # todo remove!
                     if not min_date or job.real_date_planned[
                             :10] < min_date:
-                        min_date=job.real_date_planned[:10]
+                        min_date = job.real_date_planned[:10]
                     if not max_date or job.real_date_planned[
                             :10] > max_date:
-                        max_date=job.real_date_planned[:10]
+                        max_date = job.real_date_planned[:10]
                 res[production.id][
                     'lavoration_planned'] += job.product_qty or 0.0
                 for load in job.load_ids:
@@ -2043,6 +2043,8 @@ class mrp_production_extra(osv.osv):
                     production.product_qty:
                 res[production.id]['lavoration_all_planned'] = True
 
+            res[production.id]['state_info_min_date'] = min_date
+            res[production.id]['state_info_max_date'] = max_date
             this_year = datetime.now().strftime('%Y')
             if min_date:
                 min_date_text = '%s/%s' % (
@@ -2066,7 +2068,7 @@ class mrp_production_extra(osv.osv):
             else:
                 max_date_text = '?'
 
-            range_date= '[%s-%s]' % (min_date_text, max_date_text)
+            range_date = '[%s-%s]' % (min_date_text, max_date_text)
             res[production.id]['state_info'] = '%s\n%s' % (
                 _('All planned: %6.0f') % (
                     res[production.id]['lavoration_planned'], ) if res[production.id]['lavoration_all_planned'] else '%6.0f / %6.0f' % (
@@ -2145,6 +2147,16 @@ class mrp_production_extra(osv.osv):
             _function_lavoration_planned, method=True, type='float',
             digit=(16, 3), string='Total loaded', store=False,
             multi='planned'),
+        'state_info_min_date': fields.function(
+            _function_lavoration_planned, method=True, type='date',
+            string='Data minima MRP', store=False,
+            multi='planned',
+            help='E\' la data di inizio della produzione (prima lavor.)'),
+        'state_info_max_date': fields.function(
+            _function_lavoration_planned, method=True, type='date',
+            string='Data massima MRP', store=False,
+            multi='planned',
+            help='E\' la data di termine della produzione (ultima lavor.)'),
 
         'total_production_material': fields.function(
             _function_total_material, method=True, type='float',
