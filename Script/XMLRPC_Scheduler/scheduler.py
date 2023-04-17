@@ -25,8 +25,8 @@ operation_list = [
     'move_all',         # 7. Import sql.move.line all without BS
 
     # before order:
-    'export_inventory', # 8. Export inventory setted un OpenERP
-    'import_inventory', # 9. Import inventory setted up in Accounting
+    'export_inventory', # 8. Export inventory set un OpenERP
+    'import_inventory', # 9. Import inventory set up in Accounting
     'set_commercial',   # 10. Import commercial information from customer
 ]
 

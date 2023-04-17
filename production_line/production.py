@@ -405,6 +405,7 @@ class sale_order_add_extra(osv.osv):
                     # 2. deadline changed (see in the line for value),
                     # 3. record deleted (after)
                     header = {
+                        'account_old_order': True,
                         'currency_id': currency_convert.get(
                             oc['NKY_VLT'], currency_default),
                         'fiscal_position': fiscal_position_id,
@@ -464,6 +465,7 @@ class sale_order_add_extra(osv.osv):
 
                     oc_id = self.create(cr, uid, {
                         'name': name,
+                        'account_old_order': True,  # Old order
                         'accounting_order': True,  # comes from Accounting
                         'picking_policy': 'direct',
                         'order_policy': 'manual',
