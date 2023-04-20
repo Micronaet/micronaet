@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
-    <!--res.partner--> 
+    <!--res.partner-->
+    <!--
+    Used in SAPNAET
     <record model="ir.ui.view" id="view_partner_form_analysis_fields">
         <field name="name">Analysis for partner</field>
         <field name="model">res.partner</field>
@@ -9,14 +11,14 @@
         <field name="arch" type="xml">
             <field name="comment" position="before">
                 <group>
-                    <field name="analysis_required" />                    
+                    <field name="analysis_required" />
                 <newline/>
                 </group>
                 <group attrs="{'invisible':[('analysis_required','=',False)]}">
                     <field name="analysis_note" colspan="4" nolabel="1" placeholder="Insert note for analysis..."/>
-                </group>    
+                </group>
             </field>
         </field>
-    </record>       
+    </record>-->
    </data>
-</openerp>   
+</openerp>

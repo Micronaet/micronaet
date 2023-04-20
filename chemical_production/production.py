@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution    
+#    OpenERP, Open Source Management Solution
 #    Copyright (C) 2008-2013 Micronaet S.r.l.
 #                  <http://www.micronaet.it>). All Rights Reserved
 #
@@ -21,7 +21,7 @@
 ##############################################################################
 from openerp.osv import osv, fields
 from datetime import datetime
-import logging, sys, os        
+import logging, sys, os
 _logger = logging.getLogger(__name__)
 
 
@@ -39,8 +39,8 @@ class mrp_production_material(osv.osv):
     _name = "mrp.production.material"
     _description= "Production used material"
     _rec_name = "product_id"
-    
-    
+
+
     _columns = {
         'product_id':fields.many2one('product.product', 'Product', required=True),
         'quantity': fields.float('Quantity', digits=(16, 2)),
@@ -49,7 +49,7 @@ class mrp_production_material(osv.osv):
         'prodlot_id': fields.many2one('stock.production.lot', 'Material lot', domain="[('product_id', '=', product_id)]"),
         'product_package': fields.many2one('product.packaging', 'Package', domain="[('product_id', '=', product_id)]"),
         'material_note': fields.text('Note'),
-        
+
         'chemical_state': fields.related('mrp_production_id', 'chemical_state', type='selection', selection=(_chemical_state), string="Chemical state", store=False),
         'date_planned': fields.related('mrp_production_id', 'date_planned', type='datetime', string="Date planned", store=False),
         #'accounting_qty': fields.related('product_id','accounting_qty', type='float',  digits=(16, 3), string='Accounting Q.ty', store=False),
@@ -61,7 +61,7 @@ class mrp_production_coal(osv.osv):
     '''
     _name = "mrp.production"
     _inherit = "mrp.production"
-    
+
     # -----------------
     # Utility function:
     # -----------------
@@ -91,23 +91,23 @@ class mrp_production_coal(osv.osv):
         return True
 
     # TODO create chemical_analysis for end product created
-    # ----------   
+    # ----------
     # On change:
     # ----------
     # TODO on change for set up coal production (for mask)
     def bom_id_change(self, cr, uid, ids, bom_id, context=None):
         """ Override original function for setup also coal values
-        """    
+        """
         if bom_id:
             res = super(mrp_production_coal, self).bom_id_change(cr, uid, ids, bom_id, context=context)
             bom_proxy = self.pool.get("mrp.bom").browse(cr, uid, bom_id, context=context)
-            
-            res['value']['linked_to_coal'] = bom_proxy.coal_bom_id.id if bom_proxy.coal_bom_id else False            
+
+            res['value']['linked_to_coal'] = bom_proxy.coal_bom_id.id if bom_proxy.coal_bom_id else False
             return res
-        return False    
-    
+        return False
+
     def product_id_change_no_coal(self, cr, uid, ids, product_id, context=None):
-        """ Onyl for no coal production:
+        """ Only for no coal production:
         """
         res = {
             'value': {
@@ -118,7 +118,7 @@ class mrp_production_coal(osv.osv):
         }}
         if not product_id:
             return res
-            
+
         bom_obj = self.pool.get('mrp.bom')
         product = self.pool.get('product.product').browse(cr, uid, product_id, context=context)
         bom_ids = bom_obj.search(cr, uid, [
@@ -137,10 +137,10 @@ class mrp_production_coal(osv.osv):
         res['value']['routing_id'] = routing_id,
         return res
 
-        
-    # ----------------   
+
+    # ----------------
     # Workflow action:
-    # ----------------   
+    # ----------------
     def production_chemical_draft(self, cr, uid, ids, context = None):
         ''' Draft production
         '''
@@ -148,12 +148,12 @@ class mrp_production_coal(osv.osv):
         return True
 
     def production_chemical_confirmed(self, cr, uid, ids, context = None):
-        ''' Confirmed production 
+        ''' Confirmed production
         '''
         # Test if there's coal bom to create (NOTE: not updatable!):
         if self.browse(cr, uid, ids, context=context)[0].bom_id.coal_bom_id:
             self.create_bom_coal(cr, uid, ids[0], context=context)
-            
+
         # Mark as confirmed:
         self.write(cr, uid, ids, {'chemical_state': 'confirmed', }, context = context)
         return True
@@ -177,7 +177,7 @@ class mrp_production_coal(osv.osv):
         ''' Change list of element according to weight and bom
         '''
         return self._action_load_materials_from_bom(cr, uid, ids[0], context=context)
-        
+
     _columns = {
         'bom_material_ids': fields.one2many('mrp.production.material', 'mrp_production_id', 'Material lines', required=False),
         'prodlot_id': fields.many2one('stock.production.lot', 'Product lot', domain = "[('product_id','=',product_id)]"),
@@ -193,13 +193,13 @@ class mrp_production_coal(osv.osv):
         'chemical_state': lambda *a: 'draft',
         'coal_production': lambda *a: True, # as default, usually set false in new form
     }
-    
+
 class mrp_bom(osv.osv):
     ''' Extra field for import
-    '''    
+    '''
     _name = 'mrp.bom'
     _inherit = 'mrp.bom'
-    
+
     # -----------------
     # Scheduled action:
     # -----------------
@@ -220,16 +220,16 @@ class mrp_bom(osv.osv):
                 product_code = csv_line[0]
                 material_code = csv_line[1]
                 quantity = csv_line[2]
-                
+
                 product_id = 0   # TODO
                 material_id = 0  # TODO
-                
+
                 # parent block:
                 if not old_bom_parent or old_bom_parent != product_code: # level break
                     old_bom_parent = product_code
                     bom_parent_ids = bom_pool.search(cr, uid, [('bom_id','=',False),('imported','=',True),('product_id','=',product_id)], context = context)
                     if bom_parent_ids:
-                        bom_parent_id = bom_parent_ids[0]                    
+                        bom_parent_id = bom_parent_ids[0]
                     else:
                         bom_parent_id = bom_pool.create(cr, uid, {
                             'bom_id': False,
@@ -251,10 +251,10 @@ class mrp_bom(osv.osv):
         return True
 
     _columns = {
-        'imported': fields.boolean('Imported'),        
+        'imported': fields.boolean('Imported'),
     }
     _defaults = {
-        'imported': lambda *x: False,        
+        'imported': lambda *x: False,
     }
 
 class stock_production_lot(osv.osv):
@@ -268,7 +268,7 @@ class stock_production_lot(osv.osv):
         '''
         res = {}
         for lot in self.browse(cr, uid, ids, context=context):
-            # from stock.move (load):            
+            # from stock.move (load):
             cr.execute("SELECT sum(sm.product_qty) FROM stock_move sm, stock_picking sp \
                         WHERE sm.picking_id=sp.id AND sp.type='in' AND sm.prodlot_id = %s AND sm.state='done'" % (lot.id,))
             res[lot.id] = cr.fetchone()[0] or 0.0
@@ -292,7 +292,7 @@ class stock_production_lot(osv.osv):
     _columns = {
         'production_end_product_ids': fields.one2many('mrp.production', 'prodlot_id', 'Production end product', required=False, domain=[('coal_production','=',True)]),
         'production_material_ids': fields.one2many('mrp.production.material', 'prodlot_id', 'Production material', required=False, domain=[('coal_production','=',True)]),
-        # Function: 
+        # Function:
         'stock_available_chemical': fields.function(_stock_available_chemical_function, method=True, type='float', string='Stock available', store=False),
     }
 
@@ -301,9 +301,9 @@ class product_product(osv.osv):
     """
     _name = 'product.product'
     _inherit = 'product.product'
-    
+
     _columns = {
         'lot_ids':fields.one2many('stock.production.lot', 'product_id', 'Lots', required=False),
     }
-    
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
