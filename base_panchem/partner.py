@@ -170,11 +170,12 @@ class product_product_extra_fields(osv.osv):
             uom_id: new value
         """
         try:
-            return cr.execute("""
+            cr.execute("""
                 update product_template 
                 set uos_id=%s, uom_id=%s, uom_po_id=%s 
                 where id=%s""", (
                     uom_id, uom_id, uom_id, item_id))
+            return True        
         except:
             return False
 
