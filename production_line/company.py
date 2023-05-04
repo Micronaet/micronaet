@@ -550,7 +550,7 @@ class res_company(osv.osv):
             )
         except:
             raise osv.except_osv(
-                _('Import CL error!'),
+                _('Import CL error!'),N
                 _('XMLRPC for calling importation is not response'), )
 
         return xmlrpclib.ServerProxy(xmlrpc_server)

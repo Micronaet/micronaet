@@ -261,6 +261,7 @@ class sale_order_add_extra(osv.osv):
                 record['NGL_DOC'],
             )
 
+        return False  # No more used!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         _logger.info('Start import OC header')
         currency_pool = self.pool.get('res.currency')
         partner_pool = self.pool.get('res.partner')
