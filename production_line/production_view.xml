@@ -1086,9 +1086,15 @@
 
                     <separator string="Manage Production:"/>
                     <!--<filter icon="terp-go-home" name="to_produce" string="Not to produce" domain="[('to_produce','=',True),('mrp_production_id','=',False)]" />-->
+                    <!--todo remove:-->
                     <filter icon="terp-go-home" name="Production1" string="Produce (month 0)" domain="['|',('date_deadline','=',False),('date_deadline','&lt;',(context_today()+relativedelta(months=1)).strftime('%%Y-%%m-01')),('mrp_production_id','=',False),('use_accounting_qty','=',False)]" context="{'group_by':'product_id'}"/><!--('to_produce','=',True),-->
                     <filter icon="terp-go-home" name="Production2" string="Produce (month 1)" domain="['|',('date_deadline','=',False),('date_deadline','&lt;',(context_today()+relativedelta(months=2)).strftime('%%Y-%%m-01')),('mrp_production_id','=',False),('use_accounting_qty','=',False)]" context="{'group_by':'product_id'}"/>
                     <filter icon="terp-go-home" name="Production3" string="Produce (month 2)" domain="['|',('date_deadline','=',False),('date_deadline','&lt;',(context_today()+relativedelta(months=3)).strftime('%%Y-%%m-01')),('mrp_production_id','=',False),('use_accounting_qty','=',False)]" context="{'group_by':'product_id'}"/>
+
+                    <!--only for grouping (view already filter)-->
+                    <filter name="MRP1" string="MRP (mese 0)" domain="[]" context="{'group_by':'product_id'}"/>
+                    <filter name="MRP2" string="MRP (mese 1)" domain="[]" context="{'group_by':'product_id'}"/>
+                    <filter name="MRP3" string="MRP (mese 2)" domain="[]" context="{'group_by':'product_id'}"/>
 
                     <separator string="See Production:"/>
                     <filter string="Month 0 (all)" name="month1" domain="['|',('date_deadline','=',False),('date_deadline','&lt;',(context_today()+relativedelta(months=1)).strftime('%%Y-%%m-01')),('use_accounting_qty','=',False)]"/>
