@@ -1010,6 +1010,7 @@ class sale_order_line_extra(osv.osv):
             ondelete='set null',),
         'deliver_ready': fields.boolean('Deliver ready'),
     }
+
     _defaults = {
         'to_produce': lambda *a: True,
         'use_accounting_qty': lambda *a: False,
@@ -2330,9 +2331,9 @@ class sale_order_line_extra(osv.osv):
             _function_get_mandatory_delivery, method=True, type='boolean',
             string='Mandatory delivery', store=False),
         'accounting_state': fields.selection([
-            ('not', 'Not Confirmed'), # first step during importation
+            ('not', 'Not Confirmed'),  # first step during importation
             ('new', 'New'),  # Confirmed
-            ('modified', 'Modified'), # Quantity only (for production or linked to store)
+            ('modified', 'Modified'),  # Quantity only (for production or linked to store)
             ('updated', 'Updated'),  # after new if line is the same
             # ('planned','Planned for delivery'),
             ('deleted', 'Deleted'), # Not used (order vanished when delete)

@@ -31,8 +31,8 @@
         'base',
         'product',
         'excel_export',
-        'sql_product', # statistic_category
-        'production_line', # accounting_qty
+        'sql_product',  # statistic_category
+        'production_line',  # accounting_qty
         ],
     'init_xml': [],
     'demo': [],
