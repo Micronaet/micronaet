@@ -2301,15 +2301,15 @@ class sale_order_line_extra(osv.osv):
 
     def _function_get_mandatory_delivery(self, cr, uid, ids, fields, param,
                                          context=None):
-        """ Test if oc header has delivery status setted
+        """ Test if oc header has delivery status sett
         """
         res = {}
-        for item in self.browse(cr, uid, ids, context=context):
-            # res[item.id] = item.order_id.accounting_state == 'planned'
-            if item.booked_date_confirmed:
-                res[item.id] = item.booked_date
+        for line in self.browse(cr, uid, ids, context=context):
+            # res[line.id] = line.order_id.accounting_state == 'planned'
+            if line.date_booked_confirmed:
+                res[line.id] = line.booked_date
             else:
-                res[item.id] = False
+                res[line.id] = False
         return res
 
     _columns = {
