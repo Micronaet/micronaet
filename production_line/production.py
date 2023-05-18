@@ -2307,7 +2307,7 @@ class sale_order_line_extra(osv.osv):
         for line in self.browse(cr, uid, ids, context=context):
             # res[line.id] = line.order_id.accounting_state == 'planned'
             if line.date_booked_confirmed:
-                res[line.id] = line.booked_date
+                res[line.id] = line.date_booked
             else:
                 res[line.id] = False
         return res
