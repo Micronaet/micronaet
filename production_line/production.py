@@ -2306,7 +2306,8 @@ class sale_order_line_extra(osv.osv):
         res = {}
         for item in self.browse(cr, uid, ids, context=context):
             try:
-                res[item.id] = item.order_id.accounting_state == 'planned'
+                # res[item.id] = item.order_id.accounting_state == 'planned'
+                res[item.id] = item.booked_date
             except:
                 res[item.id] = False
         return res
