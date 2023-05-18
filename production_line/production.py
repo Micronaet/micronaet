@@ -2305,10 +2305,10 @@ class sale_order_line_extra(osv.osv):
         """
         res = {}
         for item in self.browse(cr, uid, ids, context=context):
-            try:
-                # res[item.id] = item.order_id.accounting_state == 'planned'
+            # res[item.id] = item.order_id.accounting_state == 'planned'
+            if item.booked_date_confirmed:
                 res[item.id] = item.booked_date
-            except:
+            else:
                 res[item.id] = False
         return res
 
@@ -2329,8 +2329,8 @@ class sale_order_line_extra(osv.osv):
             'product.product', 'Previous product',
             help='Save last modified product_id if changed'),
         'mandatory_delivery': fields.function(
-            _function_get_mandatory_delivery, method=True, type='boolean',
-            string='Mandatory delivery', store=False),
+            _function_get_mandatory_delivery, method=True, type='date',
+            string='Consegna obbligatoria', store=False),
         'accounting_state': fields.selection([
             ('not', 'Not Confirmed'),  # first step during importation
             ('new', 'New'),  # Confirmed
