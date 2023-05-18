@@ -1068,7 +1068,7 @@
     <record model="ir.ui.view" id="view_sale_order_line_search">
         <field name="name">Search OC line</field>
         <field name="model">sale.order.line</field>
-        <field name="priority" eval="20"/>
+        <field name="priority" eval="1"/>
         <field name="arch" type="xml">
             <search string="OC line">
                     <field name="partner_id" string="Partner" filter_domain="[('partner_id','=',self)]"/>
