@@ -568,13 +568,13 @@ class product_status_wizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         # Preload
         # ---------------------------------------------------------------------
-        # Monthly peak
+        # A. Monthly peak
         monthly_peak_data = load_montly_peak_stats(
             self, cr, uid, ids, context=context)
 
+        # B. Alternative product list
         alternative_ids = alternative_pool.search(cr, uid, [], context=context)
         alternative_db = {}  # ID >> Text (to put in XSLX)
-        pdb.set_trace()
         for alternative in alternative_pool.browse(
                 cr, uid, alternative_ids, context=context):
             alternative_item_list = [
@@ -586,7 +586,7 @@ class product_status_wizard(osv.osv_memory):
                     alternative_db[product_id] += alternative_text
                 else:
                     alternative_db[product_id] = alternative_text
-        pdb.set_trace()
+
         # ---------------------------------------------------------------------
         # XLS file:
         # ---------------------------------------------------------------------
@@ -748,12 +748,16 @@ class product_status_wizard(osv.osv_memory):
 
                     peak_comment.append('%s: Kg.%10.0f' % (period, peak_q))
 
+            row_product = row[2]
             body = [
-                (row[2].name, format_text),
+                (row_product.name, format_text),
                 (default_code, format_text),
-                ('', format_text),   # Alternative material
-                (row[2].minimum_qty, format_white),  # min level account
-                (row[2].min_stock_level, format_white),  # min level calc
+
+                # Alternative material:
+                (alternative_db.get(row_product.id, ''), format_text),
+
+                (row_product.minimum_qty, format_white),  # min level account
+                (row_product.min_stock_level, format_white),  # min level calc
                 (write_supplier_order_detail(
                  history_supplier_orders.get(default_code, '')),
                  format_text,
