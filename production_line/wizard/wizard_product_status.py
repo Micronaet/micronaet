@@ -714,7 +714,6 @@ class product_status_wizard(osv.osv_memory):
         rows = mrp_pool._get_rows()
 
         table, table_comment = mrp_pool._get_table()  # For check row state
-        pdb.set_trace()
         for row in rows:
             # Check mode: only active
             if not use_row(table[row[1]], data, product=row[2]):
@@ -785,7 +784,6 @@ class product_status_wizard(osv.osv_memory):
                     body.append((status_line, format_red))
                 else:  # ("=", "<"): # not present!!!
                     body.append((status_line, format_white))
-            pdb.set_trace()
             write_xls_mrp_line(WS, i, body)
 
             # -----------------------------------------------------------------
