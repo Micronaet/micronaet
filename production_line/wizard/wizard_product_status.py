@@ -663,14 +663,14 @@ class product_status_wizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         # Material:
         WS.set_column('A:A', 35)
-        WS.set_column('B:B', 20)
-        WS.set_column('C:C', 25)
+        WS.set_column('B:B', 15)
+        WS.set_column('C:C', 30)
         WS.set_column('E:G', 20)
         WS.set_row(0, 30)
 
         # Product:
         WS_product.set_column('A:A', 35)
-        WS_product.set_column('B:B', 20)
+        WS_product.set_column('B:B', 15)
         WS_product.set_column('C:C', 10)
         WS_product.set_column('E:G', 20)
         WS_product.set_row(0, 30)
