@@ -761,9 +761,9 @@ class product_status_wizard(osv.osv_memory):
             if alternative_product:
                 # Clean current:
                 alternative_product = alternative_product.replace(
-                    '-%s' % default_code)
+                    '-%s' % default_code, '')
                 alternative_product = alternative_product.replace(
-                    '%s-' % default_code)
+                    '%s-' % default_code, '')
 
             body = [
                 (row_product.name, format_text),
