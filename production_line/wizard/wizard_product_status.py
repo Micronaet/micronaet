@@ -660,11 +660,18 @@ class product_status_wizard(osv.osv_memory):
         # Format columns:
         # ---------------------------------------------------------------------
         # Column dimension:
+        # ---------------------------------------------------------------------
+        # Material:
         WS.set_column('A:A', 35)
-        WS.set_column('B:B', 25)
+        WS.set_column('B:B', 20)
+        WS.set_column('C:C', 25)
         WS.set_column('E:G', 20)
         WS.set_row(0, 30)
+
+        # Product:
         WS_product.set_column('A:A', 35)
+        WS.set_column('B:B', 20)
+        WS.set_column('C:C', 5)
         WS_product.set_column('E:G', 20)
         WS_product.set_row(0, 30)
 
@@ -685,8 +692,8 @@ class product_status_wizard(osv.osv_memory):
             # list for update after for product:
             [_('Material'), format_title],
 
-            (_('Alternativo'), format_title),
             (_('Code'), format_title),
+            (_('Alternativo'), format_title),
             (_('Mx. stock'), format_title),
             (_('Min. stock'), format_title),
             (_('OF detail'), format_title),
@@ -748,12 +755,22 @@ class product_status_wizard(osv.osv_memory):
                     peak_comment.append('%s: Kg.%10.0f' % (period, peak_q))
 
             row_product = row[2]
+
+            # Alternative:
+            alternative_product = alternative_db.get(row_product.id, '')
+            if alternative_product:
+                # Clean current:
+                alternative_product = alternative_product.replace(
+                    '-%s' % default_code)
+                alternative_product = alternative_product.replace(
+                    '%s-' % default_code)
+
             body = [
                 (row_product.name, format_text),
                 (default_code, format_text),
 
                 # Alternative material:
-                (alternative_db.get(row_product.id, ''), format_text),
+                (alternative_product, format_text),
 
                 (row_product.minimum_qty, format_white),  # min level account
                 (row_product.min_stock_level, format_white),  # min level calc
