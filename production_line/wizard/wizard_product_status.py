@@ -563,6 +563,7 @@ class product_status_wizard(osv.osv_memory):
         # Pool used:
         mrp_pool = self.pool.get('mrp.production')
         attachment_pool = self.pool.get('ir.attachment')
+        alternative_pool = self.pool.get('bom.product.alternative')
 
         # ---------------------------------------------------------------------
         # Preload
@@ -571,6 +572,21 @@ class product_status_wizard(osv.osv_memory):
         monthly_peak_data = load_montly_peak_stats(
             self, cr, uid, ids, context=context)
 
+        alternative_ids = alternative_pool.search(cr, uid, [], context=context)
+        alternative_db = {}  # ID >> Text (to put in XSLX)
+        pdb.set_trace()
+        for alternative in alternative_pool.browse(
+                cr, uid, alternative_ids, context=context):
+            alternative_item_list = [
+                (p.code or '') for p in alternative.group_ids]
+            alternative_text = '-'.join(alternative_item_list)
+            for product in alternative.group_ids:
+                product_id = product.id
+                if product_id in alternative_db:
+                    alternative_db[product_id] += alternative_text
+                else:
+                    alternative_db[product_id] = alternative_text
+        pdb.set_trace()
         # ---------------------------------------------------------------------
         # XLS file:
         # ---------------------------------------------------------------------
