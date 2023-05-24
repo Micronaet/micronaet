@@ -645,10 +645,11 @@ class product_status_wizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         # Column dimension:
         WS.set_column('A:A', 35)
-        WS.set_column('E:F', 20)
+        WS.set_column('B:B', 25)
+        WS.set_column('E:G', 20)
         WS.set_row(0, 30)
         WS_product.set_column('A:A', 35)
-        WS_product.set_column('E:F', 20)
+        WS_product.set_column('E:G', 20)
         WS_product.set_row(0, 30)
 
         # Generate report for export:
@@ -668,6 +669,7 @@ class product_status_wizard(osv.osv_memory):
             # list for update after for product:
             [_('Material'), format_title],
 
+            (_('Alternativo'), format_title),
             (_('Code'), format_title),
             (_('Mx. stock'), format_title),
             (_('Min. stock'), format_title),
@@ -696,7 +698,7 @@ class product_status_wizard(osv.osv_memory):
         rows = mrp_pool._get_rows()
 
         table, table_comment = mrp_pool._get_table()  # For check row state
-
+        pdb.set_trace()
         for row in rows:
             # Check mode: only active
             if not use_row(table[row[1]], data, product=row[2]):
@@ -733,6 +735,7 @@ class product_status_wizard(osv.osv_memory):
             body = [
                 (row[2].name, format_text),
                 (default_code, format_text),
+                ('', format_text),   # Alternative material
                 (row[2].minimum_qty, format_white),  # min level account
                 (row[2].min_stock_level, format_white),  # min level calc
                 (write_supplier_order_detail(
@@ -762,6 +765,7 @@ class product_status_wizard(osv.osv_memory):
                     body.append((status_line, format_red))
                 else:  # ("=", "<"): # not present!!!
                     body.append((status_line, format_white))
+            pdb.set_trace()
             write_xls_mrp_line(WS, i, body)
 
             # -----------------------------------------------------------------

@@ -117,16 +117,16 @@ if odoo_mailer.smtp_encryption in ('ssl', 'starttls'):
     smtp_server = smtplib.SMTP_SSL(
         odoo_mailer.smtp_host, odoo_mailer.smtp_port)
 else:
-    print '[ERR] Connect only SMTP SSL server!'
+    print('[ERR] Connect only SMTP SSL server!')
     sys.exit()
 
 smtp_server.login(odoo_mailer.smtp_user, odoo_mailer.smtp_pass)
 for to in smtp['to'].replace(' ', '').split(','):
-    print 'Sending mail to: %s ...' % to
+    print('Sending mail to: %s ...' % to)
     msg = MIMEMultipart()
     msg['Subject'] = smtp['subject']
     msg['From'] = odoo_mailer.smtp_user
-    msg['To'] = to #smtp['to'] #', '.join(self.EMAIL_TO)
+    msg['To'] = to  # smtp['to'] #', '.join(self.EMAIL_TO)
     msg.attach(MIMEText(smtp['text'], 'html'))
 
     part = MIMEBase('application', 'octet-stream')
