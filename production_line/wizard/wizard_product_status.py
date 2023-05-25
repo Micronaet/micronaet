@@ -803,9 +803,9 @@ class product_status_wizard(osv.osv_memory):
                         alternative_name = 'non trovato!'
                     alternative_comment += '%s - %s\n' % (
                         code, alternative_name)
-                for line in
+
                 write_xls_mrp_line_comment(
-                    WS, row=i, line=[alternative_product],
+                    WS, row=i, line=[alternative_comment],
                     gap_column=1)
 
             gap_columns = len(body)
