@@ -791,8 +791,8 @@ class product_status_wizard(osv.osv_memory):
 
             if alternative_product:
                 write_xls_mrp_line_comment(
-                    WS, row=i, line=[peak_comment_text],
-                    gap_column=2)
+                    WS, row=i, line=[alternative_product],
+                    gap_column=1)
 
             gap_columns = len(body)
             peak_columns = gap_columns - 2
