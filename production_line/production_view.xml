@@ -1072,7 +1072,7 @@
         <field name="arch" type="xml">
             <search string="OC line">
                     <field name="partner_id" string="Partner" filter_domain="[('partner_id','=',self)]"/>
-                    <field name="product_id" string="Product" filter_domain="[('product_id.obsolete', '=', False),('product_id','=',self)]"/>
+                    <field name="product_id" string="Product" filter_domain="[('product_id','=',self)]"/> <!--,('product_id.obsolete','=',False)-->
                     <field name="order_id" string="Order" filter_domain="[('order_id','=',self)]"/>
 
                     <separator string="Situation:"/>
