@@ -563,7 +563,8 @@ class product_status_wizard(osv.osv_memory):
         # Pool used:
         mrp_pool = self.pool.get('mrp.production')
         attachment_pool = self.pool.get('ir.attachment')
-        alternative_pool = self.pool.get('bom.product.alternative')
+        # alternative_pool = self.pool.get('bom.product.alternative')
+        product_pool = self.pool.get('product.product')
 
         # ---------------------------------------------------------------------
         # Preload
@@ -769,8 +770,7 @@ class product_status_wizard(osv.osv_memory):
                 alternative_product = alternative_product.replace(
                     '%s-' % default_code, '')
             '''
-            alternative_product = (row_product.mapped_code_text or '').replace(
-                '|', '\n')
+            alternative_product = row_product.mapped_code_text or ''
 
             body = [
                 (row_product.name, format_text),
@@ -790,6 +790,20 @@ class product_status_wizard(osv.osv_memory):
                 ]
 
             if alternative_product:
+                alternative_comment = ''
+                for code in alternative_product.split('|'):
+                    alternative_ids = product_pool.search(cr, uid, [
+                        ('default_code', '=', code),
+                    ], context=context)
+                    if alternative_ids:
+                        alternative = product_pool.browse(
+                            cr, uid, alternative_ids[0], context=context)
+                        alternative_name = alternative.name
+                    else:
+                        alternative_name = 'non trovato!'
+                    alternative_comment += '%s - %s\n' % (
+                        code, alternative_name)
+                for line in
                 write_xls_mrp_line_comment(
                     WS, row=i, line=[alternative_product],
                     gap_column=1)
