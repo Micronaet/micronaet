@@ -668,14 +668,14 @@ class product_status_wizard(osv.osv_memory):
         # Material:
         WS.set_column('A:A', 35)
         WS.set_column('B:B', 15)
-        WS.set_column('C:C', 30)
+        # WS.set_column('C:C', 30)
         WS.set_column('E:G', 20)
         WS.set_row(0, 30)
 
         # Product:
         WS_product.set_column('A:A', 35)
         WS_product.set_column('B:B', 15)
-        WS_product.set_column('C:C', 10)
+        # WS_product.set_column('C:C', 10)
         WS_product.set_column('E:G', 20)
         WS_product.set_row(0, 30)
 
@@ -697,7 +697,7 @@ class product_status_wizard(osv.osv_memory):
             [_('Material'), format_title],
 
             (_('Code'), format_title),
-            (_('Alternativo'), format_title),
+            # (_('Alternativo'), format_title),
             (_('Mx. stock'), format_title),
             (_('Min. stock'), format_title),
             (_('OF detail'), format_title),
@@ -769,14 +769,15 @@ class product_status_wizard(osv.osv_memory):
                 alternative_product = alternative_product.replace(
                     '%s-' % default_code, '')
             '''
-            alternative_product = row_product.mapped_code_text or ''
+            alternative_product = (row_product.mapped_code_text or '').replace(
+                '|', '\n')
 
             body = [
                 (row_product.name, format_text),
                 (default_code, format_text),
 
                 # Alternative material:
-                (alternative_product, format_text),
+                # (alternative_product, format_text),
 
                 (row_product.minimum_qty, format_white),  # min level account
                 (row_product.min_stock_level, format_white),  # min level calc
@@ -787,6 +788,12 @@ class product_status_wizard(osv.osv_memory):
                 (peak_data, format_white),  # Peak
                 (row[3], format_white),  # m(x)
                 ]
+
+            if alternative_product:
+                write_xls_mrp_line_comment(
+                    WS, row=i, line=[peak_comment_text],
+                    gap_column=2)
+
             gap_columns = len(body)
             peak_columns = gap_columns - 2
 
