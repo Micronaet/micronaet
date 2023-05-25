@@ -573,8 +573,11 @@ class product_status_wizard(osv.osv_memory):
             self, cr, uid, ids, context=context)
 
         # B. Alternative product list
-        alternative_ids = alternative_pool.search(cr, uid, [], context=context)
+        '''
+        Alternative not used:
         alternative_db = {}  # ID >> Text (to put in XSLX)
+        alternative_ids = alternative_pool.search(
+            cr, uid, [], context=context)
         for alternative in alternative_pool.browse(
                 cr, uid, alternative_ids, context=context):
             alternative_item_list = [
@@ -586,6 +589,7 @@ class product_status_wizard(osv.osv_memory):
                     alternative_db[product_id] += alternative_text
                 else:
                     alternative_db[product_id] = alternative_text
+        '''
 
         # ---------------------------------------------------------------------
         # XLS file:
@@ -753,10 +757,10 @@ class product_status_wizard(osv.osv_memory):
                         peak_data = '%s: Kg.%.0f' % (period, peak_q)
 
                     peak_comment.append('%s: Kg.%10.0f' % (period, peak_q))
-
             row_product = row[2]
 
             # Alternative:
+            '''
             alternative_product = alternative_db.get(row_product.id, '')
             if alternative_product:
                 # Clean current:
@@ -764,6 +768,8 @@ class product_status_wizard(osv.osv_memory):
                     '-%s' % default_code, '')
                 alternative_product = alternative_product.replace(
                     '%s-' % default_code, '')
+            '''
+            alternative_product = row_product.mapped_code_text or ''
 
             body = [
                 (row_product.name, format_text),

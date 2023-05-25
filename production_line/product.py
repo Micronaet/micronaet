@@ -439,7 +439,7 @@ class product_product_extra(osv.osv):
             try:
                 res[line.product_id.id] += line.product_uom_qty or 0.0
             except:
-                pass # no error!
+                pass  # no error!
         return res
 
     _columns = {
@@ -448,7 +448,8 @@ class product_product_extra(osv.osv):
         'accounting_qty': fields.float('Account quantity', digits=(16, 3)),
         'linked_accounting_qty': fields.function(
             _function_linked_accounting_qty, method=True, type='float',
-            string='OC qty linked to store', store=False, multi=False),
+            string='Vecchia modalità per collegare il magazzino agli ordini',
+            store=False, multi=False),
 
         'minimum_qty': fields.float('Minimum alert quantity', digits=(16, 3)),
         'maximum_qty': fields.float('Maximum alert quantity', digits=(16, 3)),

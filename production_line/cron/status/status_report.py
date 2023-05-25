@@ -33,7 +33,7 @@ from email import Encoders
 # -----------------------------------------------------------------------------
 # Read configuration parameter:
 # -----------------------------------------------------------------------------
-#cfg_file = os.path.expanduser('../local.cfg')
+# cfg_file = os.path.expanduser('../local.cfg')
 cfg_file = os.path.expanduser('./openerp.cfg')
 now = ('%s' % datetime.now())[:19]
 now_text = now.replace('/', '_').replace('-', '_').replace(':', '_')
@@ -41,7 +41,7 @@ now_text = now.replace('/', '_').replace('-', '_').replace(':', '_')
 config = ConfigParser.ConfigParser()
 config.read([cfg_file])
 
-filename = '/tmp/production_status.xlsx' # From wizard parameter!
+filename = '/tmp/production_status.xlsx'  # From wizard parameter!
 
 # ERP Connection:
 odoo = {
@@ -100,7 +100,7 @@ context = {
         'with_medium': True,
         'month_window': 3,
         'with_order_detail': True,
-        'fake_ids': [], # TODO << nothing?
+        'fake_ids': [],  # TODO << nothing?
         },
     }
 
