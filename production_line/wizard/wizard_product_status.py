@@ -804,9 +804,10 @@ class product_status_wizard(osv.osv_memory):
                             alternative.uom_id.name,
                         )
                     else:
-                        alternative_name = 'non trovato!'
+                        alternative_name = 'Non trovato!'
                         alternative_stock = '/'
-                    alternative_comment += '%s - %s [%s]: %s\n' % (
+
+                    alternative_comment += '%s - %s [%s]\n' % (
                         code, alternative_name, alternative_stock)
 
                 write_xls_mrp_line_comment(
