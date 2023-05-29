@@ -799,10 +799,15 @@ class product_status_wizard(osv.osv_memory):
                         alternative = product_pool.browse(
                             cr, uid, alternative_ids[0], context=context)
                         alternative_name = alternative.name
+                        alternative_stock = '%s %s' % (
+                            int(alternative.accounting_qty),
+                            alternative.uom_id.name,
+                        )
                     else:
                         alternative_name = 'non trovato!'
-                    alternative_comment += '%s - %s\n' % (
-                        code, alternative_name)
+                        alternative_stock = '/'
+                    alternative_comment += '%s - %s [%s]: %s\n' % (
+                        code, alternative_name, alternative_stock)
 
                 write_xls_mrp_line_comment(
                     WS, row=i, line=[alternative_comment],
