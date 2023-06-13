@@ -125,9 +125,8 @@ class ProductProduct(osv.osv):
             raise Exception('Non trovato origine per aggiornare')
 
         from_pool = self.pool.get(from_model)
-        from_pool.write(cr, uid, [from_id], {
+        return from_pool.write(cr, uid, [from_id], {
             'product_id': ids[0]}, context=context)
-        return
 
 
 class MrpBom(osv.osv):
