@@ -770,7 +770,10 @@ class product_status_wizard(osv.osv_memory):
                 alternative_product = alternative_product.replace(
                     '%s-' % default_code, '')
             '''
-            alternative_product = row_product.mapped_code_text or ''
+            try:
+                alternative_product = row_product.mapped_code_text or ''
+            except:    
+                alternative_product = ''  # For version MX
 
             body = [
                 (row_product.name, format_text),
