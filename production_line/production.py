@@ -818,6 +818,7 @@ class sale_order_add_extra(osv.osv):
 
     _columns = {
         'currency_id': fields.many2one('res.currency', 'Currency'),
+        'date_confirmed': fields.date('Confermato il'),
         'date_deadline': fields.date('Deadline'),
         'date_previous_deadline': fields.date(
             'Previous deadline',
