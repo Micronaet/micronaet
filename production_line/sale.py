@@ -105,19 +105,19 @@ class sale_order_line(osv.osv):
             ),
 
         'note_pr': fields.char(
-            'Note Offerta', size=100,
+            'Offerta', size=100,
             help='Note scritte sulla offerta'
             ),
         'note_oc': fields.char(
-            'Note Ordine', size=100,
+            'Ordine', size=100,
             help='Note scritte sull\'ordine di vendita'
             ),
         'note_ddt': fields.char(
-            'Note DDT', size=100,
+            'DDT', size=100,
             help='Note scritte sul documento di trasporto'
             ),
         'note_all_document': fields.char(
-            'Note documenti', size=100,
+            'Tutti documenti', size=100,
             help='Note scritte sul tutti i documenti (offerta, ordine, DDT)'
         ),
     }
