@@ -172,14 +172,16 @@ class stock_production_lot_accounting(orm.Model):
 
             stock_number = row[0].strip()
             default_code = row[1].strip()
-            if default_code == 'MQ340279':
-                pdb.set_trace()
             stock_qty = float(row[2].strip().replace(',', '.'))
             if stock_number == stock_used:
                 product_id = product_db.get(default_code)
-                product_pool.write(cr, uid, [product_id], {
-                    'accounting_qty': stock_qty,
-                }, context=context)
+                try:
+                    product_pool.write(cr, uid, [product_id], {
+                        'accounting_qty': stock_qty,
+                    }, context=context)
+                except:
+                    _logger.error('Error updating %s'% default_code)
+                    continue
 
         # ---------------------------------------------------------------------
         # Reset lot not present:
