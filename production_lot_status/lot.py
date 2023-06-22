@@ -64,14 +64,14 @@ class stock_production_lot_accounting(orm.Model):
             context = {}
         separator = ';'
 
-        filename = os.path.join(
-            os.path.expanduser(path), filename)
+        filename = os.path.join(os.path.expanduser(path), filename)
         try:
             f = open(filename, 'r')
         except:
             _logger.error('Error accessing file: %s' % filename)
             return False
 
+        # lot filename
         total_filename = os.path.join(
             os.path.expanduser(path), total_filename)
         try:
@@ -175,13 +175,16 @@ class stock_production_lot_accounting(orm.Model):
             stock_qty = float(row[2].strip().replace(',', '.'))
             if stock_number == stock_used:
                 product_id = product_db.get(default_code)
-                try:
-                    product_pool.write(cr, uid, [product_id], {
-                        'accounting_qty': stock_qty,
-                    }, context=context)
-                except:
-                    _logger.error('Error updating %s'% default_code)
-                    continue
+                if product_id:
+                    try:
+                        product_pool.write(cr, uid, [product_id], {
+                            'accounting_qty': stock_qty,
+                        }, context=context)
+                    except:
+                        _logger.error('Error updating %s' % default_code)
+                        continue
+                else:
+                    _logger.error('Not found product ID: %s' % product_id)
 
         # ---------------------------------------------------------------------
         # Reset lot not present:
