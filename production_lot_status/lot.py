@@ -184,7 +184,8 @@ class stock_production_lot_accounting(orm.Model):
                         _logger.error('Error updating %s' % default_code)
                         continue
                 else:
-                    _logger.error('Not found product ID: %s' % product_id)
+                    _logger.error('Not found product ID: %s[%s]' % (
+                        product_id, default_code))
 
         # ---------------------------------------------------------------------
         # Reset lot not present:
