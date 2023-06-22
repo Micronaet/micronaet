@@ -193,7 +193,8 @@ class stock_production_lot_accounting(orm.Model):
         return True
 
     _columns = {
-        'package_id': fields.many2one('product.ul', 'Package',
+        'package_id': fields.many2one(
+            'product.ul', 'Package',
             help='Package used for package (for this lot)'),
         # TODO remove
         'stock_available_accounting': fields.float(
@@ -202,6 +203,7 @@ class stock_production_lot_accounting(orm.Model):
             help="ID lot in account program"),
         'anomaly': fields.boolean('Anomaly', required=False),
     }
+
 
 class product_product_lot_accounting(orm.Model):
     """ Add extra field for manage status of product / lot from accounting
