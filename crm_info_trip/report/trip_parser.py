@@ -130,6 +130,8 @@ class Parser(report_sxw.rml_parse):
 
             'get_total_invoiced': self.get_total_invoiced,
 
+            'get_total_ordered': self.get_total_ordered,
+
             # Price variation:
             'load_price_variation': self.load_price_variation,
             'get_price_variation': self.get_price_variation,
@@ -183,6 +185,12 @@ class Parser(report_sxw.rml_parse):
         """ Return total_invoiced
         """
         return self.total_invoiced
+
+    def get_total_ordered(self, order):
+        """ Return total_invoiced
+        """
+        # todo line remain!
+        return offer.amount_untaxed
 
     def format_date(self, value):
         """ Format date
@@ -416,7 +424,10 @@ class Parser(report_sxw.rml_parse):
 
         # OpenERP Order:
         else:
-            domain = [('partner_id', '=', partner_id)]
+            domain = [
+                ('partner_id', '=', partner_id),
+                ('logistic_state', '!=', 'complete'),  # not closed
+            ]
             offer_pool = self.pool.get('sale.order')
 
             # todo da rivedere in base alla gestione che faremo delle offerte
