@@ -194,9 +194,13 @@ class Parser(report_sxw.rml_parse):
         return order.amount_untaxed
 
     def get_order_line_open(self, order):
-        """ Return line that are logisti state undone
+        """ Return line that are logistic state undone
         """
-        return order.order_line_remain_ids
+        lines = []
+        for line in order.order_line:
+            if line.logistic_state != 'done':
+                lines.append(line)
+        return lines  # order.order_line_remain_ids
 
     def format_date(self, value):
         """ Format date
