@@ -131,6 +131,7 @@ class Parser(report_sxw.rml_parse):
             'get_total_invoiced': self.get_total_invoiced,
 
             'get_total_ordered': self.get_total_ordered,
+            'get_order_line_open': self.get_order_line_open,
 
             # Price variation:
             'load_price_variation': self.load_price_variation,
@@ -191,6 +192,11 @@ class Parser(report_sxw.rml_parse):
         """
         # todo line remain!
         return order.amount_untaxed
+
+    def get_order_line_open(self, order):
+        """ Return line that are logisti state undone
+        """
+        return order.order_line_remain_ids
 
     def format_date(self, value):
         """ Format date
