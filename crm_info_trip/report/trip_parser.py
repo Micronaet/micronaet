@@ -190,7 +190,7 @@ class Parser(report_sxw.rml_parse):
         """ Return total_invoiced
         """
         # todo line remain!
-        return offer.amount_untaxed
+        return order.amount_untaxed
 
     def format_date(self, value):
         """ Format date
