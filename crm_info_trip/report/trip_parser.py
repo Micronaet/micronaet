@@ -191,7 +191,11 @@ class Parser(report_sxw.rml_parse):
         """ Return total_invoiced
         """
         # todo line remain!
-        return order.amount_untaxed
+        total = 0.0
+        for line in order.order_line:
+            if line.logistic_state != 'done':
+                total += line.price_subtotal
+        return total or '/'
 
     def get_order_line_open(self, order):
         """ Return line that are logistic state undone
