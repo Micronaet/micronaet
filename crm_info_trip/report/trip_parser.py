@@ -436,7 +436,7 @@ class Parser(report_sxw.rml_parse):
         else:
             domain = [
                 ('partner_id', '=', partner_id),
-                ('logistic_state', '!=', 'complete'),  # not closed
+                ('logistic_state', '!=', 'done'),  # not closed
             ]
             offer_pool = self.pool.get('sale.order')
 
