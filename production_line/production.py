@@ -2284,6 +2284,7 @@ class sale_order_line_extra(osv.osv):
             cr, uid, ids, vals, context)
         return res
 
+    '''
     def unlink(self, cr, uid, ids, context=None):
         """
         Delete all record(s) from table heaving record id in ids
@@ -2296,7 +2297,7 @@ class sale_order_line_extra(osv.osv):
 
         @return: True on success, False otherwise
         """
-        if type(ids) not in (tuple, list):  # for int values of ids
+        if type(ids) not in (tuple, list):  # for int values of ids            
             ids = [ids]
 
         mrp_pool = self.pool.get('mrp.production')
@@ -2314,6 +2315,7 @@ class sale_order_line_extra(osv.osv):
 
         res = super(sale_order_line_extra, self).unlink(cr, uid, ids, context)
         return res
+    '''
 
     def _function_get_mandatory_delivery(self, cr, uid, ids, fields, param,
                                          context=None):
