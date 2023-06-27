@@ -2085,7 +2085,11 @@ class mrp_production_extra(osv.osv):
                 min_date_text = min_date_text[:-5]
             if max_date_text.endswith(this_year):
                 max_date_text = max_date_text[:-5]
-            range_date = '[%s-%s]' % (min_date_text, max_date_text)
+
+            if min_date_text == max_date_text:
+                range_date = '[%s]' % min_date_text
+            else:
+                range_date = '[%s-%s]' % (min_date_text, max_date_text)
 
             mrp_comment = '%s: ' % production.name
             if res[production.id]['lavoration_all_planned']:
