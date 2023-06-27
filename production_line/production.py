@@ -2080,6 +2080,11 @@ class mrp_production_extra(osv.osv):
             else:
                 max_date_text = '?'
 
+            this_year = datetime.now().year
+            if min_date_text.endswith(this_year):
+                min_date_text = min_date_text[:-5]
+            if max_date_text.endswith(this_year):
+                max_date_text = max_date_text[:-5]
             range_date = '[%s-%s]' % (min_date_text, max_date_text)
 
             mrp_comment = '%s: ' % production.name
