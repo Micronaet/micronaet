@@ -2335,6 +2335,9 @@ class sale_order_line_extra(osv.osv):
         'state_info': fields.related(
             'mrp_production_id', 'state_info',
             type='char', string='Production info', store=False),
+        'state_info_mrp': fields.related(
+            'mrp_production_id', 'state_info_mrp',
+            type='char', string='Production info MRP', store=False),
 
         'use_stock_qty': fields.float(
             'Usa mag.', digits=(16, 2),
