@@ -2081,12 +2081,24 @@ class mrp_production_extra(osv.osv):
                 max_date_text = '?'
 
             range_date = '[%s-%s]' % (min_date_text, max_date_text)
-            res[production.id]['state_info'] = '%s\n%s' % (
-                _('All planned: %6.0f') % (
-                    res[production.id]['lavoration_planned'], ) if res[production.id]['lavoration_all_planned'] else '%6.0f / %6.0f' % (
-                        res[production.id]['lavoration_planned'],
-                        production.product_qty), range_date,
-            )
+
+            mrp_comment = '%s: ' % production.name
+            if res[production.id]['lavoration_all_planned']:
+                info_comment = 'Tutto pianificato: '
+                quantity_detail = '%6.0f' % res[
+                    production.id]['lavoration_planned']
+            else:
+                info_comment = ''
+                quantity_detail = '%6.0f / %6.0f' % (
+                    res[production.id]['lavoration_planned'],
+                    production.product_qty,
+                )
+
+            res[production.id]['state_info'] = '%s%s\n%s' % (
+                info_comment, quantity_detail, range_date)
+            res[production.id]['state_info_mrp'] = '%s%s\n%s' % (
+                mrp_comment, quantity_detail, range_date)
+
         return res
 
     def _function_total_material(
@@ -2156,6 +2168,9 @@ class mrp_production_extra(osv.osv):
         'state_info': fields.function(
             _function_lavoration_planned, method=True, type='char',
             size=30, string='State info', store=False, multi='planned'),
+        'state_info_mrp': fields.function(
+            _function_lavoration_planned, method=True, type='char',
+            size=35, string='State infoMRP', store=False, multi='planned'),
         'total_production_loaded': fields.function(
             _function_lavoration_planned, method=True, type='float',
             digit=(16, 3), string='Total loaded', store=False,
