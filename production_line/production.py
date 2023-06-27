@@ -2065,7 +2065,7 @@ class mrp_production_extra(osv.osv):
                     ) if min_date[:4] == this_year else '%s/%s/%s' % (
                         min_date[8:10],
                         min_date[5:7],
-                        min_date[:2],
+                        min_date[-2:],
                         )
             else:
                 min_date_text = '?'
@@ -2076,7 +2076,7 @@ class mrp_production_extra(osv.osv):
                     '%s/%s/%s' % (
                         max_date[8:10],
                         max_date[5:7],
-                        max_date[:2])
+                        max_date[-2:])
             else:
                 max_date_text = '?'
 
