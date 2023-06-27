@@ -2096,7 +2096,7 @@ class mrp_production_extra(osv.osv):
 
             res[production.id]['state_info'] = '%s%s\n%s' % (
                 info_comment, quantity_detail, range_date)
-            res[production.id]['state_info_mrp'] = '%s%Kg\n%s' % (
+            res[production.id]['state_info_mrp'] = '%s%sKg\n%s' % (
                 mrp_comment, quantity_detail, range_date)
 
         return res
