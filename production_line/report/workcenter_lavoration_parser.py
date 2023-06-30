@@ -59,7 +59,7 @@ class Parser(report_sxw.rml_parse):
         """
         mrp = job.production_id
         res = ''
-        for order_line in mrp.order_line_ids:
+        for order_line in mrp.order_lines_ids:
             res += '%s\n' % order_line.partner_id.name
 
         return res
