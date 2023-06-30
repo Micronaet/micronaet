@@ -57,7 +57,12 @@ class Parser(report_sxw.rml_parse):
     def get_order_detail(self, job):
         """ Extract order from MRP
         """
-        return ''
+        mrp = job.production_id
+        res = ''
+        for order_line in mrp.order_line_ids:
+            res += order_line.partner_id.name
+
+        return res
 
     def get_total_per_day_line(self):
         """ Return total obj per day per line
