@@ -70,48 +70,52 @@ class Parser(report_sxw.rml_parse):
         security_advice = []
         security_symbol = []
         security_equipment = []
-
         total = 0.0
         rate = {}
-        for material in o.bom_material_ids:
-            product = material.product_id
-            if product.security_off:  # Not required!
-                continue
 
-            # Total management:
-            if product not in rate:
-                rate[product] = 0.0
-            quantity = material.quantity
-            rate[product] += quantity
-            total += quantity
+        try:
+            for material in o.bom_material_ids:
+                product = material.product_id
+                if product.security_off:  # Not required!
+                    continue
 
-            security_material.append(product)  # Always
+                # Total management:
+                if product not in rate:
+                    rate[product] = 0.0
+                quantity = material.quantity
+                rate[product] += quantity
+                total += quantity
 
-            # Terms H:
-            if product.term_h_ids:
-                for term in product.term_h_ids:
-                    if term not in security_advice:
-                        security_advice.append(term)
+                security_material.append(product)  # Always
 
-            # Danger symbol:
-            if product.symbol_ids:
-                for symbol in product.symbol_ids:
-                    if symbol not in security_symbol:
-                        security_symbol.append(symbol)
+                # Terms H:
+                if product.term_h_ids:
+                    for term in product.term_h_ids:
+                        if term not in security_advice:
+                            security_advice.append(term)
 
-            # Equipment:
-            for part in equipment:
-                equipment_item = eval('product.protection_%s_id' % part)
-                if equipment_item and equipment_item not in security_equipment:
-                    security_equipment.append(equipment_item)
+                # Danger symbol:
+                if product.symbol_ids:
+                    for symbol in product.symbol_ids:
+                        if symbol not in security_symbol:
+                            security_symbol.append(symbol)
 
-            # Update rate:
-        for product in rate:
-            rate[product] /= total * 0.01
+                # Equipment:
+                for part in equipment:
+                    equipment_item = eval('product.protection_%s_id' % part)
+                    if equipment_item and equipment_item \
+                            not in security_equipment:
+                        security_equipment.append(equipment_item)
 
-        # Sort:
-        security_material.sort(key=lambda x: x.default_code)
-        security_advice.sort(key=lambda x: x.name)
+                # Update rate:
+            for product in rate:
+                rate[product] /= total * 0.01
+
+            # Sort:
+            security_material.sort(key=lambda x: x.default_code)
+            security_advice.sort(key=lambda x: x.name)
+        except:
+            pass  # No Security management
 
         return [
             (security_material, security_advice, rate, security_symbol,
@@ -254,5 +258,3 @@ class Parser(report_sxw.rml_parse):
         for key in note:
             res += "[%s] %s\n" % (key, note[key])
         return res
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
