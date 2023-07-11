@@ -602,8 +602,8 @@ class product_status_wizard(osv.osv_memory):
         # Open file and write header
         WB = xlsxwriter.Workbook(filename)
         # 2 Sheets
-        WS = WB.add_worksheet('Material')
-        WS_product = WB.add_worksheet('Product')
+        WS = WB.add_worksheet('Materiali')
+        WS_product = WB.add_worksheet('Prodotti')
 
         # ---------------------------------------------------------------------
         # Format elements:
@@ -695,30 +695,30 @@ class product_status_wizard(osv.osv_memory):
         # Header:
         header = [
             # list for update after for product:
-            [_('Material'), format_title],
+            ['Materiale', format_title],
 
-            (_('Code'), format_title),
-            # (_('Alternativo'), format_title),
-            (_('Mx. stock'), format_title),
-            (_('Min. stock'), format_title),
-            (_('OF detail'), format_title),
+            ('Codice', format_title),
+            # ('Alternativo', format_title),
+            ('Mx. mag.', format_title),
+            ('Min. mag', format_title),
+            ('OF dettaglio', format_title),
 
-            (_('Picco mensile MP'), format_title),
+            ('Picco mensile MP', format_title),
 
-            (_('m(x) last %s month') % data['month_window'], format_title),
+            ('m(x) ultimi %s mesi' % data['month_window'], format_title),
             ]
         fixed_col = len(header)
         for col in cols:
             header.append((col, format_title))
         try:  # Override description for first column variable:
-            header[fixed_col] = (_('Giacenza KG'), format_title)
+            header[fixed_col] = ('Giacenza KG', format_title)
         except:
             pass
 
         # Material header:
         write_xls_mrp_line(WS, 0, header)
         # Product header
-        header[0][0] = _('Product')
+        header[0][0] = 'Prodotto'
         write_xls_mrp_line(WS_product, 0, header)
 
         # Body:
@@ -772,7 +772,7 @@ class product_status_wizard(osv.osv_memory):
             '''
             try:
                 alternative_product = row_product.mapped_code_text or ''
-            except:    
+            except:
                 alternative_product = ''  # For version MX
 
             body = [
@@ -825,6 +825,7 @@ class product_status_wizard(osv.osv_memory):
                 (q, minimum) = mrp_pool._get_cel(j, row[1])
                 j += 1
                 status_line += q
+
                 # Choose the color:
                 if not status_line:  # value = 0
                     body.append((status_line, format_white))
@@ -876,7 +877,7 @@ class product_status_wizard(osv.osv_memory):
             partner_email = []
             for user in group_pool.browse(
                     cr, uid, group_id, context=context).users:
-                partner_email.append(user.partner_id.email) # .id
+                partner_email.append(user.partner_id.email)  # .id
 
             # thread_pool = self.pool.get('mail.thread')
             # thread_pool.message_post(cr, uid, False,
@@ -905,7 +906,7 @@ class product_status_wizard(osv.osv_memory):
             # -----------------------------------------------------------------
             # Save mode:
             # -----------------------------------------------------------------
-            if save_mode: # Save as a file:
+            if save_mode:  # Save as a file:
                 _logger.warning('Save mode: %s' % save_mode)
                 return filename
 

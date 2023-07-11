@@ -140,7 +140,7 @@ class ProductStatusWizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         # Update previsional order
         # ---------------------------------------------------------------------
-        # TODO correct here?
+        # todo correct here?
         if also_previsional:
             _logger.warning('Update previsional order as done!')
             previsional_pool.write(cr, uid, previsional_ids, {

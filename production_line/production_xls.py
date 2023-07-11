@@ -263,8 +263,12 @@ class mrp_production_extra(osv.osv):
         # > populate cols
 
         line_ids = order_line_pool.search(cr, uid, [
+            ('order_id.logistic_state', '!=', 'done'),
+            ('order_id.accounting_order', '=', True),
+            ('logistic_state', '!=', 'done'),
+
             ('date_deadline', '<=', end_date.strftime('%Y-%m-%d')),
-            ], context=context) # only active from accounting
+            ], context=context)  # only active from accounting
         for line in order_line_pool.browse(cr, uid, line_ids, context=context):
             if line.product_id.not_in_status:  # jump line if product checked!
                 _logger.warning(
