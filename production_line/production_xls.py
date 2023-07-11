@@ -53,7 +53,7 @@ class mrp_production_extra(osv.osv):
         """
         default_code = product.default_code
 
-        if product.not_in_status: # Jump 'not in status' material
+        if product.not_in_status:  # Jump 'not in status' material
             return
 
         if with_medium and product:
@@ -297,7 +297,7 @@ class mrp_production_extra(osv.osv):
                     pass  # No sapnaet mode
                 table[element[1]][0] = account_qty
 
-            if line.order_id.date_deadline in col_ids: # all date
+            if line.order_id.date_deadline in col_ids:  # all date
                 table[element[1]][col_ids[line.order_id.date_deadline]] -= \
                     line.product_uom_qty or 0.0  # OC deadlined this date
             if not line.order_id.date_deadline or \
@@ -307,7 +307,7 @@ class mrp_production_extra(osv.osv):
                 table[element[1]][1] -= line.product_uom_qty or 0.0
 
         # ---------------------------------------------------------------------
-        #                   Get material list from Lavoration order
+        #                   Get material list from Job order
         # ---------------------------------------------------------------------
         # Populate cols:
         lavoration_ids = lavoration_pool.search(cr, uid, [
@@ -317,13 +317,14 @@ class mrp_production_extra(osv.osv):
             ('state', 'not in', ('cancel', 'done')),
             ], context=context)  # only open not canceled
 
+        # filtered BL orders
         for lavoration in lavoration_pool.browse(
-                cr, uid, lavoration_ids, context=context): # filtered BL orders
-
-            real_date_planned = lavoration.real_date_planned[:10] # readability
+                cr, uid, lavoration_ids, context=context):
+            # readability
+            real_date_planned = lavoration.real_date_planned[:10]
 
             # -----------------------------------------------------------------
-            # Product in lavoration order:
+            # Product in Job order:
             # -----------------------------------------------------------------
             element = (
                 'P',
