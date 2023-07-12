@@ -49,19 +49,15 @@
 
                         <separator string="Note per righe documenti:" colspan="4"/>
                         <label for="note_pr" colspan="2"/>
-                        <newline/>
-                        <field name="note_pr" colspan="2" nolabel="1"/>
-
                         <label for="note_oc" colspan="2"/>
-                        <newline/>
+
+                        <field name="note_pr" colspan="2" nolabel="1"/>
                         <field name="note_oc" colspan="2" nolabel="1"/>
 
                         <label for="note_ddt" colspan="2"/>
-                        <newline/>
-                        <field name="note_ddt" colspan="2" nolabel="1"/>
-
                         <label for="note_all_document" colspan="2"/>
-                        <newline/>
+
+                        <field name="note_ddt" colspan="2" nolabel="1"/>
                         <field name="note_all_document" colspan="2" nolabel="1"/>
                     </group>
                 </sheet>
