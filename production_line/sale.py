@@ -116,8 +116,8 @@ class sale_order_line(osv.osv):
             'DDT', size=100,
             help='Note scritte sul documento di trasporto'
             ),
-        'note_all_document': fields.char(
-            'Tutti documenti', size=100,
+        'note_all_document': fields.text(
+            'Tutti documenti', # size=100,
             help='Note scritte sul tutti i documenti (offerta, ordine, DDT)'
         ),
     }
