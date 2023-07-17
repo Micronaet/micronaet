@@ -64,9 +64,13 @@ pdb.set_trace()
 for product in product_pool.browse(product_ids):
     default_code = product.default_code or ''
     start_code = default_code[:1]
-    if start_code and start_code in 'AB':
+    if start_code and start_code in 'ABM':
         print('Saltato: %s' % default_code)
         continue
+    if default_code.startswith('OLD_'):
+        print('Saltato: %s' % default_code)
+        continue
+
     product.populate_packaging_update_all([product.id])
     print('Load package: %s' % default_code)
 
