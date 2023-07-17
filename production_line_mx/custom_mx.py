@@ -343,7 +343,7 @@ class product_product_extra(osv.osv):
         product = self.browse(cr, uid, ids, context=context)[0]
         try:
             for packaging in product.packaging:
-                ul_id = packaging.ul_id.id
+                ul_id = packaging.ul.id
                 if ul_id in ul_ids:
                     ul_ids.remove(ul_id)
             _logger.info('Updating #%s of %s' % (
