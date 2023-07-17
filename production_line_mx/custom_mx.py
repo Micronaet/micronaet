@@ -336,7 +336,6 @@ class product_product_extra(osv.osv):
         """ Populate max product
         """
         context = {'lang': 'it_IT'}
-        pdb.set_trace()
         packaging_pool = self.pool.get('product.packaging')
         ul_pool = self.pool.get('product.ul')
         ul_ids = ul_pool.search(cr, uid, [], context=context)
@@ -345,7 +344,13 @@ class product_product_extra(osv.osv):
         for packaging in product.packaging:
             ul_id = packaging.ul_id.id
             if ul_id in ul_ids:
-                continue
+                ul_ids.remove(ul_id)
+        print('Updating #%s of %s' % (
+            len(ul_ids),
+            product.default_code,
+        ))
+
+        for ul_id in ul_ids:
             packaging_pool.create(cr, uid, {
                 'product_id': product.id,
                 'ul': ul_id,
