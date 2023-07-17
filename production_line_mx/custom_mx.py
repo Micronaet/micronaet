@@ -335,12 +335,12 @@ class product_product_extra(osv.osv):
     def populate_packaging_update_all(self, cr, uid, ids, context=None):
         """ Populate max product
         """
+        pdb.set_trace()
         packaging_pool = self.pool.get('product.packaging')
         ul_pool = self.pool.get('product.ul')
         ul_ids = ul_pool.search(cr, uid, [], context=context)
 
         product = self.browse(cr, uid, ids, context=context)[0]
-        pdb.set_trace()
         for packaging in product.packaging:
             ul_id = packaging.ul_id.id
             if ul_id in ul_ids:
