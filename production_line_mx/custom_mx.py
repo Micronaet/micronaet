@@ -341,25 +341,29 @@ class product_product_extra(osv.osv):
         ul_ids = ul_pool.search(cr, uid, [], context=context)
 
         product = self.browse(cr, uid, ids, context=context)[0]
-        for packaging in product.packaging:
-            ul_id = packaging.ul_id.id
-            if ul_id in ul_ids:
-                ul_ids.remove(ul_id)
-        print('Updating #%s of %s' % (
-            len(ul_ids),
-            product.default_code,
-        ))
+        try:
+            for packaging in product.packaging:
+                ul_id = packaging.ul_id.id
+                if ul_id in ul_ids:
+                    ul_ids.remove(ul_id)
+            _logger.info('Updating #%s of %s' % (
+                len(ul_ids),
+                product.default_code,
+            ))
 
-        for ul_id in ul_ids:
-            packaging_pool.create(cr, uid, {
-                'product_id': product.id,
-                'ul': ul_id,
-                'is_active': True,
-                # 'weight': 0.0,
-                # 'ul_qty': 0.0,
-                # 'pallet_qty': 0.0,
-            }, context=context)
-        return True
+            for ul_id in ul_ids:
+                packaging_pool.create(cr, uid, {
+                    'product_id': product.id,
+                    'ul': ul_id,
+                    'is_active': True,
+                    # 'weight': 0.0,
+                    # 'ul_qty': 0.0,
+                    # 'pallet_qty': 0.0,
+                }, context=context)
+            return True
+        except:
+            _logger.error('Error Updating %s' % product.default_code)
+            return False
 
     def rpc_import_stock_status_mx(
             self, cr, uid, stock, context=None):
