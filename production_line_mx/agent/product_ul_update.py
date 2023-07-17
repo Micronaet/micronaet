@@ -42,17 +42,17 @@ def get_erp(URL, database, user, password):
 # -----------------------------------------------------------------------------
 # Extract config file name from current name
 path, name = os.path.split(os.path.abspath(__file__))
-fullname = os.path.join(path, 'openerp.cfg')
+fullname = os.path.join(path, '../openerp.cfg')
 
 config = ConfigParser.ConfigParser()
 config.read([fullname])
 
 # OpenERP block:
-hostname = config.get('openerp', 'server')
-port = config.get('openerp', 'port')
-database = config.get('openerp', 'database')
-user = config.get('openerp', 'user')
-password = config.get('openerp', 'password')
+hostname = config.get('dbaccess', 'dbname')
+port = config.get('dbaccess', 'port')
+database = config.get('dbaccess', 'dbname')
+user = config.get('dbaccess', 'user')
+password = config.get('dbaccess', 'pwd')
 
 URL = 'http://%s:%s' % (hostname, port)
 erp = get_erp(URL, database, user, password)
