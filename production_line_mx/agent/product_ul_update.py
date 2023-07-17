@@ -37,6 +37,7 @@ def get_erp(URL, database, user, password):
         password=password,
         )
 
+
 # -----------------------------------------------------------------------------
 #                                Parameters
 # -----------------------------------------------------------------------------
@@ -48,7 +49,7 @@ config = ConfigParser.ConfigParser()
 config.read([fullname])
 
 # OpenERP block:
-hostname = config.get('dbaccess', 'dbname')
+hostname = config.get('dbaccess', 'server')
 port = config.get('dbaccess', 'port')
 database = config.get('dbaccess', 'dbname')
 user = config.get('dbaccess', 'user')
