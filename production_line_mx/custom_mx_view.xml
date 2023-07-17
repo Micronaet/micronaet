@@ -12,17 +12,17 @@
                 </field>
                 <field name="recycle" position="attributes">
                     <attribute name="invisible">1</attribute>
-                </field>                
-                
+                </field>
+
                 <field name="accounting_cl_code" position="attributes">
                     <attribute name="invisible">1</attribute>
-                </field>                
+                </field>
                 <field name="partial" position="attributes">
                     <attribute name="invisible">1</attribute>
-                </field>                
+                </field>
             </field>
         </record>
-    
+
 
         <record model="ir.ui.view" id="view_mrp_production_workcenter_line_tree">
             <field name="name">mrp.production.workcenter.line.tree</field>
@@ -49,7 +49,7 @@
                 </tree>
             </field>
         </record>
-        
+
         <record model="ir.ui.view" id="view_workcenter_save_button_form">
             <field name="name">mrp.production.workcenter.line.form</field>
             <field name="model">mrp.production.workcenter.line</field>
@@ -60,18 +60,18 @@
                 </button>
             </field>
         </record>
-        
+
         <record model="ir.ui.view" id="view_mrp_production_workcenter_line_form">
             <field name="name">mrp.production.workcenter.line.form</field>
             <field name="model">mrp.production.workcenter.line</field>
             <field name="priority" eval="40" />
             <field name="arch" type="xml">
-                <form string="Production log import" version="7.0"> 
+                <form string="Production log import" version="7.0">
                     <header>
                         <button name="mark_ok" string="OK seen!" type="object" icon="gtk-ok" />
                     </header>
-                    <sheet> 
-                        <group colspan="4" col="4">               
+                    <sheet>
+                        <group colspan="4" col="4">
                             <field name="production_id" readonly="1" />
                             <field name="name" readonly="1" />
                             <field name="date_start" readonly="1" />
@@ -98,7 +98,7 @@
                             <separator string="Log error load" colspan="4"/>
                             <field name="log_error_text_load" colspan="4" nolabel="1" readonly="1" />
                         </group>
-                    </sheet>    
+                    </sheet>
                 </form>
             </field>
         </record>
@@ -120,19 +120,19 @@
             <field name="context">{'form_view_ref': 'production_line_mx.view_mrp_production_workcenter_line_form'}</field>
             <field name="domain">[]</field>
         </record>
-        <menuitem 
-            parent="mrp.menu_mrp_manufacturing" 
-            id="menu_mrp_production_workcenter_line_error" 
+        <menuitem
+            parent="mrp.menu_mrp_manufacturing"
+            id="menu_mrp_production_workcenter_line_error"
             action="action_mrp_production_workcenter_line_error"
             sequence="0"
             />
-            <menuitem 
+            <menuitem
                 parent="menu_mrp_production_workcenter_line_error"
                 id="menu_mrp_production_workcenter_line"
                 action="action_mrp_production_workcenter_line"
                 sequence="10"
                 />
-        
+
         <!--<record model="ir.ui.view" id="view_product_material_pedimento_form">
             <field name="name">Material Pedimento</field>
             <field name="model">mrp.production.workcenter.line</field>
@@ -149,7 +149,7 @@
             <field name="model">product.product</field>
             <field name="priority" eval="40" />
             <field name="arch" type="xml">
-                <tree string="Product" editable="bottom" colors="blue:waste_id!=False">        
+                <tree string="Product" editable="bottom" colors="blue:waste_id!=False">
                     <field name="name" readonly="1"/>
                     <field name="default_code" readonly="1" />
                     <field name="standard_price" readonly="1" />
@@ -158,6 +158,16 @@
                     <field name="product_type" />
                     <!--<button name="get_waste_product" string="Auto" type="object" attrs="{'invisible': [('waste_id','!=',False)]}" />-->
                 </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_product_product_load_packaging_form">
+            <field name="name">product.product.load.pack.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="arch" type="xml">
+                <field name="packaging" position="before">
+                    <button string="Carica imballi" name="populate_packaging_update_all" colspan="2" icon="gtk-refresh"/>
+                </field>
             </field>
         </record>
         <record model="ir.actions.act_window" id="action_product_product_waste">
@@ -169,12 +179,12 @@
             <field name="context">{}</field>
             <field name="domain">[]</field>
         </record>
-        <menuitem 
-            parent="mrp.menu_mrp_bom" 
+        <menuitem
+            parent="mrp.menu_mrp_bom"
             id="menu_action_product_product_waste"
             action="action_product_product_waste"
             />
-        
+
         <record model="ir.ui.view" id="default_mrp_production_workcenter_line_pedimento_view">
             <field name="name">Lavoration default</field>
             <field name="model">mrp.production.workcenter.line</field>
@@ -186,7 +196,7 @@
                     <field name="pedimento_price" />
                 </xpath>
             </field>
-        </record>    
+        </record>
 
         <!-- mode field:-->
         <record model="ir.ui.view" id="default_mrp_production_tree_view">
@@ -198,7 +208,7 @@
                    <field name="mode" />
                 </field>
             </field>
-        </record>    
+        </record>
         <record model="ir.ui.view" id="view_mrp_production_filter_extra">
             <field name="name">Search Production order</field>
             <field name="model">mrp.production</field>
@@ -209,7 +219,7 @@
                     <filter name="mode_production" string="Production" domain="[('mode','=','production')]" />
                </field>
             </field>
-        </record>   
+        </record>
 
         <record model="ir.ui.view" id="default_mrp_production_form_view">
             <field name="name">Production default</field>
@@ -223,7 +233,7 @@
                     <separator string="Check MRP error:" colspan="4" attrs="{'invisible': [('check_mrp','=',False)]}"/>
                     <field name="check_mrp" nolabel="1" colspan="4" attrs="{'invisible': [('check_mrp','=',False)]}"/>
                 </xpath>
-                
+
                 <xpath expr="//field[@name='bom_material_ids']/tree/field[@name='product_id']" position="after">
                     <field name="standard_price" />
                     <field name="pedimento_id" domain="[('product_qty', '>', 0), ('product_id', '=', product_id)]" options="{'create': false, 'create_edit': false}"/>
@@ -233,12 +243,12 @@
                 <!--Pedimento check:-->
                 <xpath expr="//field[@name='bom_material_ids']/tree/field[@name='accounting_qty']" position="after">
                     <field name="pedimento_covered" invisible="1"/>
-                    <button name="manage_pedimento_error" string="Pedimento not covered" icon="STOCK_DIALOG_WARNING" type="object" 
-                        confirm="Do you want to duplicate line and create a new line for remain qty?" 
+                    <button name="manage_pedimento_error" string="Pedimento not covered" icon="STOCK_DIALOG_WARNING" type="object"
+                        confirm="Do you want to duplicate line and create a new line for remain qty?"
                         attrs="{'invisible': [('pedimento_covered','=',True)]}"/>
 
                     <field name="accounting_covered" invisible="1" />
-                    <button name="dummy_button" string="Waste not covered change qty!" icon="gtk-stop" type="object" 
+                    <button name="dummy_button" string="Waste not covered change qty!" icon="gtk-stop" type="object"
                         attrs="{'invisible': [('accounting_covered','=',True)]}"/>
                 </xpath>
                 <xpath expr="//field[@name='bom_material_ids']/tree" position="attributes">
@@ -248,21 +258,21 @@
                 <!--Waste check:-->
                 <xpath expr="//field[@name='bom_waste_ids']/tree/field[@name='accounting_qty']" position="after">
                     <field name="accounting_covered" invisible="1" />
-                    <button name="dummy_button" string="Waste not covered change qty!" icon="gtk-stop" type="object" 
+                    <button name="dummy_button" string="Waste not covered change qty!" icon="gtk-stop" type="object"
                         attrs="{'invisible': [('accounting_covered','=',True)]}"/>
                 </xpath>
                 <xpath expr="//field[@name='bom_waste_ids']/tree" position="attributes">
                     <attribute name="colors">red:accounting_covered==False</attribute>
                 </xpath>
-                
+
                 <!--Fast lavoration button:-->
                 <xpath expr="//notebook" position="before">
                     <button name="add_new_lavoration" string="Add lavoration" type="object" icon="gtk-add" colspan="1"/>
                     <button name="refresh_lavoration_material" string="Refresh lavoration" type="object" icon="gtk-refresh" colspan="1"/>
                 </xpath>
-                
+
             </field>
-        </record>    
+        </record>
 
         <!--mrp.production.material-->
         <record model="ir.ui.view" id="view_mrp_production_material_pedimento_tree">
@@ -274,9 +284,9 @@
                        <field name="standard_price" />
                        <field name="pedimento_id" domain="[('product_qty', '>', 0), ('product_id', '=', product_id)]" options="{'create': false, 'create_edit': false}"/>
                        <field name="pedimento_price" />
-                   </field>    
+                   </field>
             </field>
-        </record>    
+        </record>
         <record model="ir.ui.view" id="view_mrp_production_material_pedimento_form">
             <field name="name">Production material</field>
             <field name="model">mrp.production.material</field>
@@ -286,10 +296,10 @@
                     <field name="standard_price" />
                     <field name="pedimento_id" domain="[('product_qty', '>', 0), ('product_id', '=', product_id)]" options="{'create': false, 'create_edit': false}"/>
                     <field name="pedimento_price" />
-               </field>    
+               </field>
             </field>
-        </record>    
-        
+        </record>
+
         <record model="ir.ui.view" id="view_product_uom_ref_form">
             <field name="name">product.uom.form</field>
             <field name="model">product.uom</field>
@@ -335,10 +345,10 @@
                         <separator string="Calculation:" colspan="4" />
                         <field name="product_price_calc" widget="html" colspan="4" nolabel="1" />
                     </page>
-                </page>                    
+                </page>
             </field>
-        </record>        
-        
+        </record>
+
         <record model="ir.ui.menu" id="production_line.menu_base_production_root_production">
             <!--<field name="active" eval="False"/>-->
             <field name="groups_id" eval="[(6, 0, [ref('group_hide_menu')])]"/>
