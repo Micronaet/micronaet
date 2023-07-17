@@ -166,7 +166,7 @@
             <field name="inherit_id" ref="product.product_normal_form_view" />
             <field name="arch" type="xml">
                 <field name="packaging" position="before">
-                    <button string="Carica imballi" name="populate_packaging_update_all" colspan="2" icon="gtk-refresh"/>
+                    <button string="Carica imballi" name="populate_packaging_update_all" colspan="2" icon="gtk-refresh" type="object"/>
                 </field>
             </field>
         </record>
