@@ -335,6 +335,7 @@ class product_product_extra(osv.osv):
     def populate_packaging_update_all(self, cr, uid, ids, context=None):
         """ Populate max product
         """
+        context = {'lang': 'it_IT'}
         pdb.set_trace()
         packaging_pool = self.pool.get('product.packaging')
         ul_pool = self.pool.get('product.ul')
