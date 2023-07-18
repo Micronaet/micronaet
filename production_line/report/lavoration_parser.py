@@ -179,6 +179,7 @@ class Parser(report_sxw.rml_parse):
                 # 'KG': u'KG',
                 # 'LT': u'LT',
                 # 'SAC': u'SAC',
+                u'Stampato': u'Impreso',
                 u'Lotto': u'Lote',
                 u'Variazioni': u'Modificación',
                 u'Totale': u'Total',
