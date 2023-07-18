@@ -53,7 +53,14 @@ class Parser(report_sxw.rml_parse):
             'translate_static': self.translate_static,
             'get_security_loaded': self. get_security_loaded,
             'get_security_object': self.get_security_object,
+            'get_datetime': self.get_datetime,
         })
+
+    def get_datetime(self):
+        """ Return correct datetime value
+        """
+        return str(datetime.now())[:19]
+
 
     def get_security_object(self, o):
         """ Return security data for last page
