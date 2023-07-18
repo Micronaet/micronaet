@@ -138,6 +138,7 @@
                <field name= "single_cycle_qty"/>
                <field name= "parameter_hammer"/>
                <field name= "parameter_grid"/>
+               <field name= "parameter_package"  groups="production_line.group_production_mx"/>
                <field name= "parameter_speed"/>
                <field name= "parameter_temperature" />
                <field name="parameter_aspiration" />
@@ -162,6 +163,7 @@
                        <separator string="Line-Product parameters:" colspan="4" />
                        <field name= "parameter_hammer"/>
                        <field name= "parameter_grid"/>
+                       <field name= "parameter_package"  groups="production_line.group_production_mx"/>
                        <field name= "parameter_speed"/>
                        <field name= "parameter_temperature"/>
                        <field name="parameter_aspiration" />
@@ -238,6 +240,7 @@
                            <field name="single_cycle_qty"/>
                            <field name="parameter_hammer"/>
                            <field name="parameter_grid"/>
+                           <field name="parameter_package" groups="production_line.group_production_mx"/>
                            <field name="parameter_speed"/>
                            <field name="parameter_temperature"/>
                            <field name="parameter_aspiration" />
