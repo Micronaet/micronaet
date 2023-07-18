@@ -2,13 +2,13 @@
 ################################################################################
 #
 #    OpenERP module
-#    Copyright (C) 2010 Micronaet srl (<http://www.micronaet.it>) 
-#    
+#    Copyright (C) 2010 Micronaet srl (<http://www.micronaet.it>)
+#
 #    Italian OpenERP Community (<http://www.openerp-italia.com>)
 #
 ################################################################################
 #
-#    OpenERP, Open Source Management Solution	
+#    OpenERP, Open Source Management Solution
 #    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>). All Rights Reserved
 #    $Id$
 #
@@ -29,18 +29,19 @@
 
 from openerp.osv import osv, fields
 
+
 # WIZARD PRINT REPORT ##########################################################
 class bom_compare_wizard(osv.osv_memory):
-    ''' Parameter for bom report
-    '''
-    
+    """ Parameter for bom report
+    """
+
     _name = 'etl.bom.line.wizard'
     _description = 'BOM report wizard'
-    
+
     # Button events:
     def print_report(self, cr, uid, ids, context=None):
-        ''' Redirect to bom report passing parameters
-        ''' 
+        """ Redirect to bom report passing parameters
+        """
         wiz_proxy = self.browse(cr, uid, ids)[0]
 
         datas = {}
@@ -54,14 +55,14 @@ class bom_compare_wizard(osv.osv_memory):
             'report_name': 'webkitbomline',
             'datas': datas,
         }
-        
+
     _columns = {
-        'all':fields.boolean('All', required=False),
-        'parent':fields.char('Parent code', size=40, required=False, readonly=False),
-        }    
-        
+        'all': fields.boolean('All', required=False),
+        'parent': fields.char(
+            'Parent code', size=40, required=False, readonly=False),
+        }
+
     _defaults = {
         'all': lambda *a: True,
         }
 bom_compare_wizard()
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
