@@ -65,4 +65,6 @@ class bom_compare_wizard(osv.osv_memory):
     _defaults = {
         'all': lambda *a: True,
         }
+
+
 bom_compare_wizard()
