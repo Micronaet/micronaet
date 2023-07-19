@@ -170,6 +170,7 @@ class mrp_production_extra(osv.osv):
         product_pool = self.pool.get('product.product')
         order_line_pool = self.pool.get('sale.order.line')
 
+        sapnaet_mode = 'locked_qty' in product_pool._columns
         # Global parameters:
         global rows, cols, table, table_comment, history_supplier_orders, \
             minimum, error_in_print
@@ -298,10 +299,8 @@ class mrp_production_extra(osv.osv):
                 # start q.
                 # Sapnaet integrazione (if stock linked to order)
                 account_qty = line.product_id.accounting_qty
-                try:
-                    account_qty += line.product_id.locked_qty  # need dep.
-                except:
-                    pass  # No sapnaet mode
+                if sapnaet_mode:  # need dep. (integration of locked)
+                    account_qty += line.product_id.locked_qty
                 table[element[1]][0] = account_qty
 
             if line.order_id.date_deadline in col_ids:  # all date
