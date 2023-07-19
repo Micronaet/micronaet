@@ -270,7 +270,14 @@ class mrp_production_extra(osv.osv):
             ('date_deadline', '<=', end_date.strftime('%Y-%m-%d')),
             ], context=context)  # only active from accounting
 
-        for line in order_line_pool.browse(cr, uid, line_ids, context=context):
+        try:
+            order_line = order_line_pool.browse(
+                cr, uid, line_ids, context=context)
+        except:
+            _logger.error('No order in report, not managed!')
+            order_line = []
+
+        for line in order_line:
             if line.product_id.not_in_status:  # jump line if product checked!
                 _logger.warning(
                     'Not in status product: %s' % line.product_id.name)
