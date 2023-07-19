@@ -566,6 +566,9 @@ class product_status_wizard(osv.osv_memory):
         # alternative_pool = self.pool.get('bom.product.alternative')
         product_pool = self.pool.get('product.product')
 
+        pdb.set_trace()
+        has_mapped = 'mapped_code_text' in product_pool._columns
+
         # ---------------------------------------------------------------------
         # Preload
         # ---------------------------------------------------------------------
