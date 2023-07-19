@@ -346,10 +346,8 @@ class mrp_production_extra(osv.osv):
 
                 account_qty = lavoration.product.accounting_qty
                 # Sapnaet integrazione (if stock linked to order)
-                try:
+                if sapnaet_mode:  # need dep. (integration of locked)
                     account_qty += lavoration.product.locked_qty  # need dep.
-                except:
-                    pass  # No sapnaet mode
                 table[element[1]][0] = account_qty
 
             # Product production:
