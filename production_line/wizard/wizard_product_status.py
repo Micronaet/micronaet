@@ -566,7 +566,6 @@ class product_status_wizard(osv.osv_memory):
         # alternative_pool = self.pool.get('bom.product.alternative')
         product_pool = self.pool.get('product.product')
 
-        pdb.set_trace()
         has_mapped = 'mapped_code_text' in product_pool._columns
 
         # ---------------------------------------------------------------------
@@ -773,9 +772,9 @@ class product_status_wizard(osv.osv_memory):
                 alternative_product = alternative_product.replace(
                     '%s-' % default_code, '')
             '''
-            try:
+            if has_mapped:
                 alternative_product = row_product.mapped_code_text or ''
-            except:
+            else:
                 alternative_product = ''  # For version MX
 
             body = [
