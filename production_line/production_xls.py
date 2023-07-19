@@ -51,6 +51,9 @@ class mrp_production_extra(osv.osv):
             ):
         """ Block used for unload materials and for simulation
         """
+        product_pool = self.pool.get('product.product')
+        sapnaet_mode = 'locked_qty' in product_pool._columns
+
         default_code = product.default_code
 
         if product.not_in_status:  # Jump 'not in status' material
@@ -80,10 +83,8 @@ class mrp_production_extra(osv.osv):
             # prepare data structure:
             # Sapnaet integrazione:
             accounting_qty = product.accounting_qty
-            try:
+            if sapnaet_mode:  # need dep. (integration of locked)
                 accounting_qty += product.locked_qty
-            except:
-                pass  # No sapnaet mode
 
             table[element[1]][0] = accounting_qty
             table_comment[element[1]][0] += \
