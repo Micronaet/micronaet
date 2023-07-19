@@ -262,15 +262,15 @@ class mrp_production_extra(osv.osv):
         # -------------------------------
         # > populate cols
 
-        line_ids = order_line_pool.search(cr, uid, [
-            ('order_id.logistic_state', '!=', 'done'),
-            ('order_id.accounting_order', '=', True),
-            ('logistic_state', '!=', 'done'),
-
-            ('date_deadline', '<=', end_date.strftime('%Y-%m-%d')),
-            ], context=context)  # only active from accounting
-
         try:
+            line_ids = order_line_pool.search(cr, uid, [
+                ('order_id.logistic_state', '!=', 'done'),
+                ('order_id.accounting_order', '=', True),
+                ('logistic_state', '!=', 'done'),
+
+                ('date_deadline', '<=', end_date.strftime('%Y-%m-%d')),
+                ], context=context)  # only active from accounting
+
             order_line = order_line_pool.browse(
                 cr, uid, line_ids, context=context)
         except:
