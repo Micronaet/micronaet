@@ -422,17 +422,21 @@ class MrpProduction(orm.Model):
                 production_price = (load.accounting_cost / load.product_qty) \
                     if load.product_qty else 0.0
 
+                # -------------------------------------------------------------
+                # Prices:
+                # -------------------------------------------------------------
                 try:
                     package_price = \
                         load.package_pedimento_id.current_price or \
-                        load.package_id.linked_product_id.standard_price
+                        load.package_id.linked_product_id.standard_price or 0.0
                 except:
                     _logger.error('No package price, no product linked')
                     package_price = 0.0
+
                 try:
                     pallet_price = \
                         load.pallet_pedimento_id.current_price or \
-                        load.pallet_product_id.standard_price,
+                        load.pallet_product_id.standard_price or 0.0,
                 except:
                     _logger.error('No pallet price, no product linked')
                     pallet_price = 0.0
