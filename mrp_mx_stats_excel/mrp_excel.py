@@ -422,12 +422,21 @@ class MrpProduction(orm.Model):
                 production_price = (load.accounting_cost / load.product_qty) \
                     if load.product_qty else 0.0
 
-                standard_price = 0.0        
-                if load.pallet_pedimento_id:
-                    standard_price = load.pallet_pedimento_id.current_price
-                if not standard_price and load.pallet_product_id:
-                    standard_price = load.pallet_product_id.standard_price
-                    
+                try:
+                    package_price = \
+                        load.package_pedimento_id.current_price or \
+                        load.package_id.linked_product_id.standard_price
+                except:
+                    _logger.error('No package price, no product linked')
+                    package_price = 0.0   
+                try:
+                    pallet_price = \
+                        load.pallet_pedimento_id.current_price or \
+                        load.pallet_product_id.standard_price,
+                except:
+                    _logger.error('No pallet price, no product linked')
+                    pallet_price = 0.0   
+                                        
                 loop = [(
                     # Product:
                     'load',
@@ -440,15 +449,14 @@ class MrpProduction(orm.Model):
                     'unload',
                     load.package_id.linked_product_id,
                     load.ul_qty,
-                    load.package_pedimento_id.current_price or \
-                        load.package_id.linked_product_id.standard_price,
+                    package_price,
                     False), (
 
                     # Pallet:
                     'unload',
                     load.pallet_product_id,
                     load.pallet_qty,
-                    standard_price,
+                    pallet_price
                     False),
                     ]
 
