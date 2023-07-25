@@ -428,15 +428,15 @@ class MrpProduction(orm.Model):
                         load.package_id.linked_product_id.standard_price
                 except:
                     _logger.error('No package price, no product linked')
-                    package_price = 0.0   
+                    package_price = 0.0
                 try:
                     pallet_price = \
                         load.pallet_pedimento_id.current_price or \
                         load.pallet_product_id.standard_price,
                 except:
                     _logger.error('No pallet price, no product linked')
-                    pallet_price = 0.0   
-                                        
+                    pallet_price = 0.0
+
                 loop = [(
                     # Product:
                     'load',
@@ -456,7 +456,7 @@ class MrpProduction(orm.Model):
                     'unload',
                     load.pallet_product_id,
                     load.pallet_qty,
-                    pallet_price
+                    pallet_price,
                     False),
                     ]
 
