@@ -436,7 +436,7 @@ class MrpProduction(orm.Model):
                 try:
                     pallet_price = \
                         load.pallet_pedimento_id.current_price or \
-                        load.pallet_product_id.standard_price or 0.0,
+                        load.pallet_product_id.standard_price or 0.0
                 except:
                     _logger.error('No pallet price, no product linked')
                     pallet_price = 0.0
