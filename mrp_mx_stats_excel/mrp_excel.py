@@ -634,24 +634,21 @@ class MrpProduction(orm.Model):
 
                 # Write data:
                 row += 1
-                try:
-                    excel_pool.write_xls_line(
-                        ws_name, row, [
-                            date,
-                            job.name,
-                            product.default_code or '',
-                            product.name,
-                            job.workcenter_id.name,
+                excel_pool.write_xls_line(
+                    ws_name, row, [
+                        date,
+                        job.name,
+                        product.default_code or '',
+                        product.name,
+                        job.workcenter_id.name,
 
-                            product.uom_id.name or '',
-                            (qty, f_number),
+                        product.uom_id.name or '',
+                        (qty, f_number),
 
-                            (price, f_number),
-                            (subtotal, f_number),
-                            currency,
-                            ], default_format=f_text)
-                except:
-                    pdb.set_trace()
+                        (price, f_number),
+                        (subtotal, f_number),
+                        currency,
+                        ], default_format=f_text)
         unload_col, year_cols['unload'] = _get_period_date_dict(range_date)
 
         # =====================================================================
