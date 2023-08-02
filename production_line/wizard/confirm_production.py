@@ -256,8 +256,11 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 pack_proxy = pack_pool.browse(
                     cr, uid, pack_ids, context=context)[0]
                 q_x_pack = pack_proxy.qty or 0.0
-                res['value']['ul_qty'] = total // q_x_pack + \
-                    (0 if total % q_x_pack == 0 else 1)
+                if q_x_pack:
+                    res['value']['ul_qty'] = total // q_x_pack + \
+                        (0 if total % q_x_pack == 0 else 1)
+                else:
+                    res['value']['ul_qty'] = 0
                 return res
         res['value']['ul_qty'] = 0
         return res
