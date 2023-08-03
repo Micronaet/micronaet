@@ -45,73 +45,8 @@ class stock_production_lot_accounting(orm.Model):
     # -------------------------------------------------------------------------
     #                            Scheduled action:
     # -------------------------------------------------------------------------
-    def scheduled_import_stock_quantity(
-            self, cr, uid, path, total_filename, context=None):
-        """ Scheduled function for import status lot from accounting
-            self: this instance
-            cr: cursor
-            uid: user id
-            path: folder path of csv file
-            filename: csv file name  << No more used!
-            package: manage package (default False)
-        """
-        product_pool = self.pool.get("product.product")
-        separator = ';'
-
-        # Stock filename
-        total_filename = os.path.join(
-            os.path.expanduser(path), total_filename)
-        try:
-            total_f = open(total_filename, 'r')
-        except:
-            _logger.error(
-                'Error accessing total stock file: %s' % total_filename)
-            return False
-
-        # Cache product:
-        product_db = {}
-        product_ids = product_pool.search(cr, uid, [], context=context)
-        for product in product_pool.browse(
-                cr, uid, product_ids, context=context):
-            product_db[product.default_code] = product.id
-
-        # Reset all status:
-        product_pool.write(cr, uid, product_ids, {
-            'accounting_qty': False,
-        }, context=context)
-
-        # ---------------------------------------------------------------------
-        #                      Update product stock status:
-        # ---------------------------------------------------------------------
-        _logger.info('Reading %s file...' % total_filename)
-        stock_used = '1'  # todo keep as a parameter
-        for line in total_f:
-            line = line.strip()
-            row = line.split(separator)
-            if len(row) != 3:
-                _logger.warning('Jump line not 3 cols')
-                continue
-
-            stock_number = row[0].strip()
-            default_code = row[1].strip()
-            stock_qty = float(row[2].strip().replace(',', '.'))
-            if stock_number != stock_used:
-                continue
-
-            product_id = product_db.get(default_code)
-            if product_id:
-                try:
-                    product_pool.write(cr, uid, [product_id], {
-                        'accounting_qty': stock_qty,
-                    }, context=context)
-                except:
-                    _logger.error('Error updating %s' % default_code)
-                    continue
-            else:
-                _logger.error('Not found product ID: [%s]' % default_code)
-        return True
-
     # OLD PROCEDURE: WHEN USED LOT!
+    # Replaced in sapnaet with scheduled_import_stock_quantity>product.product
     def scheduled_import_lot_quantity(
             self, cr, uid, path, filename,
             total_filename, package=True, context=None):
