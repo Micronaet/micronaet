@@ -42,12 +42,11 @@ class stock_production_lot_accounting(orm.Model):
     _name = 'stock.production.lot'
     _inherit = 'stock.production.lot'
 
-    # -----------------
-    # Scheduled action:
-    # -----------------
-    def scheduled_import_lot_quantity(
-            self, cr, uid, path, filename,
-            total_filename, package=True, context=None):
+    # -------------------------------------------------------------------------
+    #                            Scheduled action:
+    # -------------------------------------------------------------------------
+    def scheduled_import_stock_quantity(
+            self, cr, uid, path, total_filename, context=None):
         """ Scheduled function for import status lot from accounting
             self: this instance
             cr: cursor
@@ -109,11 +108,9 @@ class stock_production_lot_accounting(orm.Model):
                     _logger.error('Error updating %s' % default_code)
                     continue
             else:
-                _logger.error('Not found product ID: %s[%s]' % (
-                    product_id, default_code))
+                _logger.error('Not found product ID: [%s]' % default_code)
         return True
 
-    '''
     # OLD PROCEDURE: WHEN USED LOT!
     def scheduled_import_lot_quantity(
             self, cr, uid, path, filename,
@@ -126,6 +123,9 @@ class stock_production_lot_accounting(orm.Model):
             filename: csv file name
             package: manage package (default False)
         """
+        return True
+
+    '''
         # todo remove importation!!!!!!!
         product_pool = self.pool.get("product.product")
         package_pool = self.pool.get("product.ul")
