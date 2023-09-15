@@ -1627,9 +1627,11 @@
 
        <!-- Production block -->
        <menuitem name="1. OC to production order" parent="mrp.menu_mrp_manufacturing" id="menu_base_production_root_production" sequence="0" groups="group_production_admin" />
+          <!-- Rimosse sostituite con i menu di Sapnaet
           <menuitem name="OC (Month 0)" parent="menu_base_production_root_production" id="menuitem_sale_order_line_d10" action="action_view_sale_order_line_d10" sequence="10" />
           <menuitem name="OC (Month 1)" parent="menu_base_production_root_production" id="menuitem_sale_order_line_d20" action="action_view_sale_order_line_d20" sequence="20" />
           <menuitem name="OC (Month 2)" parent="menu_base_production_root_production" id="menuitem_sale_order_line_d30" action="action_view_sale_order_line_d30" sequence="30" />
+          -->
           <menuitem name="OC line (all open)" parent="menu_base_production_root_production" id="menuitem_sale_order_line" action="action_view_sale_order_line" sequence="40" />
           <menuitem name="Covered report"  parent="menu_base_production_root_production" id="menu_sale_order_line_covered_wizard_1" action="action_sale_order_line_covered_wizard_form" sequence="60" />
 
