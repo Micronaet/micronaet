@@ -40,7 +40,7 @@
                         <field name="product_id" readonly="1"/>
                         <field name="name" readonly="1"/>
 
-                        <separator string="Note per righe documenti:" colspan="4"/>
+                        <separator string="Note per documenti:" colspan="4"/>
 
                         <!--Cassandra ha richiesto una nota solo per il DDT-->
                         <label for="note_pr" colspan="2" invisible="1"/>
@@ -55,7 +55,7 @@
                         <field name="note_ddt" colspan="2" nolabel="1"/>
                         <field name="note_all_document" colspan="2" nolabel="1"/>
 
-                        <separator string="Note per i vari reparti:" colspan="4"/>
+                        <separator string="Direttive interne per reparti:" colspan="4"/>
                         <field name="note_packaging" colspan="4"/>
                         <field name="note_delivery" colspan="4"/>
 
