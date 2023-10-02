@@ -114,6 +114,8 @@ all_product_ids = product_pool.search([
     ('sql_import', '=', True),
 ])
 print('Total product imported found: %s' % len(all_product_ids))
+
+log_f = open('./product_import.log', 'w')
 for row in cr.fetchall():
     print(row),
     item_id = row[0]
@@ -143,9 +145,18 @@ for row in cr.fetchall():
 
         product_id = product_ids[0]
         product_pool.write(product_id, data)
+
+        log_f.write('UPD|%s|%s' % (
+            default_code,
+            'ERR' if len(product_ids) > 1 else '',
+            ))
         print(u' >> Update: %s' % name)
     else:
         product_id = product_pool.create(data)
+
+        log_f.write('NEW|%s|' % (
+            default_code,
+        ))
         print(u' >> Insert: %s' % name)
 
         # Remove code found:
