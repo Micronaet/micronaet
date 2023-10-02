@@ -115,7 +115,7 @@ all_product_ids = product_pool.search([
 ])
 print('Total product imported found: %s' % len(all_product_ids))
 
-log_f = open('./product_import.log', 'w')
+log_f = open('./product_import.csv', 'w')
 for row in cr.fetchall():
     print(row),
     item_id = row[0]
