@@ -113,7 +113,7 @@ update_uom = []
 all_product_ids = product_pool.search([
     ('sql_import', '=', True),
 ])
-
+print('Total product imported found: %s' % len(all_product_ids))
 for row in cr.fetchall():
     print row,
     item_id = row[0]
@@ -129,16 +129,37 @@ for row in cr.fetchall():
         }
 
     product_ids = product_pool.search([('default_code', '=', default_code)])
+
     if product_ids:
-        product_pool.write(product_ids, data)
-        print u' >> Update: %s' % name
+        if len(product_ids) > 1:
+            print('ERROR: More code: %s' % default_code)
+
+        # Remove code found:
+        for remove_id in product_ids:
+            if remove_id in all_product_ids:
+                all_product_ids.remove(remove_id)
+
         product_id = product_ids[0]
+        product_pool.write(product_id, data)
+        print(u' >> Update: %s' % name)
     else:
         product_id = product_pool.create(data)
-        print u' >> Insert: %s' % name
+        print(u' >> Insert: %s' % name)
+
+        # Remove code found:
+        if product_id in all_product_ids:
+            all_product_ids.remove(product_id)
 
     uom_id = uom_db.get(contipaq_uom_id, False)
     if uom_id:
         update_uom.append((product_id, uom_id))
-print update_uom
+
+print(update_uom)
 product_pool.update_uom(update_uom)
+
+if all_product_ids:
+    product_pool.write(all_product_ids, {
+        'active': False,
+        })
+    print('Total product hidden: %s' % len(all_product_ids))
+
