@@ -146,7 +146,7 @@ for row in cr.fetchall():
         product_id = product_ids[0]
         product_pool.write(product_id, data)
 
-        log_f.write('UPD|%s|%s' % (
+        log_f.write('UPD|%s|%s\n' % (
             default_code,
             'ERR' if len(product_ids) > 1 else '',
             ))
@@ -154,7 +154,7 @@ for row in cr.fetchall():
     else:
         product_id = product_pool.create(data)
 
-        log_f.write('NEW|%s|' % (
+        log_f.write('NEW|%s|\n' % (
             default_code,
         ))
         print(u' >> Insert: %s' % name)
