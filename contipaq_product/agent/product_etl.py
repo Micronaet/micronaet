@@ -115,7 +115,7 @@ all_product_ids = product_pool.search([
 ])
 print('Total product imported found: %s' % len(all_product_ids))
 for row in cr.fetchall():
-    print row,
+    print(row),
     item_id = row[0]
     default_code = row[1]
     name = row[2]
@@ -128,7 +128,9 @@ for row in cr.fetchall():
         'sql_import': True,
         }
 
-    product_ids = product_pool.search([('default_code', '=', default_code)])
+    product_ids = product_pool.search([
+        ('default_code', '=', default_code),
+        ])
 
     if product_ids:
         if len(product_ids) > 1:
@@ -162,4 +164,6 @@ if all_product_ids:
         'active': False,
         })
     print('Total product hidden: %s' % len(all_product_ids))
+else:
+    print('Nothing hidden in this import!')
 
