@@ -27,14 +27,14 @@ import ConfigParser
 #                                UTILITY
 # -----------------------------------------------------------------------------
 def get_erp(URL, database, user, password):
-    ''' Connect to log table in ODOO
-    '''
+    """ Connect to log table in ODOO
+    """
     return erppeek.Client(
         URL,
         db=database,
         user=user,
         password=password,
-        )   
+        )
 
 # -----------------------------------------------------------------------------
 #                                Parameters
@@ -47,9 +47,9 @@ config = ConfigParser.ConfigParser()
 config.read([fullname])
 
 # DSN block:
-dsn = config.get('dsn', 'name') 
-uid = config.get('dsn', 'uid') 
-pwd = config.get('dsn', 'pwd') 
+dsn = config.get('dsn', 'name')
+uid = config.get('dsn', 'uid')
+pwd = config.get('dsn', 'pwd')
 
 # OpenERP block:
 hostname = config.get('openerp', 'server')
@@ -58,13 +58,13 @@ database = config.get('openerp', 'database')
 user = config.get('openerp', 'user')
 password = config.get('openerp', 'password')
 
-URL = 'http://%s:%s' % (hostname, port) 
+URL = 'http://%s:%s' % (hostname, port)
 
 # Access MS SQL Database customer table:
 connection = pyodbc.connect('DSN=%s;UID=%s;PWD=%s' % (dsn, uid, pwd))
 cr = connection.cursor()
 
-# OPENERP Obj: 
+# OPENERP Obj:
 erp = get_erp(URL, database, user, password)
 
 # -----------------------------------------------------------------------------
@@ -79,7 +79,7 @@ query = '''
 try:
     cr.execute(query)
 except:
-    print 'Error: %s' % (sys.exc_info(), )
+    print('Error: %s' % (sys.exc_info(), ))
 
 for row in cr.fetchall():
     print row
@@ -90,7 +90,7 @@ for row in cr.fetchall():
     if uom_ids:
         uom_db[contipaq_id] = uom_ids[0]
     else:
-        print 'UOM: %s not found on ODOO' % contipaq_name    
+        print 'UOM: %s not found on ODOO' % contipaq_name
 
 # -----------------------------------------------------------------------------
 # Read partner:
@@ -110,6 +110,10 @@ except:
 product_pool = erp.ProductProduct
 
 update_uom = []
+all_product_ids = product_pool.search([
+    ('sql_import', '=', True),
+])
+
 for row in cr.fetchall():
     print row,
     item_id = row[0]
@@ -121,8 +125,9 @@ for row in cr.fetchall():
     data = {
         'default_code': default_code,
         'name': name,
+        'sql_import': True,
         }
-    
+
     product_ids = product_pool.search([('default_code', '=', default_code)])
     if product_ids:
         product_pool.write(product_ids, data)
@@ -131,10 +136,9 @@ for row in cr.fetchall():
     else:
         product_id = product_pool.create(data)
         print u' >> Insert: %s' % name
-   
+
     uom_id = uom_db.get(contipaq_uom_id, False)
     if uom_id:
         update_uom.append((product_id, uom_id))
 print update_uom
 product_pool.update_uom(update_uom)
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
