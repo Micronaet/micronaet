@@ -22,6 +22,7 @@ import sys
 import pyodbc
 import erppeek
 import ConfigParser
+import codecs
 
 # -----------------------------------------------------------------------------
 #                                UTILITY
@@ -115,8 +116,10 @@ all_product_ids = product_pool.search([
 ])
 print('Total product imported found: %s' % len(all_product_ids))
 
-log_conti_f = open('./product_contipaq_import.csv', 'w')
-log_f = open('./product_import.csv', 'w')
+# log_conti_f = open('./product_contipaq_import.csv', 'w')
+log_conti_f = codecs.open('./product_contipaq_import.csv', 'w', 'utf-8')
+# log_f = open('./product_import.csv', 'w')
+log_f = codecs.open('./product_import.csv', 'w', 'utf-8')
 for row in cr.fetchall():
     print(row),
     item_id = row[0]
