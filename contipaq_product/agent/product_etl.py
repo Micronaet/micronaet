@@ -90,7 +90,7 @@ for row in cr.fetchall():
     if uom_ids:
         uom_db[contipaq_id] = uom_ids[0]
     else:
-        print 'UOM: %s not found on ODOO' % contipaq_name
+        print('UOM: %s not found on ODOO' % contipaq_name)
 
 # -----------------------------------------------------------------------------
 # Read partner:
@@ -105,7 +105,7 @@ query = '''
 try:
     cr.execute(query)
 except:
-    print u'Error: %s' % (sys.exc_info(), )
+    print(u'Error: %s' % (sys.exc_info(), ))
 
 product_pool = erp.ProductProduct
 
@@ -115,6 +115,7 @@ all_product_ids = product_pool.search([
 ])
 print('Total product imported found: %s' % len(all_product_ids))
 
+log_conti_f = open('./product_contipaq_import.csv', 'w')
 log_f = open('./product_import.csv', 'w')
 for row in cr.fetchall():
     print(row),
@@ -123,6 +124,10 @@ for row in cr.fetchall():
     name = row[2]
     product_type = row[3]
     contipaq_uom_id = row[4]
+    log_conti_f.write('%s|%s\n' % (
+        default_code,
+        product_type
+    ))
 
     data = {
         'default_code': default_code,
