@@ -89,7 +89,7 @@ msgstr "Ordine di vendita"
 #. module: production_line
 #: selection:product.product,approx_mode:0
 msgid "Over approximate"
-msgstr "Approssimanto in eccesso"
+msgstr "Approssimato in eccesso"
 
 #. module: production_line
 #: model:res.groups,name:production_line.group_production_accounting

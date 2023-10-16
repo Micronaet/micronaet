@@ -78,23 +78,23 @@
                     <field name="uom_id" readonly="1" />
 
                     <!-- Security: -->
-                    <field name="security_off" />
+                    <field name="security_off" groups="mrp_safety_symbol.group_security_manager" />
 
                     <!-- Protection: -->
-                    <field name="protection_eye_id" />
-                    <field name="protection_skin_id" />
-                    <field name="protection_hand_id" />
-                    <field name="protection_air_id" />
-                    <field name="protection_body_id" />
-                    <field name="protection_foot_id" />
+                    <field name="protection_eye_id" groups="mrp_safety_symbol.group_security_manager"/>
+                    <field name="protection_skin_id" groups="mrp_safety_symbol.group_security_manager" />
+                    <field name="protection_hand_id" groups="mrp_safety_symbol.group_security_manager" />
+                    <field name="protection_air_id" groups="mrp_safety_symbol.group_security_manager" />
+                    <field name="protection_body_id" groups="mrp_safety_symbol.group_security_manager" />
+                    <field name="protection_foot_id" groups="mrp_safety_symbol.group_security_manager" />
 
                     <field name="symbol_ids" widget="many2many_tags" domain="[('mode', '=', 'danger')]"/>
 
                     <!-- Terms: -->
-                    <field name="term_h_ids" widget="many2many_tags"/>
-                    <field name="term_p_ids" widget="many2many_tags"/>
-                    <field name="term_dpi_ids" widget="many2many_tags"/>
-                    <field name="security_template_id" />
+                    <field name="term_h_ids" widget="many2many_tags" groups="mrp_safety_symbol.group_security_manager"/>
+                    <field name="term_p_ids" widget="many2many_tags" groups="mrp_safety_symbol.group_security_manager"/>
+                    <field name="term_dpi_ids" widget="many2many_tags" groups="mrp_safety_symbol.group_security_manager"/>
+                    <field name="security_template_id" groups="mrp_safety_symbol.group_security_manager" />
                 </tree>
             </field>
         </record>
