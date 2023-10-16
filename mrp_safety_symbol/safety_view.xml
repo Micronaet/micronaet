@@ -95,6 +95,8 @@
                     <field name="term_p_ids" widget="many2many_tags" groups="mrp_safety_symbol.group_security_manager"/>
                     <field name="term_dpi_ids" widget="many2many_tags" groups="mrp_safety_symbol.group_security_manager"/>
                     <field name="security_template_id" groups="mrp_safety_symbol.group_security_manager" />
+
+                    <field name="security_symbol_html" widget="html"/>
                 </tree>
             </field>
         </record>

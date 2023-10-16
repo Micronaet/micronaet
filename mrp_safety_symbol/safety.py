@@ -138,6 +138,7 @@ class ProductProduct(orm.Model):
 
     _inherit = 'product.product'
 
+
     _columns = {
         'security_off': fields.boolean(
             'Non pericoloso',
@@ -191,4 +192,4 @@ class ProductProduct(orm.Model):
             'safety.dpi', 'safety_dpi_rel',
             'product_id', 'term_dpi_id',
             'Termini DPI'),
-        }
+    }
