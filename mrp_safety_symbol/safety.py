@@ -58,7 +58,8 @@ class SafetySymbol(orm.Model):
         'note': fields.text('Note'),
         'mode': fields.selection([
             ('equipment', 'Attrezzatura'),
-            ('danger', 'Pericolosità')
+            ('danger', 'Pericolosità (interno)')
+            ('adr', 'ADR')
         ], 'Modalità', required=True)
         }
 
@@ -81,7 +82,12 @@ class SafetySymbolTemplate(orm.Model):
         'symbol_ids': fields.many2many(
             'safety.symbol', 'template_safety_rel',
             'template_id', 'symbol_id',
-            'Symbol'),
+            'Simboli interni'),
+        # todo used?
+        'adr_symbol_ids': fields.many2many(
+            'safety.symbol', 'template_adr_safety_rel',
+            'template_id', 'symbol_id',
+            'Simboli ADR'),
         'note': fields.text('Note'),
         }
 
@@ -138,7 +144,6 @@ class ProductProduct(orm.Model):
 
     _inherit = 'product.product'
 
-
     _columns = {
         'security_off': fields.boolean(
             'Non pericoloso',
@@ -178,7 +183,11 @@ class ProductProduct(orm.Model):
         'symbol_ids': fields.many2many(
            'safety.symbol', 'safety_symbol_danger_rel',
            'product_id', 'simbol_id',
-           'Pittogrammi'),
+           'Pittogrammi (interni)'),
+        'adr_symbol_ids': fields.many2many(
+           'safety.symbol', 'adr_safety_symbol_danger_rel',
+           'product_id', 'simbol_id',
+           'Pittogrammi ADR'),
 
         'term_h_ids': fields.many2many(
            'safety.h', 'safety_h_rel',
