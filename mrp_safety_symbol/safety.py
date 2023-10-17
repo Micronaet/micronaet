@@ -58,8 +58,8 @@ class SafetySymbol(orm.Model):
         'note': fields.text('Note'),
         'mode': fields.selection([
             ('equipment', 'Attrezzatura'),
-            ('danger', 'Pericolosità (interno)')
-            ('adr', 'ADR')
+            ('danger', 'Pericolosità (interno)'),
+            ('adr', 'ADR'),
         ], 'Modalità', required=True)
         }
 
