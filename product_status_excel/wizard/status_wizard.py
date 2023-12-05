@@ -158,6 +158,10 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         product_pool = self.pool.get('product.product')
         excel_pool = self.pool.get('excel.writer')
 
+        # Medium days:
+        now = datetime.now()
+        days = (now - datetime.strptime('%s-01-01' % now.year) + 1).days
+
         filter_used = ''
         wizard_domain = []
         if not save_mode:
@@ -299,7 +303,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             excel_pool.column_width(ws_name, [
                 1, 1, 1, 1,
                 5,
-                10, 40, 10, 20, 10, 12, 30,
+                10, 40, 10, 10, 10, 20, 10, 12, 30,
                 10, 10, 10, 15])
             header = [
                 'ID',
@@ -312,6 +316,8 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 u'Codice',
                 u'Nome',
                 u'Q.',
+                u'Car. 180gg',
+                u'Scar. 180gg',
                 u'Categoria',
                 u'Cat. stat.',
                 u'Cod. doganale',
@@ -354,6 +360,13 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                     format_text = format_text_red
                     state = 'Non presente'
 
+                # Medium last 180 gg.
+                if days > 0:
+                    tscar = 180.0 * product.accounting_tscar_qty / days
+                    tcar = 180.0 * product.accounting_tcar_qty / days
+                else:
+                    tscar = tcar = 0.0
+
                 excel_pool.write_xls_line(ws_name, row, [
                     # Hidden:
                     product.id,
@@ -366,6 +379,8 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                     product.default_code,
                     product.name,
                     (product.accounting_qty, format_number),
+                    (tscar, format_number),
+                    (tcar, format_number),
                     product.categ_id.name,
                     product.statistic_category,
                     product.duty_id.name or '/',
