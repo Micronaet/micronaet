@@ -163,6 +163,10 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         days = (now - datetime.strptime(
             '%s-01-01' % now.year, '%Y-%m-%d')).days + 1
 
+        comment_parameters = {
+            'width': 450,
+            'font_name': 'Courier New',
+        }
         filter_used = ''
         wizard_domain = []
         if not save_mode:
@@ -335,6 +339,18 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             excel_pool.autofilter(ws_name, row, 0, row, len(header) - 1)
             excel_pool.freeze_panes(ws_name, row + 1, 6)
             excel_pool.column_hidden(ws_name, [0, 1, 2, 3])
+
+            comment = 'Dato medio calcolato prendendo il totale %s ' \
+                      'da ' \
+                      'inizio anno diviso per i giorni e x 180 (simulazione' \
+                      'consumo ultimo semestre)'
+
+            excel_pool.write_comment(
+                ws_name, row, 8, comment % 'carico',
+                parameters=comment_parameters)
+            excel_pool.write_comment(
+                ws_name, row, 9, comment % 'scarico',
+                parameters=comment_parameters)
 
             for product in sorted(product_pool.browse(
                     cr, uid, product_ids, context=context),
