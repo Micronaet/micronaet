@@ -340,8 +340,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             excel_pool.freeze_panes(ws_name, row + 1, 6)
             excel_pool.column_hidden(ws_name, [0, 1, 2, 3])
 
-            comment = 'Dato medio calcolato prendendo il totale %s ' \
-                      'da ' \
+            comment = 'Dato medio calcolato prendendo il totale %s da ' \
                       'inizio anno diviso per i giorni e x 180 (simulazione' \
                       'consumo ultimo semestre)'
 
