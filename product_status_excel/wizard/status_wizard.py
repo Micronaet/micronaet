@@ -160,7 +160,8 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
 
         # Medium days:
         now = datetime.now()
-        days = (now - datetime.strptime('%s-01-01' % now.year)).days + 1
+        days = (now - datetime.strptime(
+            '%s-01-01' % now.year, '%Y-%m-%d')).days + 1
 
         filter_used = ''
         wizard_domain = []
