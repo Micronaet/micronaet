@@ -137,7 +137,7 @@ class bom_compare_wizard(osv.osv_memory):
 
             # Total line:
             row += 1
-            if total == 100.0:
+            if abs(total - 100.0) < 0.000001:
                 color_format = excel_format['white']
             else:
                 color_format = excel_format['red']
