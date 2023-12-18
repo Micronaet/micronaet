@@ -21,30 +21,32 @@
 ##############################################################################
 
 {
-    'name' : 'BOM Compare',
-    'version' : '0.0.1',
-    'category' : 'Generic Modules/Customization',
-    'description' : """Compare a BOM imported from external account program
-                       let user filter and search version and get a webkit
-                       compare depending on BOM primary and BOM versioned
-                    """,
-    'author' : 'Micronaet s.r.l.',
-    'website' : 'http://www.micronaet.it',
-    'depends' : [
-                 'base',
-                 'sale',
-                 'mrp',
-                 'report_webkit',
-                ],
-    'init_xml' : [], 
-    'update_xml' : [
+    'name': 'BOM Compare',
+    'version': '0.0.1',
+    'category': 'Generic Modules/Customization',
+    'description': """
+        Compare a BOM imported from external account program
+        let user filter and search version and get a webkit
+        compare depending on BOM primary and BOM versioned
+        """,
+    'author': 'Micronaet s.r.l.',
+    'website': 'http://www.micronaet.it',
+    'depends': [
+        'base',
+        'sale',
+        'mrp',
+        'report_webkit',
+        'excel_export',
+    ],
+    'init_xml': [],
+    'update_xml': [
                     'security/ir.model.access.csv',
                     'bom_views.xml',
                     'report/bom_webkit.xml',
                     'wizard/wizard_bom_view.xml',
                     'scheduler.xml',
                    ],
-    'demo_xml' : [],
-    'active' : False, 
-    'installable' : True, 
+    'demo_xml': [],
+    'active': False,
+    'installable': True,
 }

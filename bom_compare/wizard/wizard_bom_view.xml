@@ -7,17 +7,24 @@
             <field name="model">etl.bom.line.wizard</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="BOM report">
-                   <field name="all"/>
-                   <field name="parent" attrs="{'invisible':[('all','=',True)]}"/> 
-                   <newline />
-                   
-                   <button string="Cancel" special="cancel" colspan="2"/>                   
-                   <button name="print_report" type="object" string="Print" icon="gtk-print" colspan="2" />
+                <form string="BOM report" version="7.0">
+                    <header>
+                       <button string="Cancel" special="cancel" />
+                       <button name="print_report" type="object" string="Stampa comparazione" icon="gtk-print"  />
+
+                       <button name="extract_excel_report" type="object" string="Estrai ricetta (Excel)" icon="gtk-execute" />
+                    </header>
+                    <sheet>
+                        <group col="4" colspan="4">
+                            <separator string="Filtri:" colspan="4"/>
+                            <field name="all"/>
+                            <field name="parent" attrs="{'invisible':[('all','=',True)]}"/>
+                        </group>
+                    </sheet>
                 </form>
             </field>
       </record>
-      
+
       <record id="etl_bom_line_wizard_action" model="ir.actions.act_window">
         <field name="name">BOM report</field>
         <field name="type">ir.actions.act_window</field>
@@ -27,11 +34,11 @@
         <field name="target">new</field>
       </record>
 
-      <menuitem name="BOM report" 
-                id="menu_etl_bom_line_wizard" 
-                parent="menu_etl_production" 
-                action="etl_bom_line_wizard_action" 
-                sequence="10" />        
+      <menuitem name="BOM report"
+                id="menu_etl_bom_line_wizard"
+                parent="menu_etl_production"
+                action="etl_bom_line_wizard_action"
+                sequence="10" />
   </data>
 </openerp>
 
