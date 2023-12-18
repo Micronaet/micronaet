@@ -56,7 +56,7 @@ class bom_compare_wizard(osv.osv_memory):
         ]
         if not wizard.all:
             domain.append(
-                ('product_id.default_code', '=ilike', '%s%%' % wizard.parend),
+                ('product_id.default_code', '=ilike', '%s%%' % wizard.parent),
             )
 
         # ---------------------------------------------------------------------
