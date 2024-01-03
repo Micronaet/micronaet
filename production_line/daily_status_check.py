@@ -814,6 +814,7 @@ class MrpProductionDailyReport(orm.Model):
         # XXX Return to check page:
         ws_name = 'Controlli da fare'
         row = -2
+        color_format = excel_format['']
         for mode in product_moved:
             row += 2
             header = [mode, u'Nome', 'Tot. OC', u'Magaz.', 'Commento']
@@ -824,7 +825,7 @@ class MrpProductionDailyReport(orm.Model):
                     product_moved[mode], key=lambda x: x.default_code):
                 default_code = product.default_code or ''
                 if default_code.startswith('VV'):
-                    continue # Not use water!
+                    continue  # Not use water!
                 if product.accounting_qty < 0.0:
                     color_format = excel_format['red']
                 else:
@@ -904,7 +905,8 @@ class MrpProductionDailyReport(orm.Model):
         if save_mode:
             return excel_pool.save_file_as(save_mode)
         else:
-            return excel_pool.return_attachment(cr, uid, 'Movimenti di ieri',
+            return excel_pool.return_attachment(
+                cr, uid, 'Movimenti di ieri',
                 name_of_file=False, version='7.0', php=True,
                 context=context)
 
