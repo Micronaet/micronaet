@@ -195,7 +195,7 @@ class Parser(report_sxw.rml_parse):
         for line in order.order_line:
             if line.logistic_state != 'done':
                 total += line.price_subtotal
-        return total or '/'
+        return total or 0.0   # '/'
 
     def get_order_line_open(self, order):
         """ Return line that are logistic state undone
