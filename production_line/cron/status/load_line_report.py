@@ -40,7 +40,14 @@ now_text = now.replace('/', '_').replace('-', '_').replace(':', '_')
 config = ConfigParser.ConfigParser()
 config.read([cfg_file])
 
-filename = '/tmp/production_load_line_status.xlsx' # From wizard parameter!
+try:
+    path = os.path.expanduser(config.get('folder', 'line'))
+except:
+    path = '/tmp'
+
+# From wizard parameter!
+filename = os.path.join(path, 'production_load_line_status_%s.xlsx' % (
+    now_text))
 
 # ERP Connection:
 odoo = {

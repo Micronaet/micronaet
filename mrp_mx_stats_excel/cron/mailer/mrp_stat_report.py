@@ -34,7 +34,7 @@ from email import Encoders
 # Read configuration parameter:
 # -----------------------------------------------------------------------------
 cfg_file = os.path.expanduser('../openerp.cfg')
-now = ('%s' %datetime.now())[:19]
+now = ('%s' % datetime.now())[:19]
 
 config = ConfigParser.ConfigParser()
 config.read([cfg_file])
