@@ -87,12 +87,12 @@ class SafetySymbolTemplate(orm.Model):
         'symbol_ids': fields.many2many(
             'safety.symbol', 'template_safety_rel',
             'template_id', 'symbol_id',
-            'Simboli interni', domain="[('obsolete', '=', False)]"),
+            'Simboli interni'),
         # todo used?
         'adr_symbol_ids': fields.many2many(
             'safety.symbol', 'template_adr_safety_rel',
             'template_id', 'symbol_id',
-            'Simboli ADR', domain="[('obsolete', '=', False)]"),
+            'Simboli ADR'),
         'note': fields.text('Note'),
         }
 
@@ -188,11 +188,11 @@ class ProductProduct(orm.Model):
         'symbol_ids': fields.many2many(
            'safety.symbol', 'safety_symbol_danger_rel',
            'product_id', 'simbol_id',
-           'Pittogrammi (interni)', domain="[('obsolete', '=', False)]"),
+           'Pittogrammi (interni)'),
         'adr_symbol_ids': fields.many2many(
            'safety.symbol', 'adr_safety_symbol_danger_rel',
            'product_id', 'simbol_id',
-           'Pittogrammi ADR', domain="[('obsolete', '=', False)]"),
+           'Pittogrammi ADR'),
 
         'term_h_ids': fields.many2many(
            'safety.h', 'safety_h_rel',
