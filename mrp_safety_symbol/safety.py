@@ -52,6 +52,11 @@ class SafetySymbol(orm.Model):
     _order = 'name'
 
     _columns = {
+        'obsolete': fields.boolean(
+            'Obsoleto',
+            help='Indica che non viene più utilizzato, da ora in poi non '
+                 'si potrà più selezionare nelle videate, togliero dove '
+                 'era stato messo!'),
         'code': fields.char('Codice', size=10),
         'name': fields.char('Name', size=64, required=True),
         'image': fields.binary('Image', filters=None),
@@ -82,12 +87,12 @@ class SafetySymbolTemplate(orm.Model):
         'symbol_ids': fields.many2many(
             'safety.symbol', 'template_safety_rel',
             'template_id', 'symbol_id',
-            'Simboli interni'),
+            'Simboli interni', domain="[('obsolete', '=', False)]"),
         # todo used?
         'adr_symbol_ids': fields.many2many(
             'safety.symbol', 'template_adr_safety_rel',
             'template_id', 'symbol_id',
-            'Simboli ADR'),
+            'Simboli ADR', domain="[('obsolete', '=', False)]"),
         'note': fields.text('Note'),
         }
 
@@ -183,11 +188,11 @@ class ProductProduct(orm.Model):
         'symbol_ids': fields.many2many(
            'safety.symbol', 'safety_symbol_danger_rel',
            'product_id', 'simbol_id',
-           'Pittogrammi (interni)'),
+           'Pittogrammi (interni)', domain="[('obsolete', '=', False)]"),
         'adr_symbol_ids': fields.many2many(
            'safety.symbol', 'adr_safety_symbol_danger_rel',
            'product_id', 'simbol_id',
-           'Pittogrammi ADR'),
+           'Pittogrammi ADR', domain="[('obsolete', '=', False)]"),
 
         'term_h_ids': fields.many2many(
            'safety.h', 'safety_h_rel',

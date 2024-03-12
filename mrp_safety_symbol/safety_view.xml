@@ -150,7 +150,8 @@
             <field name="name">safety.symbol.tree</field>
             <field name="model">safety.symbol</field>
             <field name="arch" type="xml">
-                <tree string="Symbol" colors="red:mode == 'danger'">
+                <tree string="Symbol" colors="grey: obsolete == True; red:mode == 'danger'">
+                    <field name="obsolete" />
                     <field name="code" />
                     <field name="name" />
                     <field name="mode" />
@@ -166,6 +167,7 @@
                     <sheet>
                         <group colspan="4" col="4">
                             <group colspan="2" col="2">
+                                <field name="obsolete" />
                                 <field name="code" />
                                 <field name="name" />
                                 <field name="mode" />
