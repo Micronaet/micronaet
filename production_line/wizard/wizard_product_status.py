@@ -51,8 +51,12 @@ _logger = logging.getLogger(__name__)
 
 
 excluded_code = (
-    'SCONTO', 'VV', 'QUELLO CHE VUOI',
+    'SCONTO', 'VV', 'QUELLO CHE VUOI', 'CONAI',
+    # 'ESENZION', 'FRC', 'FREE', 'CARBONE',
+    # 'CCO', 'CELITE', 'COU', 'CFV', 'TRASP', 'VARSIC1', 'SPT', 'SPB',
+    # 'REG', 'SBANC',
     )
+
 
 class MrpProductionExtraFunctions(osv.osv):
     """ Create extra fields in mrp.production obj
