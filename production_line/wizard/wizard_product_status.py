@@ -890,7 +890,7 @@ class product_status_wizard(osv.osv_memory):
             elif min_stock_level <= 0.0:
                 note = 'No liv. min.'
                 check = 'Warning'
-            elif stock_qty <= 0.0:
+            elif stock_qty < 0.0:
                 note = 'Negativo'
                 check = 'Errore'
                 check_format = format_red
