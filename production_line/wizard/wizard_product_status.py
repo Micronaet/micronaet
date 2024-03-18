@@ -892,7 +892,10 @@ class product_status_wizard(osv.osv_memory):
             check_format = format_white
             # A. MRP:
             if check_extra:
-                check_format = format_red  # Always
+                # Always:
+                check_format = format_red
+                check = 'Errore'
+
                 if check_extra == 'red':
                     note = 'MRP (Sottozero)'
                 elif check_extra == 'yellow':
