@@ -733,13 +733,13 @@ class product_status_wizard(osv.osv_memory):
         # Material header:
         write_xls_mrp_line(WS, 0, header)
         WS.freeze_panes(1, 4)
-        WS.autofilter(0, 1, 0, fixed_col)
+        WS.autofilter(0, 0, 0, fixed_col - 1)
 
         # Product header
         header[0][0] = 'Prodotto'
         write_xls_mrp_line(WS_product, 0, header)
         WS_product.freeze_panes(1, 4)
-        WS_product.autofilter(0, 1, 0, fixed_col)
+        WS_product.autofilter(0, 0, 0, fixed_col - 1)
 
         # Body:
         i = 1  # row position (before 0)
