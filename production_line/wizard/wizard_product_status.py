@@ -899,7 +899,7 @@ class product_status_wizard(osv.osv_memory):
                 if check_extra == 'red':
                     note = 'MRP (Sottozero)'
                 elif check_extra == 'yellow':
-                    note = 'MRP (Sottoscorta)'
+                    note = 'MRP (Sottosc.)'
                 else:
                     note = 'MRP Errore codice!'
 
@@ -908,16 +908,16 @@ class product_status_wizard(osv.osv_memory):
                 note = 'No liv. min.'
                 check = 'Warning'
             elif stock_qty < 0.0:
-                note = 'Negativo'
+                note = 'Sottozero'
                 check = 'Errore'
                 check_format = format_red
             elif stock_qty < min_stock_level:
-                note = '%s (sotto)' % int(min_stock_level - stock_qty)
+                note = '%s (Sottosc.)' % int(min_stock_level - stock_qty)
                 check = 'Errore'
                 check_format = format_yellow
                 # todo also MRP check here!
             else:
-                note = '%s (sopra)' % int(stock_qty - min_stock_level)
+                note = '%s (Sopra)' % int(stock_qty - min_stock_level)
                 check = 'Info'
                 check_format = format_green
 
