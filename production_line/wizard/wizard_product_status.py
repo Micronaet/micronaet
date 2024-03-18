@@ -789,23 +789,24 @@ class product_status_wizard(osv.osv_memory):
             # Check data:
             # -----------------------------------------------------------------
             # minimum_qty = row_product.minimum_qty  # Ex. Account Min level!
-            stock_qty = row_product.accountinq_qty
+            stock_qty = row_product.accounting_qty
             min_stock_level = row_product.min_stock_level
             check_format = format_white
             if min_stock_level <= 0.0:
                 note = 'No liv. min.'
-                check = 'Non controllato'
+                check = 'Warning'
             elif stock_qty <= 0.0:
-                note = ''
-                check = 'Negativo'
+                note = 'Negativo'
+                check = 'Errore'
                 check_format = format_red
             elif stock_qty < min_stock_level:
                 note = '%s (sotto)' % int(min_stock_level - stock_qty)
-                check = 'Sotto livello'
+                check = 'Errore'
                 check_format = format_yellow
+                # todo also MRP check here!
             else:
                 note = '%s (sopra)' % int(stock_qty - min_stock_level)
-                check = 'Sopra livello'
+                check = 'Info'
                 check_format = format_green
 
             # -----------------------------------------------------------------
