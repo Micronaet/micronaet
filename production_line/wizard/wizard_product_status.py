@@ -891,18 +891,13 @@ class product_status_wizard(osv.osv_memory):
             check_format = format_white
             # A. MRP:
             if check_extra:
+                check_format = format_red  # Always
                 if check_extra == 'red':
                     note = 'MRP (Sottozero)'
-                    check = 'Errore'
-                    check_format = format_red
                 elif check_extra == 'yellow':
                     note = 'MRP (Sottoscorta)'
-                    check = 'Warning'
-                    check_format = format_yellow
                 else:
-                    note = 'Errore nel codice!'
-                    check = 'MRP Errore'
-                    check_format = format_red
+                    note = 'MRP Errore codice!'
 
             # B. Min stock level management:
             elif min_stock_level <= 0.0:
