@@ -50,6 +50,10 @@ from email import encoders
 _logger = logging.getLogger(__name__)
 
 
+excluded_code = (
+    'SCONTO', 'VV', 'QUELLO CHE VUOI',
+    )
+
 class MrpProductionExtraFunctions(osv.osv):
     """ Create extra fields in mrp.production obj
     """
@@ -752,6 +756,9 @@ class product_status_wizard(osv.osv_memory):
 
             status_line = 0.0
             default_code = (row[2].default_code or '/').strip()
+            if default_code in excluded_code:
+                _logger.warning('Excluded code %s' % default_code)
+                continue
 
             # -----------------------------------------------------------------
             # Peak data:
@@ -817,6 +824,9 @@ class product_status_wizard(osv.osv_memory):
                 (row[3], format_white),  # m(x)
                 ]
 
+            # -----------------------------------------------------------------
+            # Alternative:
+            # -----------------------------------------------------------------
             if alternative_product:
                 alternative_comment = ''
                 for code in alternative_product.split('|'):
@@ -845,6 +855,9 @@ class product_status_wizard(osv.osv_memory):
             gap_columns = len(body)
             peak_columns = gap_columns - 2
 
+            # -----------------------------------------------------------------
+            # MRP extra data:
+            # -----------------------------------------------------------------
             j = 0
             check_extra = ''
             for col in cols:
@@ -871,7 +884,7 @@ class product_status_wizard(osv.osv_memory):
             # Update with note and check data:
             # -----------------------------------------------------------------
             check_format = format_white
-            # MRP:
+            # A. MRP:
             if check_extra:
                 if check_extra == 'red':
                     note = 'MRP (Sottozero)'
@@ -886,7 +899,7 @@ class product_status_wizard(osv.osv_memory):
                     check = 'MRP Errore'
                     check_format = format_red
 
-            # Min stock level management:
+            # B. Min stock level management:
             elif min_stock_level <= 0.0:
                 note = 'No liv. min.'
                 check = 'Warning'
@@ -914,7 +927,7 @@ class product_status_wizard(osv.osv_memory):
             write_xls_mrp_line(WS, i, body)
 
             # -----------------------------------------------------------------
-            # Comment:
+            # Peak Comment:
             # -----------------------------------------------------------------
             if peak_comment:
                 peak_comment_text = '\n'.join(sorted(peak_comment))
