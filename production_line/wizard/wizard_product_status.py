@@ -671,15 +671,15 @@ class product_status_wizard(osv.osv_memory):
         # Material:
         WS.set_column('A:A', 35)
         WS.set_column('B:B', 15)
-        # WS.set_column('C:C', 30)
-        WS.set_column('E:G', 20)
+        WS.set_column('C:F', 10)
+        WS.set_column('G:I', 20)
         WS.set_row(0, 30)
 
         # Product:
         WS_product.set_column('A:A', 35)
         WS_product.set_column('B:B', 15)
-        # WS_product.set_column('C:C', 10)
-        WS_product.set_column('E:G', 20)
+        WS_product.set_column('C:F', 10)
+        WS_product.set_column('G:I', 20)
         WS_product.set_row(0, 30)
 
         # Generate report for export:
@@ -701,8 +701,11 @@ class product_status_wizard(osv.osv_memory):
 
             ('Codice', format_title),
             # ('Alternativo', format_title),
-            ('Mx. mag.', format_title),
-            ('Min. mag', format_title),
+            ('Magaz.', format_title),
+            ('Liv. min.', format_title),
+            ('Note', format_title),
+            ('Check.', format_title),
+
             ('OF dettaglio', format_title),
 
             ('Picco mensile MP', format_title),
@@ -719,9 +722,14 @@ class product_status_wizard(osv.osv_memory):
 
         # Material header:
         write_xls_mrp_line(WS, 0, header)
+        WS.freeze_panes(1, 4)
+        WS.autofilter(0, 1, 0, fixed_col)
+
         # Product header
         header[0][0] = 'Prodotto'
         write_xls_mrp_line(WS_product, 0, header)
+        WS_product.freeze_panes(1, 4)
+        WS_product.autofilter(0, 1, 0, fixed_col)
 
         # Body:
         i = 1  # row position (before 0)
@@ -786,6 +794,10 @@ class product_status_wizard(osv.osv_memory):
 
                 (row_product.minimum_qty, format_white),  # min level account
                 (row_product.min_stock_level, format_white),  # min level calc
+                # todo:
+                ('', format_white),  # min level calc
+                ('', format_white),  # min level calc
+
                 (write_supplier_order_detail(
                  history_supplier_orders.get(default_code, '')),
                  format_text,
