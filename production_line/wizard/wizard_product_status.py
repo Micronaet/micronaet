@@ -902,8 +902,8 @@ class product_status_wizard(osv.osv_memory):
                 check_format = format_green
 
             # Update placeholder value:
-            body[4] = (note, check_format),  # Note
-            body[5] = (check, check_format),  # Check
+            body[4] = (note, check_format)  # Note
+            body[5] = (check, check_format)  # Check
 
             write_xls_mrp_line(WS, i, body)
 
