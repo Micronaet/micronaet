@@ -682,7 +682,8 @@ class product_status_wizard(osv.osv_memory):
         # Product:
         WS_product.set_column('A:A', 35)
         WS_product.set_column('B:B', 15)
-        WS_product.set_column('C:F', 11)
+        WS_product.set_column('C:D', 10)
+        WS_product.set_column('E:F', 13)
         WS_product.set_column('G:I', 20)
         WS_product.set_row(0, 30)
 
