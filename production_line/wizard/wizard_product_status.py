@@ -791,23 +791,6 @@ class product_status_wizard(osv.osv_memory):
             # minimum_qty = row_product.minimum_qty  # Ex. Account Min level!
             stock_qty = row_product.accounting_qty
             min_stock_level = row_product.min_stock_level
-            check_format = format_white
-            if min_stock_level <= 0.0:
-                note = 'No liv. min.'
-                check = 'Warning'
-            elif stock_qty <= 0.0:
-                note = 'Negativo'
-                check = 'Errore'
-                check_format = format_red
-            elif stock_qty < min_stock_level:
-                note = '%s (sotto)' % int(min_stock_level - stock_qty)
-                check = 'Errore'
-                check_format = format_yellow
-                # todo also MRP check here!
-            else:
-                note = '%s (sopra)' % int(stock_qty - min_stock_level)
-                check = 'Info'
-                check_format = format_green
 
             # -----------------------------------------------------------------
             # Write record:
@@ -822,8 +805,9 @@ class product_status_wizard(osv.osv_memory):
                 (stock_qty, format_white),  # min level account
                 (min_stock_level, format_white),  # min level calc
 
-                (note, check_format),  # Note
-                (check, check_format),  # Check
+                # Placeholder:
+                '',  # 4
+                '',  # 5
 
                 (write_supplier_order_detail(
                  history_supplier_orders.get(default_code, '')),
@@ -862,6 +846,7 @@ class product_status_wizard(osv.osv_memory):
             peak_columns = gap_columns - 2
 
             j = 0
+            check_extra = ''
             for col in cols:
                 (q, minimum) = mrp_pool._get_cel(j, row[1])
                 j += 1
@@ -871,14 +856,55 @@ class product_status_wizard(osv.osv_memory):
                 if not status_line:  # value = 0
                     body.append((status_line, format_white))
                 elif status_line > minimum:  # > minimum value (green)
-                    body.append((status_line, format_green))
-                    pass  # Green
+                    body.append((status_line, format_green))  # Green
                 elif status_line > 0.0:  # under minimum (yellow)
                     body.append((status_line, format_yellow))
+                    if check_extra != 'red':  # Red has priority
+                        check_extra = 'yellow'
                 elif status_line < 0.0:  # under 0 (red)
                     body.append((status_line, format_red))
+                    check_extra = 'red'
                 else:  # ("=", "<"): # not present!!!
                     body.append((status_line, format_white))
+
+            # -----------------------------------------------------------------
+            # Update with note and check data:
+            # -----------------------------------------------------------------
+            check_format = format_white
+            # MRP:
+            if check_extra:
+                if check_extra == 'red':
+                    note = 'Sottozero MRP'
+                    check = 'Errore'
+                elif check_extra == 'yellow':
+                    note = 'Sottoscorta MRP'
+                    check = 'Warning'
+                else:
+                    note = 'Errore nel codice!'
+                    check = 'Errore'
+
+            # Min stock level management:
+            elif min_stock_level <= 0.0:
+                note = 'No liv. min.'
+                check = 'Warning'
+            elif stock_qty <= 0.0:
+                note = 'Negativo'
+                check = 'Errore'
+                check_format = format_red
+            elif stock_qty < min_stock_level:
+                note = '%s (sotto)' % int(min_stock_level - stock_qty)
+                check = 'Errore'
+                check_format = format_yellow
+                # todo also MRP check here!
+            else:
+                note = '%s (sopra)' % int(stock_qty - min_stock_level)
+                check = 'Info'
+                check_format = format_green
+
+            # Update placeholder value:
+            body[4] = (note, check_format),  # Note
+            body[5] = (check, check_format),  # Check
+
             write_xls_mrp_line(WS, i, body)
 
             # -----------------------------------------------------------------
