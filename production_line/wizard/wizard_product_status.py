@@ -860,6 +860,8 @@ class product_status_wizard(osv.osv_memory):
             # -----------------------------------------------------------------
             j = 0
             check_extra = ''
+            if default_code == 'A2205':
+                pdb.set_trace()
             for col in cols:
                 (q, minimum) = mrp_pool._get_cel(j, row[1])
                 j += 1
