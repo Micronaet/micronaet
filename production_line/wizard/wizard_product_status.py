@@ -874,7 +874,7 @@ class product_status_wizard(osv.osv_memory):
                     body.append((status_line, format_yellow))
                     if check_extra != 'red':  # Red has priority
                         check_extra = 'yellow'
-                elif status_line < 0.0:  # under 0 (red)
+                elif status_line <= 0.0:  # under 0 (red)
                     body.append((status_line, format_red))
                     check_extra = 'red'
                 else:  # ("=", "<"): # not present!!!
