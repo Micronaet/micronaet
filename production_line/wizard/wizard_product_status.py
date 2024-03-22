@@ -676,21 +676,15 @@ class product_status_wizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         # Column dimension:
         # ---------------------------------------------------------------------
-        # Material:
-        WS.set_column('A:A', 35)
-        WS.set_column('B:B', 15)
-        WS.set_column('C:D', 10)
-        WS.set_column('E:F', 13)
-        WS.set_column('G:I', 20)
-        WS.set_row(0, 30)
-
-        # Product:
-        WS_product.set_column('A:A', 35)
-        WS_product.set_column('B:B', 15)
-        WS_product.set_column('C:D', 10)
-        WS_product.set_column('E:F', 13)
-        WS_product.set_column('G:I', 20)
-        WS_product.set_row(0, 30)
+        for WS_select in (WS, WS_product):
+            # Material and Product:
+            WS_select.set_column('A:A', 35)
+            WS_select.set_column('B:B', 11)
+            WS_select.set_column('C:D', 10)
+            WS_select.set_column('E:E', 20)
+            WS_select.set_column('F:F', 13)
+            WS_select.set_column('G:I', 20)
+            WS_select.set_row(0, 30)
 
         # Generate report for export:
         context['lang'] = 'it_IT'
@@ -890,6 +884,7 @@ class product_status_wizard(osv.osv_memory):
             # Update with note and check data:
             # -----------------------------------------------------------------
             check_format = format_white
+            note = ''
             # A. MRP:
             if check_extra:
                 # Always:
@@ -897,27 +892,27 @@ class product_status_wizard(osv.osv_memory):
                 check = 'Errore'
 
                 if check_extra == 'red':
-                    note = 'MRP (Sottozero)'
+                    note += '[MRP (Sotto 0)]'
                 elif check_extra == 'yellow':
-                    note = 'MRP (Sottosc.)'
+                    note += '[MRP (Sotto)]'
                 else:
-                    note = 'MRP Errore codice!'
+                    note += '[MRP Errore codice!]'
 
             # B. Min stock level management:
             elif min_stock_level <= 0.0:
-                note = 'No liv. min.'
+                note += 'MX No liv. min.'
                 check = 'Warning'
             elif stock_qty < 0.0:
-                note = 'Sottozero'
+                note += '[MX Sotto 0]'
                 check = 'Errore'
                 check_format = format_red
             elif stock_qty < min_stock_level:
-                note = '%s (Sottosc.)' % int(min_stock_level - stock_qty)
+                note += '[MX %s (Sotto)]' % int(min_stock_level - stock_qty)
                 check = 'Errore'
                 check_format = format_yellow
                 # todo also MRP check here!
             else:
-                note = '%s (Sopra)' % int(stock_qty - min_stock_level)
+                note += '[MX %s (Sopra)]' % int(stock_qty - min_stock_level)
                 check = 'Info'
                 check_format = format_green
 
