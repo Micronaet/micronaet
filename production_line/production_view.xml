@@ -58,6 +58,7 @@
                         <separator string="Direttive interne per reparti:" colspan="4"/>
                         <field name="note_packaging" colspan="4"/>
                         <field name="note_delivery" colspan="4"/>
+                        <!--<field name="note_accounting" colspan="4"/>-->
 
                         <!--Cassandra ha richiesto di nasconderle, lasciato solo le due utilizzate per ora-->
                         <field name="note_mrp" colspan="4" invisible="1"/>

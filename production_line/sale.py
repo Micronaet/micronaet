@@ -98,6 +98,10 @@ class sale_order_line(osv.osv):
             'Note consegna', size=100,
             help='Note per il personale che effettua fisicamente la consegna',
             ),
+        # 'note_accounting': fields.char(
+        #    'Note contabili', size=100,
+        #    help='Note per il personale contabile che inserisce l\'ordine',
+        #    ),
         'note_internal': fields.char(
             'Note interne', size=100,
             help='Note interne amministrative che rimangono collegate alla'
