@@ -575,7 +575,8 @@ class product_status_wizard(osv.osv_memory):
                 start = code[:1]
                 start2 = code[:2]
 
-                if code in excluded_code or start in 'Z' or start2 in ('VV', ):
+                if code in excluded_code or start in 'LZ' or \
+                        start2 in ('VV', ):
                     return 'Escluso'
 
                 elif product.obsolete:
@@ -584,6 +585,8 @@ class product_status_wizard(osv.osv_memory):
                     return 'Non movimentato'
                 elif not code:
                     return 'Senza codice'
+                if start == 'K':
+                    return 'Accessori'
                 if start == 'A':
                     return 'Materie prime'
                 elif start == 'B':
@@ -598,7 +601,7 @@ class product_status_wizard(osv.osv_memory):
             # Hidden columns:
             hide_filter_list = [
                 'Obsoleto', 'Non movimentato', 'Senza codice', 'Recuperi',
-                'Macchinari', 'Escluso',
+                'Macchinari', 'Escluso', 'Accessori',
             ]
             show_filter_list = [
                 'Imballi', 'Prodotti finiti', 'Materie prime'
