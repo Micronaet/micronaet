@@ -640,7 +640,6 @@ class product_status_wizard(osv.osv_memory):
             )
             hidden_row = []
             for product in sorted_products:
-                row += 1
                 # Field used:
                 default_code = product.default_code or ''
                 account_qty = int(product.accounting_qty)
@@ -650,6 +649,7 @@ class product_status_wizard(osv.osv_memory):
                     _logger.error('Product %s has no code' % product.name)
                     continue
 
+                row += 1
                 product_type = get_type(product)
                 if product_type in hide_filter_list:
                     hidden_row.append(row)
