@@ -611,6 +611,11 @@ class product_status_wizard(osv.osv_memory):
             ]
             fixed_col = len(header)
 
+            row = 0
+            write_xls_mrp_line(WS, row, header)
+            WS.freeze_panes(1, 4)
+            WS.autofilter(0, 0, 0, fixed_col - 1)
+
             sorted_products = sorted(
                 products,
                 key=lambda x: (get_type(x), x.default_code),
@@ -881,7 +886,7 @@ class product_status_wizard(osv.osv_memory):
         rows = mrp_pool._get_rows()
 
         table, table_comment = mrp_pool._get_table()  # For check row state
-        WS_select = WS[pages[-2]]  # Materials
+        WS_select = WS[pages[0]]  # Materials
         for row in rows:
             # Check mode: only active
             if not use_row(table[row[1]], data, product=row[2]):
@@ -892,7 +897,7 @@ class product_status_wizard(osv.osv_memory):
                 # _logger.info('Yes: %s' % (table[row[1]], ))
 
             if not start_product and row[0] == 'P':
-                WS_select = WS[pages[-1]]  # change ref. for use second sheet
+                WS_select = WS[pages[1]]  # change ref. for use second sheet
                 start_product = True
                 i = 1  # jump one line
 
