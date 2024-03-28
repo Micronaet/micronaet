@@ -595,8 +595,6 @@ class product_status_wizard(osv.osv_memory):
                 else:
                     return 'Prodotti finiti'
 
-            print(orders)
-            pdb.set_trace()
             # Hidden columns:
             hide_filter_list = [
                 'Obsoleto', 'Non movimentato', 'Senza codice', 'Recuperi',
@@ -657,12 +655,19 @@ class product_status_wizard(osv.osv_memory):
                     WS.set_row(row, None, None, {'hidden': True})
 
                 # Supplier Order data:
-                order_data = {}
-                order_account_qty = order_data.get('total', 0.0)  # todo
-                order_comment = order_data.get('comment', '')
-                order_deadlined = order_data.get('deadlined', '')
+                order_account_qty = account_qty   # Start with account!
+                order_comment = ''
+                for deadline in orders.get(default_code, {}):
+                    supplier_qty = orders[default_code][deadline]
+                    order_account_qty += supplier_qty
+                    order_comment += 'Q. %s [%s]\n' % (
+                        supplier_qty,
+                        deadline,
+                    )
+                # Update with stock:
+                order_account_qty = int(order_account_qty)
+                # todo write comment!
 
-                order_account_qty += int(account_qty + 0.0)  # todo get order!
                 min_stock_level = int(product.min_stock_level)
                 # if mode == 'Niente':  # todo
                 #    state = 'Non movimentato'
