@@ -602,11 +602,11 @@ class product_status_wizard(osv.osv_memory):
                 (u'Stato', excel_format['title']),
                 # (u'Manuale', excel_format['title']),
                 (u'Lead time gg.', excel_format['title']),
-                (u'Medio Kg / mese', excel_format['title']),
-                (u'Liv. minimo giorn.', excel_format['title']),
-                (u'Liv. minimo Kg.', excel_format['title']),
-                (u'Liv. massimo giorn.', excel_format['title']),
-                (u'Liv. massimo Kg.', excel_format['title']),
+                (u'Medio giorn. Kg', excel_format['title']),
+                (u'Liv. minimo Kg', excel_format['title']),
+                (u'(gg)', excel_format['title']),
+                (u'Liv. massimo Kg', excel_format['title']),
+                (u'(gg)', excel_format['title']),
             ]
             fixed_col = len(header)
 
@@ -673,7 +673,7 @@ class product_status_wizard(osv.osv_memory):
                     # (product.manual_stock_level or '', color_format),
 
                     (product.day_leadtime or '', color_format),
-                    (product.medium_stock_qty * 30, color_format),
+                    (product.medium_stock_qty, color_format),
 
                     (int(min_stock_level), color_format),
                     (product.day_min_level, color_format),
