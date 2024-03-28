@@ -664,20 +664,20 @@ class product_status_wizard(osv.osv_memory):
                         order_account_qty, color_format)
 
                 line = [
-                    product_type,
-                    default_code,
-                    product.name or '',
-                    product.uom_id.name or '',
+                    (product_type, color_format),
+                    (default_code, color_format),
+                    (product.name or '', color_format),
+                    (product.uom_id.name or '', color_format),
 
                     (product.approx_integer, color_format),
-                    product.approx_mode or '',
+                    (product.approx_mode or '', color_format),
 
                     (account_qty, color_format),
-                    color_order_account_qty,
-                    state,
+                    (color_order_account_qty, color_format),
+                    (state, color_format),
 
                     (product.manual_stock_level or '', color_format),
-                    product.day_leadtime or '',
+                    (product.day_leadtime or '', color_format),
                     # per month:
                     (product.medium_stock_qty * 30, color_format),
 
