@@ -609,9 +609,10 @@ class product_status_wizard(osv.osv_memory):
 
             WS.set_column('A:A', 15)
             WS.set_column('B:B', 10)
-            WS.set_column('C:C', 30)
+            WS.set_column('C:C', 40)
             WS.set_column('D:D', 8)
             WS.set_column('E:M', 12)
+            WS.set_column('H:H', 8)
             WS.set_row(0, 35)
 
             header = [
@@ -684,12 +685,12 @@ class product_status_wizard(osv.osv_memory):
                 elif account_qty > min_stock_level:
                     state = 'OK'
                     color_format = excel_format['white']
+                elif min_stock_level < account_qty <= gross_account_qty:
+                    state = 'In copertura'
+                    color_format = excel_format['orange']
                 elif account_qty <= min_stock_level:
                     state = 'Sotto scorta'
                     color_format = excel_format['yellow']
-                elif account_qty <= gross_account_qty:
-                    state = 'In copertura'
-                    color_format = excel_format['orange']
                 else:
                     state = 'Non gestito'
                     color_format = excel_format['white']
