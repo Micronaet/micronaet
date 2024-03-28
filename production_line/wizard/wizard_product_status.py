@@ -792,6 +792,14 @@ class product_status_wizard(osv.osv_memory):
                 'border': 1,
                 'num_format': num_format,
                 }),
+            'orange': WB.add_format({
+                'font_name': 'Arial',
+                'font_size': 9,
+                'align': 'right',
+                'bg_color': '#ebb734',  # 'orange',
+                'border': 1,
+                'num_format': num_format,
+                }),
         }
 
         # 2 Sheets (+ ROP is selected)
