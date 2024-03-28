@@ -600,7 +600,8 @@ class product_status_wizard(osv.osv_memory):
                 (u'Magazzino', excel_format['title']),
                 (u'Disponibilità', excel_format['title']),
                 (u'Stato', excel_format['title']),
-                (u'Manuale', excel_format['title']),
+                # (u'Manuale', excel_format['title']),
+                (u'Lead time gg.', excel_format['title']),
                 (u'Medio Kg / mese', excel_format['title']),
                 (u'Liv. minimo giorn.', excel_format['title']),
                 (u'Liv. minimo Kg.', excel_format['title']),
@@ -670,14 +671,15 @@ class product_status_wizard(osv.osv_memory):
                     (color_order_account_qty, color_format),
                     (state, color_format),
                     # (product.manual_stock_level or '', color_format),
-                    # (product.day_leadtime or '', color_format),
+
+                    (product.day_leadtime or '', color_format),
                     (product.medium_stock_qty * 30, color_format),
 
-                    (product.day_min_level, color_format),
                     (int(min_stock_level), color_format),
+                    (product.day_min_level, color_format),
 
-                    (product.day_max_level, color_format),
                     (int(product.max_stock_level), color_format),
+                    (product.day_max_level, color_format),
                 ]
                 write_xls_mrp_line(WS, row, line)
 
