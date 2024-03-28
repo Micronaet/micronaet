@@ -591,7 +591,7 @@ class product_status_wizard(osv.osv_memory):
             WS.set_column('E:E', 20)
             WS.set_column('F:F', 13)
             WS.set_column('G:I', 20)
-            WS.set_row(0, 30)
+            WS.set_row(0, 35)
 
             header = [
                 # list for update after for product:
@@ -621,8 +621,9 @@ class product_status_wizard(osv.osv_memory):
                 key=lambda x: (get_type(x), x.default_code),
             )
             for product in sorted_products:
+                row += 1
                 # Field used:
-                default_code = product.default_code
+                default_code = product.default_code or ''
                 account_qty = int(product.accounting_qty)
 
                 # Filter code:
@@ -662,10 +663,9 @@ class product_status_wizard(osv.osv_memory):
                     color_order_account_qty = (
                         order_account_qty, color_format)
 
-                '''
                 line = [
                     product_type,
-                    default_code or '',
+                    default_code,
                     product.name or '',
                     product.uom_id.name or '',
 
@@ -687,11 +687,10 @@ class product_status_wizard(osv.osv_memory):
                     (product.day_max_level, color_format['right']),
                     (int(product.max_stock_level), color_format['right']),
 
-                    # 'X' if product.stock_obsolete else '',
-                ]'''
-                break
+                    # 'X' if product.stock_obsolete else ''
+                ]
+                write_xls_mrp_line(WS, row, line)
 
-            pdb.set_trace()
             return True
 
         if context is None:
