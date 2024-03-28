@@ -807,7 +807,7 @@ class product_status_wizard(osv.osv_memory):
             parameters = {
                 'WS': WB.add_worksheet('ROP'),
                 'excel_format': excel_format,
-                'product': products,
+                'products': products,
             }
             add_rop_page(**parameters)
 
