@@ -684,10 +684,10 @@ class product_status_wizard(osv.osv_memory):
                 elif account_qty > min_stock_level:
                     state = 'OK'
                     color_format = excel_format['white']
-                elif account_qty < min_stock_level:
+                elif account_qty <= min_stock_level:
                     state = 'Sotto scorta'
                     color_format = excel_format['yellow']
-                elif account_qty < gross_account_qty:
+                elif account_qty <= gross_account_qty:
                     state = 'In copertura'
                     color_format = excel_format['orange']
                 else:
