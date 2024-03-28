@@ -759,52 +759,97 @@ class product_status_wizard(osv.osv_memory):
                 'border': 1,
                 'text_wrap': True,
                 }),
-            'text': WB.add_format({
-                'font_name': 'Arial',
-                'align': 'left',
-                'font_size': 9,
-                'border': 1,
-                }),
-            'white': WB.add_format({
-                'font_name': 'Arial',
-                'font_size': 9,
-                'align': 'right',
-                'bg_color': 'white',
-                'border': 1,
-                'num_format': num_format,
-                }),
-            'yellow': WB.add_format({
-                'font_name': 'Arial',
-                'font_size': 9,
-                'align': 'right',
-                'bg_color': '#ffff99',  # 'yellow',
-                'border': 1,
-                'num_format': num_format,
-                }),
-            'red': WB.add_format({
-                'font_name': 'Arial',
-                'font_size': 9,
-                'align': 'right',
-                'bg_color': '#ff9999',  # 'red',
-                'border': 1,
-                'num_format': num_format,
-                }),
-            'green': WB.add_format({
-                'font_name': 'Arial',
-                'font_size': 9,
-                'align': 'right',
-                'bg_color': '#c1ef94',  # 'green',
-                'border': 1,
-                'num_format': num_format,
-                }),
-            'orange': WB.add_format({
-                'font_name': 'Arial',
-                'font_size': 9,
-                'align': 'right',
-                'bg_color': '#ebb734',  # 'orange',
-                'border': 1,
-                'num_format': num_format,
-                }),
+
+            'white': {
+                'text': WB.add_format({
+                    'font_name': 'Arial',
+                    'font_size': 9,
+                    # 'align': 'right',
+                    'bg_color': 'white',
+                    'border': 1,
+                    # 'num_format': num_format,
+                    }),
+                'number': WB.add_format({
+                    'font_name': 'Arial',
+                    'font_size': 9,
+                    'align': 'right',
+                    'bg_color': 'white',
+                    'border': 1,
+                    'num_format': num_format,
+                    })
+                },
+            'yellow': {
+                'text': WB.add_format({
+                    'font_name': 'Arial',
+                    'font_size': 9,
+                    # 'align': 'right',
+                    'bg_color': '#ffff99',
+                    'border': 1,
+                    # 'num_format': num_format,
+                    }),
+                'number': WB.add_format({
+                    'font_name': 'Arial',
+                    'font_size': 9,
+                    'align': 'right',
+                    'bg_color': '#ffff99',
+                    'border': 1,
+                    'num_format': num_format,
+                    })
+                },
+            'red': {
+                'text': WB.add_format({
+                    'font_name': 'Arial',
+                    'font_size': 9,
+                    # 'align': 'right',
+                    'bg_color': '#ff9999',
+                    'border': 1,
+                    # 'num_format': num_format,
+                    }),
+                'number': WB.add_format({
+                    'font_name': 'Arial',
+                    'font_size': 9,
+                    'align': 'right',
+                    'bg_color': '#ff9999',
+                    'border': 1,
+                    'num_format': num_format,
+                    })
+                },
+            'green': {
+                'text': WB.add_format({
+                    'font_name': 'Arial',
+                    'font_size': 9,
+                    # 'align': 'right',
+                    'bg_color': '#c1ef94',
+                    'border': 1,
+                    # 'num_format': num_format,
+                    }),
+                'number': WB.add_format({
+                    'font_name': 'Arial',
+                    'font_size': 9,
+                    'align': 'right',
+                    'bg_color': '#c1ef94',
+                    'border': 1,
+                    'num_format': num_format,
+                    })
+                },
+            'orange': {
+                'text': WB.add_format({
+                    'font_name': 'Arial',
+                    'font_size': 9,
+                    # 'align': 'right',
+                    'bg_color': '#ebb734',
+                    'border': 1,
+                    # 'num_format': num_format,
+                    }),
+                'number': WB.add_format({
+                    'font_name': 'Arial',
+                    'font_size': 9,
+                    'align': 'right',
+                    'bg_color': '#ebb734',
+                    'border': 1,
+                    'num_format': num_format,
+                    })
+                },
         }
 
         # 2 Sheets (+ ROP is selected)
@@ -953,14 +998,14 @@ class product_status_wizard(osv.osv_memory):
             # Write record:
             # -----------------------------------------------------------------
             body = [
-                (row_product.name, excel_format['text']),
-                (default_code, excel_format['text']),
+                (row_product.name, excel_format['white']['text']),
+                (default_code, excel_format['white']['text']),
 
                 # Alternative material:
                 # (alternative_product, format_text),
 
-                (stock_qty, excel_format['white']),  # min level account
-                (min_stock_level, excel_format['white']),  # min level calc
+                (stock_qty, excel_format['white']['number']),
+                (min_stock_level, excel_format['white']['number']),
 
                 # Placeholder:
                 '',  # 4
@@ -968,10 +1013,10 @@ class product_status_wizard(osv.osv_memory):
 
                 (write_supplier_order_detail(
                  history_supplier_orders.get(default_code, '')),
-                 excel_format['text'],
+                 excel_format['white']['text'],
                  ),  # OF detail
-                (peak_data, excel_format['white']),  # Peak
-                (row[3], excel_format['white']),  # m(x)
+                (peak_data, excel_format['white']['number']),  # Peak
+                (row[3], excel_format['white']['number']),  # m(x)
                 ]
 
             # -----------------------------------------------------------------
@@ -1017,30 +1062,31 @@ class product_status_wizard(osv.osv_memory):
 
                 # Choose the color:
                 if not status_line:  # value = 0
-                    body.append((status_line, excel_format['white']))
+                    body.append((status_line, excel_format['white']['number']))
                     if check_extra != 'red':  # Red has priority
                         check_extra = 'yellow'
                 elif status_line > minimum:  # > minimum value (green)
-                    body.append((status_line, excel_format['green']))  # Green
+                    body.append((status_line, excel_format['green']['number']))
                 elif status_line > 0.0:  # under minimum (yellow)
-                    body.append((status_line, excel_format['yellow']))
+                    body.append((
+                        status_line, excel_format['yellow']['number']))
                     if check_extra != 'red':  # Red has priority
                         check_extra = 'yellow'
                 elif status_line < 0.0:  # under 0 (red)
-                    body.append((status_line, excel_format['red']))
+                    body.append((status_line, excel_format['red']['number']))
                     check_extra = 'red'
                 else:  # ("=", "<"): # not present!!!
-                    body.append((status_line, excel_format['white']))
+                    body.append((status_line, excel_format['white']['number']))
 
             # -----------------------------------------------------------------
             # Update with note and check data:
             # -----------------------------------------------------------------
-            check_format = excel_format['white']
+            check_format = excel_format['white']['number']
             note = ''
             # A. MRP:
             if check_extra:
                 # Always:
-                check_format = excel_format['red']
+                check_format = excel_format['red']['number']
                 check = 'Errore'
 
                 if check_extra == 'red':
@@ -1057,16 +1103,16 @@ class product_status_wizard(osv.osv_memory):
             elif stock_qty < 0.0:
                 note += '[MX Sotto 0]'
                 check = 'Errore'
-                check_format = excel_format['red']
+                check_format = excel_format['red']['number']
             elif stock_qty < min_stock_level:
                 note += '[MX %s (Sotto)]' % int(min_stock_level - stock_qty)
                 check = 'Errore'
-                check_format = excel_format['yellow']
+                check_format = excel_format['yellow']['number']
                 # todo also MRP check here!
             else:
                 note += '[MX %s (Sopra)]' % int(stock_qty - min_stock_level)
                 check = 'Info'
-                check_format = excel_format['green']
+                check_format = excel_format['green']['number']
 
             # -----------------------------------------------------------------
             # Write Block line:
