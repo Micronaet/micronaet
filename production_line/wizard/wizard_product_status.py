@@ -424,6 +424,7 @@ class product_status_wizard(osv.osv_memory):
         """
         if context is None:
             context = {}
+        context['lang'] = 'it_IT'
 
         save_mode = context.get('save_mode')
         _logger.info('Start extract save mode: %s' % save_mode)
@@ -559,6 +560,134 @@ class product_status_wizard(osv.osv_memory):
             else:
                 return True
 
+        def add_rop_page(WS=False, products=False, excel_format=False):
+            """ Add rop page in necessary
+            """
+            # Utility:
+            def get_type(product):
+                """ Extract type from code
+                """
+                # if product.not_in_status:
+                #     return 'EXCL'
+
+                code = (product.default_code or '').strip().upper()
+                start = code[:1]
+
+                if not code:
+                    return 'Senza codice'
+
+                if start == 'A':  # Raw materials
+                    return 'MP'
+                elif start == 'B':  # Raw materials
+                    return 'IMB'
+                elif start in 'R':  # Waste
+                    return 'REC'
+                else:
+                    return 'PROD'
+
+            WS.set_column('A:A', 35)
+            WS.set_column('B:B', 11)
+            WS.set_column('C:D', 10)
+            WS.set_column('E:E', 20)
+            WS.set_column('F:F', 13)
+            WS.set_column('G:I', 20)
+            WS.set_row(0, 30)
+
+            header = [
+                # list for update after for product:
+                (u'Tipo', excel_format['title']),
+                (u'Codice', excel_format['title']),
+                (u'Descrizione', excel_format['title']),
+                (u'UM.', excel_format['title']),
+                (u'Magazzino', excel_format['title']),
+                (u'Disponibilità', excel_format['title']),
+                (u'Stato', excel_format['title']),
+                (u'Manuale', excel_format['title']),
+                (u'Medio Kg / mese', excel_format['title']),
+                (u'Liv. minimo giorn.', excel_format['title']),
+                (u'Liv. minimo Kg.', excel_format['title']),
+                (u'Liv. massimo giorn.', excel_format['title']),
+                (u'Liv. massimo Kg.', excel_format['title']),
+            ]
+            fixed_col = len(header)
+
+            sorted_products = sorted(
+                products,
+                key=lambda x: (get_type(x), x.default_code),
+            )
+            for product in sorted_products:
+                # Field used:
+                default_code = product.default_code
+                account_qty = int(product.accounting_qty)
+
+                # Filter code:
+                if not default_code:
+                    _logger.error('Product %s has no code' % product.name)
+                    continue
+                product_type = get_type(product)
+
+                # Supplier Order data:
+                order_data = {}
+                order_account_qty = order_data.get('total', 0.0)
+                order_comment = order_data.get('comment', '')
+                order_deadlined = order_data.get('deadlined', '')
+
+                order_account_qty += int(account_qty + 0.0)  # todo get order!
+                min_stock_level = int(product.min_stock_level)
+                # if mode == 'Niente':  # todo
+                #    state = 'Non movimentato'
+                #     color_format = excel_format['grey']
+                if account_qty < min_stock_level < order_account_qty:
+                    state = 'In copertura'
+                    color_format = excel_format['yellow']
+                elif account_qty < min_stock_level:
+                    state = 'Sotto scorta'
+                    color_format = excel_format['orange']
+                elif account_qty < 0:
+                    state = 'Negativo'
+                    color_format = excel_format['red']
+                else:
+                    state = 'OK'
+                    color_format = excel_format['white']
+
+                if order_deadlined:
+                    color_order_account_qty = (
+                        order_account_qty, excel_format['red']['right'])
+                else:
+                    color_order_account_qty = (
+                        order_account_qty, color_format['right'])
+
+                line = [
+                    product_type,
+                    default_code or '',
+                    product.name or '',
+                    product.uom_id.name or '',
+
+                    (product.approx_integer, color_format['right']),
+                    product.approx_mode or '',
+
+                    (account_qty, color_format['right']),
+                    color_order_account_qty,
+                    state,
+
+                    (product.manual_stock_level or '', color_format['right']),
+                    product.day_leadtime or '',
+                    # per month:
+                    (product.medium_stock_qty * 30, color_format['number']),
+
+                    (product.day_min_level, color_format['right']),
+                    (int(min_stock_level), color_format['right']),
+
+                    (product.day_max_level, color_format['right']),
+                    (int(product.max_stock_level), color_format['right']),
+
+                    # 'X' if product.stock_obsolete else '',
+                ]
+                break
+
+            pdb.set_trace()
+            return True
+
         if context is None:
             context = {}
 
@@ -613,79 +742,85 @@ class product_status_wizard(osv.osv_memory):
         # Open file and write header
         WB = xlsxwriter.Workbook(filename)
 
-        # 2 Sheets (+ ROP is selected)
-        rop_page = data.get('rop_page')
-        pages = []
-        if rop_page:
-            pages.append('ROP')
-        pages.extend(['Materiali', 'Prodotti'])
+        # ---------------------------------------------------------------------
+        # Format elements:
+        # ---------------------------------------------------------------------
+        num_format = '#,##0'
+        excel_format = {
+            'title': WB.add_format({
+                'bold': True,
+                'font_color': 'black',
+                'font_name': 'Arial',
+                'font_size': 10,
+                'align': 'center',
+                'valign': 'vcenter',
+                'bg_color': 'gray',
+                'border': 1,
+                'text_wrap': True,
+                }),
+            'text': WB.add_format({
+                'font_name': 'Arial',
+                'align': 'left',
+                'font_size': 9,
+                'border': 1,
+                }),
+            'white': WB.add_format({
+                'font_name': 'Arial',
+                'font_size': 9,
+                'align': 'right',
+                'bg_color': 'white',
+                'border': 1,
+                'num_format': num_format,
+                }),
+            'yellow': WB.add_format({
+                'font_name': 'Arial',
+                'font_size': 9,
+                'align': 'right',
+                'bg_color': '#ffff99',  # 'yellow',
+                'border': 1,
+                'num_format': num_format,
+                }),
+            'red': WB.add_format({
+                'font_name': 'Arial',
+                'font_size': 9,
+                'align': 'right',
+                'bg_color': '#ff9999',  # 'red',
+                'border': 1,
+                'num_format': num_format,
+                }),
+            'green': WB.add_format({
+                'font_name': 'Arial',
+                'font_size': 9,
+                'align': 'right',
+                'bg_color': '#c1ef94',  # 'green',
+                'border': 1,
+                'num_format': num_format,
+                }),
+        }
 
+        # 2 Sheets (+ ROP is selected)
+        if data.get('rop_page'):
+            ctx = context.copy()
+            product_ids = product_pool.search(cr, uid, [], context=context)
+            products = product_pool.browse(
+                cr, uid, product_ids, context=context)
+            parameters = {
+                'WS': WB.add_worksheet('ROP'),
+                'excel_format': excel_format,
+                'product': products,
+            }
+            add_rop_page(**parameters)
+
+        # Add other 2 page:
+        pages = ['Materiali', 'Prodotti']
         WS = {}
         for ws_name in pages:
             WS[ws_name] = WB.add_worksheet(ws_name)
 
         # ---------------------------------------------------------------------
-        # Format elements:
-        # ---------------------------------------------------------------------
-        num_format = '#,##0'
-        format_title = WB.add_format({
-            'bold': True,
-            'font_color': 'black',
-            'font_name': 'Arial',
-            'font_size': 10,
-            'align': 'center',
-            'valign': 'vcenter',
-            'bg_color': 'gray',
-            'border': 1,
-            'text_wrap': True,
-            })
-
-        format_text = WB.add_format({
-            'font_name': 'Arial',
-            'align': 'left',
-            'font_size': 9,
-            'border': 1,
-            })
-
-        format_white = WB.add_format({
-            'font_name': 'Arial',
-            'font_size': 9,
-            'align': 'right',
-            'bg_color': 'white',
-            'border': 1,
-            'num_format': num_format,
-            })
-        format_yellow = WB.add_format({
-            'font_name': 'Arial',
-            'font_size': 9,
-            'align': 'right',
-            'bg_color': '#ffff99',  # 'yellow',
-            'border': 1,
-            'num_format': num_format,
-            })
-        format_red = WB.add_format({
-            'font_name': 'Arial',
-            'font_size': 9,
-            'align': 'right',
-            'bg_color': '#ff9999',  # 'red',
-            'border': 1,
-            'num_format': num_format,
-            })
-        format_green = WB.add_format({
-            'font_name': 'Arial',
-            'font_size': 9,
-            'align': 'right',
-            'bg_color': '#c1ef94',  # 'green',
-            'border': 1,
-            'num_format': num_format,
-            })
-
-        # ---------------------------------------------------------------------
-        # Format columns:
-        # ---------------------------------------------------------------------
         # Column dimension:
         # ---------------------------------------------------------------------
-        for ws_name in pages[-2:]:  # Last 2 pages
+        for ws_name in pages:
             # Material and Product:
             WS[ws_name].set_column('A:A', 35)
             WS[ws_name].set_column('B:B', 11)
@@ -694,17 +829,8 @@ class product_status_wizard(osv.osv_memory):
             WS[ws_name].set_column('F:F', 13)
             WS[ws_name].set_column('G:I', 20)
             WS[ws_name].set_row(0, 30)
-        if rop_page:
-            # todo:
-            WS[pages[0]].set_column('A:A', 35)
-            WS[pages[0]].set_column('B:B', 11)
-            WS[pages[0]].set_column('C:D', 10)
-            WS[pages[0]].set_column('E:E', 20)
-            WS[pages[0]].set_column('F:F', 13)
-            WS[pages[0]].set_column('G:I', 20)
 
         # Generate report for export:
-        context['lang'] = 'it_IT'
         mrp_pool._start_up(cr, uid, data, context=context)
         start_product = False
         cols = mrp_pool._get_cols()
@@ -718,31 +844,32 @@ class product_status_wizard(osv.osv_memory):
         # Header:
         header = [
             # list for update after for product:
-            ['Materiale', format_title],
+            ['Materiale', excel_format['title']],
 
-            ('Codice', format_title),
-            # ('Alternativo', format_title),
-            ('Magaz.', format_title),
-            ('Liv. min.', format_title),
-            ('Note', format_title),
-            ('Check.', format_title),
+            ('Codice', excel_format['title']),
+            # ('Alternativo', excel_format['title']),
+            ('Magaz.', excel_format['title']),
+            ('Liv. min.', excel_format['title']),
+            ('Note', excel_format['title']),
+            ('Check.', excel_format['title']),
 
-            ('OF dettaglio', format_title),
+            ('OF dettaglio', excel_format['title']),
 
-            ('Picco mensile MP', format_title),
+            ('Picco mensile MP', excel_format['title']),
 
-            ('m(x) ultimi %s mesi' % data['month_window'], format_title),
+            ('m(x) ultimi %s mesi' % data['month_window'],
+             excel_format['title']),
             ]
         fixed_col = len(header)
         for col in cols:
-            header.append((col, format_title))
+            header.append((col, excel_format['title']))
         try:  # Override description for first column variable:
-            header[fixed_col] = ('Giacenza KG', format_title)
+            header[fixed_col] = ('Giacenza KG', excel_format['title'])
         except:
             pass
 
         # Setup header freeze and panes:
-        for ws_name in pages:  # [-2:]:
+        for ws_name in pages:
             header[0][0] = ws_name
             write_xls_mrp_line(WS[ws_name], 0, header)
             WS[ws_name].freeze_panes(1, 4)
@@ -817,14 +944,14 @@ class product_status_wizard(osv.osv_memory):
             # Write record:
             # -----------------------------------------------------------------
             body = [
-                (row_product.name, format_text),
-                (default_code, format_text),
+                (row_product.name, excel_format['text']),
+                (default_code, excel_format['text']),
 
                 # Alternative material:
                 # (alternative_product, format_text),
 
-                (stock_qty, format_white),  # min level account
-                (min_stock_level, format_white),  # min level calc
+                (stock_qty, excel_format['white']),  # min level account
+                (min_stock_level, excel_format['white']),  # min level calc
 
                 # Placeholder:
                 '',  # 4
@@ -832,10 +959,10 @@ class product_status_wizard(osv.osv_memory):
 
                 (write_supplier_order_detail(
                  history_supplier_orders.get(default_code, '')),
-                 format_text,
+                 excel_format['text'],
                  ),  # OF detail
-                (peak_data, format_white),  # Peak
-                (row[3], format_white),  # m(x)
+                (peak_data, excel_format['white']),  # Peak
+                (row[3], excel_format['white']),  # m(x)
                 ]
 
             # -----------------------------------------------------------------
@@ -881,30 +1008,30 @@ class product_status_wizard(osv.osv_memory):
 
                 # Choose the color:
                 if not status_line:  # value = 0
-                    body.append((status_line, format_white))
+                    body.append((status_line, excel_format['white']))
                     if check_extra != 'red':  # Red has priority
                         check_extra = 'yellow'
                 elif status_line > minimum:  # > minimum value (green)
-                    body.append((status_line, format_green))  # Green
+                    body.append((status_line, excel_format['green']))  # Green
                 elif status_line > 0.0:  # under minimum (yellow)
-                    body.append((status_line, format_yellow))
+                    body.append((status_line, excel_format['yellow']))
                     if check_extra != 'red':  # Red has priority
                         check_extra = 'yellow'
                 elif status_line < 0.0:  # under 0 (red)
-                    body.append((status_line, format_red))
+                    body.append((status_line, excel_format['red']))
                     check_extra = 'red'
                 else:  # ("=", "<"): # not present!!!
-                    body.append((status_line, format_white))
+                    body.append((status_line, excel_format['white']))
 
             # -----------------------------------------------------------------
             # Update with note and check data:
             # -----------------------------------------------------------------
-            check_format = format_white
+            check_format = excel_format['white']
             note = ''
             # A. MRP:
             if check_extra:
                 # Always:
-                check_format = format_red
+                check_format = excel_format['red']
                 check = 'Errore'
 
                 if check_extra == 'red':
@@ -921,16 +1048,16 @@ class product_status_wizard(osv.osv_memory):
             elif stock_qty < 0.0:
                 note += '[MX Sotto 0]'
                 check = 'Errore'
-                check_format = format_red
+                check_format = excel_format['red']
             elif stock_qty < min_stock_level:
                 note += '[MX %s (Sotto)]' % int(min_stock_level - stock_qty)
                 check = 'Errore'
-                check_format = format_yellow
+                check_format = excel_format['yellow']
                 # todo also MRP check here!
             else:
                 note += '[MX %s (Sopra)]' % int(stock_qty - min_stock_level)
                 check = 'Info'
-                check_format = format_green
+                check_format = excel_format['green']
 
             # -----------------------------------------------------------------
             # Write Block line:
