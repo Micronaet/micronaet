@@ -581,7 +581,7 @@ class product_status_wizard(osv.osv_memory):
 
                 elif product.obsolete:
                     return 'Obsoleto'
-                elif product.stock_obsolete:
+                elif product.min_stock_level <= 0.0:  # stock_obsolete:
                     return 'Non movimentato'
                 elif not code:
                     return 'Senza codice'
