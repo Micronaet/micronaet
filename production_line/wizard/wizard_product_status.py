@@ -611,8 +611,8 @@ class product_status_wizard(osv.osv_memory):
             WS.set_column('B:B', 10)
             WS.set_column('C:C', 40)
             WS.set_column('D:D', 8)
-            WS.set_column('E:M', 12)
-            WS.set_column('H:H', 8)
+            WS.set_column('E:N', 12)
+            WS.set_column('I:I', 8)
             WS.set_row(0, 35)
 
             header = [
@@ -623,6 +623,7 @@ class product_status_wizard(osv.osv_memory):
                 (u'UM.', excel_format['title']),
                 (u'Magazzino', excel_format['title']),
                 (u'Disponibilità', excel_format['title']),
+                (u'In ordine', excel_format['title']),
                 (u'Stato', excel_format['title']),
                 # (u'Manuale', excel_format['title']),
                 (u'Lead time gg.', excel_format['title']),
@@ -705,6 +706,7 @@ class product_status_wizard(osv.osv_memory):
                     # (product.approx_mode or '', color_format),
                     (account_qty, color_format['number']),
                     (gross_account_qty, color_format['number']),
+                    (order_comment, color_format['text']),
                     (state, color_format['text']),
                     # (product.manual_stock_level or '', color_format),
 
