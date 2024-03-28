@@ -704,7 +704,6 @@ class product_status_wizard(osv.osv_memory):
             # -----------------------------------------------------------------
             if hidden_row:
                 WS.filter_column_list('A', filter_list)
-                WS.row_hidden(hidden_row)
                 for row in hidden_row:
                     WS.set_row(row, None, None, {'hidden': True})
             return True
