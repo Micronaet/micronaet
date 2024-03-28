@@ -590,6 +590,12 @@ class product_status_wizard(osv.osv_memory):
                 else:
                     return 'Prodotti finiti'
 
+            # Hidden columns:
+            filter_list = [
+                'Obsoleto', 'Non movimentato', 'Senza codice', 'Recuperi',
+                'Macchiario',
+            ]
+
             WS.set_column('A:A', 15)
             WS.set_column('B:B', 10)
             WS.set_column('C:C', 30)
@@ -625,6 +631,7 @@ class product_status_wizard(osv.osv_memory):
                 products,
                 key=lambda x: (get_type(x), x.default_code),
             )
+            hidden_row = []
             for product in sorted_products:
                 row += 1
                 # Field used:
@@ -689,6 +696,14 @@ class product_status_wizard(osv.osv_memory):
                 ]
                 write_xls_mrp_line(WS, row, line)
 
+            # -----------------------------------------------------------------
+            # Hidden row:
+            # -----------------------------------------------------------------
+            if hidden_row:
+                WS.filter_column_list('A', filter_list)
+                WS.row_hidden(hidden_row)
+                for row in hidden_row:
+                    WS.set_row(row, None, None, {'hidden': True})
             return True
 
         if context is None:
