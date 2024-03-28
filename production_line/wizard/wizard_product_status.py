@@ -657,37 +657,27 @@ class product_status_wizard(osv.osv_memory):
                     color_format = excel_format['white']
 
                 if order_deadlined:
-                    color_order_account_qty = (
-                        order_account_qty, excel_format)
+                    color_order_account_qty = order_account_qty
                 else:
-                    color_order_account_qty = (
-                        order_account_qty, color_format)
+                    color_order_account_qty = order_account_qty
 
                 line = [
                     (product_type, color_format),
                     (default_code, color_format),
                     (product.name or '', color_format),
                     (product.uom_id.name or '', color_format),
-
                     (product.approx_integer, color_format),
                     (product.approx_mode or '', color_format),
-
                     (account_qty, color_format),
                     (color_order_account_qty, color_format),
                     (state, color_format),
-
                     (product.manual_stock_level or '', color_format),
                     (product.day_leadtime or '', color_format),
-                    # per month:
                     (product.medium_stock_qty * 30, color_format),
-
                     (product.day_min_level, color_format),
                     (int(min_stock_level), color_format),
-
                     (product.day_max_level, color_format),
                     (int(product.max_stock_level), color_format),
-
-                    # 'X' if product.stock_obsolete else ''
                 ]
                 pdb.set_trace()
                 write_xls_mrp_line(WS, row, line)
