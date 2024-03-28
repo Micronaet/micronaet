@@ -638,7 +638,6 @@ class product_status_wizard(osv.osv_memory):
                 products,
                 key=lambda x: (get_type(x), x.default_code),
             )
-            hidden_row = []
             for product in sorted_products:
                 # Field used:
                 default_code = product.default_code or ''
@@ -652,7 +651,7 @@ class product_status_wizard(osv.osv_memory):
                 row += 1
                 product_type = get_type(product)
                 if product_type in hide_filter_list:
-                    hidden_row.append(row)
+                    WS.set_row(row, None, None, {'hidden': True})
 
                 # Supplier Order data:
                 order_data = {}
@@ -709,10 +708,8 @@ class product_status_wizard(osv.osv_memory):
             # -----------------------------------------------------------------
             # Hidden row:
             # -----------------------------------------------------------------
-            if hidden_row:
-                for row in hidden_row[:10]:
-                    WS.set_row(row, None, None, {'hidden': True})
-                # WS.filter_column_list('A', show_filter_list)
+            # if hidden_row:
+            # WS.filter_column_list('A', show_filter_list)
             return True
 
         if context is None:
