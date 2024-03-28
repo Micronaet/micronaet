@@ -591,9 +591,12 @@ class product_status_wizard(osv.osv_memory):
                     return 'Prodotti finiti'
 
             # Hidden columns:
-            filter_list = [
+            hide_filter_list = [
                 'Obsoleto', 'Non movimentato', 'Senza codice', 'Recuperi',
                 'Macchiario',
+            ]
+            show_filter_list = [
+                'Imballi', 'Prodotti finiti', 'Materie prime'
             ]
 
             WS.set_column('A:A', 15)
@@ -644,7 +647,7 @@ class product_status_wizard(osv.osv_memory):
                     continue
 
                 product_type = get_type(product)
-                if product_type in filter_list:
+                if product_type in hide_filter_list:
                     hidden_row.append(row)
 
                 # Supplier Order data:
@@ -703,9 +706,9 @@ class product_status_wizard(osv.osv_memory):
             # Hidden row:
             # -----------------------------------------------------------------
             if hidden_row:
-                WS.filter_column_list('A', filter_list)
                 for row in hidden_row:
                     WS.set_row(row, None, None, {'hidden': True})
+                WS.filter_column_list('A', show_filter_list)
             return True
 
         if context is None:
