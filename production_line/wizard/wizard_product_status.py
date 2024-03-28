@@ -590,14 +590,14 @@ class product_status_wizard(osv.osv_memory):
                 elif start in 'R':
                     return 'Recuperi'
                 elif start in 'M':
-                    return 'Macchinario'
+                    return 'Macchinari'
                 else:
                     return 'Prodotti finiti'
 
             # Hidden columns:
             hide_filter_list = [
                 'Obsoleto', 'Non movimentato', 'Senza codice', 'Recuperi',
-                'Macchiario', 'Escluso',
+                'Macchinari', 'Escluso',
             ]
             show_filter_list = [
                 'Imballi', 'Prodotti finiti', 'Materie prime'
@@ -713,7 +713,7 @@ class product_status_wizard(osv.osv_memory):
             # Hidden row:
             # -----------------------------------------------------------------
             # if hidden_row:
-            # WS.filter_column_list('A', show_filter_list)
+            WS.filter_column_list('A', show_filter_list)
             return True
 
         if context is None:
