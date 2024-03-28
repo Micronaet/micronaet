@@ -612,6 +612,7 @@ class product_status_wizard(osv.osv_memory):
             WS.set_column('C:C', 40)
             WS.set_column('D:D', 8)
             WS.set_column('E:N', 12)
+            WS.set_column('G:G', 18)
             WS.set_column('I:I', 8)
             WS.set_row(0, 35)
 
@@ -666,7 +667,7 @@ class product_status_wizard(osv.osv_memory):
                     supplier_qty = orders[default_code][deadline]
                     gross_account_qty += supplier_qty
                     order_comment += 'Q. %s [%s]\n' % (
-                        supplier_qty,
+                        int(supplier_qty),
                         deadline,
                     )
                 # Update with stock:
