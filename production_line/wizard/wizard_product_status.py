@@ -658,17 +658,17 @@ class product_status_wizard(osv.osv_memory):
                     WS.set_row(row, None, None, {'hidden': True})
 
                 # Supplier Order data:
-                order_account_qty = account_qty   # Start with account!
+                gross_account_qty = account_qty   # Start with account!
                 order_comment = ''
                 for deadline in orders.get(default_code, {}):
                     supplier_qty = orders[default_code][deadline]
-                    order_account_qty += supplier_qty
+                    gross_account_qty += supplier_qty
                     order_comment += 'Q. %s [%s]\n' % (
                         supplier_qty,
                         deadline,
                     )
                 # Update with stock:
-                order_account_qty = int(order_account_qty)
+                gross_account_qty = int(gross_account_qty)
                 # todo write comment!
 
                 min_stock_level = int(product.min_stock_level)
@@ -681,14 +681,17 @@ class product_status_wizard(osv.osv_memory):
                 elif account_qty < 0:
                     state = 'Negativo'
                     color_format = excel_format['red']
-                elif min_stock_level < account_qty < order_account_qty:
+                elif account_qty > gross_account_qty:
+                    state = 'OK'
+                    color_format = excel_format['white']
+                elif min_stock_level < account_qty < gross_account_qty:
                     state = 'In copertura'
                     color_format = excel_format['orange']
                 elif account_qty < min_stock_level:
                     state = 'Sotto scorta'
                     color_format = excel_format['yellow']
                 else:
-                    state = 'OK'
+                    state = 'Non gestito'
                     color_format = excel_format['white']
 
                 line = [
@@ -699,7 +702,7 @@ class product_status_wizard(osv.osv_memory):
                     # (product.approx_integer, color_format),
                     # (product.approx_mode or '', color_format),
                     (account_qty, color_format['number']),
-                    (order_account_qty, color_format['number']),
+                    (gross_account_qty, color_format['number']),
                     (state, color_format['text']),
                     # (product.manual_stock_level or '', color_format),
 
