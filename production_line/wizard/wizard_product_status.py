@@ -669,23 +669,23 @@ class product_status_wizard(osv.osv_memory):
                     product.name or '',
                     product.uom_id.name or '',
 
-                    (product.approx_integer, color_format['right']),
+                    (product.approx_integer, color_format),
                     product.approx_mode or '',
 
-                    (account_qty, color_format['right']),
+                    (account_qty, color_format),
                     color_order_account_qty,
                     state,
 
-                    (product.manual_stock_level or '', color_format['right']),
+                    (product.manual_stock_level or '', color_format),
                     product.day_leadtime or '',
                     # per month:
-                    (product.medium_stock_qty * 30, color_format['number']),
+                    (product.medium_stock_qty * 30, color_format),
 
-                    (product.day_min_level, color_format['right']),
-                    (int(min_stock_level), color_format['right']),
+                    (product.day_min_level, color_format),
+                    (int(min_stock_level), color_format),
 
-                    (product.day_max_level, color_format['right']),
-                    (int(product.max_stock_level), color_format['right']),
+                    (product.day_max_level, color_format),
+                    (int(product.max_stock_level), color_format),
 
                     # 'X' if product.stock_obsolete else ''
                 ]
