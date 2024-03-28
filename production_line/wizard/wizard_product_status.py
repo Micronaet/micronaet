@@ -665,25 +665,25 @@ class product_status_wizard(osv.osv_memory):
                     color_order_account_qty = order_account_qty
 
                 line = [
-                    (product_type, color_format),
-                    (default_code, color_format),
-                    (product.name or '', color_format),
-                    (product.uom_id.name or '', color_format),
+                    (product_type, color_format['text']),
+                    (default_code, color_format['text']),
+                    (product.name or '', color_format['text']),
+                    (product.uom_id.name or '', color_format['text']),
                     # (product.approx_integer, color_format),
                     # (product.approx_mode or '', color_format),
-                    (account_qty, color_format),
-                    (color_order_account_qty, color_format),
-                    (state, color_format),
+                    (account_qty, color_format['number']),
+                    (color_order_account_qty, color_format['number']),
+                    (state, color_format['text']),
                     # (product.manual_stock_level or '', color_format),
 
-                    (product.day_leadtime or '', color_format),
-                    (product.medium_stock_qty, color_format),
+                    (product.day_leadtime or '', color_format['number']),
+                    (product.medium_stock_qty, color_format['number']),
 
-                    (int(min_stock_level), color_format),
-                    (product.day_min_level, color_format),
+                    (int(min_stock_level), color_format['number']),
+                    (product.day_min_level, color_format['number']),
 
-                    (int(product.max_stock_level), color_format),
-                    (product.day_max_level, color_format),
+                    (int(product.max_stock_level), color_format['number']),
+                    (product.day_max_level, color_format['number']),
                 ]
                 write_xls_mrp_line(WS, row, line)
 
