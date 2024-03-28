@@ -575,22 +575,20 @@ class product_status_wizard(osv.osv_memory):
 
                 if not code:
                     return 'Senza codice'
-
-                if start == 'A':  # Raw materials
-                    return 'MP'
-                elif start == 'B':  # Raw materials
-                    return 'IMB'
-                elif start in 'R':  # Waste
-                    return 'REC'
+                if start == 'A':
+                    return 'Materie prime'
+                elif start == 'B':
+                    return 'Imballi'
+                elif start in 'R':
+                    return 'Recuperi'
                 else:
-                    return 'PROD'
+                    return 'Prodotti finiti'
 
-            WS.set_column('A:A', 35)
-            WS.set_column('B:B', 11)
-            WS.set_column('C:D', 10)
-            WS.set_column('E:E', 20)
-            WS.set_column('F:F', 13)
-            WS.set_column('G:I', 20)
+            WS.set_column('A:A', 15)
+            WS.set_column('B:B', 10)
+            WS.set_column('C:C', 30)
+            WS.set_column('D:D', 8)
+            WS.set_column('E:M', 12)
             WS.set_row(0, 35)
 
             header = [
@@ -666,16 +664,18 @@ class product_status_wizard(osv.osv_memory):
                     (default_code, color_format),
                     (product.name or '', color_format),
                     (product.uom_id.name or '', color_format),
-                    (product.approx_integer, color_format),
-                    (product.approx_mode or '', color_format),
+                    # (product.approx_integer, color_format),
+                    # (product.approx_mode or '', color_format),
                     (account_qty, color_format),
                     (color_order_account_qty, color_format),
                     (state, color_format),
-                    (product.manual_stock_level or '', color_format),
-                    (product.day_leadtime or '', color_format),
+                    # (product.manual_stock_level or '', color_format),
+                    # (product.day_leadtime or '', color_format),
                     (product.medium_stock_qty * 30, color_format),
+
                     (product.day_min_level, color_format),
                     (int(min_stock_level), color_format),
+
                     (product.day_max_level, color_format),
                     (int(product.max_stock_level), color_format),
                 ]
