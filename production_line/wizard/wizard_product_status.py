@@ -679,7 +679,6 @@ class product_status_wizard(osv.osv_memory):
                     (product.day_max_level, color_format),
                     (int(product.max_stock_level), color_format),
                 ]
-                pdb.set_trace()
                 write_xls_mrp_line(WS, row, line)
 
             return True
