@@ -642,7 +642,10 @@ class product_status_wizard(osv.osv_memory):
                 if not default_code:
                     _logger.error('Product %s has no code' % product.name)
                     continue
+
                 product_type = get_type(product)
+                if product_type in filter_list:
+                    hidden_row.append(row)
 
                 # Supplier Order data:
                 order_data = {}
