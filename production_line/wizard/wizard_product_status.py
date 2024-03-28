@@ -689,6 +689,7 @@ class product_status_wizard(osv.osv_memory):
 
                     # 'X' if product.stock_obsolete else ''
                 ]
+                pdb.set_trace()
                 write_xls_mrp_line(WS, row, line)
 
             return True
