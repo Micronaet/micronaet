@@ -585,6 +585,8 @@ class product_status_wizard(osv.osv_memory):
                     return 'Imballi'
                 elif start in 'R':
                     return 'Recuperi'
+                elif start in 'M':
+                    return 'Macchinario'
                 else:
                     return 'Prodotti finiti'
 
