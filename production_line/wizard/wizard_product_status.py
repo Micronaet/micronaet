@@ -655,7 +655,7 @@ class product_status_wizard(osv.osv_memory):
 
                 # Supplier Order data:
                 order_data = {}
-                order_account_qty = order_data.get('total', 0.0)
+                order_account_qty = order_data.get('total', 0.0)  # todo
                 order_comment = order_data.get('comment', '')
                 order_deadlined = order_data.get('deadlined', '')
 
@@ -667,24 +667,18 @@ class product_status_wizard(osv.osv_memory):
                 if product_type == 'Escluso':
                     state = ''
                     color_format = excel_format['grey']
-
-                if account_qty < min_stock_level < order_account_qty:
+                elif account_qty < 0:
+                    state = 'Negativo'
+                    color_format = excel_format['red']
+                elif min_stock_level < order_account_qty:
                     state = 'In copertura'
                     color_format = excel_format['orange']
                 elif account_qty < min_stock_level:
                     state = 'Sotto scorta'
                     color_format = excel_format['yellow']
-                elif account_qty < 0:
-                    state = 'Negativo'
-                    color_format = excel_format['red']
                 else:
                     state = 'OK'
                     color_format = excel_format['white']
-
-                if order_deadlined:
-                    color_order_account_qty = order_account_qty
-                else:
-                    color_order_account_qty = order_account_qty
 
                 line = [
                     (product_type, color_format['text']),
@@ -694,7 +688,7 @@ class product_status_wizard(osv.osv_memory):
                     # (product.approx_integer, color_format),
                     # (product.approx_mode or '', color_format),
                     (account_qty, color_format['number']),
-                    (color_order_account_qty, color_format['number']),
+                    (order_account_qty, color_format['number']),
                     (state, color_format['text']),
                     # (product.manual_stock_level or '', color_format),
 
