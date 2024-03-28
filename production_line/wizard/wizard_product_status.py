@@ -612,10 +612,17 @@ class product_status_wizard(osv.osv_memory):
 
         # Open file and write header
         WB = xlsxwriter.Workbook(filename)
-        # 2 Sheets
 
-        WS = WB.add_worksheet('Materiali')
-        WS_product = WB.add_worksheet('Prodotti')
+        # 2 Sheets (+ ROP is selected)
+        rop_page = data.get('rop_page')
+        pages = []
+        if rop_page:
+            pages.append('ROP')
+        pages.extend(['Materiali', 'Prodotti'])
+
+        WS = {}
+        for ws_name in pages:
+            WS[ws_name] = WB.add_worksheet(ws_name)
 
         # ---------------------------------------------------------------------
         # Format elements:
@@ -678,15 +685,23 @@ class product_status_wizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         # Column dimension:
         # ---------------------------------------------------------------------
-        for WS_select in (WS, WS_product):
+        for ws_name in pages[-2:]:  # Last 2 pages
             # Material and Product:
-            WS_select.set_column('A:A', 35)
-            WS_select.set_column('B:B', 11)
-            WS_select.set_column('C:D', 10)
-            WS_select.set_column('E:E', 20)
-            WS_select.set_column('F:F', 13)
-            WS_select.set_column('G:I', 20)
-            WS_select.set_row(0, 30)
+            WS[ws_name].set_column('A:A', 35)
+            WS[ws_name].set_column('B:B', 11)
+            WS[ws_name].set_column('C:D', 10)
+            WS[ws_name].set_column('E:E', 20)
+            WS[ws_name].set_column('F:F', 13)
+            WS[ws_name].set_column('G:I', 20)
+            WS[ws_name].set_row(0, 30)
+        if rop_page:
+            # todo:
+            WS[pages[0]].set_column('A:A', 35)
+            WS[pages[0]].set_column('B:B', 11)
+            WS[pages[0]].set_column('C:D', 10)
+            WS[pages[0]].set_column('E:E', 20)
+            WS[pages[0]].set_column('F:F', 13)
+            WS[pages[0]].set_column('G:I', 20)
 
         # Generate report for export:
         context['lang'] = 'it_IT'
@@ -726,22 +741,19 @@ class product_status_wizard(osv.osv_memory):
         except:
             pass
 
-        # Material header:
-        write_xls_mrp_line(WS, 0, header)
-        WS.freeze_panes(1, 4)
-        WS.autofilter(0, 0, 0, fixed_col - 1)
-
-        # Product header
-        header[0][0] = 'Prodotto'
-        write_xls_mrp_line(WS_product, 0, header)
-        WS_product.freeze_panes(1, 4)
-        WS_product.autofilter(0, 0, 0, fixed_col - 1)
+        # Setup header freeze and panes:
+        for ws_name in pages:  # [-2:]:
+            header[0][0] = ws_name
+            write_xls_mrp_line(WS[ws_name], 0, header)
+            WS[ws_name].freeze_panes(1, 4)
+            WS[ws_name].autofilter(0, 0, 0, fixed_col - 1)
 
         # Body:
         i = 1  # row position (before 0)
         rows = mrp_pool._get_rows()
 
         table, table_comment = mrp_pool._get_table()  # For check row state
+        WS_select = WS[pages[-2]]  # Materials
         for row in rows:
             # Check mode: only active
             if not use_row(table[row[1]], data, product=row[2]):
@@ -752,7 +764,7 @@ class product_status_wizard(osv.osv_memory):
                 # _logger.info('Yes: %s' % (table[row[1]], ))
 
             if not start_product and row[0] == 'P':
-                WS = WS_product  # change ref. for use second sheet
+                WS_select = WS[pages[-1]]  # change ref. for use second sheet
                 start_product = True
                 i = 1  # jump one line
 
@@ -851,7 +863,7 @@ class product_status_wizard(osv.osv_memory):
                         code, alternative_name, alternative_stock)
 
                 write_xls_mrp_line_comment(
-                    WS, row=i, line=[alternative_comment],
+                    WS_select, row=i, line=[alternative_comment],
                     gap_column=1)
 
             gap_columns = len(body)
@@ -927,7 +939,7 @@ class product_status_wizard(osv.osv_memory):
             body[4] = (note, check_format)  # Note
             body[5] = (check, check_format)  # Check
             # Write line generated
-            write_xls_mrp_line(WS, i, body)
+            write_xls_mrp_line(WS_select, i, body)
 
             # -----------------------------------------------------------------
             # Peak Comment:
@@ -935,12 +947,13 @@ class product_status_wizard(osv.osv_memory):
             if peak_comment:
                 peak_comment_text = '\n'.join(sorted(peak_comment))
                 write_xls_mrp_line_comment(
-                    WS, row=i, line=[peak_comment_text],
+                    WS_select, row=i, line=[peak_comment_text],
                     gap_column=peak_columns)
             comment_line = table_comment.get(row[1])
             if comment_line:
                 write_xls_mrp_line_comment(
-                    WS, row=i, line=comment_line, gap_column=gap_columns)
+                    WS_select, row=i, line=comment_line,
+                    gap_column=gap_columns)
 
             i += 1
         _logger.info('End export status on %s' % filename)
