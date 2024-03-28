@@ -664,6 +664,10 @@ class product_status_wizard(osv.osv_memory):
                 # if mode == 'Niente':  # todo
                 #    state = 'Non movimentato'
                 #     color_format = excel_format['grey']
+                if product_type == 'Escluso':
+                    state = ''
+                    color_format = excel_format['grey']
+
                 if account_qty < min_stock_level < order_account_qty:
                     state = 'In copertura'
                     color_format = excel_format['orange']
@@ -783,6 +787,24 @@ class product_status_wizard(osv.osv_memory):
                 'text_wrap': True,
                 }),
 
+            'grey': {
+                'text': WB.add_format({
+                    'font_name': 'Arial',
+                    'font_size': 9,
+                    # 'align': 'right',
+                    'bg_color': '#e6e8e5',
+                    'border': 1,
+                    # 'num_format': num_format,
+                    }),
+                'number': WB.add_format({
+                    'font_name': 'Arial',
+                    'font_size': 9,
+                    'align': 'right',
+                    'bg_color': '#e6e8e5',
+                    'border': 1,
+                    'num_format': num_format,
+                    })
+                },
             'white': {
                 'text': WB.add_format({
                     'font_name': 'Arial',
