@@ -130,6 +130,7 @@ class ProductStatusWizard(osv.osv_memory):
                 'month_window': 3,
                 'with_order_detail': True,
                 'fake_ids': fake_ids,
+                'rop_page': True,
                 }
 
         if wizard is not None:

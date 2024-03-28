@@ -276,7 +276,7 @@ class product_status_wizard(osv.osv_memory):
     def prepare_data(self, cr, uid, ids, context=None):
         """ Prepare data dict
         """
-        wiz_proxy = self.browse(cr, uid, ids)[0]
+        wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
         datas = {}
         if wiz_proxy.days:
             datas['days'] = wiz_proxy.days
@@ -287,6 +287,7 @@ class product_status_wizard(osv.osv_memory):
         datas['with_medium'] = wiz_proxy.with_medium
         datas['month_window'] = wiz_proxy.month_window
         datas['with_order_detail'] = wiz_proxy.with_order_detail
+        datas['rop_page'] = wiz_proxy.rop_page
 
         datas['fake_ids'] = wiz_proxy.fake_ids
         return datas
@@ -612,6 +613,7 @@ class product_status_wizard(osv.osv_memory):
         # Open file and write header
         WB = xlsxwriter.Workbook(filename)
         # 2 Sheets
+
         WS = WB.add_worksheet('Materiali')
         WS_product = WB.add_worksheet('Prodotti')
 
@@ -991,14 +993,14 @@ class product_status_wizard(osv.osv_memory):
                 ))
 
             # -----------------------------------------------------------------
-            # Save mode:
+            # A. Save mode:
             # -----------------------------------------------------------------
             if save_mode:  # Save as a file:
                 _logger.warning('Save mode: %s' % save_mode)
                 return filename
 
             # -----------------------------------------------------------------
-            # Mail mode:
+            # B. Mail mode:
             # -----------------------------------------------------------------
             for email in partner_email:
                 _logger.warning('... sending mail: %s' % email)
@@ -1016,7 +1018,7 @@ class product_status_wizard(osv.osv_memory):
                     )
         else:
             # -----------------------------------------------------------------
-            # Open attachment form:
+            # C. Open attachment form:
             # -----------------------------------------------------------------
             attachment_id = attachment_pool.create(cr, uid, {
                 'name': 'Status MRP Report',
@@ -1321,6 +1323,7 @@ class product_status_wizard(osv.osv_memory):
         'with_medium': fields.boolean('With m(x)', required=False,
             help="if check in report there's production m(x), if not check report is more fast"),
         'with_order_detail': fields.boolean('With OF detail'),
+        'rop_page': fields.boolean('Con pagina ROP'),
         }
 
     _defaults = {

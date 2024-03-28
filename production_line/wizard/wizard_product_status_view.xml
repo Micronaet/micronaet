@@ -24,7 +24,7 @@
                             <field name="month_window" attrs="{'invisible':[('with_medium','=',False)]}"/>
 
                             <field name="with_order_detail" />
-                            <newline/>
+                            <field name="rop_page" />
 
                             <separator string="Fake production:" colspan="4" />
                             <field name="fake_ids" colspan="4" nolabel="1">
