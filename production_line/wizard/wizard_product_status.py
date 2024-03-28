@@ -573,7 +573,11 @@ class product_status_wizard(osv.osv_memory):
                 code = (product.default_code or '').strip().upper()
                 start = code[:1]
 
-                if not code:
+                if product.obsolete:
+                    return 'Obsoleto'
+                elif product.stock_obsolete:
+                    return 'Non movimentato'
+                elif not code:
                     return 'Senza codice'
                 if start == 'A':
                     return 'Materie prime'
