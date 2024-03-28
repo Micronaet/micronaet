@@ -706,7 +706,7 @@ class product_status_wizard(osv.osv_memory):
                     # (product.approx_mode or '', color_format),
                     (account_qty, color_format['number']),
                     (gross_account_qty, color_format['number']),
-                    (order_comment, color_format['text']),
+                    (order_comment.strip(), color_format['text']),
                     (state, color_format['text']),
                     # (product.manual_stock_level or '', color_format),
 
@@ -806,6 +806,7 @@ class product_status_wizard(osv.osv_memory):
                     # 'align': 'right',
                     'bg_color': '#e6e8e5',
                     'border': 1,
+                    'valign': 'top',
                     # 'num_format': num_format,
                     }),
                 'number': WB.add_format({
@@ -824,6 +825,7 @@ class product_status_wizard(osv.osv_memory):
                     # 'align': 'right',
                     'bg_color': 'white',
                     'border': 1,
+                    'valign': 'top',
                     # 'num_format': num_format,
                     }),
                 'number': WB.add_format({
@@ -842,6 +844,7 @@ class product_status_wizard(osv.osv_memory):
                     # 'align': 'right',
                     'bg_color': '#ffff99',
                     'border': 1,
+                    'valign': 'top',
                     # 'num_format': num_format,
                     }),
                 'number': WB.add_format({
@@ -860,6 +863,7 @@ class product_status_wizard(osv.osv_memory):
                     # 'align': 'right',
                     'bg_color': '#ff9999',
                     'border': 1,
+                    'valign': 'top',
                     # 'num_format': num_format,
                     }),
                 'number': WB.add_format({
@@ -878,6 +882,7 @@ class product_status_wizard(osv.osv_memory):
                     # 'align': 'right',
                     'bg_color': '#c1ef94',
                     'border': 1,
+                    'valign': 'top',
                     # 'num_format': num_format,
                     }),
                 'number': WB.add_format({
@@ -896,6 +901,7 @@ class product_status_wizard(osv.osv_memory):
                     # 'align': 'right',
                     'bg_color': '#ebb734',
                     'border': 1,
+                    'valign': 'top',
                     # 'num_format': num_format,
                     }),
                 'number': WB.add_format({
