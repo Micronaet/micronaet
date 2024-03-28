@@ -560,7 +560,8 @@ class product_status_wizard(osv.osv_memory):
             else:
                 return True
 
-        def add_rop_page(WS=False, products=False, excel_format=False):
+        def add_rop_page(
+                WS=False, products=False, excel_format=False, orders=False):
             """ Add rop page in necessary
             """
             # Utility:
@@ -594,6 +595,8 @@ class product_status_wizard(osv.osv_memory):
                 else:
                     return 'Prodotti finiti'
 
+            print(orders)
+            pdb.set_trace()
             # Hidden columns:
             hide_filter_list = [
                 'Obsoleto', 'Non movimentato', 'Senza codice', 'Recuperi',
@@ -901,6 +904,8 @@ class product_status_wizard(osv.osv_memory):
                 'WS': WB.add_worksheet('ROP'),
                 'excel_format': excel_format,
                 'products': products,
+                'orders': mrp_pool.get_external_supplier_order(
+                    cr, uid, context=context)
             }
             add_rop_page(**parameters)
 
