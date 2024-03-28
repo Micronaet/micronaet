@@ -652,11 +652,12 @@ class product_status_wizard(osv.osv_memory):
 
                 if order_deadlined:
                     color_order_account_qty = (
-                        order_account_qty, excel_format['red']['right'])
+                        order_account_qty, excel_format)
                 else:
                     color_order_account_qty = (
-                        order_account_qty, color_format['right'])
+                        order_account_qty, color_format)
 
+                '''
                 line = [
                     product_type,
                     default_code or '',
@@ -682,7 +683,7 @@ class product_status_wizard(osv.osv_memory):
                     (int(product.max_stock_level), color_format['right']),
 
                     # 'X' if product.stock_obsolete else '',
-                ]
+                ]'''
                 break
 
             pdb.set_trace()
