@@ -198,7 +198,6 @@ class MrpProduction(osv.osv):
     def load_custom_bom_materials_for_mrp(self, cr, uid, ids, context=None):
         """ Generate a custom BOM for this order
         """
-        pdb.set_trace()
         bom_pool = self.pool.get('mrp.bom')
 
         mrp_id = ids[0]
@@ -211,16 +210,17 @@ class MrpProduction(osv.osv):
                 'ripristinare quella originale')
 
         current_bom_id = current_bom.id
-        default = {
+        default_data = {
             'mrp_id': mrp_id,
             'active': False,
             'name': u'%s [Pers. x %s]' % (
                 current_bom.name, mrp.name),
             }
         new_bom_id = bom_pool.copy(
-            cr, uid, current_bom_id, default=default, context=context)
-        # Update (needed?)
-        bom_pool.write(cr, uid, [new_bom_id], default, context=context)
+            cr, uid, current_bom_id, context=context)
+        pdb.set_trace()
+        # Update with default:
+        bom_pool.write(cr, uid, [new_bom_id], default_data, context=context)
 
         # Update reference BOM:
         data = {'bom_id': new_bom_id}
