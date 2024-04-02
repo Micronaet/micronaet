@@ -238,8 +238,8 @@ class MrpProduction(osv.osv):
         lines = bom_pool.browse(cr, uid, new_bom_id, context=context).bom_lines
         for line in lines:
             bom_pool.write(cr, uid, [line.id], {
-                'origin_id': line.product_id.id,
-                'origin_qty': line.qty,
+                'base_product_id': line.product_id.id,
+                'base_prodcut_qty': line.product_qty,
             }, context=context)
 
         # Update reference BOM:
