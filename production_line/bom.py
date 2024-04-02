@@ -182,7 +182,7 @@ class MrpProduction(osv.osv):
         mrp = self.browse(cr, uid, mrp_id, context=context)
         bom = mrp.bom_id
         origin_bom = mrp.origin_bom_id
-        if not origin_bom or bom == origin_bom or not bom.mrp_id:
+        if not origin_bom or bom == origin_bom: #or not bom.mrp_id:
             _logger.error('Distinta base già nella versione originale')
             return False
 
@@ -203,14 +203,6 @@ class MrpProduction(osv.osv):
         mrp_id = ids[0]
         mrp = self.browse(cr, uid, mrp_id, context=None)
 
-        # Try to search before:
-        # bom_ids = bom_pool.search(cr, uid, [
-        #    ('active', '=', False),
-        #    ('mrp_id', '=', mrp_id),
-        # ], context=context)
-        # if bom_ids:  # Connect previous BOM
-        #    new_bom_id = bom_ids[0]
-        # else:
         current_bom = mrp.bom_id
         if current_bom.mrp_id:  # Is a MRP BOM
             raise Exception(
