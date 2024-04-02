@@ -175,7 +175,6 @@ class MrpProduction(osv.osv):
     def restore_bom_materials_for_mrp(self, cr, uid, ids, context=None):
         """ Restore original Bom for production
         """
-        pdb.set_trace()
         bom_pool = self.pool.get('mrp.bom')
 
         mrp_id = ids[0]
@@ -218,7 +217,6 @@ class MrpProduction(osv.osv):
             }
         new_bom_id = bom_pool.copy(
             cr, uid, current_bom_id, context=context)
-        pdb.set_trace()
         # Update with default:
         bom_pool.write(cr, uid, [new_bom_id], default_data, context=context)
 
