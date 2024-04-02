@@ -216,11 +216,12 @@ class MrpProduction(osv.osv):
                 'ripristinare quella originale')
 
         current_bom_id = current_bom.id
+        bom_name = u'%s [Pers. x %s]' % (
+                current_bom.name, mrp.name)
         default_data = {
             'mrp_id': mrp_id,
             'active': False,
-            'name': u'%s [Pers. x %s]' % (
-                current_bom.name, mrp.name),
+            'name': bom_name,
             }
         new_bom_id = bom_pool.copy(
             cr, uid, current_bom_id, context=context)
@@ -234,7 +235,7 @@ class MrpProduction(osv.osv):
 
         self.write_thread_message(
             cr, uid, [mrp_id],
-            subject='Impostata distinta base personalizzata',
+            subject='Impostata distinta base personalizzata: %s' % bom_name,
             # body=body,
             context=context)
 
