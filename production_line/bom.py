@@ -221,9 +221,7 @@ class MrpProduction(osv.osv):
             cr, uid, current_bom_id, default=default, context=context)
 
         # Update reference BOM:
-        data = {
-            'bom_id': new_bom_id,
-            }
+        data = {'bom_id': new_bom_id}
         if not mrp.origin_bom_id:
             data['origin_bom_id'] = mrp.bom_id.id  # Save current BOM
         return self.write(cr, uid, ids, data, context=context)
