@@ -163,9 +163,9 @@ class MrpBom(osv.osv):
                  'produziones'),
 
         # Bom line:
-        'origin_id': fields.many2one(
+        'base_product_id': fields.many2one(
             'product.product', 'Prod. orig.', required=False),
-        'origin_qty': fields.float(
+        'base_product_qty': fields.float(
             'Q. orig', digits=(10, 2), required=False),
     }
 
