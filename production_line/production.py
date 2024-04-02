@@ -1824,7 +1824,7 @@ class mrp_production_extra(osv.osv):
         # Delete all elements:
         material_pool = self.pool.get('mrp.production.material')
         material_ids = material_pool.search(cr, uid, [
-            ('mrp_production_id','=',item_id)], context=context)
+            ('mrp_production_id', '=', item_id)], context=context)
         material_pool.unlink(cr, uid, material_ids, context=context)
 
         # Create elements from bom:

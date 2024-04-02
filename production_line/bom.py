@@ -150,12 +150,92 @@ class MrpBom(osv.osv):
             cr, uid, ids, context=ctx)
 
     _columns = {
+        'mrp_id': fields.many2one(
+            'mrp.production', 'Produzione',
+            help='Indica che la distinta base è stata personalizzata solo '
+                 'per questa produzione (è anche stata disattivata e visibile '
+                 'solo da questo collegamento nella produzione)'),
         'create_date': fields.datetime('Data creazione'),
         #  'is_active': fields.boolean('Attivo (rimuovere)!'),
         'obsolete': fields.boolean(
             'Obsoleta',
             help='Se attivo è considerata obsolete e non visibile in '
                  'produziones'),
+    }
+
+
+class MrpProduction(osv.osv):
+    """ Alternative groups for BOM
+    """
+    _inherit = 'mrp.production'
+
+    # -------------------------------------------------------------------------
+    # Custom BOM management:
+    # -------------------------------------------------------------------------
+    def restore_bom_materials_for_mrp(self, cr, uid, ids, context=None):
+        """ Restore original Bom for production
+        """
+        pdb.set_trace()
+        bom_pool = self.pool.get('mrp.bom')
+
+        mrp_id = ids[0]
+        mrp = self.browse(cr, uid, mrp_id, context=context)
+        bom = mrp.bom_id
+        origin_bom = mrp.origin_bom_id
+        if not origin_bom or bom == origin_bom or not bom.mrp_id:
+            _logger.info('Distinta base già nella versione originale')
+            return False
+
+        # Update reference BOM:
+        self.write(cr, uid, ids, {
+            'bom_id': origin_bom.id,
+        }, context=context)
+        return bom_pool.unlink(cr, uid, [], context=context)
+
+    def load_custom_bom_materials_for_mrp(self, cr, uid, ids, context=None):
+        """ Generate a custom BOM for this order
+        """
+        pdb.set_trace()
+        bom_pool = self.pool.get('mrp.bom')
+
+        mrp_id = ids[0]
+        mrp = self.browse(cr, uid, mrp_id, context=None)
+
+        # Try to search before:
+        # bom_ids = bom_pool.search(cr, uid, [
+        #    ('active', '=', False),
+        #    ('mrp_id', '=', mrp_id),
+        # ], context=context)
+        # if bom_ids:  # Connect previous BOM
+        #    new_bom_id = bom_ids[0]
+        # else:
+        current_bom = mrp.bom_id
+        if current_bom.mrp_id:  # Is a MRP BOM
+            raise Exception(
+                'La ricetta è già personalizzata, modificarla o '
+                'ripristinare quella originale')
+        current_bom_id = current_bom.id
+        new_bom_id = bom_pool.copy(
+            cr, uid, current_bom_id, context=context)
+
+        # Update reference BOM:
+        data = {
+            'active': False,
+            'bom_id': new_bom_id,
+            'name': '%s [Pers. %s]' % (
+                current_bom.name,
+                mrp.name,
+            ),
+            }
+        if not mrp.origin_bom_id:
+            data['origin_bom_id'] = mrp.bom_id.id  # Save current BOM
+
+        return self.write(cr, uid, ids, data, context=context)
+
+    _columns = {
+        'origin_bom_id': fields.many2one(
+            'mrp.bom', 'Origin BOM',
+            help='Origin BOM before custom'),
     }
 
 
