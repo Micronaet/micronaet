@@ -183,7 +183,7 @@ class MrpProduction(osv.osv):
         bom = mrp.bom_id
         origin_bom = mrp.origin_bom_id
         if not origin_bom or bom == origin_bom or not bom.mrp_id:
-            _logger.info('Distinta base già nella versione originale')
+            _logger.error('Distinta base già nella versione originale')
             return False
 
         # Update reference BOM:
@@ -218,20 +218,22 @@ class MrpProduction(osv.osv):
                 'ripristinare quella originale')
         current_bom_id = current_bom.id
         new_bom_id = bom_pool.copy(
-            cr, uid, current_bom_id, context=context)
+            cr, uid, current_bom_id, context=context,
+            default={
+                'mrp_id': mrp_id,
+                'active': False,
+                'name': '%s [Pers. x %s]' % (
+                    current_bom.name,
+                    mrp.name,
+                ),
+            })
 
         # Update reference BOM:
         data = {
-            'active': False,
             'bom_id': new_bom_id,
-            'name': '%s [Pers. %s]' % (
-                current_bom.name,
-                mrp.name,
-            ),
             }
         if not mrp.origin_bom_id:
             data['origin_bom_id'] = mrp.bom_id.id  # Save current BOM
-
         return self.write(cr, uid, ids, data, context=context)
 
     _columns = {
