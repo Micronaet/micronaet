@@ -191,6 +191,13 @@ class MrpProduction(osv.osv):
             'bom_id': origin_bom.id,
             'origin_bom_id': False,
         }, context=context)
+
+        self.write_thread_message(
+            cr, uid, [mrp_id],
+            subject='Ripristino distinta base originale prodotto',
+            # body=body,
+            context=context)
+
         # Remove custom BOM:
         return bom_pool.unlink(cr, uid, [bom_id], context=context)
 
@@ -224,6 +231,13 @@ class MrpProduction(osv.osv):
         data = {'bom_id': new_bom_id}
         if not mrp.origin_bom_id:
             data['origin_bom_id'] = mrp.bom_id.id  # Save current BOM
+
+        self.write_thread_message(
+            cr, uid, [mrp_id],
+            subject='Impostata distinta base personalizzata',
+            # body=body,
+            context=context)
+
         return self.write(cr, uid, ids, data, context=context)
 
     _columns = {
