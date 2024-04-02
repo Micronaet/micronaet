@@ -885,7 +885,7 @@
         <field name="inherit_id" ref="mrp.mrp_production_form_view" />
         <field name="arch" type="xml">
             <field name="bom_id" position="before">
-                <button type="object" colspan="1" name="load_custom_bom_materials_for_mrp" string="Ricetta personalizzata" class="oe_highlight"/>
+                <button type="object" colspan="1" name="load_custom_bom_materials_for_mrp" string="Ricetta personalizzata" class="oe_highlight" attrs="{'invisible': [('origin_bom_id', '!=', False)]}"/>
                 <button type="object" colspan="1" name="restore_bom_materials_for_mrp" string="Ripristina originale" attrs="{'invisible': [('origin_bom_id', '=', False)]}"/>
                 <field name="origin_bom_id" invisible="1" />
             </field>

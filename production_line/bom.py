@@ -189,7 +189,9 @@ class MrpProduction(osv.osv):
         # Update reference BOM:
         self.write(cr, uid, ids, {
             'bom_id': origin_bom.id,
+            'origin_bom_id': False,
         }, context=context)
+        # Remove custom BOM:
         return bom_pool.unlink(cr, uid, [], context=context)
 
     def load_custom_bom_materials_for_mrp(self, cr, uid, ids, context=None):
