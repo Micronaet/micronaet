@@ -183,7 +183,7 @@ class MrpProduction(osv.osv):
         bom = mrp.bom_id
         bom_id = bom.id
         origin_bom = mrp.origin_bom_id
-        if not origin_bom or bom == origin_bom: #or not bom.mrp_id:
+        if not origin_bom or bom == origin_bom or not bom.mrp_id:
             _logger.error('Distinta base già nella versione originale')
             return False
 
@@ -209,17 +209,16 @@ class MrpProduction(osv.osv):
             raise Exception(
                 'La ricetta è già personalizzata, modificarla o '
                 'ripristinare quella originale')
+
         current_bom_id = current_bom.id
+        default = {
+            'mrp_id': mrp_id,
+            'active': False,
+            'name': '%s [Pers. x %s]' % (
+                current_bom.name, mrp.name,),
+            }
         new_bom_id = bom_pool.copy(
-            cr, uid, current_bom_id, context=context,
-            default={
-                'mrp_id': mrp_id,
-                'active': False,
-                'name': '%s [Pers. x %s]' % (
-                    current_bom.name,
-                    mrp.name,
-                ),
-            })
+            cr, uid, current_bom_id, default=default, context=context)
 
         # Update reference BOM:
         data = {
