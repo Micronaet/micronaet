@@ -181,6 +181,7 @@ class MrpProduction(osv.osv):
         mrp_id = ids[0]
         mrp = self.browse(cr, uid, mrp_id, context=context)
         bom = mrp.bom_id
+        bom_id = bom.id
         origin_bom = mrp.origin_bom_id
         if not origin_bom or bom == origin_bom: #or not bom.mrp_id:
             _logger.error('Distinta base già nella versione originale')
@@ -192,7 +193,7 @@ class MrpProduction(osv.osv):
             'origin_bom_id': False,
         }, context=context)
         # Remove custom BOM:
-        return bom_pool.unlink(cr, uid, [], context=context)
+        return bom_pool.unlink(cr, uid, [bom_id], context=context)
 
     def load_custom_bom_materials_for_mrp(self, cr, uid, ids, context=None):
         """ Generate a custom BOM for this order
