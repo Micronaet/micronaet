@@ -70,33 +70,36 @@
                 </xpath>
 
                 <!-- Hide part if MRP BOM: -->
-                <xpath expr="//field[@name='obsolete']" position="attributes">
+                <!--<xpath expr="//field[@name='obsolete']" position="attributes">
                     <attribute name="attrs">{'invisible': [('mrp_id', '!=', False)]}</attribute>
                 </xpath>
                 <xpath expr="//field[@name='is_primary']" position="attributes">
                     <attribute name="attrs">{'invisible': [('mrp_id', '!=', False)]}</attribute>
-                </xpath>
+                </xpath>-->
                 <xpath expr="//field[@name='type']" position="attributes">
                     <attribute name="attrs">{'invisible': [('mrp_id', '!=', False)]}</attribute>
                 </xpath>
+                <!--
                 <xpath expr="//field[@name='from_bom_id']" position="attributes">
                     <attribute name="attrs">{'invisible': [('mrp_id', '!=', False)]}</attribute>
                 </xpath>
+                -->
                 <xpath expr="//field[@name='code']" position="attributes">
                     <attribute name="attrs">{'invisible': [('mrp_id', '!=', False)]}</attribute>
                 </xpath>
-                <xpath expr="//notebook/page[2]" position="attributes"><!-- Distinte derivate -->
-                    <attribute name="invisible">0</attribute>
-                </xpath>
+                <!-- Distinte derivate -->
+                <!--<xpath expr="//notebook/page[2]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>-->
 
                 <xpath expr="//field[@name='bom_lines']//field[@name='product_uom']" position="attributes">
                     <attribute name="string">U.M.</attribute>
                 </xpath>
                 <xpath expr="//field[@name='bom_lines']//field[@name='date_start']" position="attributes">
-                    <attribute name="invisible">0</attribute>
+                    <attribute name="invisible">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='bom_lines']//field[@name='date_stop']" position="attributes">
-                    <attribute name="invisible">0</attribute>
+                    <attribute name="invisible">1</attribute>
                 </xpath>
 
                 <!-- Alternative component: -->
