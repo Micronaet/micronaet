@@ -57,20 +57,22 @@
         <!-- Objects:-->
         <!-- Inherit: mrp.bom -->
         <record model="ir.ui.view" id="view_mrp_bom_button_alternative_form">
-            <field name="name">mrp.bom.button.alternative.form</field>
+            <field name="name">mrp.bom.button.alternative.custom.form</field>
             <field name="model">mrp.bom</field>
             <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='product_uom']" position="attributes">
+                <!-- Custom BOM: -->
+                <xpath expr="//field[@name='bom_lines']//field[@name='product_uom']" position="attributes">
                     <attribute name="name">U.M.</attribute>
                 </xpath>
-                <xpath expr="//field[@name='date_start']" position="attributes">
+                <xpath expr="//field[@name='bom_lines']//field[@name='date_start']" position="attributes">
                     <attribute name="invisible" eval="True"/>
                 </xpath>
-                <xpath expr="//field[@name='date_stop']" position="attributes">
+                <xpath expr="//field[@name='bom_lines']//field[@name='date_stop']" position="attributes">
                     <attribute name="invisible" eval="True"/>
                 </xpath>
 
+                <!-- Alternative component: -->
                 <xpath expr="//field[@name='bom_lines']//field[@name='product_id']" position="after">
                     <button type="object"
                             name="choose_material_alternative"
