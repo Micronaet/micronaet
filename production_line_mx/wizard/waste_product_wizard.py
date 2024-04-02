@@ -78,7 +78,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
         price = current.force_price or current.remain_price
         calc = current.remain_detail # TODO
         now = datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
-        
+
         # ---------------------------------------------------------------------
         # A. Create DB if not present
         # ---------------------------------------------------------------------
@@ -87,7 +87,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
             ('product_id', '=', to_product.id),
             ], context=context)
         if bom_ids:
-            bom_id = bom_ids[0]    
+            bom_id = bom_ids[0]
         else:
             # Create minimal BOM (empty):
             bom_id = bom_pool.create(cr, uid, {
@@ -96,8 +96,8 @@ class MrpProductionWasteWizard(osv.osv_memory):
                 'name': _('WASTE %s') % to_product.name,
                 'product_uom': to_product.uom_id.id,
                 'product_qty': 1.0,
-                }, context=context)    
-            
+                }, context=context)
+
         # ---------------------------------------------------------------------
         # B. Create production
         # ---------------------------------------------------------------------
@@ -111,7 +111,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
             'mode': 'waste',
             'accounting_state': 'close', # yet close
             }, context=context)
-        
+
         # ---------------------------------------------------------------------
         # C. Create lavoration
         # ---------------------------------------------------------------------
@@ -122,7 +122,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
             'date_start': now,
             'date_finished': now,
             'delay': 0.0,
-            'workcenter_id': 1, # TODO 
+            'workcenter_id': 1, # TODO
             'production_state': 'done',
             'cycle': 1,
             'single_cycle_duration': 0.0,
@@ -136,8 +136,8 @@ class MrpProductionWasteWizard(osv.osv_memory):
             'product_price_calc': calc,
             'state': 'done',
             }, context=context)
-        
-        # Read production created:            
+
+        # Read production created:
         mrp = mrp_pool.browse(cr, uid, mrp_id, context=context)
 
         # ---------------------------------------------------------------------
@@ -190,7 +190,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
 
         ws_name = 'unload'
         excel_pool.create_worksheet(ws_name)
-        
+
         row = 0
         excel_pool.write_xls_line(ws_name, row, [
                 _('material_code'),
@@ -207,7 +207,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         total = 0.0
         stock_number = '2' if from_product.product_type == 'MP' else '1'
-        for lot in from_product.pedimento_ids:                
+        for lot in from_product.pedimento_ids:
             qty = lot.product_qty
             if not qty:
                 # Jump not present
@@ -226,15 +226,15 @@ class MrpProductionWasteWizard(osv.osv_memory):
             # -----------------------------------------------------------------
             # Excel unload:
             # -----------------------------------------------------------------
-            # Pedimento / Lot column: 
+            # Pedimento / Lot column:
             if from_product.product_mode == 'lot':
                 pedimento_name = ''
                 lot_name = lot.code or ''
-            else: # pedimento   
+            else: # pedimento
                 pedimento_name = lot.code or ''
                 lot_name = ''
             standard_price = \
-                lot.standard_price or lot.product_id.standard_price 
+                lot.standard_price or lot.product_id.standard_price
 
             row += 1
             excel_pool.write_xls_line(ws_name, row, [
@@ -249,7 +249,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
 
         if not total:
             raise osv.except_osv(
-                _('Error'), 
+                _('Error'),
                 _('The "from product" contains nothing to R-product!'),
                 )
 
@@ -267,7 +267,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
         mrp_pool.write(cr, uid, [mrp_id], {
             'accounting_state': 'close',
             }, context=context)
-        
+
         return {
             'type': 'ir.actions.act_window',
             'name': _('MRP'),
@@ -290,9 +290,9 @@ class MrpProductionWasteWizard(osv.osv_memory):
 
         detail = ''
         qty = total = 0.0
-        if from_id:                
+        if from_id:
             product = product_pool.browse(cr, uid, from_id, context=context)
-            for lot in product.pedimento_ids:                
+            for lot in product.pedimento_ids:
                 subtotal = lot.standard_price * lot.product_qty
                 qty += lot.product_qty
                 total += subtotal
@@ -312,13 +312,13 @@ class MrpProductionWasteWizard(osv.osv_memory):
                 'remain_qty': qty,
                 'remain_price': medium_price,
                 }}
-        else:        
+        else:
             return {'value': {
                 'remain_detail': '',
                 'remain_qty': 0.0,
                 'remain_price': 0.0,
                 }}
-        
+
     _columns = {
         'from_id': fields.many2one('product.product', 'From product',
             help='Current product to be moved in R-Product',
@@ -328,12 +328,10 @@ class MrpProductionWasteWizard(osv.osv_memory):
         'force_price': fields.float('Force price', digits=(16, 2)),
 
         # Stock detail:
-        'remain_detail': fields.text('Remain detail', readonly=True, 
-            help='Detail of all lot / pedimentos present'), 
+        'remain_detail': fields.text('Remain detail', readonly=True,
+            help='Detail of all lot / pedimentos present'),
         'remain_qty': fields.float('Remain qty',
             digits=(16, 2), help='Remain q. present in stock'),
         'remain_price': fields.float('Remain price',
             digits=(16, 2), help='Medium price of lot present'),
         }
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -163,8 +163,10 @@ class MrpBom(osv.osv):
                  'produziones'),
 
         # Bom line:
-        'origin_id': fields.many2one('product.product', 'Prod. orig.'),
-        'origin_qty': fields.float('Q. orig', digits=(10, 2)),
+        'origin_id': fields.many2one(
+            'product.product', 'Prod. orig.', required=False),
+        'origin_qty': fields.float(
+            'Q. orig', digits=(10, 2), required=False),
     }
 
 
@@ -231,6 +233,14 @@ class MrpProduction(osv.osv):
             cr, uid, current_bom_id, context=context)
         # Update with default:
         bom_pool.write(cr, uid, [new_bom_id], default_data, context=context)
+
+        # Update lines data:
+        lines = bom_pool.browse(cr, uid, new_bom_id, context=context).bom_lines
+        for line in lines:
+            bom_pool.write(cr, uid, [line.id], {
+                'origin_id': line.product_id.id,
+                'origin_qty': line.quantity,
+            }, context=context)
 
         # Update reference BOM:
         data = {'bom_id': new_bom_id}
