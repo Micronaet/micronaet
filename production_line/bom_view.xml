@@ -98,9 +98,12 @@
 
 
                 <!-- Extra fields line:-->
+                <xpath expr="//field[@name='bom_lines']" position="attributes">
+                    <attribute name="context">{'mrp_id': mrp_id}</attribute>
+                </xpath>
                 <xpath expr="//field[@name='bom_lines']//field[@name='product_id']" position="before">
-                    <field name="base_product_id" readonly="1" /> <!--attrs="{'invisible': [('bom_id.mrp_id', '!=', False)]}"-->
-                    <field name="base_product_qty" readonly="1" />
+                    <field name="base_product_id" readonly="1" invisible="not context.get('mrp_id')"/><!--attrs="{'invisible': [('parent.mrp_id', '!=', False)]}"-->
+                    <field name="base_product_qty" readonly="1" invisible="not context.get('mrp_id')"/>
                 </xpath>
 
                 <!--<xpath expr="//field[@name='bom_lines']//field[@name='product_id']" position="after">
