@@ -214,11 +214,13 @@ class MrpProduction(osv.osv):
         default = {
             'mrp_id': mrp_id,
             'active': False,
-            'name': '%s [Pers. x %s]' % (
-                current_bom.name, mrp.name,),
+            'name': u'%s [Pers. x %s]' % (
+                current_bom.name, mrp.name),
             }
         new_bom_id = bom_pool.copy(
             cr, uid, current_bom_id, default=default, context=context)
+        # Update (needed?)
+        bom_pool.write(cr, uid, [new_bom_id], default, context=context)
 
         # Update reference BOM:
         data = {'bom_id': new_bom_id}
