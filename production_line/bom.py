@@ -166,7 +166,7 @@ class MrpBom(osv.osv):
         'base_product_id': fields.many2one(
             'product.product', 'Prod. orig.', required=False),
         'base_product_qty': fields.float(
-            'Q. orig', digits=(10, 2), required=False),
+            'Q. orig', digits=(10, 6), required=False),
     }
 
 
@@ -239,7 +239,7 @@ class MrpProduction(osv.osv):
         for line in lines:
             bom_pool.write(cr, uid, [line.id], {
                 'base_product_id': line.product_id.id,
-                'base_prodcut_qty': line.product_qty,
+                'base_product_qty': line.product_qty,
             }, context=context)
 
         # Update reference BOM:
