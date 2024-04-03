@@ -175,6 +175,7 @@ class MrpBom(osv.osv):
         message = ''  # For logging
 
         original_qty = modify_qty = 0.0
+        message += u'\n<b>Cambio prodotto:</b>\n'
         for line in bom.bom_lines:
             new_product = line.product_id
             org_product = line.base_product_id
@@ -193,7 +194,7 @@ class MrpBom(osv.osv):
                 product_qty = old_qty * old_concentration / new_concentration
                 message += u'%.6f x [%s conc. %.2f] a [%s conc. %.2f] = ' \
                            'nuova q. %.6f\n' % (
-                                line.base_product_qt,
+                                line.base_product_qty,
                                 org_product.default_code,
                                 old_concentration,
 
@@ -225,7 +226,7 @@ class MrpBom(osv.osv):
                 k,
                 )
 
-        message += u'<b>Nuove quantità ricalcolate:</b>\n'
+        message += u'\n<b>Nuove quantità ricalcolate:</b>\n'
         for line in original_data:
             product_qty = line.base_product_qty * k
             self.write(
