@@ -154,6 +154,8 @@ class MrpBom(osv.osv):
         original_data = []
         modify_data = {}
 
+        message = ''  # For logging
+
         original_qty = modify_qty = 0.0
         for line in bom.bom_lines:
             new_product = line.product_id
@@ -171,6 +173,15 @@ class MrpBom(osv.osv):
                     100.0
                 old_concentration = org_product.concentration or 100.0
                 product_qty = old_qty * old_concentration / new_concentration
+                message += '%s x [%s - conc %s] a [%s - conc %s] = ' \
+                           'nuova q. %s<br/>' % (
+                                original_qty,
+                                org_product.default_code,
+                                old_concentration,
+                                new_product.default_code,
+                                new_concentration,
+                                product_qty,
+                                )
 
                 # Touched lines:
                 modify_data[line.id] = {
@@ -186,13 +197,35 @@ class MrpBom(osv.osv):
 
         # Update not modify data:
         k = (1.0 - modify_qty) / original_qty  # Remain coeff.
+
+        message += '<br/>' \
+                   'Residua precedente %s - Residua attuale %s = coeff. %s' % (
+                       original_qty,
+                       modify_qty,
+                       k,
+                       )
+
+        message += u'<b>Nuove quantità ricalcolate</b>'
         for line in original_data:
+            product_qty = line.base_product_qty * k
             self.write(
+
                 cr, uid, [line.id], {
                     # Recalc with coeff:
-                    'product_qty': line.base_product_qty * k,
+                    'product_qty': product_qty,
                     }, context=context)
+            message += '%s da %s a %s' % (
+                line.base_product_id.defaut_code,
+                line.base_product_qty,
+                product_qty,
+            )
 
+        if message:
+            self.write_thread_message(
+                cr, uid, ids,
+                subject='Ricalcolata distinta base:',
+                body=message,  # '<table class="oe_list_content">%s</table>',
+                context=context)
         return True
 
     def choose_material_alternative(self, cr, uid, ids, context=None):
@@ -255,10 +288,10 @@ class MrpBom(osv.osv):
             'Forza % concentr.', digits=(10, 2)),
 
         'base_concentration': fields.function(
-            _function_base_data, method=True, multi=True, digits=(10, 6),
+            _function_base_data, method=True, multi=True, digits=(10, 2),
             type='float', string='% Conc. orig.', store=False),
         'product_concentration': fields.function(
-            _function_base_data, method=True, multi=True, digits=(10, 6),
+            _function_base_data, method=True, multi=True, digits=(10, 2),
             type='float', string='% Conc.', store=False),
         'is_changed': fields.function(
             _function_base_data, method=True, multi=True,
