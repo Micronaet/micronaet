@@ -191,11 +191,12 @@ class MrpBom(osv.osv):
                     100.0
                 old_concentration = org_product.concentration or 100.0
                 product_qty = old_qty * old_concentration / new_concentration
-                message += u'%s x [%s - conc %s] a [%s - conc %s] = ' \
-                           'nuova q. %s\n' % (
+                message += u'%.6f x [%s conc. %.2f] a [%.6f conc. %.2f] = ' \
+                           'nuova q. %.6f\n' % (
                                 original_qty,
                                 org_product.default_code,
                                 old_concentration,
+
                                 new_product.default_code,
                                 new_concentration,
                                 product_qty,
@@ -217,14 +218,14 @@ class MrpBom(osv.osv):
         k = (1.0 - modify_qty) / original_qty  # Remain coeff.
 
         message += '\n' \
-                   'Residua precedente %s - Residua attuale %s = ' \
-                   'coeff. %s\n' % (
-                       original_qty,
-                       1.0 - modify_qty,
-                       k,
-                       )
+            'Residua precedente %.6f - Residua attuale %.6f = ' \
+            'coeff. %.6f\n' % (
+                original_qty,
+                1.0 - modify_qty,
+                k,
+                )
 
-        message += u'<b>Nuove quantità ricalcolate</b>\n'
+        message += u'<b>Nuove quantità ricalcolate:</b>\n'
         for line in original_data:
             product_qty = line.base_product_qty * k
             self.write(
@@ -233,7 +234,7 @@ class MrpBom(osv.osv):
                     # Recalc with coeff:
                     'product_qty': product_qty,
                     }, context=context)
-            message += '%s da %s a %s\n' % (
+            message += '%s da %.6f a %.6f\n' % (
                 line.base_product_id.default_code,
                 line.base_product_qty,
                 product_qty,
