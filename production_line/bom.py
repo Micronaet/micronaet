@@ -142,6 +142,55 @@ class MrpBom(osv.osv):
     """
     _inherit = 'mrp.bom'
 
+    def force_new_recipe_quantity(self, cr, uid, ids, context=None):
+        """ Recalc recipe
+        """
+        bom = self.browse(cr, uid, ids, context=context)[0]
+
+        original_data = []
+        modify_data = {}
+
+        modify_qty = 0.0
+        for line in bom.bom_lines:
+            new_product = line.product_id
+            org_product = line.base_product_id
+
+            if new_product == org_product:
+                # Not touched lines:
+                original_data.append(line)
+            else:
+                # new_qty = line.product_qty
+                old_qty = line.base_product_qty
+                new_concentration = \
+                    new_product.concentration or \
+                    line.force_concentration or 100.0
+                old_concentration = org_product.concentration or 100.0
+                product_qty = old_qty * old_concentration / new_concentration
+
+                # Touched lines:
+                modify_data[line.id] = {
+                    'product_qty': product_qty,
+                    'force_concentration': new_concentration,
+                }
+                modify_qty += product_qty
+
+
+        # Update modify data:
+        for record_id in modify_data:
+            data = modify_data[record_id]
+            self.write(cr, uid, [record_id], data, context=context)
+
+        # Update not modify data:
+        k = 1.0 - modify_qty  # Remain coeff.
+        for record in original_data:
+            self.write(
+                cr, uid, [record.id], {
+                # Recalc with coeff:
+                'product_qty': line.product_qty * k,
+                }, context=context)
+
+        return True
+
     def choose_material_alternative(self, cr, uid, ids, context=None):
         """ Open alternatives materials
         """
@@ -188,11 +237,6 @@ class MrpProduction(osv.osv):
     # -------------------------------------------------------------------------
     # Custom BOM management:
     # -------------------------------------------------------------------------
-    def force_new_recipe_quantity(self, cr, uid, ids, context=None):
-        """ Recalc recipe
-        """
-        return True
-
     def restore_bom_materials_for_mrp(self, cr, uid, ids, context=None):
         """ Restore original Bom for production
         """
