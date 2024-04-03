@@ -210,7 +210,7 @@ class MrpBom(osv.osv):
         return alternative_pool.choose_material_alternative(
             cr, uid, ids, context=ctx)
 
-    def _function_get_is_changed(
+    def _function_base_data(
             self, cr, uid, ids, fields, args, context=None):
         """ Fields function for calculate
         """
@@ -219,7 +219,11 @@ class MrpBom(osv.osv):
             base_product = line.base_product_id
             product = line.product_id
 
-            res[line.id] = base_product and base_product != product
+            res[line.id] = {
+                'is_changed': base_product and base_product != product,
+                'base_concentration': base_product.concentration,
+                'product_concentration': product.concentration,
+            }
 
         return res
 
@@ -243,8 +247,15 @@ class MrpBom(osv.osv):
             'Q. orig', digits=(10, 6), required=False),
         'force_concentration': fields.float(
             'Forza % concentr.', digits=(10, 2)),
+
+        'base_concentration': fields.function(
+            _function_base_data, method=True, multi=True, digits=(10, 6),
+            type='float', string='Conc. orig.', store=False),
+        'product_concentration': fields.function(
+            _function_base_data, method=True, multi=True, digits=(10, 6),
+            type='float', string='Conc. nuova', store=False),
         'is_changed': fields.function(
-            _function_get_is_changed, method=True,
+            _function_base_data, method=True, multi=True,
             type='boolean', string='Cambiato', store=False),
     }
 
