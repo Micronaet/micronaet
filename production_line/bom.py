@@ -150,7 +150,7 @@ class MrpBom(osv.osv):
         original_data = []
         modify_data = {}
 
-        modify_qty = 0.0
+        original_qty = modify_qty = 0.0
         for line in bom.bom_lines:
             new_product = line.product_id
             org_product = line.base_product_id
@@ -158,6 +158,7 @@ class MrpBom(osv.osv):
             if new_product == org_product:
                 # Not touched lines:
                 original_data.append(line)
+                original_qty += line.base_product_qty
             else:
                 # new_qty = line.product_qty
                 old_qty = line.base_product_qty
@@ -174,20 +175,19 @@ class MrpBom(osv.osv):
                 }
                 modify_qty += product_qty
 
-
         # Update modify data:
         for record_id in modify_data:
             data = modify_data[record_id]
             self.write(cr, uid, [record_id], data, context=context)
 
         # Update not modify data:
-        k = 1.0 - modify_qty  # Remain coeff.
-        for record in original_data:
+        k = (1.0 - modify_qty) / original_qty  # Remain coeff.
+        for line in original_data:
             self.write(
-                cr, uid, [record.id], {
-                # Recalc with coeff:
-                'product_qty': line.product_qty * k,
-                }, context=context)
+                cr, uid, [line.id], {
+                    # Recalc with coeff:
+                    'product_qty': line.base_product_qty * k,
+                    }, context=context)
 
         return True
 
