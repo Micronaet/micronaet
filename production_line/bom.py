@@ -136,6 +136,10 @@ class ProductProduct(osv.osv):
                  'ricalcolarla quando viene scambiato con altri prodotti.'),
     }
 
+    _defaults = {
+        'concentration': lambda *x: 100.0,
+    }
+
 
 class MrpBom(osv.osv):
     """ Alternative groups for BOM
