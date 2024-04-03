@@ -218,12 +218,18 @@ class MrpBom(osv.osv):
         for line in self.browse(cr, uid, ids, context=context):
             base_product = line.base_product_id
             product = line.product_id
-
-            res[line.id] = {
-                'is_changed': base_product and base_product != product,
-                'base_concentration': base_product.concentration or 100.0,
-                'product_concentration': product.concentration or 100.0,
-            }
+            if base_product:
+                res[line.id] = {
+                    'is_changed': base_product and base_product != product,
+                    'base_concentration': base_product.concentration or 100.0,
+                    'product_concentration': product.concentration or 100.0,
+                }
+            else:
+                res[line.id] = {
+                    'is_changed': False,
+                    'base_concentration': 0.0,
+                    'product_concentration': 0.0,
+                }
 
         return res
 
