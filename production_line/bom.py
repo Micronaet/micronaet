@@ -191,9 +191,9 @@ class MrpBom(osv.osv):
                     100.0
                 old_concentration = org_product.concentration or 100.0
                 product_qty = old_qty * old_concentration / new_concentration
-                message += u'%.6f x [%s conc. %.2f] a [%.6f conc. %.2f] = ' \
+                message += u'%.6f x [%s conc. %.2f] a [%s conc. %.2f] = ' \
                            'nuova q. %.6f\n' % (
-                                original_qty,
+                                line.base_product_qt,
                                 org_product.default_code,
                                 old_concentration,
 
