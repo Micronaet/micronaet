@@ -126,8 +126,8 @@
                     <attribute name="invisible">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='bom_lines']/tree" position="attributes">
-                    <attribute name="colors">blue: base_product_qty != product_qty</attribute>
-                    <attribute name="fonts">bold: base_product_qty != product_qty</attribute>
+                    <attribute name="colors">blue: is_changed == True</attribute>
+                    <attribute name="fonts">bold: is_changed == True</attribute>
                 </xpath>
 
 
@@ -141,6 +141,7 @@
                 </xpath>
                 <xpath expr="//field[@name='bom_lines']//field[@name='product_qty']" position="before">
                     <field name="force_concentration" invisible="not context.get('origin_bom_id')" />
+                    <field name="is_changed" invisible="not context.get('origin_bom_id')" />
                     <!-- <button name="force_new_quantity" type="object" string="Forza q." invisible="not context.get('origin_bom_id')" /> -->
                 </xpath>
                 <!--<xpath expr="//field[@name='bom_lines']//field[@name='product_id']" position="after">

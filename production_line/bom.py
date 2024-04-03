@@ -163,8 +163,8 @@ class MrpBom(osv.osv):
                 # new_qty = line.product_qty
                 old_qty = line.base_product_qty
                 new_concentration = \
-                    new_product.concentration or \
-                    line.force_concentration or 100.0
+                    line.force_concentration or new_product.concentration or \
+                    100.0
                 old_concentration = org_product.concentration or 100.0
                 product_qty = old_qty * old_concentration / new_concentration
 
@@ -206,6 +206,19 @@ class MrpBom(osv.osv):
         return alternative_pool.choose_material_alternative(
             cr, uid, ids, context=ctx)
 
+    def _function_get_is_changed(
+            self, cr, uid, ids, fields, args, context=None):
+        """ Fields function for calculate
+        """
+        res = {}
+        for line in self.browse(cr, uid, ids, context=context):
+            base_product = line.base_product_id
+            product = line.product_id
+
+            res[line.id] = base_product and base_product != product
+
+        return res
+
     _columns = {
         'mrp_id': fields.many2one(
             'mrp.production', 'Produzione',
@@ -226,6 +239,9 @@ class MrpBom(osv.osv):
             'Q. orig', digits=(10, 6), required=False),
         'force_concentration': fields.float(
             'Forza % concentr.', digits=(10, 2)),
+        'is_changed': fields.function(
+            _function_get_is_changed, method=True,
+            type='boolean', string='Cambiato', store=False),
     }
 
 
