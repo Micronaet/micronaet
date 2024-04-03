@@ -146,6 +146,24 @@ class MrpBom(osv.osv):
     """
     _inherit = 'mrp.bom'
 
+    def write_thread_message(
+            self, cr, uid, ids, subject='', body='', context=None):
+        """ Write generic message
+        """
+        # Default part of message:
+        message = {
+            'subject': subject,
+            'body': body,
+            'type': 'comment',  # 'notification', 'email',
+            'subtype': False,   # parent_id, #attachments,
+            'content_subtype': 'html',
+            'partner_ids': [],
+            'email_from': 'openerp@micronaet.it',  # wizard.email_from,
+            'context': context,
+            }
+        msg_id = self.message_post(cr, uid, ids, **message)
+        return
+
     def force_new_recipe_quantity(self, cr, uid, ids, context=None):
         """ Recalc recipe
         """
@@ -173,8 +191,8 @@ class MrpBom(osv.osv):
                     100.0
                 old_concentration = org_product.concentration or 100.0
                 product_qty = old_qty * old_concentration / new_concentration
-                message += '%s x [%s - conc %s] a [%s - conc %s] = ' \
-                           'nuova q. %s<br/>' % (
+                message += u'%s x [%s - conc %s] a [%s - conc %s] = ' \
+                           'nuova q. %s\n' % (
                                 original_qty,
                                 org_product.default_code,
                                 old_concentration,
@@ -198,14 +216,15 @@ class MrpBom(osv.osv):
         # Update not modify data:
         k = (1.0 - modify_qty) / original_qty  # Remain coeff.
 
-        message += '<br/>' \
-                   'Residua precedente %s - Residua attuale %s = coeff. %s' % (
+        message += '\n' \
+                   'Residua precedente %s - Residua attuale %s = ' \
+                   'coeff. %s\n' % (
                        original_qty,
-                       modify_qty,
+                       1.0 - modify_qty,
                        k,
                        )
 
-        message += u'<b>Nuove quantità ricalcolate</b>'
+        message += u'<b>Nuove quantità ricalcolate</b>\n'
         for line in original_data:
             product_qty = line.base_product_qty * k
             self.write(
@@ -214,8 +233,8 @@ class MrpBom(osv.osv):
                     # Recalc with coeff:
                     'product_qty': product_qty,
                     }, context=context)
-            message += '%s da %s a %s' % (
-                line.base_product_id.defaut_code,
+            message += '%s da %s a %s\n' % (
+                line.base_product_id.default_code,
                 line.base_product_qty,
                 product_qty,
             )
@@ -224,7 +243,8 @@ class MrpBom(osv.osv):
             self.write_thread_message(
                 cr, uid, ids,
                 subject='Ricalcolata distinta base:',
-                body=message,  # '<table class="oe_list_content">%s</table>',
+                # '<table class="oe_list_content">%s</table>',
+                body=message.replace('\n', '<br/>'),
                 context=context)
         return True
 
