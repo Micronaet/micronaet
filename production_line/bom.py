@@ -235,7 +235,7 @@ class MrpBom(osv.osv):
                     # Recalc with coeff:
                     'product_qty': product_qty,
                     }, context=context)
-            message += '%s da %.6f a %.6f\n' % (
+            message += '<b>%s</b> da %.6f a %.6f\n' % (
                 line.base_product_id.default_code,
                 line.base_product_qty,
                 product_qty,
