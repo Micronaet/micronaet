@@ -221,8 +221,8 @@ class MrpBom(osv.osv):
 
             res[line.id] = {
                 'is_changed': base_product and base_product != product,
-                'base_concentration': base_product.concentration,
-                'product_concentration': product.concentration,
+                'base_concentration': base_product.concentration or 100.0,
+                'product_concentration': product.concentration or 100.0,
             }
 
         return res
@@ -250,10 +250,10 @@ class MrpBom(osv.osv):
 
         'base_concentration': fields.function(
             _function_base_data, method=True, multi=True, digits=(10, 6),
-            type='float', string='Conc. orig.', store=False),
+            type='float', string='% Conc. orig.', store=False),
         'product_concentration': fields.function(
             _function_base_data, method=True, multi=True, digits=(10, 6),
-            type='float', string='Conc. nuova', store=False),
+            type='float', string='% Conc.', store=False),
         'is_changed': fields.function(
             _function_base_data, method=True, multi=True,
             type='boolean', string='Cambiato', store=False),
