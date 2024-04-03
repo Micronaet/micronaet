@@ -39,8 +39,20 @@
                 </field>
             </field>
         </record>
+
         <!--Wizard:-->
         <!--bom.product.alternative.wizard-->
+        <record model="ir.ui.view" id="view_bom_product_bom_extra_form">
+            <field name="name">product.product.bom.extra.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <field name="default_code" position="before">
+                    <field name="concentration" />
+                </field>
+            </field>
+        </record>
+
         <record model="ir.ui.view" id="view_bom_product_alternative_list_tree">
             <field name="name">product.product.tree</field>
             <field name="model">product.product</field>

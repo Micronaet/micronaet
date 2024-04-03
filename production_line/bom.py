@@ -128,6 +128,14 @@ class ProductProduct(osv.osv):
         return from_pool.write(cr, uid, [from_id], {
             'product_id': ids[0]}, context=context)
 
+    _columns = {
+        'concentration': fields.float(
+            '% Concentrazione', digits=(5, 2),
+            help='Concentrazione del prodotto, utilizzato per valutare'
+                 'la quantità da utilizzare nelle ricette o per '
+                 'ricalcolarla quando viene scambiato con altri prodotti.'),
+    }
+
 
 class MrpBom(osv.osv):
     """ Alternative groups for BOM
