@@ -113,6 +113,9 @@
                     <attribute name="invisible">1</attribute>
                 </xpath>-->
 
+                <xpath expr="//field[@name='bom_lines']" position="before">
+                    <button name="force_new_recipe_quantity" type="object" string="Ricalcola q. ricetta" invisible="not context.get('origin_bom_id')" icon="gtk-refresh"/>
+                </xpath>
                 <xpath expr="//field[@name='bom_lines']//field[@name='product_uom']" position="attributes">
                     <attribute name="string">U.M.</attribute>
                 </xpath>
@@ -121,6 +124,9 @@
                 </xpath>
                 <xpath expr="//field[@name='bom_lines']//field[@name='date_stop']" position="attributes">
                     <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='bom_lines']/tree" position="attributes">
+                    <attribute name="colors">blue: (base_product_id > 0) and (base_product_id != product_id)</attribute>
                 </xpath>
 
 
@@ -132,7 +138,10 @@
                     <field name="base_product_id" readonly="1" invisible="not context.get('origin_bom_id')"/><!--attrs="{'invisible': [('parent.mrp_id', '!=', False)]}"-->
                     <field name="base_product_qty" readonly="1" invisible="not context.get('origin_bom_id')" sum="previous_total"/>
                 </xpath>
-
+                <xpath expr="//field[@name='bom_lines']//field[@name='product_qty']" position="before">
+                    <field name="force_concentration" invisible="not context.get('origin_bom_id')" />
+                    <!-- <button name="force_new_quantity" type="object" string="Forza q." invisible="not context.get('origin_bom_id')" /> -->
+                </xpath>
                 <!--<xpath expr="//field[@name='bom_lines']//field[@name='product_id']" position="after">
                     <field name="origin_id"/>
                 </xpath>-->

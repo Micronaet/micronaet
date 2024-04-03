@@ -175,6 +175,8 @@ class MrpBom(osv.osv):
             'product.product', 'Prod. orig.', required=False),
         'base_product_qty': fields.float(
             'Q. orig', digits=(10, 6), required=False),
+        'force_concentration': fields.float(
+            'Forza % concentr.', digits=(10, 2)),
     }
 
 
@@ -186,6 +188,11 @@ class MrpProduction(osv.osv):
     # -------------------------------------------------------------------------
     # Custom BOM management:
     # -------------------------------------------------------------------------
+    def force_new_recipe_quantity(self, cr, uid, ids, context=None):
+        """ Recalc recipe
+        """
+        return True
+
     def restore_bom_materials_for_mrp(self, cr, uid, ids, context=None):
         """ Restore original Bom for production
         """
