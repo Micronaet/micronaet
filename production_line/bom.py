@@ -204,7 +204,7 @@ class MrpBom(osv.osv):
 
                 # Touched lines:
                 modify_data[line.id] = {
-                    # 'product_qty': product_qty,
+                    'product_qty': product_qty,
                     'force_concentration': new_concentration,
                 }
                 new_bom_qty += product_qty
@@ -227,7 +227,10 @@ class MrpBom(osv.osv):
 
         message += u'\n<b>Nuove quantità ricalcolate:</b>\n'
         for line in bom.bom_lines:  # original_data:
-            product_qty = line.base_product_qty * k
+            if line in original_data:  # Original q. for untouched lines
+                product_qty = line.base_product_qty * k
+            else:  # New quantity for modified lines:
+                product_qty = line.product_qty * k
             self.write(
                 cr, uid, [line.id], {
                     # Recalc with coeff:
