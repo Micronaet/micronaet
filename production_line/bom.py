@@ -204,7 +204,7 @@ class MrpBom(osv.osv):
 
                 # Touched lines:
                 modify_data[line.id] = {
-                    'product_qty': product_qty,
+                    # 'product_qty': product_qty,
                     'force_concentration': new_concentration,
                 }
                 new_bom_qty += product_qty
@@ -215,7 +215,7 @@ class MrpBom(osv.osv):
             self.write(cr, uid, [record_id], data, context=context)
 
         # Update not modify data:
-        k = new_bom_qty / old_qty  # Remain coeff.
+        k = original_bom_qty / new_bom_qty  # Remain coeff.
 
         message += '\n' \
             'Totale ricetta: vecchia %.6f VS attuale %.6f = ' \
@@ -226,10 +226,9 @@ class MrpBom(osv.osv):
                 )
 
         message += u'\n<b>Nuove quantità ricalcolate:</b>\n'
-        for line in original_data:
+        for line in bom.bom_lines:  # original_data:
             product_qty = line.base_product_qty * k
             self.write(
-
                 cr, uid, [line.id], {
                     # Recalc with coeff:
                     'product_qty': product_qty,
