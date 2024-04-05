@@ -243,7 +243,7 @@ class MrpBom(osv.osv):
                 line.base_product_id.default_code,
                 line.base_product_qty,
                 product_qty,
-                (' (rical. da %s)' % upgrade_qty) if upgrade_qty else '',
+                (' (rical. da %.4f)' % upgrade_qty) if upgrade_qty else '',
             )
 
         if message:
