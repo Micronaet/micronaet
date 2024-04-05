@@ -227,19 +227,23 @@ class MrpBom(osv.osv):
 
         message += u'\n<b>Nuove quantità ricalcolate:</b>\n'
         for line in bom.bom_lines:  # original_data:
-            if line in original_data:  # Original q. for untouched lines
+            if line.id in modify_data:  # Touched lines (use new q)
+                upgrade_qty = modify_data[line.id]['product_qty']
+                product_qty = upgrade_qty * k
+            else:  # Untouched lines (use original q)
                 product_qty = line.base_product_qty * k
-            else:  # New quantity for modified lines:
-                product_qty = line.product_qty * k
+                upgrade_qty = 0
+
             self.write(
                 cr, uid, [line.id], {
                     # Recalc with coeff:
                     'product_qty': product_qty,
                     }, context=context)
-            message += '<b>%s</b> da %.6f a %.6f\n' % (
+            message += '<b>%s</b> da %.6f a %.6f%s\n' % (
                 line.base_product_id.default_code,
                 line.base_product_qty,
                 product_qty,
+                (' (rical. da %s)' % upgrade_qty) if upgrade_qty else '',
             )
 
         if message:
