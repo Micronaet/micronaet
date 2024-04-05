@@ -174,18 +174,17 @@ class MrpBom(osv.osv):
 
         message = ''  # For logging
 
-        original_qty = modify_qty = 0.0
+        original_bom_qty = new_bom_qty = 0.0
         message += u'\n<b>Cambio prodotto:</b>\n'
         for line in bom.bom_lines:
             new_product = line.product_id
             org_product = line.base_product_id
+            original_bom_qty += line.base_product_qty
 
-            if new_product == org_product:
-                # Not touched lines:
+            if new_product == org_product:   # Not touched lines:
                 original_data.append(line)
-                original_qty += line.base_product_qty
+                new_bom_qty += line.base_product_qty
             else:
-                # new_qty = line.product_qty
                 old_qty = line.base_product_qty
                 new_concentration = \
                     line.force_concentration or new_product.concentration or \
@@ -208,7 +207,7 @@ class MrpBom(osv.osv):
                     'product_qty': product_qty,
                     'force_concentration': new_concentration,
                 }
-                modify_qty += product_qty
+                new_bom_qty += product_qty
 
         # Update modify data:
         for record_id in modify_data:
@@ -216,13 +215,13 @@ class MrpBom(osv.osv):
             self.write(cr, uid, [record_id], data, context=context)
 
         # Update not modify data:
-        k = (1.0 - modify_qty) / original_qty  # Remain coeff.
+        k = new_bom_qty / old_qty  # Remain coeff.
 
         message += '\n' \
-            'Residua precedente %.6f - Residua attuale %.6f = ' \
+            'Totale ricetta: vecchia %.6f VS attuale %.6f = ' \
             'coeff. %.6f\n' % (
-                original_qty,
-                1.0 - modify_qty,
+                original_bom_qty,
+                new_bom_qty,
                 k,
                 )
 
