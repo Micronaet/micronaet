@@ -61,7 +61,7 @@ data_total = {}
 # Collect data:
 counter = 0
 total = len(mrp_ids)
-for mrp in mrp_pool.browse(mrp_ids):
+for mrp in mrp_pool.browse(mrp_ids[:10]):
     counter += 1
     print('Check %s of %s' % (
         counter, total,
