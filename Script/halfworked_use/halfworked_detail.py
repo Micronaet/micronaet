@@ -108,7 +108,7 @@ for default_code in sorted(data_detail):
     header_line = '%s|%s|' % (
         default_code, last_date)
 
-    for record in sorted(data_detail, reversed=True):
+    for record in sorted(data_detail, reverse=True):
         line = '%s|%s|%s|%s|%s\n' % (
             header_line,
             record[0],
