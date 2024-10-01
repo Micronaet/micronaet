@@ -119,7 +119,7 @@ for default_code in sorted(data_detail):
         line = '%s|%s|%s|%s|%s\n' % (
             header_line,
             record[0],
-            record[1],
+            int(record[1]),
             record[2],
             record[3],
         )
@@ -140,6 +140,6 @@ for default_code in sorted(data_total):
             default_code,
             last_use,
             year,
-            quantity,
+            int(quantity),
             ))
 
