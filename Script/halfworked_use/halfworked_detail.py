@@ -107,7 +107,13 @@ for default_code in sorted(data):
         default_code, last_date)
 
     for record in sorted(data_detail, reversed=True):
-        line = '%s|%s|%s|%s|%s\n' % (header_line, *record)
+        line = '%s|%s|%s|%s|%s\n' % (
+            header_line,
+            record[0],
+            record[1],
+            record[2],
+            record[3],
+        )
         print(line)
         log_f.write(line)
 
