@@ -32,11 +32,11 @@ cfg_file = os.path.expanduser('../openerp.cfg')
 
 config = ConfigParser.ConfigParser()
 config.read([cfg_file])
-dbname = config.get('dbaccess', 'dbname')
-user = config.get('dbaccess', 'user')
-pwd = config.get('dbaccess', 'pwd')
-server = config.get('dbaccess', 'server')
-port = config.get('dbaccess', 'port')   # verify if it's necessary: getint
+dbname = config.get('openerp', 'database')
+user = config.get('openerp', 'user')
+pwd = config.get('openerp', 'password')
+server = config.get('openerp', 'server')
+port = config.get('openerp', 'port')   # verify if it's necessary: getint
 
 
 # -----------------------------------------------------------------------------
@@ -63,7 +63,7 @@ for mrp in mrp_pool.browse(mrp_ids):
     # Extract data:
     date = str(mrp.date_planned)[:10]
     year = date[:4]
-    final_product = mpr.product_id.default_code
+    final_product = mrp.product_id.default_code
 
     for job in mrp.workcenter_lines:
         for material in job.bom_material_ids:
