@@ -108,7 +108,9 @@ for mrp in mrp_pool.browse(mrp_ids[:10]):
 # Detail:
 # -----------------------------------------------------------------------------
 log_f = open('detail.csv', 'w')
-log_f.write('Semilavorato|Ultimo uso|data_detail|Q.|Lavorazione|Prod. finito\n')
+log_f.write(
+    'Semilavorato|Ultimo uso|data_detail|Q.|Lavorazione|Prod. finito\n')
+pdb.set_trace()
 for default_code in sorted(data_detail):
     last_date, data_detail = data_detail[default_code]
     header_line = '%s|%s|' % (
