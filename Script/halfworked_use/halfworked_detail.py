@@ -112,11 +112,11 @@ log_f.write(
     'Semilavorato|Ultimo uso|data_detail|Q.|Lavorazione|Prod. finito\n')
 pdb.set_trace()
 for default_code in sorted(data_detail):
-    last_date, data_detail = data_detail[default_code]
-    header_line = '%s|%s|' % (
+    last_date, records = data_detail[default_code]
+    header_line = '%s|%s' % (
         default_code, last_date)
 
-    for record in sorted(data_detail, reverse=True):
+    for record in sorted(records, reverse=True):
         line = '%s|%s|%s|%s|%s\n' % (
             header_line,
             record[0],
