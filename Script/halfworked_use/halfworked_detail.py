@@ -86,12 +86,12 @@ for mrp in mrp_pool.browse(mrp_ids):
                 data_total[default_code][year] = 0.0
 
             if not data_detail[default_code][0] or \
-                    date > data_detail[default_code][1]:
-                data_detail[default_code][1] = date
+                    date > data_detail[default_code][0]:
+                data_detail[default_code][0] = date
 
+            # Update collect:
             data_total[default_code][year] += quantity
-
-            data_total[default_code][1].append((
+            data_detail[default_code][1].append((
                 date,
                 quantity,
                 job.name,
