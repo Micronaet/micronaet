@@ -62,11 +62,11 @@ data_total = {}
 pdb.set_trace()
 counter = 0
 total = len(mrp_ids)
-for mrp in mrp_pool.browse(mrp_ids):
+for mrp in mrp_pool.browse(mrp_ids[:10]):
     counter += 1
     print('Check %s of %s' % (
         counter, total,
-    ))
+        ))
     # Extract data:
     date = str(mrp.date_planned)[:10]
     year = date[:4]
