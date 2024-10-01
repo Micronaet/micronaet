@@ -59,7 +59,6 @@ data_detail = {}
 data_total = {}
 
 # Collect data:
-pdb.set_trace()
 counter = 0
 total = len(mrp_ids)
 for mrp in mrp_pool.browse(mrp_ids[:10]):
@@ -132,6 +131,7 @@ for default_code in sorted(data_detail):
 # -----------------------------------------------------------------------------
 log_f = open('total.csv', 'w')
 log_f.write('Semilavorato|Ultimo uso|Anno|Q.\n')
+pdb.set_trace()
 for default_code in sorted(data_total):
     for year in sorted(data_total[default_code]):
         quantity = data_total[default_code][year]
