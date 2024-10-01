@@ -61,7 +61,7 @@ data_total = {}
 # Collect data:
 counter = 0
 total = len(mrp_ids)
-for mrp in mrp_pool.browse(mrp_ids[:10]):
+for mrp in mrp_pool.browse(mrp_ids):
     counter += 1
     print('Check %s of %s' % (
         counter, total,
@@ -109,7 +109,6 @@ for mrp in mrp_pool.browse(mrp_ids[:10]):
 log_f = open('detail.csv', 'w')
 log_f.write(
     'Semilavorato|Ultimo uso|data_detail|Q.|Lavorazione|Prod. finito\n')
-pdb.set_trace()
 for default_code in sorted(data_detail):
     last_date, records = data_detail[default_code]
     header_line = '%s|%s' % (
@@ -131,7 +130,6 @@ for default_code in sorted(data_detail):
 # -----------------------------------------------------------------------------
 log_f = open('total.csv', 'w')
 log_f.write('Semilavorato|Ultimo uso|Anno|Q.\n')
-pdb.set_trace()
 for default_code in sorted(data_total):
     for year in sorted(data_total[default_code]):
         quantity = data_total[default_code][year]
