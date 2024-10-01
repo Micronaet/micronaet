@@ -54,8 +54,7 @@ mrp_ids = mrp_pool.search([
     ('accounting_state', '=', 'close'),
     ])
 
-import pdb; pdb.set_trace()
-data = {}
+data_detail = {}
 data_total = {}
 
 # Collect data:
@@ -77,15 +76,16 @@ for mrp in mrp_pool.browse(mrp_ids):
             if start and start in 'AB':
                 continue
 
-            if default_code not in data:
-                data[default_code] = ['', []]
+            if default_code not in data_detail:
+                data_detail[default_code] = ['', []]
                 data_total[default_code] = {}
 
             if year not in data_total[default_code]:
                 data_total[default_code][year] = 0.0
 
-            if not data[default_code][0] or date > data[default_code][1]:
-                data[default_code][1] = date
+            if not data_detail[default_code][0] or \
+                    date > data_detail[default_code][1]:
+                data_detail[default_code][1] = date
 
             data_total[default_code][year] += quantity
 
@@ -100,9 +100,9 @@ for mrp in mrp_pool.browse(mrp_ids):
 # Detail:
 # -----------------------------------------------------------------------------
 log_f = open('detail.csv', 'w')
-log_f.write('Semilavorato|Ultimo uso|Data|Q.|Lavorazione|Prod. finito\n')
-for default_code in sorted(data):
-    last_date, data_detail = data[default_code]
+log_f.write('Semilavorato|Ultimo uso|data_detail|Q.|Lavorazione|Prod. finito\n')
+for default_code in sorted(data_detail):
+    last_date, data_detail = data_detail[default_code]
     header_line = '%s|%s|' % (
         default_code, last_date)
 
@@ -122,15 +122,14 @@ for default_code in sorted(data):
 # -----------------------------------------------------------------------------
 log_f = open('total.csv', 'w')
 log_f.write('Semilavorato|Ultimo uso|Anno|Q.\n')
-for year in data:
-    for default_code in sorted(data_total):
-        for year in sorted(data_total[default_code]):
-            quantity = data_total[default_code][year]
-            last_use = data[default_code][0]
-            log_f.write('%s|%s|%s|%s\n' % (
-                default_code,
-                last_use,
-                year,
-                quantity,
-                ))
+for default_code in sorted(data_total):
+    for year in sorted(data_total[default_code]):
+        quantity = data_total[default_code][year]
+        last_use = data_detail[default_code][0]
+        log_f.write('%s|%s|%s|%s\n' % (
+            default_code,
+            last_use,
+            year,
+            quantity,
+            ))
 
