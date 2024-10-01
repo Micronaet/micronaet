@@ -20,6 +20,7 @@
 #
 ###############################################################################
 import os
+import pdb
 import sys
 import erppeek
 import ConfigParser
@@ -58,6 +59,7 @@ data_detail = {}
 data_total = {}
 
 # Collect data:
+pdb.set_trace()
 for mrp in mrp_pool.browse(mrp_ids):
     # Extract data:
     date = str(mrp.date_planned)[:10]
