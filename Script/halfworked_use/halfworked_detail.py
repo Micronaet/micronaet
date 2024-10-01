@@ -72,7 +72,7 @@ for mrp in mrp_pool.browse(mrp_ids):
             material = material.product_id
             default_code = material.default_code or ''
             start = default_code[:1]
-            quantity = material.quantity
+            quantity = job.qty
 
             # Only final product:
             if start and start in 'AB':
