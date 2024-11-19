@@ -41,6 +41,42 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 _logger = logging.getLogger(__name__)
 
 
+class sale_order(osv.osv):
+    """ Problem with confirmed files # patch
+    """
+    _name = 'sale.order'
+    _inherit = 'sale.order'
+
+    def get_selection(self, cr, uid, context=None):
+        """ Get current selection and append field
+        """
+        if 'state' not in self._columns:
+            return []
+
+        confirmed = ('confirmed', 'Confirmed')
+        if confirmed not in self._columns['state'].selection:
+            self._columns['state'].selection.append(confirmed)
+
+    _columns = {
+        'payment_problem': fields.boolean(
+            'Problemi pagamento',
+            help='Il cliente non paga oppure si è deciso di aspettare il'
+                 ' pagamento per sbloccare l''ordine'),
+        'state': fields.selection([
+            ('draft', 'Draft Quotation'),
+            ('sent', 'Quotation Sent'),
+            ('cancel', 'Cancelled'),
+            ('confirmed', 'Confirmed'),
+            ('waiting_date', 'Waiting Schedule'),
+            ('progress', 'Sales Order'),
+            ('manual', 'Sale to Invoice'),
+            ('invoice_except', 'Invoice Exception'),
+            ('done', 'Done'),
+            ], 'State', readonly=True,
+        )
+    }
+
+
 class sale_order_line(osv.osv):
     """ Problem with confirmed files # patch
     """
@@ -74,6 +110,10 @@ class sale_order_line(osv.osv):
             }
 
     _columns = {
+        'payment_problem': fields.related(
+            'order_id', 'payment_problem',
+            string='Problemi di pagamento',
+            ),
         # Added also here for MX installation
         # Was in partner_product_detail for Italy
         'pallet_weight': fields.integer(
@@ -125,36 +165,4 @@ class sale_order_line(osv.osv):
             'Tutti documenti',  # size=100,
             help='Note scritte sul tutti i documenti (offerta, ordine, DDT)'
         ),
-    }
-
-
-class sale_order(osv.osv):
-    """ Problem with confirmed files # patch
-    """
-    _name = 'sale.order'
-    _inherit = 'sale.order'
-
-    def get_selection(self, cr, uid, context=None):
-        """ Get current selection and append field
-        """
-        if 'state' not in self._columns:
-            return []
-
-        confirmed = ('confirmed', 'Confirmed')
-        if confirmed not in self._columns['state'].selection:
-            self._columns['state'].selection.append(confirmed)
-
-    _columns = {
-        'state': fields.selection([
-            ('draft', 'Draft Quotation'),
-            ('sent', 'Quotation Sent'),
-            ('cancel', 'Cancelled'),
-            ('confirmed', 'Confirmed'),
-            ('waiting_date', 'Waiting Schedule'),
-            ('progress', 'Sales Order'),
-            ('manual', 'Sale to Invoice'),
-            ('invoice_except', 'Invoice Exception'),
-            ('done', 'Done'),
-            ], 'State', readonly=True,
-        )
     }
