@@ -183,10 +183,12 @@ class hr_analytic_timesheet_intervent(osv.osv):
 
         ts_pool.unlink(cr, uid, delete_intervent_ids, context=context)
         move_pool.unlink(cr, uid, delete_move_ids, context=context)
-        # raise osv.except_osv(_('Invalid Action!'), _('In order to delete a confirmed sales order, you must cancel it before!'))
+        # raise osv.except_osv(_('Invalid Action!'),
+        # _('In order to delete a confirmed sales order, you must cancel
+        # it before!'))
 
         # ------------------------------------
-        # Than delete intervent parent record:
+        # Than delete intervention parent record:
         # ------------------------------------
         return osv.osv.unlink(self, cr, uid, ids, context=context)
 
