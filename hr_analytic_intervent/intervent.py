@@ -186,7 +186,6 @@ class hr_analytic_timesheet_intervent(osv.osv):
         # raise osv.except_osv(_('Invalid Action!'),
         # _('In order to delete a confirmed sales order, you must cancel
         # it before!'))
-
         # ------------------------------------
         # Than delete intervention parent record:
         # ------------------------------------

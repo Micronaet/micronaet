@@ -42,21 +42,21 @@ _logger = logging.getLogger(__name__)
 
 
 class MrpProductionWasteWizard(osv.osv_memory):
-    ''' Wizard for create waste product
-    '''
+    """ Wizard for create waste product
+    """
     _name = 'mrp.production.waste.wizard'
 
     # -------------------------------------------------------------------------
     #                        Wizard button events:
     # -------------------------------------------------------------------------
     def action_confirm_move(self, cr, uid, ids, context=None):
-        ''' Create unload from product and load to product
+        """ Create unload from product and load to product
             1. Create BOM empty lines
             2. Create production
             3. Create material list from from_product
             4. Create empty mrp job
             5. Extract unload and load in Excel for Account program
-        '''
+        """
         if context is None:
             context = {}
 
@@ -284,8 +284,8 @@ class MrpProductionWasteWizard(osv.osv_memory):
             }
 
     def onchange_product_id(self, cr, uid, ids, from_id, context=None):
-        ''' Onchange product id update product stock status
-        '''
+        """ Onchange product id update product stock status
+        """
         product_pool = self.pool.get('product.product')
 
         detail = ''
