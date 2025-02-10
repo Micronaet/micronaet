@@ -134,8 +134,8 @@ class MsdsChemeter(orm.Model):
             cr, uid, version_ids, context=context)
     '''
 
-    def search_product_from_mixture(self, cr, uid, ids, context=None):
-        """ Search product with this mixture
+    def search_product_from_mixture_domain(self, cr, uid, ids, context=None):
+        """ Search product_ids from mixture
         """
         product_pool = self.pool.get('product.product')
 
@@ -158,6 +158,31 @@ class MsdsChemeter(orm.Model):
             raise osv.except_osv(
                 'Attenzione:',
                 'Non trovati prodotti con mixture: {}'.format(name))
+        return product_ids
+
+    def search_product_from_mixture(self, cr, uid, ids, context=None):
+        """ Search product with this mixture
+        """
+        line_pool = self.pool.get('sale.order.line')
+
+        mixture = self.browse(cr, uid, ids, context=context)[0]
+        alias_code = mixture.alias
+
+        # Search product with mixture reference:
+        product_ids = self.search_product_from_mixture_domain(
+            cr, uid, ids, context=context)
+
+        if alias_code:
+            line_ids = line_pool.search(cr, uid, [
+                ('product_id', '=', product_ids),
+                ('name', '=', alias_code),
+            ], context=context)
+        else:
+            # Search product line with name = product_id.name
+            line_ids = line_pool.search(cr, uid, [
+                ('product_id', '=', product_ids),
+                ('name', '=', alias_code),
+            ], context=context)
 
         model_pool = self.pool.get('ir.model.data')
         # view_id = model_pool.get_object_reference(
@@ -166,20 +191,18 @@ class MsdsChemeter(orm.Model):
         view_id = False
         return {
             'type': 'ir.actions.act_window',
-            'name': _('Prodotto'),
+            'name': _('Righe OC'),
             'view_type': 'form',
             'view_mode': 'tree,form',
             'res_id': False,
-            'res_model': 'product.product',
+            'res_model': 'sale.order.line',
             'view_id': view_id,
             'views': [(view_id, 'tree'), (view_id, 'form')],
-            'domain': [('id', 'in', product_ids)],
+            'domain': [('id', 'in', line_ids)],
             'context': context,
             'target': 'current',
             'nodestroy': False,
             }
-
-        return True
 
     def search_sale_from_mixture(self, cr, uid, ids, context=None):
         """ Search sale line with this mixture and name
