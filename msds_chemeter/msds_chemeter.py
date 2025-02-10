@@ -22,7 +22,7 @@ import sys
 import logging
 import shutil
 import pdb
-import urrlib
+import urllib
 from openerp.osv import osv, orm, fields
 from datetime import datetime, timedelta
 from openerp.tools import (
