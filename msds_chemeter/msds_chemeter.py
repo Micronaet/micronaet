@@ -239,6 +239,8 @@ class MsdsChemeter(orm.Model):
     def search_language_from_mixture(self, cr, uid, ids, context=None):
         """ Search sale line with this mixture, name and language
         """
+        line_pool = self.pool.get('sale.order.line')
+
         line_ids = self.search_sale_from_mixture_domain(
             cr, uid, ids, context=context)
 
@@ -246,7 +248,7 @@ class MsdsChemeter(orm.Model):
         language_id = mixture.language_id.id
 
         # Add language:
-        line_ids = self.search(cr, uid, [
+        line_ids = line_pool.search(cr, uid, [
             ('id', 'in', line_ids),
             ('order_id.partner_id.msds_language_id', '=', language_id)
         ], context=context)
