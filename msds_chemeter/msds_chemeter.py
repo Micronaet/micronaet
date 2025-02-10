@@ -254,9 +254,10 @@ class ProductProduct(orm.Model):
         res[product_id] = chemeter_pool.search(cr, uid, [
                 ('name', '=', mixture),
                 ('alias', '!=', False),
-            ], context=context),
+            ], context=context)
 
-        '''res[product_id] = {
+        '''
+        res[product_id] = {
             'msds_chemeter_ids': chemeter_pool.search(cr, uid, [
                 ('name', '=', mixture),
                 ('alias', '=', False),
@@ -265,17 +266,18 @@ class ProductProduct(orm.Model):
                 ('name', '=', mixture),
                 ('alias', '!=', False),
             ], context=context),
-        }'''
+        }
+        '''
         return res
 
     _columns = {
         # m2m function:
         'msds_chemeter_ids': fields.function(
             _get_msds_chemeter_m2m,
-            method=True, type='many2many',  # multi=True,
-            relation='msds.chemeter',
+            method=True,   # multi=True,
+            relation='msds.chemeter', type='many2many',
             string='Schede'),
-        #'msds_chemeter_alias_ids': fields.function(
+        # 'msds_chemeter_alias_ids': fields.function(
         #    _get_msds_chemeter_m2m,
         #    method=True, type='many2many', multi=True,
         #    relation='msds.chemeter',
