@@ -148,6 +148,12 @@ class MsdsChemeter(orm.Model):
             ('default_code', '=ilike', name),
         ], context=context)
 
+        if not product_ids and name.endswith('_'):
+            # Force not present, search exactly the code without _
+            product_ids = product_pool.search(cr, uid, [
+                ('default_code', '=', name[:-1]),
+            ], context=context)
+
         if not product_ids:
             raise osv.except_osv(
                 'Attenzione:',
