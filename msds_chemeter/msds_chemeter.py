@@ -224,9 +224,6 @@ class ProductProduct(orm.Model):
             self, cr, uid, ids, field_names, arg=None, context=None):
         """ Extract Mixture MSDS Chemeter for product
         """
-        if uid == 1:
-            pdb.set_trace()
-
         if context is None:
             context = {}
 
