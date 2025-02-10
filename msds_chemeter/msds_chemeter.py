@@ -128,6 +128,7 @@ class MsdsChemeter(orm.Model):
 
         # Check and update record data:
         _logger.info(_('Update record and creare PDF'))
+        pdb.set_trace()
         for key in report_data:
             mixture, alias, language = key
             mixture_ids = self.search(cr, uid, [
