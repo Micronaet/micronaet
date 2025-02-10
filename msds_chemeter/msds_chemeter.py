@@ -77,6 +77,7 @@ class MsdsChemeter(orm.Model):
             context = {}
 
         attachment_pool = self.pool.get('ir.attachment')
+        pallet_pool = self.pool.get('mrp.analysis.sample')
 
         filename = self._get_file_name(cr, uid, ids, context=context)
         chemeter = self.browse(cr, uid, ids, context=context)[0]
@@ -95,7 +96,7 @@ class MsdsChemeter(orm.Model):
             }
 
             # Call generator of PDF file:
-            self.save_pallet_report_as_odt(cr, uid, ids, context=ctx)
+            pallet_pool.save_pallet_report_as_odt(cr, uid, [0], context=ctx)
 
         name = 'MSDS.{}.{}.{}.pdf'.format(
             chemeter.name or '',
