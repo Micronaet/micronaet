@@ -97,18 +97,22 @@ class MsdsChemeter(orm.Model):
     def import_msds_form(self, cr, uid, context=None):
         """ Scheduled import for MSDS form Chemeter API generator
         """
-        _logger.info(_('Start import PDF MSDS forms'))
-        log_message = ''
-        log_imported = ''
+        sapnaet_pool = self.pool.get('sapnaet')
+        company_pool = self.pool.get('res.company')
 
-        # ---------------
+        # ---------------------------------------------------------------------
         # Get parameters:
-        # ---------------
+        # ---------------------------------------------------------------------
+        _logger.info(_('Start import PDF MSDS forms'))
         try:
-            company_proxy = self.pool.get('res.company').browse(
-                cr, uid, 1, context=context)  # TODO
+            # todo better
+            company_proxy = company_pool.browse(cr, uid, 1, context=context)
             msds_folder_store = os.path.expanduser(
                 company_proxy.msds_folder_store)
+            msds_mask = os.path.join(
+                msds_folder_store,
+                '{}.pdf'
+            )
         except:
             log_message = _(
                 'Error reading start up path (in / store), check '
@@ -116,7 +120,40 @@ class MsdsChemeter(orm.Model):
             _logger.error(log_message)
             return False
 
-        # todo
+        # Launch report with parameter to get
+        _logger.info(_('Generate report to get list of MSDS from DDT'))
+        sapnaet_ids = sapnaet_pool.search(cr, uid, [], context=context)
+        report_data = sapnaet_pool.button_report_msds_delivery_report(
+            cr, uid, sapnaet_ids, context=context)
+
+        # Check and update record data:
+        _logger.info(_('Update record and creare PDF'))
+        for key in report_data:
+            mixture, alias, language = key
+            mixture_ids = self.search(cr, uid, [
+                ('name', '=', mixture),
+                ('alias', '=', alias),
+                ('language_id', '=', language.id),
+            ], context=context)
+            # todo
+
+            if mixture_ids:
+                regenerate_pdf = False
+                # Update file
+                mixture_id = mixture_ids[0]
+                # todo raise if more than one?
+            else:
+                regenerate_pdf = True
+                # Create new
+                mixture_id = self.create(cr, uid, {
+
+                }, context=context)
+
+            if regenerate_pdf:
+                filename = msds_mask.format(mixture_id)
+                _logger.info('Generarting {}'.format(filename))
+                # todo Generate PDF file
+
         _logger.info(_('End importation MSDS forms'))
         return True
 
