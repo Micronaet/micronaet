@@ -41,7 +41,7 @@
             <field name="name">msds.chemeter.form</field>
             <field name="model">msds.chemeter</field>
             <field name="arch" type="xml">
-                <search string="MSDS" fonts="bold: alias==False"><!--colors="blue: alias==False" -->
+                <search string="MSDS">
                    <field name="name" string="Mixture" filter_domain="[('name','ilike',self)]"/>
                    <field name="alias" string="Nome alias" filter_domain="[('alias','=',self)]"/>
                    <field name="language_id" string="Lingua" filter_domain="[('language_id','=',self)]"/>
@@ -58,7 +58,7 @@
             <field name="name">msds.chemeter.tree</field>
             <field name="model">msds.chemeter</field>
             <field name="arch" type="xml">
-                <tree string="MSDS chemeter">
+                <tree string="MSDS chemeter" fonts="bold: alias==False"><!--colors="blue: alias==False" -->
                     <field name="name" />
                     <field name="alias"  />
                     <field name="language_id" />
