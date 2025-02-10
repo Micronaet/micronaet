@@ -185,10 +185,10 @@ class MsdsChemeter(orm.Model):
             ], context=context)
 
         model_pool = self.pool.get('ir.model.data')
-        # view_id = model_pool.get_object_reference(
-        #    cr, uid,
-        #    'mrp_operations', 'inherit')[1]
-        view_id = False
+        tree_view_id = model_pool.get_object_reference(
+            cr, uid,
+            'sapnaet',
+            'view_sale_order_line_prepare_order_check_tree')[1]
         return {
             'type': 'ir.actions.act_window',
             'name': _('Righe OC'),
@@ -196,8 +196,8 @@ class MsdsChemeter(orm.Model):
             'view_mode': 'tree,form',
             'res_id': False,
             'res_model': 'sale.order.line',
-            'view_id': view_id,
-            'views': [(view_id, 'tree'), (view_id, 'form')],
+            'view_id': tree_view_id,
+            'views': [(tree_view_id, 'tree')],
             'domain': [('id', 'in', line_ids)],
             'context': context,
             'target': 'current',
