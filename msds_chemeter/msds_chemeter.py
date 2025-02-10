@@ -163,6 +163,32 @@ class MsdsChemeter(orm.Model):
     def search_product_from_mixture(self, cr, uid, ids, context=None):
         """ Search product with this mixture
         """
+        product_ids = self.search_product_from_mixture_domain(
+            cr, uid, ids, context=context)
+
+        # model_pool = self.pool.get('ir.model.data')
+        # view_id = model_pool.get_object_reference(
+        #    cr, uid,
+        #    'mrp_operations', 'inherit')[1]
+        view_id = False
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Prodotto'),
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            'res_id': False,
+            'res_model': 'product.product',
+            'view_id': view_id,
+            'views': [(view_id, 'tree'), (view_id, 'form')],
+            'domain': [('id', 'in', product_ids)],
+            'context': context,
+            'target': 'current',
+            'nodestroy': False,
+            }
+
+    def search_sale_from_mixture(self, cr, uid, ids, context=None):
+        """ Search sale line with this mixture and name
+        """
         line_pool = self.pool.get('sale.order.line')
 
         mixture = self.browse(cr, uid, ids, context=context)[0]
@@ -202,12 +228,7 @@ class MsdsChemeter(orm.Model):
             'context': context,
             'target': 'current',
             'nodestroy': False,
-            }
-
-    def search_sale_from_mixture(self, cr, uid, ids, context=None):
-        """ Search sale line with this mixture and name
-        """
-        return True
+        }
 
     def search_language_from_mixture(self, cr, uid, ids, context=None):
         """ Search sale line with this mixture, name and language
