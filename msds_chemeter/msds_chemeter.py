@@ -193,7 +193,7 @@ class MsdsChemeter(orm.Model):
             'type': 'ir.actions.act_window',
             'name': _('Righe OC'),
             'view_type': 'form',
-            'view_mode': 'tree,form',
+            'view_mode': 'tree',
             'res_id': False,
             'res_model': 'sale.order.line',
             'view_id': tree_view_id,
