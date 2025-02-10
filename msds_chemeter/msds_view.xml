@@ -41,7 +41,7 @@
             <field name="name">msds.chemeter.form</field>
             <field name="model">msds.chemeter</field>
             <field name="arch" type="xml">
-                <search string="MSDS">
+                <search string="MSDS" fonts="bold: alias==False"><!--colors="blue: alias==False" -->
                    <field name="name" string="Mixture" filter_domain="[('name','ilike',self)]"/>
                    <field name="alias" string="Nome alias" filter_domain="[('alias','=',self)]"/>
                    <field name="language_id" string="Lingua" filter_domain="[('language_id','=',self)]"/>
