@@ -166,7 +166,7 @@ class MsdsChemeter(orm.Model):
         line_pool = self.pool.get('sale.order.line')
 
         mixture = self.browse(cr, uid, ids, context=context)[0]
-        alias_code = mixture.alias
+        alias_code = mixture.alias or ''
 
         # Search product with mixture reference:
         product_ids = self.search_product_from_mixture_domain(
@@ -181,7 +181,7 @@ class MsdsChemeter(orm.Model):
             # Search product line with name = product_id.name
             line_ids = line_pool.search(cr, uid, [
                 ('product_id', '=', product_ids),
-                ('name', '=', alias_code),
+                # ('name', '=', alias_code),
             ], context=context)
 
         model_pool = self.pool.get('ir.model.data')
