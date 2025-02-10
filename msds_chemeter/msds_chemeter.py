@@ -244,7 +244,7 @@ class ProductProduct(orm.Model):
             _logger.warning('No Mixture code found')
             return res
 
-        _logger.info('Searching product mixures for {}'.format(mixture))
+        _logger.warning('Searching product mixures for {}'.format(mixture))
         res[product_id] = {
             'msds_chemeter_ids': chemeter_pool.search(cr, uid, [
                 ('name', '=', mixture),
