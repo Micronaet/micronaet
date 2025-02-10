@@ -84,7 +84,7 @@ class MsdsForm(orm.Model):
             self, cr, uid, subject='', body='', partner_ids=[], context=None):
         """ Write log in wall
         """
-        # TODO Mettere meglio (anche con l'invio della mail)
+        # todo Mettere meglio (anche con l'invio della mail)
 
         # Default part of message:
         message = {

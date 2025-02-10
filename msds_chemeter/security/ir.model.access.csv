@@ -1,0 +1,3 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_msds_chemeter_manager","msds.chemeter","model_msds_chemeter","msds_chemeter.group_MSDS_chemeter_manager",1,1,1,1
+"access_msds_chemeter_user","msds.chemeter","model_msds_chemeter","msds_chemeter.group_MSDS_chemeter_user",1,0,0,0

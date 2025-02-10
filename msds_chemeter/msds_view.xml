@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    <!-- INHERIT VIEW -->
+    <!--product.product -->
+       <record id="product_normal_form_view" model="ir.ui.view">
+            <field name="name">product.normal.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="/form/sheet/notebook/page[@string='Information']" position='after'>
+                    <page string="MSDS Chemeter" groups="msds_chemeter.group_MSDS_chemeter_manager,msds_chemeter.group_MSDS_chemeter_user">
+                        <separator string="Schede Prodotto" />
+                        <field name="msds_chemeter_alias_ids" />
+                        <separator string="Schede Alias" />
+                        <field name="msds_chemeter_alias_ids" />
+                    </page>
+                </xpath>
+            </field>
+      </record>
+
+    <!--res.company -->
+    <record model="ir.ui.view" id="res_company_form_msds_view">
+        <field name="name">Company MSDS</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form" />
+        <field name="arch" type="xml">
+            <xpath expr="/form/sheet/notebook/page[@string='General Information']" position="after">
+                <page string="MSDS Chemeter" groups="msds_chemeter.group_MSDS_chemeter_manager,msds_chemeter.group_MSDS_chemeter_user">
+                    <group colspan="4" col="4">
+                       <field name="msds_folder_store"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- NORMAL VIEW -->
+    <!--msds.form-->
+       <record id="msds_chemeter_search_view" model="ir.ui.view">
+            <field name="name">msds.chemeter.form</field>
+            <field name="model">msds.chemeter</field>
+            <field name="arch" type="xml">
+                <search string="MSDS">
+                   <field name="name" string="Mixture" filter_domain="[('name','ilike',self)]"/>
+                   <field name="alias" string="Nome alias" filter_domain="[('alias','=',self)]"/>
+                   <field name="language_id" string="Lingua" filter_domain="[('language_id','=',self)]"/>
+                   <separator/>
+                   <group expand='0' string='Group by...'>
+                       <filter string='Alias' icon="terp-stock_symbol-selection" domain="[]" context="{'group_by': 'alias'}"/>
+                       <filter string='Lingue' icon="terp-stock_symbol-selection" domain="[]" context="{'group_by': 'language_id'}"/>
+                   </group>
+                </search>
+            </field>
+        </record>
+
+       <record id="msds_chemeter_tree_view" model="ir.ui.view">
+            <field name="name">msds.chemeter.tree</field>
+            <field name="model">msds.chemeter</field>
+            <field name="arch" type="xml">
+                <tree string="MSDS chemeter">
+                    <field name="name" />
+                    <field name="alias"  />
+                    <field name="language_id" />
+                    <button name="download_msds_form" string="Download" type="object" class="oe_highlight" icon="gtk-save"/>
+                </tree>
+            </field>
+       </record>
+
+       <record id="msds_chemeter_form_view" model="ir.ui.view">
+            <field name="name">msds.chemeter.form</field>
+            <field name="model">msds.chemeter</field>
+            <field name="arch" type="xml">
+                <form string="MSDS chemeter" version="7.0">
+                    <sheet>
+                        <group colspan="4" col="4">
+                           <field name="name" readonly="1"/>
+                           <field name="alias" readonly="1" />
+                           <field name="language_id" readonly="1" />
+                           <button name="download_msds_form" string="Download" type="object" class="oe_highlight" icon="gtk-save"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+       </record>
+
+        <record model="ir.actions.act_window" id="action_msds_chemeter">
+            <field name="name">MDSD Chemeter</field>
+            <field name="res_model">msds.chemeter</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="msds_chemeter_tree_view" />
+        </record>
+
+    <menuitem name="MSDS Chemeter" id="menu_msds_chemeter_root" sequence="10" groups="msds_chemeter.group_MSDS_chemeter_manager,msds_chemeter.group_MSDS_chemeter_user" parent="base.menu_base_config"/>
+        <menuitem name="Schede" id="menu_msds_chemeter_form" sequence="10" parent="menu_msds_chemeter_root" action="action_msds_chemeter"/>
+
+    </data>
+</openerp>
+
