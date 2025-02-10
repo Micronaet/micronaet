@@ -60,8 +60,12 @@
             <field name="arch" type="xml">
                 <tree string="MSDS chemeter" fonts="bold: alias == ''"><!--colors="blue: alias==False" -->
                     <field name="name" />
+                    <button name="search_product_from_mixture" string="Ricerca questa mixture tra i prodotti" type="object" class="oe_highlight" icon="gtk-search"/>
                     <field name="alias"  />
+                    <button name="search_sale_from_mixture" string="Ricerca questa mixture con alias tra il venduto" type="object" class="oe_highlight" icon="gtk-search"/>
                     <field name="language_id" />
+                    <button name="search_language_from_mixture" string="Ricerca questa mixture con alias e lingua tra il venduto" type="object" class="oe_highlight" icon="gtk-search"/>
+
                     <button name="download_msds_form" string="Download" type="object" class="oe_highlight" icon="gtk-save"/>
                 </tree>
             </field>

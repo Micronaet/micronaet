@@ -69,6 +69,25 @@ class MsdsChemeter(orm.Model):
     # -------------------------------------------------------------------------
     # Button event:
     # -------------------------------------------------------------------------
+    def download_msds_form(self, cr, uid, ids, context=None):
+        """ Return download file:
+        """
+        filename = self._get_file_name(cr, uid, ids, context=context)
+        if not os.path.isfile(filename):
+            # Generate filename from Chemeter call
+            pass
+
+        chemeter = self.browse(cr, uid, ids, context=context)[0]
+        attachment_pool = self.pool.get('ir.attachment')
+
+        name = 'MSDS.{}.{}.{}.pdf'.format(
+            chemeter.name or '',
+            chemeter.alias or '',
+            chemeter.language_id.code or '_',
+        )
+        return attachment_pool.return_file_apache_php(
+            cr, uid, filename, name=name, context=context)
+
     '''
     def open_msds_form(self, cr, uid, ids, context=None):
         """ Return a link element for use agent and open document from file
@@ -82,18 +101,24 @@ class MsdsChemeter(orm.Model):
             cr, uid, version_ids, context=context)
     '''
 
-    def download_msds_form(self, cr, uid, ids, context=None):
-        """ Download file with PDF
+    def search_product_from_mixture(self, cr, uid, ids, context=None):
+        """ Search product with this mixture
         """
-        version_pool = self.pool.get('msds.form.version')
-        version_ids = version_pool.search(cr, uid, [
-            ('msds_id', '=', ids[0])], context=context)
-        return version_pool.download_msds_form(
-            cr, uid, version_ids, context=context)
+        return True
 
-    # -----------------
+    def search_sale_from_mixture(self, cr, uid, ids, context=None):
+        """ Search sale line with this mixture and name
+        """
+        return True
+
+    def search_language_from_mixture(self, cr, uid, ids, context=None):
+        """ Search sale line with this mixture, name and language
+        """
+        return True
+
+    # -------------------------------------------------------------------------
     # Scheduled action:
-    # -----------------
+    # -------------------------------------------------------------------------
     def import_msds_form(self, cr, uid, context=None):
         """ Scheduled import for MSDS form Chemeter API generator
         """
@@ -192,26 +217,6 @@ class MsdsChemeter(orm.Model):
             'target': 'new',
         }
 
-    def download_msds_form(self, cr, uid, ids, context=None):
-        """ Return download file:
-        """
-        pdf_path = os.path.expanduser('~/ETL/panchemicals/msds/openerp')
-
-        version_proxy = self.browse(cr, uid, ids, context=context)[0]
-        msds = version_proxy.msds_id
-
-        attachment_pool = self.pool.get('ir.attachment')
-        filename = os.path.join(pdf_path, '%s.PDF' % ids[0])
-
-        name = 'MSDS_%s_%slang_%s_ID_%s' % (
-            msds.product_code or '',
-            ('alias_%s_' % msds.alias_code) if
-            msds.alias_code else '',
-            msds.language_id.code or 'XX',
-            os.path.basename(filename),
-            )
-        return attachment_pool.return_file_apache_php(
-            cr, uid, filename, name=name, context=context)
     '''
 
 
