@@ -58,7 +58,7 @@
             <field name="name">msds.chemeter.tree</field>
             <field name="model">msds.chemeter</field>
             <field name="arch" type="xml">
-                <tree string="MSDS chemeter" fonts="bold: alias==False"><!--colors="blue: alias==False" -->
+                <tree string="MSDS chemeter" fonts="bold: alias == ''"><!--colors="blue: alias==False" -->
                     <field name="name" />
                     <field name="alias"  />
                     <field name="language_id" />
