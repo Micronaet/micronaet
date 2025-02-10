@@ -72,10 +72,20 @@ class MsdsChemeter(orm.Model):
     def download_msds_form(self, cr, uid, ids, context=None):
         """ Return download file:
         """
+        if context is None:
+            context = {}
+
         filename = self._get_file_name(cr, uid, ids, context=context)
         if not os.path.isfile(filename):
-            # Generate filename from Chemeter call
-            pass
+            pdb.set_trace()
+            # Generate filename from Chemeter call:
+            ctx = context.copy()
+            ctx['report_mode'] = 'sheet'
+            ctx['report_action'] = 'pdf'
+            ctx['force_filename'] = filename
+
+            # Call generator of PDF file:
+            self.save_pallet_report_as_odt(cr, uid, ids, context=ctx)
 
         chemeter = self.browse(cr, uid, ids, context=context)[0]
         attachment_pool = self.pool.get('ir.attachment')
@@ -89,6 +99,29 @@ class MsdsChemeter(orm.Model):
             cr, uid, filename, name=name, context=context)
 
     '''
+    Label print:
+    def button_msds(self, cr, uid, ids, context=None):
+        """ Open MSDS
+        """
+        if context is None:
+            context = {}
+        ctx = context.copy()
+        ctx['report_mode'] = 'label'
+        ctx['report_action'] = 'pdf'
+
+        return self.save_pallet_report_as_odt(cr, uid, ids, context=ctx)
+
+    def button_msds_print(self, cr, uid, ids, context=None):
+        """ Open MSDS
+        """
+        if context is None:
+            context = {}
+        ctx = context.copy()
+        ctx['report_mode'] = 'label'
+        ctx['report_action'] = 'print'
+
+        return self.save_pallet_report_as_odt(cr, uid, ids, context=ctx)
+
     def open_msds_form(self, cr, uid, ids, context=None):
         """ Return a link element for use agent and open document from file
             system of MSDS form, ex.:
@@ -104,6 +137,42 @@ class MsdsChemeter(orm.Model):
     def search_product_from_mixture(self, cr, uid, ids, context=None):
         """ Search product with this mixture
         """
+        product_pool = self.pool.get('product.product')
+
+        mixture = self.browse(cr, uid, ids, context=context)[0]
+        name = mixture.name
+
+        product_ids = product_pool.search(cr, uid, [
+            '|',
+            ('force_mixture', '=', name),
+            ('default_code', '=ilike', name),
+        ], context=context)
+
+        if not product_ids:
+            raise osv.except_osv(
+                'Attenzione: Non trovati prodotti con mixture: {}'.format(
+                    name))
+
+        model_pool = self.pool.get('ir.model.data')
+        # view_id = model_pool.get_object_reference(
+        #    cr, uid,
+        #    'mrp_operations', 'inherit')[1]
+        view_id = False
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Prodotto'),
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_id': False,
+            'res_model': 'product.product',
+            'view_id': view_id,
+            'views': [(view_id, 'tree')],
+            'domain': [('id', 'in', product_ids)],
+            'context': context,
+            'target': 'current',
+            'nodestroy': False,
+            }
+
         return True
 
     def search_sale_from_mixture(self, cr, uid, ids, context=None):

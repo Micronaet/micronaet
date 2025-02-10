@@ -76,7 +76,7 @@ class report_actions_wizard(wizard.interface):
         res = ir_set(cr, uid, 'action', 'client_print_multi', report.report_name, [report.model], 'ir.actions.report.xml,%d' % data['id'], isobject=True)
         if report.report_wizard:
             report._set_report_wizard()
-        return {'value_id':res[0]}
+        return {'value_id': res[0]}
 
     def _check(self, cr, uid, data, context):
         pool = pooler.get_pool(cr.dbname)
@@ -113,7 +113,7 @@ class report_actions_wizard(wizard.interface):
         act_win['domain'] = [('id','=',form['value_id'])]
         act_win['name'] = _('Client Events')
         return act_win
-    
+
     states = {
         'init': {
 			'actions': [],
