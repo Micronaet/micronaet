@@ -28,7 +28,7 @@
             <xpath expr="/form/sheet/notebook/page[@string='General Information']" position="after">
                 <page string="MSDS Chemeter" groups="msds_chemeter.group_MSDS_chemeter_manager,msds_chemeter.group_MSDS_chemeter_user">
                     <group colspan="4" col="4">
-                       <field name="msds_folder_store"/>
+                       <field name="msds_chemeter_folder_store"/>
                     </group>
                 </page>
             </xpath>
