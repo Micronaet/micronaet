@@ -179,10 +179,17 @@ class MsdsChemeter(orm.Model):
             ], context=context)
         else:
             # Search product line with name = product_id.name
-            line_ids = line_pool.search(cr, uid, [
+            product_line_ids = line_pool.search(cr, uid, [
                 ('product_id', '=', product_ids),
                 # ('name', '=', alias_code),
             ], context=context)
+            line_ids = []
+
+            # Search only alias = product name line:
+            for line in line_pool.browse(
+                    cr, uid, product_line_ids, context=context):
+                if line.name == line.product_id.name:
+                    line_ids.append(line.id)
         return line_ids
 
     def search_product_from_mixture(self, cr, uid, ids, context=None):
