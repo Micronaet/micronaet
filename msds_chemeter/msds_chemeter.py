@@ -89,7 +89,7 @@ class MsdsChemeter(orm.Model):
             ctx['report_mode'] = 'sheet'
             ctx['report_action'] = 'pdf'
             ctx['force_filename'] = filename
-            ctx['sheet_parametr'] = {
+            ctx['sheet_parameter'] = {
                 'mixtureCode': chemeter.name,
                 'alias': chemeter.alias,
                 'language': chemeter.language_id.code or 'it-IT'
