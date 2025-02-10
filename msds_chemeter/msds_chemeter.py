@@ -150,8 +150,8 @@ class MsdsChemeter(orm.Model):
 
         if not product_ids:
             raise osv.except_osv(
-                'Attenzione: Non trovati prodotti con mixture: {}'.format(
-                    name))
+                'Attenzione:',
+                'Non trovati prodotti con mixture: {}'.format(name))
 
         model_pool = self.pool.get('ir.model.data')
         # view_id = model_pool.get_object_reference(
