@@ -12,8 +12,8 @@
                     <page string="MSDS Chemeter" groups="msds_chemeter.group_MSDS_chemeter_manager,msds_chemeter.group_MSDS_chemeter_user">
                         <separator string="Schede Prodotto" />
                         <field name="msds_chemeter_ids" />
-                        <separator string="Schede Alias" />
-                        <field name="msds_chemeter_alias_ids" />
+                        <!--<separator string="Schede Alias" />
+                        <field name="msds_chemeter_alias_ids" />-->
                     </page>
                 </xpath>
             </field>
