@@ -135,7 +135,7 @@ class MsdsChemeter(orm.Model):
     '''
 
     def search_product_from_mixture_domain(self, cr, uid, ids, context=None):
-        """ Search product_ids from mixture
+        """ UTILITY: Search product_ids from mixture
         """
         product_pool = self.pool.get('product.product')
 
@@ -159,6 +159,31 @@ class MsdsChemeter(orm.Model):
                 'Attenzione:',
                 'Non trovati prodotti con mixture: {}'.format(name))
         return product_ids
+
+    def search_sale_from_mixture_domain(self, cr, uid, ids, context=None):
+        """ UTILITY: Search product_ids from mixture
+        """
+        line_pool = self.pool.get('sale.order.line')
+
+        mixture = self.browse(cr, uid, ids, context=context)[0]
+        alias_code = mixture.alias or ''
+
+        # Search product with mixture reference:
+        product_ids = self.search_product_from_mixture_domain(
+            cr, uid, ids, context=context)
+
+        if alias_code:
+            line_ids = line_pool.search(cr, uid, [
+                ('product_id', '=', product_ids),
+                ('name', '=', alias_code),
+            ], context=context)
+        else:
+            # Search product line with name = product_id.name
+            line_ids = line_pool.search(cr, uid, [
+                ('product_id', '=', product_ids),
+                # ('name', '=', alias_code),
+            ], context=context)
+        return line_ids
 
     def search_product_from_mixture(self, cr, uid, ids, context=None):
         """ Search product with this mixture
@@ -189,27 +214,8 @@ class MsdsChemeter(orm.Model):
     def search_sale_from_mixture(self, cr, uid, ids, context=None):
         """ Search sale line with this mixture and name
         """
-        line_pool = self.pool.get('sale.order.line')
-
-        mixture = self.browse(cr, uid, ids, context=context)[0]
-        alias_code = mixture.alias or ''
-
-        # Search product with mixture reference:
-        product_ids = self.search_product_from_mixture_domain(
+        line_ids = self.search_sale_from_mixture_domain(
             cr, uid, ids, context=context)
-
-        if alias_code:
-            line_ids = line_pool.search(cr, uid, [
-                ('product_id', '=', product_ids),
-                ('name', '=', alias_code),
-            ], context=context)
-        else:
-            # Search product line with name = product_id.name
-            line_ids = line_pool.search(cr, uid, [
-                ('product_id', '=', product_ids),
-                # ('name', '=', alias_code),
-            ], context=context)
-
         model_pool = self.pool.get('ir.model.data')
         tree_view_id = model_pool.get_object_reference(
             cr, uid,
@@ -233,7 +239,37 @@ class MsdsChemeter(orm.Model):
     def search_language_from_mixture(self, cr, uid, ids, context=None):
         """ Search sale line with this mixture, name and language
         """
-        return True
+        line_ids = self.search_sale_from_mixture_domain(
+            cr, uid, ids, context=context)
+
+        mixture = self.browse(cr, uid, ids, context=context)[0]
+        language_id = mixture.language_id.id
+
+        # Add language:
+        line_ids = self.search(cr, uid, [
+            ('id', 'in', line_ids),
+            ('order_id.partner_id.msds_language_id', '=', language_id)
+        ], context=context)
+
+        model_pool = self.pool.get('ir.model.data')
+        tree_view_id = model_pool.get_object_reference(
+            cr, uid,
+            'sapnaet',
+            'view_sale_order_line_prepare_order_check_tree')[1]
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Righe OC'),
+            'view_type': 'form',
+            'view_mode': 'tree',
+            'res_id': False,
+            'res_model': 'sale.order.line',
+            'view_id': tree_view_id,
+            'views': [(tree_view_id, 'tree')],
+            'domain': [('id', 'in', line_ids)],
+            'context': context,
+            'target': 'current',
+            'nodestroy': False,
+        }
 
     # -------------------------------------------------------------------------
     # Scheduled action:
