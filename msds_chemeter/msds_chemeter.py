@@ -96,7 +96,8 @@ class MsdsChemeter(orm.Model):
             }
 
             # Call generator of PDF file:
-            pallet_pool.save_pallet_report_as_odt(cr, uid, [0], context=ctx)
+            return pallet_pool.save_pallet_report_as_odt(
+                cr, uid, [0], context=ctx)
 
         name = 'MSDS.{}.{}.{}.pdf'.format(
             chemeter.name or '',
