@@ -47,6 +47,7 @@
                    <field name="language_id" string="Lingua" filter_domain="[('language_id','=',self)]"/>
                    <separator/>
                    <group expand='0' string='Group by...'>
+                       <filter string='Mixture' icon="terp-stock_symbol-selection" domain="[]" context="{'group_by': 'name'}"/>
                        <filter string='Alias' icon="terp-stock_symbol-selection" domain="[]" context="{'group_by': 'alias'}"/>
                        <filter string='Lingue' icon="terp-stock_symbol-selection" domain="[]" context="{'group_by': 'language_id'}"/>
                    </group>
