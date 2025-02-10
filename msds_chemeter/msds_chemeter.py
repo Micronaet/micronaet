@@ -97,6 +97,9 @@ class MsdsChemeter(orm.Model):
     def import_msds_form(self, cr, uid, context=None):
         """ Scheduled import for MSDS form Chemeter API generator
         """
+        if context is None:
+            context = {}
+
         sapnaet_pool = self.pool.get('sapnaet')
         company_pool = self.pool.get('res.company')
 
@@ -122,9 +125,12 @@ class MsdsChemeter(orm.Model):
 
         # Launch report with parameter to get
         _logger.info(_('Generate report to get list of MSDS from DDT'))
+
         sapnaet_ids = sapnaet_pool.search(cr, uid, [], context=context)
+        ctx = context.copy()
+        ctx['update_record'] = True
         report_data = sapnaet_pool.button_report_msds_delivery_report(
-            cr, uid, sapnaet_ids, context=context)
+            cr, uid, sapnaet_ids, context=ctx)
 
         # Check and update record data:
         _logger.info(_('Update record and creare PDF'))
