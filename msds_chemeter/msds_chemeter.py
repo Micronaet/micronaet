@@ -22,6 +22,7 @@ import sys
 import logging
 import shutil
 import pdb
+import urrlib
 from openerp.osv import osv, orm, fields
 from datetime import datetime, timedelta
 from openerp.tools import (
@@ -82,7 +83,6 @@ class MsdsChemeter(orm.Model):
         filename = self._get_file_name(cr, uid, ids[0], context=context)
         chemeter = self.browse(cr, uid, ids, context=context)[0]
         if not os.path.isfile(filename):
-            pdb.set_trace()
             # Generate filename from Chemeter call:
             ctx = context.copy()
 
@@ -90,8 +90,8 @@ class MsdsChemeter(orm.Model):
             ctx['report_action'] = 'pdf'
             ctx['force_filename'] = filename
             ctx['sheet_parameter'] = {
-                'mixture': chemeter.name,
-                'alias': chemeter.alias,
+                'mixture': urllib.quote(chemeter.name),
+                'alias': urllib.quote(chemeter.alias),
                 'language': chemeter.language_id.code or 'it-IT'
             }
 
