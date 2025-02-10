@@ -60,8 +60,9 @@ class MsdsChemeter(orm.Model):
         """ Find file name for document stored
             product_id: integer single element
         """
-        product_proxy = self.browse(cr, uid, product_id, context=context)
-        company = product_proxy.product_id.company_id
+        company_pool = self.pool.get('res.company')
+        company_ids = company_pool.search(cr, uid, [], context=context)
+        company = company_pool.browse(cr, uid, company_ids, context=context)[0]
         folder = os.path.expanduser(company.msds_chemeter_folder_store)
         res = os.path.join(folder, "%s.pdf" % product_id)
         return res
@@ -75,20 +76,26 @@ class MsdsChemeter(orm.Model):
         if context is None:
             context = {}
 
+        attachment_pool = self.pool.get('ir.attachment')
+
         filename = self._get_file_name(cr, uid, ids, context=context)
+        chemeter = self.browse(cr, uid, ids, context=context)[0]
         if not os.path.isfile(filename):
             pdb.set_trace()
             # Generate filename from Chemeter call:
             ctx = context.copy()
+
             ctx['report_mode'] = 'sheet'
             ctx['report_action'] = 'pdf'
             ctx['force_filename'] = filename
+            ctx['sheet_parametr'] = {
+                'mixtureCode': chemeter.name,
+                'alias': chemeter.alias,
+                'language': chemeter.language_id.code or 'it-IT'
+            }
 
             # Call generator of PDF file:
             self.save_pallet_report_as_odt(cr, uid, ids, context=ctx)
-
-        chemeter = self.browse(cr, uid, ids, context=context)[0]
-        attachment_pool = self.pool.get('ir.attachment')
 
         name = 'MSDS.{}.{}.{}.pdf'.format(
             chemeter.name or '',
