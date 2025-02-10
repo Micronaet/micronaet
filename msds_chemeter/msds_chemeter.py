@@ -231,18 +231,20 @@ class ProductProduct(orm.Model):
         res = {}
         product_id = ids[0]
         product = self.browse(cr, uid, product_id, context=context)
+        force_mixture = product.force_mixture
         product_code = product.default_code or ''
 
-        if product.force_mixture:
-            mixture = product.force_mixture
+        if force_mixture:
+            mixture = force_mixture
         else:
+            if not product_code:
+                _logger.warning('No Mixture code found')
+                return res
+
             mixture = '{}_{}'.format(
                 product_code[:5],
                 product_code[6:],
             )
-        if not mixture or not product_code:
-            _logger.warning('No Mixture code found')
-            return res
 
         _logger.warning('Searching product mixures for {}'.format(mixture))
         res[product_id] = {
