@@ -96,38 +96,41 @@ class MsdsChemeter(orm.Model):
         pallet_pool = self.pool.get('mrp.analysis.sample')
 
         filename = self._get_file_name(cr, uid, ids[0], context=context)
+        try:
+            os.remove(filename)
+            _logger.warning('Remove {}'.format(filename))
+        except:
+            _logger.warning('Cannot remove {}'.format(filename))
+
         chemeter = self.browse(cr, uid, ids, context=context)[0]
-        if not os.path.isfile(filename):
-            # Generate filename from Chemeter call:
-            ctx = context.copy()
 
-            ctx['report_mode'] = 'sheet'
-            ctx['report_action'] = 'pdf'
-            # ctx['force_filename'] = filename
-            ctx['sheet_parameter'] = {
-                'mixture': urllib.quote(chemeter.name),
-                'alias': urllib.quote(chemeter.alias),
-                'language': urllib.quote(chemeter.language_id.code),
-                # or 'it-IT'
-            }
+        # Generate filename from Chemeter call:
+        ctx = context.copy()
+        ctx['report_mode'] = 'sheet'
+        ctx['report_action'] = 'pdf'
+        # ctx['force_filename'] = filename
+        ctx['sheet_parameter'] = {
+            'mixture': urllib.quote(chemeter.name),
+            'alias': urllib.quote(chemeter.alias),
+            'language': urllib.quote(chemeter.language_id.code),
+            # or 'it-IT'
+        }
 
-            # Call generator of PDF file:
-            reply = pallet_pool.save_pallet_report_as_odt(
-                cr, uid, [0], context=ctx)
-            try:
-                url = reply.get('url')
-                _logger.warning('Saving Chemeter MSDS as {}'.format(filename))
-                command = "wget -O \"{}\" --content-disposition \"{}\"".format(
-                    filename, url
-                )
-                os.system(command)
-            except:
-                raise osv.except_osv(
-                    'Attenzione:',
-                    'Non trovato il mixture: {}'.format(chemeter.name))
+        # Call generator of PDF file:
+        reply = pallet_pool.save_pallet_report_as_odt(
+            cr, uid, [0], context=ctx)
+        try:
+            url = reply.get('url')
+            _logger.warning('Saving Chemeter MSDS as {}'.format(filename))
+            command = "wget -O \"{}\" --content-disposition \"{}\"".format(
+                filename, url
+            )
+            os.system(command)
+        except:
+            raise osv.except_osv(
+                'Attenzione:',
+                'Non trovato il mixture: {}'.format(chemeter.name))
         return True
-        return attachment_pool.return_file_apache_php(
-            cr, uid, filename, name='', context=context)
 
     '''
     Label print:
