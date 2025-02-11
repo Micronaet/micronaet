@@ -88,7 +88,7 @@ class MsdsChemeter(orm.Model):
 
             ctx['report_mode'] = 'sheet'
             ctx['report_action'] = 'pdf'
-            ctx['force_filename'] = filename
+            # ctx['force_filename'] = filename
             ctx['sheet_parameter'] = {
                 'mixture': urllib.quote(chemeter.name),
                 'alias': urllib.quote(chemeter.alias),
@@ -96,9 +96,19 @@ class MsdsChemeter(orm.Model):
             }
 
             # Call generator of PDF file:
-            pdb.set_trace()
-            return pallet_pool.save_pallet_report_as_odt(
+            reply = pallet_pool.save_pallet_report_as_odt(
                 cr, uid, [0], context=ctx)
+            try:
+                url = reply.get('url')
+                pdb.set_trace()
+                command = "wget -O \"{}\" --content-disposition {}".format(
+                    filename, url
+                )
+                os.system(command)
+            except:
+                raise osv.except_osv(
+                    'Attenzione:',
+                    'Non trovato il mixture: {}'.format(chemeter.name))
 
         return attachment_pool.return_file_apache_php(
             cr, uid, filename, name='', context=context)
