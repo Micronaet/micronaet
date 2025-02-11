@@ -102,7 +102,7 @@ class MsdsChemeter(orm.Model):
             try:
                 url = reply.get('url')
                 _logger.warning('Saving Chemeter MSDS as {}'.format(filename))
-                command = "wget -O \"{}\" --content-disposition {}".format(
+                command = "wget -O \"{}\" --content-disposition \"{}\"".format(
                     filename, url
                 )
                 os.system(command)
