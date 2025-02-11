@@ -99,14 +99,8 @@ class MsdsChemeter(orm.Model):
             return pallet_pool.save_pallet_report_as_odt(
                 cr, uid, [0], context=ctx)
 
-        name = 'MSDS.{}.{}.{}.pdf'.format(
-            chemeter.name or '',
-            chemeter.alias or '',
-            chemeter.language_id.code or '_',
-        )
-        name = ''
         return attachment_pool.return_file_apache_php(
-            cr, uid, filename, name=name, context=context)
+            cr, uid, filename, name='', context=context)
 
     '''
     Label print:
