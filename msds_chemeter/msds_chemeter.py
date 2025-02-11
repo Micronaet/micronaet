@@ -104,6 +104,7 @@ class MsdsChemeter(orm.Model):
             chemeter.alias or '',
             chemeter.language_id.code or '_',
         )
+        name = ''
         return attachment_pool.return_file_apache_php(
             cr, uid, filename, name=name, context=context)
 
