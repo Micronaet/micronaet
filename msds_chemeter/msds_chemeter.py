@@ -92,7 +92,7 @@ class MsdsChemeter(orm.Model):
             ctx['sheet_parameter'] = {
                 'mixture': urllib.quote(chemeter.name),
                 'alias': urllib.quote(chemeter.alias),
-                'language': urllib.quote(chemeter.language_id.code)
+                'language': urllib.quote(chemeter.language_id.code),
                 # or 'it-IT'
             }
 
