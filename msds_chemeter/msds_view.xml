@@ -84,6 +84,7 @@
                            <field name="alias" readonly="1" />
                            <field name="language_id" readonly="1" />
                            <button name="download_msds_form" string="Download" type="object" class="oe_highlight" icon="gtk-save"/>
+                           <button name="open_msds_chemeter_form" string="Download" type="object" class="oe_highlight" icon="gtk-save"/>
                         </group>
                     </sheet>
                 </form>
