@@ -67,7 +67,8 @@
                     <field name="language_id" />
                     <button name="search_language_from_mixture" string="Ricerca questa mixture con alias e lingua tra il venduto" type="object" class="oe_highlight" icon="terp-stock_zoom"/>
 
-                    <button name="download_msds_form" string="Download" type="object" class="oe_highlight" icon="gtk-save"/>
+                    <button name="download_msds_form" string="Refresh" type="object" class="oe_highlight" icon="gtk-refresh"/>
+                    <button name="open_msds_chemeter_form" string="Download" type="object" class="oe_highlight" icon="gtk-save"/>
                 </tree>
             </field>
        </record>

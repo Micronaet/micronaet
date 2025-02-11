@@ -71,6 +71,21 @@ class MsdsChemeter(orm.Model):
     # -------------------------------------------------------------------------
     # Button event:
     # -------------------------------------------------------------------------
+    def open_msds_chemeter_form(self, cr, uid, ids, context=None):
+        """ Return download file:
+        """
+        if context is None:
+            context = {}
+        attachment_pool = self.pool.get('ir.attachment')
+        filename = self._get_file_name(cr, uid, ids[0], context=context)
+        chemeter = self.browse(cr, uid, ids, context=context)[0]
+        if not os.path.isfile(filename):
+            raise osv.except_osv(
+                'Attenzione:',
+                'Non trovato il mixture: {}'.format(chemeter.name))
+        return attachment_pool.return_file_apache_php(
+            cr, uid, filename, name='', context=context)
+
     def download_msds_form(self, cr, uid, ids, context=None):
         """ Return download file:
         """
@@ -110,7 +125,7 @@ class MsdsChemeter(orm.Model):
                 raise osv.except_osv(
                     'Attenzione:',
                     'Non trovato il mixture: {}'.format(chemeter.name))
-
+        return True
         return attachment_pool.return_file_apache_php(
             cr, uid, filename, name='', context=context)
 
