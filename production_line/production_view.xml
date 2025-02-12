@@ -1412,6 +1412,14 @@
         <field name="view_id" ref="production_line.mrp_production_workcenter_line_calendar_planner_view"/>
         <field name="context">{'calendar_view_ref':'production_line.mrp_production_workcenter_line_calendar_planner_view','search_default_only_open':1}</field>
     </record>
+    <record model="ir.actions.act_window" id="action_view_lavoration_today_standard_detailed"> <!--Same as action_view_lavoration_today_standard (Overridden in Sapnaet -->
+        <field name="name">Lavoration</field>
+        <field name="res_model">mrp.production.workcenter.line</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,calendar,graph</field>
+        <field name="view_id" ref="production_line.mrp_production_workcenter_line_calendar_planner_view"/>
+        <field name="context">{'calendar_view_ref':'production_line.mrp_production_workcenter_line_calendar_planner_view','search_default_only_open':1}</field>
+    </record>
     <record model="ir.actions.act_window" id="action_view_lavoration_today_todo">
         <field name="name">Lavoration open today</field>
         <field name="res_model">mrp.production.workcenter.line</field>
@@ -1651,9 +1659,10 @@
           <menuitem name="Production order (all)" parent="menu_base_production_root_lavoration" id="menu_base_production_root_lavoration_open" action="action_view_mrp_production" sequence="20" />
 
        <!-- Plan lavoration  -->
-       <menuitem name="3. Plan lavoration" parent="mrp.menu_mrp_manufacturing" id="menu_base_production_root_lavoration_plan" sequence="0" action="action_view_lavoration_today_standard" groups="group_production_admin" />
+       <menuitem name="3. Plan lavoration" parent="mrp.menu_mrp_manufacturing" id="menu_base_production_root_lavoration_plan" sequence="0" action="action_view_lavoration_today_standard_detailed" groups="group_production_admin" />
           <menuitem name="Lavoration open" parent="menu_base_production_root_lavoration_plan" id="menu_base_production_root_lavoration_plan_open" action="action_view_lavoration_open" sequence="10" />
           <menuitem name="Weekly planner" parent="menu_base_production_root_lavoration_plan" id="menu_base_production_root_reporting_wizard_3" action="action_mrp_print_lavoration_week_wizard_view" sequence="20" />
+          <menuitem name="Calendario con dettaglio" parent="menu_base_production_root_lavoration_plan" id="menu_base_production_root_lavoration_plan_detailed" sequence="90" action="action_view_lavoration_today_standard" />
 
        <!-- Fabbrica  -->
        <menuitem name="4. Lavoration" parent="mrp.menu_mrp_manufacturing" id="menu_base_production_root_lavoration_mrp" sequence="0" action="action_view_lavoration_today_standard" groups="group_production_admin" />
