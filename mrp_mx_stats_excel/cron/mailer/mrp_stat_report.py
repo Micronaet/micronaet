@@ -311,8 +311,8 @@ else:
     print('[ERR] Connect only SMTP SSL server!')
     sys.exit()
 
-smtp_server.ehlo() #open the connection
-smtp_server.starttls()
+# smtp_server.ehlo() #open the connection
+# smtp_server.starttls()
 smtp_server.login(odoo_mailer.smtp_user, odoo_mailer.smtp_pass)
 
 # Extract 2 files
