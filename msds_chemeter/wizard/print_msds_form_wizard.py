@@ -53,16 +53,25 @@ class MsdsPrintFormWizard(orm.TransientModel):
     def action_print(self, cr, uid, ids, context=None):
         """ Event for button done
         """
+        chemeter_pool = self.pool.get()
         if context is None: 
             context = {}        
         
         wizard = self.browse(cr, uid, ids, context=context)[0]
-        # download_msds_form
-        # open_msds_chemeter_form
+        now = datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+        mixture = wizard.mixture
+        language = wizard.language_id.code
 
-        return {
-            'type': 'ir.actions.act_window_close'
-            }
+        ctx = context.copy()
+        ctx['force_record'] = {
+            'filename': '/tmp/{}_{}_{}.pdf'.format(
+                mixture, language, now),
+            'mixture': mixture,
+            'alias': wizard.alias,
+            'language': language,
+        }
+        chemeter_pool.download_msds_form(cr, uid, [], context=ctx)
+        return chemeter_pool.download_msds_form(cr, uid, [], context=ctx)
 
     _columns = {
         'name': fields.char(

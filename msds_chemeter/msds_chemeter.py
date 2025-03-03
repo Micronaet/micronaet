@@ -76,8 +76,12 @@ class MsdsChemeter(orm.Model):
         """
         if context is None:
             context = {}
+        force_record = context.get('force_record')
+        force_filename = force_record.get('filename')
+
         attachment_pool = self.pool.get('ir.attachment')
-        filename = self._get_file_name(cr, uid, ids[0], context=context)
+        filename = (force_filename or
+            self._get_file_name(cr, uid, ids[0], context=context))
         chemeter = self.browse(cr, uid, ids, context=context)[0]
         if not os.path.isfile(filename):
             raise osv.except_osv(
@@ -97,18 +101,28 @@ class MsdsChemeter(orm.Model):
         """
         if context is None:
             context = {}
+        force_record = context.get('force_record')
+        force_filename = force_record.get('filename')
 
-        attachment_pool = self.pool.get('ir.attachment')
         pallet_pool = self.pool.get('mrp.analysis.sample')
-
-        filename = self._get_file_name(cr, uid, ids[0], context=context)
+        filename = (force_filename or
+            self._get_file_name(cr, uid, ids[0], context=context))
         try:
             os.remove(filename)
             _logger.warning('Remove {}'.format(filename))
         except:
             _logger.warning('Cannot remove {}'.format(filename))
 
-        chemeter = self.browse(cr, uid, ids, context=context)[0]
+        # Read data (forced or from record)
+        if force_record:
+            mixture = force_record.get('mixture')
+            alias = force_record.get('alias')
+            language = force_record.get('language')
+        else:
+            chemeter = self.browse(cr, uid, ids, context=context)[0]
+            mixture = chemeter.name
+            alias = chemeter.alias
+            language = chemeter.language_id.code
 
         # Generate filename from Chemeter call:
         ctx = context.copy()
@@ -116,9 +130,9 @@ class MsdsChemeter(orm.Model):
         ctx['report_action'] = 'pdf'
         # ctx['force_filename'] = filename
         ctx['sheet_parameter'] = {
-            'mixture': urllib.quote(chemeter.name),
-            'alias': urllib.quote(chemeter.alias),
-            'language': urllib.quote(chemeter.language_id.code),
+            'mixture': urllib.quote(mixture),
+            'alias': urllib.quote(alias),
+            'language': urllib.quote(language),
             # or 'it-IT'
         }
 
@@ -136,7 +150,7 @@ class MsdsChemeter(orm.Model):
         except:
             raise osv.except_osv(
                 'Attenzione:',
-                'Non trovato il mixture: {}'.format(chemeter.name))
+                'Non trovato il mixture: {}'.format(mixture))
         return True
 
     '''

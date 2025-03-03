@@ -41,6 +41,7 @@
     'data': [
         'security/msds_group.xml',
         'security/ir.model.access.csv',
+        'wizard/print_msds_form_wizard_view.xml',
         'msds_view.xml',
         'scheduler.xml',
         ],
