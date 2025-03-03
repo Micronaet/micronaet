@@ -160,7 +160,7 @@ class MsdsPrintFormWizard(orm.TransientModel):
             'name': 'Wizard stampa MSDS',
             'view_type': 'form',
             'view_mode': 'form',
-            'res_model': self._name,
+            'res_model': 'msds.print.form.wizard',
             'views': [(False, 'form')],
             'type': 'ir.actions.act_window',
             'context': ctx,
