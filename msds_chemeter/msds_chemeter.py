@@ -100,8 +100,7 @@ class MsdsChemeter(orm.Model):
             context = {}
 
         pallet_pool = self.pool.get('mrp.analysis.sample')
-        filename = (force_filename or
-            self._get_file_name(cr, uid, ids[0], context=context))
+        filename = self._get_file_name(cr, uid, ids[0], context=context)
         try:
             os.remove(filename)
             _logger.warning('Remove {}'.format(filename))
