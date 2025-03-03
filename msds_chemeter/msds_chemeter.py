@@ -128,8 +128,8 @@ class MsdsChemeter(orm.Model):
             cr, uid, [0], context=ctx)
         try:
             url = reply.get('url')
-            if context.get('wizard'):
-                return url
+            if context.get('wizard_mode'):
+                return reply
 
             _logger.warning('Saving Chemeter MSDS as {}'.format(filename))
             command = "wget -O \"{}\" --content-disposition \"{}\"".format(

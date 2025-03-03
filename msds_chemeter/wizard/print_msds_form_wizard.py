@@ -80,7 +80,7 @@ class MsdsPrintFormWizard(orm.TransientModel):
                 'language_id': language.id,
             }, context=context)
         ctx = context.copy()
-        ctx['wizard'] = True
+        ctx['wizard_mode'] = True
         return chemeter_pool.download_msds_form(
             cr, uid, [chemeter_id], context=ctx)
         #return chemeter_pool.download_msds_form(
