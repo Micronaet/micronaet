@@ -124,11 +124,13 @@ class MsdsChemeter(orm.Model):
         }
 
         # Call generator of PDF file:
-        pdb.set_trace()
         reply = pallet_pool.save_pallet_report_as_odt(
             cr, uid, [0], context=ctx)
         try:
             url = reply.get('url')
+            if context.get('wizard'):
+                return url
+
             _logger.warning('Saving Chemeter MSDS as {}'.format(filename))
             command = "wget -O \"{}\" --content-disposition \"{}\"".format(
                 filename, url
