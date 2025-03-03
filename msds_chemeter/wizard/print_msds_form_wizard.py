@@ -164,7 +164,10 @@ class MsdsPrintFormWizard(orm.TransientModel):
         _logger.info('Wizard context: {}'.format(ctx))
 
         view_id = self.pool.get('ir.model.data').get_object_reference(
-            'msds_chemeter.msds_print_form_wizard_view')
+            cr, uid,
+            'msds_chemeter.msds_print_form_wizard_view',
+            context=context,
+        )
         return {
             'name': 'Wizard stampa MSDS',
             'view_type': 'form',
