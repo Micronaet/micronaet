@@ -53,7 +53,7 @@ class MsdsPrintFormWizard(orm.TransientModel):
     def action_print(self, cr, uid, ids, context=None):
         """ Event for button done
         """
-        chemeter_pool = self.pool.get()
+        chemeter_pool = self.pool.get('msds.chemeter')
         if context is None: 
             context = {}        
         
