@@ -119,14 +119,14 @@ class MsdsPrintFormWizard(orm.TransientModel):
             # -----------------------------------------------------------------
             if model == 'sale.order.line':
                 partner = record.order_id.partner_id
-                ctx['default_alias'] = obiect.name
+                ctx['default_alias'] = record.name
 
             # -----------------------------------------------------------------
             # Partner pricelist:
             # -----------------------------------------------------------------
             else:
                 partner = record.partner_id
-                ctx['default_alias'] = obiect.alias_name or ''
+                ctx['default_alias'] = record.alias_name or ''
 
             ctx['default_language_id'] = partner.msds_language_id.id or False
 
