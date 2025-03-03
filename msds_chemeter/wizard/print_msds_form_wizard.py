@@ -89,7 +89,6 @@ class MsdsPrintFormWizard(orm.TransientModel):
         # Product mode:
         # ---------------------------------------------------------------------
         ctx = context.copy()
-        pdb.set_trace()
         if object == 'product.product':
             product = record
         else:
@@ -111,11 +110,10 @@ class MsdsPrintFormWizard(orm.TransientModel):
             ctx['default_language_id'] = partner.msds_language_id.id or False
 
         # Extract Mixture:
-        if product.force_mixture:
-            ctx['default_mixture'] = product.force_mixture or '{}_{}'.format(
-                product_code[:5],
-                product_code[6:],
-                )
+        ctx['default_mixture'] = product.force_mixture or '{}_{}'.format(
+            product_code[:5],
+            product_code[6:],
+            )
 
         _logger.info('Wizard context: {}'.format(ctx))
         return {
