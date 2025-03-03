@@ -100,6 +100,19 @@
             <field name="view_id" ref="msds_chemeter_tree_view" />
         </record>
 
+        <!--Integrate get PDF button on Sapnaet-->
+        <!--Product-->
+        <record id="view_product_product_msds_button_form" model="ir.ui.view">
+            <field name="name">Product MSDS button</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="sapnaet.view_product_product_obsolete_form"/>
+            <field name="arch" type="xml">
+                <field name="force_mixture" position="after">
+                    <button type="object" name="open_print_msds_wizard" icon="terp-emblem-important" colspan="2"/>
+                </field>
+            </field>
+        </record>
+
     <menuitem name="MSDS Chemeter" id="menu_msds_chemeter_root" sequence="10" groups="msds_chemeter.group_MSDS_chemeter_manager,msds_chemeter.group_MSDS_chemeter_user" parent="base.menu_base_config"/>
         <menuitem name="Schede" id="menu_msds_chemeter_form" sequence="10" parent="menu_msds_chemeter_root" action="action_msds_chemeter"/>
         <menuitem name="Wizard di Stampa" id="menu_msds_chemeter_print_wizard" sequence="20" parent="menu_msds_chemeter_root" action="action_msds_print_form_wizard"/>

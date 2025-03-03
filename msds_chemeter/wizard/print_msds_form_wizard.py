@@ -43,10 +43,87 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 _logger = logging.getLogger(__name__)
 
 
+class ProductProduct(orm.Model):
+    """ Button to open wizard
+    """
+    _inherit = 'product.prodcut'
+
+    def open_print_msds_wizard(self, cr, uid, ids, context=None):
+        """ Open Wizard button
+        """
+        wizard_pool = self.pool.get('msds.print.form.wizard')
+
+        if context is None:
+            context = {}
+
+        ctx = context.copy()
+        ctx['origin'] = {
+            'model': 'product.product',
+            'id': ids[0],
+        }
+        return wizard_pool.open_wizard_from(cr, uid, False, context=ctx)
+
+
 class MsdsPrintFormWizard(orm.TransientModel):
     """ Wizard for print MSDS from Chemeter
     """
     _name = 'msds.print.form.wizard'
+
+    def open_wizard_from(self, cr, uid, ids, context=None):
+        """ Open wizard with passing reference of origin dict:
+            'model': sale.order.line product.product res.partner.pricelist.product
+            'id': item ID
+        """
+        if context is None:
+            context = {}
+        origin = context.get('origin', {})
+        object = origin.get('model')
+        item_id = origin.get('id')
+
+        this_pool = self.pool.get(object)
+        record = this_pool.browse(cr, uid, item_id, context=context)
+
+        # ---------------------------------------------------------------------
+        # Product mode:
+        # ---------------------------------------------------------------------
+        ctx = context.copy()
+        if object == 'product.product':
+            product = record
+        else:
+            product = object.product_id  # both sale line and pricelist
+            # -----------------------------------------------------------------
+            # Sale line mode:
+            # -----------------------------------------------------------------
+            if object == 'sale.order.line':
+                partner = object.order_id.partner_id
+                ctx['default_alias'] = obiect.name
+
+            # -----------------------------------------------------------------
+            # Partner pricelist:
+            # -----------------------------------------------------------------
+            else:
+                partner = object.partner_id
+                ctx['default_alias'] = obiect.alias_name or ''
+
+            ctx['default_language_id'] = partner.msds_language_id or False
+
+        # Extract Mixture:
+        if product.force_mixture:
+            ctx['default_mixture'] = product.force_mixture or '{}_{}'.format(
+                product_code[:5],
+                product_code[6:],
+                )
+
+        return {
+            'name': 'Wizard stampa MSDS',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': self._name,
+            'views': [(False, 'form')],
+            'type': 'ir.actions.act_window',
+            'context': ctx,
+            'target': 'new',
+        }
 
     # --------------------
     # Wizard button event:
