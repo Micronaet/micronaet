@@ -77,6 +77,8 @@ class MsdsPrintFormWizard(orm.TransientModel):
         if context is None:
             context = {}
         origin = context.get('origin', {})
+        _logger.info('Wizard with origin: {}'.format(origin))
+
         object = origin.get('model')
         item_id = origin.get('id')
 
