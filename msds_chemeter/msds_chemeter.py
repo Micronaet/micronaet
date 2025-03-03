@@ -117,7 +117,6 @@ class MsdsChemeter(orm.Model):
         ctx = context.copy()
         ctx['report_mode'] = 'sheet'
         ctx['report_action'] = 'pdf'
-        # ctx['force_filename'] = filename
         ctx['sheet_parameter'] = {
             'mixture': urllib.quote(mixture),
             'alias': urllib.quote(alias),
