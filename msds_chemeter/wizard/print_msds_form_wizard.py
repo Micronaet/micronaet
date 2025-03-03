@@ -107,6 +107,7 @@ class MrpAnalysisSample(orm.Model):
             return self.pool.get('product.product').open_print_msds_wizard(
                 cr, uid, [record.product_id.id], context=context)
 
+
 class MsdsPrintFormWizard(orm.TransientModel):
     """ Wizard for print MSDS from Chemeter
     """
@@ -161,6 +162,7 @@ class MsdsPrintFormWizard(orm.TransientModel):
             )
 
         _logger.info('Wizard context: {}'.format(ctx))
+        pdb.set_trace()
         return {
             'name': 'Wizard stampa MSDS',
             'view_type': 'form',
