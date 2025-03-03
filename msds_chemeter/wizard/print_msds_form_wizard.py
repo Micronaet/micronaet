@@ -100,32 +100,32 @@ class MsdsPrintFormWizard(orm.TransientModel):
         origin = context.get('origin', {})
         _logger.info('Wizard with origin: {}'.format(origin))
 
-        object = origin.get('model')
+        model = origin.get('model')
         item_id = origin.get('id')
 
-        this_pool = self.pool.get(object)
+        this_pool = self.pool.get(model)
         record = this_pool.browse(cr, uid, item_id, context=context)
 
         # ---------------------------------------------------------------------
         # Product mode:
         # ---------------------------------------------------------------------
         ctx = context.copy()
-        if object == 'product.product':
+        if model == 'product.product':
             product = record
         else:
-            product = object.product_id  # both sale line and pricelist
+            product = record.product_id  # both sale line and pricelist
             # -----------------------------------------------------------------
             # Sale line mode:
             # -----------------------------------------------------------------
-            if object == 'sale.order.line':
-                partner = object.order_id.partner_id
+            if model == 'sale.order.line':
+                partner = record.order_id.partner_id
                 ctx['default_alias'] = obiect.name
 
             # -----------------------------------------------------------------
             # Partner pricelist:
             # -----------------------------------------------------------------
             else:
-                partner = object.partner_id
+                partner = record.partner_id
                 ctx['default_alias'] = obiect.alias_name or ''
 
             ctx['default_language_id'] = partner.msds_language_id.id or False
