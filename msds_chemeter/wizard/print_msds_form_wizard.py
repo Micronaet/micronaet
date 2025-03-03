@@ -59,7 +59,7 @@ class MsdsPrintFormWizard(orm.TransientModel):
             context = {}        
         
         wizard = self.browse(cr, uid, ids, context=context)[0]
-        now = datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+        now = datetime.now().strftime('%Y%m%d-%H%M%S')
         mixture = wizard.mixture
         language = wizard.language_id.code
 
