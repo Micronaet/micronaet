@@ -105,7 +105,7 @@ class MsdsPrintFormWizard(orm.TransientModel):
                 partner = object.partner_id
                 ctx['default_alias'] = obiect.alias_name or ''
 
-            ctx['default_language_id'] = partner.msds_language_id or False
+            ctx['default_language_id'] = partner.msds_language_id.id or False
 
         # Extract Mixture:
         if product.force_mixture:
@@ -114,6 +114,7 @@ class MsdsPrintFormWizard(orm.TransientModel):
                 product_code[6:],
                 )
 
+        _logger.info('Wizard context: {}'.format(ctx))
         return {
             'name': 'Wizard stampa MSDS',
             'view_type': 'form',
