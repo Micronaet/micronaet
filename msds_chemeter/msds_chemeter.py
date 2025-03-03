@@ -83,6 +83,12 @@ class MsdsChemeter(orm.Model):
             raise osv.except_osv(
                 'Attenzione:',
                 'Non trovato il mixture: {}'.format(chemeter.name))
+        pdf_file = open(filename, 'r')
+        if pdf_file.read(4) != '%PDF':
+            raise osv.except_osv(
+                'Attenzione:',
+                'Non è un file PDF quello salvato, rigenerarlo: '
+                '{}'.format(chemeter.name))
         return attachment_pool.return_file_apache_php(
             cr, uid, filename, name='', context=context)
 
@@ -126,6 +132,7 @@ class MsdsChemeter(orm.Model):
                 filename, url
             )
             os.system(command)
+            # todo check if is a PDF file here
         except:
             raise osv.except_osv(
                 'Attenzione:',
