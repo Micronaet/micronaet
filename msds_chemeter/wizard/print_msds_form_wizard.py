@@ -64,13 +64,14 @@ class MsdsPrintFormWizard(orm.TransientModel):
 
         ctx = context.copy()
         ctx['force_record'] = {
-            'filename': '/tmp/{}_{}_{}.pdf'.format(
+            'filename': '/tmp/{}.{}.{}.pdf'.format(
                 mixture, language, now),
             'mixture': mixture,
             'alias': wizard.alias,
             'language': language,
         }
         # Force download from Chemeter:
+        pdb.set_trace()
         chemeter_pool.download_msds_form(cr, uid, [], context=ctx)
         # Force return as PDF:
         return chemeter_pool.download_msds_form(cr, uid, [], context=ctx)
