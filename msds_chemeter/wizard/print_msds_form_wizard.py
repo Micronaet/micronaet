@@ -61,14 +61,14 @@ class MsdsPrintFormWizard(orm.TransientModel):
         wizard = self.browse(cr, uid, ids, context=context)[0]
         now = datetime.now().strftime('%Y%m%d-%H%M%S')
         mixture = wizard.mixture
-        language = wizard.language_id.code
+        language = wizard.language_id.code or 'it-IT'
 
         ctx = context.copy()
         ctx['force_record'] = {
             'filename': '/tmp/{}.{}.{}.pdf'.format(
                 mixture, language, now),
-            'mixture': mixture,
-            'alias': wizard.alias,
+            'mixture': mixture or '',
+            'alias': wizard.alias or '',
             'language': language,
         }
         # Force download from Chemeter:
