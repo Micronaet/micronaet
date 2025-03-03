@@ -74,7 +74,7 @@ class MsdsPrintFormWizard(orm.TransientModel):
         return chemeter_pool.download_msds_form(cr, uid, [], context=ctx)
 
     _columns = {
-        'name': fields.char(
+        'mixture': fields.char(
             'Codice Mixture', size=35,
             help='Codice Mixture, es: S0007_1 (ganulometria di solito '
                  'indicata come _ per dire che il carattere scritto '
