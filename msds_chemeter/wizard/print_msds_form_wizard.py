@@ -76,7 +76,7 @@ class MsdsPrintFormWizard(orm.TransientModel):
     _columns = {
         'mixture': fields.char(
             'Codice Mixture', size=35,
-            help='Codice Mixture, es: S0007_1 (ganulometria di solito '
+            help='Codice Mixture, es: S0007_1 (granulometria di solito '
                  'indicata come _ per dire che il carattere scritto '
                  'non è importante'),
         'alias': fields.char(
