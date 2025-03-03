@@ -89,6 +89,7 @@ class MsdsPrintFormWizard(orm.TransientModel):
         # Product mode:
         # ---------------------------------------------------------------------
         ctx = context.copy()
+        pdb.set_trace()
         if object == 'product.product':
             product = record
         else:
