@@ -85,7 +85,7 @@ class SaleOrderLine(orm.Model):
         return wizard_pool.open_wizard_from(cr, uid, False, context=ctx)
 
 
-class MrpAnalysisSsample(orm.Model):
+class MrpAnalysisSample(orm.Model):
     """ Button to open wizard
     """
     _inherit = 'mrp.analysis.sample'
