@@ -70,7 +70,9 @@ class MsdsPrintFormWizard(orm.TransientModel):
             'alias': wizard.alias,
             'language': language,
         }
+        # Force download from Chemeter:
         chemeter_pool.download_msds_form(cr, uid, [], context=ctx)
+        # Force return as PDF:
         return chemeter_pool.download_msds_form(cr, uid, [], context=ctx)
 
     _columns = {
