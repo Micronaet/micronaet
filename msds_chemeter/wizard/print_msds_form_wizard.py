@@ -85,6 +85,24 @@ class SaleOrderLine(orm.Model):
         return wizard_pool.open_wizard_from(cr, uid, False, context=ctx)
 
 
+class MrpAnalysisSsample(orm.Model):
+    """ Button to open wizard
+    """
+    _inherit = 'mrp.analysis.sample'
+
+    def open_print_msds_wizard(self, cr, uid, ids, context=None):
+        """ Open Wizard button
+        """
+        record = self.browse(cr, uid, ids[0], context=context)
+
+        # Call other actions:
+        if record.sale_line_id:
+            return self.pool.get('sale.order.line').open_print_msds_wizard(
+                cr, uid, [record.sale_line_id.id], context=context)
+        else:
+            return self.pool.get('product.product').open_print_msds_wizard(
+                cr, uid, [record.product_id.id], context=context)
+
 class MsdsPrintFormWizard(orm.TransientModel):
     """ Wizard for print MSDS from Chemeter
     """
