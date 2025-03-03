@@ -76,12 +76,9 @@ class MsdsChemeter(orm.Model):
         """
         if context is None:
             context = {}
-        force_record = context.get('force_record')
-        force_filename = force_record.get('filename')
 
         attachment_pool = self.pool.get('ir.attachment')
-        filename = (force_filename or
-            self._get_file_name(cr, uid, ids[0], context=context))
+        filename = self._get_file_name(cr, uid, ids[0], context=context)
         chemeter = self.browse(cr, uid, ids, context=context)[0]
         if not os.path.isfile(filename):
             raise osv.except_osv(
@@ -101,8 +98,6 @@ class MsdsChemeter(orm.Model):
         """
         if context is None:
             context = {}
-        force_record = context.get('force_record')
-        force_filename = force_record.get('filename')
 
         pallet_pool = self.pool.get('mrp.analysis.sample')
         filename = (force_filename or
@@ -113,16 +108,10 @@ class MsdsChemeter(orm.Model):
         except:
             _logger.warning('Cannot remove {}'.format(filename))
 
-        # Read data (forced or from record)
-        if force_record:
-            mixture = force_record.get('mixture')
-            alias = force_record.get('alias')
-            language = force_record.get('language')
-        else:
-            chemeter = self.browse(cr, uid, ids, context=context)[0]
-            mixture = chemeter.name
-            alias = chemeter.alias
-            language = chemeter.language_id.code
+        chemeter = self.browse(cr, uid, ids, context=context)[0]
+        mixture = chemeter.name
+        alias = chemeter.alias or ''
+        language = chemeter.language_id.code
 
         # Generate filename from Chemeter call:
         ctx = context.copy()
@@ -410,6 +399,9 @@ class MsdsChemeter(orm.Model):
         return True
 
     _columns = {
+        'manual': fields.boolean(
+            'Manuale',
+            help='Creato manualmente per stampa da Wizard'),
         'name': fields.char(
             'Codice Mixture', size=35,
             help="Code for this product"),

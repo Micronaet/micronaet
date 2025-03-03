@@ -59,23 +59,31 @@ class MsdsPrintFormWizard(orm.TransientModel):
             context = {}        
         
         wizard = self.browse(cr, uid, ids, context=context)[0]
-        now = datetime.now().strftime('%Y%m%d-%H%M%S')
         mixture = wizard.mixture
-        language = wizard.language_id.code or 'it-IT'
+        alias = wizard.alias
+        language = wizard.language_id
 
-        ctx = context.copy()
-        ctx['force_record'] = {
-            'filename': '/tmp/{}.{}.{}.pdf'.format(
-                mixture, language, now),
-            'mixture': mixture or '',
-            'alias': wizard.alias or '',
-            'language': language,
-        }
-        # Force download from Chemeter:
-        pdb.set_trace()
-        chemeter_pool.download_msds_form(cr, uid, [], context=ctx)
-        # Force return as PDF:
-        return chemeter_pool.download_msds_form(cr, uid, [], context=ctx)
+        # Try to search in MDSD
+        chemeter_ids = chemeter_pool.search(cr, uid, [
+            ('name', '=', mixture),
+            ('alias', '=', alias),
+            ('language_id', '=', language.id),
+        ], context=context)
+
+        if chemeter_ids:
+            chemeter_id = chemeter_ids[0]
+        else:
+            chemeter_id = chemeter_pool.create(cr, uid, {
+                'manual': True,
+                'name': mixture,
+                'alias': alias,
+                'language_id': language.id,
+            }, context=context)
+        chemeter_pool.download_msds_form(
+            cr, uid, [chemeter_id], context=context)
+        return chemeter_pool.download_msds_form(
+            cr, uid, [chemeter_id], context=context)
+
 
     _columns = {
         'mixture': fields.char(
