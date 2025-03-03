@@ -108,7 +108,7 @@
             <field name="inherit_id" ref="sapnaet.view_product_product_obsolete_form"/>
             <field name="arch" type="xml">
                 <field name="force_mixture" position="after">
-                    <button type="object" name="open_print_msds_wizard" icon="terp-emblem-important" colspan="2"/>
+                    <button type="object" name="open_print_msds_wizard" icon="terp-emblem-important" colspan="2" groups="msds_chemeter.group_MSDS_chemeter_manager,msds_chemeter.group_MSDS_chemeter_user"/>
                 </field>
             </field>
         </record>

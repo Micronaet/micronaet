@@ -46,7 +46,7 @@ _logger = logging.getLogger(__name__)
 class ProductProduct(orm.Model):
     """ Button to open wizard
     """
-    _inherit = 'product.prodcut'
+    _inherit = 'product.product'
 
     def open_print_msds_wizard(self, cr, uid, ids, context=None):
         """ Open Wizard button
