@@ -64,6 +64,27 @@ class ProductProduct(orm.Model):
         return wizard_pool.open_wizard_from(cr, uid, False, context=ctx)
 
 
+class SaleOrderLine(orm.Model):
+    """ Button to open wizard
+    """
+    _inherit = 'sale.order.line'
+
+    def open_print_msds_wizard(self, cr, uid, ids, context=None):
+        """ Open Wizard button
+        """
+        wizard_pool = self.pool.get('msds.print.form.wizard')
+
+        if context is None:
+            context = {}
+
+        ctx = context.copy()
+        ctx['origin'] = {
+            'model': 'sale.order.line',
+            'id': ids[0],
+        }
+        return wizard_pool.open_wizard_from(cr, uid, False, context=ctx)
+
+
 class MsdsPrintFormWizard(orm.TransientModel):
     """ Wizard for print MSDS from Chemeter
     """

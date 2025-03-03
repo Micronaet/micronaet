@@ -113,6 +113,17 @@
                 </field>
             </field>
         </record>
+        <record model="ir.ui.view" id="docnaet_sapnaet_order_msds_button_form_view">
+            <field name="name">Sapnaet MSDS Button</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sapnaet.view_sale_order_matrix_form" />
+            <field name="arch" type="xml">
+                <field name="adr" position="after">
+                    <button type="object" string="Apri scheda MSDS" name="open_print_msds_wizard" icon="terp-emblem-important"
+                            colspan="2" groups="msds_chemeter.group_MSDS_chemeter_manager,msds_chemeter.group_MSDS_chemeter_user"/>
+                </field>
+            </field>
+        </record>
 
     <menuitem name="MSDS Chemeter" id="menu_msds_chemeter_root" sequence="10" groups="msds_chemeter.group_MSDS_chemeter_manager,msds_chemeter.group_MSDS_chemeter_user" parent="base.menu_base_config"/>
         <menuitem name="Schede" id="menu_msds_chemeter_form" sequence="10" parent="menu_msds_chemeter_root" action="action_msds_chemeter"/>
