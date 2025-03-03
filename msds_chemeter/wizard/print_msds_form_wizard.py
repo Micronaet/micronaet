@@ -55,6 +55,8 @@ class ProductProduct(orm.Model):
 
         if context is None:
             context = {}
+        # Clear context here:
+        context = {'lang': context.get('lang')}
 
         ctx = context.copy()
         ctx['origin'] = {
@@ -76,6 +78,8 @@ class SaleOrderLine(orm.Model):
 
         if context is None:
             context = {}
+        # Clear context here:
+        context = {'lang': context.get('lang')}
 
         ctx = context.copy()
         ctx['origin'] = {
@@ -115,6 +119,7 @@ class MsdsPrintFormWizard(orm.TransientModel):
         """
         if context is None:
             context = {}
+
         origin = context.get('origin', {})
         _logger.info('Wizard with origin: {}'.format(origin))
 
