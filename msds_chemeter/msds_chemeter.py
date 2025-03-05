@@ -68,9 +68,9 @@ class MsdsChemeter(orm.Model):
         res = os.path.join(folder, "%s.pdf" % product_id)
         return res
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------------------------------------
     # Button event:
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------------------------------------
     def open_msds_chemeter_form(self, cr, uid, ids, context=None):
         """ Return download file:
         """
@@ -437,6 +437,25 @@ class ProductProduct(orm.Model):
     """
     _inherit = 'product.product'
 
+    def get_mixture_code(self, product):
+        """ Extract mixture code
+        """
+        if product.force_mixture:
+            # 1. Forced code:
+            return product.force_mixture
+
+        else:
+            default_code = product.default_code or ''
+            if not default_code:
+                # 2. No Code:
+                _logger.warning('No Mixture code found')
+                return ''
+            elif default_code.startswith('MQ'):
+                # 3. Machine code:
+                return default_code
+            # 4. Granulometry code:
+            return '{}_{}'.format(default_code[:5], default_code[6:])
+
     def _get_msds_chemeter_m2m(
             self, cr, uid, ids, field_names, arg=None, context=None):
         """ Extract Mixture MSDS Chemeter for product
@@ -448,23 +467,8 @@ class ProductProduct(orm.Model):
         res = {}
         product_id = ids[0]
         product = self.browse(cr, uid, product_id, context=context)
-        force_mixture = product.force_mixture
-        product_code = product.default_code or ''
-
-        if force_mixture:
-            mixture = force_mixture
-        else:
-            if not product_code:
-                _logger.warning('No Mixture code found')
-                return res
-
-            mixture = '{}_{}'.format(
-                product_code[:5],
-                product_code[6:],
-            )
-
-        _logger.warning('Searching product mixures for {}'.format(mixture))
-
+        mixture = self.get_mixture_code(product)
+        _logger.warning('Searching product mixure for {}'.format(mixture))
         res[product_id] = chemeter_pool.search(cr, uid, [
                 ('name', '=', mixture),
                 ('alias', '!=', False),

@@ -154,12 +154,8 @@ class MsdsPrintFormWizard(orm.TransientModel):
 
             ctx['default_language_id'] = partner.msds_language_id.id or False
 
-        # Extract Mixture:
-        product_code = product.default_code or ''
-        ctx['default_mixture'] = product.force_mixture or '{}_{}'.format(
-            product_code[:5],
-            product_code[6:],
-            )
+        # Extract Mixture from product setup:
+        ctx['default_mixture'] = self.pool.get('product.product').get_mixture_code(product)
 
         _logger.info('Wizard context: {}'.format(ctx))
 
