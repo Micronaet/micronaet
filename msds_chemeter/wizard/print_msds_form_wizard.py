@@ -197,7 +197,7 @@ class MsdsPrintFormWizard(orm.TransientModel):
 
         # Try to search in MDSD
         chemeter_ids = chemeter_pool.search(cr, uid, [
-            ('name', '=', mixture),
+            ('name', '=ilike', mixture),
             ('alias', '=', alias),
             ('language_id', '=', language.id),
         ], context=context)
@@ -215,7 +215,7 @@ class MsdsPrintFormWizard(orm.TransientModel):
         ctx['wizard_mode'] = True
         return chemeter_pool.download_msds_form(
             cr, uid, [chemeter_id], context=ctx)
-        #return chemeter_pool.download_msds_form(
+        # return chemeter_pool.download_msds_form(
         #    cr, uid, [chemeter_id], context=context)
 
 
