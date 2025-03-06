@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
-        <record id="view_product_product_msds_tree" model="ir.ui.view">
+        <!--<record id="view_product_product_msds_tree" model="ir.ui.view">
             <field name="name">Product MSDS</field>
             <field name="model">product.product</field>
             <field name="priority" eval="40"/>
@@ -22,7 +22,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_product_product_msds_tree" />
-        </record>
+        </record>-->
 
         <!--Integrate get PDF button on Sapnaet-->
         <!--Product-->
@@ -167,7 +167,7 @@
     <menuitem name="MSDS Chemeter" id="menu_msds_chemeter_root" sequence="10" groups="msds_chemeter.group_MSDS_chemeter_manager,msds_chemeter.group_MSDS_chemeter_user" parent="base.menu_base_config"/>
         <menuitem name="Schede" id="menu_msds_chemeter_form" sequence="10" parent="menu_msds_chemeter_root" action="action_msds_chemeter"/>
         <menuitem name="Wizard di Stampa" id="menu_msds_chemeter_print_wizard" sequence="20" parent="menu_msds_chemeter_root" action="action_msds_print_form_wizard"/>
-        <menuitem name="Prodotti MSDS" id="menu_msds_chemeter_product" sequence="30" parent="menu_msds_chemeter_root" action="action_msds_chemeter_product"/>
+        <!--<menuitem name="Prodotti MSDS" id="menu_msds_chemeter_product" sequence="30" parent="menu_msds_chemeter_root" action="action_msds_chemeter_product"/>-->
     </data>
 </openerp>
 
