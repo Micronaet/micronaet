@@ -200,7 +200,7 @@ class MsdsPrintFormWizard(orm.TransientModel):
             'SELECT id '
             'FROM msds_chemeter '
             'WHERE mixture = "%s" '
-            '  AND alias = "%s", '
+            '  AND alias = "%s" '
             '  AND language_id = %s', (mixture, alias, language.id))
         chemeter_ids = [x[0] for x in cr.fetchall()]
         if uid == 1:
