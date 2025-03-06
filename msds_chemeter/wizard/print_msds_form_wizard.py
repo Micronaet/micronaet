@@ -196,19 +196,15 @@ class MsdsPrintFormWizard(orm.TransientModel):
         language = wizard.language_id
 
         # Try to search in MDSD
-        domain = [
-            ('name', '=ilike', mixture),
-            ('language_id', '=', language.id),
-            ]
-
+        cr.execute(
+            'SELECT id '
+            'FROM msds_chemeter '
+            'WHERE mixture = "%s" '
+            '  AND alias = "%s", '
+            '  AND language_id = %s', (mixture, alias, language.id))
+        chemeter_ids = [x[0] for x in cr.fetchall()]
         if uid == 1:
             pdb.set_trace()
-        domain.append(
-            ('alias', '=', alias),
-            )
-
-        chemeter_ids = chemeter_pool.search(
-            cr, uid, domain, context=context)
 
         if chemeter_ids:
             chemeter_id = chemeter_ids[0]
