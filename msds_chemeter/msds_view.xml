@@ -166,10 +166,10 @@
             <field name="view_id" ref="msds_chemeter_tree_view" />
         </record>
 
-    <menuitem name="MSDS Chemeter" id="menu_msds_chemeter_root" sequence="10" groups="msds_chemeter.group_MSDS_chemeter_manager,msds_chemeter.group_MSDS_chemeter_user" parent="base.menu_base_config"/>
-        <menuitem name="Schede" id="menu_msds_chemeter_form" sequence="10" parent="menu_msds_chemeter_root" action="action_msds_chemeter"/>
-        <menuitem name="Wizard di Stampa" id="menu_msds_chemeter_print_wizard" sequence="20" parent="menu_msds_chemeter_root" action="action_msds_print_form_wizard"/>
-        <menuitem name="Prodotti MSDS" id="menu_msds_chemeter_product" sequence="30" parent="menu_msds_chemeter_root" action="action_msds_chemeter_product"/>
+        <menuitem name="MSDS Chemeter" id="menu_msds_chemeter_root" sequence="10" groups="msds_chemeter.group_MSDS_chemeter_manager,msds_chemeter.group_MSDS_chemeter_user" parent="base.menu_base_config"/>
+            <menuitem name="Schede" id="menu_msds_chemeter_form" sequence="10" parent="menu_msds_chemeter_root" action="action_msds_chemeter"/>
+            <menuitem name="Wizard di Stampa" id="menu_msds_chemeter_print_wizard" sequence="20" parent="menu_msds_chemeter_root" action="action_msds_print_form_wizard"/>
+            <menuitem name="Prodotti MSDS" id="menu_msds_chemeter_product" sequence="30" parent="menu_msds_chemeter_root" action="action_msds_chemeter_product"/>
     </data>
 </openerp>
 
