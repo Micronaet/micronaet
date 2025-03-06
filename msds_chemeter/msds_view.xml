@@ -1,6 +1,31 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+        <record id="view_product_product_msds_tree" model="ir.ui.view">
+            <field name="name">Product MSDS</field>
+            <field name="model">product.product</field>
+            <field name="priority" eval="40"/>
+            <field name="arch" type="xml">
+                <tree string="Prodotti MSDS" editable="bottom">
+                    <field name="name"/>
+                    <field name="default_code"/>
+                    <field name="msds_manual" />
+                    <field name="uom_id" />
+                    <field name="type" />
+                    <button type="object" string="Apri scheda MSDS" name="open_print_msds_wizard" icon="terp-emblem-important"
+                            colspan="2" attrs="{'invisible': [('msds_manual', '=', True)]}" />
+                    <field name="state" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_msds_chemeter_product">
+            <field name="name">Prodotti per MDSD</field>
+            <field name="res_model">msds.chemeter</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_product_product_msds_tree" />
+        </record>
+
         <!--Integrate get PDF button on Sapnaet-->
         <!--Product-->
         <record id="view_product_product_msds_button_form" model="ir.ui.view">
@@ -144,7 +169,7 @@
     <menuitem name="MSDS Chemeter" id="menu_msds_chemeter_root" sequence="10" groups="msds_chemeter.group_MSDS_chemeter_manager,msds_chemeter.group_MSDS_chemeter_user" parent="base.menu_base_config"/>
         <menuitem name="Schede" id="menu_msds_chemeter_form" sequence="10" parent="menu_msds_chemeter_root" action="action_msds_chemeter"/>
         <menuitem name="Wizard di Stampa" id="menu_msds_chemeter_print_wizard" sequence="20" parent="menu_msds_chemeter_root" action="action_msds_print_form_wizard"/>
-
+        <menuitem name="Prodotti MSDS" id="menu_msds_chemeter_product" sequence="30" parent="menu_msds_chemeter_root" action="action_msds_chemeter_product"/>
     </data>
 </openerp>
 
