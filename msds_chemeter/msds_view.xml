@@ -171,7 +171,7 @@
             <menuitem name="Wizard di Stampa" id="menu_msds_chemeter_print_wizard" sequence="20" parent="menu_msds_chemeter_root" action="action_msds_print_form_wizard"/>
             <menuitem name="Prodotti MSDS" id="menu_msds_chemeter_product" sequence="30" parent="menu_msds_chemeter_root" action="action_msds_chemeter_product"/>
 
-        <menuitem name="MSDS Chemeter" id="menu_sapnaet_msds_chemeter_root" sequence="4"
+        <menuitem name="MSDS Chemeter" id="menu_sapnaet_msds_chemeter_root" sequence="50"
                   groups="msds_chemeter.group_MSDS_chemeter_manager,msds_chemeter.group_MSDS_chemeter_user" parent="sapnaet.menu_sapnaet_root"/>
             <menuitem name="Schede" id="menu_sapnaet_msds_chemeter_form" sequence="10" parent="menu_sapnaet_msds_chemeter_root" action="action_msds_chemeter"/>
             <menuitem name="Wizard di Stampa" id="menu_sapnaet_msds_chemeter_print_wizard" sequence="20" parent="menu_sapnaet_msds_chemeter_root" action="action_msds_print_form_wizard"/>
