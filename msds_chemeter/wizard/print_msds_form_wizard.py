@@ -138,6 +138,7 @@ class MsdsPrintFormWizard(orm.TransientModel):
             product = record
         else:
             product = record.product_id  # both sale line and pricelist
+
             # -----------------------------------------------------------------
             # Sale line mode:
             # -----------------------------------------------------------------
@@ -153,6 +154,10 @@ class MsdsPrintFormWizard(orm.TransientModel):
                 ctx['default_alias'] = record.alias_name or ''
 
             ctx['default_language_id'] = partner.msds_language_id.id or False
+
+        if product.msds_manual:
+            raise Exception('Attenzione il prodotto collegato richiede la '
+                            'stampa manuale del documento!')
 
         # Extract Mixture from product setup:
         ctx['default_mixture'] = self.pool.get('product.product').get_mixture_code(product)

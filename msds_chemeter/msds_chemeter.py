@@ -476,6 +476,10 @@ class ProductProduct(orm.Model):
         return res
 
     _columns = {
+        'msds_manual': fields.boolean(
+            'MSDS Manuale',
+            help='Non permette la stampa della scheda, va fatta a mano '
+                 'e poi corretta in Word'),
         'msds_chemeter_ids': fields.function(
             _get_msds_chemeter_m2m,
             method=True,   # multi=True,
