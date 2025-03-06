@@ -203,8 +203,6 @@ class MsdsPrintFormWizard(orm.TransientModel):
             '  AND alias = %s '
             '  AND language_id = %s', (mixture, alias, language.id))
         chemeter_ids = [x[0] for x in cr.fetchall()]
-        if uid == 1:
-            pdb.set_trace()
 
         if chemeter_ids:
             chemeter_id = chemeter_ids[0]
