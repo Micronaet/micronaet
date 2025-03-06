@@ -156,8 +156,10 @@ class MsdsPrintFormWizard(orm.TransientModel):
             ctx['default_language_id'] = partner.msds_language_id.id or False
 
         if product.msds_manual:
-            raise Exception('Attenzione il prodotto collegato richiede la '
-                            'stampa manuale del documento!')
+            raise osv.except_osv(
+                'Errore MSDS:',
+                'Attenzione il prodotto collegato richiede la '
+                'stampa manuale del documento!')
 
         # Extract Mixture from product setup:
         ctx['default_mixture'] = self.pool.get('product.product').get_mixture_code(product)
