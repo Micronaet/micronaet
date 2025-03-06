@@ -192,7 +192,7 @@ class MsdsPrintFormWizard(orm.TransientModel):
         
         wizard = self.browse(cr, uid, ids, context=context)[0]
         mixture = wizard.mixture
-        alias = wizard.alias or False
+        alias = wizard.alias or ''
         language = wizard.language_id
 
         # Try to search in MDSD
