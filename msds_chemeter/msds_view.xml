@@ -8,8 +8,8 @@
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view" />
             <field name="arch" type="xml">
-                <xpath expr="/form/sheet/notebook/page[@string='Information']" position='after' attrs="{'invisible': [('msds_manual', '=', True)]}">
-                    <page string="MSDS Chemeter" groups="msds_chemeter.group_MSDS_chemeter_manager,msds_chemeter.group_MSDS_chemeter_user">
+                <xpath expr="/form/sheet/notebook/page[@string='Information']" position='after'>
+                    <page string="MSDS Chemeter" groups="msds_chemeter.group_MSDS_chemeter_manager,msds_chemeter.group_MSDS_chemeter_user"  attrs="{'invisible': [('msds_manual', '=', True)]}">
                         <separator string="Schede Prodotto" />
                         <field name="msds_chemeter_ids" />
                         <field name="msds_manual" invisible="1"/>
