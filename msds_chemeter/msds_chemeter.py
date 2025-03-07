@@ -59,7 +59,7 @@ def clean_windows_filename(filename):
     # lunghezza_massima = 255
     # nome_file_pulito = nome_file_pulito[:lunghezza_massima]
     # alias.encode('utf-8', 'replace').decode('utf-8')
-    return filename
+    return result
 
 
 _logger = logging.getLogger(__name__)
