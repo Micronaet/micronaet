@@ -33,9 +33,9 @@ _chemical_state = [
 ]
 
 class mrp_production_material(osv.osv):
-    ''' Create object mrp.production.material seems the bom explosed on product
+    """ Create object mrp.production.material seems the bom explosed on product
         quantity used as a model for bom list
-    '''
+    """
     _name = "mrp.production.material"
     _description= "Production used material"
     _rec_name = "product_id"
@@ -57,8 +57,8 @@ class mrp_production_material(osv.osv):
     }
 
 class mrp_production_coal(osv.osv):
-    ''' Create extra fields in mrp.production obj
-    '''
+    """ Create extra fields in mrp.production obj
+    """
     _name = "mrp.production"
     _inherit = "mrp.production"
 
@@ -66,11 +66,11 @@ class mrp_production_coal(osv.osv):
     # Utility function:
     # -----------------
     def _action_load_materials_from_bom(self, cr, uid, item_id, context = None):
-        ''' Generic function called from create elements or button for load
+        """ Generic function called from create elements or button for load
             sub material according to BOM selected and quantity
             item_id is the id of mrp.production (integer not list)
             This material is only for see store status, non used for lavorations
-        '''
+        """
         production_browse = self.browse(cr, uid, item_id, context=context)
         if not production_browse.bom_id and not production_browse.product_qty:
             return True # TODO raise error
@@ -142,14 +142,14 @@ class mrp_production_coal(osv.osv):
     # Workflow action:
     # ----------------
     def production_chemical_draft(self, cr, uid, ids, context = None):
-        ''' Draft production
-        '''
+        """ Draft production
+        """
         self.write(cr, uid, ids, {'chemical_state': 'draft', }, context = context)
         return True
 
     def production_chemical_confirmed(self, cr, uid, ids, context = None):
-        ''' Confirmed production
-        '''
+        """ Confirmed production
+        """
         # Test if there's coal bom to create (NOTE: not updatable!):
         if self.browse(cr, uid, ids, context=context)[0].bom_id.coal_bom_id:
             self.create_bom_coal(cr, uid, ids[0], context=context)
@@ -159,14 +159,14 @@ class mrp_production_coal(osv.osv):
         return True
 
     def production_chemical_validated(self, cr, uid, ids, context = None):
-        ''' Validated production
-        '''
+        """ Validated production
+        """
         self.write(cr, uid, ids, {'chemical_state': 'validated', }, context = context)
         return True
 
     def production_chemical_cancel(self, cr, uid, ids, context = None):
-        ''' Cancel production
-        '''
+        """ Cancel production
+        """
         self.write(cr, uid, ids, {'chemical_state': 'cancel', }, context = context)
         return True
 
@@ -174,8 +174,8 @@ class mrp_production_coal(osv.osv):
     # Button function:
     # ----------------
     def load_materials_from_bom(self, cr, uid, ids, context = None):
-        ''' Change list of element according to weight and bom
-        '''
+        """ Change list of element according to weight and bom
+        """
         return self._action_load_materials_from_bom(cr, uid, ids[0], context=context)
 
     _columns = {
@@ -195,8 +195,8 @@ class mrp_production_coal(osv.osv):
     }
 
 class mrp_bom(osv.osv):
-    ''' Extra field for import
-    '''
+    """ Extra field for import
+    """
     _name = 'mrp.bom'
     _inherit = 'mrp.bom'
 
@@ -204,8 +204,8 @@ class mrp_bom(osv.osv):
     # Scheduled action:
     # -----------------
     def import_production_bom(self, cr, uid, path, csv_file, context = None):
-        ''' Import BOM from accounting program for production
-        '''
+        """ Import BOM from accounting program for production
+        """
         try:
             bom_pool = self.pool.get("mrp.bom")
             file_name = os.path.join(os.path.expanduser(path), csv_file)
@@ -264,8 +264,8 @@ class stock_production_lot(osv.osv):
     _inherit = 'stock.production.lot'
 
     def _stock_available_chemical_function(self, cr, uid, ids, field=None, args=False, context=None):
-        ''' Total of availability stock in + stock out + production - material
-        '''
+        """ Total of availability stock in + stock out + production - material
+        """
         res = {}
         for lot in self.browse(cr, uid, ids, context=context):
             # from stock.move (load):
