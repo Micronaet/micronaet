@@ -148,9 +148,8 @@ class MsdsChemeter(orm.Model):
         ctx = context.copy()
         ctx['report_mode'] = 'sheet'
         ctx['report_action'] = 'pdf'
-        if uid == 1:
-            alias = clean_windows_filename(alias)
-            pdb.set_trace()
+
+        alias = clean_windows_filename(alias)
         try:
             ctx['sheet_parameter'] = {
                 'mixture': urllib.quote(mixture),
