@@ -163,6 +163,7 @@
             <field name="res_model">msds.chemeter</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree</field>
+            <field name="domain">[('manual', '=', False)]</field>
             <field name="view_id" ref="msds_chemeter_tree_view" />
         </record>
 
