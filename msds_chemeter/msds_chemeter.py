@@ -117,7 +117,43 @@ class MsdsChemeter(orm.Model):
         ctx['report_mode'] = 'sheet'
         ctx['report_action'] = 'pdf'
         if uid == 1:
-            alias = alias.encode('utf-8', 'replace').decode('utf-8')
+            import re
+            def pulisci_nome_file_windows(nome_file):
+                """
+                Pulisce una stringa per renderla un nome file valido in Windows.
+
+                Args:
+                    nome_file: La stringa da pulire.
+
+                Returns:
+                    La stringa pulita.
+                """
+
+                # 1. Caratteri non consentiti in Windows
+                caratteri_non_consentiti = r'[<>:"/\\|?*\x00-\x1F]'  # Include caratteri di controllo ASCII
+                nome_file_pulito = re.sub(caratteri_non_consentiti, '_', nome_file)
+
+                # 2. Rimuovi punti e spazi finali
+                nome_file_pulito = nome_file_pulito.rstrip('. ')
+
+                # 3. Nomi riservati di Windows (CON, PRN, AUX, NUL, COM1, COM2, ecc.)
+                nomi_riservati = ['CON', 'PRN', 'AUX', 'NUL', 'COM1', 'COM2', 'COM3', 'COM4', 'COM5', 'COM6', 'COM7',
+                                  'COM8', 'COM9',
+                                  'LPT1', 'LPT2', 'LPT3', 'LPT4', 'LPT5', 'LPT6', 'LPT7', 'LPT8', 'LPT9']
+                nome_base, estensione = re.match(r'^(.*?)(?:\.([^.]+))?$', nome_file_pulito).groups()
+                if nome_base.upper() in nomi_riservati:
+                    nome_base = "_" + nome_base
+
+                nome_file_pulito = nome_base + (("." + estensione) if estensione else "")
+
+                # 4. Limita la lunghezza del nome del file (opzionale)
+                lunghezza_massima = 255
+                nome_file_pulito = nome_file_pulito[:lunghezza_massima]
+
+                return nome_file_pulito
+
+            # alias.encode('utf-8', 'replace').decode('utf-8')
+            alias = pulisci_nome_file_windows(alias)
             pdb.set_trace()
 
         ctx['sheet_parameter'] = {
