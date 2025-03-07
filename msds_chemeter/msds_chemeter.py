@@ -117,6 +117,7 @@ class MsdsChemeter(orm.Model):
         ctx['report_mode'] = 'sheet'
         ctx['report_action'] = 'pdf'
         if uid == 1:
+            alias = alias.encode('utf-8', 'replace').decode('utf-8')
             pdb.set_trace()
 
         ctx['sheet_parameter'] = {
