@@ -156,12 +156,15 @@ class MsdsChemeter(orm.Model):
             alias = pulisci_nome_file_windows(alias)
             pdb.set_trace()
 
-        ctx['sheet_parameter'] = {
-            'mixture': urllib.quote(mixture),
-            'alias': urllib.quote(alias),
-            'language': urllib.quote(language),
-            # or 'it-IT'
-        }
+        try:
+            ctx['sheet_parameter'] = {
+                'mixture': urllib.quote(mixture),
+                'alias': urllib.quote(alias),
+                'language': urllib.quote(language),
+                # or 'it-IT'
+            }
+        except:
+            raise osv.except_osv('Errore', u'Errore caratteri nel nome Alias non validi: {}'.format(alias))
 
         # Call generator of PDF file:
         reply = pallet_pool.save_pallet_report_as_odt(
