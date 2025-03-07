@@ -38,12 +38,12 @@ def clean_windows_filename(filename):
         Remove not ASCII char
     """
     not_admit = r'[<>:"/\\|?*\x00-\x1F]'
-    filename = re.sub(not_admit, '_', filename)
+    filename = re.sub(not_admit, '-', filename)
     filename = filename.rstrip('. ')  # No extra space or .
     result = ''
     for c in filename:
         if ord(c) > 127:
-            result += '_'
+            result += '-'
         else:
             result += c
 
