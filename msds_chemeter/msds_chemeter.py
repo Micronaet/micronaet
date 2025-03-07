@@ -23,12 +23,44 @@ import logging
 import shutil
 import pdb
 import urllib
+import re
 from openerp.osv import osv, orm, fields
 from datetime import datetime, timedelta
 from openerp.tools import (
     DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT,
     DATETIME_FORMATS_MAP, float_compare)
 from openerp.tools.translate import _
+
+
+# Utility:
+def clean_windows_filename(filename):
+    """ Remove not allowed characters for Windows file name
+        Remove not ASCII char
+    """
+    not_admit = r'[<>:"/\\|?*\x00-\x1F]'
+    filename = re.sub(not_admit, '_', filename)
+    filename = filename.rstrip('. ')  # No extra space or .
+    result = ''
+    for c in filename:
+        if ord(c) > 127:
+            result += '_'
+        else:
+            result += c
+
+    # nomi_riservati = ['CON', 'PRN', 'AUX', 'NUL', 'COM1', 'COM2', 'COM3', 'COM4', 'COM5', 'COM6', 'COM7',
+    #                  'COM8', 'COM9',
+    #                  'LPT1', 'LPT2', 'LPT3', 'LPT4', 'LPT5', 'LPT6', 'LPT7', 'LPT8', 'LPT9']
+    # nome_base, estensione = re.match(r'^(.*?)(?:\.([^.]+))?$', nome_file_pulito).groups()
+    # if nome_base.upper() in nomi_riservati:
+    #    nome_base = "_" + nome_base
+    # nome_file_pulito = nome_base + (("." + estensione) if estensione else "")
+
+    # 4. Limita la lunghezza del nome del file (opzionale)
+    # lunghezza_massima = 255
+    # nome_file_pulito = nome_file_pulito[:lunghezza_massima]
+    # alias.encode('utf-8', 'replace').decode('utf-8')
+    return filename
+
 
 _logger = logging.getLogger(__name__)
 
@@ -117,45 +149,8 @@ class MsdsChemeter(orm.Model):
         ctx['report_mode'] = 'sheet'
         ctx['report_action'] = 'pdf'
         if uid == 1:
-            import re
-            def pulisci_nome_file_windows(nome_file):
-                """
-                Pulisce una stringa per renderla un nome file valido in Windows.
-
-                Args:
-                    nome_file: La stringa da pulire.
-
-                Returns:
-                    La stringa pulita.
-                """
-
-                # 1. Caratteri non consentiti in Windows
-                caratteri_non_consentiti = r'[<>:"/\\|?*\x00-\x1F]'  # Include caratteri di controllo ASCII
-                nome_file_pulito = re.sub(caratteri_non_consentiti, '_', nome_file)
-
-                # 2. Rimuovi punti e spazi finali
-                nome_file_pulito = nome_file_pulito.rstrip('. ')
-
-                # 3. Nomi riservati di Windows (CON, PRN, AUX, NUL, COM1, COM2, ecc.)
-                nomi_riservati = ['CON', 'PRN', 'AUX', 'NUL', 'COM1', 'COM2', 'COM3', 'COM4', 'COM5', 'COM6', 'COM7',
-                                  'COM8', 'COM9',
-                                  'LPT1', 'LPT2', 'LPT3', 'LPT4', 'LPT5', 'LPT6', 'LPT7', 'LPT8', 'LPT9']
-                nome_base, estensione = re.match(r'^(.*?)(?:\.([^.]+))?$', nome_file_pulito).groups()
-                if nome_base.upper() in nomi_riservati:
-                    nome_base = "_" + nome_base
-
-                nome_file_pulito = nome_base + (("." + estensione) if estensione else "")
-
-                # 4. Limita la lunghezza del nome del file (opzionale)
-                lunghezza_massima = 255
-                nome_file_pulito = nome_file_pulito[:lunghezza_massima]
-
-                return nome_file_pulito
-
-            # alias.encode('utf-8', 'replace').decode('utf-8')
-            alias = pulisci_nome_file_windows(alias)
+            alias = clean_windows_filename(alias)
             pdb.set_trace()
-
         try:
             ctx['sheet_parameter'] = {
                 'mixture': urllib.quote(mixture),
