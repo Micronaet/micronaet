@@ -121,27 +121,30 @@ class sale_order_line(osv.osv):
             help='Caricare per questo prodotto il pallet con questi Kg'
             ),
 
-        'note_packaging': fields.char(
-            'Note packaging', size=100,
-            help='Note per il personale che preparerà la consegna nel '
-                 'magazzino',
-            ),
         'note_mrp': fields.char(
             'Note produzione', size=100,
-            help='Note per il personale che prepara la produzione',
+            help='Note per il personale che prepara gli ordini di '
+                 'produzione',
+            ),
+        'note_packaging': fields.char(
+            'Note insaccco', size=100,
+            help='Note per il personale che preparerà i bancali di '
+                 'merce in produzione',
             ),
         'note_laboratory': fields.char(
             'Note laboratorio', size=100,
-            help='Note per il personale del laboratorio',
+            help='Note per il personale del laboratorio che effettua '
+                 'le analisi della produzione',
             ),
         'note_delivery': fields.char(
-            'Note consegna', size=100,
-            help='Note per il personale che effettua fisicamente la consegna',
+            'Note magazzino', size=100,
+            help='Note per il personale che prepara la consegna nella '
+                 'zona di stoccaggio e carico',
             ),
         'note_accounting': fields.char(
             'Note spedizione', size=100,
             help='Note per il personale contabile che si occupa dei '
-                 'documenti di spedizione',
+                 'documenti di spedizione, DDT o fattura',
             ),
         'note_internal': fields.char(
             'Note interne', size=100,
