@@ -108,6 +108,20 @@ class MrpAnalysisSample(orm.Model):
                 cr, uid, [record.product_id.id], context=context)
 
 
+class StockDdtLine(orm.Model):
+    """ DDT Line button
+    """
+    _inherit = 'stock.ddt.line'
+
+    def open_print_msds_wizard(self, cr, uid, ids, context=None):
+        """ Open Wizard from DDT line
+        """
+        line = self.browse(cr, uid, ids[0], context=context)
+
+        return self.pool.get('sale.order.line').open_print_msds_wizard(
+            cr, uid, [line.line_id.id], context=context)
+
+
 class MsdsPrintFormWizard(orm.TransientModel):
     """ Wizard for print MSDS from Chemeter
     """

@@ -469,22 +469,6 @@ class MsdsChemeter(orm.Model):
     '''
 
 
-class StockDdtLine(orm.Model):
-    """ DDT Line button
-    """
-    _inherit = 'stock.ddt.line'
-
-    def open_print_msds_wizard(self, cr, uid, ids, context=None):
-        """ Open Wizard from DDT line
-        """
-        msds_pool = self.pool.get('msds.chemeter')
-
-        line = self.browse(cr, uid, ids[0], context=context)
-
-        return msds_pool.search_sale_from_mixture_domain(
-            cr, uid, [line.line_id.id], context=context)
-
-
 class ProductProduct(orm.Model):
     """ Add extra info in product
     """
