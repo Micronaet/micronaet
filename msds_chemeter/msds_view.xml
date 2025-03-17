@@ -27,6 +27,22 @@
         </record>
 
         <!--Integrate get PDF button on Sapnaet-->
+        <!--DDT line-->
+        <record model="ir.ui.view" id="view_stock_ddt_msds_form">
+            <field name="name">stock.ddt.msds.form</field>
+            <field name="model">stock.ddt</field>
+            <field name="inherit_id" ref="sapnaet_ddt.view_stock_ddt_form"/>
+            <field name="arch" type="xml">
+                <field name="product_id" position="after">
+                    <field name="msds_manual" />
+                    <button type="object" string="Apri scheda MSDS" name="open_print_msds_wizard" icon="terp-emblem-important"
+                            groups="msds_chemeter.group_MSDS_chemeter_manager,msds_chemeter.group_MSDS_chemeter_user"
+                            attrs="{'invisible': [('msds_manual', '=', True)]}"
+                            />
+                </field>
+            </field>
+        </record>
+
         <!--Product-->
         <record id="view_product_product_msds_button_form" model="ir.ui.view">
             <field name="name">Product MSDS button</field>

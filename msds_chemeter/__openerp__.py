@@ -35,6 +35,7 @@
         'product',
         'save_as',
         'sapnaet',
+        'sapnaet_ddt',
         ],
     'init_xml': [],
     'demo': [],
