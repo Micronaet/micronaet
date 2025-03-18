@@ -19,10 +19,11 @@
             </field>
         </record>
         <record model="ir.actions.act_window" id="action_msds_chemeter_product">
-            <field name="name">Prodotti per MDSD</field>
+            <field name="name">Prodotti per MSDS</field>
             <field name="res_model">product.product</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
+            <field name="domain">[('default_code', '!=ilike', 'A%')]</field>
             <field name="view_id" ref="view_product_product_msds_tree" />
         </record>
 
