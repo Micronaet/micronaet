@@ -97,8 +97,8 @@
     </record>
     
     <menuitem name="Report" parent="base.menu_mrp_root" id="menu_etl_production" sequence="40" />
-        <menuitem name="BOM lines" id="menu_etl_order_primaty_delivery" parent="menu_etl_production" action="action_etl_bom_line_primary_tree" sequence="20" />
-        <menuitem name="BOM lines" id="menu_etl_order_delivery" parent="menu_etl_production" action="action_etl_bom_line_form" sequence="30" />
+        <!--<menuitem name="Ricette Primarie" id="menu_etl_order_primaty_delivery" parent="menu_etl_production" action="action_etl_bom_line_primary_tree" sequence="20" />-->
+        <menuitem name="Righe ricette" id="menu_etl_order_delivery" parent="menu_etl_production" action="action_etl_bom_line_form" sequence="30" />
     </data>
 </openerp>
 
