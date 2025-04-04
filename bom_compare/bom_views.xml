@@ -75,7 +75,7 @@
         </field>
     </record>
 
-    <record model="ir.actions.act_window" id="action_etl_bom_line_primary_tree">
+    <!--<record model="ir.actions.act_window" id="action_etl_bom_line_primary_tree">
         <field name="name">BOM primary</field>
         <field name="res_model">etl.bom</field>
         <field name="view_type">form</field>
@@ -83,7 +83,7 @@
         <field name="view_id" ref="view_etl_bom_line_tree"/>
         <field name="context">{}</field>
         <field name="domain">[('is_primary', '=', True)]</field>
-    </record>
+    </record>-->
     <record model="ir.actions.act_window" id="action_etl_bom_line_form">
         <field name="name">BOM line</field>
         <field name="res_model">etl.bom.line</field>
@@ -96,7 +96,7 @@
     </record>
     
     <menuitem name="Report" parent="base.menu_mrp_root" id="menu_etl_production" sequence="40" />
-        <menuitem name="Ricette Primarie" id="menu_etl_order_primaty_delivery" parent="menu_etl_production" action="action_etl_bom_line_primary_tree" sequence="20" />
+        <!--<menuitem name="Ricette Primarie" id="menu_etl_order_primaty_delivery" parent="menu_etl_production" action="action_etl_bom_line_primary_tree" sequence="20" />-->
         <menuitem name="Righe ricette" id="menu_etl_order_delivery" parent="menu_etl_production" action="action_etl_bom_line_form" sequence="30" />
     </data>
 </openerp>
