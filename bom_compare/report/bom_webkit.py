@@ -77,7 +77,7 @@ class report_webkit_html(report_sxw.rml_parse):
         parent_list = []
         if data is None:
             data = {}
-
+        import pdb; pdb.set_trace()
         domain = [('is_primary', '=', True)]
         primary = data.get('primary', False)
 
