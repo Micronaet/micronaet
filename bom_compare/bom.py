@@ -207,7 +207,7 @@ class etl_bom_line(osv.osv):
         # Header:
         'name': fields.char('BOM version', size=40, required=True),
         'code': fields.char('Product code', size=8, required=True),
-        'is_primary': fields.boolean('is primary', required=False),
+        'is_primary': fields.boolean('is primary'),
         'primary': fields.char('BOM primary', size=24, required=False),
 
         # Line:
@@ -495,4 +495,3 @@ class mrp_bom_extra_fields(osv.osv):
         'product_qty': fields.float('Product Quantity', digits=(8,6)),
         #dp.get_precision('Product Unit of Measure')),
         }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
