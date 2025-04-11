@@ -112,7 +112,6 @@ class etl_order(osv.osv):
 
         _logger = logging.getLogger('crm_order_analysis')
 
-        partner_proxy = self.pool.get("res.partner")
         order_line_proxy = self.pool.get("etl.order.line")
         product_proxy = self.pool.get('product.product')
         partner_proxy = self.pool.get('res.partner')
@@ -121,8 +120,8 @@ class etl_order(osv.osv):
         counter = {'tot': 0, 'upd': 0, 'err': 0, 'err_upd': 0, 'new': 0}
 
         # Import BC e FT according to order line: *****************************
-        delete_all = self.unlink(cr, uid, self.search(cr, uid, []))
-        # clean all DB
+        # Clean all DB
+        self.unlink(cr, uid, self.search(cr, uid, [], context=context))
 
         # Import order:
         year_now = datetime.now().year
@@ -138,7 +137,8 @@ class etl_order(osv.osv):
                     else:
                        if not tot_colonne:
                            tot_colonne=len(line)
-                           _logger.info('Start sync of documents lines year %s [cols=%s, file=%s]'%(year, tot_colonne, file_name))
+                           _logger.info('Start sync of documents lines year %s [cols=%s, file=%s]' % (
+                               year, tot_colonne, file_name))
 
                        if len(line): # jump empty lines
                            if tot_colonne != len(line): # tot # of colums must be equal to # of column in first line
@@ -166,8 +166,8 @@ class etl_order(osv.osv):
                            partner_id = Prepare(line[csv_id])
 
                            # calculated fields:
-                           name = "%s-%s-%s"%(acronym, year, number)
-                           date = "%s-%s-%s"%(date[:4],date[4:6],date[-2:]) if date else False
+                           name = "%s-%s-%s" % (acronym, year, number)
+                           date = "%s-%s-%s" % (date[:4], date[4:6], date[-2:]) if date else False
                            year_analysis=date[:4] if date else False
 
 
@@ -190,18 +190,18 @@ class etl_order(osv.osv):
                                total_order_id[(order,product_id)] += amount or 0.0
 
                            data_line = {
-                                        'name': name,
-                                        'type': acronym,
-                                        'date': date,
-                                        'year': year_analysis,
-                                        'product_id': product_id,
-                                        'partner_id': partner_id,
-                                        'quantity': unit,
-                                        'unit': amount / unit if unit!=0.0 else 0.0,
-                                        'amount': amount,
-                                        'order': order,
-                                       }
-                           new_id=self.create(cr, uid, data_line)
+                               'name': name,
+                               'type': acronym,
+                               'date': date,
+                               'year': year_analysis,
+                               'product_id': product_id,
+                               'partner_id': partner_id,
+                               'quantity': unit,
+                               'unit': amount / unit if unit!=0.0 else 0.0,
+                               'amount': amount,
+                               'order': order,
+                               }
+                           self.create(cr, uid, data_line, context=context)
                 _logger.info('End import movement lines year %s, total: [%s]'%(year, counter['tot']))
             except:
                 _logger.error('Error generic import movement lines year %s, total: [%s]'%(year, counter['tot']))
