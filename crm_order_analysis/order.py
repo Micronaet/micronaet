@@ -171,7 +171,6 @@ class etl_order(osv.osv):
                            date = "%s-%s-%s" % (date[:4], date[4:6], date[-2:]) if date else False
                            year_analysis=date[:4] if date else False
 
-
                            product_id = product_proxy.search(cr, uid, [('default_code','=',product_id)])
                            if product_id:
                                product_id = product_id[0]
