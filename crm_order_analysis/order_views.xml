@@ -109,8 +109,6 @@
         res_model="etl.order"
         src_model="res.partner"/>
 
-
-
     <!-- etl.order.line -->
     <record model="ir.ui.view" id="view_etl_order_line_search">
         <field name="name">Order movement list</field>
