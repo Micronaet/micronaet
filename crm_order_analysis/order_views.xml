@@ -7,6 +7,9 @@
         <field name="model">etl.order</field>
         <field name="arch" type="xml">
             <search string="Sales analisys line">
+                <field name="name" />
+                <field name="customer_name" />
+
                 <field name="partner_id" string="Partner" filter_domain="[('partner_id','=',self)]" />
                 <field name="product_id" string="Product" filter_domain="[('product_id','=',self)]" />
                 <field name="chemical_category_id" string="Chemical category" filter_domain="[('chemical_category_id','=',self)]" />
@@ -37,6 +40,7 @@
                 <field name="type" />
                 <field name="year" />
                 <field name="name" />
+                <field name="customer_name" />
                 <field name="order" />
                 <field name="date" />
                 <field name="product_id" />
@@ -53,21 +57,22 @@
         <field name="model">etl.order</field>
         <field name="arch" type="xml">
             <form string="Sales analisys line" version="7.0">
-               <sheet>
-               <group col="6" colspan="4">
-                    <field name="type" />
-                    <field name="year" />
-                    <field name="order" />
+                <sheet>
+                    <group col="6" colspan="4">
+                        <field name="type" />
+                        <field name="year" />
+                        <field name="order" />
 
-                    <field name="name" />
-                    <field name="product_id" />
-                    <field name="partner_id" />
+                        <field name="name" />
+                        <field name="customer_name" />
+                        <field name="product_id" />
+                        <field name="partner_id" />
 
-                    <field name="quantity" />
-                    <field name="unit" />
-                    <field name="amount" />
-               </group>
-               </sheet>
+                        <field name="quantity" />
+                        <field name="unit" />
+                        <field name="amount" />
+                    </group>
+                </sheet>
             </form>
         </field>
     </record>

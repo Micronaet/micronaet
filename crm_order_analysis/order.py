@@ -60,15 +60,16 @@ class etl_order_line(osv.osv):
     _order ='name'
 
     _columns = {
-        'name': fields.char('Number', size=10, required=True, readonly=False),
+        'name': fields.char('Number', size=10, required=True),
+        'customer_name': fields.char('Rif. Cliente', size=20),
         'date': fields.date('Date', help="Date when order is created"),
         'deadline': fields.date(
             'Deadline', help="Deadline for statistic evaluation of delivery"),
         # 'amount': fields.float('Total amount', digits=(16, 2)),
         'partner_id': fields.many2one(
-            'res.partner', 'Partner', required=False),
+            'res.partner', 'Partner'),
         'product_id': fields.many2one(
-            'product.product', 'Product', required=False),
+            'product.product', 'Product'),
         'chemical_category_id': fields.related(
             'product_id', 'chemical_category_id', type='many2one',
             relation="chemical.product.category", string='Category',
@@ -307,27 +308,28 @@ class etl_order(osv.osv):
             _logger.info('End import order headers %s, total: [%s]'%(year, counter['tot']))
         except:
             _logger.error('Error generic import order headers, total: [%s]'%(counter['tot']))
-
         return
 
     _columns = {
-                'name': fields.char('Document', size=15, help="Document-Year-Number"),
-                'type':fields.selection([
-                    ('BC','DDT'),
-                    ('FT','Invoice'),
-                    ('NC','Credit note'),
-                    ('RC','Refund'),
-                ],'Type', select=True, readonly=False),
-                'year': fields.char('Year', size=4), #fields.date('Date'),
-                'date': fields.date('Date'),
-                'product_id': fields.many2one('product.product', 'Product'),
-                'chemical_category_id': fields.related('product_id', 'chemical_category_id', type = 'many2one', relation = "chemical.product.category", string='Category', readonly = True, store = True),
-                'partner_id': fields.many2one('res.partner', 'Partner'),
-                'amount': fields.float('Total', digits=(16,2),),
-                'unit': fields.float('Price unit.', digits=(16,2),),
-                'quantity': fields.float('Q.', digits=(16,2),),
-                # refer to order:
-                'order': fields.char('Order number', size=15, help="Number of order that start the sale"),
+        'name': fields.char('Document', size=15, help="Document-Year-Number"),
+        'customer_name': fields.char('Rif. cliente', size=15, help='Riferimento ordine cliente'),
+        'type':fields.selection([
+            ('BC','DDT'),
+            ('FT','Invoice'),
+            ('NC','Credit note'),
+            ('RC','Refund'),
+        ],'Type', select=True, readonly=False),
+        'year': fields.char('Year', size=4), #fields.date('Date'),
+        'date': fields.date('Date'),
+        'product_id': fields.many2one('product.product', 'Product'),
+        'chemical_category_id': fields.related(
+            'product_id', 'chemical_category_id', type='many2one', relation="chemical.product.category",
+            string='Category', readonly = True, store = True),
+        'partner_id': fields.many2one('res.partner', 'Partner'),
+        'amount': fields.float('Total', digits=(16,2),),
+        'unit': fields.float('Price unit.', digits=(16,2),),
+        'quantity': fields.float('Q.', digits=(16,2),),
+        # refer to order:
+        'order': fields.char('Order number', size=15, help="Number of order that start the sale"),
     }
 etl_order()
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
