@@ -127,8 +127,7 @@ class etl_order(osv.osv):
         year_now = datetime.now().year
         for year in [year_now, year_now - 1, year_now - 2]:
             try:
-                file_complete = os.path.expanduser(
-                    os.path.join(path, "%s%s" % (year, file_name)))
+                file_complete = os.path.expanduser(os.path.join(path, "%s%s" % (year, file_name)))
                 lines = csv.reader(open(file_complete, 'rb'), delimiter=";")
                 tot_colonne = 0
                 for line in lines:
@@ -164,6 +163,8 @@ class etl_order(osv.osv):
                            date = Prepare(line[csv_id])
                            csv_id+=1
                            partner_id = Prepare(line[csv_id])
+                           csv_id+=1
+                           customer_name = Prepare(line[csv_id])
 
                            # calculated fields:
                            name = "%s-%s-%s" % (acronym, year, number)
@@ -191,6 +192,7 @@ class etl_order(osv.osv):
 
                            data_line = {
                                'name': name,
+                               'customer_name': customer_name,
                                'type': acronym,
                                'date': date,
                                'year': year_analysis,
