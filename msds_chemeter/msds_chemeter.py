@@ -93,7 +93,7 @@ class ResCountry(osv.osv):
         partner_pool = self.pool.get('res.partner')
         country = self.browse(cr, uid, ids, context=context)[0]
 
-        msds_language_id = country.msds_languade_id.id
+        msds_language_id = country.msds_language_id.id
         if not msds_language_id:
             return False
 
