@@ -87,11 +87,21 @@ class ResCountry(osv.osv):
     """
     _inherit = 'res.country'
 
+    def schedule_update_msds_language(self, cr, uid, context=None):
+        """ Update partner lang depend on language
+        """
+        country_ids = self.search(cr, uid, [
+            ('msds_language_id', '!=', False),
+        ], context=context)
+        for item_id in country_ids:
+            self.msds_language_update(cr, uid, [item_id], context=context)
+        return True
+
     def msds_language_update(self, cr, uid, ids, context=None):
         """ update language to partner of this country
         """
         partner_pool = self.pool.get('res.partner')
-        country = self.browse(cr, uid, ids, context=context)[0]
+        country = self.browse(cr, uid, ids[0], context=context)
 
         msds_language_id = country.msds_language_id.id
         if not msds_language_id:
@@ -103,7 +113,7 @@ class ResCountry(osv.osv):
             ('country_id', '=', country.id),
             ('msds_language_id', '!=', msds_language_id),
         ], context=context)
-        _logger.warning('Aggiornamento {} clienti'.format(len(partner_ids)))
+        _logger.warning('Aggiornamento {} clienti naz. {}'.format(len(partner_ids, county.name)))
         return partner_pool.write(cr, uid, partner_ids, {
             'msds_language_id': msds_language_id,
         }, context=context)
