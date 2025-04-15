@@ -102,6 +102,7 @@ class ResCountry(osv.osv):
             ('msds_language_manual', '=', False),
             ('msds_language_id', '!=', msds_language_id),
         ], context=context)
+        _logger.warning('Aggironamento {} clienti'.format(len(partner_ids)))
         return partner_pool.write(cr, uid, partner_ids, {
             'msds_language_id': msds_language_id,
         }, context=context)
