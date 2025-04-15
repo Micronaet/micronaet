@@ -100,6 +100,7 @@ class ResCountry(osv.osv):
         partner_ids = partner_pool.search(cr, uid, [
             ('sql_customer_code', '!=', False),
             ('msds_language_manual', '=', False),
+            ('country_id', '=', country.id),
             ('msds_language_id', '!=', msds_language_id),
         ], context=context)
         _logger.warning('Aggiornamento {} clienti'.format(len(partner_ids)))
