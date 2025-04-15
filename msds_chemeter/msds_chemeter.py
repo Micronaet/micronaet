@@ -113,7 +113,9 @@ class ResCountry(osv.osv):
             ('country_id', '=', country.id),
             ('msds_language_id', '!=', msds_language_id),
         ], context=context)
-        _logger.warning('Aggiornamento {} clienti naz. {}'.format(len(partner_ids, county.name)))
+        _logger.warning(
+            'Update #{} customer  country: {}'.format(
+                len(partner_ids, county.name)))
         return partner_pool.write(cr, uid, partner_ids, {
             'msds_language_id': msds_language_id,
         }, context=context)
