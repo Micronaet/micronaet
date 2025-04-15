@@ -35,6 +35,7 @@
                     <field name="city" readonly="1"/>
                     <field name="country_id" readonly="1"/>
                     <field name="sql_customer_code" readonly="1"/>
+                    <field name="msds_language_manual" />
                     <field name="msds_language_id" />
                 </tree>
             </field>

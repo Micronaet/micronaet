@@ -99,6 +99,7 @@ class ResCountry(osv.osv):
 
         partner_ids = partner_pool.search(cr, uid, [
             ('sql_customer_code', '!=', False),
+            ('msds_language_manual', '=', False),
             ('msds_language_id', '!=', msds_language_id),
         ], context=context)
         return partner_pool.write(cr, uid, partner_ids, {
