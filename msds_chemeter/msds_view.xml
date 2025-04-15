@@ -193,7 +193,6 @@
                 </form>
             </field>
        </record>
-
         <record model="ir.actions.act_window" id="action_msds_chemeter">
             <field name="name">MDSD Chemeter</field>
             <field name="res_model">msds.chemeter</field>
