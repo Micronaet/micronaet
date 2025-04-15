@@ -87,6 +87,24 @@ class ResCountry(osv.osv):
     """
     _inherit = 'res.country'
 
+    def msds_language_update(self, cr, uid, ids, context=None):
+        """ update language to partner of this country
+        """
+        partner_pool = self.pool.get('res.partner')
+        country = self.browse(cr, uid, ids, context=context)[0]
+
+        msds_language_id = country.msds_languade_id.id
+        if not msds_language_id:
+            return False
+
+        partner_ids = partner_pool.search(cr, uid, [
+            ('sql_customer_code', '!=', False),
+            ('msds_language_id', '!=', msds_language_id),
+        ], context=context)
+        return partner_pool.write(cr, uid, partner_ids, {
+            'msds_language_id': msds_language_id,
+        }, context=context)
+
     _columns = {
         'msds_language_id': fields.many2one('msds.language', 'Lingua Chemeter'),
         }

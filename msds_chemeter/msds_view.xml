@@ -10,6 +10,7 @@
                     <field name="name" readonly="1"/>
                     <field name="code" readonly="1"/>
                     <field name="msds_language_id" />
+                    <button name="msds_language_update" type="object" icon="gtk-refresh" string="Aggiorna partner della nazione"/>
                 </tree>
             </field>
         </record>
