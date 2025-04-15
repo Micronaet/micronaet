@@ -15,5 +15,19 @@
 			<field eval="1" name="interval_number"/>
 			<field eval="&quot;&quot;&quot;msds.chemeter&quot;&quot;&quot;" name="model"/>
 		</record>
+		<record id="ir_cron_msds_chemeter_lang_update_1" model="ir.cron">
+			<field eval="&quot;&quot;&quot;schedule_update_msds_language&quot;&quot;&quot;" name="function"/>
+			<field eval="&quot;&quot;&quot;days&quot;&quot;&quot;" name="interval_type"/>
+			<field name="user_id" ref="base.user_root"/>
+			<field eval="&quot;&quot;&quot;MSDS Chemeter: Update partner lang from country&quot;&quot;&quot;" name="name"/>
+			<field eval="-1" name="numbercall"/>
+			<field eval="&quot;&quot;&quot;2010-07-04 23:45:00&quot;&quot;&quot;" name="nextcall"/>
+			<field eval="5" name="priority"/>
+			<field eval="0" name="doall"/>
+			<field eval="0" name="active"/>
+			<field name="args">()</field>
+			<field eval="1" name="interval_number"/>
+			<field eval="&quot;&quot;&quot;res.country&quot;&quot;&quot;" name="model"/>
+		</record>
 	</data>
 </openerp>
