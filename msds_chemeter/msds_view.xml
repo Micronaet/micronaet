@@ -9,7 +9,7 @@
                 <tree string="Lingue Chemeter" editable="bottom">
                     <field name="name" readonly="1"/>
                     <field name="code" readonly="1"/>
-                    <field name="chemeter_language_id" />
+                    <field name="msds_language_id" />
                 </tree>
             </field>
         </record>
@@ -20,6 +20,38 @@
             <field name="view_mode">tree</field>
             <field name="domain">[]</field>
             <field name="view_id" ref="view_res_country_chemeter_tree" />
+        </record>
+
+        <record id="view_res_partner_chemeter_tree" model="ir.ui.view">
+            <field name="name">Partner Chemeter Lang</field>
+            <field name="model">res.partner</field>
+            <field name="priority" eval="40"/>
+            <field name="arch" type="xml">
+                <tree string="Partner Chemeter" editable="bottom">
+                    <field name="name" readonly="1"/>
+                    <field name="street" readonly="1"/>
+                    <field name="city" readonly="1"/>
+                    <field name="country_id" readonly="1"/>
+                    <field name="sql_customer_code" readonly="1"/>
+                    <field name="msds_language_id" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_msds_chemeter_partner_lang">
+            <field name="name">Partner Chemeter Lang</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[]</field>
+            <field name="view_id" ref="view_res_partner_chemeter_tree" />
+        </record>
+        <record model="ir.actions.act_window" id="action_msds_chemeter_partner_no_lang">
+            <field name="name">Partner Chemeter No Lang</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[('msds_language_id', '=', False)]</field>
+            <field name="view_id" ref="view_res_partner_chemeter_tree" />
         </record>
 
         <record id="view_product_product_msds_tree" model="ir.ui.view">
@@ -207,6 +239,8 @@
             <menuitem name="Wizard di Stampa" id="menu_msds_chemeter_print_wizard" sequence="20" parent="menu_msds_chemeter_root" action="action_msds_print_form_wizard"/>
             <menuitem name="Schede" id="menu_msds_chemeter_form" sequence="30" parent="menu_msds_chemeter_root" action="action_msds_chemeter" groups="msds_chemeter.group_MSDS_chemeter_account" />
             <menuitem name="Lingue x nazione" id="menu_msds_chemeter_country_lang" sequence="40" parent="menu_msds_chemeter_root" action="action_msds_chemeter_country_lang" groups="msds_chemeter.group_MSDS_chemeter_account" />
+            <menuitem name="Lingue partner" id="menu_msds_chemeter_partner_lang" sequence="50" parent="menu_msds_chemeter_root" action="action_msds_chemeter_partner_lang" groups="msds_chemeter.group_MSDS_chemeter_account" />
+            <menuitem name="Partner senza lingua" id="menu_msds_chemeter_partner_no_lang" sequence="60" parent="menu_msds_chemeter_root" action="action_msds_chemeter_partner_no_lang" groups="msds_chemeter.group_MSDS_chemeter_account" />
 
         <menuitem name="MSDS Chemeter" id="menu_sapnaet_msds_chemeter_root" sequence="50"
                   groups="msds_chemeter.group_MSDS_chemeter_manager,msds_chemeter.group_MSDS_chemeter_user" parent="sapnaet.menu_sapnaet_root"/>
@@ -214,6 +248,8 @@
             <menuitem name="Wizard di Stampa" id="menu_sapnaet_msds_chemeter_print_wizard" sequence="20" parent="menu_sapnaet_msds_chemeter_root" action="action_msds_print_form_wizard"/>
             <menuitem name="Schede" id="menu_sapnaet_msds_chemeter_form" sequence="30" parent="menu_sapnaet_msds_chemeter_root" action="action_msds_chemeter" groups="msds_chemeter.group_MSDS_chemeter_account" />
             <menuitem name="Lingue x nazione" id="menu_msds_chemeter_country_lang_sapnaet" sequence="40" parent="menu_sapnaet_msds_chemeter_root" action="action_msds_chemeter_country_lang" groups="msds_chemeter.group_MSDS_chemeter_account" />
+            <menuitem name="Lingue partner" id="menu_msds_chemeter_partner_lang_sapnaet" sequence="50" parent="menu_sapnaet_msds_chemeter_root" action="action_msds_chemeter_partner_lang" groups="msds_chemeter.group_MSDS_chemeter_account" />
+            <menuitem name="Partner senza lingua" id="menu_msds_chemeter_partner_no_lang_sapnaet" sequence="60" parent="menu_sapnaet_msds_chemeter_root" action="action_msds_chemeter_partner_no_lang" groups="msds_chemeter.group_MSDS_chemeter_account" />
 
     </data>
 </openerp>

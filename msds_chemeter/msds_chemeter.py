@@ -88,7 +88,7 @@ class ResCountry(osv.osv):
     _inherit = 'res.country'
 
     _columns = {
-        'chemeter_language_id': fields.many2one('msds.language', 'Lingua Chemeter'),
+        'msds_language_id': fields.many2one('msds.language', 'Lingua Chemeter'),
         }
 
 
