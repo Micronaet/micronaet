@@ -42,7 +42,7 @@
             <field name="res_model">res.partner</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree</field>
-            <field name="domain">[]</field>
+            <field name="domain">[('sql_customer_code', '!=', False)]</field>
             <field name="view_id" ref="view_res_partner_chemeter_tree" />
         </record>
         <record model="ir.actions.act_window" id="action_msds_chemeter_partner_no_lang">
@@ -50,7 +50,7 @@
             <field name="res_model">res.partner</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree</field>
-            <field name="domain">[('msds_language_id', '=', False)]</field>
+            <field name="domain">[('sql_customer_code', '!=', False), ('msds_language_id', '=', False)]</field>
             <field name="view_id" ref="view_res_partner_chemeter_tree" />
         </record>
 
