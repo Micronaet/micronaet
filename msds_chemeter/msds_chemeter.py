@@ -82,6 +82,16 @@ class ResCompany(osv.osv):
         }
 
 
+class ResCountry(osv.osv):
+    """ Extra field in country
+    """
+    _inherit = 'res.country'
+
+    _columns = {
+        'chemeter_language_id': fields.many2one('msds.language', 'Lingua Chemeter'),
+        }
+
+
 class MsdsChemeter(orm.Model):
     """ MSDS Form, all elements are form for product (present in more version)
     """

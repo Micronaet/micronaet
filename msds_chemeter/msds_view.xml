@@ -1,6 +1,27 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+        <record id="view_res_country_chemeter_tree" model="ir.ui.view">
+            <field name="name">Country Chemeter Lang</field>
+            <field name="model">res.country</field>
+            <field name="priority" eval="40"/>
+            <field name="arch" type="xml">
+                <tree string="Lingue Chemeter" editable="bottom">
+                    <field name="name" readonly="1"/>
+                    <field name="code" readonly="1"/>
+                    <field name="chemeter_language_id" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_msds_chemeter_country_lang">
+            <field name="name">Lingue Chemeter Nazioni</field>
+            <field name="res_model">res.country</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[]</field>
+            <field name="view_id" ref="view_res_country_chemeter_tree" />
+        </record>
+
         <record id="view_product_product_msds_tree" model="ir.ui.view">
             <field name="name">Product MSDS</field>
             <field name="model">product.product</field>
@@ -186,12 +207,14 @@
             <menuitem name="Prodotti MSDS" id="menu_msds_chemeter_product" sequence="10" parent="menu_msds_chemeter_root" action="action_msds_chemeter_product"/>
             <menuitem name="Wizard di Stampa" id="menu_msds_chemeter_print_wizard" sequence="20" parent="menu_msds_chemeter_root" action="action_msds_print_form_wizard"/>
             <menuitem name="Schede" id="menu_msds_chemeter_form" sequence="30" parent="menu_msds_chemeter_root" action="action_msds_chemeter" groups="msds_chemeter.group_MSDS_chemeter_account" />
+            <menuitem name="Lingue x nazione" id="menu_msds_chemeter_country_lang" sequence="40" parent="menu_msds_chemeter_root" action="action_msds_chemeter_country_lang" groups="msds_chemeter.group_MSDS_chemeter_account" />
 
         <menuitem name="MSDS Chemeter" id="menu_sapnaet_msds_chemeter_root" sequence="50"
                   groups="msds_chemeter.group_MSDS_chemeter_manager,msds_chemeter.group_MSDS_chemeter_user" parent="sapnaet.menu_sapnaet_root"/>
             <menuitem name="Prodotti MSDS" id="menu_sapnaet_msds_chemeter_product" sequence="10" parent="menu_sapnaet_msds_chemeter_root" action="action_msds_chemeter_product"/>
             <menuitem name="Wizard di Stampa" id="menu_sapnaet_msds_chemeter_print_wizard" sequence="20" parent="menu_sapnaet_msds_chemeter_root" action="action_msds_print_form_wizard"/>
             <menuitem name="Schede" id="menu_sapnaet_msds_chemeter_form" sequence="30" parent="menu_sapnaet_msds_chemeter_root" action="action_msds_chemeter" groups="msds_chemeter.group_MSDS_chemeter_account" />
+            <menuitem name="Lingue x nazione" id="menu_msds_chemeter_country_lang_sapnaet" sequence="40" parent="menu_sapnaet_msds_chemeter_root" action="action_msds_chemeter_country_lang" groups="msds_chemeter.group_MSDS_chemeter_account" />
 
     </data>
 </openerp>
