@@ -48,6 +48,38 @@ class ProductProduct(orm.Model):
 
     _inherit = 'product.product'
 
+    def name_get(self, cr, uid, ids, context=None):
+        """ Return a list of tupples contains id, name.
+            result format : {[(id, name), (id, name), ...]}
+
+            @param cr: cursor to database
+            @param uid: id of current user
+            @param ids: list of ids for which name should be read
+            @param context: context arguments, like lang, time zone
+
+            @return: returns a list of tupples contains id, name
+        """
+        if context is None:
+            context = {}
+        if not context.get('mrp_mode'):
+            return super(ProductProduct, self).name_get(cr, uid, ids, context=context)
+
+        if not ids:
+            return []
+
+        if isinstance(ids, (long, int)):
+            ids = [ids]
+        res = []
+        for record in self.browse(cr, uid, ids, context=context):
+            res.append((
+                record.id,
+                u'[{code}] {name}{obsolete}'.format(
+                    code=record.default_code or '?',
+                    name=record.name,
+                    obsolete=' (OBSOLETE)' if record.mrp_obsolete else '',
+                )))
+        return res
+
     _columns = {
         'mrp_obsolete': fields.boolean('Obsolete (MRP)'),
     }
