@@ -50,7 +50,7 @@
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
                 <field name="default_code" position="after">
-                    <field name="msp_obsolete" />
+                    <field name="mrp_obsolete" />
                 </field>
             </field>
         </record>
