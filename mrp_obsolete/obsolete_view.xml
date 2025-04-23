@@ -14,8 +14,6 @@
                 	<field name="uom_id" readonly="1"/>
 
 	                <field name="accounting_qty" readonly="1"/>
-                    <field name="supply_method" readonly="1"/>
-                    <field name="product_mode" readonly="1"/>
 
                     <field name="adr" readonly="1"/>
 
