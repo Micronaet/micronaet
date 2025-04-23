@@ -73,7 +73,7 @@ class ProductProduct(orm.Model):
         for record in self.browse(cr, uid, ids, context=context):
             res.append((
                 record.id,
-                u'[{code}] {name}{obsolete}'.format(
+                u'[{{{obsolete}}} {code}] {name}'.format(
                     code=record.default_code or '?',
                     name=record.name,
                     obsolete=' (OBSOLETE)' if record.mrp_obsolete else '',
