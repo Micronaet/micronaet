@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <!--product.product-->
+        <record id="view_product_product_mrp_obsolete_tree" model="ir.ui.view">
+            <field name="name">Product Obsolete</field>
+            <field name="model">product.product</field>
+            <field name="priority" eval="40"/>
+            <field name="arch" type="xml">
+                <tree string="Product MRP obsolete" editable="bottom">
+                    <field name="mrp_obsolete" />
+                    <field name="default_code" readonly="1"/>
+                    <field name="name" readonly="1"/>
+                	<field name="uom_id" readonly="1"/>
+
+	                <field name="accounting_qty" readonly="1"/>
+                    <field name="supply_method" readonly="1"/>
+                    <field name="product_mode" readonly="1"/>
+
+                    <field name="adr" readonly="1"/>
+
+                	<field name="categ_id" invisible="1"/>
+                	<field name="company_id" invisible="1" />
+                    <field name="standard_price" invisible="1" />
+                    <field name="state" readonly="1" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_mrp_obsolete">
+            <field name="name">Product MRP Obsolete</field>
+            <field name="res_model">product.product</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[('mrp_obsolete', '=', True)]</field>
+            <field name="view_id" ref="view_product_product_mrp_obsolete_tree" />
+        </record>
+        <record model="ir.actions.act_window" id="action_mrp_not_obsolete">
+            <field name="name">Product MRP Obsolete</field>
+            <field name="res_model">product.product</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[('mrp_obsolete', '=', False)]</field>
+            <field name="view_id" ref="view_product_product_mrp_obsolete_tree" />
+        </record>
+
+        <!--INHERIT product.product-->
+        <record id="view_product_product_mrp_obsolete_form" model="ir.ui.view">
+            <field name="name">Product MRP Obsolete</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <field name="default_code" position="after">
+                    <field name="msp_obsolete" />
+                </field>
+            </field>
+        </record>
+
+        <!--mrp.production-->
+        <record model="ir.ui.view" id="mrp_production_no_obsolete_form_view">
+            <field name="name">Production without obsolete</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="production_line.default_mrp_production_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='bom_material_ids']/tree/field[@name='product_id']" position="attributes">
+                    <attribute name="domain">[('mrp_obsolete', '=', False)]</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!--mrp.bom-->
+        <record model="ir.ui.view" id="mrp_bom_no_obsolete_form_view">
+            <field name="name">BOM without Obsolete</field>
+            <field name="model">mrp.bom</field>
+            <field name="inherit_id" ref="mrp.mrp_bom_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='bom_lines']/tree/field[@name='product_id']" position="attributes">
+                    <attribute name="domain">[('mrp_obsolete', '=', False)]</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <menuitem name="Product Obsolete" id="menu_product_mrp_obsolete" sequence="11" parent="mrp.menu_mrp_bom" action="action_mrp_not_obsolete" />
+            <menuitem name="Active" id="menu_product_mrp_obsolete_active" sequence="10" parent="menu_product_mrp_obsolete" action="action_mrp_not_obsolete" />
+            <menuitem name="Obsolete" id="menu_product_mrp_obsolete_active" sequence="20" parent="menu_product_mrp_obsolete" action="action_mrp_obsolete" />
+
+    </data>
+</openerp>
+
