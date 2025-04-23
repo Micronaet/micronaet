@@ -77,7 +77,7 @@ class ProductProduct(orm.Model):
                 u'{obsolete}[{code}] {name}'.format(
                     code=record.default_code or '?',
                     name=record.name,
-                    obsolete='{OLD} ' if record.mrp_obsolete else '',
+                    obsolete='**OBS.** ' if record.mrp_obsolete else '',
                 )))
         return res
 
