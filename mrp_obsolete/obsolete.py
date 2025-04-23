@@ -70,7 +70,8 @@ class ProductProduct(orm.Model):
         if isinstance(ids, (long, int)):
             ids = [ids]
         res = []
-        for record in self.browse(cr, uid, ids, context=context):
+        records = self.browse(cr, uid, ids, context=context)
+        for record in sorted(records, key=lambda x: (x.mrp_obsolete, x.default_code)):
             res.append((
                 record.id,
                 u'{obsolete}[{code}] {name}'.format(
