@@ -79,7 +79,7 @@
 
         <menuitem name="Product Obsolete" id="menu_product_mrp_obsolete" sequence="11" parent="mrp.menu_mrp_bom" action="action_mrp_not_obsolete" />
             <menuitem name="Active" id="menu_product_mrp_obsolete_active" sequence="10" parent="menu_product_mrp_obsolete" action="action_mrp_not_obsolete" />
-            <menuitem name="Obsolete" id="menu_product_mrp_obsolete_active" sequence="20" parent="menu_product_mrp_obsolete" action="action_mrp_obsolete" />
+            <menuitem name="Obsolete" id="menu_product_mrp_obsolete_obsolete" sequence="20" parent="menu_product_mrp_obsolete" action="action_mrp_obsolete" />
 
     </data>
 </openerp>
