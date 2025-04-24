@@ -156,7 +156,10 @@ class etl_order(osv.osv):
                            amount = PrepareFloat(line[6])
                            date = Prepare(line[7])
                            partner_id = Prepare(line[8])
-                           customer_name = Prepare(line[9])
+                           try:
+	                       customer_name = Prepare(line[9])
+	                   except:
+	                       customer_name = '?'    
 
                            # calculated fields:
                            name = "%s-%s-%s" % (acronym, year, number)
