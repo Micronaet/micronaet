@@ -205,7 +205,8 @@ class etl_order(osv.osv):
                            self.create(cr, uid, data_line, context=context)
                 _logger.info('End import movement lines year %s, total: [%s]'%(year, counter['tot']))
             except:
-                _logger.error('Error generic import movement lines year %s, total: [%s]'%(year, counter['tot']))
+                _logger.error('Error generic import movement lines year %s, total: [%s]\n%s' % (
+                    year, counter['tot'], sys.exc_info()))
 
         counter = {'tot':0,'upd':0, 'err':0, 'err_upd':0, 'new':0}
 
