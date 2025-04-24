@@ -147,26 +147,16 @@ class etl_order(osv.osv):
                                continue
 
                            counter['tot']+=1
-                           csv_id=0
-                           acronym = Prepare(line[csv_id])
-                           csv_id+=1
-                           number = Prepare(line[csv_id])
-                           csv_id+=1
-                           order = Prepare(line[csv_id])
-                           csv_id+=1
-                           product_id = Prepare(line[csv_id])
-                           csv_id+=1
+                           acronym = Prepare(line[0])
+                           number = Prepare(line[1])
+                           order = Prepare(line[2])
+                           product_id = Prepare(line[3])
                            # descrizione aggiuntiva
-                           csv_id+=1
-                           unit = PrepareFloat(line[csv_id])
-                           csv_id+=1
-                           amount = PrepareFloat(line[csv_id])
-                           csv_id+=1
-                           date = Prepare(line[csv_id])
-                           csv_id+=1
-                           partner_id = Prepare(line[csv_id])
-                           csv_id+=1
-                           customer_name = Prepare(line[csv_id])
+                           unit = PrepareFloat(line[5])
+                           amount = PrepareFloat(line[6])
+                           date = Prepare(line[7])
+                           partner_id = Prepare(line[8])
+                           customer_name = Prepare(line[9])
 
                            # calculated fields:
                            name = "%s-%s-%s" % (acronym, year, number)
@@ -208,8 +198,8 @@ class etl_order(osv.osv):
                 _logger.info('End import movement lines year %s, total: [%s]'%(year, counter['tot']))
             except:
 	        exc_type, exc_value, exc_traceback = sys.exc_info()
-                _logger.error('Error generic import movement lines year %s, total: [%s]\nTipo: %s Valore: %s Riga: %s' % (
-                    year, counter['tot'], exc_type, exc_value, exc_traceback.tb_lineno))
+                _logger.error('Error generic import file %s, year %s, total: [%s]\nTipo: %s Valore: %s Riga: %s' % (
+                    file_complete, year, counter['tot'], exc_type, exc_value, exc_traceback.tb_lineno))
 
         counter = {'tot':0,'upd':0, 'err':0, 'err_upd':0, 'new':0}
 
