@@ -159,7 +159,7 @@ class etl_order(osv.osv):
                            try:
 	                       customer_name = Prepare(line[9])
 	                   except:
-	                       customer_name = '?'    
+	                       customer_name = ''    
 
                            # calculated fields:
                            name = "%s-%s-%s" % (acronym, year, number)
