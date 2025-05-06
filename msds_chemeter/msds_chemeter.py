@@ -520,7 +520,7 @@ class ProductProduct(orm.Model):
     _inherit = 'product.product'
 
     def rdp_get_mixture_code(self, cr, uid, ids, context=None):
-        """ Extract mixture code from RPD call
+        """ Extract mixture code from RPD call remote
         """
         product_id = ids[0]
         product = self.browse(cr, uid, product_id, context=context)
