@@ -522,6 +522,10 @@ class ProductProduct(orm.Model):
     def get_mixture_code(self, product):
         """ Extract mixture code
         """
+        # For external call:
+        if type(product) == int:
+            product = self.browse(cr, uid, product, context=context)
+            
         if product.force_mixture:
             # 1. Forced code:
             return product.force_mixture
