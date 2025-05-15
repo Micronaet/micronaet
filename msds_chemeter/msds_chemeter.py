@@ -543,7 +543,7 @@ class ProductProduct(orm.Model):
                 # 2. No Code:
                 _logger.warning('No Mixture code found')
                 return ''
-            elif default_code.startswith('MQ') or default_code.startswith('E'):
+            elif default_code.startswith('MQ') or default_code.startswith('E') or default_code.startswith('A'):
                 # 3. Machine code:
                 return default_code
             # 4. Granulometry code:
