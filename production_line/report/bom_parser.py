@@ -48,5 +48,3 @@ class Parser(report_sxw.rml_parse):
         super(Parser, self).__init__(cr, uid, name, context)
         self.localcontext.update({
         })
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

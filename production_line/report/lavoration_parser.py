@@ -164,9 +164,9 @@ class Parser(report_sxw.rml_parse):
             # 'en_US': {
             #    },
             'es_AR': {
-                u'ORDINE DI PRODUZIONE': u'ORDER DE FABRICACIÓN',
+                u'ORDINE DI PRODUZIONE': u'ORDEN DE FABRICACIÓN',
                 u'Ordine di lavorazione': u'Orden de Fabricación',
-                u'ORDINE DI LAVORAZIONE': u'ORDER DE FABRICACIÓN',
+                u'ORDINE DI LAVORAZIONE': u'ORDEN DE FABRICACIÓN',
                 u'FOGLIO PRODUZIONE': u'HOJA DE PRODUCCIÓN',
                 u'FOGLIO CONFEZIONAMENTO': u'HOLA DE ALMACEN',
                 u'N. Partita': u'N. Partida',
