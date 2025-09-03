@@ -70,7 +70,7 @@ ul_pool = odoo.model('product.ul')
 package_pool = odoo.model('product.packaging')
 product_pool = odoo.model('product.product')
 
-for start_char in ('Z', 'M'):
+for start_char in ('Z', 'M', 'A', 'B'):
     package_ids = package_pool.search([
         ('product_id.default_code', '=ilike', '{}%'.format(start_char)),
     ])
