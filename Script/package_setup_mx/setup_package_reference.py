@@ -91,70 +91,71 @@ for mode in setup:
     # ------------------------------------------------------------------------------------------------------------------
     # Mode product selection:
     # ------------------------------------------------------------------------------------------------------------------
-    for code_part in setup[mode][0]:
-        print('>> MODE: {} >> Code {}'.format(mode, code_part))
+    for code_part_list, ul_code_list in setup[mode]:
+        for code_part in code_part_list:
+            print('>> MODE: {} >> Code {}'.format(mode, code_part))
 
-        if mode == 'start':
-            product_ids = product_pool.search([
-                ('default_code', '=ilike', '{}%'.format(code_part)),
-            ])
-        elif mode == 'code':
-            product_ids = product_pool.search([
-                ('default_code', '=', code_part),
-            ])
-        elif mode == 'name':
-            product_ids = product_pool.search([
-                ('name', 'ilike', code_part),
-            ])
-        else:
-            continue
-
-        # --------------------------------------------------------------------------------------------------------------
-        # Product Loop:
-        # --------------------------------------------------------------------------------------------------------------
-        for product_id in product_ids:
-            print('>> MODE: {} >> Code {} >> Product ID {}'.format(mode, code_part, product_id))
+            if mode == 'start':
+                product_ids = product_pool.search([
+                    ('default_code', '=ilike', '{}%'.format(code_part)),
+                ])
+            elif mode == 'code':
+                product_ids = product_pool.search([
+                    ('default_code', '=', code_part),
+                ])
+            elif mode == 'name':
+                product_ids = product_pool.search([
+                    ('name', 'ilike', code_part),
+                ])
+            else:
+                continue
 
             # ----------------------------------------------------------------------------------------------------------
-            # Package Loop:
+            # Product Loop:
             # ----------------------------------------------------------------------------------------------------------
-            for ul_code in setup[mode][1]:
-                ul_id = ul_db.get(ul_code)
-                if not ul_id:
-                    print('Not found UL: {}'.format(ul_code))
-                    continue
-
-                print('>> MODE: {} >> Code {} >> Product ID {} >> UL ID {}'.format(mode, code_part, product_id, ul_id))
-
-                # Search package-product:
-                package_active_ids = package_pool.search([
-                    ('product_id', '=', product_id),
-                    ('ul', '=', ul_id),
-                    ('is_active', '=', True),
-                    ])
-                package_unactive_ids = package_pool.search([
-                    ('product_id', '=', product_id),
-                    ('ul', '=', ul_id),
-                    ('is_active', '=', False),
-                    ])
+            for product_id in product_ids:
+                print('>> MODE: {} >> Code {} >> Product ID {}'.format(mode, code_part, product_id))
 
                 # ------------------------------------------------------------------------------------------------------
-                # Setup product-package:
+                # Package Loop:
                 # ------------------------------------------------------------------------------------------------------
-                # Found unactive:
-                if package_unactive_ids:
-                    # Present, set as active
-                    package_pool.write(package_unactive_ids, {
-                        'is_active': True,
-                    })
+                for ul_code in ul_code_list:
+                    ul_id = ul_db.get(ul_code)
+                    if not ul_id:
+                        print('Not found UL: {}'.format(ul_code))
+                        continue
 
-                # Not found:
-                elif not package_active_ids:
-                    # Not present, create new one
-                    package_pool.create({
-                        'product_id': product_id,
-                        'is_active': True,
-                        'ul': ul_id,
-                        # 'ul_qty': 0.0,
-                    })
-                # else yet present and active
+                    print('>> MODE: {} >> Code {} >> Product ID {} >> UL ID {}'.format(mode, code_part, product_id, ul_id))
+
+                    # Search package-product:
+                    package_active_ids = package_pool.search([
+                        ('product_id', '=', product_id),
+                        ('ul', '=', ul_id),
+                        ('is_active', '=', True),
+                        ])
+                    package_unactive_ids = package_pool.search([
+                        ('product_id', '=', product_id),
+                        ('ul', '=', ul_id),
+                        ('is_active', '=', False),
+                        ])
+
+                    # ------------------------------------------------------------------------------------------------------
+                    # Setup product-package:
+                    # ------------------------------------------------------------------------------------------------------
+                    # Found unactive:
+                    if package_unactive_ids:
+                        # Present, set as active
+                        package_pool.write(package_unactive_ids, {
+                            'is_active': True,
+                        })
+
+                    # Not found:
+                    elif not package_active_ids:
+                        # Not present, create new one
+                        package_pool.create({
+                            'product_id': product_id,
+                            'is_active': True,
+                            'ul': ul_id,
+                            # 'ul_qty': 0.0,
+                        })
+                    # else yet present and active
