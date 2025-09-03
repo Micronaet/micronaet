@@ -70,6 +70,13 @@ ul_pool = odoo.model('product.ul')
 package_pool = odoo.model('product.packaging')
 product_pool = odoo.model('product.product')
 
+package_ids = package_pool.search([
+    ('product_id.default_code', '=ilike', 'M%'),
+])
+pdb.set_trace()
+print('Remove package for M code #{}'.format(len(package_ids)))
+package_pool.unlink(package_ids)
+
 # ----------------------------------------------------------------------------------------------------------------------
 # Load UL database:
 # ----------------------------------------------------------------------------------------------------------------------
