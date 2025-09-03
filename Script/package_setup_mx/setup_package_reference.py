@@ -85,6 +85,15 @@ for ul in ul_pool.browse(ul_ids):
 # ----------------------------------------------------------------------------------------------------------------------
 # Master Loop:
 # ----------------------------------------------------------------------------------------------------------------------
+# Clean all:
+package_ids = package_pool.search([
+    ('is_active', '=', True),
+])
+print('Cleaning package #{}'.format(len(package_ids)))
+package_pool.write(package_ids, {
+    'is_active': False,
+})
+
 pdb.set_trace()
 for mode in setup:
     print('>> MODE: {}'.format(mode))
