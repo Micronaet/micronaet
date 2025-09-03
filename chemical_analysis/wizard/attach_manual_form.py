@@ -141,9 +141,8 @@ class ChemicalAnalysis(osv.osv):
         return self.open_attachment_detailed(
             cr, uid, form_id, False, context=context)
 
-    def open_attachment_detailed(
-            self, cr, uid, form_id, attachment_id, context=None):
-        """ Open wizard wit 2 mode:
+    def open_attachment_detailed(self, cr, uid, form_id, attachment_id, context=None):
+        """ Open wizard with 2 mode:
         """
         attachment_pool = self.pool.get('chemical.attachment')
         wizard_pool = self.pool.get('chemical.attach.manual.form.wizard')
@@ -154,8 +153,7 @@ class ChemicalAnalysis(osv.osv):
 
         ctx = context.copy()
         if attachment_id:
-            attachment = attachment_pool.browse(
-                cr, uid, attachment_id, context=context)
+            attachment = attachment_pool.browse(cr, uid, attachment_id, context=context)
             ctx['default_extension'] = attachment.extension or 'docx'
         ctx['default_form_id'] = form_id
         ctx['default_attachment_id'] = attachment_id

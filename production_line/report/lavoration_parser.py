@@ -225,8 +225,7 @@ class Parser(report_sxw.rml_parse):
         history_pool = self.pool.get('mrp.workcenter.history')
         if product_id and workcenter_id:
             # test if workcenter is a child:
-            workcenter_proxy = workcenter_pool.browse(
-                self.cr, self.uid, workcenter_id)
+            workcenter_proxy = workcenter_pool.browse(self.cr, self.uid, workcenter_id)
             if workcenter_proxy.parent_workcenter_id:
                 workcenter_id = workcenter_proxy.parent_workcenter_id.id
 
@@ -236,8 +235,7 @@ class Parser(report_sxw.rml_parse):
                 ('workcenter_id', '=', workcenter_id)
             ])
             if history_ids:
-                parameters = history_pool.browse(
-                    self.cr, self.uid, history_ids)[0]
+                parameters = history_pool.browse(self.cr, self.uid, history_ids)[0]
             else:
                 _logger.error('Paramter Line - Product not found!')
         return

@@ -1196,7 +1196,7 @@ class mrp_workcenter_history(osv.osv):
     """ History of lavoration caracteristic for product-workcenter link
     """
     _name = 'mrp.workcenter.history'
-    _description = 'Workcenter histroy'
+    _description = 'Workcenter history'
     _rec_name = 'workcenter_id'
     _order='product_id'
 
@@ -1212,6 +1212,7 @@ class mrp_workcenter_history(osv.osv):
         'single_cycle_qty': fields.float(
             'Cycle quantity', digits=(8, 3),
             help='Production quantity for one cycle'),
+
         # Parameter:
         'parameter_note': fields.text('Parameter note'),
 
