@@ -108,18 +108,18 @@ for mode in setup:
 
             if mode == 'start':
                 product_ids = product_pool.search([
-                    ('product_type', '=', 'PT'),
+                    # ('product_type', '=', 'PT'),
                     ('default_code', '=ilike', '{}%'.format(code_part)),
                 ])
             elif mode == 'code':
                 product_ids = product_pool.search([
-                    ('product_type', '=', 'PT'),
+                    # ('product_type', '=', 'PT'),
                     ('default_code', '=', code_part),
                     ('default_code', 'not ilike', 'OLD_'),
                 ])
             elif mode == 'name':
                 product_ids = product_pool.search([
-                    ('product_type', '=', 'PT'),
+                    # ('product_type', '=', 'PT'),
                     ('name', 'ilike', code_part),
                 ])
             else:
