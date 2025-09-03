@@ -79,7 +79,7 @@ ul_ids = ul_pool.search([
     ])
 for ul in ul_pool.browse(ul_ids):
     # code = ul.linked_product_id.default_code
-    code = ul.default_code
+    code = ul.code
     ul_db[code] = ul.id
 print('UL database\n {}'.format(ul_db))
 
