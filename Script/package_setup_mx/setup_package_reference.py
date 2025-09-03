@@ -78,7 +78,8 @@ ul_ids = ul_pool.search([
     ('linked_product_id', '!=', False),
     ])
 for ul in ul_pool.browse(ul_ids):
-    code = ul.linked_product_id.default_code
+    # code = ul.linked_product_id.default_code
+    code = ul.default_code
     ul_db[code] = ul.id
 
 # ----------------------------------------------------------------------------------------------------------------------
