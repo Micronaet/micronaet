@@ -194,6 +194,7 @@ class Parser(report_sxw.rml_parse):
                 u'Operatori': u'Operador',
                 u'Macchine': u'Ciclos producidos',
                 u'Velocità': u'Velocidad',
+                u'Note parametri (prodotto - linea)': u'Notas (producto - linea)',
                 u'Note lavorazione': u'Notas',
                 u'Tempo miscelaz.': u'Tiempo',
                 u'Anomalie riscontrate': u'Anomalias de maquinaria',
