@@ -160,8 +160,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
 
         # Medium days:
         now = datetime.now()
-        days = (now - datetime.strptime(
-            '%s-01-01' % now.year, '%Y-%m-%d')).days + 1
+        days = (now - datetime.strptime('%s-01-01' % now.year, '%Y-%m-%d')).days + 1
 
         comment_parameters = {
             'width': 450,
@@ -204,8 +203,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             if wiz_browse.statistic_category:
                 wizard_domain.append(
                     ('statistic_category', '=', wiz_browse.statistic_category))
-                filter_used += ', Cat. stat. = %s ' % \
-                               wiz_browse.statistic_category
+                filter_used += ', Cat. stat. = %s ' % wiz_browse.statistic_category
 
             if wiz_browse.categ_id:
                 wizard_domain.append(('categ_id', '=', wiz_browse.categ_id.id))
@@ -345,19 +343,16 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                       'consumo ultimo semestre)'
 
             excel_pool.write_comment(
-                ws_name, row, 8, comment % 'carico',
-                parameters=comment_parameters)
+                ws_name, row, 8, comment % 'carico', parameters=comment_parameters)
             excel_pool.write_comment(
-                ws_name, row, 9, comment % 'scarico',
-                parameters=comment_parameters)
+                ws_name, row, 9, comment % 'scarico', parameters=comment_parameters)
 
             for product in sorted(product_pool.browse(
                     cr, uid, product_ids, context=context),
                     key=sort_key):
 
                 # Only not obsolete or with stock will be written:
-                if ws_name != 'Esclusi' and product.stock_obsolete and \
-                        not product.accounting_qty:
+                if ws_name != 'Esclusi' and product.stock_obsolete and not product.accounting_qty:
                     removed_ids.append(product.id)  # For last loop 'Rimossi'
                     continue
 
@@ -386,7 +381,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 excel_pool.write_xls_line(ws_name, row, [
                     # Hidden:
                     product.id,
-                    'X' if product.stock_obsolete else '',  # used as excl.!
+                    'X' if product.stock_obsolete else '',  # used as excluded (for reimport the file)
                     (product.day_leadtime, format_number),
                     (product.day_min_level, format_number),
 
