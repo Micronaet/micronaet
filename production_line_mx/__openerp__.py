@@ -46,6 +46,8 @@
         # 'security/ir.model.access.csv',
 
         'custom_mx_view.xml',
+        'bom_report_view.xml',
+
         'wizard/parameter_view.xml',
         'wizard/confirm_production_mx_wizard.xml',
         'wizard/waste_product_view.xml',

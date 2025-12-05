@@ -23,6 +23,4 @@
 
 from . import custom_mx
 from . import wizard
-
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+import bom_report

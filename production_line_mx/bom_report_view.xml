@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="res_company_production_parameter_form_view">
+            <field name="name">Report BOM</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_tree" />
+            <field name="arch" type="xml">
+                <field name="partner_id" position="after">
+                    <button name="button_bom_last_cost_evaluate" type="object" string="Controllo costi BOM"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>
+
