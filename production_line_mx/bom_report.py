@@ -167,7 +167,7 @@ class ResCompanyButton(orm.Model):
                 product.name,
                 'X' if bom.obsolete else ' ',
                 (record['total'], color_format['number']),
-                bom.last_mrp_use or '',
+                '/',
                 record['detail'],
                 'X' if record['error'] else ' ',
                 '\n'.join(tuple(record['error_comment']))
