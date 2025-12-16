@@ -87,7 +87,7 @@ class MrpProductionInherit(orm.Model):
         excel_pool.write_xls_line(ws_name, row, header, default_format=excel_format['header'])
 
         job_ids = job_pool.search(cr, uid, [
-            ('state', '=', 'completed'),
+            ('state', '=', 'done'),
         ], context=context)
         color_format = excel_format['']
         for job in job_pool.browse(cr, uid, job_ids, context=context):
