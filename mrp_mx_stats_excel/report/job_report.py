@@ -74,14 +74,19 @@ class MrpProductionInherit(orm.Model):
         width = [
             5, 15, 15,
             20, 18,
-            30, 10,
+            30,
+            12, 12, 12, 12,
         ]
         excel_pool.column_width(ws_name, width)
 
         header = [
             u'Job ID', u'MRP', u'Line',
             u'Job ref.', u'Date',
-            u'Product', u'Q.',
+            u'Product',
+            u'Q. planned',
+            u'Raw mat.',
+            u'Final prod.',
+            u'Waste',
         ]
         row = 0
         excel_pool.write_xls_line(ws_name, row, header, default_format=excel_format['header'])
@@ -96,6 +101,17 @@ class MrpProductionInherit(orm.Model):
             mrp = job.production_id
             line = job.workcenter_id
             # product_price_calc
+
+            # 1. Raw Materials
+            unload_qty = 0.0
+            for item in job.bom_material_ids:
+                item.qty
+
+            # 2. Final product
+            load_qty = waste_qty = 0.0
+            for item in job.load_ids:
+                load_qty = item.product_qty
+                waste_qty = item.waste_qty
 
             row += 1
             excel_pool.write_xls_line(ws_name, row, [
@@ -112,6 +128,11 @@ class MrpProductionInherit(orm.Model):
                 ),
 
                 (job.product_qty, color_format['number']),
+
+                (unload_qty, color_format['number']),
+                (load_qty, color_format['number']),
+                (waste_qty, color_format['number']),
+
             ], default_format=color_format['text'])
 
         return excel_pool.return_attachment(
