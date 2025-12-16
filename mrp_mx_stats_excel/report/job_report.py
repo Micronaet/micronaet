@@ -105,7 +105,7 @@ class MrpProductionInherit(orm.Model):
             # 1. Raw Materials
             unload_qty = 0.0
             for item in job.bom_material_ids:
-                unload_qty += item.qty
+                unload_qty += item.quantity
 
             # 2. Final product
             load_qty = waste_qty = 0.0
