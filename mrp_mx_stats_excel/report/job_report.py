@@ -90,7 +90,8 @@ class MrpProductionInherit(orm.Model):
             ('state', '=', 'done'),
         ], context=context)
         color_format = excel_format['']
-        for job in job_pool.browse(cr, uid, job_ids, context=context):
+        jobs = job_pool.browse(cr, uid, job_ids, context=context)
+        for job in sorted(jobs, key=lambda j: j.real_date_planned, reverse=True):
             product = job.product
             mrp = job.production_id
             line = job.workcenter_id
