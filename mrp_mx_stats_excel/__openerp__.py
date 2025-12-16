@@ -44,6 +44,8 @@
     'data': [
         'security/satistic_group.xml',
         #'scheduler.xml',
+
+        'views/report_view.xml'
         ],
     'active': False,
     'installable': True,

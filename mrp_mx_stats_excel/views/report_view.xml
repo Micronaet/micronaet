@@ -10,7 +10,7 @@
             <field name="name">Job completed report</field>
         </record>
 
-        <menuitem name="Job completed report"  parent="production_line.menu_base_production_root_reporting" id="menu_ir_server_action_view_mrp_production_job_report" action="ir_server_action_view_mrp_production_job_report" sequence="60" />
+        <menuitem name="Job completed"  parent="production_line.menu_base_production_root_reporting" id="menu_ir_server_action_view_mrp_production_job_report" action="ir_server_action_view_mrp_production_job_report" sequence="60" />
 
     </data>
 </odoo>
