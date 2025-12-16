@@ -105,13 +105,13 @@ class MrpProductionInherit(orm.Model):
             # 1. Raw Materials
             unload_qty = 0.0
             for item in job.bom_material_ids:
-                item.qty
+                unload_qty += item.product_qty
 
             # 2. Final product
             load_qty = waste_qty = 0.0
             for item in job.load_ids:
-                load_qty = item.product_qty
-                waste_qty = item.waste_qty
+                load_qty += item.product_qty
+                waste_qty += item.waste_qty
 
             row += 1
             excel_pool.write_xls_line(ws_name, row, [
