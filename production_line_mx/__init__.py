@@ -24,4 +24,4 @@
 from . import custom_mx
 from . import wizard
 from . import bom_report
-from . import report
+
