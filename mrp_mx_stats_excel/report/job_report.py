@@ -73,7 +73,7 @@ class MrpProductionInherit(orm.Model):
         # Column:
         width = [
             5, 15, 15,
-            20, 18,
+            20, 15,
             30,
             12, 12, 12, 12,
         ]
@@ -120,7 +120,7 @@ class MrpProductionInherit(orm.Model):
                 line.name,
 
                 job.name,
-                job.real_date_planned,
+                job.real_date_planned[:10],
 
                 '%s (%s)' % (
                     product.name,
