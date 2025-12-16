@@ -143,8 +143,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
         # ---------------------------------------------------------------------
         #                           Excel transit files:
         # ---------------------------------------------------------------------
-        folder = company_pool.get_contipaq_folder_parameters(
-            cr, uid, context=context)
+        folder = company_pool.get_contipaq_folder_parameters(cr, uid, context=context)
 
         # ---------------------------------------------------------------------
         # Check mount test file:
@@ -155,9 +154,9 @@ class MrpProductionWasteWizard(osv.osv_memory):
                 _('Windows server not mounted (%s)!' % folder['whoami']),
                 )
 
-        # ---------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
         # LOAD file:
-        # ---------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
         ws_name = 'load'
         excel_pool.create_worksheet(ws_name)
 
@@ -178,12 +177,11 @@ class MrpProductionWasteWizard(osv.osv_memory):
             price,
             mrp.name, # Use production name
             ])
-        excel_pool.save_file_as(folder['load']['data'] % \
-            lavoration_id)
+        excel_pool.save_file_as(folder['load']['data'] % lavoration_id)
 
-        # ---------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
         # UNLOAD file:
-        # ---------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
         excel_pool = self.pool.get('excel.writer')
         del(excel_pool)
         excel_pool = self.pool.get('excel.writer')
@@ -233,8 +231,7 @@ class MrpProductionWasteWizard(osv.osv_memory):
             else: # pedimento
                 pedimento_name = lot.code or ''
                 lot_name = ''
-            standard_price = \
-                lot.standard_price or lot.product_id.standard_price
+            standard_price = lot.standard_price or lot.product_id.standard_price
 
             row += 1
             excel_pool.write_xls_line(ws_name, row, [

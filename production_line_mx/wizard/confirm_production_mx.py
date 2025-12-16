@@ -84,20 +84,14 @@ class ResCompany(orm.Model):
             'root': contipaq_samba_folder,
             'whoami': os.path.join(contipaq_samba_folder, 'whoami.winsrv'),
             'load': {
-                'data': os.path.join(
-                    contipaq_samba_folder, 'load', 'load_%s.xlsx'),
-                'history': os.path.join(
-                    contipaq_samba_folder, 'load', 'history'),
-                'log': os.path.join(
-                    contipaq_samba_folder, 'log', 'load.log'),
+                'data': os.path.join(contipaq_samba_folder, 'load', 'load_%s.xlsx'),
+                'history': os.path.join(contipaq_samba_folder, 'load', 'history'),
+                'log': os.path.join(contipaq_samba_folder, 'log', 'load.log'),
                 },
             'unload': {
-                'data': os.path.join(
-                    contipaq_samba_folder, 'unload', 'unload_%s.xlsx'),
-                'history': os.path.join(
-                    contipaq_samba_folder, 'unload', 'history'),
-                'log': os.path.join(
-                    contipaq_samba_folder, 'log', 'unload.log'),
+                'data': os.path.join(contipaq_samba_folder, 'unload', 'unload_%s.xlsx'),
+                'history': os.path.join(contipaq_samba_folder, 'unload', 'history'),
+                'log': os.path.join(contipaq_samba_folder, 'log', 'unload.log'),
                 },
             }
 
@@ -230,8 +224,7 @@ class MrpProduction(osv.Model):
                 raise osv.except_osv(
                     _('Lavoration cost error!'),
                     _('Material without cost: %s' % default_code))
-                # calc += u'[%s] ERROR calc subtotal for line<br/>' % \
-                #    default_code
+                # calc += u'[%s] ERROR calc subtotal for line<br/>' % default_code
 
         # ---------------------------------------------------------------------
         # 2. Unload from loading operation:
