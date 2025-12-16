@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
+<opemerp>
     <data>
         <record id="ir_server_action_view_mrp_production_job_report" model="ir.actions.server">
             <field name="sequence" eval="5"/>
@@ -13,4 +13,4 @@
         <menuitem name="Job completed"  parent="production_line.menu_base_production_root_reporting" id="menu_ir_server_action_view_mrp_production_job_report" action="ir_server_action_view_mrp_production_job_report" sequence="60" />
 
     </data>
-</odoo>
+</opemerp>
