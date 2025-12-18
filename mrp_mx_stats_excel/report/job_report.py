@@ -26,6 +26,7 @@ import pdb
 import sys
 import logging
 import openerp
+import re
 import openerp.netsvc as netsvc
 import openerp.addons.decimal_precision as dp
 from openerp.osv import fields, osv, expression, orm
@@ -60,6 +61,7 @@ class MrpProductionInherit(orm.Model):
         excel_pool = self.pool.get('excel.writer')
 
         _logger.info('Job report')
+        re_pattern = r"Load price:.*=\s*(\d+\.\d+|\d+)"
 
         # ---------------------------------------------------------------------
         # Excel start:
@@ -76,7 +78,7 @@ class MrpProductionInherit(orm.Model):
             5, 15, 15,
             20, 15,
             30,
-            12, 12, 12, 12,
+            12, 12, 12, 12, 12,
         ]
         excel_pool.column_width(ws_name, width)
 
@@ -88,6 +90,7 @@ class MrpProductionInherit(orm.Model):
             u'Raw mat.',
             u'Final prod.',
             u'Waste',
+            u'Load price',
         ]
         row = 0
         excel_pool.write_xls_line(ws_name, row, header, default_format=excel_format['header'])
@@ -114,6 +117,13 @@ class MrpProductionInherit(orm.Model):
                 load_qty += item.product_qty
                 waste_qty += item.waste_qty
 
+            product_price_calc = job.product_price_calc or ''
+            match = re.search(re_pattern, product_price_calc)
+            if match:
+                medium_price = match.group(1)
+            else:
+                medium_price = ''
+
             row += 1
             excel_pool.write_xls_line(ws_name, row, [
                 job.id,
@@ -133,6 +143,7 @@ class MrpProductionInherit(orm.Model):
                 (unload_qty, color_format['number']),
                 (load_qty, color_format['number']),
                 (waste_qty, color_format['number']),
+                (medium_price, color_format['number']),
 
             ], default_format=color_format['text'])
 
