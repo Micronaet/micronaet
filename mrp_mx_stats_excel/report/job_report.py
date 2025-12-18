@@ -61,7 +61,7 @@ class MrpProductionInherit(orm.Model):
         excel_pool = self.pool.get('excel.writer')
 
         _logger.info('Job report')
-        re_pattern = r"Load price:.*=\s*(\d+\.\d+|\d+)"
+        re_pattern = r"[-+]?\d*\.\d+|\d+"
 
         # ---------------------------------------------------------------------
         # Excel start:
@@ -118,9 +118,9 @@ class MrpProductionInherit(orm.Model):
                 waste_qty += item.waste_qty
 
             product_price_calc = job.product_price_calc or ''
-            match = re.search(re_pattern, product_price_calc)
+            match = re.findall(re_pattern, product_price_calc)
             if match:
-                medium_price = match.group(1)
+                medium_price = match[-1]
             else:
                 medium_price = ''
 
