@@ -57,7 +57,8 @@ class MrpProductionInherit(orm.Model):
             context = {}
 
         call_context = context.copy()
-        call_context['force_filename'] = '/tmp/job_status.xlsx'
+        now = str(datetime.now()).replace('/', '_').replace('-', '_').replace(':', '_')
+        call_context['force_filename'] = '/tmp/job_status_{}.xlsx'.format(now)
 
         self.server_action_extract_excel_job_report(cr, uid, context=call_context)
         return call_context['force_filename']
