@@ -50,11 +50,25 @@ class MrpProductionInherit(orm.Model):
     """
     _inherit = 'mrp.production'
 
+    def server_action_extract_excel_job_report_saveas(self, cr, uid, context=None):
+        """ Extract with force
+        """
+        if context is None:
+            context = {}
+
+        call_context = context.copy()
+        call_context['force_filename'] = '/tmp/job_status.xlsx'
+
+        self.server_action_extract_excel_job_report(cr, uid, context=call_context)
+        return context['force_filename']
+
     def server_action_extract_excel_job_report(self, cr, uid, context=None):
         """ Jobs: Extract Job report
         """
         if context is None:
             context = {}
+
+        force_filename = context.get('force_filename')
 
         # Pool used:
         job_pool = self.pool.get('mrp.production.workcenter.line')  # Job/SL
@@ -75,7 +89,7 @@ class MrpProductionInherit(orm.Model):
 
         # Column:
         width = [
-            5, 15, 15,
+            5, 15, 25,
             20, 15,
             30,
             12, 12, 12, 12, 12,
@@ -86,11 +100,7 @@ class MrpProductionInherit(orm.Model):
             u'Job ID', u'MRP', u'Line',
             u'Job ref.', u'Date',
             u'Product',
-            u'Q. planned',
-            u'Raw mat.',
-            u'Final prod.',
-            u'Waste',
-            u'Load price',
+            u'Q. planned', u'Raw mat.', u'Final prod.', u'Waste', u'Load price',
         ]
         row = 0
         excel_pool.write_xls_line(ws_name, row, header, default_format=excel_format['header'])
@@ -152,6 +162,9 @@ class MrpProductionInherit(orm.Model):
 
             ], default_format=color_format['text'])
 
-        return excel_pool.return_attachment(
-            cr, uid, 'Job completed', name_of_file=False, version='7.0', php=True, context=context)
+        if force_filename:
+            return excel_pool.save_file_as(force_filename)
+        else:
+            return excel_pool.return_attachment(
+                cr, uid, 'Job completed', name_of_file=False, version='7.0', php=True, context=context)
 
