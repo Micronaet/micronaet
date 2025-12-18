@@ -94,6 +94,8 @@ class MrpProductionInherit(orm.Model):
         ]
         row = 0
         excel_pool.write_xls_line(ws_name, row, header, default_format=excel_format['header'])
+        excel_pool.autofilter(ws_name, row, 0, row, len(header) - 1)
+        excel_pool.freeze_panes(ws_name, row + 1, 3)
 
         job_ids = job_pool.search(cr, uid, [
             ('state', '=', 'done'),
