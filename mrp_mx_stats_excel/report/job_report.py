@@ -60,7 +60,7 @@ class MrpProductionInherit(orm.Model):
         call_context['force_filename'] = '/tmp/job_status.xlsx'
 
         self.server_action_extract_excel_job_report(cr, uid, context=call_context)
-        return context['force_filename']
+        return call_context['force_filename']
 
     def server_action_extract_excel_job_report(self, cr, uid, context=None):
         """ Jobs: Extract Job report
