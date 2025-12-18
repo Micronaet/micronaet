@@ -122,7 +122,10 @@ class MrpProductionInherit(orm.Model):
             product_price_calc = job.product_price_calc or ''
             match = re.findall(re_pattern, product_price_calc)
             if match:
-                medium_price = match[-1]
+                try:
+                    medium_price = float(match[-1])
+                except:
+                    medium_price = 'ERROR: {}'.format(match[-1])
             else:
                 medium_price = ''
 
