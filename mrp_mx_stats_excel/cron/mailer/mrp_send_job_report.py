@@ -51,9 +51,9 @@ odoo = {
 
 # Mail:
 smtp = {
-    'text': '''<p>Job statistic detail dated: {}</p><b>Micronaet S.r.l.</b>''' % now,
-    'subject': 'PCA Job Statistics : %s' % now,
-    'to': eval(config.get('job', 'to')),
+    'text': '''<p>Job statistic detail dated: {}</p><b>Micronaet S.r.l.</b>'''.format(now),
+    'subject': 'PCA Job Statistics : {}'.format(now),
+    'to': config.get('job', 'to').split(','),
     }
 
 # now = now.replace('/', '_').replace('-', '_').replace(':', '_')
