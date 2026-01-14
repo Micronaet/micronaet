@@ -578,4 +578,6 @@ class ProductProduct(orm.Model):
             method=True,   # multi=True,
             relation='msds.chemeter', type='many2many',
             string='Schede'),
+        'msds_form_present': fields.boolean(
+            'Scheda presente', help='Caricato il dato con una procedura automatica'),
         }
