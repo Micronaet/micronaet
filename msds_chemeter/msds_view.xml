@@ -76,6 +76,25 @@
                 </tree>
             </field>
         </record>
+        <record model="ir.ui.view" id="view_product_product_security_msds_search">
+            <field name="name">product.product.search</field>
+            <field name="model">product.product</field>
+            <field name="priority" eval="40"/>
+            <field name="arch" type="xml">
+                <search string="Ricerca prodotti MSDS" version="7.0">
+                    <field name="default_code" />
+                    <field name="name" />
+
+                    <filter name="msds_form_present_on" string="MSDS Presente" domain="[('msds_form_present','=',True)]"/>
+                    <filter name="msds_form_present_off" string="MSDS Non presente" domain="[('msds_form_present','=',False)]"/>
+
+                    <group expand="0" string="Group By...">
+                        <filter name="group_state" string="Sicurezza" context="{'group_by': 'msds_form_present'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
         <record model="ir.actions.act_window" id="action_msds_chemeter_product">
             <field name="name">Prodotti per MSDS</field>
             <field name="res_model">product.product</field>
@@ -83,6 +102,7 @@
             <field name="view_mode">tree,form</field>
             <field name="domain">['!',('default_code','=ilike','A%'),'!',('default_code','=ilike','B%'),'!',('default_code','=ilike','C%'),'!',('default_code','=ilike','R%'),'!',('default_code','=ilike','M%'),'!',('default_code','=ilike','Z%')]</field>
             <field name="view_id" ref="view_product_product_msds_tree" />
+            <field name="search_view_id" ref="view_product_product_security_msds_search" />
         </record>
 
         <!--Integrate get PDF button on Sapnaet-->
