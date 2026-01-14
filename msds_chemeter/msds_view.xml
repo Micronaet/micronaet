@@ -68,7 +68,7 @@
                     <field name="force_mixture" groups="msds_chemeter.group_MSDS_chemeter_manager"/>
                     <field name="msds_manual" />
                     <field name="uom_id" readonly="1"/>
-                    <field name="msds_form_present" readonly="1"/>
+                    <!--<field name="msds_form_present" readonly="1"/>-->
                     <field name="type" readonly="1"/>
                     <button type="object" string="Apri scheda MSDS" name="open_print_msds_wizard" icon="terp-emblem-important"
                             colspan="2" attrs="{'invisible': [('msds_manual', '=', True)]}" />
