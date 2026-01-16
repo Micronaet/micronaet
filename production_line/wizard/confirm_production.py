@@ -131,7 +131,6 @@ class MrpProduction(osv.osv):
         """
         # Pool used:
         product_pool = self.pool.get('product.product')
-        pdb.set_trace()
         try:
             f_sl = open(file_sl, 'w')
             for unload in lavoration_browse.bom_material_ids:
