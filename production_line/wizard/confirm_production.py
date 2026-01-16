@@ -785,7 +785,12 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                             _('Error during confirm the load or price for product in accounting program!'),
                         )
                         for (key,res) in res_list:
-                            load_id = convert_load_id[key]
+                            # load_id = convert_load_id[key]
+                            load_id = convert_load_id.get(key)
+                            if not load_id:
+                                _logger.error('No CL: {}'.format(key))
+                                continue
+
                             if res:  # if True update succesfully
                                 load_pool.write(
                                     cr, uid, load_id,
