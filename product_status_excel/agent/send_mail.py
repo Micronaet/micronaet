@@ -40,7 +40,7 @@ now_text = now.replace('/', '_').replace('-', '_').replace(':', '_')
 config = ConfigParser.ConfigParser()
 config.read([cfg_file])
 
-filename = '/tmp/stock_status_commpleted.xlsx'
+filename = '/tmp/stock_status_completed.xlsx'
 
 # ERP Connection:
 odoo = {

@@ -400,6 +400,8 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                     (product.day_min_level, format_number),
                     (min_stock, format_number),
                     state,
+
+
                     ], format_text)
 
         # ---------------------------------------------------------------------
