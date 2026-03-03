@@ -405,6 +405,8 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                     (product.day_min_level, format_number),
                     (min_stock, format_number),
                     state,
+
+                    # Hidden:
                     product.accounting_tscar_qty,
                     product.accounting_tcar_qty,
                     days,
