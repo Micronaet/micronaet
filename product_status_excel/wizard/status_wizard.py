@@ -309,6 +309,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 10, 40, 10, 10, 10, 20, 10, 12, 30,
                 10, 10, 10, 15])
             header = [
+                # Hidden
                 'ID',
                 'Escludi (orig.)',
                 u'Leadtime',
@@ -330,13 +331,17 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 u'GG. APPROV.',
                 u'Liv. riord.',
                 'Stato',
+
+                'TSCAR',
+                'TCAR',
+                'days',
                 ]
 
             row += 2
             excel_pool.write_xls_line(ws_name, row, header, format_header)
             excel_pool.autofilter(ws_name, row, 0, row, len(header) - 1)
             excel_pool.freeze_panes(ws_name, row + 1, 6)
-            excel_pool.column_hidden(ws_name, [0, 1, 2, 3])
+            excel_pool.column_hidden(ws_name, [0, 1, 2, 3, 18, 19, 20])
 
             comment = 'Dato medio calcolato prendendo il totale %s da ' \
                       'inizio anno : giorni x 180 (simulazione ' \
@@ -400,8 +405,9 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                     (product.day_min_level, format_number),
                     (min_stock, format_number),
                     state,
-
-
+                    product.accounting_tscar_qty,
+                    product.accounting_tcar_qty,
+                    days,
                     ], format_text)
 
         # ---------------------------------------------------------------------
