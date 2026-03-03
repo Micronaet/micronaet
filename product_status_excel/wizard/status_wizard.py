@@ -332,8 +332,8 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 u'Liv. riord.',
                 'Stato',
 
-                'TSCAR',
                 'TCAR',
+                'TSCAR',
                 'days',
                 ]
 
@@ -395,8 +395,8 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                     product.default_code,
                     product.name,
                     (product.accounting_qty, format_number),
-                    (tscar, format_number),
                     (tcar, format_number),
+                    (tscar, format_number),
                     product.categ_id.name,
                     product.statistic_category,
                     product.duty_id.name or '/',
@@ -407,8 +407,8 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                     state,
 
                     # Hidden:
-                    product.accounting_tscar_qty,
                     product.accounting_tcar_qty,
+                    product.accounting_tscar_qty,
                     days,
                     ], format_text)
 
