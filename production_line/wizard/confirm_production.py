@@ -315,15 +315,12 @@ class confirm_mrp_production_wizard(osv.osv_memory):
         error_prefix = '#'  # TODO configuration area?
 
         # Interchange file:
-        file_cl, file_cl_upd, file_sl = mrp_pool.get_interchange_files(
-            cr, uid, parameter, context=context)
+        file_cl, file_cl_upd, file_sl = mrp_pool.get_interchange_files(cr, uid, parameter, context=context)
 
         # XMLRPC server:
-        mx_server = mrp_pool.get_xmlrpc_sl_cl_server(
-            cr, uid, parameter, context=context)
+        mx_server = mrp_pool.get_xmlrpc_sl_cl_server(cr, uid, parameter, context=context)
 
-        lavoration_browse = lavoration_pool.browse(
-            cr, uid, current_lavoration_id, context=context)
+        lavoration_browse = lavoration_pool.browse(cr, uid, current_lavoration_id, context=context)
 
         # readability:
         mrp = lavoration_browse.production_id # Production reference
@@ -394,8 +391,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
 
             # TODO create sequence depend on production
             # Reload record for get sequence value:
-            sequence = load_pool.browse(
-                cr, uid, load_id, context=context).sequence
+            sequence = load_pool.browse(cr, uid, load_id, context=context).sequence
 
             # TODO manage recycle product!!!!! <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -481,8 +477,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             #        '',
             #        ))
             # else:
-            f_cl.write('%-35s%10.2f%13.5f%16s\r\n' % (
-                product_code, product_qty, price, ''))
+            f_cl.write('%-35s%10.2f%13.5f%16s\r\n' % (product_code, product_qty, price, ''))
 
             # TODO mode in product (end movement)
             convert_load_id = {}  # list for convert CL code in load.id
@@ -502,6 +497,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                         ))
             else:
                 pass  # todo raise error if no package? (no if wrong!)
+
             if pallet and wiz_proxy.pallet_qty:
                 f_cl.write(
                     '%-10s%-25s%10.2f%-13s%16s\r\n' % (  # TODO 10 extra space
