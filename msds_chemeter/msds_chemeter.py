@@ -489,7 +489,7 @@ class MsdsChemeter(orm.Model):
             'Codice Mixture', size=35,
             help="Code for this product"),
         'alias': fields.char(
-            'Alias', size=50,
+            'Alias', size=100,
             help='Codice alias indicato nel documento cliente'),
         'language_id': fields.many2one(
             'msds.language', 'Lingua',
