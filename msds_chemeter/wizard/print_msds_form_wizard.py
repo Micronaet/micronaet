@@ -243,7 +243,7 @@ class MsdsPrintFormWizard(orm.TransientModel):
                  'indicata come _ per dire che il carattere scritto '
                  'non è importante'),
         'alias': fields.char(
-            'Alias', size=20,
+            'Alias', size=100,
             help='Codice alias indicato nel documento cliente'),
         'language_id': fields.many2one(
             'msds.language', 'Lingua',
