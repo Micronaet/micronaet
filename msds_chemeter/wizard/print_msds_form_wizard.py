@@ -235,7 +235,6 @@ class MsdsPrintFormWizard(orm.TransientModel):
         # return chemeter_pool.download_msds_form(
         #    cr, uid, [chemeter_id], context=context)
 
-
     _columns = {
         'mixture': fields.char(
             'Codice Mixture', size=35,
