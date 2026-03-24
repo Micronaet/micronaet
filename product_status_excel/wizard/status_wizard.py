@@ -566,9 +566,9 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 # Medium last 180 gg.
                 if default_code in preload_stock_stats:
                     preload_data = preload_stock_stats[default_code]
-                    load_qty = preload_data[default_code]['BF'] + preload_data[default_code]['CL']
-                    unload_qty = preload_data[default_code]['SL']
-                    sold_qty = preload_data[default_code]['OC']
+                    load_qty = preload_data['BF'] + preload_data['CL']
+                    unload_qty = preload_data['SL']
+                    sold_qty = preload_data['OC']
                 else:
                     load_qty = unload_qty = sold_qty = 0
 
