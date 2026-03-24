@@ -37,11 +37,6 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
     DATETIME_FORMATS_MAP,
     float_compare)
 
-# from chemical_analysis.etl.modelli_analisi import convert_caterogy_name
-
-# import base64
-# import xlrd
-
 _logger = logging.getLogger(__name__)
 
 
