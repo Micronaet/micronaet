@@ -568,7 +568,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                     preload_data = preload_stock_stats[default_code]
                     load_qty = preload_data['BF'] + preload_data['CL']
                     unload_qty = preload_data['SL']
-                    sold_qty = preload_data['OC']
+                    sold_qty = preload_data['BC']
                 else:
                     load_qty = unload_qty = sold_qty = 0
 
