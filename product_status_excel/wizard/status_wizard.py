@@ -198,7 +198,7 @@ class ProductProductInherit(osv.Model):
 
             for default_code, quantity, mode in move_loop:
                 if not default_code or default_code not in master_data:
-                    _logger.warning('{}. Not used "{}"'.format(mode, default_code))
+                    _logger.warning('CL-{}. Not used "{}"'.format(mode, default_code))
                 else:
                     master_data[default_code][mode] += quantity
                     log_f.write('CL-Op. {}|{}|{}|{}|{}\n'.format(
