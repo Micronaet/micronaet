@@ -199,10 +199,9 @@ class ProductProductInherit(osv.Model):
                     _logger.warning('{}. Not used {}'.format(mode, default_code))
                 else:
                     master_data[default_code][mode] += quantity
-                    log_f.write('CL-{}-{}|{}|{}|{}|{}\n'.format(
+                    log_f.write('CL-{}|{}|{}|{}|{}\n'.format(
                         mode,
                         cl.accounting_cl_code,
-                        cl.name,
                         cl.date,
                         default_code,
                         quantity,
