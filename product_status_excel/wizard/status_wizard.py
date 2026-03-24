@@ -36,11 +36,172 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
     DEFAULT_SERVER_DATETIME_FORMAT,
     DATETIME_FORMATS_MAP,
     float_compare)
+
+from chemical_analysis.etl.modelli_analisi import convert_caterogy_name
+
 # import base64
 # import xlrd
 
 _logger = logging.getLogger(__name__)
 
+
+class ProductProductInherit(osv.Model):
+    """ Add extra function
+    """
+    _inherit = 'product.product'
+
+    # ------------------------------------------------------------------------------------------------------------------
+    # Utility for report:
+    # ------------------------------------------------------------------------------------------------------------------
+    def get_external_supplier_deadline_order(self, cr, uid, deadline, context=None):
+        """ Collect OF buy from deadline to today
+            Return product: quantity dict
+        """
+        accounting_pool = self.pool.get('micronaet.accounting')
+        company_pool = self.pool.get('res.company')
+
+        cursor_of = accounting_pool.get_of_line_quantity_deadline(cr, uid)
+
+        if company_pool.table_capital_name(cr, uid, context=context):
+            table = "OF_RIGHE"
+        else:
+            table = "of_righe"
+
+        # Loop on all year till deadline:
+        current_year = datetime.now().year
+        from_year = int(deadline[:4])
+        supplier_product = {}
+        try:
+            for year in range(from_year, current_year + 1):
+                cursor = self.connect(cr, uid, year=year, context=context)
+                # todo add deadline in query:
+                # CSG_DOC, NGB_SR_DOC, NGL_DOC, NPR_RIGA, CKY_ART, DTT_SCAD, NGB_TIPO_QTA, NQT_RIGA_O_PLOR, NCF_CONV
+                cursor.execute("""
+                    SELECT CKY_ART, DTT_SCAD, NQT_RIGA_O_PLOR, NCF_CONV FROM %s;""" % table)
+
+                if not cursor_of:
+                    _logger.error('Error access OF {}'.format(year))
+                else:
+                    for supplier_order in cursor_of:  # all open OC
+                        of_deadline = supplier_order['DTT_SCAD'].strftime('%Y-%m-%d')
+                        if of_deadline < deadline:
+                            continue  # Not used
+
+                        ref = supplier_order['CKY_ART'].strip()
+                        if ref not in supplier_product:
+                            supplier_product[ref] = 0.0
+
+                        conversion = supplier_order['NCF_CONV'] or 1.0
+                        quantity = float(supplier_order['NQT_RIGA_O_PLOR'] or 0.0) * (1.0 / conversion)
+                        supplier_product[ref] += quantity
+        except:
+            _logger.error(sys.exc_info())
+        return supplier_product
+
+
+    def preload_data_load_unload_product(self, cr, uid, products, days=180, context=None):
+        """ Preload data from BF, OF, SL, CL
+            products: preload objects
+            context parameters:
+            days = 180: Maximum period for document date
+        """
+        pdb.set_trace()
+        master_data = {}
+        from_date_dt = datetime.now() - timedelta(days=days)
+        deadline = from_date_dt.strftime('%Y-%m-%d')
+        deadline_time = from_date_dt.strftime('%Y-%m-%d 00:00:00')
+
+        # --------------------------------------------------------------------------------------------------------------
+        # Prepare master data:
+        # --------------------------------------------------------------------------------------------------------------
+        for product in products:
+            default_code = product.default_code or ''
+            if not default_code:
+                continue
+
+            if default_code not in master_data:
+                master_data[default_code] = {
+                    'BF': 0.0,
+                    'BC': 0.0,
+                    'SL': 0.0,
+                    'CL': 0.0,
+                }
+
+        # --------------------------------------------------------------------------------------------------------------
+        # BF (Load):
+        # --------------------------------------------------------------------------------------------------------------
+        # SQL Table for bf:
+        supplier_orders = self.get_external_supplier_deadline_order(cr, uid, deadline=deadline, context=context)
+        for default_code in supplier_orders:
+            if not default_code or default_code not in master_data:
+                _logger.warning('BF. Not used "{}"'.format(default_code))
+                continue
+            master_data[default_code]['BF'] += supplier_orders[default_code]
+
+        # --------------------------------------------------------------------------------------------------------------
+        # SL (Unload):
+        # --------------------------------------------------------------------------------------------------------------
+        sl_pool = self.pool.get('mrp.production.workcenter.line')
+        # Filter: real_date_planned (datetime) state 'done'
+        sl_ids = sl_pool.search(cr, uid, [
+            ('real_date_planned', '>=', deadline_time),
+            ('state', '=', 'done'),
+        ], context=context)
+
+        # Data: bom_material_ids: product_id, quantity
+        for sl in sl_pool.browse(cr, uid, sl_ids, context=context):
+            for line in sl.bom_material_ids:
+                default_code = line.product_id.default_code or ''
+                if not default_code or default_code not in master_data:
+                    _logger.warning('SL. Not used {}'.format(default_code))
+                    continue
+                master_data[default_code]['SL'] += line.quantity
+
+
+        # --------------------------------------------------------------------------------------------------------------
+        # CL (Load FP, Unload package, pallet):
+        # --------------------------------------------------------------------------------------------------------------
+        cl_pool = self.pool.get('mrp.production.workcenter.load')
+        # Filter: date (datetime):
+        cl_ids = cl_pool.search(cr, uid, [
+            ('date', '>=', deadline_time),
+        ], context=context)
+
+        # Data:
+        for cl in cl_pool.browse(cr, uid, cl_ids, context=context):
+            # Loop on 3 cases:
+            for default_code, quantity, mode in (
+                    # product_id, product_qty
+                    (cl.product_id.default_code or '', cl.quantity or 0.0, 'CL'),
+                    # package_id, ul_qty
+                    (cl.product_id.default_code or '', cl.quantity or 0.0, 'SL'),
+                    # pallet_product_id, pallet_qty
+                    (cl.product_id.default_code or '', cl.quantity or 0.0, 'SL'),
+                    ):
+                if not default_code or default_code not in master_data:
+                    _logger.warning('{}. Not used {}'.format(mode, default_code))
+                else:
+                    master_data[default_code][mode] += quantity
+
+        # --------------------------------------------------------------------------------------------------------------
+        # DDT (Unload):
+        # --------------------------------------------------------------------------------------------------------------
+        bc_pool = self.pool.get('stock.ddt')
+        # Filter: date (date) state 'done'
+        bc_ids = bc_pool.search(cr, uid, [
+            ('date', '>=', deadline),
+            ('state', '=', 'done'),
+        ], context=context)
+        # Data: line_ids: - product_id, product_uom_qty
+        for bc in bc_pool.browse(cr, uid, bc_ids, context=context):
+            for line in bc.line_ids:
+                default_code = line.product_id.default_code or ''
+                if not default_code or default_code not in master_data:
+                    _logger.warning('BC. Not used {}'.format(default_code))
+                    continue
+                master_data[default_code]['BC'] += line.product_uom_qty
+
+        return master_data
 
 class ProductExtractProductXlsWizard(orm.TransientModel):
     """ Wizard for extract XLS report
@@ -161,19 +322,21 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         # Medium days:
         now = datetime.now()
         days = (now - datetime.strptime('%s-01-01' % now.year, '%Y-%m-%d')).days + 1
+        windows_days = 180
 
         comment_parameters = {
             'width': 450,
             'font_name': 'Courier New',
         }
+
+        # --------------------------------------------------------------------------------------------------------------
+        # Create dynamic domain
+        # --------------------------------------------------------------------------------------------------------------
         filter_used = ''
         wizard_domain = []
         if not save_mode:
             wiz_browse = self.browse(cr, uid, ids, context=context)[0]
 
-            # -----------------------------------------------------------------
-            # Create dynamic domain
-            # -----------------------------------------------------------------
             # Search block:
             if not wiz_browse.with_empty_code:
                 wizard_domain.append(('default_code', '!=', False))
@@ -222,18 +385,20 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             # Default sort for mail report mode:
             sort_key = lambda x: x.default_code
 
-        # ---------------------------------------------------------------------
-        # Master loop for page:
-        # ---------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #                                     Master loop for page:
+        # --------------------------------------------------------------------------------------------------------------
         removed_ids = []  # Compiled when removed in first n-1 loop
         cr.execute('''
-            SELECT id from product_product 
+            SELECT id 
+            FROM product_product 
             WHERE substring(default_code, 1, 1) in ('C', 'V')
             ''')
         excluded_ids = [record[0] for record in cr.fetchall()]
 
         cr.execute('''
-            SELECT id from product_product 
+            SELECT id 
+            FROM product_product 
             WHERE substring(default_code, 1, 1) not in 
                 ('A', 'B', 'C', 'L', 'M', 'R', 'V', 'Z');
             ''')
@@ -266,6 +431,10 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 ('id', 'in', removed_ids),
             ]),
         ]
+
+        # --------------------------------------------------------------------------------------------------------------
+        # Write page per page:
+        # --------------------------------------------------------------------------------------------------------------
         format_loaded = False
         for ws_name, page_domain in master_loop:
             if not save_mode:
@@ -277,7 +446,16 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             # Excel generation
             excel_pool.create_worksheet(ws_name)
 
+            # ----------------------------------------------------------------------------------------------------------
+            # Preload data: Load / Unload references
+            # ----------------------------------------------------------------------------------------------------------
+            products = product_pool.browse(cr, uid, product_ids, context=context)
+            preload_stock_stats = product_pool.preload_data_load_unload_product(
+                cr, uid, products, days=windows_days, context=context)
+
+            # ----------------------------------------------------------------------------------------------------------
             # Format used:
+            # ----------------------------------------------------------------------------------------------------------
             # excel_pool.set_format()
             if not format_loaded:  # Load once
                 format_title = excel_pool.get_format('title')
@@ -298,6 +476,9 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                     'bg_red')
                 format_loaded = True
 
+            # ----------------------------------------------------------------------------------------------------------
+            # Header part:
+            # ----------------------------------------------------------------------------------------------------------
             row = 0
             excel_pool.write_xls_line(ws_name, row, [
                 '', '', '', '', 'Stato prodotti, Filtro: ', filter_used,
@@ -347,15 +528,13 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                       'inizio anno : giorni x 180 (simulazione ' \
                       'consumo ultimo semestre)'
 
-            excel_pool.write_comment(
-                ws_name, row, 8, comment % 'carico', parameters=comment_parameters)
-            excel_pool.write_comment(
-                ws_name, row, 9, comment % 'scarico', parameters=comment_parameters)
+            excel_pool.write_comment(ws_name, row, 8, comment % 'carico', parameters=comment_parameters)
+            excel_pool.write_comment(ws_name, row, 9, comment % 'scarico', parameters=comment_parameters)
 
-            for product in sorted(product_pool.browse(
-                    cr, uid, product_ids, context=context),
-                    key=sort_key):
-
+            # ----------------------------------------------------------------------------------------------------------
+            # Data part:
+            # ----------------------------------------------------------------------------------------------------------
+            for product in sorted(products, key=sort_key):
                 # Only not obsolete or with stock will be written:
                 if ws_name != 'Esclusi' and product.stock_obsolete and not product.accounting_qty:
                     removed_ids.append(product.id)  # For last loop 'Rimossi'

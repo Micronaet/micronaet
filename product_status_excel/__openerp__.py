@@ -30,6 +30,11 @@
     'depends': [
         'base',
         'product',
+
+        # SQL for BF:
+        'base_mssql',
+        'base_mssql_accounting',
+
         'excel_export',
         'sql_product',  # statistic_category
         'production_line',  # accounting_qty

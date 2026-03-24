@@ -560,8 +560,7 @@ class product_status_wizard(osv.osv_memory):
             else:
                 return True
 
-        def add_rop_page(
-                WS=False, products=False, excel_format=False, orders=False):
+        def add_rop_page(WS=False, products=False, excel_format=False, orders=False):
             """ Add rop page in necessary
             """
             # Utility:
@@ -751,8 +750,7 @@ class product_status_wizard(osv.osv_memory):
         # Preload
         # ---------------------------------------------------------------------
         # A. Monthly peak
-        monthly_peak_data = load_montly_peak_stats(
-            self, cr, uid, ids, context=context)
+        monthly_peak_data = load_montly_peak_stats(self, cr, uid, ids, context=context)
 
         # B. Alternative product list
         '''

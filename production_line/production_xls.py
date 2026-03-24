@@ -141,8 +141,7 @@ class mrp_production_extra(osv.osv):
         cursor_of = accounting_pool.get_of_line_quantity_deadline(cr, uid)
         supplier_orders = {}
         if not cursor_of:
-            _logger.error(
-                'Error access OF line table in accounting! (status webkit)')
+            _logger.error('Error access OF line table in accounting! (status webkit)')
         else:
             for supplier_order in cursor_of:  # all open OC
                 ref = supplier_order['CKY_ART'].strip()
@@ -173,8 +172,7 @@ class mrp_production_extra(osv.osv):
 
         sapnaet_mode = 'locked_qty' in product_pool._columns
         # Global parameters:
-        global rows, cols, table, table_comment, history_supplier_orders, \
-            minimum, error_in_print
+        global rows, cols, table, table_comment, history_supplier_orders, minimum, error_in_print
 
         # initialize globals:
         rows = []
@@ -223,8 +221,7 @@ class mrp_production_extra(osv.osv):
         # ------------------------------
         # 2. Get OF lines with deadline:
         # ------------------------------
-        supplier_orders = self.get_external_supplier_order(
-            cr, uid, context=context)
+        supplier_orders = self.get_external_supplier_order(cr, uid, context=context)
 
         # Used for print order detail in result:
         history_supplier_orders = copy.deepcopy(supplier_orders)
