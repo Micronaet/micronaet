@@ -67,13 +67,16 @@ class ProductProductInherit(osv.Model):
         current_year = datetime.now().year
         from_year = int(deadline[:4])
         supplier_product = {}
+        log_f = open('/tmp/report_stock_level_OF.csv', 'w')
         try:
             for year in range(from_year, current_year + 1):
                 cursor = accounting_pool.connect(cr, uid, year=year, context=context)
                 # todo add deadline in query:
                 # CSG_DOC, NGB_SR_DOC, NGL_DOC, NPR_RIGA, CKY_ART, DTT_SCAD, NGB_TIPO_QTA, NQT_RIGA_O_PLOR, NCF_CONV
                 cursor.execute("""
-                    SELECT CKY_ART, DTT_SCAD, NQT_RIGA_O_PLOR, NCF_CONV FROM %s;""" % table)
+                    SELECT CKY_ART, DTT_SCAD, NQT_RIGA_O_PLOR, NCF_CONV,
+                           CSG_DOC, NGB_SR_DOC, NGL_DOC, DTT_SCAD
+                    FROM %s;""" % table)
 
                 if not cursor_of:
                     _logger.error('Error access OF {}'.format(year))
@@ -90,6 +93,14 @@ class ProductProductInherit(osv.Model):
                         conversion = supplier_order['NCF_CONV'] or 1.0
                         quantity = float(supplier_order['NQT_RIGA_O_PLOR'] or 0.0) * (1.0 / conversion)
                         supplier_product[ref] += quantity
+                        log_f.write('OF|{}-{}-{}|{}|{}|{}\n'.format(
+                            supplier_order['CSG_DOC'],
+                            supplier_order['NGB_SR_DOC'],
+                            supplier_order['NGL_DOC'],
+                            supplier_order['DTT_SCAD'],
+                            ref,
+                            quantity,
+                        ))
         except:
             _logger.error(sys.exc_info())
         return supplier_product
@@ -109,6 +120,7 @@ class ProductProductInherit(osv.Model):
         # --------------------------------------------------------------------------------------------------------------
         # Prepare master data:
         # --------------------------------------------------------------------------------------------------------------
+        log_f = open('/tmp/report_stock_level_ALL.csv', 'w')
         products = self.browse(cr, uid, ids, context=context)
         for product in products:
             default_code = product.default_code or ''
@@ -126,6 +138,7 @@ class ProductProductInherit(osv.Model):
         # --------------------------------------------------------------------------------------------------------------
         # BF (Load):
         # --------------------------------------------------------------------------------------------------------------
+
         # SQL Table for bf:
         supplier_orders = self.get_external_supplier_deadline_order(cr, uid, deadline=deadline, context=context)
         for default_code in supplier_orders:
@@ -152,6 +165,12 @@ class ProductProductInherit(osv.Model):
                     _logger.warning('SL. Not used {}'.format(default_code))
                     continue
                 master_data[default_code]['SL'] += line.quantity
+                log_f.write('SL|{}|{}|{}|{}\n'.format(
+                    sl.name,
+                    sl.real_date_planned,
+                    default_code,
+                    line.quantity,
+                ))
 
 
         # --------------------------------------------------------------------------------------------------------------
@@ -178,6 +197,13 @@ class ProductProductInherit(osv.Model):
                     _logger.warning('{}. Not used {}'.format(mode, default_code))
                 else:
                     master_data[default_code][mode] += quantity
+                    log_f.write('{}|{}|{}|{}|{}\n'.format(
+                        mode,
+                        cl.accounting_cl_code,
+                        cl.date,
+                        default_code,
+                        quantity,
+                    ))
 
         # --------------------------------------------------------------------------------------------------------------
         # DDT (Unload):
@@ -196,6 +222,13 @@ class ProductProductInherit(osv.Model):
                     _logger.warning('BC. Not used {}'.format(default_code))
                     continue
                 master_data[default_code]['BC'] += line.product_uom_qty
+                log_f.write('BC|{}-{}|{}|{}|{}\n'.format(
+                    bc.series_id.name,
+                    bc.name,
+                    bc.date,
+                    default_code,
+                    line.product_uom_qty,
+                ))
 
         return master_data
 
