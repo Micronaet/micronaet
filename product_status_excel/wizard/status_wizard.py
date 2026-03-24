@@ -164,7 +164,7 @@ class ProductProductInherit(osv.Model):
             for line in sl.bom_material_ids:
                 default_code = line.product_id.default_code or ''
                 if not default_code or default_code not in master_data:
-                    _logger.warning('SL. Not used {}'.format(default_code))
+                    _logger.warning('SL. Not used "{}"'.format(default_code))
                     continue
                 master_data[default_code]['SL'] += line.quantity
                 log_f.write('SL|{}|{}|{}|{}\n'.format(
@@ -198,7 +198,7 @@ class ProductProductInherit(osv.Model):
 
             for default_code, quantity, mode in move_loop:
                 if not default_code or default_code not in master_data:
-                    _logger.warning('{}. Not used {}'.format(mode, default_code))
+                    _logger.warning('{}. Not used "{}"'.format(mode, default_code))
                 else:
                     master_data[default_code][mode] += quantity
                     log_f.write('CL-Op. {}|{}|{}|{}|{}\n'.format(
@@ -223,7 +223,7 @@ class ProductProductInherit(osv.Model):
             for line in bc.line_ids:
                 default_code = line.product_id.default_code or ''
                 if not default_code or default_code not in master_data:
-                    _logger.warning('BC. Not used {}'.format(default_code))
+                    _logger.warning('BC. Not used "{}"'.format(default_code))
                     continue
                 master_data[default_code]['BC'] += line.product_uom_qty
                 log_f.write('BC|{}-{}|{}|{}|{}\n'.format(
