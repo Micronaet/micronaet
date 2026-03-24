@@ -542,6 +542,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             # Data part:
             # ----------------------------------------------------------------------------------------------------------
             for product in sorted(products, key=sort_key):
+                default_code = product.default_code or '/'
                 # Only not obsolete or with stock will be written:
                 if ws_name != 'Esclusi' and product.stock_obsolete and not product.accounting_qty:
                     removed_ids.append(product.id)  # For last loop 'Rimossi'
