@@ -37,7 +37,6 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
     DATETIME_FORMATS_MAP,
     float_compare)
 
-from Script.XMLRPC.bom import default_code
 
 _logger = logging.getLogger(__name__)
 
