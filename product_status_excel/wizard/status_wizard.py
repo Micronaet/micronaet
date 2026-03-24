@@ -57,6 +57,7 @@ class ProductProductInherit(osv.Model):
         """ Collect OF buy from deadline to today
             Return product: quantity dict
         """
+        pdb.set_trace()
         accounting_pool = self.pool.get('micronaet.accounting')
         company_pool = self.pool.get('res.company')
 
