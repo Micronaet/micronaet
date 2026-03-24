@@ -101,7 +101,6 @@ class ProductProductInherit(osv.Model):
             context parameters:
             days = 180: Maximum period for document date
         """
-        pdb.set_trace()
         master_data = {}
         from_date_dt = datetime.now() - timedelta(days=days)
         deadline = from_date_dt.strftime('%Y-%m-%d')
@@ -126,6 +125,7 @@ class ProductProductInherit(osv.Model):
         # --------------------------------------------------------------------------------------------------------------
         # BF (Load):
         # --------------------------------------------------------------------------------------------------------------
+        pdb.set_trace()
         # SQL Table for bf:
         supplier_orders = self.get_external_supplier_deadline_order(cr, uid, deadline=deadline, context=context)
         for default_code in supplier_orders:
