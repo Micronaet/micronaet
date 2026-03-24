@@ -68,6 +68,7 @@ class ProductProductInherit(osv.Model):
         from_year = int(deadline[:4])
         supplier_product = {}
         log_f = open('/tmp/report_stock_level_OF.csv', 'w')
+        _logger.info('Create log file {}'.format(log_f))
         try:
             for year in range(from_year, current_year + 1):
                 cursor = accounting_pool.connect(cr, uid, year=year, context=context)
@@ -121,6 +122,7 @@ class ProductProductInherit(osv.Model):
         # Prepare master data:
         # --------------------------------------------------------------------------------------------------------------
         log_f = open('/tmp/report_stock_level_ALL.csv', 'w')
+        _logger.info('Create log file {}'.format(log_f))
         products = self.browse(cr, uid, ids, context=context)
         for product in products:
             default_code = product.default_code or ''
