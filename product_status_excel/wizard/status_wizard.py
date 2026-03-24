@@ -91,11 +91,10 @@ class ProductProductInherit(osv.Model):
                         supplier_product[ref] += quantity
         except:
             _logger.error(sys.exc_info())
-        pdb.set_trace()
         return supplier_product
 
 
-    def preload_data_load_unload_product(self, cr, uid, products, days=180, context=None):
+    def preload_data_load_unload_product(self, cr, uid, ids, days=180, context=None):
         """ Preload data from BF, OF, SL, CL
             products: preload objects
             context parameters:
@@ -109,6 +108,7 @@ class ProductProductInherit(osv.Model):
         # --------------------------------------------------------------------------------------------------------------
         # Prepare master data:
         # --------------------------------------------------------------------------------------------------------------
+        products = self.browse(cr, uid, ids, context=context)
         for product in products:
             default_code = product.default_code or ''
             if not default_code:
@@ -125,7 +125,6 @@ class ProductProductInherit(osv.Model):
         # --------------------------------------------------------------------------------------------------------------
         # BF (Load):
         # --------------------------------------------------------------------------------------------------------------
-        pdb.set_trace()
         # SQL Table for bf:
         supplier_orders = self.get_external_supplier_deadline_order(cr, uid, deadline=deadline, context=context)
         for default_code in supplier_orders:
@@ -253,7 +252,6 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         # ---------------------------------------------------------------------
         # Loop on all pages:
         # ---------------------------------------------------------------------
-        pdb.set_trace()
         for ws_name in WB.sheet_names():
             WS = WB.sheet_by_name(ws_name)
             _logger.warning('Read page: %s' % ws_name)
@@ -428,6 +426,17 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             ]),
         ]
 
+
+        # --------------------------------------------------------------------------------------------------------------
+        # Preload all products movements:
+        # --------------------------------------------------------------------------------------------------------------
+        all_product_ids = product_pool.search(cr, uid, [
+            ('default_code', '!=', False)
+            ], context=context)
+        preload_stock_stats = product_pool.preload_data_load_unload_product(
+            cr, uid, all_product_ids, days=windows_days, context=context)
+        pdb.set_trace()
+
         # --------------------------------------------------------------------------------------------------------------
         # Write page per page:
         # --------------------------------------------------------------------------------------------------------------
@@ -446,8 +455,6 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             # Preload data: Load / Unload references
             # ----------------------------------------------------------------------------------------------------------
             products = product_pool.browse(cr, uid, product_ids, context=context)
-            preload_stock_stats = product_pool.preload_data_load_unload_product(
-                cr, uid, products, days=windows_days, context=context)
 
             # ----------------------------------------------------------------------------------------------------------
             # Format used:
