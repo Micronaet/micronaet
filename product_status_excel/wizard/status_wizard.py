@@ -187,19 +187,21 @@ class ProductProductInherit(osv.Model):
         # Data:
         for cl in cl_pool.browse(cr, uid, cl_ids, context=context):
             # Loop on 3 cases:
-            for default_code, quantity, mode in (
-                    # product_id, product_qty
-                    (cl.product_id.default_code or '', cl.product_qty or 0.0, 'CL'),
-                    # package_id, ul_qty
-                    (cl.package_id.linked_product_id.default_code or '', cl.ul_qty or 0.0, 'SL'),
-                    # pallet_product_id, pallet_qty
-                    (cl.pallet_product_id.linked_product_id.default_code or '', cl.pallet_qty or 0.0, 'SL'),
-                    ):
+            move_loop = (
+                # Product
+                (cl.recycle_product_id.default_code or cl.product_id.default_code or '', cl.product_qty or 0.0, 'CL'),
+                # Package:
+                (cl.package_id.linked_product_id.default_code or '', cl.ul_qty or 0.0, 'SL'),
+                # Pallet:
+                (cl.pallet_product_id.default_code or '', cl.pallet_qty or 0.0, 'SL'),
+                )
+
+            for default_code, quantity, mode in move_loop:
                 if not default_code or default_code not in master_data:
                     _logger.warning('{}. Not used {}'.format(mode, default_code))
                 else:
                     master_data[default_code][mode] += quantity
-                    log_f.write('CL-{}|{}|{}|{}|{}\n'.format(
+                    log_f.write('CL-Op. {}|{}|{}|{}|{}\n'.format(
                         mode,
                         cl.accounting_cl_code,
                         cl.date,
