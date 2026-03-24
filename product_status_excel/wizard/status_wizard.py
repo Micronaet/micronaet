@@ -37,6 +37,8 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
     DATETIME_FORMATS_MAP,
     float_compare)
 
+from Script.XMLRPC.bom import default_code
+
 _logger = logging.getLogger(__name__)
 
 
@@ -435,7 +437,6 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             ], context=context)
         preload_stock_stats = product_pool.preload_data_load_unload_product(
             cr, uid, all_product_ids, days=windows_days, context=context)
-        pdb.set_trace()
 
         # --------------------------------------------------------------------------------------------------------------
         # Write page per page:
@@ -490,8 +491,10 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             excel_pool.column_width(ws_name, [
                 1, 1, 1, 1,
                 5,
-                10, 40, 10, 10, 10, 20, 10, 12, 30,
-                10, 10, 10, 15])
+                10, 40, 10, 10, 10, 10,
+                20, 10, 12, 30,
+                10, 10, 10, 15,
+            ])
             header = [
                 # Hidden
                 'ID',
@@ -506,6 +509,8 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                 u'Q.',
                 u'Car. 180gg',
                 u'Scar. 180gg',
+                u'Vend. 180gg',
+
                 u'Categoria',
                 u'Cat. stat.',
                 u'Cod. doganale',
@@ -525,7 +530,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
             excel_pool.write_xls_line(ws_name, row, header, format_header)
             excel_pool.autofilter(ws_name, row, 0, row, len(header) - 1)
             excel_pool.freeze_panes(ws_name, row + 1, 6)
-            excel_pool.column_hidden(ws_name, [0, 1, 2, 3, 18, 19, 20])
+            excel_pool.column_hidden(ws_name, [0, 1, 2, 3, 19, 20, 21])
 
             comment = 'Dato medio calcolato prendendo il totale %s da ' \
                       'inizio anno : giorni x 180 (simulazione ' \
@@ -559,11 +564,19 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                     state = 'Non presente'
 
                 # Medium last 180 gg.
-                if days > 0:
-                    tscar = 180.0 * product.accounting_tscar_qty / days
-                    tcar = 180.0 * product.accounting_tcar_qty / days
+                if default_code in preload_stock_stats:
+                    preload_data = preload_stock_stats[default_code]
+                    load_qty = preload_data[default_code]['BF'] + preload_data[default_code]['CL']
+                    unload_qty = preload_data[default_code]['SL']
+                    sold_qty = preload_data[default_code]['OC']
                 else:
-                    tscar = tcar = 0.0
+                    load_qty = unload_qty = sold_qty = 0
+
+                # if days > 0:
+                #    tscar = 180.0 * product.accounting_tscar_qty / days
+                #    tcar = 180.0 * product.accounting_tcar_qty / days
+                # else:
+                #    tscar = tcar = 0.0
 
                 excel_pool.write_xls_line(ws_name, row, [
                     # Hidden:
@@ -577,8 +590,9 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
                     product.default_code,
                     product.name,
                     (product.accounting_qty, format_number),
-                    (tcar, format_number),
-                    (tscar, format_number),
+                    (load_qty, format_number),
+                    (unload_qty, format_number),
+                    (sold_qty, format_number),
                     product.categ_id.name,
                     product.statistic_category,
                     product.duty_id.name or '/',
