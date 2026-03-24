@@ -168,11 +168,11 @@ class ProductProductInherit(osv.Model):
             # Loop on 3 cases:
             for default_code, quantity, mode in (
                     # product_id, product_qty
-                    (cl.product_id.default_code or '', cl.quantity or 0.0, 'CL'),
+                    (cl.product_id.default_code or '', cl.product_qty or 0.0, 'CL'),
                     # package_id, ul_qty
-                    (cl.product_id.default_code or '', cl.quantity or 0.0, 'SL'),
+                    (cl.product_id.default_code or '', cl.ul_qty or 0.0, 'SL'),
                     # pallet_product_id, pallet_qty
-                    (cl.product_id.default_code or '', cl.quantity or 0.0, 'SL'),
+                    (cl.product_id.default_code or '', cl.pallet_qty or 0.0, 'SL'),
                     ):
                 if not default_code or default_code not in master_data:
                     _logger.warning('{}. Not used {}'.format(mode, default_code))
