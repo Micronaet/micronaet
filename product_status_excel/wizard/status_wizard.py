@@ -52,7 +52,6 @@ class ProductProductInherit(osv.Model):
         """ Collect OF buy from deadline to today
             Return product: quantity dict
         """
-        pdb.set_trace()
         accounting_pool = self.pool.get('micronaet.accounting')
         company_pool = self.pool.get('res.company')
 
@@ -69,7 +68,7 @@ class ProductProductInherit(osv.Model):
         supplier_product = {}
         try:
             for year in range(from_year, current_year + 1):
-                cursor = self.connect(cr, uid, year=year, context=context)
+                cursor = accounting_pool.connect(cr, uid, year=year, context=context)
                 # todo add deadline in query:
                 # CSG_DOC, NGB_SR_DOC, NGL_DOC, NPR_RIGA, CKY_ART, DTT_SCAD, NGB_TIPO_QTA, NQT_RIGA_O_PLOR, NCF_CONV
                 cursor.execute("""
@@ -92,6 +91,7 @@ class ProductProductInherit(osv.Model):
                         supplier_product[ref] += quantity
         except:
             _logger.error(sys.exc_info())
+        pdb.set_trace()
         return supplier_product
 
 
