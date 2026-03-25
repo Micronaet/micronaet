@@ -148,8 +148,7 @@ class MrpProduction(osv.Model):
         load_pool = self.pool.get('mrp.production.workcenter.load')
 
         # Reload data (to get relation fields updated:
-        lavoration = lavoration_pool.browse(
-            cr, uid, lavoration_id, context=context)
+        lavoration = lavoration_pool.browse(cr, uid, lavoration_id, context=context)
         # ---------------------------------------------------------------------
         # Excel startup:
         # ---------------------------------------------------------------------
@@ -166,8 +165,7 @@ class MrpProduction(osv.Model):
         # Lavoration K cost (for line):
         try:
             # Check if forced during production
-            line_rate_cost = mrp.force_production_rate or \
-                wc.cost_product_id.standard_price or 0.0
+            line_rate_cost = mrp.force_production_rate or wc.cost_product_id.standard_price or 0.0
         except:
             line_rate_cost = 0.0
         if not line_rate_cost:

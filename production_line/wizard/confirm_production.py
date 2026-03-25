@@ -288,9 +288,9 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             pass # set qty to 0.0
         return res
 
-    # --------------
+    # ------------------------------------------------------------------------------------------------------------------
     # Wizard button:
-    # --------------
+    # ------------------------------------------------------------------------------------------------------------------
     def action_confirm_mrp_production_order(self, cr, uid, ids, context=None):
         """ Write confirmed weight (load or unload documents)
         """
@@ -332,11 +332,9 @@ class confirm_mrp_production_wizard(osv.osv_memory):
         # 2. From second to last: all product are loaded with unload package
         # 3. Last: also correct product price
         if wiz_proxy.state == 'product':
-            # -----------------------------------------------------------------
+            # ----------------------------------------------------------------------------------------------------------
             #                      CL  (job load)
-            # -----------------------------------------------------------------
-
-            # -----------
+            # ----------------------------------------------------------------------------------------------------------
             # Init check:
             # -----------
             # Verify then if is the last load no job are open:
@@ -355,11 +353,8 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                     )
 
             # Package can have 0 as qty (when not unloaded)
-            # if wiz_proxy.package_id and not wiz_proxy.ul_qty:
-            #    raise osv.except_osv(
-            #        _('Package error:'),
-            #        _('If package is present quantity is mandatory!'))
 
+            # Pallet is mandatory!
             if pallet and not wiz_proxy.pallet_qty:
                 raise osv.except_osv(
                     _('Pallet error:'),
@@ -370,8 +365,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             wrong = wiz_proxy.wrong
             recycle = wiz_proxy.recycle
             # recycle_product_id = wiz_proxy.recycle_product_id
-            package_id = \
-                wiz_proxy.package_id.id if wiz_proxy.package_id else False
+            package_id = wiz_proxy.package_id.id if wiz_proxy.package_id else False
             # todo create a function for compute: sum ( q. x std. cost)
             price = 0.0
             load_id = load_pool.create(cr, uid, {
@@ -407,6 +401,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             # todo Check if lot is yet created:
             ref_lot_id = False
             mrp_id = self.get_mrp_id(cr, uid, context=context)
+            lot_created_id = False
             if mrp_id:
                 lot_created_id = mrp_pool.get_account_yet_created_ul(
                     cr, uid, mrp_id, wiz_proxy.package_id.id, context=context)
@@ -450,8 +445,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                 cr, uid, mrp.product_id.id,
                 # XXX Now update accounting_qty on db for speed up
                 {'accounting_qty':
-                    (mrp.product_id.accounting_qty or 0.0) + \
-                    (wiz_proxy.real_product_qty or 0.0),
+                    (mrp.product_id.accounting_qty or 0.0) + (wiz_proxy.real_product_qty or 0.0),
                     }, context=context)
 
             # Export CL for product with new generated code:
@@ -483,10 +477,11 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             convert_load_id = {}  # list for convert CL code in load.id
             # for load in lavoration_browse.load_ids:
 
-            # -----------------------------------------------------
+            # ----------------------------------------------------------------------------------------------------------
             # Export SL form package/pallet used in loaded products
-            # -----------------------------------------------------
-            if wiz_proxy.package_id and wiz_proxy.ul_qty:
+            # ----------------------------------------------------------------------------------------------------------
+            # Write Package only if Q > 0
+            if wiz_proxy.package_id and wiz_proxy.ul_qty > 0.0:
                 f_cl.write(
                     '%-10s%-25s%10.2f%-13s%16s\r\n' % (  # todo 10 extra space
                         wiz_proxy.package_id.linked_product_id.default_code,
@@ -496,9 +491,9 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                         '',
                         ))
             else:
-                pass  # todo raise error if no package? (no if wrong!)
+                _logger.warning('No Package passed to account!')
 
-            if pallet and wiz_proxy.pallet_qty:
+            if pallet and wiz_proxy.pallet_qty > 0.0:
                 f_cl.write(
                     '%-10s%-25s%10.2f%-13s%16s\r\n' % (  # TODO 10 extra space
                         pallet.default_code,
@@ -508,7 +503,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                         '',
                         ))
             else:
-                pass
+                _logger.warning('No Pallet passed to account!')
             f_cl.close()
 
             # -----------------------------------------------------------------
@@ -581,8 +576,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                     except:
                         raise osv.except_osv(
                             _('Transit file!'),
-                            _('Problem accessing file: %s (maybe open in accounting program)!') % (
-                                file_cl_upd))
+                            _('Problem accessing file: %s (maybe open in accounting program)!') % (file_cl_upd))
                     unload_cost_total = 0.0
 
                     # ---------------------------------------------------------
@@ -621,8 +615,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                             u'Lavoratione <b>%s</b>:<br/>' % lavoration.name
                         for unload in lavoration.bom_material_ids:
                             try:
-                                subtotal = unload.product_id.standard_price * \
-                                    unload.quantity
+                                subtotal = unload.product_id.standard_price * unload.quantity
                                 unload_cost_total += subtotal
                                 cost_detail_subtotal += subtotal
 
@@ -656,10 +649,8 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                                 # ---------------------------------------------
                                 package = load.package_id
                                 if package: # There's pallet
-                                    link_product = \
-                                        package.linked_product_id
-                                    subtotal = link_product.standard_price * \
-                                        load.ul_qty
+                                    link_product = package.linked_product_id
+                                    subtotal = link_product.standard_price * load.ul_qty
                                     unload_cost_total += subtotal
                                     cost_detail_subtotal += subtotal
 
@@ -686,8 +677,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                                 # ---------------------------------------------
                                 pallet_in = load.pallet_product_id
                                 if pallet_in: # there's pallet
-                                    subtotal = pallet_in.standard_price * \
-                                        load.pallet_qty
+                                    subtotal = pallet_in.standard_price * load.pallet_qty
                                     unload_cost_total += subtotal
                                     cost_detail_subtotal += subtotal
 
@@ -734,10 +724,9 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                             if not load.accounting_cl_code:
                                 raise osv.except_osv(
                                     _('CL list!'),
-                                    _('Error CL without number finded!'), )
+                                    _('Errore trovata CL senza numero!'), )
 
-                            accounting_cl_code = \
-                                load.accounting_cl_code.strip()
+                            accounting_cl_code = load.accounting_cl_code.strip()
                             f_cl_upd.write(
                                 '%-6s%10.5f\r\n' % (
                                     accounting_cl_code,
