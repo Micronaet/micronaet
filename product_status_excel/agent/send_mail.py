@@ -67,6 +67,17 @@ smtp = {
         - Giallo: sotto il livello di scorta minimo<br/>
         - Rosso: non presente o negativo<br/>        
         </p>
+        <p> 
+        Dettaglio calcolo per le movimentazioni degli ultimi 180 giorni:<br/>
+        <b>1. CARICHI:</b><br/>
+        - BF: Consegne fornitore: Carichi di Materie Prime e Prodotti Commercializzati.<br/>
+        - CL: Carichi di produzione: Carico di Prodotti Finiti da produzione.<br/><br/>
+        <b>2A. SCARICHI:</b><br/>
+        - SL: Scarichi di lavorazione: Uscita Materie Prime, Recuperi, Prodotti riutilizzati come Semilavorati.<br/>
+        - SL imballi: Scarichi di lavorazione: Imballi e Pallet utilizzati.<br/><br/>
+        <b>2B. VENDITE:</b><br/>
+        - BC: DDT Cliente: Venduto di Prodotti Finiti, Materie Prime, Commercializzati.<br/>
+        </p> 
 
         <p><i>Le colonne: obsoleto, escludi, leadtime e gg. approvv. si possono
         usare anche per impostare in Excel per poi reimportarle in OpenERP!
