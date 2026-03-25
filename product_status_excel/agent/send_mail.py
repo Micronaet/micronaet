@@ -70,7 +70,7 @@ smtp = {
         <p> 
         Dettaglio calcolo per le movimentazioni degli ultimi 180 giorni:<br/>
         <b>1. CARICHI:</b><br/>
-        - BF: Consegne fornitore: Carichi di Materie Prime e Prodotti Commercializzati.<br/>
+        - BF: Consegne fornitore (da Mexal): Carichi di Materie Prime e Prodotti Commercializzati.<br/>
         - CL: Carichi di produzione: Carico di Prodotti Finiti da produzione.<br/><br/>
         <b>2A. SCARICHI:</b><br/>
         - SL: Scarichi di lavorazione: Uscita Materie Prime, Recuperi, Prodotti riutilizzati come Semilavorati.<br/>
