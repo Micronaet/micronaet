@@ -480,13 +480,14 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             # ----------------------------------------------------------------------------------------------------------
             # Export SL form package/pallet used in loaded products
             # ----------------------------------------------------------------------------------------------------------
-            # Write Package only if Q > 0
-            if wiz_proxy.package_id and wiz_proxy.ul_qty > 0.0:
+            # Write Package
+            if wiz_proxy.package_id:  #  and wiz_proxy.ul_qty > 0.0
+                ul_qty = -wiz_proxy.ul_qty
                 f_cl.write(
                     '%-10s%-25s%10.2f%-13s%16s\r\n' % (  # todo 10 extra space
                         wiz_proxy.package_id.linked_product_id.default_code,
                         '',  # lavoration_browse.name[4:],
-                        - wiz_proxy.ul_qty,
+                        ul_qty,
                         lavoration_browse.accounting_sl_code,
                         '',
                         ))
@@ -580,7 +581,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
                     unload_cost_total = 0.0
 
                     # ---------------------------------------------------------
-                    # Lavoration K cost:
+                    # Job K cost:
                     # ---------------------------------------------------------
                     try:
                         cost_line = wc.cost_product_id.standard_price or 0.0
