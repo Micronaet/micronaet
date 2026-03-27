@@ -482,7 +482,7 @@ class confirm_mrp_production_wizard(osv.osv_memory):
             # ----------------------------------------------------------------------------------------------------------
             # Write Package
             if wiz_proxy.package_id:  #  and wiz_proxy.ul_qty > 0.0
-                ul_qty = -wiz_proxy.ul_qty
+                ul_qty = -wiz_proxy.ul_qty or 0
                 f_cl.write(
                     '%-10s%-25s%10.2f%-13s%16s\r\n' % (  # todo 10 extra space
                         wiz_proxy.package_id.linked_product_id.default_code,
