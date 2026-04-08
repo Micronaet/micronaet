@@ -894,6 +894,16 @@ class product_status_wizard(osv.osv_memory):
                     'valign': 'top',
                     # 'num_format': num_format,
                     }),
+                'multiline': WB.add_format({
+                    'font_name': 'Arial',
+                    'font_size': 9,
+                    # 'align': 'right',
+                    'bg_color': 'white',
+                    'border': 1,
+                    'valign': 'top',
+                    'text_wrap': True,  # Multiline
+                    # 'num_format': num_format,
+                    }),
                 'number': WB.add_format({
                     'font_name': 'Arial',
                     'font_size': 9,
@@ -1012,7 +1022,8 @@ class product_status_wizard(osv.osv_memory):
             WS[ws_name].set_column('C:D', 10)
             WS[ws_name].set_column('E:E', 20)
             WS[ws_name].set_column('F:F', 13)
-            WS[ws_name].set_column('G:I', 20)
+            WS[ws_name].set_column('G:G', 30)
+            WS[ws_name].set_column('H:I', 20)
             WS[ws_name].set_row(0, 30)
 
         # Generate report for export:
@@ -1154,7 +1165,8 @@ class product_status_wizard(osv.osv_memory):
                 '',  # 4
                 '',  # 5
 
-                (supplier_order_list, excel_format['white']['text']),  # OF detail
+                (supplier_order_list, excel_format['white']['multiline']),  # OF detail
+
                 (peak_data, excel_format['white']['text']),  # Peak
                 (row[3], excel_format['white']['number']),  # m(x)
                 ]
