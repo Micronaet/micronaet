@@ -417,6 +417,76 @@ class product_status_wizard(osv.osv_memory):
             cr, uid, 'Stato settimanale', version='7.0', php=True,
             context=context)
 
+    def sql_account_load_supplier_order(self, cr, uid, ids, context=None):
+        """ Collect OF buy from deadline to today
+            Return product: quantity dict
+        """
+        accounting_pool = self.pool.get('micronaet.accounting')
+        company_pool = self.pool.get('res.company')
+
+        # 3 tables case operation:
+        if company_pool.table_capital_name(cr, uid, context=context):
+            or_testate = "OF_TESTATE"
+            or_righe = "OF_RIGHE"
+            pa_rubr_pdb_clfr = 'PA_RUBR_PDC_CLFR'
+        else:
+            or_testate = "or_testate"
+            or_righe = "of_righe"
+            pa_rubr_pdb_clfr = 'pa_rubr_pdc_clfr'
+
+        # Master query to run:
+        cursor = accounting_pool.connect(cr, uid, year=False, context=context)
+        try:
+            cursor.execute("""
+                SELECT 
+                    OFR.CSG_DOC, 
+                    OFR.NGB_SR_DOC, 
+                    OFR.NGL_DOC, 
+                    PA.CDS_CNT,
+                    OFR.NPR_RIGA, 
+                    OFR.CKY_ART, 
+                    OFR.DTT_SCAD, 
+                    OFR.NGB_TIPO_QTA, 
+                    OFR.NQT_RIGA_O_PLOR, 
+                    OFR.NCF_CONV
+                FROM {of_righe} AS OFR 
+                INNER JOIN {of_testate} AS OF 
+                    ON OFR.CSG_DOC = OF.CSG_DOC 
+                    AND OFR.NGB_SR_DOC = OF.NGB_SR_DOC 
+                    AND OFR.NGL_DOC = OF.NGL_DOC
+                LEFT JOIN {pa_rubr_pdb_clfr} AS PA 
+                    ON OF.CKY_CNT_CLFR = PA.CKY_CNT
+                ORDER BY OFR.DTT_SCAD DESC;
+                """.format(
+                    of_testate=or_testate,
+                    of_righe=or_righe,
+                    pa_rubr_pdb_clfr=pa_rubr_pdb_clfr,
+                ))
+            # Sort: NGL_DOC, NPR_SORT_RIGA
+        except:
+            raise osv.except_osv(
+                _('Errore accesso ordini:'),
+                _('Non si collega alla tabella ordini del gestionale!'),
+            )
+
+        # Loop on all year till deadline:
+        supplier_product = {}
+        for record in cursor.fetchall():
+            document = '{}/{}/{}'.format(*record[:2])  # First 3 item is document reference
+            product_code = record[5]
+            supplier = record[3]
+            deadline = record[6].strftime('%Y-%m-%d')  # DTT_SCAD
+            conversion = record[9] or 1.0
+            quantity = float(record[8] or 0.0) * (1.0 / conversion)
+
+            if product_code not in supplier_product:
+                supplier_product[product_code] = []
+            supplier_product[product_code].append(
+                '{}: {} di {} Q. {}'.format(deadline or 'No data di consegna', document, supplier, quantity)
+            )
+        return supplier_product
+
+
     def export_excel(self, cr, uid, ids, context=None):
         """ Export excel file
             Procedure used also for sent mail (used context parameter
@@ -483,8 +553,9 @@ class product_status_wizard(osv.osv_memory):
                 log_file.close()
             return res
 
+        # TODO remove: no more used!
         def write_supplier_order_detail(record):
-            """
+            """ Write detail of Supplier Order
             """
             if not record:
                 return ''
@@ -560,8 +631,8 @@ class product_status_wizard(osv.osv_memory):
             else:
                 return True
 
-        def add_rop_page(WS=False, products=False, excel_format=False, orders=False):
-            """ Add rop page in necessary
+        def add_rop_page(WS=False, products=None, excel_format=False, orders=False):
+            """ Add rop page if necessary
             """
             # Utility:
             def get_type(product):
@@ -574,8 +645,7 @@ class product_status_wizard(osv.osv_memory):
                 start = code[:1]
                 start2 = code[:2]
 
-                if code in excluded_code or start in 'LZ' or \
-                        start2 in ('VV', ):
+                if code in excluded_code or start in 'LZ' or start2 in ('VV', ):
                     return 'Escluso'
 
                 elif product.obsolete:
@@ -640,10 +710,7 @@ class product_status_wizard(osv.osv_memory):
             WS.freeze_panes(1, 4)
             WS.autofilter(0, 0, 0, fixed_col - 1)
 
-            sorted_products = sorted(
-                products,
-                key=lambda x: (get_type(x), x.default_code),
-            )
+            sorted_products = sorted(products, key=lambda x: (get_type(x), x.default_code))
             for product in sorted_products:
                 # Field used:
                 default_code = product.default_code or ''
@@ -721,9 +788,9 @@ class product_status_wizard(osv.osv_memory):
                 ]
                 write_xls_mrp_line(WS, row, line)
 
-            # -----------------------------------------------------------------
+            # ----------------------------------------------------------------------------------------------------------
             # Hidden row:
-            # -----------------------------------------------------------------
+            # ----------------------------------------------------------------------------------------------------------
             # if hidden_row:
             WS.filter_column_list('A', show_filter_list)
             return True
@@ -746,9 +813,9 @@ class product_status_wizard(osv.osv_memory):
 
         has_mapped = 'mapped_code_text' in product_pool._columns
 
-        # ---------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
         # Preload
-        # ---------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
         # A. Monthly peak
         monthly_peak_data = load_montly_peak_stats(self, cr, uid, ids, context=context)
 
@@ -771,9 +838,9 @@ class product_status_wizard(osv.osv_memory):
                     alternative_db[product_id] = alternative_text
         '''
 
-        # ---------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
         # XLS file:
-        # ---------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
         filename = '/tmp/production_status.xlsx'
         filename = os.path.expanduser(filename)
         _logger.info('Start export status on %s' % filename)
@@ -781,9 +848,9 @@ class product_status_wizard(osv.osv_memory):
         # Open file and write header
         WB = xlsxwriter.Workbook(filename)
 
-        # ---------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
         # Format elements:
-        # ---------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
         num_format = '#,##0'
         excel_format = {
             'title': WB.add_format({
@@ -935,9 +1002,9 @@ class product_status_wizard(osv.osv_memory):
         for ws_name in pages:
             WS[ws_name] = WB.add_worksheet(ws_name)
 
-        # ---------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
         # Column dimension:
-        # ---------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
         for ws_name in pages:
             # Material and Product:
             WS[ws_name].set_column('A:A', 35)
@@ -954,7 +1021,10 @@ class product_status_wizard(osv.osv_memory):
         cols = mrp_pool._get_cols()
 
         if data.get('with_order_detail', False):
-            history_supplier_orders = mrp_pool._get_history_supplier_orders()
+            # history_supplier_orders = mrp_pool._get_history_supplier_orders()
+            # New procedure to get order list:
+            history_supplier_orders = self.sql_account_load_supplier_order(cr, uid, False, context=context)
+
         else:
             history_supplier_orders = {}
 
@@ -1019,9 +1089,9 @@ class product_status_wizard(osv.osv_memory):
                 _logger.warning('Excluded code %s' % default_code)
                 continue
 
-            # -----------------------------------------------------------------
+            # ----------------------------------------------------------------------------------------------------------
             # Peak data:
-            # -----------------------------------------------------------------
+            # ----------------------------------------------------------------------------------------------------------
             monthly_peak = monthly_peak_data.get(default_code, {})
             peak_comment = []
             peak_data = ''
@@ -1051,16 +1121,25 @@ class product_status_wizard(osv.osv_memory):
             else:
                 alternative_product = ''  # For version MX
 
-            # -----------------------------------------------------------------
+            # ----------------------------------------------------------------------------------------------------------
             # Check data:
-            # -----------------------------------------------------------------
+            # ----------------------------------------------------------------------------------------------------------
             # minimum_qty = row_product.minimum_qty  # Ex. Account Min level!
             stock_qty = row_product.accounting_qty
             min_stock_level = row_product.min_stock_level
 
-            # -----------------------------------------------------------------
+            # ----------------------------------------------------------------------------------------------------------
+            # Prepare OF data
+            # ----------------------------------------------------------------------------------------------------------
+            if default_code in history_supplier_orders:
+                supplier_order_list = '\n'.join(history_supplier_orders[default_code])
+                # write_supplier_order_detail(history_supplier_orders.get(default_code, ''))
+            else:
+                supplier_order_list = ''
+
+            # ----------------------------------------------------------------------------------------------------------
             # Write record:
-            # -----------------------------------------------------------------
+            # ----------------------------------------------------------------------------------------------------------
             body = [
                 (row_product.name, excel_format['white']['text']),
                 (default_code, excel_format['white']['text']),
@@ -1075,17 +1154,14 @@ class product_status_wizard(osv.osv_memory):
                 '',  # 4
                 '',  # 5
 
-                (write_supplier_order_detail(
-                 history_supplier_orders.get(default_code, '')),
-                 excel_format['white']['text'],
-                 ),  # OF detail
-                (peak_data, excel_format['white']['number']),  # Peak
+                (supplier_order_list, excel_format['white']['text']),  # OF detail
+                (peak_data, excel_format['white']['text']),  # Peak
                 (row[3], excel_format['white']['number']),  # m(x)
                 ]
 
-            # -----------------------------------------------------------------
+            # ----------------------------------------------------------------------------------------------------------
             # Alternative:
-            # -----------------------------------------------------------------
+            # ----------------------------------------------------------------------------------------------------------
             if alternative_product:
                 alternative_comment = ''
                 for code in alternative_product.split('|'):
@@ -1114,9 +1190,9 @@ class product_status_wizard(osv.osv_memory):
             gap_columns = len(body)
             peak_columns = gap_columns - 2
 
-            # -----------------------------------------------------------------
+            # ----------------------------------------------------------------------------------------------------------
             # MRP extra data:
-            # -----------------------------------------------------------------
+            # ----------------------------------------------------------------------------------------------------------
             j = 0
             check_extra = ''
             for col in cols:
@@ -1142,15 +1218,16 @@ class product_status_wizard(osv.osv_memory):
                 else:  # ("=", "<"): # not present!!!
                     body.append((status_line, excel_format['white']['number']))
 
-            # -----------------------------------------------------------------
+            # ----------------------------------------------------------------------------------------------------------
             # Update with note and check data:
-            # -----------------------------------------------------------------
-            check_format = excel_format['white']['number']
+            # ----------------------------------------------------------------------------------------------------------
+            check_format = excel_format['white']['text']
             note = ''
+
             # A. MRP:
             if check_extra:
                 # Always:
-                check_format = excel_format['red']['number']
+                check_format = excel_format['red']['text']
                 check = 'Errore'
 
                 if check_extra == 'red':
@@ -1167,39 +1244,35 @@ class product_status_wizard(osv.osv_memory):
             elif stock_qty < 0.0:
                 note += '[MX Sotto 0]'
                 check = 'Errore'
-                check_format = excel_format['red']['number']
+                check_format = excel_format['red']['text']
             elif stock_qty < min_stock_level:
                 note += '[MX %s (Sotto)]' % int(min_stock_level - stock_qty)
                 check = 'Errore'
-                check_format = excel_format['yellow']['number']
+                check_format = excel_format['yellow']['text']
                 # todo also MRP check here!
             else:
                 note += '[MX %s (Sopra)]' % int(stock_qty - min_stock_level)
                 check = 'Info'
-                check_format = excel_format['green']['number']
+                check_format = excel_format['green']['text']
 
-            # -----------------------------------------------------------------
+            # ----------------------------------------------------------------------------------------------------------
             # Write Block line:
-            # -----------------------------------------------------------------
+            # ----------------------------------------------------------------------------------------------------------
             # Update placeholder value:
             body[4] = (note, check_format)  # Note
             body[5] = (check, check_format)  # Check
             # Write line generated
             write_xls_mrp_line(WS_select, i, body)
 
-            # -----------------------------------------------------------------
+            # ----------------------------------------------------------------------------------------------------------
             # Peak Comment:
-            # -----------------------------------------------------------------
+            # ----------------------------------------------------------------------------------------------------------
             if peak_comment:
                 peak_comment_text = '\n'.join(sorted(peak_comment))
-                write_xls_mrp_line_comment(
-                    WS_select, row=i, line=[peak_comment_text],
-                    gap_column=peak_columns)
+                write_xls_mrp_line_comment(WS_select, row=i, line=[peak_comment_text], gap_column=peak_columns)
             comment_line = table_comment.get(row[1])
             if comment_line:
-                write_xls_mrp_line_comment(
-                    WS_select, row=i, line=comment_line,
-                    gap_column=gap_columns)
+                write_xls_mrp_line_comment(WS_select, row=i, line=comment_line, gap_column=gap_columns)
 
             i += 1
         _logger.info('End export status on %s' % filename)

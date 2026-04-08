@@ -452,7 +452,7 @@
                 <newline />
             </field>
             <field name="date_finished" position="attributes">
-                <attribute name="readonly"></attribute>
+                <attribute name="readonly" />
             </field>
             <field name="date_finished" position="after">
                 <button name="date_stop_now" string="Stop now" type="object" attrs="{'invisible':[('state','in',('draft'))]}" groups="production_line.group_production_admin"/>
