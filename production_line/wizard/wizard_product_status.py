@@ -471,14 +471,13 @@ class product_status_wizard(osv.osv_memory):
 
         # Loop on all year till deadline:
         supplier_product = {}
-        pdb.set_trace()
         for record in cursor.fetchall():
-            document = '{}/{}/{}'.format(record[0], record[1], record[2])  # First 3 item is document reference
-            product_code = record[5]
-            supplier = record[3]
-            deadline = record[6].strftime('%Y-%m-%d')  # DTT_SCAD
-            conversion = record[9] or 1.0
-            quantity = float(record[8] or 0.0) * (1.0 / conversion)
+            document = '{}/{}/{}'.format(record['CSG_DOC'], record['NGB_SR_DOC'], record['NGL_DOC'])
+            product_code = record['CKY_ART']
+            supplier = record['CDS_CNT']
+            deadline = record['DTT_SCAD'].strftime('%Y-%m-%d')  # DTT_SCAD
+            conversion = record['NCF_CONV'] or 1.0
+            quantity = float(record['NQT_RIGA_O_PLOR'] or 0.0) * (1.0 / conversion)
 
             if product_code not in supplier_product:
                 supplier_product[product_code] = []
