@@ -477,7 +477,7 @@ class product_status_wizard(osv.osv_memory):
             supplier = record['CDS_CNT']
             deadline = record['DTT_SCAD'].strftime('%Y-%m-%d')  # DTT_SCAD
             conversion = record['NCF_CONV'] or 1.0
-            quantity = int(record['NQT_RIGA_O_PLOR'] or 0.0) * (1.0 / conversion)
+            quantity = int((record['NQT_RIGA_O_PLOR'] or 0.0) * (1.0 / conversion))
 
             if product_code not in supplier_product:
                 supplier_product[product_code] = []
@@ -1040,7 +1040,6 @@ class product_status_wizard(osv.osv_memory):
             # history_supplier_orders = mrp_pool._get_history_supplier_orders()
             # New procedure to get order list:
             history_supplier_orders = self.sql_account_load_supplier_order(cr, uid, False, context=context)
-
         else:
             history_supplier_orders = {}
 
