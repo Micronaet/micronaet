@@ -477,7 +477,7 @@ class product_status_wizard(osv.osv_memory):
             supplier = record['CDS_CNT']
             deadline = record['DTT_SCAD'].strftime('%Y-%m-%d')  # DTT_SCAD
             conversion = record['NCF_CONV'] or 1.0
-            quantity = float(record['NQT_RIGA_O_PLOR'] or 0.0) * (1.0 / conversion)
+            quantity = int(record['NQT_RIGA_O_PLOR'] or 0.0) * (1.0 / conversion)
 
             if product_code not in supplier_product:
                 supplier_product[product_code] = []
@@ -1007,8 +1007,7 @@ class product_status_wizard(osv.osv_memory):
                 'WS': WB.add_worksheet('ROP'),
                 'excel_format': excel_format,
                 'products': products,
-                'orders': mrp_pool.get_external_supplier_order(
-                    cr, uid, context=context)
+                'orders': mrp_pool.get_external_supplier_order(cr, uid, context=context)
             }
             add_rop_page(**parameters)
 
