@@ -681,7 +681,7 @@ class product_status_wizard(osv.osv_memory):
             WS.set_column('C:C', 45)
             WS.set_column('D:D', 8)
             WS.set_column('E:F', 10)
-            WS.set_column('G:G', 45)
+            WS.set_column('G:G', 15)
             WS.set_column('H:N', 10)
             WS.set_row(0, 35)
 
@@ -1027,7 +1027,7 @@ class product_status_wizard(osv.osv_memory):
             WS[ws_name].set_column('C:D', 10)
             WS[ws_name].set_column('E:E', 20)
             WS[ws_name].set_column('F:F', 13)
-            WS[ws_name].set_column('G:G', 30)
+            WS[ws_name].set_column('G:G', 45)
             WS[ws_name].set_column('H:I', 20)
             WS[ws_name].set_row(0, 30)
 
