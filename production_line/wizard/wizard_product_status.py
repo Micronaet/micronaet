@@ -471,6 +471,7 @@ class product_status_wizard(osv.osv_memory):
 
         # Loop on all year till deadline:
         supplier_product = {}
+        pdb.set_trace()
         for record in cursor.fetchall():
             document = '{}/{}/{}'.format(record[0], record[1], record[2])  # First 3 item is document reference
             product_code = record[5]
