@@ -472,7 +472,7 @@ class product_status_wizard(osv.osv_memory):
         # Loop on all year till deadline:
         supplier_product = {}
         for record in cursor.fetchall():
-            document = '{}/{}/{}'.format(*record[:2])  # First 3 item is document reference
+            document = '{}/{}/{}'.format(record[0], record[1], record[2])  # First 3 item is document reference
             product_code = record[5]
             supplier = record[3]
             deadline = record[6].strftime('%Y-%m-%d')  # DTT_SCAD
@@ -488,7 +488,7 @@ class product_status_wizard(osv.osv_memory):
 
 
     def export_excel(self, cr, uid, ids, context=None):
-        """ Export excel file
+        """ Export Excel file
             Procedure used also for sent mail (used context parameter
             sendmail for activate with datas passed)
         """
