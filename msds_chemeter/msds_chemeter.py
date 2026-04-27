@@ -445,8 +445,7 @@ class MsdsChemeter(orm.Model):
         sapnaet_ids = sapnaet_pool.search(cr, uid, [], context=context)
         ctx = context.copy()
         ctx['update_record'] = True
-        report_data = sapnaet_pool.button_report_msds_delivery_report(
-            cr, uid, sapnaet_ids, context=ctx)
+        report_data = sapnaet_pool.button_report_msds_delivery_report(cr, uid, sapnaet_ids, context=ctx)
 
         # Check and update record data:
         _logger.info(_('Update record and creare PDF'))
