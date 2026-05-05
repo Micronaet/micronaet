@@ -567,6 +567,7 @@ class ProductProduct(orm.Model):
             ('default_code', 'not ilike', 'Z%'),
         ], context=context)
         _logger.info('Selected {} product to update mixture'.format(len(product_ids)))
+
         for product in self.browse(cr, uid, product_ids, context=context):
             new_val = self.get_mixture_code(product) or False
             if product.msds_mixture_code != new_val:
