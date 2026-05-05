@@ -550,9 +550,20 @@ class ProductProduct(orm.Model):
         # Update pattern product:
         updates = {}
 
-        product_ids = self.search(cr, uid, [
+        cr.execute('''
+            SELECT id 
+            FROM product_product 
+            WHERE 
+                defalt_code is not null AND 
+                default_code != '' AND
+                left(default_code, 1) not in (
+                    'A', 'B', 'C', 'L', 'M', 'P', 'R', 'V', 'W', 'Z', 
+                    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+            ''')
+        product_ids = [record[0] for record in cr.fetchall()]
+
+        '''product_ids = self.search(cr, uid, [
             ('default_code', '!=', False),        # No null code
-            ('default_code', '!=', ''),           # No empty string code
             # Not start with:
             ('default_code', 'not ilike', 'A%'),
             ('default_code', 'not ilike', 'B%'),
@@ -565,7 +576,8 @@ class ProductProduct(orm.Model):
             ('default_code', 'not ilike', 'V%'),
             ('default_code', 'not ilike', 'W%'),
             ('default_code', 'not ilike', 'Z%'),
-        ], context=context)
+        ], context=context)'''
+
         _logger.info('Selected {} product to update mixture'.format(len(product_ids)))
 
         for product in self.browse(cr, uid, product_ids, context=context):
