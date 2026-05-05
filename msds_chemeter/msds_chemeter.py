@@ -534,7 +534,7 @@ class ProductProduct(orm.Model):
             start1 = default_code[:1] or ''
             if not default_code or start1 in 'ABCLMPRVWZ' or start1.isdigit():
                 # 2. No Code or Excluded items:
-                _logger.warning('No Mixture code found (or exluded)')
+                _logger.warning('No Mixture code found (or excluded): {}'.format(default_code))
                 return ''
 
             elif start1 == 'E':  # TODO M?
