@@ -532,13 +532,13 @@ class ProductProduct(orm.Model):
         else:
             default_code = (product.default_code or '').upper()
             start1 = default_code[:1] or ''
-            if not default_code:
-                # 2. No Code:
-                _logger.warning('No Mixture code found')
+            if not default_code or start1 in 'ABCLMPRVWZ' or start1.isdigit():
+                # 2. No Code or Excluded items:
+                _logger.warning('No Mixture code found (or exluded)')
                 return ''
 
-            elif start1 in 'ABCELMPRVWZ' or start1.isdigit():
-                # 3. Machine code or unused code or Energo:
+            elif start1 == 'E':  # TODO M?
+                # 3. used as is code, like Energo:  (TODO Machine code)
                 return default_code
 
             # 4. Granulometry code:
@@ -557,7 +557,7 @@ class ProductProduct(orm.Model):
             ('default_code', 'not ilike', 'A%'),
             ('default_code', 'not ilike', 'B%'),
             ('default_code', 'not ilike', 'C%'),
-            ('default_code', 'not ilike', 'E%'),
+            # ('default_code', 'not ilike', 'E%'),
             ('default_code', 'not ilike', 'L%'),
             ('default_code', 'not ilike', 'M%'),
             ('default_code', 'not ilike', 'P%'),
