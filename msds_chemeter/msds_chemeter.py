@@ -550,7 +550,7 @@ class ProductProduct(orm.Model):
         # Update pattern product:
         updates = {}
 
-        product_ids = self.search(cr, uid, domain = [
+        product_ids = self.search(cr, uid, [
             ('default_code', '!=', False),        # No null code
             ('default_code', '!=', ''),           # No empty string code
             # Not start with:
