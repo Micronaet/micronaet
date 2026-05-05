@@ -426,11 +426,10 @@ class MsdsChemeter(orm.Model):
         try:
             # todo better
             company_proxy = company_pool.browse(cr, uid, 1, context=context)
-            msds_folder_store = os.path.expanduser(
-                company_proxy.msds_folder_store)
+            msds_folder_store = os.path.expanduser(company_proxy.msds_folder_store)
             msds_mask = os.path.join(
                 msds_folder_store,
-                '{}.pdf'
+                '{}.pdf',   # TODO format value?
             )
         except:
             log_message = _(
@@ -545,7 +544,7 @@ class ProductProduct(orm.Model):
             # 4. Granulometry code:
             return '{}_{}'.format(default_code[:5], default_code[6:])
 
-    def scheduled_set_all_product_mixture(self, cr, uid, ids, context=None):
+    def scheduled_set_all_product_mixture(self, cr, uid, context=None):
         """ Set all mixtures
         """
         # Update pattern product:
@@ -567,6 +566,7 @@ class ProductProduct(orm.Model):
             ('default_code', 'not ilike', 'W%'),
             ('default_code', 'not ilike', 'Z%'),
         ], context=context)
+        _logger.info('Selected {} product to update mixture'.format(len(product_ids)))
         for product in self.browse(cr, uid, product_ids, context=context):
             new_val = self.get_mixture_code(product) or False
             if product.msds_mixture_code != new_val:
