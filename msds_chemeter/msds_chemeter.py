@@ -554,7 +554,7 @@ class ProductProduct(orm.Model):
             SELECT id 
             FROM product_product 
             WHERE 
-                defalt_code is not null AND 
+                default_code is not null AND 
                 default_code != '' AND
                 left(default_code, 1) not in (
                     'A', 'B', 'C', 'L', 'M', 'P', 'R', 'V', 'W', 'Z', 
