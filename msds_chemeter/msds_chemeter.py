@@ -511,8 +511,6 @@ class MsdsChemeter(orm.Model):
         }
 
     '''
-
-
 class ProductProduct(orm.Model):
     """ Add extra info in product
     """
@@ -528,25 +526,58 @@ class ProductProduct(orm.Model):
     def get_mixture_code(self, product):
         """ Extract mixture code
         """
-        # For external call:
-        if type(product) == int:
-            product = self.browse(cr, uid, product, context=context)
-            
         if product.force_mixture:
             # 1. Forced code:
             return product.force_mixture
 
         else:
-            default_code = product.default_code or ''
+            default_code = (product.default_code or '').upper()
+            start1 = default_code[:1] or ''
             if not default_code:
                 # 2. No Code:
                 _logger.warning('No Mixture code found')
                 return ''
-            elif default_code.startswith('MQ') or default_code.startswith('E') or default_code.startswith('A'):
-                # 3. Machine code:
+
+            elif start1 in 'ABCELMPRVWZ' or start1.isdigit():
+                # 3. Machine code or unused code or Energo:
                 return default_code
+
             # 4. Granulometry code:
             return '{}_{}'.format(default_code[:5], default_code[6:])
+
+    def scheduled_set_all_product_mixture(self, cr, uid, ids, context=None):
+        """ Set all mixtures
+        """
+        # Update pattern product:
+        updates = {}
+
+        product_ids = self.search(cr, uid, domain = [
+            ('default_code', '!=', False),        # No null code
+            ('default_code', '!=', ''),           # No empty string code
+            # Not start with:
+            ('default_code', 'not ilike', 'A%'),
+            ('default_code', 'not ilike', 'B%'),
+            ('default_code', 'not ilike', 'C%'),
+            ('default_code', 'not ilike', 'E%'),
+            ('default_code', 'not ilike', 'L%'),
+            ('default_code', 'not ilike', 'M%'),
+            ('default_code', 'not ilike', 'P%'),
+            ('default_code', 'not ilike', 'R%'),
+            ('default_code', 'not ilike', 'V%'),
+            ('default_code', 'not ilike', 'W%'),
+            ('default_code', 'not ilike', 'Z%'),
+        ], context=context)
+        for product in self.browse(cr, uid, product_ids, context=context):
+            new_val = self.get_mixture_code(product) or False
+            if product.msds_mixture_code != new_val:
+                updates.setdefault(new_val, []).append(product.id)
+
+        # Update operation:
+        for val, ids_to_update in updates.items():
+            self.write(cr, uid, ids_to_update, {
+                'msds_mixture_code': val,
+            }, context=context)
+        return True
 
     def _get_msds_chemeter_m2m(
             self, cr, uid, ids, field_names, arg=None, context=None):
@@ -568,6 +599,7 @@ class ProductProduct(orm.Model):
         return res
 
     _columns = {
+        'msds_mixture_code': fields.char('Codice Mixture', size=35),
         'msds_manual': fields.boolean(
             'MSDS Manuale',
             help='Non permette la stampa della scheda, va fatta a mano '
