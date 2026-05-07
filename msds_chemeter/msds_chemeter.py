@@ -561,35 +561,20 @@ class ProductProduct(orm.Model):
                     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
             ''')
         product_ids = [record[0] for record in cr.fetchall()]
-
-        '''product_ids = self.search(cr, uid, [
-            ('default_code', '!=', False),        # No null code
-            # Not start with:
-            ('default_code', 'not ilike', 'A%'),
-            ('default_code', 'not ilike', 'B%'),
-            ('default_code', 'not ilike', 'C%'),
-            # ('default_code', 'not ilike', 'E%'),
-            ('default_code', 'not ilike', 'L%'),
-            ('default_code', 'not ilike', 'M%'),
-            ('default_code', 'not ilike', 'P%'),
-            ('default_code', 'not ilike', 'R%'),
-            ('default_code', 'not ilike', 'V%'),
-            ('default_code', 'not ilike', 'W%'),
-            ('default_code', 'not ilike', 'Z%'),
-        ], context=context)'''
-
         _logger.info('Selected {} product to update mixture'.format(len(product_ids)))
 
         for product in self.browse(cr, uid, product_ids, context=context):
-            new_val = self.get_mixture_code(product) or False
-            if product.msds_mixture_code != new_val:
-                updates.setdefault(new_val, []).append(product.id)
+            new_mixture = self.get_mixture_code(product) or False
+            if product.msds_mixture_code != new_mixture:
+                updates.setdefault(new_mixture, []).append(product.id)
 
         # Update operation:
-        for val, ids_to_update in updates.items():
-            self.write(cr, uid, ids_to_update, {
-                'msds_mixture_code': val,
+        for new_mixture in updates:
+            record_ids = updates[new_mixture]
+            self.write(cr, uid, record_ids, {
+                'msds_mixture_code': new_mixture,
             }, context=context)
+        _logger.info('Updated {} mixture product'.format(len(updates)))
         return True
 
     def _get_msds_chemeter_m2m(
