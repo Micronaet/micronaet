@@ -90,7 +90,6 @@ class ProductProductInherit(osv.Model):
 
                 _logger.error('Running year {} query: {}'.format(year, query))
                 cursor.execute(query)
-                pdb.set_trace()
                 if not cursor:
                     _logger.error('Error access OF {}'.format(year))
                 else:
