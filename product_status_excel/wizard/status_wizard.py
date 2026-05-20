@@ -89,7 +89,7 @@ class ProductProductInherit(osv.Model):
 
                 _logger.error('Running year {} query: {}'.format(year, query))
                 cursor.execute(query)
-
+                pdb.set_trace()
                 if not cursor_of:
                     _logger.error('Error access OF {}'.format(year))
                 else:
@@ -103,7 +103,7 @@ class ProductProductInherit(osv.Model):
                             supplier_product[ref] = 0.0
 
                         conversion = supplier_order['NCF_CONV'] or 1.0
-                        quantity = float(supplier_order['NQT_RIGA_O_PLOR'] or 0.0) * (1.0 / conversion)
+                        quantity = float(supplier_order['quantity'] or 0.0) * (1.0 / conversion)
                         supplier_product[ref] += quantity
                         log_f.write('{}|{}-{}-{}|{}|{}|{}\n'.format(
                             mode,
