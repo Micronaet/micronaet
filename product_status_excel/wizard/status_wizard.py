@@ -56,8 +56,7 @@ class ProductProductInherit(osv.Model):
         accounting_pool = self.pool.get('micronaet.accounting')
         company_pool = self.pool.get('res.company')
         mode = 'mm' # 'OF'
-
-        cursor_of = accounting_pool.get_of_line_quantity_deadline(cr, uid)
+        # cursor_of = accounting_pool.get_of_line_quantity_deadline(cr, uid)
 
         table = "{}_righe".format(mode)
         if company_pool.table_capital_name(cr, uid, context=context):
@@ -71,7 +70,9 @@ class ProductProductInherit(osv.Model):
         _logger.info('Create log file {}'.format(log_f))
         try:
             for year in range(from_year, current_year + 1):
+                # Cursor for year:
                 cursor = accounting_pool.connect(cr, uid, year=year, context=context)
+
                 # todo add deadline in query:
                 # CSG_DOC, NGB_SR_DOC, NGL_DOC, NPR_RIGA, CKY_ART, DTT_SCAD, NGB_TIPO_QTA, NQT_RIGA_O_PLOR, NCF_CONV
                 if mode == 'mm':  # BF
@@ -88,8 +89,7 @@ class ProductProductInherit(osv.Model):
                         FROM %s;""" % table
 
                 _logger.error('Running year {} query: {}'.format(year, query))
-                cursor.execute(query)
-                pdb.set_trace()
+                cursor_of = cursor.execute(query)
                 if not cursor_of:
                     _logger.error('Error access OF {}'.format(year))
                 else:
@@ -152,7 +152,7 @@ class ProductProductInherit(osv.Model):
         # --------------------------------------------------------------------------------------------------------------
         # BF (Load):
         # --------------------------------------------------------------------------------------------------------------
-        # SQL Table for bf:
+        # SQL Table for BF:
         supplier_orders = self.get_external_supplier_deadline_order(cr, uid, deadline=deadline, context=context)
         for default_code in supplier_orders:
             if not default_code or default_code not in master_data:
