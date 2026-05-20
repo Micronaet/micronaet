@@ -67,7 +67,7 @@ class ProductProductInherit(osv.Model):
         current_year = datetime.now().year
         from_year = int(deadline[:4])
         supplier_product = {}
-        log_f = open('/tmp/report_stock_level_OF.csv', 'w')
+        log_f = open('/tmp/report_stock_level_{}.csv'.format(mode), 'w')
         _logger.info('Create log file {}'.format(log_f))
         try:
             for year in range(from_year, current_year + 1):
@@ -76,14 +76,14 @@ class ProductProductInherit(osv.Model):
                 # CSG_DOC, NGB_SR_DOC, NGL_DOC, NPR_RIGA, CKY_ART, DTT_SCAD, NGB_TIPO_QTA, NQT_RIGA_O_PLOR, NCF_CONV
                 if mode == 'mm':  # BF
                     cursor.execute("""
-                        SELECT CKY_ART, DTT_SCAD, NQT_RIGA_ART_PLOR, NCF_CONV,
+                        SELECT CKY_ART, DTT_SCAD, NQT_RIGA_ART_PLOR as quantity, NCF_CONV,
                                CSG_DOC, NGB_SR_DOC, NGL_DOC, DTT_SCAD
                         FROM %s 
                         WHERE CSG_DOC = 'BF';
                         """ % table)
                 else:  # OF mode
                     cursor.execute("""
-                        SELECT CKY_ART, DTT_SCAD, NQT_RIGA_O_PLOR, NCF_CONV,
+                        SELECT CKY_ART, DTT_SCAD, NQT_RIGA_O_PLOR as quantity, NCF_CONV,
                                CSG_DOC, NGB_SR_DOC, NGL_DOC, DTT_SCAD
                         FROM %s;""" % table)
 
