@@ -87,7 +87,7 @@ class ProductProductInherit(osv.Model):
                                CSG_DOC, NGB_SR_DOC, NGL_DOC, DTT_SCAD
                         FROM %s;""" % table
 
-                _logger.error('Running query: {}'.format(query))
+                _logger.error('Running year {} query: {}'.format(year, query))
                 cursor.execute(query)
 
                 if not cursor_of:
