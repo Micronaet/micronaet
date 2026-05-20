@@ -55,18 +55,18 @@ class ProductProductInherit(osv.Model):
         """
         accounting_pool = self.pool.get('micronaet.accounting')
         company_pool = self.pool.get('res.company')
-        mode = 'mm' # 'OF'
-        # cursor_of = accounting_pool.get_of_line_quantity_deadline(cr, uid)
 
-        table = "{}_righe".format(mode)
+        table = "mm_righe"
+        header_table = "mm_testate"
         if company_pool.table_capital_name(cr, uid, context=context):
             table = table.upper()
+            header_table = header_table.upper()
 
         # Loop on all year till deadline:
         current_year = datetime.now().year
         from_year = int(deadline[:4])
         supplier_product = {}
-        log_f = open('/tmp/report_stock_level_{}.csv'.format(mode), 'w')
+        log_f = open('/tmp/report_stock_level_BF.csv', 'w')
         _logger.info('Create log file {}'.format(log_f))
         try:
             for year in range(from_year, current_year + 1):
@@ -75,18 +75,25 @@ class ProductProductInherit(osv.Model):
 
                 # todo add deadline in query:
                 # CSG_DOC, NGB_SR_DOC, NGL_DOC, NPR_RIGA, CKY_ART, DTT_SCAD, NGB_TIPO_QTA, NQT_RIGA_O_PLOR, NCF_CONV
-                if mode == 'mm':  # BF
-                    query = """
-                        SELECT CKY_ART, DTT_SCAD, NQT_RIGA_ART_PLOR as quantity, NCF_CONV,
-                               CSG_DOC, NGB_SR_DOC, NGL_DOC, DTT_SCAD
-                        FROM %s 
-                        WHERE CSG_DOC = 'BF';
-                        """ % table
-                else:  # OF mode
-                    query = """
-                        SELECT CKY_ART, DTT_SCAD, NQT_RIGA_O_PLOR as quantity, NCF_CONV,
-                               CSG_DOC, NGB_SR_DOC, NGL_DOC, DTT_SCAD
-                        FROM %s;""" % table
+                query = """
+                    SELECT 
+                        R.CKY_ART codice, R.NQT_RIGA_ART_PLOR quantity, R.NCF_CONV conversion,
+                        R.CSG_DOC sigla, R.NGB_SR_DOC serie, R.NGL_DOC numero, 
+                        T.DTT_DOC data
+                    FROM 
+                        {riga} as R JOIN {testata} as T ON 
+                            R.CSG_DOC = T.CSG_DOC AND 
+                            R.NGB_SR_DOC = T.NGB_SR_DOC AND 
+                            R.NGL_DOC = T.NGL_DOC AND 
+                            R.CKY_CNT_CLFR = T.CKY_CNT_CLFR  
+                    WHERE 
+                        R.CSG_DOC = 'BF';
+                    """.format(riga=table, testata=header_table)
+
+                # OLD OF
+                #        SELECT CKY_ART, DTT_SCAD, NQT_RIGA_O_PLOR as quantity, NCF_CONV,
+                #               CSG_DOC, NGB_SR_DOC, NGL_DOC, DTT_SCAD
+                #        FROM %s;""" % table
 
                 _logger.error('Running year {} query: {}'.format(year, query))
                 cursor.execute(query)
@@ -94,23 +101,22 @@ class ProductProductInherit(osv.Model):
                     _logger.error('Error access OF {}'.format(year))
                 else:
                     for supplier_order in cursor:  # all open OC
-                        of_deadline = supplier_order['DTT_SCAD'].strftime('%Y-%m-%d')
-                        if of_deadline < deadline:
+                        delivery_date = supplier_order['data'].strftime('%Y-%m-%d')
+                        if delivery_date < deadline:
                             continue  # Not used
 
-                        ref = supplier_order['CKY_ART'].strip()
+                        ref = supplier_order['codice'].strip()
                         if ref not in supplier_product:
                             supplier_product[ref] = 0.0
 
-                        conversion = supplier_order['NCF_CONV'] or 1.0
+                        conversion = supplier_order['conversion'] or 1.0
                         quantity = float(supplier_order['quantity'] or 0.0) * (1.0 / conversion)
                         supplier_product[ref] += quantity
-                        log_f.write('{}|{}-{}-{}|{}|{}|{}\n'.format(
-                            mode,
-                            supplier_order['CSG_DOC'],
-                            supplier_order['NGB_SR_DOC'],
-                            supplier_order['NGL_DOC'],
-                            supplier_order['DTT_SCAD'],
+                        log_f.write('BF|{}-{}-{}|{}|{}|{}\n'.format(
+                            supplier_order['sigla'],
+                            supplier_order['serie'],
+                            supplier_order['numero'],
+                            supplier_order['data'],
                             ref,
                             quantity,
                         ))
