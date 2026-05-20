@@ -55,13 +55,13 @@ class ProductProductInherit(osv.Model):
         """
         accounting_pool = self.pool.get('micronaet.accounting')
         company_pool = self.pool.get('res.company')
+        mode = 'mm' # 'OF'
 
         cursor_of = accounting_pool.get_of_line_quantity_deadline(cr, uid)
 
+        table = "{}_righe".format(mode)
         if company_pool.table_capital_name(cr, uid, context=context):
-            table = "OF_RIGHE"
-        else:
-            table = "of_righe"
+            table = table.upper()
 
         # Loop on all year till deadline:
         current_year = datetime.now().year
@@ -74,10 +74,18 @@ class ProductProductInherit(osv.Model):
                 cursor = accounting_pool.connect(cr, uid, year=year, context=context)
                 # todo add deadline in query:
                 # CSG_DOC, NGB_SR_DOC, NGL_DOC, NPR_RIGA, CKY_ART, DTT_SCAD, NGB_TIPO_QTA, NQT_RIGA_O_PLOR, NCF_CONV
-                cursor.execute("""
-                    SELECT CKY_ART, DTT_SCAD, NQT_RIGA_O_PLOR, NCF_CONV,
-                           CSG_DOC, NGB_SR_DOC, NGL_DOC, DTT_SCAD
-                    FROM %s;""" % table)
+                if mode == 'mm':  # BF
+                    cursor.execute("""
+                        SELECT CKY_ART, DTT_SCAD, NQT_RIGA_ART_PLOR, NCF_CONV,
+                               CSG_DOC, NGB_SR_DOC, NGL_DOC, DTT_SCAD
+                        FROM %s 
+                        WHERE CSG_DOC = 'BF';
+                        """ % table)
+                else:  # OF mode
+                    cursor.execute("""
+                        SELECT CKY_ART, DTT_SCAD, NQT_RIGA_O_PLOR, NCF_CONV,
+                               CSG_DOC, NGB_SR_DOC, NGL_DOC, DTT_SCAD
+                        FROM %s;""" % table)
 
                 if not cursor_of:
                     _logger.error('Error access OF {}'.format(year))
@@ -94,7 +102,8 @@ class ProductProductInherit(osv.Model):
                         conversion = supplier_order['NCF_CONV'] or 1.0
                         quantity = float(supplier_order['NQT_RIGA_O_PLOR'] or 0.0) * (1.0 / conversion)
                         supplier_product[ref] += quantity
-                        log_f.write('OF|{}-{}-{}|{}|{}|{}\n'.format(
+                        log_f.write('{}|{}-{}-{}|{}|{}|{}\n'.format(
+                            mode,
                             supplier_order['CSG_DOC'],
                             supplier_order['NGB_SR_DOC'],
                             supplier_order['NGL_DOC'],
@@ -140,7 +149,6 @@ class ProductProductInherit(osv.Model):
         # --------------------------------------------------------------------------------------------------------------
         # BF (Load):
         # --------------------------------------------------------------------------------------------------------------
-
         # SQL Table for bf:
         supplier_orders = self.get_external_supplier_deadline_order(cr, uid, deadline=deadline, context=context)
         for default_code in supplier_orders:
@@ -471,6 +479,7 @@ class ProductExtractProductXlsWizard(orm.TransientModel):
         all_product_ids = product_pool.search(cr, uid, [
             ('default_code', '!=', False)
             ], context=context)
+        # SQL load / Unload data:
         preload_stock_stats = product_pool.preload_data_load_unload_product(
             cr, uid, all_product_ids, days=windows_days, context=context)
 
