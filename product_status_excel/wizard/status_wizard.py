@@ -93,7 +93,7 @@ class ProductProductInherit(osv.Model):
                 if not cursor_of:
                     _logger.error('Error access OF {}'.format(year))
                 else:
-                    for supplier_order in cursor_of:  # all open OC
+                    for supplier_order in cursor_of.fetchall():  # all open OC
                         of_deadline = supplier_order['DTT_SCAD'].strftime('%Y-%m-%d')
                         if of_deadline < deadline:
                             continue  # Not used
