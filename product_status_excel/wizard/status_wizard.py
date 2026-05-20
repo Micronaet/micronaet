@@ -75,17 +75,20 @@ class ProductProductInherit(osv.Model):
                 # todo add deadline in query:
                 # CSG_DOC, NGB_SR_DOC, NGL_DOC, NPR_RIGA, CKY_ART, DTT_SCAD, NGB_TIPO_QTA, NQT_RIGA_O_PLOR, NCF_CONV
                 if mode == 'mm':  # BF
-                    cursor.execute("""
+                    query = """
                         SELECT CKY_ART, DTT_SCAD, NQT_RIGA_ART_PLOR as quantity, NCF_CONV,
                                CSG_DOC, NGB_SR_DOC, NGL_DOC, DTT_SCAD
                         FROM %s 
                         WHERE CSG_DOC = 'BF';
-                        """ % table)
+                        """ % table
                 else:  # OF mode
-                    cursor.execute("""
+                    query = """
                         SELECT CKY_ART, DTT_SCAD, NQT_RIGA_O_PLOR as quantity, NCF_CONV,
                                CSG_DOC, NGB_SR_DOC, NGL_DOC, DTT_SCAD
-                        FROM %s;""" % table)
+                        FROM %s;""" % table
+
+                _logger.error('Running query: {}'.format(query))
+                cursor.execute(query)
 
                 if not cursor_of:
                     _logger.error('Error access OF {}'.format(year))
