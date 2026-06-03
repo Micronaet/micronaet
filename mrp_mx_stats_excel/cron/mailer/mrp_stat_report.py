@@ -336,7 +336,7 @@ for mode in smtp['report_mode']:
     # Launch extract procedure for this mode:
     mrp.extract_mrp_stats_excel_report(mode)
 
-    file_log = 'Read %s, dimension %s byte' % (
+    file_log = 'Read %s, dimension %s bytes' % (
         fullname,
         os.path.getsize(fullname),
     )
