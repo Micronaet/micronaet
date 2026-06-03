@@ -301,7 +301,7 @@ if not mailer_ids:
 odoo_mailer = mailer.browse(mailer_ids)[0]
 
 # Open connection:
-print('[INFO] Sending using "%s" connection [%s:%s]' % (
+print('[INFO] Select SMTP from ERP "%s" connection [%s:%s]' % (
     odoo_mailer.name,
     odoo_mailer.smtp_host,
     odoo_mailer.smtp_port,
@@ -333,6 +333,7 @@ for mode in smtp['report_mode']:
         print('[ERR] Connect only SMTP SSL server!')
         sys.exit()
     smtp_server.login(odoo_mailer.smtp_user, odoo_mailer.smtp_pass)
+    print('[INFO] Sending mode %s using email "%s"' % (mode, odoo_mailer.smtp_user))
 
     file_log = 'Read %s, dimension %s bytes' % (
         fullname,
