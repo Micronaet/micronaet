@@ -37,6 +37,8 @@ from email import Encoders
 cfg_file = os.path.expanduser('../openerp.cfg')
 now = ('%s' % datetime.now())[:19]
 
+print('[INFO] Reading config file "%s" now [%s]' % (cfg_file, now))
+
 config = ConfigParser.ConfigParser()
 config.read([cfg_file])
 
@@ -323,8 +325,7 @@ for mode in smtp['report_mode']:
         continue
 
     filename = u'PCA OpenERP Contipaq %s.%s.xlsx' % (now, mode)
-    fullname = os.path.expanduser(
-        os.path.join(smtp['folder'], filename))
+    fullname = os.path.expanduser(os.path.join(smtp['folder'], filename))
     context = {
         'save_mode': fullname,
         }
