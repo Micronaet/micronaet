@@ -350,7 +350,7 @@ for mode in smtp['report_mode']:
         Encoders.encode_base64(part)
         part.add_header('Content-Disposition', 'attachment; filename="%s"' % filename)
 
-        msg.attach(part)
+        # msg.attach(part)
 
         # Send mail:
         smtp_server.sendmail(odoo_mailer.smtp_user, to, msg.as_string())
