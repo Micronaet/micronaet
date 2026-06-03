@@ -334,7 +334,13 @@ for mode in smtp['report_mode']:
     mrp = odoo.model('mrp.production')
 
     # Launch extract procedure for this mode:
-    # mrp.extract_mrp_stats_excel_report(mode)
+    mrp.extract_mrp_stats_excel_report(mode)
+
+    file_log = 'Read %s, dimension %s byte' % (
+        fullname,
+        os.path.getsize(fullname),
+    )
+    print(file_log)
 
     for to in smtp['report_mode'][mode]:
         to = to.replace(' ', '')
