@@ -334,7 +334,7 @@ for mode in smtp['report_mode']:
     mrp = odoo.model('mrp.production')
 
     # Launch extract procedure for this mode:
-    mrp.extract_mrp_stats_excel_report(mode)
+    # mrp.extract_mrp_stats_excel_report(mode)
 
     for to in smtp['report_mode'][mode]:
         to = to.replace(' ', '')
@@ -345,12 +345,14 @@ for mode in smtp['report_mode']:
         msg['To'] = ','.join(smtp['report_mode'][mode]) # XXX See all delivery!
         msg.attach(MIMEText(smtp['text'][mode], 'html'))
 
+        '''
         part = MIMEBase('application', 'octet-stream')
         part.set_payload(open(fullname, 'rb').read())
         Encoders.encode_base64(part)
         part.add_header('Content-Disposition', 'attachment; filename="%s"' % filename)
 
-        # msg.attach(part)
+        msg.attach(part)
+        '''
 
         # Send mail:
         smtp_server.sendmail(odoo_mailer.smtp_user, to, msg.as_string())
