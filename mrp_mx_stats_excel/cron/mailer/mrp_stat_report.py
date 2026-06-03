@@ -341,23 +341,24 @@ for mode in smtp['report_mode']:
     )
     print(file_log)
 
-    for to in smtp['report_mode'][mode]:
-        to = to.replace(' ', '')
-        print('Sending mail %s to: %s ...' % (mode, to))
-        msg = MIMEMultipart()
-        msg['Subject'] = smtp['subject']
-        msg['From'] = odoo_mailer.smtp_user
-        msg['To'] = ','.join(smtp['report_mode'][mode]) # XXX See all delivery!
-        msg.attach(MIMEText(smtp['text'][mode], 'html'))
+    recipients_list = [email.replace(' ', '') for email in smtp['report_mode'][mode]]
+    print('Sending single mail %s to ALL recipients: %s ...' % (mode, ', '.join(recipients_list)))
 
-        part = MIMEBase('application', 'octet-stream')
-        part.set_payload(open(fullname, 'rb').read())
-        Encoders.encode_base64(part)
-        part.add_header('Content-Disposition', 'attachment; filename="%s"' % filename)
+    msg = MIMEMultipart()
+    msg['Subject'] = smtp['subject']
+    msg['From'] = odoo_mailer.smtp_user
+    msg['To'] = ','.join(recipients_list)
+    msg.attach(MIMEText(smtp['text'][mode], 'html'))
 
-        msg.attach(part)
+    # Add attachment:
+    part = MIMEBase('application', 'octet-stream')
+    part.set_payload(open(fullname, 'rb').read())
+    Encoders.encode_base64(part)
+    part.add_header('Content-Disposition', 'attachment; filename="%s"' % filename)
 
-        # Send mail:
-        smtp_server.sendmail(odoo_mailer.smtp_user, to, msg.as_string())
+    msg.attach(part)
 
-smtp_server.quit()
+    # Send mail:
+    smtp_server.sendmail(odoo_mailer.smtp_user, recipients_list, msg.as_string())
+    # End session for this loop
+    smtp_server.quit()
