@@ -142,7 +142,7 @@ class MsdsChemeter(orm.Model):
         company_ids = company_pool.search(cr, uid, [], context=context)
         company = company_pool.browse(cr, uid, company_ids, context=context)[0]
         folder = os.path.expanduser(company.msds_chemeter_folder_store)
-        res = os.path.join(folder, "%s.pdf" % product_id)
+        res = os.path.join(folder, "{}.pdf".format(product_id)
         return res
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -214,9 +214,7 @@ class MsdsChemeter(orm.Model):
                 return reply
 
             _logger.warning('Saving Chemeter MSDS as {}'.format(filename))
-            command = "wget -O \"{}\" --content-disposition \"{}\"".format(
-                filename, url
-            )
+            command = "wget -O \"{}\" --content-disposition \"{}\"".format(filename, url)
             os.system(command)
             # todo check if is a PDF file here
         except:
