@@ -142,7 +142,7 @@ class MsdsChemeter(orm.Model):
         company_ids = company_pool.search(cr, uid, [], context=context)
         company = company_pool.browse(cr, uid, company_ids, context=context)[0]
         folder = os.path.expanduser(company.msds_chemeter_folder_store)
-        res = os.path.join(folder, "{}.pdf".format(product_id)
+        res = os.path.join(folder, "{}.pdf".format(product_id))
         return res
 
     # ------------------------------------------------------------------------------------------------------------------
