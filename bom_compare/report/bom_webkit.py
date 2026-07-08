@@ -27,8 +27,12 @@
 #
 ##############################################################################
 import time
+import logging
 from openerp.report import report_sxw
 from openerp.osv import osv
+
+_logger = logging.getLogger(__name__)
+
 
 # global value:
 current_bom = {}
@@ -99,6 +103,7 @@ class report_webkit_html(report_sxw.rml_parse):
                 parent_list.append(item.primary)
 
         parent_list.sort()
+        _logger.info('Parent list:\n{}'.format(parent_list))
         return parent_list
 
     def _create_current_bom(self, primary):
@@ -122,40 +127,51 @@ class report_webkit_html(report_sxw.rml_parse):
         rows = []
         cols = []
 
+        # --------------------------------------------------------------------------------------------------------------
         # Setup internal note:
+        # --------------------------------------------------------------------------------------------------------------
         recipe_pool = self.pool.get('mrp.bom')
         recipe_ids = recipe_pool.search(cr, uid, [
             ('internal_note', '!=', False)
         ], context=context)
 
         for recipe in recipe_pool.browse(cr, uid, recipe_ids):
-            product_note[recipe.product_id.default_code or ''] =\
-                recipe.internal_note
+            product_note[recipe.product_id.default_code or ''] = recipe.internal_note
 
-        # 1. Search lines that have passed primary name: ######################
+        # --------------------------------------------------------------------------------------------------------------
+        # 1. Search lines that have passed primary name:
+        # --------------------------------------------------------------------------------------------------------------
         bom_pool = self.pool.get('etl.bom.line')
         bom_ids = bom_pool.search(cr, uid, [
             ('primary', '=', primary)
             ], order='is_primary,code,seq')  # (only version)
-        bom_proxy = bom_pool.browse(cr, uid, bom_ids)
+        bom_proxy = bom_pool.browse(cr, uid, bom_ids, context=context)
 
+        # --------------------------------------------------------------------------------------------------------------
         # 2. Loop element searching: component, version
+        # --------------------------------------------------------------------------------------------------------------
         for item in bom_proxy:  # MP name
             if item.code not in cols:  # BOM Version name
                 cols.append(item.code)
                 if item.code not in translate_name:
                     translate_name[item.code] = item.name
 
-            # 3. Create table according to cols and rows ######################
+            # ----------------------------------------------------------------------------------------------------------
+            # 3. Create table according to cols and rows
+            # ----------------------------------------------------------------------------------------------------------
             current_bom[(item.component_code, item.code)] = item.quantity
 
-            # 4. Total for version (test is 1 in report) ######################
+            # ----------------------------------------------------------------------------------------------------------
+            # 4. Total for version (test is 1 in report)
+            # ----------------------------------------------------------------------------------------------------------
             if item.code in totals:
                 totals[item.code] += item.quantity
             else:
                 totals[item.code] = item.quantity
 
-            # 5. Create model dict ############################################
+            # ----------------------------------------------------------------------------------------------------------
+            # 5. Create model dict
+            # ----------------------------------------------------------------------------------------------------------
             if item.is_primary:
                 # '%5.5f'%(item.quantity or 0.0)
                 current_model[item.component_code] = item.quantity or 0.0
