@@ -78,6 +78,12 @@ class report_webkit_html(report_sxw.rml_parse):
                    between master bom (more or less)
         """
         global translate_name
+
+        parent_pool = self.pool.get('etl.bom.line')
+        context = {
+            'lang': 'it_IT',
+        }
+
         parent_list = []
         if data is None:
             data = {}
@@ -89,9 +95,8 @@ class report_webkit_html(report_sxw.rml_parse):
                 ('primary', 'ilike', primary),
                 )
 
-        parent_pool = self.pool.get('etl.bom.line')
-        parent_ids = parent_pool.search(self.cr, self.uid, domain)
-        parent_proxy = parent_pool.browse(self.cr, self.uid, parent_ids)
+        parent_ids = parent_pool.search(self.cr, self.uid, domain, context=context)
+        parent_proxy = parent_pool.browse(self.cr, self.uid, parent_ids, context=context)
 
         for item in parent_proxy:
             # Description

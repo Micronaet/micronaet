@@ -93,6 +93,7 @@ class etl_bom_line(osv.osv):
 
         bom_f = open(file_name, 'w')
         # only parent elements:
+
         for bom in bom_pool.browse(cr, uid, bom_ids, context=context):
             sequence = 0
             for line in bom.bom_lines:
@@ -130,8 +131,7 @@ class etl_bom_line(osv.osv):
         # Generate file before from BOM
         if generate_from_bom:
             _logger.info('Generate file [%s] from BOM' % file_name)
-            self.generate_csv_file_from_bom(
-                cr, uid, file_name, context=context)
+            self.generate_csv_file_from_bom(cr, uid, file_name, context=context)
 
         # Delete all:
         all_ids = self.search(cr, uid, [], context=context)
@@ -139,7 +139,10 @@ class etl_bom_line(osv.osv):
 
         # Create elements:
         try:
-            lines = csv.reader(open(file_name,'rb'), delimiter = ';')
+            lines = csv.reader(
+                open(file_name,'rb'),
+                delimiter = ';',
+            )
 
             tot_colonne=0
             for line in lines:
@@ -151,24 +154,18 @@ class etl_bom_line(osv.osv):
                        _logger.info('Start sync of BOM [cols=%s, file=%s]' % (
                            tot_colonne, file_name))
 
-                   if len(line): # jump empty lines
+                   if len(line):  # jump empty lines
                        if tot_colonne != len(line): # tot # of colums must be equal to # of column in first line
                            _logger.error('Colums not the same')
                            continue
 
                        counter += 1
-                       csv_id=0
-                       code = Prepare(line[csv_id]).strip() # bom code (product)
-                       csv_id+=1
-                       name = Prepare(line[csv_id]).title() # product description
-                       csv_id+=1
-                       seq = Prepare(line[csv_id]) # sequence
-                       csv_id+=1
-                       component_code = Prepare(line[csv_id]) # bom code (material)
-                       csv_id+=1
-                       component_name = Prepare(line[csv_id]).title() # material description
-                       csv_id+=1
-                       quantity = PrepareFloat(line[csv_id]) # quantity
+                       code = Prepare(line[0]).strip() # bom code (product)
+                       name = Prepare(line[1]).title() # product description
+                       seq = Prepare(line[2]) # sequence
+                       component_code = Prepare(line[3]) # bom code (material)
+                       component_name = Prepare(line[4]).title() # material description
+                       quantity = PrepareFloat(line[5]) # quantity
 
                        # Calculated fields:
                        is_primary = len(code) != 7
@@ -191,8 +188,7 @@ class etl_bom_line(osv.osv):
 
                        # PRODUCT CREATION ***************
                        try:
-                           product_id = self.create(cr, uid, data,
-                               context=context)
+                           product_id = self.create(cr, uid, data, context=context)
                        except:
                            _logger.info(
                                "[ERROR] Create BOM line, current record:",
@@ -223,6 +219,7 @@ class etl_bom_line(osv.osv):
         'is_primary': lambda *a: False,
         #'sum_for_total': lambda *a: True, # TODO remove
         }
+
 
 class mrp_bom_extra_fields(osv.osv):
     """ Add extra field to manage mrp.bom
@@ -255,8 +252,8 @@ class mrp_bom_extra_fields(osv.osv):
             except:
                 return False
 
-        def create_update_product(self, cr, uid, default_code, data, _logger,
-                context=None):
+        def create_update_product(
+                self, cr, uid, default_code, data, _logger, context=None):
             """ Search default_code an decide to create / update record
                 logging error >1 record are present
                 return product_id
@@ -322,8 +319,7 @@ class mrp_bom_extra_fields(osv.osv):
                 ('bom_id', '!=', False),
             ], context=context)
 
-            uom_id = get_product_uom(
-                self, cr, uid, 'kg', context=context) # always kg
+            uom_id = get_product_uom(self, cr, uid, 'kg', context=context) # always kg
             # Get file name and read all lines
             file_name = os.path.expanduser(os.path.join(path, file_name))
             lines = csv.reader(open(file_name,'rb'), delimiter = ";")
