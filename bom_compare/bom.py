@@ -127,6 +127,7 @@ class etl_bom_line(osv.osv):
         # Close both files:
         bom_f.close()
         bom_f_duplicate.close()
+        _logger.error('Duplicated product BOM:\n{}\n\n'.format(duplicated_bom))
         return True
 
     # ------------------------------------------------------------------------------------------------------------------
