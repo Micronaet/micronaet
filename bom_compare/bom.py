@@ -91,7 +91,10 @@ class etl_bom_line(osv.osv):
             # ('mrp_id', '=', False),  # Not MRP custom BOM (non serve sono già disattivate)
             ], context=context)
 
+        # Used 2 output files: correct, duplicated BOM (for check!)
         bom_f = open(file_name, 'w')
+        bom_f_duplicate = open('{}.DUPL'.format(file_name), 'w')
+
         duplicated_bom = []
         for bom in bom_pool.browse(cr, uid, bom_ids, context=context):
             sequence = 0
@@ -101,14 +104,15 @@ class etl_bom_line(osv.osv):
             # Check and remove duplicated:
             if product_code in duplicated_bom:
                 _logger.error('BOM duplicated: {}'.format(product_code))
-                continue
+                used_f = bom_f_duplicate
             else:
                 duplicated_bom.append(product_code)
+                used_f = bom_f
 
             for line in bom.bom_lines:
                 sequence += 1
                 row = '%s;%s;%s;%s;%s;%15.4f\r\n' % (
-                    # Heeader:
+                    # Header:
                     product_code,
                     product_name,
 
@@ -119,8 +123,10 @@ class etl_bom_line(osv.osv):
                     line.product_qty or 0.0,
                     )
                 row = row.replace('.', ',') # old account stype
-                bom_f.write(row)
+                used_f.write(row)
+        # Close both files:
         bom_f.close()
+        bom_f_duplicate.close()
         return True
 
     # ------------------------------------------------------------------------------------------------------------------
