@@ -95,6 +95,7 @@ class etl_bom_line(osv.osv):
         bom_f = open(file_name, 'w')
         bom_f_duplicate = open('{}.DUPL'.format(file_name), 'w')
 
+        done_bom = []
         duplicated_bom = []
         for bom in bom_pool.browse(cr, uid, bom_ids, context=context):
             sequence = 0
@@ -102,11 +103,13 @@ class etl_bom_line(osv.osv):
             product_name = prepare_ascii(bom.product_id.name)
 
             # Check and remove duplicated:
-            if product_code in duplicated_bom:
+            if product_code in done_bom:
                 _logger.error('BOM duplicated: {}'.format(product_code))
                 used_f = bom_f_duplicate
+                if product_code in duplicated_bom:
+                    duplicated_bom.append(product_code)  # Only for log (and once!)
             else:
-                duplicated_bom.append(product_code)
+                done_bom.append(product_code)  # To check duplicated
                 used_f = bom_f
 
             for line in bom.bom_lines:
