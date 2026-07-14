@@ -65,7 +65,8 @@
             margin:0px;
             cellspacing:0px;
             cellpadding:0px;
-            border-collapse:collapse;
+
+            border-collapse: separate;
 
             /*Non funziona il paginate*/
             -fs-table-paginate: paginate;
