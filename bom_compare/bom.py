@@ -88,18 +88,29 @@ class etl_bom_line(osv.osv):
         bom_pool = self.pool.get('mrp.bom')
         bom_ids = bom_pool.search(cr, uid, [
             ('bom_id', '=', False),  # Only parent BOM
-            ('mrp_id', '=', False),  # Not MRP custom BOM
+            # ('mrp_id', '=', False),  # Not MRP custom BOM (non serve sono già disattivate)
             ], context=context)
 
         bom_f = open(file_name, 'w')
+        duplicated_bom = []
         for bom in bom_pool.browse(cr, uid, bom_ids, context=context):
             sequence = 0
+            product_code = bom.product_id.default_code
+            product_name = prepare_ascii(bom.product_id.name)
+
+            # Check and remove duplicated:
+            if product_code in duplicated_bom:
+                _logger.error('BOM duplicated: {}'.format(product_code))
+                continue
+            else:
+                duplicated_bom.append(product_code)
+
             for line in bom.bom_lines:
                 sequence += 1
                 row = '%s;%s;%s;%s;%s;%15.4f\r\n' % (
                     # Heeader:
-                    bom.product_id.default_code,
-                    prepare_ascii(bom.product_id.name),
+                    product_code,
+                    product_name,
 
                     # Lines:
                     sequence,
