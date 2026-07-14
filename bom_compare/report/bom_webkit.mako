@@ -72,7 +72,7 @@
         }
 
         table.list_table tr, table.list_table tr td {
-            page-break-inside:avoid;
+            page-break-inside:avoid !important;
         }
 
         thead tr th{
