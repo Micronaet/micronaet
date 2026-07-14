@@ -378,15 +378,13 @@ class MrpProduction(osv.osv):
                 'ripristinare quella originale')
 
         current_bom_id = current_bom.id
-        bom_name = u'%s [Pers. x %s]' % (
-                current_bom.name, mrp.name)
+        bom_name = u'%s [Pers. x %s]' % (current_bom.name, mrp.name)
         default_data = {
             'mrp_id': mrp_id,
             'active': False,
             'name': bom_name,
             }
-        new_bom_id = bom_pool.copy(
-            cr, uid, current_bom_id, context=context)
+        new_bom_id = bom_pool.copy(cr, uid, current_bom_id, context=context)
         # Update with default:
         bom_pool.write(cr, uid, [new_bom_id], default_data, context=context)
 
@@ -394,6 +392,7 @@ class MrpProduction(osv.osv):
         lines = bom_pool.browse(cr, uid, new_bom_id, context=context).bom_lines
         for line in lines:
             bom_pool.write(cr, uid, [line.id], {
+                # Compare with original product-quantity:
                 'base_product_id': line.product_id.id,
                 'base_product_qty': line.product_qty,
             }, context=context)
@@ -412,9 +411,7 @@ class MrpProduction(osv.osv):
         return self.write(cr, uid, ids, data, context=context)
 
     _columns = {
-        'origin_bom_id': fields.many2one(
-            'mrp.bom', 'Origin BOM',
-            help='Origin BOM before custom'),
+        'origin_bom_id': fields.many2one('mrp.bom', 'Origin BOM', help='Origin BOM before custom'),
     }
 
 

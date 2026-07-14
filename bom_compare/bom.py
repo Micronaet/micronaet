@@ -376,8 +376,7 @@ class mrp_bom_extra_fields(osv.osv):
                                 #'taxes_id':,
                             }
                             product_id = create_update_product(
-                                self, cr, uid, code, product_data, _logger,
-                                context=context)
+                                self, cr, uid, code, product_data, _logger, context=context)
 
                             # -----------------------------------
                             # 2. Create or get mrp.bom > [header]
