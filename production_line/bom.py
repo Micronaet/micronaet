@@ -442,5 +442,4 @@ class MrpProductionMaterial(osv.osv):
             'from_id': ids[0],
             'from_model': 'mrp.production.material',
         })
-        return alternative_pool.choose_material_alternative(
-            cr, uid, ids, context=ctx)
+        return alternative_pool.choose_material_alternative(cr, uid, ids, context=ctx)
