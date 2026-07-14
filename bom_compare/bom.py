@@ -79,21 +79,19 @@ class etl_bom_line(osv.osv):
     _description = 'BOM line'
     _order = 'is_primary,name,seq'
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------------------------------------
     #                                 Utility
-    # -------------------------------------------------------------------------
-    def generate_csv_file_from_bom(self, cr, uid, file_name,
-            context=None):
+    # ------------------------------------------------------------------------------------------------------------------
+    def generate_csv_file_from_bom(self, cr, uid, file_name, context=None):
         """ Generate file from BOM (variant)
         """
         bom_pool = self.pool.get('mrp.bom')
         bom_ids = bom_pool.search(cr, uid, [
-            ('bom_id', '=', False),
+            ('bom_id', '=', False),  # Only parent BOM
+            ('mrp_id', '=', False),  # Not MRP custom BOM
             ], context=context)
 
         bom_f = open(file_name, 'w')
-        # only parent elements:
-
         for bom in bom_pool.browse(cr, uid, bom_ids, context=context):
             sequence = 0
             for line in bom.bom_lines:
@@ -114,30 +112,28 @@ class etl_bom_line(osv.osv):
         bom_f.close()
         return True
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------------------------------------
     #                     Scheduled action (etl.bom.line)
-    # -------------------------------------------------------------------------
-    def schedule_etl_bom_line_import(self, cr, uid, path, file_name,
-            generate_from_bom=True, context=None):
-        """ ETL operations for import BOM in OpenERP (parameter setted up in
-            scheduled action for file name)
-            Note: Only for report that compare BOM
-            generate_from_bom: generate file before
+    # ------------------------------------------------------------------------------------------------------------------
+    def schedule_etl_bom_line_import(self, cr, uid, path, file_name, generate_from_bom=True, context=None):
+        """ ETL operations for import BOM in OpenERP (parameter set up in scheduled action for file name)
+            Note: Only for report that compare BOM generate_from_bom: generate file before
+            This procedure export file from ERP BOM and reimport, this because BOM initially was generated from Account
         """
         # TODO Migrate to mrp.bom
         counter = 1
         file_name = os.path.expanduser(os.path.join(path, file_name))
 
-        # Generate file before from BOM
+        # 1. Generate file before from BOM
         if generate_from_bom:
             _logger.info('Generate file [%s] from BOM' % file_name)
             self.generate_csv_file_from_bom(cr, uid, file_name, context=context)
 
-        # Delete all:
+        # 2. Delete all:
         all_ids = self.search(cr, uid, [], context=context)
         self.unlink(cr, uid, all_ids, context=context)
 
-        # Create elements:
+        # 3. Create elements:
         try:
             lines = csv.reader(
                 open(file_name,'rb'),
@@ -151,8 +147,7 @@ class etl_bom_line(osv.osv):
                 else:
                    if not tot_colonne:
                        tot_colonne=len(line)
-                       _logger.info('Start sync of BOM [cols=%s, file=%s]' % (
-                           tot_colonne, file_name))
+                       _logger.info('Start sync of BOM [cols=%s, file=%s]' % (tot_colonne, file_name))
 
                    if len(line):  # jump empty lines
                        if tot_colonne != len(line): # tot # of colums must be equal to # of column in first line
