@@ -102,6 +102,11 @@
         .nopb {
             page-break-inside: avoid;
            }
+
+        .no-break {
+           page-break-inside: avoid !important;
+            display: block;
+        }
     </style>
 </head>
 <body>
