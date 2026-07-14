@@ -106,7 +106,7 @@ class etl_bom_line(osv.osv):
             if product_code in done_bom:
                 _logger.error('BOM duplicated: {}'.format(product_code))
                 used_f = bom_f_duplicate
-                if product_code in duplicated_bom:
+                if product_code not in duplicated_bom:
                     duplicated_bom.append(product_code)  # Only for log (and once!)
             else:
                 done_bom.append(product_code)  # To check duplicated
