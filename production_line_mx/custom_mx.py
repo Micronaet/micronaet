@@ -310,20 +310,15 @@ class MrpProductionMaterial(orm.Model):
         'pedimento_id': fields.many2one(
             'product.product.pedimento', 'Pedimento'),
         'standard_price': fields.related(
-            'product_id', 'standard_price',
-            type='float', string='Standard price'),
+            'product_id', 'standard_price', type='float', string='Standard price'),
         'pedimento_price': fields.related(
-            'pedimento_id', 'standard_price',
-            type='float', string='Pedimento price'),
+            'pedimento_id', 'standard_price', type='float', string='Pedimento price'),
         'current_pedimento_price': fields.related(
-            'pedimento_id', 'current_price',
-            type='float', string='Pedimento current price'),
+            'pedimento_id', 'current_price', type='float', string='Pedimento current price'),
         'pedimento_covered': fields.function(
-            _get_pedimento_covered, method=True,
-            type='boolean', string='Pedimento covered'),
+            _get_pedimento_covered, method=True, type='boolean', string='Pedimento covered'),
         'accounting_covered': fields.function(
-            _get_accounting_covered, method=True,
-            type='boolean', string='Pedimento covered'),
+            _get_accounting_covered, method=True, type='boolean', string='Pedimento covered'),
         }
 
 
