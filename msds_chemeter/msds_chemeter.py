@@ -538,7 +538,7 @@ class ProductProduct(orm.Model):
                 _logger.warning('No Mixture code found (or excluded): {}'.format(default_code))
                 return ''
 
-            elif start1 == 'E':  # TODO M?
+            elif start1 in ('A' or 'E'):  # TODO M?
                 # 3. used as is code, like Energo:  (TODO Machine code)
                 return default_code
 
