@@ -488,8 +488,12 @@ class product_status_wizard(osv.osv_memory):
         """
         # Reload stock status
         _logger.info('Reload stock status before report')
-        self.pool.get('product.product').schedule_etl_product_state_mssql(
-            cr, uid, verbose=True, as_dict=True, file_name_package=False, context=context)
+        try:
+            self.pool.get('product.product').schedule_etl_product_state_mssql(
+                cr, uid, verbose=True, as_dict=True, file_name_package=False, context=context)
+        except:
+            raise osv.except_osv(
+                'Errore aggiornamento', 'Problemi aggiornando il magazzino, riprovare più tardi')
 
         _logger.info('Extract report')
         return self.export_excel(cr, uid, ids, context=context)
