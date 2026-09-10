@@ -266,11 +266,8 @@ class product_status_wizard(osv.osv_memory):
             'yes' if datas.get('with_medium', False) else 'no',
             datas.get('month_window', '/'),
             )
-        res += 'With OF detail' if datas.get(
-            'with_order_detail', False) else 'No OF detail',
-        res += 'With fake order: %s -' % (
-            'yes' if datas.get('fake_ids', False) else 'no',
-            )
+        res += 'With OF detail' if datas.get('with_order_detail', False) else 'No OF detail'
+        res += 'With fake order: %s -' % ('yes' if datas.get('fake_ids', False) else 'no')
         return res
 
     def prepare_data(self, cr, uid, ids, context=None):
@@ -486,6 +483,16 @@ class product_status_wizard(osv.osv_memory):
             )
         return supplier_product
 
+    def export_excel_reload_stock(self, cr, uid, ids, context=None):
+        """ Reload Stock status and run original action
+        """
+        # Reload stock status
+        _logger.info('Reload stock status before report')
+        self.pool.get('producxt.product').schedule_etl_product_state_mssql(
+            cr, uid, verbose=True, as_dict=True, file_name_package=False, context=context)
+
+        _logger.info('Extract report')
+        return self.export_excel(cr, uid, ids, context=context)
 
     def export_excel(self, cr, uid, ids, context=None):
         """ Export Excel file

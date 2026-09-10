@@ -564,7 +564,7 @@ msgstr "Pianificato per consegna"
 #. module: production_line
 #: view:product.status.wizard:0
 msgid "Export XLS"
-msgstr "Exporta XLS"
+msgstr "Esporta XLS"
 
 #. module: production_line
 #: field:product.status.production.fake.wizard,production_date:0
