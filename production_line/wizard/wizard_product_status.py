@@ -488,7 +488,7 @@ class product_status_wizard(osv.osv_memory):
         """
         # Reload stock status
         _logger.info('Reload stock status before report')
-        self.pool.get('producxt.product').schedule_etl_product_state_mssql(
+        self.pool.get('product.product').schedule_etl_product_state_mssql(
             cr, uid, verbose=True, as_dict=True, file_name_package=False, context=context)
 
         _logger.info('Extract report')
