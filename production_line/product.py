@@ -265,9 +265,9 @@ class product_product_extra(osv.osv):
         return super(product_product_extra, self).fields_view_get(
             cr, uid, view_id, view_type, context=context, toolbar=toolbar)
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------------------------------------
     #                               Scheduled actions
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------------------------------------
     def schedule_etl_product_state_mssql(
             self, cr, uid, verbose=True,
             as_dict=True, file_name_package=False, context=None):
@@ -282,14 +282,13 @@ class product_product_extra(osv.osv):
         product_pool = self.pool.get("product.product")
 
         try:
-            cursor = accounting_pool.get_product_package_columns(
-                 cr, uid, context=context)
+            cursor = accounting_pool.get_product_package_columns(cr, uid, context=context)
             if not cursor:
                 _logger.error('Unable to connect no package imported!')
 
-            # -----------------------------------------------------------------
+            # ----------------------------------------------------------------------------------------------------------
             #                Import Product UL from file:
-            # -----------------------------------------------------------------
+            # ----------------------------------------------------------------------------------------------------------
             if file_name_package:  # No more used
                 ul_pool.import_ul(cr, uid, file_name_package, context=context)
                 ul_ids = ul_pool.search(cr, uid, [], context=context)
@@ -312,13 +311,12 @@ class product_product_extra(osv.osv):
                     except:
                         _logger.error(sys.exc_info())
 
-                # -------------------------------------------------------------
+                # ------------------------------------------------------------------------------------------------------
                 # Start importation product-package:
-                # -------------------------------------------------------------
+                # ------------------------------------------------------------------------------------------------------
                 _logger.info("Start import packages for product")
 
-                cursor = accounting_pool.get_product_package(
-                    cr, uid, context=context)
+                cursor = accounting_pool.get_product_package(cr, uid, context=context)
                 if not cursor:
                     _logger.error(
                         'Unable to connect no importation of package list '
@@ -331,8 +329,7 @@ class product_product_extra(osv.osv):
                         ('default_code', '=', product_code),
                     ], context=context)
                     if not product_ids:
-                        _logger.error(
-                            "Product not found, code: '%s'" % product_code)
+                        _logger.error("Product not found, code: '%s'" % product_code)
                         continue  # next record!
 
                     product_id = product_ids[0]
@@ -350,9 +347,8 @@ class product_product_extra(osv.osv):
                             if qty > 0.0:  # search if present and > 0
                                 ul = codepackage_2_id.get(key, False)
                                 if not ul:
-                                   _logger.error(
-                                       "UL: '%s' not found (used in product: '%s')" % (
-                                           key, product_code,))
+                                   _logger.error("UL: '%s' not found (used in product: '%s')" % (
+                                       key, product_code,))
                                    continue  # next record (jump this)!
                                 # search if package is yet present:
                                 ul_ids = product_packaging_pool.search(cr, uid, [
@@ -363,28 +359,25 @@ class product_product_extra(osv.osv):
                                     res = product_packaging_pool.write(
                                         cr, uid, ul_ids, {'qty': qty},
                                         context=context)
-                                else:      # create
+                                else:  # create
                                     item_id = product_packaging_pool.create(
                                         cr, uid, {
                                             'product_id': product_id,
                                             'ul': ul,
                                             'qty': qty,
                                             }, context=context)
-
                         except:
                             _logger.error(sys.exc_info())
         except:
             _logger.error('Error import package during status importation!')
 
-        # ---------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
         # Start syncro product state:
-        # ---------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
         _logger.info('Start syncro product state')
-        cursor = accounting_pool.get_product_quantity(
-            cr, uid, 1, 9, context=context)  # current year always 9
+        cursor = accounting_pool.get_product_quantity(cr, uid, 1, 9, context=context)  # current year always 9
         if not cursor:
-            _logger.error(
-                'Unable to connect no importation of product state quantity!')
+            _logger.error('Unable to connect no importation of product state quantity!')
 
         # Verbose variables:
         total = 0
@@ -396,27 +389,23 @@ class product_product_extra(osv.osv):
             for record in cursor:
                 try:
                     records += 1
-
                     default_code = record['CKY_ART'].strip()
 
                     item_id = self.search(cr, uid, [
                         ('default_code', '=', default_code),
                         ], context=context)
                     if item_id:
-                        accounting_qty = record['NQT_INV'] + \
-                            record['NQT_CAR'] - record['NQT_SCAR']
+                        accounting_qty = record['NQT_INV'] + record['NQT_CAR'] - record['NQT_SCAR']
                         self.write(cr, uid, item_id, {
                             'accounting_qty': accounting_qty,
                             }, context=context)
                         total += 1
 
                     if verbose and (records % verbose_quantity == 0):
-                        _logger.info('%s State updated: %s]!' % (
-                            records, total))
+                        _logger.info('%s State updated: %s]!' % (records, total))
                 except:
                     _logger.error(
-                        'ETL MSSQL: Error update product state! [%s]' % (
-                            sys.exc_info()))
+                        'ETL MSSQL: Error update product state! [{}]'.format(sys.exc_info()))
             _logger.info(
                 'Import state terminated! %s Imported %s!' % (records, total))
         except:
