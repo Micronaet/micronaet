@@ -520,7 +520,7 @@
                         <newline/>
                         <field name="material_from_production" invisible="1" />
                         <field name="bom_material_ids" nolabel="1" colspan="4"  attrs="{'readonly':[('unload_confirmed','=',True)]}">
-                            <tree string="Material BOM list" editable="bottom" colors="red:accounting_qty&lt;0"><!-- -->
+                            <tree string="Material BOM list" editable="bottom" colors="red:accounting_qty &lt; accounting_qty"><!-- -->
                                 <field name="product_id" />
                                 <button type="object" name="choose_material_alternative" string="Seleziona prodotto alternativo"
                                     icon="terp-stock_effects-object-colorize"/>
